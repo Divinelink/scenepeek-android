@@ -11,6 +11,7 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.runComposeUiTest
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.scaffold.NavGraphExtension
@@ -48,6 +49,7 @@ fun ComposeUiTest.setVisibilityScopeContent(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = preferencesRepository,
+      appInfoRepository = TestAppInfoRepository(),
       navigationProvider = listOf(),
     )
     ProvideScenePeekAppState(appState = state) {
@@ -71,6 +73,7 @@ fun ComposeUiTest.setScaffoldContent(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
       preferencesRepository = TestPreferencesRepository(),
+      appInfoRepository = TestAppInfoRepository(),
       navigationProvider = navigationProvider,
     )
 

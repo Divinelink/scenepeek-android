@@ -13,7 +13,6 @@ class AndroidBuildConfigProvider : BuildConfigProvider {
     if (AndroidConstants.isDebug) append(" DEBUG")
     append(" (${AndroidConstants.versionCode})")
   }
-  override val versionCheckerUrl: String = AndroidConstants.VERSION_CHECKER_URL
 }
 
 actual fun getBuildConfigProvider(): BuildConfigProvider = AndroidBuildConfigProvider()

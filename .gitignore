@@ -111,16 +111,13 @@ playground.xcworkspace
 
 Carthage/Build
 
-fastlane/report.xml
+android/fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 
 # MacOS X
 **/.DS_Store
-
-# Created by .ignore support plugin (hsz.mobi)
-
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -136,8 +133,6 @@ gradle-app.setting
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
-
-
 
 ## Plugin-specific files:
 

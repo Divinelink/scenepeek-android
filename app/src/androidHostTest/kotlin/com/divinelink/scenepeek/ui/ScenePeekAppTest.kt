@@ -29,6 +29,7 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.app.TestAppInfoRepository
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
@@ -140,6 +141,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
   private lateinit var authRepository: TestAuthRepository
   private lateinit var detailsRepository: TestDetailsRepository
+  private lateinit var appInfoRepository: TestAppInfoRepository
 
   // Onboarding use cases
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
@@ -169,6 +171,7 @@ class ScenePeekAppTest : ComposeTest() {
     deleteMediaUseCase = TestDeleteMediaUseCase()
     authRepository = TestAuthRepository()
     detailsRepository = TestDetailsRepository()
+    appInfoRepository = TestAppInfoRepository()
 
     startKoin {
       modules(
@@ -203,6 +206,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -260,6 +264,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -331,6 +336,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -410,6 +416,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -501,6 +508,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -568,6 +576,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -692,6 +701,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -714,9 +724,6 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test loading content is visible when uiState is loading`() = uiTest {
-//    runTest(
-//      MainDispatcherRule().testDispatcher.unconfined,
-//    ) {
     uiState = MainUiState.Loading
 
     setContentWithTheme {
@@ -730,6 +737,7 @@ class ScenePeekAppTest : ComposeTest() {
           networkMonitor = networkMonitor,
           navigationProvider = navigationProvider,
           preferencesRepository = preferencesRepository,
+          appInfoRepository = appInfoRepository,
         ),
         uiState = uiState,
         uiEvent = uiEvent,
@@ -752,6 +760,7 @@ class ScenePeekAppTest : ComposeTest() {
           onboardingManager = onboardingManager,
           navigationProvider = navigationProvider,
           preferencesRepository = preferencesRepository,
+          appInfoRepository = appInfoRepository,
         )
       }
 
@@ -788,6 +797,7 @@ class ScenePeekAppTest : ComposeTest() {
           onboardingManager = onboardingManager,
           navigationProvider = navigationProvider,
           preferencesRepository = preferencesRepository,
+          appInfoRepository = appInfoRepository,
         )
 
         ScenePeekApp(
@@ -825,6 +835,7 @@ class ScenePeekAppTest : ComposeTest() {
           onboardingManager = onboardingManager,
           navigationProvider = navigationProvider,
           preferencesRepository = preferencesRepository,
+          appInfoRepository = appInfoRepository,
         )
 
         currentDestination = state.currentDestination?.route
@@ -850,6 +861,7 @@ class ScenePeekAppTest : ComposeTest() {
           onboardingManager = onboardingManager,
           navigationProvider = navigationProvider,
           preferencesRepository = preferencesRepository,
+          appInfoRepository = appInfoRepository,
         )
       }
 
@@ -892,6 +904,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(
@@ -954,6 +967,7 @@ class ScenePeekAppTest : ComposeTest() {
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
         preferencesRepository = preferencesRepository,
+        appInfoRepository = appInfoRepository,
       )
 
       ScenePeekApp(

@@ -6,7 +6,6 @@ interface BuildConfigProvider {
   val versionCode: Int
   val versionName: String
   val versionData: String
-  val versionCheckerUrl: String
 }
 
 expect fun getBuildConfigProvider(): BuildConfigProvider
