@@ -1,0 +1,82 @@
+package com.andreolas.movierama
+
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import com.andreolas.movierama.home.HomeScreen
+import com.andreolas.movierama.home.NavGraphs
+import com.andreolas.movierama.home.destinations.HomeScreenDestination
+import com.andreolas.movierama.ui.theme.AppTheme
+import com.andreolas.movierama.ui.theme.updateForTheme
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
+import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
+import com.ramcosta.composedestinations.spec.Route
+import dagger.hilt.android.AndroidEntryPoint
+import gr.divinelink.core.util.utils.setNavigationBarColor
+
+@ExperimentalAnimationApi
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+        // Update for Dark Mode straight away
+        updateForTheme(viewModel.currentTheme)
+
+        setContent {
+            AppTheme {
+                Surface(
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    AppNavHost(
+                        startRoute = HomeScreenDestination
+                    )
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterialNavigationApi::class)
+    @Composable
+    private fun AppNavHost(
+        startRoute: Route,
+    ) {
+        DestinationsNavHost(
+            startRoute = startRoute,
+            navGraph = NavGraphs.root,
+            engine = rememberAnimatedNavHostEngine(
+                rootDefaultAnimations = RootNavGraphDefaultAnimations(
+                    enterTransition = {
+                        slideInHorizontally()
+                    },
+                    exitTransition = {
+                        fadeOut()
+                    },
+                ),
+            ),
+            manualComposableCallsBuilder = {
+                composable(HomeScreenDestination) {
+                    HomeScreen(
+                        navigator = destinationsNavigator,
+                    )
+                }
+            }
+        )
+    }
+}

@@ -1,0 +1,22 @@
+apply plugin: "kover"
+
+
+//tasks.withType(Test) {
+//    kover {
+//        generateXml = false
+//        generateHtml = true
+//        coverageEngine = 'INTELLIJ'
+//        xmlReportFile.set(file("$buildDir/kover-coverage-report/report.xml"))
+//        htmlReportDir.set(file("$buildDir/kover-coverage-report/html"))
+//        binaryReportFile.set(file("$buildDir/kover-coverage-report/result.bin"))
+//    }
+//}
+
+//tasks.koverVerify {
+//    rule {
+//        name = "Minimal line coverage rate in percents"
+//        bound {
+//            minValue = 98
+//        }
+//    }
+//}

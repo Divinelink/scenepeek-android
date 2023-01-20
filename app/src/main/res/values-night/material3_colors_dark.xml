@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_colorPrimary">#5BD5FA</color>
+    <color name="dark_colorOnPrimary">#003543</color>
+    <color name="dark_colorPrimaryContainer">#004E60</color>
+    <color name="dark_colorOnPrimaryContainer">#B5EBFF</color>
+    <color name="dark_colorSecondary">#B3CAD4</color>
+    <color name="dark_colorOnSecondary">#1D333B</color>
+    <color name="dark_colorSecondaryContainer">#344A52</color>
+    <color name="dark_colorOnSecondaryContainer">#CFE6F0</color>
+    <color name="dark_colorTertiary">#C2C3EB</color>
+    <color name="dark_colorOnTertiary">#2B2E4D</color>
+    <color name="dark_colorTertiaryContainer">#424465</color>
+    <color name="dark_colorOnTertiaryContainer">#E0E0FF</color>
+    <color name="dark_colorError">#FFB4AB</color>
+    <color name="dark_colorErrorContainer">#93000A</color>
+    <color name="dark_colorOnError">#690005</color>
+    <color name="dark_colorOnErrorContainer">#FFDAD6</color>
+    <color name="dark_colorBackground">#191C1D</color>
+    <color name="dark_colorOnBackground">#E1E3E4</color>
+    <color name="dark_colorSurface">#191C1D</color>
+    <color name="dark_colorOnSurface">#E1E3E4</color>
+    <color name="dark_colorSurfaceVariant">#40484C</color>
+    <color name="dark_colorOnSurfaceVariant">#BFC8CC</color>
+    <color name="dark_colorOutline">#899296</color>
+    <color name="dark_colorInverseOnSurface">#191C1D</color>
+    <color name="dark_colorInverseSurface">#E1E3E4</color>
+    <color name="dark_colorInversePrimary">#00677E</color>
+    <color name="dark_colorShadow">#000000</color>
+    <color name="dark_colorSurfaceTint">#5BD5FA</color>
+    <color name="dark_colorSurfaceTintColor">#5BD5FA</color>
+
+<!--    <color name="dark_colorSurface1">#23242A</color>-->
+    <color name="dark_colorSurface2">#172224</color>
+<!--    <color name="dark_colorSurface3">#2C2F37</color>-->
+<!--    <color name="dark_colorSurface4">#2E3039</color>-->
+<!--    <color name="dark_colorSurface5">#31343E</color>-->
+
+    <color name="dark_colorTransparent1">#0AFFFFFF</color>
+    <color name="dark_colorTransparent2">#1FFFFFFF</color>
+    <color name="dark_colorTransparent3">#29FFFFFF</color>
+    <color name="dark_colorTransparent4">#7AFFFFFF</color>
+    <color name="dark_colorTransparent5">#B8FFFFFF</color>
+    <color name="dark_colorNeutral">#121212</color>
+    <color name="dark_colorNeutralVariant">#5C5C5C</color>
+    <color name="dark_colorTransparentInverse1">#0A000000</color>
+    <color name="dark_colorTransparentInverse2">#14000000</color>
+    <color name="dark_colorTransparentInverse3">#29000000</color>
+    <color name="dark_colorTransparentInverse4">#B8000000</color>
+    <color name="dark_colorTransparentInverse5">#F5000000</color>
+    <color name="dark_colorNeutralInverse">#E0FFFFFF</color>
+    <color name="dark_colorNeutralVariantInverse">#A3FFFFFF</color>
+
+    <color name="dark_text_primary">@color/colorOnSurface</color>
+    <color name="dark_text_primary_disabled">@color/core_grey_25</color>
+    <color name="dark_text_primary_dialog">@color/core_grey_65</color>
+
+    <color name="dark_text_secondary">@color/colorOnSurfaceVariant</color>
+
+    <color name="dark_conversation_toolbar_color">@color/colorSurface</color>
+
+    <color name="dark_accent_primary">@color/core_ultramarine</color>
+    <color name="dark_accent_stroke_primary">@color/colorBackground</color>
+
+<!--    <color name="inverse_primary">@color/core_black</color>-->
+
+<!--    <color name="background_primary">@color/colorBackground</color>-->
+<!--    <color name="background_secondary">@color/colorSurface</color>-->
+<!--    <color name="background_tertiary">@color/core_grey_02</color>-->
+<!--    <color name="background_dialog">@color/colorSurface</color>-->
+<!--    <color name="background_dialog_secondary">@color/background_secondary</color>-->
+
+<!--    <color name="text_hint">@color/core_grey_45</color>-->
+
+<!--    <color name="text_toolbar_title">@color/colorBackground</color>-->
+<!--    <color name="text_toolbar_subtitle">@color/transparent_white_90</color>-->
+
+    <color name="dark_icon_tint_primary">@color/colorOnSurface</color>
+    <color name="dark_icon_tint_secondary">@color/colorOnSurfaceVariant</color>
+    <color name="dark_icon_tint_action">@color/core_black</color>
+
+<!--    <color name="icon_tint_tab_selected">@color/colorOnSurface</color>-->
+<!--    <color name="icon_tint_tab_unselected">@color/colorOnSurfaceVariant</color>-->
+
+<!--    <color name="button_primary">@color/core_ultramarine</color>-->
+<!--    <color name="button_primary_ripple">@color/transparent_black_15</color>-->
+<!--    <color name="button_primary_text">@color/core_white</color>-->
+<!--    <color name="button_primary_text_disabled">@color/transparent_white_20</color>-->
+
+<!--    <color name="button_secondary">@color/core_grey_05</color>-->
+<!--    <color name="button_secondary_ripple">@color/core_grey_02</color>-->
+<!--    <color name="button_secondary_text">@color/core_ultramarine</color>-->
+<!--    <color name="button_secondary_text_disabled">@color/core_grey_25</color>-->
+<!--    <color name="button_secondary_stroke">@color/core_grey_15</color>-->
+
+<!--    <color name="divider_minor">@color/core_grey_15</color>-->
+<!--    <color name="divider_major">@color/core_grey_25</color>-->
+
+<!--    <color name="alert_primary">@color/core_red_highlight</color>-->
+
+<!--    <color name="transparent_20">@color/transparent_white_20</color>-->
+<!--    <color name="transparent_40">@color/transparent_white_40</color>-->
+<!--    <color name="transparent_60">@color/transparent_white_60</color>-->
+<!--    <color name="transparent_80">@color/transparent_white_80</color>-->
+
+<!--    <color name="inverse_transparent">@color/transparent_black</color>-->
+<!--    <color name="inverse_transparent_05">@color/transparent_black_05</color>-->
+<!--    <color name="inverse_transparent_08">@color/transparent_black_08</color>-->
+<!--    <color name="inverse_transparent_10">@color/transparent_black_10</color>-->
+<!--    <color name="inverse_transparent_15">@color/transparent_black_15</color>-->
+<!--    <color name="inverse_transparent_20">@color/transparent_black_20</color>-->
+<!--    <color name="inverse_transparent_25">@color/transparent_black_25</color>-->
+<!--    <color name="inverse_transparent_40">@color/transparent_black_40</color>-->
+<!--    <color name="inverse_transparent_60">@color/transparent_black_60</color>-->
+<!--    <color name="inverse_transparent_80">@color/transparent_black_80</color>-->
+
+<!--    <color name="colorSecondaryContainer_12">#1FDCE5F9</color>-->
+<!--    <color name="colorSurface_60">#99FBFCFF</color>-->
+<!--    <color name="colorSurfaceVariant_38">#61E7EBF3</color>-->
+<!--    <color name="colorOnSurface_12">#1F1B1B1D</color>-->
+<!--    <color name="colorOnSurfaceVariant_60">#99545863</color>-->
+<!--    <color name="colorOnBackground_60">#991B1D1D</color>-->
+<!--    <color name="colorOutline_38">#61808389</color>-->
+<!--    <color name="colorBackground_0">#00FBFCFF</color>-->
+
+</resources>

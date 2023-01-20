@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorSurface2" />
+
+    <!--
+    Desired radius would be 18 dp, but then ripple effect is leaking outside of radius.
+    It doesn't seem viable for now to edit Menu OverFlow's ripple color or behaviour.
+    Therefore padding is added in order to have at least some corner radius.
+     -->
+
+    <padding
+        android:bottom="8dp"
+        android:top="8dp" />
+
+    <corners android:radius="8dp" />
+
+</shape>

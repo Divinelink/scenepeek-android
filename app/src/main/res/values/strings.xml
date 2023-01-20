@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">MovieRama</string>
+
+    <string name="ok">OK</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+
+    <!-- Error -->
+    <string name="empty_field_error_message">%s is required.</string>
+    <string name="general_error_message">Something when wrong.</string>
+
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+
+    <string name="settings">Settings</string>
+
+    <!-- preferences.xml -->
+    <string name="preferences__none">None</string>
+    <string name="preferences__appearance">Appearance</string>
+    <string name="preferences__theme">Theme</string>
+    <string name="preferences__light_theme">Light</string>
+    <string name="preferences__dark_theme">Dark</string>
+    <string name="preferences__system_default">System default</string>
+
+    <!-- HelpSettingsFragment -->
+    <string name="HelpSettingsFragment__help">Help</string>
+    <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
+    <string name="HelpSettingsFragment__version">Version</string>
+
+
+</resources>

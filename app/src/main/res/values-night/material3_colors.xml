@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/dark_colorPrimary</color>
+    <color name="colorOnPrimary">@color/dark_colorOnPrimary</color>
+    <color name="colorPrimaryContainer">@color/dark_colorPrimaryContainer</color>
+    <color name="colorOnPrimaryContainer">@color/dark_colorOnPrimaryContainer</color>
+    <color name="colorSecondary">@color/dark_colorSecondary</color>
+    <color name="colorOnSecondary">@color/dark_colorOnSecondary</color>
+    <color name="colorSecondaryContainer">@color/dark_colorSecondaryContainer</color>
+    <color name="colorOnSecondaryContainer">@color/dark_colorOnSecondaryContainer</color>
+    <color name="colorTertiary">@color/dark_colorTertiary</color>
+    <color name="colorOnTertiary">@color/dark_colorOnTertiary</color>
+    <color name="colorTertiaryContainer">@color/dark_colorTertiaryContainer</color>
+    <color name="colorOnTertiaryContainer">@color/dark_colorOnTertiaryContainer</color>
+    <color name="colorError">@color/dark_colorError</color>
+    <color name="colorErrorContainer">@color/dark_colorErrorContainer</color>
+    <color name="colorOnError">@color/dark_colorOnError</color>
+    <color name="colorOnErrorContainer">@color/dark_colorOnErrorContainer</color>
+    <color name="colorBackground">@color/dark_colorBackground</color>
+    <color name="colorOnBackground">@color/dark_colorOnBackground</color>
+    <color name="colorSurface">@color/dark_colorSurface</color>
+    <color name="colorOnSurface">@color/dark_colorOnSurface</color>
+    <color name="colorSurfaceVariant">@color/dark_colorSurfaceVariant</color>
+    <color name="colorOnSurfaceVariant">@color/dark_colorOnSurfaceVariant</color>
+    <color name="colorOutline">@color/dark_colorOutline</color>
+    <color name="colorInverseOnSurface">@color/dark_colorInverseOnSurface</color>
+    <color name="colorInverseSurface">@color/dark_colorInverseSurface</color>
+    <color name="colorInversePrimary">@color/dark_colorInversePrimary</color>
+    <color name="colorShadow">@color/dark_colorShadow</color>
+    <color name="colorSurfaceTint">@color/dark_colorSurfaceTint</color>
+    <color name="colorSurfaceTintColor">@color/dark_colorSurfaceTintColor</color>
+
+    <color name="text_primary">@color/dark_text_primary</color>
+    <color name="text_primary_disabled">@color/dark_text_primary_disabled</color>
+    <color name="text_primary_dialog">@color/dark_text_primary_dialog</color>
+
+    <color name="text_secondary">@color/dark_text_secondary</color>
+
+    <color name="conversation_toolbar_color">@color/dark_conversation_toolbar_color</color>
+
+    <color name="accent_primary">@color/dark_accent_primary</color>
+    <color name="accent_stroke_primary">@color/dark_accent_stroke_primary</color>
+
+    <color name="colorSurface2">@color/dark_colorSurface2</color>
+
+<!--    <color name="inverse_primary">@color/dark_inverse_primary</color>-->
+
+<!--    <color name="background_primary">@color/dark_background_primary</color>-->
+<!--    <color name="background_secondary">@color/dark_background_secondary</color>-->
+<!--    <color name="background_tertiary">@color/dark_background_tertiary</color>-->
+<!--    <color name="background_dialog">@color/dark_background_dialog</color>-->
+<!--    <color name="background_dialog_secondary">@color/dark_background_dialog_secondary</color>-->
+
+<!--    <color name="text_hint">@color/dark_text_hint</color>-->
+
+<!--    <color name="text_toolbar_title">@color/dark_text_toolbar_title</color>-->
+<!--    <color name="text_toolbar_subtitle">@color/dark_text_toolbar_subtitle</color>-->
+
+    <color name="icon_tint_primary">@color/dark_icon_tint_primary</color>
+    <color name="icon_tint_secondary">@color/dark_icon_tint_secondary</color>
+    <color name="icon_tint_action">@color/dark_icon_tint_action</color>
+
+<!--    <color name="icon_tint_tab_selected">@color/dark_icon_tint_tab_selected</color>-->
+<!--    <color name="icon_tint_tab_unselected">@color/dark_icon_tint_tab_unselected</color>-->
+
+<!--    <color name="button_primary">@color/dark_button_primary</color>-->
+<!--    <color name="button_primary_ripple">@color/dark_button_primary_ripple</color>-->
+<!--    <color name="button_primary_text">@color/dark_button_primary_text</color>-->
+<!--    <color name="button_primary_text_disabled">@color/dark_button_primary_text_disabled</color>-->
+
+<!--    <color name="button_secondary">@color/dark_button_secondary</color>-->
+<!--    <color name="button_secondary_ripple">@color/dark_button_secondary_ripple</color>-->
+<!--    <color name="button_secondary_text">@color/dark_button_secondary_text</color>-->
+<!--    <color name="button_secondary_text_disabled">@color/dark_button_secondary_text_disabled</color>-->
+<!--    <color name="button_secondary_stroke">@color/dark_button_secondary_stroke</color>-->
+
+<!--    <color name="divider_minor">@color/dark_divider_minor</color>-->
+<!--    <color name="divider_major">@color/dark_divider_major</color>-->
+
+<!--    <color name="alert_primary">@color/dark_alert_primary</color>-->
+
+<!--    <color name="transparent_20">@color/dark_transparent_20</color>-->
+<!--    <color name="transparent_40">@color/dark_transparent_40</color>-->
+<!--    <color name="transparent_60">@color/dark_transparent_60</color>-->
+<!--    <color name="transparent_80">@color/dark_transparent_80</color>-->
+
+<!--    <color name="inverse_transparent">@color/dark_inverse_transparent</color>-->
+<!--    <color name="inverse_transparent_05">@color/dark_inverse_transparent_05</color>-->
+<!--    <color name="inverse_transparent_08">@color/dark_inverse_transparent_08</color>-->
+<!--    <color name="inverse_transparent_10">@color/dark_inverse_transparent_10</color>-->
+<!--    <color name="inverse_transparent_15">@color/dark_inverse_transparent_15</color>-->
+<!--    <color name="inverse_transparent_20">@color/dark_inverse_transparent_20</color>-->
+<!--    <color name="inverse_transparent_25">@color/dark_inverse_transparent_25</color>-->
+<!--    <color name="inverse_transparent_40">@color/dark_inverse_transparent_40</color>-->
+<!--    <color name="inverse_transparent_60">@color/dark_inverse_transparent_60</color>-->
+<!--    <color name="inverse_transparent_80">@color/dark_inverse_transparent_80</color>-->
+
+<!--    <color name="colorSecondaryContainer_12">@color/dark_colorSecondaryContainer_12</color>-->
+<!--    <color name="colorSurface_60">@color/dark_colorSurface_60</color>-->
+<!--    <color name="colorSurfaceVariant_38">@color/dark_colorSurfaceVariant_38</color>-->
+<!--    <color name="colorOnSurface_12">@color/dark_colorOnSurface_12</color>-->
+<!--    <color name="colorOnSurfaceVariant_60">@color/dark_colorOnSurfaceVariant_60</color>-->
+<!--    <color name="colorOnBackground_60">@color/dark_colorOnBackground_60</color>-->
+<!--    <color name="colorOutline_38">@color/dark_colorOutline_38</color>-->
+<!--    <color name="colorBackground_0">@color/dark_colorBackground_0</color>-->
+</resources>

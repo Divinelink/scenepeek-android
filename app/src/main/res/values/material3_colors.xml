@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/light_colorPrimary</color>
+    <color name="colorOnPrimary">@color/light_colorOnPrimary</color>
+    <color name="colorPrimaryContainer">@color/light_colorPrimaryContainer</color>
+    <color name="colorOnPrimaryContainer">@color/light_colorOnPrimaryContainer</color>
+    <color name="colorSecondary">@color/light_colorSecondary</color>
+    <color name="colorOnSecondary">@color/light_colorOnSecondary</color>
+    <color name="colorSecondaryContainer">@color/light_colorSecondaryContainer</color>
+    <color name="colorOnSecondaryContainer">@color/light_colorOnSecondaryContainer</color>
+    <color name="colorTertiary">@color/light_colorTertiary</color>
+    <color name="colorOnTertiary">@color/light_colorOnTertiary</color>
+    <color name="colorTertiaryContainer">@color/light_colorTertiaryContainer</color>
+    <color name="colorOnTertiaryContainer">@color/light_colorOnTertiaryContainer</color>
+    <color name="colorError">@color/light_colorError</color>
+    <color name="colorErrorContainer">@color/light_colorErrorContainer</color>
+    <color name="colorOnError">@color/light_colorOnError</color>
+    <color name="colorOnErrorContainer">@color/light_colorOnErrorContainer</color>
+    <color name="colorBackground">@color/light_colorBackground</color>
+    <color name="colorOnBackground">@color/light_colorOnBackground</color>
+    <color name="colorSurface">@color/light_colorSurface</color>
+    <color name="colorOnSurface">@color/light_colorOnSurface</color>
+    <color name="colorSurfaceVariant">@color/light_colorSurfaceVariant</color>
+    <color name="colorOnSurfaceVariant">@color/light_colorOnSurfaceVariant</color>
+    <color name="colorOutline">@color/light_colorOutline</color>
+    <color name="colorInverseOnSurface">@color/light_colorInverseOnSurface</color>
+    <color name="colorInverseSurface">@color/light_colorInverseSurface</color>
+    <color name="colorInversePrimary">@color/light_colorInversePrimary</color>
+    <color name="colorShadow">@color/light_colorShadow</color>
+    <color name="colorSurfaceTint">@color/light_colorSurfaceTint</color>
+    <color name="colorSurfaceTintColor">@color/light_colorSurfaceTintColor</color>
+
+<!--    <color name="colorSurface1">@color/light_colorSurface1</color>-->
+    <color name="colorSurface2">@color/light_colorSurface2</color>
+<!--    <color name="colorSurface3">@color/light_colorSurface3</color>-->
+<!--    <color name="colorSurface4">@color/light_colorSurface4</color>-->
+<!--    <color name="colorSurface5">@color/light_colorSurface5</color>-->
+
+    <color name="text_primary">@color/light_text_primary</color>
+    <color name="text_primary_disabled">@color/light_text_primary_disabled</color>
+    <color name="text_primary_dialog">@color/light_text_primary_dialog</color>
+
+    <color name="text_secondary">@color/light_text_secondary</color>
+
+    <color name="conversation_toolbar_color">@color/light_conversation_toolbar_color</color>
+
+    <color name="accent_primary">@color/light_accent_primary</color>
+    <color name="accent_stroke_primary">@color/light_accent_stroke_primary</color>
+
+    <color name="inverse_primary">@color/light_inverse_primary</color>
+
+    <color name="background_primary">@color/light_background_primary</color>
+    <color name="background_secondary">@color/light_background_secondary</color>
+    <color name="background_tertiary">@color/light_background_tertiary</color>
+    <color name="background_dialog">@color/light_background_dialog</color>
+    <color name="background_dialog_secondary">@color/light_background_dialog_secondary</color>
+
+    <color name="text_hint">@color/light_text_hint</color>
+
+    <color name="text_toolbar_title">@color/light_text_toolbar_title</color>
+    <color name="text_toolbar_subtitle">@color/light_text_toolbar_subtitle</color>
+
+    <color name="icon_tint_primary">@color/light_icon_tint_primary</color>
+    <color name="icon_tint_secondary">@color/light_icon_tint_secondary</color>
+    <color name="icon_tint_action">@color/light_icon_tint_action</color>
+
+    <color name="icon_tint_tab_selected">@color/light_icon_tint_tab_selected</color>
+    <color name="icon_tint_tab_unselected">@color/light_icon_tint_tab_unselected</color>
+
+    <color name="button_primary">@color/light_button_primary</color>
+    <color name="button_primary_ripple">@color/light_button_primary_ripple</color>
+    <color name="button_primary_text">@color/light_button_primary_text</color>
+    <color name="button_primary_text_disabled">@color/light_button_primary_text_disabled</color>
+
+    <color name="button_secondary">@color/light_button_secondary</color>
+    <color name="button_secondary_ripple">@color/light_button_secondary_ripple</color>
+    <color name="button_secondary_text">@color/light_button_secondary_text</color>
+    <color name="button_secondary_text_disabled">@color/light_button_secondary_text_disabled</color>
+    <color name="button_secondary_stroke">@color/light_button_secondary_stroke</color>
+
+    <color name="divider_minor">@color/light_divider_minor</color>
+    <color name="divider_major">@color/light_divider_major</color>
+
+    <color name="alert_primary">@color/light_alert_primary</color>
+
+    <color name="transparent_20">@color/light_transparent_20</color>
+    <color name="transparent_40">@color/light_transparent_40</color>
+    <color name="transparent_60">@color/light_transparent_60</color>
+    <color name="transparent_80">@color/light_transparent_80</color>
+
+    <color name="inverse_transparent">@color/light_inverse_transparent</color>
+    <color name="inverse_transparent_05">@color/light_inverse_transparent_05</color>
+    <color name="inverse_transparent_08">@color/light_inverse_transparent_08</color>
+    <color name="inverse_transparent_10">@color/light_inverse_transparent_10</color>
+    <color name="inverse_transparent_15">@color/light_inverse_transparent_15</color>
+    <color name="inverse_transparent_20">@color/light_inverse_transparent_20</color>
+    <color name="inverse_transparent_25">@color/light_inverse_transparent_25</color>
+    <color name="inverse_transparent_40">@color/light_inverse_transparent_40</color>
+    <color name="inverse_transparent_60">@color/light_inverse_transparent_60</color>
+    <color name="inverse_transparent_80">@color/light_inverse_transparent_80</color>
+
+    <color name="colorSecondaryContainer_12">@color/light_colorSecondaryContainer_12</color>
+    <color name="colorSurface_60">@color/light_colorSurface_60</color>
+    <color name="colorSurfaceVariant_38">@color/light_colorSurfaceVariant_38</color>
+    <color name="colorOnSurface_12">@color/light_colorOnSurface_12</color>
+    <color name="colorOnSurfaceVariant_60">@color/light_colorOnSurfaceVariant_60</color>
+    <color name="colorOnBackground_60">@color/light_colorOnBackground_60</color>
+    <color name="colorOutline_38">@color/light_colorOutline_38</color>
+    <color name="colorBackground_0">@color/light_colorBackground_0</color>
+
+</resources>
