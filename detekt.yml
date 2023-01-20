@@ -407,6 +407,7 @@ formatting:
   StringTemplate:
     active: true
     autoCorrect: true
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 naming:
   active: true
