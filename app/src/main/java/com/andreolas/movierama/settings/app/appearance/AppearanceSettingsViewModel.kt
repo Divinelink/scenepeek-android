@@ -6,8 +6,8 @@ import com.andreolas.movierama.settings.app.appearance.usecase.GetAvailableTheme
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.SetThemeUseCase
 import com.andreolas.movierama.ui.theme.Theme
-import gr.divinelink.core.util.domain.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import gr.divinelink.core.util.domain.WhileViewSubscribed
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

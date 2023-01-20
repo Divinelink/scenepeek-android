@@ -11,10 +11,10 @@ import com.andreolas.movierama.databinding.DslButtonTonalBinding
 import com.andreolas.movierama.settings.DSLSettingsIcon
 import com.andreolas.movierama.settings.DSLSettingsText
 import com.andreolas.movierama.settings.PreferenceModel
+import com.google.android.material.button.MaterialButton
 import gr.divinelink.core.util.mapping.LayoutFactory
 import gr.divinelink.core.util.mapping.MappingAdapter
 import gr.divinelink.core.util.mapping.MappingViewHolder
-import com.google.android.material.button.MaterialButton
 
 object Button {
 

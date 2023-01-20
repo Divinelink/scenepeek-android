@@ -10,6 +10,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination(
     start = true
 )
+@Suppress("UnusedPrivateMember")
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator,

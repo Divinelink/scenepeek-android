@@ -6,6 +6,9 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
 
+    <string name="toolbar_search">Search MovieRama</string>
+    <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
+
     <!-- Error -->
     <string name="empty_field_error_message">%s is required.</string>
     <string name="general_error_message">Something when wrong.</string>

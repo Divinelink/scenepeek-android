@@ -25,13 +25,13 @@ import com.andreolas.movierama.settings.models.AsyncSwitch
 import com.andreolas.movierama.settings.models.Button
 import com.andreolas.movierama.settings.models.Space
 import com.andreolas.movierama.settings.models.Text
-import gr.divinelink.core.util.mapping.LayoutFactory
-import gr.divinelink.core.util.mapping.MappingAdapter
-import gr.divinelink.core.util.mapping.MappingViewHolder
 import com.andreolas.movierama.ui.views.LearnMoreTextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import gr.divinelink.core.util.extensions.visible
+import gr.divinelink.core.util.mapping.LayoutFactory
+import gr.divinelink.core.util.mapping.MappingAdapter
+import gr.divinelink.core.util.mapping.MappingViewHolder
 import gr.divinelink.core.util.swipe.utils.isLtr
 import gr.divinelink.core.util.utils.CommunicationActions
 import gr.divinelink.core.util.utils.DimensionUnit

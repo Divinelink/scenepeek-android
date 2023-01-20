@@ -74,6 +74,7 @@ comments:
   UndocumentedPublicProperty:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 complexity:
   active: true
@@ -148,6 +149,7 @@ complexity:
     ignoreDeprecated: false
     ignorePrivate: false
     ignoreOverridden: true
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 coroutines:
   active: true
@@ -159,6 +161,7 @@ coroutines:
     active: false
   SuspendFunWithFlowReturnType:
     active: false
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 empty-blocks:
   active: true
@@ -194,6 +197,7 @@ empty-blocks:
     active: true
   EmptyWhileBlock:
     active: true
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 exceptions:
   active: true
@@ -322,6 +326,7 @@ formatting:
   NoConsecutiveBlankLines:
     active: true
     autoCorrect: true
+    excludes: ['**/ksp/**', '**/kspCaches/**']
   NoEmptyClassBody:
     active: true
     autoCorrect: true
@@ -497,6 +502,7 @@ naming:
     privateVariablePattern: '(_)?[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
     ignoreOverridden: true
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 performance:
   active: true
