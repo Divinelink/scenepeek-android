@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.home.domain.PopularMovie
+import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.components.PopularMovieItem
 import com.andreolas.movierama.ui.theme.AppTheme
 

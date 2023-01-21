@@ -45,7 +45,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.andreolas.movierama.BuildConfig
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.PopularMovie
+import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 

@@ -1,4 +1,4 @@
-package com.andreolas.movierama.home.domain
+package com.andreolas.movierama.home.domain.model
 
 data class PopularMovie(
     val id: Long,
