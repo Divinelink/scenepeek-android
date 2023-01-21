@@ -1,6 +1,7 @@
 package com.andreolas.movierama.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +34,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -53,6 +56,7 @@ fun PopularMovieItem(
     onLikeMovieClick: () -> Unit,
 ) {
     Card(
+        shape = PopularMovieItemShape,
         modifier = Modifier
             .clip(PopularMovieItemShape)
             .clipToBounds()
@@ -62,9 +66,9 @@ fun PopularMovieItem(
     ) {
 
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(PopularMovieItemShape)
                 .wrapContentHeight()
         ) {
             AsyncImage(
@@ -80,10 +84,10 @@ fun PopularMovieItem(
             Column(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .clip(RoundedCornerShape(bottomEnd = 16.dp))
+                    .clip(RoundedCornerShape(bottomEnd = 8.dp))
                     .clickable { onLikeMovieClick() }
             ) {
-                LikeButton(movie)
+                LikeButton(movie.isFavorite)
             }
         }
 
@@ -98,7 +102,8 @@ fun PopularMovieItem(
 
         Text(
             modifier = Modifier
-                .padding(start = 8.dp, bottom = 4.dp)
+                .fillMaxWidth()
+                .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
                 .height(40.dp),
             text = movie.title,
             overflow = TextOverflow.Ellipsis,
@@ -107,7 +112,7 @@ fun PopularMovieItem(
         )
 
         Text(
-            modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
             text = movie.releaseDate,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
@@ -116,23 +121,30 @@ fun PopularMovieItem(
 }
 
 @Composable
-private fun LikeButton(movie: PopularMovie) {
+private fun LikeButton(isFavorite: Boolean) {
     Box {
-        val image = when (movie.isFavorite) {
+        val color by animateColorAsState(
+            targetValue = when (isFavorite) {
+                true -> colorResource(id = R.color.core_red_highlight)
+                false -> colorResource(id = R.color.core_grey_55)
+            }
+
+        )
+        val image = when (isFavorite) {
             true -> Icons.Default.Favorite
             false -> Icons.Default.FavoriteBorder
         }
         Box(
             modifier = Modifier
-                .size(52.dp)
+                .size(44.dp)
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
         ) {
             Icon(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .size(36.dp),
+                    .size(32.dp),
                 imageVector = image,
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = color,
                 contentDescription = null,
             )
         }
@@ -198,13 +210,13 @@ fun MovieItemPreview() {
         Surface(
             modifier = Modifier
                 .width(160.dp)
-                .height(340.dp)
+                .wrapContentHeight()
         ) {
             PopularMovieItem(
                 modifier = Modifier,
                 movie = PopularMovie(
                     id = 0,
-                    posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
+                    posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
                     releaseDate = "2023",
                     title = "Night of the Day of the Dawn of the Son of the Bride of the " +
                         "Return of the Revenge of the Terror of the Attack of the Evil," +
