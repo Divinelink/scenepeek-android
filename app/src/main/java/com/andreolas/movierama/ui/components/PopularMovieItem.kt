@@ -1,6 +1,7 @@
 package com.andreolas.movierama.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -128,25 +129,27 @@ private fun LikeButton(isFavorite: Boolean) {
                 true -> colorResource(id = R.color.core_red_highlight)
                 false -> colorResource(id = R.color.core_grey_55)
             }
-
         )
-        val image = when (isFavorite) {
-            true -> Icons.Default.Favorite
-            false -> Icons.Default.FavoriteBorder
-        }
         Box(
             modifier = Modifier
                 .size(44.dp)
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
         ) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(32.dp),
-                imageVector = image,
-                tint = color,
-                contentDescription = null,
-            )
+            Crossfade(
+                modifier = Modifier.align(Alignment.Center),
+                targetState = isFavorite
+            ) { favorite ->
+                val image = when (favorite) {
+                    true -> Icons.Default.Favorite
+                    false -> Icons.Default.FavoriteBorder
+                }
+                Icon(
+                    modifier = Modifier.size(32.dp),
+                    imageVector = image,
+                    tint = color,
+                    contentDescription = null,
+                )
+            }
         }
     }
 }
