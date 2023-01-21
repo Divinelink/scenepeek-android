@@ -32,7 +32,7 @@ class ProdMoviesRepository @Inject constructor(
             }
     }
 
-    override suspend fun removeFavoriteMovie(id: String): Result<Unit> {
+    override suspend fun removeFavoriteMovie(id: Long): Result<Unit> {
         movieDAO
             .removeFavoriteMovie(id)
             .also {
@@ -51,7 +51,7 @@ private fun PersistableMovie.toPopularMovie(): PopularMovie {
         posterPath = this.posterPath,
         releaseDate = this.releaseDate,
         title = this.title,
-        rating = this.rating.toString(),
+        rating = this.rating,
         isFavorite = this.isFavorite
     )
 }
@@ -62,7 +62,7 @@ private fun PopularMovie.toPersistableMovie(): PersistableMovie {
         title = this.title,
         posterPath = this.posterPath,
         releaseDate = this.releaseDate,
-        rating = this.rating.toDouble(),
+        rating = this.rating,
         isFavorite = this.isFavorite
     )
 }

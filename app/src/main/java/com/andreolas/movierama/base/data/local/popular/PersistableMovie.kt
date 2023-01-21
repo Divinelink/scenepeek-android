@@ -10,6 +10,6 @@ data class PersistableMovie(
     val title: String,
     val posterPath: String,
     val releaseDate: String,
-    val rating: Double,
+    val rating: String,
     val isFavorite: Boolean,
 )

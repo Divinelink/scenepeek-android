@@ -35,6 +35,6 @@ interface MoviesRepository {
      * Remove favorite [movie] from local storage.
      */
     suspend fun removeFavoriteMovie(
-        id: String,
+        id: Long,
     ): Result<Unit>
 }
