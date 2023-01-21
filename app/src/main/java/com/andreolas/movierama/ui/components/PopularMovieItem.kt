@@ -1,16 +1,25 @@
 package com.andreolas.movierama.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,20 +49,43 @@ import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 fun PopularMovieItem(
     modifier: Modifier = Modifier,
     movie: PopularMovie,
+    onMovieItemClick: () -> Unit,
+    onLikeMovieClick: () -> Unit,
 ) {
     Card(
-        elevation = CardDefaults.cardElevation(8.dp),
-        modifier = Modifier.clip(PopularMovieItemShape)
+        modifier = Modifier
+            .clip(PopularMovieItemShape)
+            .clipToBounds()
+            .clickable {
+                onMovieItemClick()
+            },
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(BuildConfig.TMDB_IMAGE_URL + movie.posterPath)
-                .crossfade(true)
-                .build(),
-            placeholder = painterResource(R.drawable.ic_close),
-            contentDescription = stringResource(R.string.ok),
-            contentScale = ContentScale.Fit,
-        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(PopularMovieItemShape)
+                .wrapContentHeight()
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(BuildConfig.TMDB_IMAGE_URL + movie.posterPath)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.ic_movie_placeholder),
+                contentDescription = stringResource(R.string.ok),
+                contentScale = ContentScale.Fit,
+            )
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .clip(RoundedCornerShape(bottomEnd = 16.dp))
+                    .clickable { onLikeMovieClick() }
+            ) {
+                LikeButton(movie)
+            }
+        }
 
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -79,6 +112,30 @@ fun PopularMovieItem(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
         )
+    }
+}
+
+@Composable
+private fun LikeButton(movie: PopularMovie) {
+    Box {
+        val image = when (movie.isFavorite) {
+            true -> Icons.Default.Favorite
+            false -> Icons.Default.FavoriteBorder
+        }
+        Box(
+            modifier = Modifier
+                .size(52.dp)
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
+        ) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(36.dp),
+                imageVector = image,
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = null,
+            )
+        }
     }
 }
 
@@ -122,9 +179,12 @@ fun PopularMovieItemPreview() {
                     id = 0,
                     posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
                     releaseDate = "2023",
-                    title = "My Big Fat Greek Wedding 2",
-                    rating = "72"
-                )
+                    title = "Fight Club",
+                    rating = "72",
+                    isFavorite = true,
+                ),
+                onMovieItemClick = {},
+                onLikeMovieClick = {},
             )
         }
     }
@@ -149,8 +209,11 @@ fun MovieItemPreview() {
                     title = "Night of the Day of the Dawn of the Son of the Bride of the " +
                         "Return of the Revenge of the Terror of the Attack of the Evil," +
                         " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
-                    rating = "4.2"
-                )
+                    rating = "4.2",
+                    isFavorite = false,
+                ),
+                onMovieItemClick = {},
+                onLikeMovieClick = {},
             )
         }
     }
