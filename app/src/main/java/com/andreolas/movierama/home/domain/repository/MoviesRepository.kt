@@ -1,5 +1,6 @@
 package com.andreolas.movierama.home.domain.repository
 
+import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +16,8 @@ interface MoviesRepository {
      * Request popular movies using pagination.
      * Uses [Flow] in order to observe changes to our popular movies list.
      */
-    fun fetchPopularMovies(
-        page: Int,
+    suspend fun fetchPopularMovies(
+        request: PopularRequestApi,
     ): Flow<MoviesListResult>
 
     /**

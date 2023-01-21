@@ -2,33 +2,34 @@ package com.andreolas.movierama.home.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.MovieDAO
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.base.data.network.popular.ApiPopularMovie
-import com.andreolas.movierama.base.data.network.popular.ApiPopularResponse
-import com.andreolas.movierama.base.data.network.popular.MovieRemote
+import com.andreolas.movierama.base.data.remote.popular.MovieService
+import com.andreolas.movierama.base.data.remote.popular.dto.PopularMovieApi
+import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProdMoviesRepository @Inject constructor(
     private val movieDAO: MovieDAO,
-    private val movieRemote: MovieRemote,
+    private val movieRemote: MovieService,
 ) : MoviesRepository {
 
-    override fun fetchPopularMovies(page: Int): Flow<MoviesListResult> {
+    override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<MoviesListResult> {
         return movieRemote
-            .fetchPopularMovies(page)
+            .fetchPopularMovies(request)
             .map { apiResponse ->
-                if (apiResponse.isNotEmpty()) {
-                    Result.Success(apiResponse.first().toDomainMoviesList())
-                } else {
-                    Result.Error(Exception("response is empty"))
-                }
+                Result.Success(apiResponse.toDomainMoviesList())
             }
             .catch { exception ->
-                emit(Result.Error(Exception(exception.message)))
+                flowOf(Result.Error(Exception(exception.message)))
+                // .flatMapConcat {
+                // movieRemote.fetchPopularMovies(request)
+                // }
             }
     }
 
@@ -58,17 +59,17 @@ class ProdMoviesRepository @Inject constructor(
 }
 
 @JvmName("apiMovieToDomainMoviesList")
-private fun ApiPopularResponse.toDomainMoviesList(): List<PopularMovie> {
-    return this.results.map(ApiPopularMovie::toPopularMovie)
+private fun PopularResponseApi.toDomainMoviesList(): List<PopularMovie> {
+    return this.results.map(PopularMovieApi::toPopularMovie)
 }
 
-private fun ApiPopularMovie.toPopularMovie(): PopularMovie {
+private fun PopularMovieApi.toPopularMovie(): PopularMovie {
     return PopularMovie(
         id = this.id,
-        posterPath = this.poster_path,
-        releaseDate = this.release_date,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate,
         title = this.title,
-        rating = this.vote_average.toString(),
+        rating = this.voteAverage.toString(),
         isFavorite = false,
     )
 }
