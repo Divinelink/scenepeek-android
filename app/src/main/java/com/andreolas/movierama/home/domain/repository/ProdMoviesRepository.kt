@@ -23,6 +23,22 @@ class ProdMoviesRepository @Inject constructor(
                 Result.Success(moviesList.toDomainMoviesList())
             }
     }
+
+    override suspend fun insertFavoriteMovie(movie: PopularMovie): Result<Unit> {
+        movieDAO
+            .insertFavoriteMovie(movie.toPersistableMovie())
+            .also {
+                return Result.Success(it)
+            }
+    }
+
+    override suspend fun removeFavoriteMovie(id: String): Result<Unit> {
+        movieDAO
+            .removeFavoriteMovie(id)
+            .also {
+                return Result.Success(it)
+            }
+    }
 }
 
 private fun List<PersistableMovie>.toDomainMoviesList(): List<PopularMovie> {
@@ -36,6 +52,17 @@ private fun PersistableMovie.toPopularMovie(): PopularMovie {
         releaseDate = this.releaseDate,
         title = this.title,
         rating = this.rating.toString(),
+        isFavorite = this.isFavorite
+    )
+}
+
+private fun PopularMovie.toPersistableMovie(): PersistableMovie {
+    return PersistableMovie(
+        id = this.id,
+        title = this.title,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate,
+        rating = this.rating.toDouble(),
         isFavorite = this.isFavorite
     )
 }

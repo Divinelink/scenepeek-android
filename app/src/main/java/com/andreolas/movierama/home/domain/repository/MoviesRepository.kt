@@ -24,14 +24,17 @@ interface MoviesRepository {
      */
     fun fetchFavoriteMovies(): Flow<MoviesListResult>
 
-//    @Insert(
-//        onConflict = OnConflictStrategy.REPLACE,
-//    )
-//    suspend fun insertFavoriteMovie(
-//        movie: PersistableMovie,
-//    )
-//
-//    suspend fun removeFavoriteMovie(
-//        movie: PersistableMovie,
-//    )
+    /**
+     * Add favorite [movie] to local storage.
+     */
+    suspend fun insertFavoriteMovie(
+        movie: PopularMovie,
+    ): Result<Unit>
+
+    /**
+     * Remove favorite [movie] from local storage.
+     */
+    suspend fun removeFavoriteMovie(
+        id: String,
+    ): Result<Unit>
 }
