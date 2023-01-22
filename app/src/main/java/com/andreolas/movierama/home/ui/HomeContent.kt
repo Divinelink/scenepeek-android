@@ -2,10 +2,7 @@ package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.components.SearchBar
@@ -41,12 +37,6 @@ fun HomeContent(
 
     val context = LocalContext.current
     Scaffold(
-        contentWindowInsets = WindowInsets(
-            left = 0.dp,
-            top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
-            right = 0.dp,
-            bottom = 0.dp,
-        ),
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
@@ -73,15 +63,14 @@ fun HomeContent(
         },
     ) { paddingValues ->
         PopularMoviesList(
-            modifier = modifier
-                .padding(top = paddingValues.calculateTopPadding()),
+            modifier = modifier.padding(paddingValues),
             movies = viewState.moviesList,
             onMovieClicked = onMovieClicked,
             onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
         )
 
         if (viewState.isLoading) {
-            // TODO: Add Loading State
+            // todo
         }
     }
 }

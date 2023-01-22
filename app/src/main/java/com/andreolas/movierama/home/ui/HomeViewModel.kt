@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
-import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
@@ -19,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
-    private val removeFavoriteUseCase: RemoveFavoriteUseCase,
+//    private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
+//    private val removeFavoriteUseCase: RemoveFavoriteUseCase,
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
@@ -70,10 +68,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @Suppress("UnusedPrivateMember")
     fun onMovieClicked(movie: PopularMovie) {
         // todo
     }
 
+    @Suppress("UnusedPrivateMember")
     fun onMarkAsFavoriteClicked(movie: PopularMovie) {
         // todo
     }

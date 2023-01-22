@@ -43,8 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.andreolas.movierama.BuildConfig
 import com.andreolas.movierama.R
+import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
@@ -74,10 +74,11 @@ fun PopularMovieItem(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(BuildConfig.TMDB_IMAGE_URL + movie.posterPath)
+                    .data(ApiConstants.TMDB_IMAGE_URL + movie.posterPath)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_movie_placeholder),
+                error = painterResource(R.drawable.ic_movie_placeholder),
                 contentDescription = stringResource(R.string.ok),
                 contentScale = ContentScale.Fit,
             )

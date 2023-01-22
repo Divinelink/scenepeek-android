@@ -88,7 +88,7 @@ android {
             }
         }
         variant.buildConfigField "String", "TMDB_BASE_URL", '"https://api.themoviedb.org/3/"'
-        variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/"'
+        variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/original"'
     }
 }
 
