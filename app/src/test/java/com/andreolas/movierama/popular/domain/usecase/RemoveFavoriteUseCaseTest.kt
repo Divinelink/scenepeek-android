@@ -28,7 +28,7 @@ class RemoveFavoriteUseCaseTest {
 
     private val remoteMovies = (1..6).map { index ->
         PopularMovie(
-            id = index.toLong(),
+            id = index,
             posterPath = "",
             releaseDate = "2000",
             title = "Fight Club $index",

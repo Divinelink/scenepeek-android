@@ -6,6 +6,7 @@ import com.andreolas.movierama.base.data.remote.popular.MovieService
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularMovieApi
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.popular.service.MovieService
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
@@ -50,6 +51,7 @@ class ProdMoviesRepository @Inject constructor(
     }
 
     override suspend fun removeFavoriteMovie(id: Long): Result<Unit> {
+    override suspend fun removeFavoriteMovie(id: Int): Result<Unit> {
         movieDAO
             .removeFavoriteMovie(id)
             .also {

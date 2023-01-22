@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.popular
+package com.andreolas.movierama.base.data.remote.popular.service
 
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi

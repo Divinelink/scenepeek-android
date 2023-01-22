@@ -28,7 +28,7 @@ class FakeMovieDAO {
     }
 
     suspend fun verifyRemoveMovie(
-        id: Long,
+        id: Int,
     ) {
         verify(mock).removeFavoriteMovie(id)
     }

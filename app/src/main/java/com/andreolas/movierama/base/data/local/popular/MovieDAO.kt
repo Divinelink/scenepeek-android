@@ -21,6 +21,6 @@ interface MovieDAO {
 
     @Query("DELETE FROM movie WHERE id=:id")
     suspend fun removeFavoriteMovie(
-        id: Long,
+        id: Int,
     )
 }

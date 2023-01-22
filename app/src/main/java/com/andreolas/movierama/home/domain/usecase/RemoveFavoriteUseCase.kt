@@ -11,8 +11,8 @@ import javax.inject.Inject
 open class RemoveFavoriteUseCase @Inject constructor(
     private val repository: MoviesRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher,
-) : UseCase<Long, Unit>(dispatcher) {
-    override suspend fun execute(parameters: Long) {
+) : UseCase<Int, Unit>(dispatcher) {
+    override suspend fun execute(parameters: Int) {
         val result = repository.removeFavoriteMovie(parameters)
 
         when (result) {

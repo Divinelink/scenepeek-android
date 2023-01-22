@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.popular
+package com.andreolas.movierama.base.data.remote.popular.service
 
 import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.base.communication.RestClient
@@ -14,8 +14,11 @@ class ProdMovieService @Inject constructor(
 
     override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> {
 
-        val response =
-            restClient.get<PopularResponseApi>("${ApiConstants.TMDB_URL}/movie/popular?api_key=${request.apiKey}&language=en-US&page=${request.page}")
+        val response = restClient.get<PopularResponseApi>(
+            ApiConstants.TMDB_URL + "/movie/popular?" +
+                "api_key=${request.apiKey}" + "&language=en-US&" +
+                "page=${request.page}"
+        )
 
         return flowOf(response)
     }

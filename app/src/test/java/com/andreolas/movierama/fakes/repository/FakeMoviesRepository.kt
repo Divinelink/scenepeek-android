@@ -46,7 +46,7 @@ class FakeMoviesRepository {
     }
 
     suspend fun mockRemoveFavorite(
-        id: Long,
+        id: Int,
         response: Result<Unit>,
     ) {
         whenever(
