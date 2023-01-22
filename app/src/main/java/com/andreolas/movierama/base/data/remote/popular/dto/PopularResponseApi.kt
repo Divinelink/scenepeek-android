@@ -20,7 +20,7 @@ data class PopularMovieApi(
     val backdropPath: String,
     @SerialName("genre_ids")
     val genreIds: List<Int>,
-    val id: Long,
+    val id: Int,
     @SerialName("original_language")
     val originalLanguage: String,
     @SerialName("original_title")

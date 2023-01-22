@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "movie")
 data class PersistableMovie(
     @PrimaryKey
-    val id: Long,
+    val id: Int,
     val title: String,
     val posterPath: String,
     val releaseDate: String,

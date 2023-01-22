@@ -1,7 +1,7 @@
 package com.andreolas.movierama.home.domain.model
 
 data class PopularMovie(
-    val id: Long,
+    val id: Int,
     val posterPath: String,
     val releaseDate: String,
     val title: String,
