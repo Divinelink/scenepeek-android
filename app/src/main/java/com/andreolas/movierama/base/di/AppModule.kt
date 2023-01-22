@@ -3,9 +3,9 @@ package com.andreolas.movierama.base.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.local.AppDatabase
 import com.andreolas.movierama.base.data.local.AppDatabase.Companion.DB_NAME
-import com.andreolas.movierama.base.data.remote.popular.ProdMovieService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,13 +35,13 @@ object AppModule {
     @Provides
     fun provideMovieDAO(database: AppDatabase) = database.movieDAO()
 
-    @Singleton
-    @Provides
-    fun provideMovieService() = ProdMovieService()
-
     @ApplicationContext
     @Provides
     fun providesApplicationContext() = Application()
+
+    @Singleton
+    @Provides
+    fun provideRestClient(): RestClient = RestClient()
 
     @ApplicationScope
     @Singleton
