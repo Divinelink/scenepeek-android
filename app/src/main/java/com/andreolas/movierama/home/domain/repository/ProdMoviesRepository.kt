@@ -2,7 +2,6 @@ package com.andreolas.movierama.home.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.MovieDAO
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.base.data.remote.popular.MovieService
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularMovieApi
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi
@@ -44,13 +43,12 @@ class ProdMoviesRepository @Inject constructor(
 
     override suspend fun insertFavoriteMovie(movie: PopularMovie): Result<Unit> {
         movieDAO
-            .insertFavoriteMovie(movie.toPersistableMovie())
+            .insertFavoriteMovie(movie.copy(isFavorite = true).toPersistableMovie())
             .also {
                 return Result.Success(it)
             }
     }
 
-    override suspend fun removeFavoriteMovie(id: Long): Result<Unit> {
     override suspend fun removeFavoriteMovie(id: Int): Result<Unit> {
         movieDAO
             .removeFavoriteMovie(id)

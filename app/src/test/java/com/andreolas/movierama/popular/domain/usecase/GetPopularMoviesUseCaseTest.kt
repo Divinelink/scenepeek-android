@@ -25,9 +25,10 @@ class GetPopularMoviesUseCaseTest {
 
     private val request = PopularRequestApi(apiKey = "", page = 0)
 
-    private val localFavoriteMovies = (1..3).map { index ->
+    // Movies with id 1, 3, 5 are marked as favorite.
+    private val localFavoriteMovies = (1..6 step 2).map { index ->
         PopularMovie(
-            id = index.toLong(),
+            id = index,
             posterPath = "",
             releaseDate = "2000",
             title = "Fight Club $index",
@@ -38,7 +39,7 @@ class GetPopularMoviesUseCaseTest {
 
     private val remoteMovies = (1..6).map { index ->
         PopularMovie(
-            id = index.toLong(),
+            id = index,
             posterPath = "",
             releaseDate = "2000",
             title = "Fight Club $index",
@@ -47,29 +48,16 @@ class GetPopularMoviesUseCaseTest {
         )
     }.toMutableList()
 
-    private val mergedListResult = (1..3).map { index ->
+    private val mergedListResult = (1..6).map { index ->
         PopularMovie(
-            id = index.toLong(),
+            id = index,
             posterPath = "",
             releaseDate = "2000",
             title = "Fight Club $index",
-            isFavorite = true,
+            isFavorite = index % 2 == 1,
             rating = index.toString(),
         )
-    }.toMutableList().also { list ->
-        list.addAll(
-            (4..6).map { index ->
-                PopularMovie(
-                    id = index.toLong(),
-                    posterPath = "",
-                    releaseDate = "2000",
-                    title = "Fight Club $index",
-                    isFavorite = false,
-                    rating = index.toString(),
-                )
-            }.toMutableList()
-        )
-    }
+    }.toMutableList()
 
     @Before
     fun setUp() {

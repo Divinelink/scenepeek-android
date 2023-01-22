@@ -58,14 +58,18 @@ class GetPopularMoviesUseCase @Inject constructor(
      * This will results in a [mergedList] with both favorite and non favorite movies,
      * but it'll only contain distinct movies.
      *
+     * It's worth noting that we should add the favorite items into the popular items list and not the other way around.
+     * That way we preserve the order that the items were fetched with.
+     *
      */
     private fun sanitizeMovies(
         favorite: Result.Success<List<PopularMovie>>,
         popular: Result.Success<List<PopularMovie>>,
     ): List<PopularMovie> {
-        val mergedList = (favorite.data + popular.data).groupBy { it.id }.map { (_, group) ->
-            group.firstOrNull { it.isFavorite } ?: group.first()
-        }
+        val mergedList = (popular.data + favorite.data)
+            .groupBy { it.id }.map { (_, group) ->
+                group.firstOrNull { it.isFavorite } ?: group.first()
+            }
         return mergedList
     }
 }
