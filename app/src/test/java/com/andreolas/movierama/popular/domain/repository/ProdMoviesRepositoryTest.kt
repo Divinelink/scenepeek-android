@@ -1,4 +1,4 @@
-package com.andreolas.movierama.popular.domain
+package com.andreolas.movierama.popular.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.base.data.remote.popular.dto.PopularMovieApi
