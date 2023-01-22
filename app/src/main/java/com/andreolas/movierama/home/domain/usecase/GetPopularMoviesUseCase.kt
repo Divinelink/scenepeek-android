@@ -41,6 +41,8 @@ class GetPopularMoviesUseCase @Inject constructor(
 
                 val mergedList = sanitizeMovies(favorite, popular)
                 emit(Result.Success(mergedList))
+            } else if (popular is Result.Success) {
+                emit(Result.Success(popular.data))
             } else {
                 emit(Result.Error(Exception("Something went wrong.")))
             }

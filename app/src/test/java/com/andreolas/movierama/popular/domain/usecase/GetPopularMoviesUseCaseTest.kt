@@ -77,11 +77,34 @@ class GetPopularMoviesUseCaseTest {
     }
 
     @Test
-    fun `given 3 favorite movies when I fetch Popular movies then I expect success data`() = runTest {
-        val expectedResult = Result.Success<List<PopularMovie>>(mergedListResult)
+    fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
+        runTest {
+            val expectedResult = Result.Success<List<PopularMovie>>(mergedListResult)
+
+            repository.mockFetchFavoriteMovies(
+                Result.Success(localFavoriteMovies)
+            )
+
+            repository.mockFetchPopularMovies(
+                request = PopularRequestApi(apiKey = "", page = 0),
+                response = Result.Success(remoteMovies)
+            )
+
+            val useCase = GetPopularMoviesUseCase(
+                moviesRepository = repository.mock,
+                dispatcher = testDispatcher,
+            )
+            val result = useCase(request).first()
+
+            assertThat(result).isEqualTo(expectedResult)
+        }
+
+    @Test
+    fun `given local data failed then I expect remote data`() = runTest {
+        val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
         repository.mockFetchFavoriteMovies(
-            Result.Success(localFavoriteMovies)
+            Result.Error(Exception())
         )
 
         repository.mockFetchPopularMovies(
@@ -96,5 +119,49 @@ class GetPopularMoviesUseCaseTest {
         val result = useCase(request).first()
 
         assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `given remote data failed then I expect Error Result`() = runTest {
+        val expectedResult = Result.Error(Exception("Something went wrong."))
+
+        repository.mockFetchFavoriteMovies(
+            Result.Success(localFavoriteMovies)
+        )
+
+        repository.mockFetchPopularMovies(
+            request = PopularRequestApi(apiKey = "", page = 0),
+            response = Result.Error(Exception())
+        )
+
+        val useCase = GetPopularMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).first()
+
+        assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
+    fun `given both data resources failed then I expect Error Results`() = runTest {
+        val expectedResult = Result.Error(Exception("Something went wrong."))
+
+        repository.mockFetchFavoriteMovies(
+            Result.Error(Exception())
+        )
+
+        repository.mockFetchPopularMovies(
+            request = PopularRequestApi(apiKey = "", page = 0),
+            response = Result.Error(Exception())
+        )
+
+        val useCase = GetPopularMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).first()
+
+        assertThat(result).isInstanceOf(expectedResult::class.java)
     }
 }
