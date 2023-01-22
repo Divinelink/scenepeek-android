@@ -1,7 +1,6 @@
 package com.andreolas.movierama.base.communication
 
 import com.andreolas.movierama.BuildConfig
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,7 +16,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.InternalAPI
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 class RestClient {
 
@@ -45,9 +47,10 @@ class RestClient {
         }
     }
 
+    @OptIn(InternalSerializationApi::class)
     suspend inline fun <reified T : Any> get(url: String): T {
         val json = client.get(url).bodyAsText()
-        return Json.decodeFromString(PopularResponseApi.serializer(), json) as T
+        return Json.decodeFromString(T::class.serializer(), json)
     }
 
     @OptIn(InternalAPI::class)
