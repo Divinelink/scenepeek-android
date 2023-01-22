@@ -3,7 +3,7 @@ package com.andreolas.movierama.popular.domain.usecase
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
+import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,7 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MarkAsFavoriteUseCaseTest {
+class RemoveFavoriteUseCaseTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -41,17 +41,17 @@ class MarkAsFavoriteUseCaseTest {
     fun `given movies is successfully saved I expect Success Result`() = runTest {
         val expectedResult = Result.Success(Unit)
 
-        repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+        repository.mockRemoveFavorite(
+            id = remoteMovies[2].id,
             response = Result.Success(Unit)
         )
 
-        val useCase = MarkAsFavoriteUseCase(
+        val useCase = RemoveFavoriteUseCase(
             repository = repository.mock,
             dispatcher = testDispatcher,
         )
 
-        val result = useCase(remoteMovies[2])
+        val result = useCase(remoteMovies[2].id)
         assertThat(result).isEqualTo(expectedResult)
     }
 
@@ -59,17 +59,17 @@ class MarkAsFavoriteUseCaseTest {
     fun `given movie failed to save I expect Error Result`() = runTest {
         val expectedResult = Result.Error(Exception("Failed to mark as favorite."))
 
-        repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+        repository.mockRemoveFavorite(
+            id = remoteMovies[2].id,
             response = Result.Error(Exception())
         )
 
-        val useCase = MarkAsFavoriteUseCase(
+        val useCase = RemoveFavoriteUseCase(
             repository = repository.mock,
             dispatcher = testDispatcher,
         )
 
-        val result = useCase(remoteMovies[2])
+        val result = useCase(remoteMovies[2].id)
         assertThat(result).isInstanceOf(expectedResult::class.java)
     }
 
@@ -77,17 +77,17 @@ class MarkAsFavoriteUseCaseTest {
     fun `given loading result then I expect general exception`() = runTest {
         val expectedResult = Result.Error(IllegalStateException())
 
-        repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+        repository.mockRemoveFavorite(
+            id = remoteMovies[2].id,
             response = Result.Loading
         )
 
-        val useCase = MarkAsFavoriteUseCase(
+        val useCase = RemoveFavoriteUseCase(
             repository = repository.mock,
             dispatcher = testDispatcher,
         )
 
-        val result = useCase(remoteMovies[2])
+        val result = useCase(remoteMovies[2].id)
         assertThat(result).isInstanceOf(expectedResult::class.java)
     }
 }
