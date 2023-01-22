@@ -1,9 +1,10 @@
-package com.andreolas.movierama.home
+package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -21,7 +22,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.home.ui.HomeViewState
+import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.components.SearchBar
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -33,6 +34,8 @@ import com.andreolas.movierama.ui.theme.SearchBarShape
 fun HomeContent(
     viewState: HomeViewState,
     modifier: Modifier = Modifier,
+    onMovieClicked: (PopularMovie) -> Unit,
+    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -68,23 +71,19 @@ fun HomeContent(
                 }
             )
         },
-    ) { _ ->
+    ) { paddingValues ->
+        PopularMoviesList(
+            modifier = modifier
+                .padding(top = paddingValues.calculateTopPadding()),
+            movies = viewState.moviesList,
+            onMovieClicked = onMovieClicked,
+            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+        )
 
-        //        if (viewState is BeanTrackerViewState.Completed) {
-        //            BeansList(
-        //                viewState.beans,
-        //                modifier = modifier
-        //                    .padding(top = paddingValues.calculateTopPadding()),
-        //                onBeanClicked = onBeanClicked,
-        //                state = scrollState,
-        //                bottomPadding = bottomPadding,
-        //            )
-        //        }
+        if (viewState.isLoading) {
+            // TODO: Add Loading State
+        }
     }
-    //
-    //    if (viewState.showLoading) {
-    //        BeansLoadingContent()
-    //    }
 }
 
 @Composable
@@ -94,7 +93,14 @@ fun HomeContentPreview() {
     AppTheme {
         Surface {
             HomeContent(
-                viewState = HomeViewState(),
+                viewState = HomeViewState(
+                    isLoading = false,
+                    moviesList = listOf(),
+                    selectedMovie = null,
+                    error = null,
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {},
             )
         }
     }

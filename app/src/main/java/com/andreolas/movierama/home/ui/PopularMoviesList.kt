@@ -20,7 +20,7 @@ fun PopularMoviesList(
     modifier: Modifier = Modifier,
     movies: List<PopularMovie>,
     onMovieClicked: (PopularMovie) -> Unit,
-    onLikeClicked: (PopularMovie) -> Unit,
+    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
     //    state: LazyListState = LazyListState(),
 ) {
     LazyVerticalGrid(
@@ -37,7 +37,7 @@ fun PopularMoviesList(
             PopularMovieItem(
                 movie = movie,
                 onMovieItemClick = { onMovieClicked(movie) },
-                onLikeMovieClick = { onLikeClicked(movie) }
+                onLikeMovieClick = { onMarkAsFavoriteClicked(movie) }
             )
         }
     }
@@ -50,7 +50,7 @@ fun ListBeansScreenPreview() {
     @Suppress("MagicNumber")
     val movies = (1..10).map { index ->
         PopularMovie(
-            id = index.toLong(),
+            id = index,
             posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
             releaseDate = (2000 + index).toString(),
             title = "Fight Club $index",
@@ -64,7 +64,7 @@ fun ListBeansScreenPreview() {
             PopularMoviesList(
                 movies = movies,
                 onMovieClicked = {},
-                onLikeClicked = {}
+                onMarkAsFavoriteClicked = {}
 
             )
         }
