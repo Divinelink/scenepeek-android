@@ -42,12 +42,12 @@ internal class LastActionStateController(
         fun onLastActionFullMove(mainView: View, actionView: View)
 
         fun onCrossInteractionMove(isAnimatedState: Boolean, mainView: View, actionView: View, actionSize: Size, index: Int)
-
     }
 
     private var state = State.CLOSED
     private var animation: Animator? = null
 
+    @Suppress("UnusedPrivateMember")
     fun onTranslate(mainView: View, actionView: View, actionSize: Size, dx: Int, index: Int) {
         when {
             isFullyOpened(mainView, actionSize) && !isOpeningOrOpened() -> {
@@ -118,5 +118,4 @@ internal class LastActionStateController(
         animation?.cancel()
         animation = null
     }
-
 }
