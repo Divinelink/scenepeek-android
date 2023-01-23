@@ -15,7 +15,7 @@ class ProdMovieService @Inject constructor(
     override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> {
 
         val response = restClient.get<PopularResponseApi>(
-            ApiConstants.TMDB_URL + "/movie/popular?" +
+            ApiConstants.TMDB_URL + "movie/popular?" +
                 "api_key=${request.apiKey}" + "&language=en-US&" +
                 "page=${request.page}"
         )

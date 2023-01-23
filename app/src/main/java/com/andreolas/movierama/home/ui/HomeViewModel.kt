@@ -10,10 +10,14 @@ import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.succeeded
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +26,7 @@ class HomeViewModel @Inject constructor(
     private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
     private val removeFavoriteUseCase: RemoveFavoriteUseCase,
 ) : ViewModel() {
+    private var currentPage: Int = 1
 
     private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
         HomeViewState(
@@ -34,19 +39,23 @@ class HomeViewModel @Inject constructor(
     val viewState: StateFlow<HomeViewState> = _viewState
 
     init {
+        fetchPopularMovies()
+    }
+
+    private fun fetchPopularMovies() {
         viewModelScope.launch {
             getPopularMoviesUseCase.invoke(
                 parameters = PopularRequestApi(
                     apiKey = "30842f7c80f80bb3ad8a2fb98195544d", // System.getenv("TMDB_API_KEY")!!,
-                    page = 1
+                    page = currentPage,
                 )
-            ).collect { result ->
+            ).collectLatest { result ->
                 when (result) {
                     is Result.Success -> {
                         _viewState.update { viewState ->
                             viewState.copy(
                                 isLoading = false,
-                                moviesList = result.data,
+                                moviesList = (viewState.moviesList + result.data).distinctBy { it.id },
                             )
                         }
                     }
@@ -75,15 +84,37 @@ class HomeViewModel @Inject constructor(
         // todo
     }
 
-    @Suppress("UnusedPrivateMember")
     fun onMarkAsFavoriteClicked(movie: PopularMovie) {
         viewModelScope.launch {
-            // todo Add Snackbar when movie is added or removed.
             val result = if (movie.isFavorite) {
                 removeFavoriteUseCase(movie.id)
             } else {
-                markAsFavoriteUseCase.invoke(movie)
+                markAsFavoriteUseCase(movie)
+            }
+            if (result.succeeded) {
+                // todo Add Snackbar when movie is added or removed.
+                updateFavoriteStatus(movie)
             }
         }
+    }
+
+    private fun updateFavoriteStatus(movie: PopularMovie) {
+        _viewState.getAndUpdate { viewState ->
+            viewState.copy(
+                moviesList = viewState.moviesList.map { currentMovie ->
+                    if (currentMovie.id == movie.id) {
+                        Timber.d("Movie ${movie.title} favorite property changed.")
+                        currentMovie.copy(isFavorite = !movie.isFavorite)
+                    } else {
+                        currentMovie
+                    }
+                }
+            )
+        }
+    }
+
+    fun onLoadNextPage() {
+        currentPage++
+        fetchPopularMovies()
     }
 }

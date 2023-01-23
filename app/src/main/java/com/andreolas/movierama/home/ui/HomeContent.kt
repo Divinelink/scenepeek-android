@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,11 +33,16 @@ fun HomeContent(
     modifier: Modifier = Modifier,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onLoadNextPage: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val context = LocalContext.current
     Scaffold(
+        floatingActionButton = {
+            Button(onClick = onLoadNextPage) {
+            }
+        },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
@@ -58,7 +64,7 @@ fun HomeContent(
                 },
                 onClearClicked = {
                     // todo
-                }
+                },
             )
         },
     ) { paddingValues ->
@@ -67,6 +73,7 @@ fun HomeContent(
             movies = viewState.moviesList,
             onMovieClicked = onMovieClicked,
             onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+            onLoadNextPage = onLoadNextPage,
         )
 
         if (viewState.isLoading) {
@@ -90,6 +97,7 @@ fun HomeContentPreview() {
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
+                onLoadNextPage = {},
             )
         }
     }

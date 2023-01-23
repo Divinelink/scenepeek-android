@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,8 +22,22 @@ fun PopularMoviesList(
     movies: List<PopularMovie>,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onLoadNextPage: () -> Unit,
     //    state: LazyListState = LazyListState(),
 ) {
+    //    val scrollState = rememberScrollState()
+    //    val endReached by remember {
+    //        derivedStateOf {
+    //            scrollState.value <= scrollState.maxValue - 100
+    //        }
+    //    }
+    //
+    //    if (endReached) {
+    //        LaunchedEffect(Unit) {
+    //            onLoadNextPage()
+    //        }
+    //    }
+
     LazyVerticalGrid(
         modifier = modifier
             .padding(
@@ -64,8 +79,8 @@ fun ListBeansScreenPreview() {
             PopularMoviesList(
                 movies = movies,
                 onMovieClicked = {},
-                onMarkAsFavoriteClicked = {}
-
+                onMarkAsFavoriteClicked = {},
+                onLoadNextPage = {},
             )
         }
     }

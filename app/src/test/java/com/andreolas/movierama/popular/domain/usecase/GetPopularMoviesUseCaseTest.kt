@@ -88,6 +88,68 @@ class GetPopularMoviesUseCaseTest {
         }
 
     @Test
+    fun `favorite movie is not shown if it doesn't exist on popular movies`() = runTest {
+        val remoteMovies = (1..2).map {
+            PopularMovie(
+                id = it,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                isFavorite = false,
+                rating = "1",
+            )
+        }.toMutableList()
+        val favoriteMovie = (2..3).map {
+            PopularMovie(
+                id = it,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                isFavorite = true,
+                rating = "1",
+            )
+        }.toMutableList()
+
+        val expectedMovies = listOf(
+            PopularMovie(
+                id = 1,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                isFavorite = false,
+                rating = "1",
+            ),
+            PopularMovie(
+                id = 2,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                isFavorite = true,
+                rating = "1",
+            )
+        )
+
+        val expectedResult = Result.Success(expectedMovies)
+
+        repository.mockFetchFavoriteMovies(
+            Result.Success(favoriteMovie)
+        )
+
+        repository.mockFetchPopularMovies(
+            request = PopularRequestApi(apiKey = "", page = 0),
+            response = Result.Success(remoteMovies)
+        )
+
+        val useCase = GetPopularMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).first()
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
     fun `given local data failed then I expect remote data`() = runTest {
         val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
