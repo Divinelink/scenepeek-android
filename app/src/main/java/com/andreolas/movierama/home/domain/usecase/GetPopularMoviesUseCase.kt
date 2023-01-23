@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetPopularMoviesUseCase @Inject constructor(
+open class GetPopularMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<PopularRequestApi, List<PopularMovie>>(dispatcher) {

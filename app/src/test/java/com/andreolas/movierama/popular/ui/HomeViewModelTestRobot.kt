@@ -1,13 +1,11 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
-import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
+import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
+import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.FakeRemoveFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
-import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
-import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat
@@ -22,24 +20,16 @@ class HomeViewModelTestRobot {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private val fakeMoviesRepository = FakeMoviesRepository()
+    private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
+    private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+    private val fakeRemoveFavoriteUseCase = FakeRemoveFavoriteUseCase()
 
     fun buildViewModel() = apply {
         viewModel = HomeViewModel(
-            getPopularMoviesUseCase = GetPopularMoviesUseCase(
-                moviesRepository = fakeMoviesRepository.mock,
-                dispatcher = testDispatcher,
-            ),
-            markAsFavoriteUseCase = MarkAsFavoriteUseCase(
-                repository = fakeMoviesRepository.mock,
-                dispatcher = testDispatcher,
-            ),
-            removeFavoriteUseCase = RemoveFavoriteUseCase(
-                repository = fakeMoviesRepository.mock,
-                dispatcher = testDispatcher,
-            )
+            getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
+            markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
+            removeFavoriteUseCase = fakeRemoveFavoriteUseCase.mock,
         )
     }
 
@@ -55,41 +45,27 @@ class HomeViewModelTestRobot {
         assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
     }
 
-    suspend fun mockFetchPopularMovies(
-        request: PopularRequestApi,
+    fun mockFetchPopularMovies(
         response: MoviesListResult,
     ) = apply {
-        fakeMoviesRepository.mockFetchPopularMovies(
-            request = request,
-            response = response,
-        )
-    }
-
-    fun mockFetchFavoriteMovies(
-        response: MoviesListResult,
-    ) = apply {
-        fakeMoviesRepository.mockFetchFavoriteMovies(
+        fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
             response = response,
         )
     }
 
     suspend fun mockMarkAsFavorite(
-        movie: PopularMovie,
-        response: Result<Unit>,
+        result: Result<Unit>,
     ) = apply {
-        fakeMoviesRepository.mockMarkAsFavorite(
-            movie = movie,
-            response = response,
+        fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
+            result = result,
         )
     }
 
     suspend fun mockRemoveFavorite(
-        id: Int,
-        response: Result<Unit>,
+        result: Result<Unit>,
     ) = apply {
-        fakeMoviesRepository.mockRemoveFavorite(
-            id = id,
-            response = response,
+        fakeRemoveFavoriteUseCase.mockRemoveFavoriteResult(
+            result = result,
         )
     }
 
@@ -99,5 +75,9 @@ class HomeViewModelTestRobot {
 
     fun onMovieClicked(movie: PopularMovie) = apply {
         viewModel.onMovieClicked(movie)
+    }
+
+    fun onMarkAsFavorite(movie: PopularMovie) = apply {
+        viewModel.onMarkAsFavoriteClicked(movie)
     }
 }
