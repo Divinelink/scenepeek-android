@@ -1,3 +1,5 @@
+@file:Suppress("TooGenericExceptionCaught")
+
 package com.andreolas.movierama.base.communication
 
 import com.andreolas.movierama.BuildConfig
@@ -20,6 +22,7 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
+import timber.log.Timber
 
 class RestClient {
 
@@ -38,6 +41,8 @@ class RestClient {
                 Json {
                     prettyPrint = true
                     isLenient = true
+                    coerceInputValues = true
+                    ignoreUnknownKeys = true
                 }
             )
         }
@@ -50,7 +55,12 @@ class RestClient {
     @OptIn(InternalSerializationApi::class)
     suspend inline fun <reified T : Any> get(url: String): T {
         val json = client.get(url).bodyAsText()
-        return Json.decodeFromString(T::class.serializer(), json)
+        try {
+            return Json.decodeFromString(T::class.serializer(), json)
+        } catch (e: Exception) {
+            Timber.e("${e.message}")
+            throw e
+        }
     }
 
     @OptIn(InternalAPI::class)

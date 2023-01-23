@@ -66,8 +66,8 @@ private fun PopularResponseApi.toDomainMoviesList(): List<PopularMovie> {
 private fun PopularMovieApi.toPopularMovie(): PopularMovie {
     return PopularMovie(
         id = this.id,
-        posterPath = this.posterPath,
-        releaseDate = this.releaseDate,
+        posterPath = this.posterPath ?: "",
+        releaseDate = this.releaseDate ?: "",
         title = this.title,
         rating = this.voteAverage.toString(),
         isFavorite = false,
