@@ -9,6 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -82,7 +83,7 @@ class GetPopularMoviesUseCaseTest {
                 moviesRepository = repository.mock,
                 dispatcher = testDispatcher,
             )
-            val result = useCase(request).first()
+            val result = useCase(request).last()
 
             assertThat(result).isEqualTo(expectedResult)
         }
@@ -144,8 +145,7 @@ class GetPopularMoviesUseCaseTest {
             moviesRepository = repository.mock,
             dispatcher = testDispatcher,
         )
-        val result = useCase(request).first()
-
+        val result = useCase(request).last()
         assertThat(result).isEqualTo(expectedResult)
     }
 
@@ -166,8 +166,7 @@ class GetPopularMoviesUseCaseTest {
             moviesRepository = repository.mock,
             dispatcher = testDispatcher,
         )
-        val result = useCase(request).first()
-
+        val result = useCase(request).last()
         assertThat(result).isEqualTo(expectedResult)
     }
 

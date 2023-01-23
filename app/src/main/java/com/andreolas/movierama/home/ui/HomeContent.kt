@@ -2,10 +2,10 @@ package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,10 +39,6 @@ fun HomeContent(
 
     val context = LocalContext.current
     Scaffold(
-        floatingActionButton = {
-            Button(onClick = onLoadNextPage) {
-            }
-        },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
@@ -70,13 +66,14 @@ fun HomeContent(
     ) { paddingValues ->
         PopularMoviesList(
             modifier = modifier.padding(paddingValues),
+            isLoading = viewState.isLoading,
             movies = viewState.moviesList,
             onMovieClicked = onMovieClicked,
             onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
             onLoadNextPage = onLoadNextPage,
         )
 
-        if (viewState.isLoading) {
+        AnimatedVisibility(visible = viewState.isLoading) {
             // todo
         }
     }

@@ -6,24 +6,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.components.PopularMovieItem
+import com.andreolas.movierama.ui.components.extensions.OnBottomReached
 import com.andreolas.movierama.ui.theme.AppTheme
 
 @Composable
 fun PopularMoviesList(
     modifier: Modifier = Modifier,
+//    isLoading: Boolean = false,
     movies: List<PopularMovie>,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
     onLoadNextPage: () -> Unit,
     //    state: LazyListState = LazyListState(),
+//    state: LazyListState = LazyListState(),
 ) {
     //    val scrollState = rememberScrollState()
     //    val endReached by remember {
@@ -37,8 +40,14 @@ fun PopularMoviesList(
     //            onLoadNextPage()
     //        }
     //    }
+    val scrollState = rememberLazyGridState()
+
+    scrollState.OnBottomReached {
+        onLoadNextPage()
+    }
 
     LazyVerticalGrid(
+        state = scrollState,
         modifier = modifier
             .padding(
                 start = 8.dp,
