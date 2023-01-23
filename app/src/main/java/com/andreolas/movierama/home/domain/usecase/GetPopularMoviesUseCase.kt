@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -27,12 +28,14 @@ class GetPopularMoviesUseCase @Inject constructor(
         val favoriteMovies = moviesRepository.fetchFavoriteMovies()
         val popularMovies = flow {
             coroutineScope {
+                emit(Result.Loading)
                 val result = withContext(dispatcher) {
                     moviesRepository.fetchPopularMovies(parameters)
                 }
                 emitAll(result)
             }
-        }
+        }.flowOn(dispatcher)
+
         return favoriteMovies.combineTransform(popularMovies) { favorite, popular ->
             if (favorite is Result.Success && popular is Result.Success) {
                 val mergedList = sanitizeMovies(favorite, popular)
