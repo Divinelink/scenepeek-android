@@ -25,21 +25,8 @@ fun PopularMoviesList(
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
     onLoadNextPage: () -> Unit,
-    //    state: LazyListState = LazyListState(),
 //    state: LazyListState = LazyListState(),
 ) {
-    //    val scrollState = rememberScrollState()
-    //    val endReached by remember {
-    //        derivedStateOf {
-    //            scrollState.value <= scrollState.maxValue - 100
-    //        }
-    //    }
-    //
-    //    if (endReached) {
-    //        LaunchedEffect(Unit) {
-    //            onLoadNextPage()
-    //        }
-    //    }
     val scrollState = rememberLazyGridState()
 
     scrollState.OnBottomReached {

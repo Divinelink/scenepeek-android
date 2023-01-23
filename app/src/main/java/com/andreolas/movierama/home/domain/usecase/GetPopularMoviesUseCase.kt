@@ -38,7 +38,7 @@ class GetPopularMoviesUseCase @Inject constructor(
 
         return favoriteMovies.combineTransform(popularMovies) { favorite, popular ->
             if (favorite is Result.Success && popular is Result.Success) {
-                val mergedList = sanitizeMovies(favorite, popular)
+                val mergedList = getFavoritesAndPopularMoviesCombined(favorite, popular)
                 emit(Result.Success(mergedList))
             } else if (popular is Result.Success) {
                 emit(Result.Success(popular.data))
@@ -58,7 +58,7 @@ class GetPopularMoviesUseCase @Inject constructor(
      * The returned list is a combination of both favorite and popular movies but with the same id movies,
      * the one with isFavorite = true will be present in the list.
      */
-    private fun sanitizeMovies(
+    private fun getFavoritesAndPopularMoviesCombined(
         favorite: Result.Success<List<PopularMovie>>,
         popular: Result.Success<List<PopularMovie>>,
     ): List<PopularMovie> {
