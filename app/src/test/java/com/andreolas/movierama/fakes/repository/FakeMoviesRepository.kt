@@ -1,6 +1,7 @@
 package com.andreolas.movierama.fakes.repository
 
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
@@ -29,6 +30,17 @@ class FakeMoviesRepository {
     ) {
         whenever(
             mock.fetchPopularMovies(request)
+        ).thenReturn(
+            flowOf(response)
+        )
+    }
+
+    suspend fun mockFetchSearchMovies(
+        request: SearchRequestApi,
+        response: MoviesListResult,
+    ) {
+        whenever(
+            mock.fetchSearchMovies(request)
         ).thenReturn(
             flowOf(response)
         )

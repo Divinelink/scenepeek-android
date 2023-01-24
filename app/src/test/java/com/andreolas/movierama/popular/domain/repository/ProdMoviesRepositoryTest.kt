@@ -4,6 +4,9 @@ import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchMovieApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.dao.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -63,6 +66,30 @@ class ProdMoviesRepositoryTest {
         totalResults = 0
     )
 
+    private val apiSearchResponse = SearchResponseApi(
+        page = 1,
+        results = (1..10).map {
+            SearchMovieApi(
+                adult = false,
+                backdropPath = "",
+                genreIds = listOf(),
+                id = 0,
+                originalLanguage = "",
+                originalTitle = "",
+                overview = "",
+                popularity = 0.0,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                video = false,
+                voteAverage = 0.0,
+                voteCount = 0
+            )
+        }.toList(),
+        totalPages = 0,
+        totalResults = 0
+    )
+
     private var movieDAO = FakeMovieDAO()
     private var movieRemote = FakeMovieRemote()
 
@@ -102,20 +129,48 @@ class ProdMoviesRepositoryTest {
         assertThat(expectedResult).isEqualTo(actualResult.data)
     }
 
-//    @Test
-//    fun testFetchPopularMoviesErrorCase() = runTest {
-//        val request = PopularRequestApi(apiKey = "", page = 1)
-//        val expectedResult = Result.Error(Exception("response is empty"))
-//
-//        movieRemote.mockFetchPopularMovies(
-//            request = request,
-//            result = flowOf(),
-//        )
-//
-//        val actualResult = repository.fetchPopularMovies(request)
-//
-//        assertThat(expectedResult).isInstanceOf(actualResult::class.java)
-//    }
+    @Test
+    fun testFetchSearchMovies() = runTest {
+        val request = SearchRequestApi(query = "test123", 3)
+        val expectedResult = (1..10).map {
+            PopularMovie(
+                id = 0,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                rating = "0.0",
+                isFavorite = false
+            )
+        }.toList()
+
+        val expectedApiSearchResponse = flowOf(apiSearchResponse)
+
+        movieRemote.mockFetchSearchMovies(
+            request = request,
+            result = expectedApiSearchResponse
+        )
+
+        val actualResult = repository.fetchSearchMovies(
+            request = request,
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    //    @Test
+    //    fun testFetchPopularMoviesErrorCase() = runTest {
+    //        val request = PopularRequestApi(apiKey = "", page = 1)
+    //        val expectedResult = Result.Error(Exception("response is empty"))
+    //
+    //        movieRemote.mockFetchPopularMovies(
+    //            request = request,
+    //            result = flowOf(),
+    //        )
+    //
+    //        val actualResult = repository.fetchPopularMovies(request)
+    //
+    //        assertThat(expectedResult).isInstanceOf(actualResult::class.java)
+    //    }
 
     @Test
     fun testFetchFavoriteMovies() = runTest {
