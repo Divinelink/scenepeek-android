@@ -10,10 +10,12 @@ import com.andreolas.movierama.ui.UIText
  *
  * */
 data class HomeViewState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val moviesList: List<PopularMovie>,
     val selectedMovie: PopularMovie? = null,
     val loadMorePopular: Boolean = true,
     val query: String = "",
+    val searchLoading: Boolean = false,
+    val emptyResult: Boolean = false,
     val error: UIText? = null,
 )

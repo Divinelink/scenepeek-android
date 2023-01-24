@@ -139,29 +139,27 @@ private fun SearchIconWithLoading(
     onClearClicked: () -> Unit,
     toolbarState: MutableState<ToolbarState>,
 ) {
-    Crossfade(isLoading) { loading ->
-        when (loading) {
-            true -> {
-                Material3CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                        .height(24.dp)
-                        .width(24.dp)
+    when (isLoading) {
+        true -> {
+            Material3CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .height(24.dp)
+                    .width(24.dp)
+            )
+        }
+        false -> {
+            IconButton(
+                modifier = Modifier.padding(start = 2.dp),
+                onClick = {
+                    onClearClicked()
+                    toolbarState.value = ToolbarState.Unfocused
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = stringResource(id = R.string.toolbar_search),
                 )
-            }
-            false -> {
-                IconButton(
-                    modifier = Modifier.padding(start = 2.dp),
-                    onClick = {
-                        onClearClicked()
-                        toolbarState.value = ToolbarState.Unfocused
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(id = R.string.toolbar_search),
-                    )
-                }
             }
         }
     }

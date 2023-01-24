@@ -154,7 +154,7 @@ class HomeViewModel @Inject constructor(
                 viewState.copy(
                     query = query,
                     loadMorePopular = false,
-                    isLoading = true,
+                    searchLoading = true,
                 )
             }
             searchJob = viewModelScope.launch {
@@ -172,8 +172,9 @@ class HomeViewModel @Inject constructor(
             viewState.copy(
                 moviesList = cachedMovies,
                 loadMorePopular = true,
-                isLoading = false,
+                searchLoading = false,
                 query = "",
+                emptyResult = false,
             )
         }
     }
@@ -198,8 +199,9 @@ class HomeViewModel @Inject constructor(
                             val movies = accumulateSearchMovies(page, result)
                             _viewState.update { viewState ->
                                 viewState.copy(
-                                    isLoading = false,
+                                    searchLoading = false,
                                     moviesList = movies,
+                                    emptyResult = movies.isEmpty(),
                                 )
                             }
                         }
@@ -207,7 +209,7 @@ class HomeViewModel @Inject constructor(
                     is Result.Error -> {
                         _viewState.update { viewState ->
                             viewState.copy(
-                                isLoading = false,
+                                searchLoading = false,
                                 error = UIText.StringText(result.exception.message ?: "Something went wrong."),
                             )
                         }

@@ -20,19 +20,16 @@ import com.andreolas.movierama.ui.theme.AppTheme
 @Composable
 fun PopularMoviesList(
     modifier: Modifier = Modifier,
-//    isLoading: Boolean = false,
     movies: List<PopularMovie>,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
     onLoadNextPage: () -> Unit,
-//    state: LazyListState = LazyListState(),
 ) {
     val scrollState = rememberLazyGridState()
 
     scrollState.OnBottomReached {
         onLoadNextPage()
     }
-
     LazyVerticalGrid(
         state = scrollState,
         modifier = modifier
@@ -57,7 +54,7 @@ fun PopularMoviesList(
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun ListBeansScreenPreview() {
+fun MoviesListScreenPreview() {
     @Suppress("MagicNumber")
     val movies = (1..10).map { index ->
         PopularMovie(
