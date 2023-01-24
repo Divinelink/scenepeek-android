@@ -1,6 +1,6 @@
 package com.andreolas.movierama.test.util.fakes
 
-import com.andreolas.movierama.base.di.PreferenceStorage
+import com.andreolas.movierama.base.storage.PreferenceStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 
 open class FakePreferenceStorage(

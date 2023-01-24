@@ -6,16 +6,16 @@ import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularReques
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class ProdMovieService @Inject constructor(
     private val restClient: RestClient,
+    encryptedStorage: EncryptedPreferenceStorage,
 ) : MovieService {
-    private val apiKey = Firebase.remoteConfig.getString("tmdb_api_key")
+    private val apiKey = encryptedStorage.tmdbApiKey
 
     override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> {
         val baseUrl = "${ApiConstants.TMDB_URL}/movie/popular?"

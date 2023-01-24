@@ -1,9 +1,12 @@
 package com.andreolas.movierama
 
 import androidx.lifecycle.ViewModel
+import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.theme.ThemedActivityDelegate
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +16,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     themedActivityDelegate: ThemedActivityDelegate,
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
+    private val encryptedPreferenceStorage: EncryptedPreferenceStorage,
 ) : ViewModel(),
     ThemedActivityDelegate by themedActivityDelegate {
 
@@ -38,6 +42,9 @@ class MainViewModel @Inject constructor(
         firebaseRemoteConfig.fetchAndActivate()
             .addOnCompleteListener { remoteTask ->
                 if (remoteTask.isSuccessful) {
+                    Firebase.remoteConfig.getString("tmdb_api_key").also { apiKey ->
+                        encryptedPreferenceStorage.setTmdbApiKey(apiKey)
+                    }
                     _viewState.value = MainViewState.Completed
                 } else {
                     _viewState.value = MainViewState.Error(
