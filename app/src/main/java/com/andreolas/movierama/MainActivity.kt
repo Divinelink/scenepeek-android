@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                             LoadingContent()
                         }
                         is MainViewState.Error -> {
-                            viewModel.onFetchRemoteAgain()
+                            viewModel.retryFetchRemoteConfig()
                         }
                     }
                 }
