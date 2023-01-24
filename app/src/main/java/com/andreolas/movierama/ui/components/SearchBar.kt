@@ -144,7 +144,7 @@ private fun SearchIconWithLoading(
             true -> {
                 Material3CircularProgressIndicator(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
                 )
@@ -176,7 +176,7 @@ private fun FocusedSearchField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth(TEXT_MAX_WIDTH)
-            .padding(top = 16.dp, end = 16.dp, bottom = 16.dp),
+            .padding(end = 16.dp),
         value = value ?: "",
         textStyle = TextStyle(
             color = MaterialTheme.colorScheme.onSurface,

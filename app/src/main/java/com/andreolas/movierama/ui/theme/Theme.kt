@@ -54,7 +54,7 @@ fun topBarColor(): Color {
 }
 
 val FabSize = 56.dp
-val SearchBarSize = 56.dp
+val SearchBarSize = 48.dp
 
 enum class Theme(val storageKey: String) {
     SYSTEM("system"),

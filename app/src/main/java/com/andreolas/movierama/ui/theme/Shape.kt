@@ -9,6 +9,9 @@ val MaterialCardShape = RoundedCornerShape(16.dp)
 
 val SearchBarShape = RoundedCornerShape(50.dp)
 
+// Popular Movies
+val PopularMovieItemShape = RoundedCornerShape(8.dp)
+
 val HorizontalIconPadding = 12.dp
 // Bottom Sheet
 val BottomSheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)

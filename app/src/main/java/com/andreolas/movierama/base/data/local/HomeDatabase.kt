@@ -4,10 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.andreolas.movierama.base.data.local.bean.BeanDAO
 import com.andreolas.movierama.base.data.local.bean.PersistableBean
+import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 
 @Database(
     entities = [
         PersistableBean::class,
+        PersistableMovie::class,
     ],
     version = HomeDatabase.LATEST_VERSION,
     exportSchema = true
