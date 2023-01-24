@@ -2,7 +2,7 @@ package com.andreolas.movierama.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
@@ -46,7 +46,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getPopularMoviesUseCase.invoke(
                 parameters = PopularRequestApi(
-                    apiKey = "30842f7c80f80bb3ad8a2fb98195544d", // System.getenv("TMDB_API_KEY")!!,
                     page = currentPage,
                 )
             ).collectLatest { result ->

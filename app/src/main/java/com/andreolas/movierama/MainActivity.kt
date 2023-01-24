@@ -10,9 +10,11 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import com.andreolas.movierama.home.ui.HomeScreen
+import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.home.ui.NavGraphs
 import com.andreolas.movierama.home.ui.destinations.HomeScreenDestination
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -44,9 +46,21 @@ class MainActivity : AppCompatActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    AppNavHost(
-                        startRoute = HomeScreenDestination
-                    )
+                    val mainState = viewModel.viewState.collectAsState()
+
+                    when (mainState.value) {
+                        MainViewState.Completed -> {
+                            AppNavHost(
+                                startRoute = HomeScreenDestination,
+                            )
+                        }
+                        MainViewState.Loading -> {
+                            LoadingContent()
+                        }
+                        is MainViewState.Error -> {
+                            viewModel.onFetchRemoteAgain()
+                        }
+                    }
                 }
             }
         }

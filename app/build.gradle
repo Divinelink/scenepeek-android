@@ -87,7 +87,7 @@ android {
                 kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
             }
         }
-        variant.buildConfigField "String", "TMDB_BASE_URL", '"https://api.themoviedb.org/3/"'
+        variant.buildConfigField "String", "TMDB_BASE_URL", '"https://api.themoviedb.org/3"'
         variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/original"'
     }
 }
@@ -106,9 +106,10 @@ dependencies {
     implementation project(':core-util')
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-config-ktx'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -217,6 +218,9 @@ dependencies {
 
     implementation 'androidx.datastore:datastore-core:1.0.0'
     implementation 'androidx.datastore:datastore-preferences-core:1.0.0'
+    // KeyStore - Encrypted Preferences
+    implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha04'
+
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 

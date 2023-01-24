@@ -1,7 +1,7 @@
 package com.andreolas.movierama.settings.app.appearance.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.base.di.PreferenceStorage
+import com.andreolas.movierama.base.storage.PreferenceStorage
 import com.andreolas.movierama.ui.theme.Theme
 import com.andreolas.movierama.ui.theme.themeFromStorageKey
 import gr.divinelink.core.util.domain.UseCase

@@ -2,6 +2,10 @@ package com.andreolas.movierama.base.di
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
+import com.andreolas.movierama.base.storage.DataStorePreferenceStorage
+import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
+import com.andreolas.movierama.base.storage.EncryptedStorage
+import com.andreolas.movierama.base.storage.PreferenceStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +22,9 @@ object PreferencesStorageModule {
     @Provides
     fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage =
         DataStorePreferenceStorage(context.dataStore)
+
+    @Singleton
+    @Provides
+    fun provideEncryptedPreferenceStorage(@ApplicationContext context: Context): EncryptedStorage =
+        EncryptedPreferenceStorage(context)
 }

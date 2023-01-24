@@ -1,10 +1,10 @@
-package com.andreolas.movierama.base.di
+package com.andreolas.movierama.base.storage
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.andreolas.movierama.base.di.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
+import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.andreolas.movierama.ui.theme.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
