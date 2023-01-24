@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "593008087858",
-    "project_id": "aeropress-recipes-59e6c",
-    "storage_bucket": "aeropress-recipes-59e6c.appspot.com"
+    "project_number": "930017142786",
+    "project_id": "movierama-99525",
+    "storage_bucket": "movierama-99525.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:593008087858:android:2a3708747e9db04cdcbd2b",
+        "mobilesdk_app_id": "1:930017142786:android:9c5043fddb8d2fa06c9f1b",
         "android_client_info": {
           "package_name": "com.andreolas.movierama"
         }
       },
       "oauth_client": [
         {
-          "client_id": "593008087858-a976u6lhh06ejqcfqaf3dqbtul1ohpcp.apps.googleusercontent.com",
+          "client_id": "930017142786-q28o6okfkek6rb0rjrqe4fcc57rogjgc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD4_sm4dwuSAMUJG2jr7JvE4giDK079sg0"
+          "current_key": "AIzaSyDuLF5Z8l9TsyTsbCOlQeepYxY2ADrEO0M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "593008087858-a976u6lhh06ejqcfqaf3dqbtul1ohpcp.apps.googleusercontent.com",
+              "client_id": "930017142786-q28o6okfkek6rb0rjrqe4fcc57rogjgc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

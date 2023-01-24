@@ -15,9 +15,6 @@ import javax.inject.Inject
 class ProdMovieService @Inject constructor(
     private val restClient: RestClient,
 ) : MovieService {
-
-//    private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-//    private val apiKey = remoteConfig.getString("tmdb_api_key")
     private val apiKey = Firebase.remoteConfig.getString("tmdb_api_key")
 
     override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> {

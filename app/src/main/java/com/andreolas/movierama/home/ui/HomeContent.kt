@@ -84,7 +84,7 @@ fun HomeContent(
 }
 
 @Composable
-private fun LoadingContent() {
+fun LoadingContent() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
