@@ -1,8 +1,8 @@
 package com.andreolas.movierama.fakes.dao
 
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularResponseApi
-import com.andreolas.movierama.base.data.remote.popular.service.MovieService
+import com.andreolas.movierama.base.data.remote.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.dto.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

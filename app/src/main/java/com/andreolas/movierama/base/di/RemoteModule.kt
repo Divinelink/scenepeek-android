@@ -1,8 +1,8 @@
 package com.andreolas.movierama.base.di
 
 import com.andreolas.movierama.base.communication.RestClient
-import com.andreolas.movierama.base.data.remote.popular.service.MovieService
-import com.andreolas.movierama.base.data.remote.popular.service.ProdMovieService
+import com.andreolas.movierama.base.data.remote.movies.service.MovieService
+import com.andreolas.movierama.base.data.remote.movies.service.ProdMovieService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

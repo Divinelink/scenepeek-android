@@ -1,6 +1,7 @@
 package com.andreolas.movierama.home.domain.repository
 
-import com.andreolas.movierama.base.data.remote.popular.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +25,14 @@ interface MoviesRepository {
      * Fetch all popular movies that the user has marked as favorite.
      */
     fun fetchFavoriteMovies(): Flow<MoviesListResult>
+
+    /**
+     * Request movies through a search query. Uses pagination.
+     * Uses [Flow] in order to observe changes to our movies list.
+     */
+    suspend fun fetchSearchMovies(
+        request: SearchRequestApi,
+    ): Flow<MoviesListResult>
 
     /**
      * Add favorite [movie] to local storage.
