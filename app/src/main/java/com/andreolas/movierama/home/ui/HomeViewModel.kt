@@ -13,9 +13,10 @@ import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.succeeded
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private var currentPage: Int = 1
     private var searchPage: Int = 1
+
+    private var searchJob: Job? = null
+    private var allowSearchResult: Boolean = true
 
     private var cachedMovies: MutableList<PopularMovie> = mutableListOf()
 
@@ -54,10 +58,12 @@ class HomeViewModel @Inject constructor(
                 parameters = PopularRequestApi(
                     page = currentPage,
                 )
-            ).collectLatest { result ->
+            ).collect { result ->
                 when (result) {
                     is Result.Success -> {
-                        cachedMovies = (_viewState.value.moviesList + result.data).distinctBy { it.id }.toMutableList()
+                        cachedMovies = (_viewState.value.moviesList + result.data)
+                            .distinctBy { it.id }
+                            .toMutableList()
                         _viewState.update { viewState ->
                             viewState.copy(
                                 isLoading = false,
@@ -138,7 +144,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onSearchMovies(query: String) {
+        searchJob?.cancel()
         searchPage = 1
+        allowSearchResult = true
         if (query.isEmpty()) {
             onClearClicked()
         } else {
@@ -146,22 +154,25 @@ class HomeViewModel @Inject constructor(
                 viewState.copy(
                     query = query,
                     loadMorePopular = false,
+                    isLoading = true,
                 )
-            }.also {
-                fetchFromSearchQuery(
-                    query = query,
-                    page = 1
-                )
+            }
+            searchJob = viewModelScope.launch {
+                delay(timeMillis = 300)
+                fetchFromSearchQuery(query = query, page = 1)
             }
         }
     }
 
     fun onClearClicked() {
+        searchJob?.cancel()
         searchPage = 1
+        allowSearchResult = false
         _viewState.update { viewState ->
             viewState.copy(
                 moviesList = cachedMovies,
                 loadMorePopular = true,
+                isLoading = false,
                 query = "",
             )
         }
@@ -177,22 +188,20 @@ class HomeViewModel @Inject constructor(
                     query = query,
                     page = page,
                 )
-            ).collectLatest { result ->
+            ).collect { result ->
                 when (result) {
                     Result.Loading -> {
                         // todo
                     }
                     is Result.Success -> {
-                        val movies = if (page == 1) {
-                            result.data
-                        } else {
-                            (_viewState.value.moviesList + result.data).distinctBy { it.id }
-                        }
-                        _viewState.update { viewState ->
-                            viewState.copy(
-                                isLoading = false,
-                                moviesList = movies,
-                            )
+                        if (allowSearchResult) {
+                            val movies = accumulateSearchMovies(page, result)
+                            _viewState.update { viewState ->
+                                viewState.copy(
+                                    isLoading = false,
+                                    moviesList = movies,
+                                )
+                            }
                         }
                     }
                     is Result.Error -> {
@@ -206,5 +215,17 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun accumulateSearchMovies(
+        page: Int,
+        result: Result.Success<List<PopularMovie>>,
+    ): List<PopularMovie> {
+        val movies = if (page == 1) {
+            result.data
+        } else {
+            (_viewState.value.moviesList + result.data).distinctBy { it.id }
+        }
+        return movies
     }
 }

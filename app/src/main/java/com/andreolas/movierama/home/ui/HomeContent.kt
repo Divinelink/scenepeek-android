@@ -61,6 +61,7 @@ fun HomeContent(
                         Icon(Icons.Filled.Settings, null)
                     }
                 },
+                isLoading = viewState.isLoading,
                 searchValue = viewState.query,
                 onSearchFieldChanged = { query ->
                     onSearchMovies(query)
@@ -73,16 +74,11 @@ fun HomeContent(
     ) { paddingValues ->
         PopularMoviesList(
             modifier = modifier.padding(paddingValues),
-            //            isLoading = viewState.isLoading,
             movies = viewState.moviesList,
             onMovieClicked = onMovieClicked,
             onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
             onLoadNextPage = onLoadNextPage,
         )
-
-        if (viewState.isLoading) {
-            LoadingContent()
-        }
     }
 }
 

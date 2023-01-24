@@ -18,7 +18,7 @@ data class SearchResponseApi(
 data class SearchMovieApi(
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdropPath: String?,
+    val backdropPath: String? = null,
     @SerialName("genre_ids")
     val genreIds: List<Int>,
     val id: Int,
@@ -29,9 +29,9 @@ data class SearchMovieApi(
     val overview: String,
     val popularity: Double,
     @SerialName("poster_path")
-    val posterPath: String?,
+    val posterPath: String? = null,
     @SerialName("release_date")
-    val releaseDate: String,
+    val releaseDate: String? = null,
     val title: String,
     val video: Boolean,
     @SerialName("vote_average")
@@ -48,7 +48,7 @@ private fun SearchMovieApi.toPopularMovie(): PopularMovie {
     return PopularMovie(
         id = this.id,
         posterPath = this.posterPath ?: "",
-        releaseDate = this.releaseDate,
+        releaseDate = this.releaseDate ?: "",
         title = this.title,
         rating = this.voteAverage.toString(),
         isFavorite = false,
