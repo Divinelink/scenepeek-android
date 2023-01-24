@@ -9,8 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object PreferencesStorageModule {
     private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
 

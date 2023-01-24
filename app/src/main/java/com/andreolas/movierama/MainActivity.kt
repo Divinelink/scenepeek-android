@@ -12,9 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-import com.andreolas.movierama.home.HomeScreen
-import com.andreolas.movierama.home.NavGraphs
-import com.andreolas.movierama.home.destinations.HomeScreenDestination
+import com.andreolas.movierama.home.ui.HomeScreen
+import com.andreolas.movierama.home.ui.NavGraphs
+import com.andreolas.movierama.home.ui.destinations.HomeScreenDestination
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.updateForTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi

@@ -31,7 +31,8 @@ import gr.divinelink.core.util.views.NoCrossfadeChangeDefaultAnimator
  * same factory can be registered multiple times for multiple model types (if the model type class hierarchy supports it).
  */
 
-abstract class MappingAdapter : ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()),
+abstract class MappingAdapter :
+    ListAdapter<MappingModel, MappingViewHolder<MappingModel>>(MappingDiffCallback()),
     RegisterFactory {
     var factories: MutableMap<Int, Factory<*>> = HashMap()
     var itemTypes: MutableMap<Any, Int> = HashMap()

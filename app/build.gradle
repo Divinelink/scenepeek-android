@@ -8,6 +8,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.devtools.ksp' version '1.7.20-1.0.8'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 apply {
@@ -86,7 +87,8 @@ android {
                 kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
             }
         }
-        variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/"'
+        variant.buildConfigField "String", "TMDB_BASE_URL", '"https://api.themoviedb.org/3/"'
+        variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/original"'
     }
 }
 
@@ -97,7 +99,9 @@ kapt {
 dependencies {
     def appcompat_version = "1.5.1"
     def room_version = "2.5.0"
-    def hilt_version = "2.42"
+    def hilt_version = "2.43.2"
+    def ktor_version = "2.2.2"
+
 
     implementation project(':core-util')
 
@@ -176,9 +180,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 
 
+    // Room DB
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
-
 
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
@@ -188,6 +192,15 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
+
+    // Ktor
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+    implementation "io.ktor:ktor-client-logging:$ktor_version"
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
     implementation 'com.airbnb.android:lottie:5.2.0'
 

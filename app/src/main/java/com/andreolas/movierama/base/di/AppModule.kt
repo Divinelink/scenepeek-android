@@ -2,10 +2,10 @@ package com.andreolas.movierama.base.di
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
-import com.andreolas.movierama.base.data.local.HomeDatabase
-import com.andreolas.movierama.base.data.local.HomeDatabase.Companion.DB_NAME
+import com.andreolas.movierama.base.communication.RestClient
+import com.andreolas.movierama.base.data.local.AppDatabase
+import com.andreolas.movierama.base.data.local.AppDatabase.Companion.DB_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,17 +27,21 @@ object AppModule {
         @ApplicationContext app: Context,
     ) = Room.databaseBuilder(
         app,
-        HomeDatabase::class.java,
+        AppDatabase::class.java,
         DB_NAME
     ).fallbackToDestructiveMigration().build() // The reason we can construct a database for the repo
 
     @Singleton
     @Provides
-    fun provideBeanDAO(db: HomeDatabase) = db.beanDAO()
+    fun provideMovieDAO(database: AppDatabase) = database.movieDAO()
 
     @ApplicationContext
     @Provides
     fun providesApplicationContext() = Application()
+
+    @Singleton
+    @Provides
+    fun provideRestClient(): RestClient = RestClient()
 
     @ApplicationScope
     @Singleton
@@ -45,13 +49,4 @@ object AppModule {
     fun providesApplicationScope(
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
     ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(
-            context.packageName + "_preferences",
-            Context.MODE_PRIVATE
-        )
-    }
 }

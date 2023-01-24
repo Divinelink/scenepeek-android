@@ -1,10 +1,11 @@
-package com.andreolas.movierama.home
+package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,14 +16,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.home.ui.HomeViewState
+import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.settings.app.AppSettingsActivity
+import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
@@ -33,17 +35,14 @@ import com.andreolas.movierama.ui.theme.SearchBarShape
 fun HomeContent(
     viewState: HomeViewState,
     modifier: Modifier = Modifier,
+    onMovieClicked: (PopularMovie) -> Unit,
+    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onLoadNextPage: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val context = LocalContext.current
     Scaffold(
-        contentWindowInsets = WindowInsets(
-            left = 0.dp,
-            top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding().value.dp,
-            right = 0.dp,
-            bottom = 0.dp,
-        ),
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
@@ -65,26 +64,37 @@ fun HomeContent(
                 },
                 onClearClicked = {
                     // todo
-                }
+                },
             )
         },
-    ) { _ ->
+    ) { paddingValues ->
+        PopularMoviesList(
+            modifier = modifier.padding(paddingValues),
+            //            isLoading = viewState.isLoading,
+            movies = viewState.moviesList,
+            onMovieClicked = onMovieClicked,
+            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+            onLoadNextPage = onLoadNextPage,
+        )
 
-        //        if (viewState is BeanTrackerViewState.Completed) {
-        //            BeansList(
-        //                viewState.beans,
-        //                modifier = modifier
-        //                    .padding(top = paddingValues.calculateTopPadding()),
-        //                onBeanClicked = onBeanClicked,
-        //                state = scrollState,
-        //                bottomPadding = bottomPadding,
-        //            )
-        //        }
+        if (viewState.isLoading) {
+            LoadingContent()
+        }
     }
-    //
-    //    if (viewState.showLoading) {
-    //        BeansLoadingContent()
-    //    }
+}
+
+@Composable
+private fun LoadingContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Material3CircularProgressIndicator(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center),
+        )
+    }
 }
 
 @Composable
@@ -94,7 +104,15 @@ fun HomeContentPreview() {
     AppTheme {
         Surface {
             HomeContent(
-                viewState = HomeViewState(),
+                viewState = HomeViewState(
+                    isLoading = true,
+                    moviesList = listOf(),
+                    selectedMovie = null,
+                    error = null,
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {},
+                onLoadNextPage = {},
             )
         }
     }
