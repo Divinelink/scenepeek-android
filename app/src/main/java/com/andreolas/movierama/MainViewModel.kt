@@ -1,22 +1,21 @@
 package com.andreolas.movierama
 
 import androidx.lifecycle.ViewModel
-import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
+import androidx.lifecycle.viewModelScope
+import com.andreolas.movierama.base.data.remote.firebase.usecase.SetRemoteConfigUseCase
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.theme.ThemedActivityDelegate
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     themedActivityDelegate: ThemedActivityDelegate,
-    private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    private val encryptedPreferenceStorage: EncryptedPreferenceStorage,
+    private val setRemoteConfigUseCase: SetRemoteConfigUseCase,
 ) : ViewModel(),
     ThemedActivityDelegate by themedActivityDelegate {
 
@@ -39,18 +38,16 @@ class MainViewModel @Inject constructor(
 
     private fun initialiseRemoteConfig() {
         _viewState.value = MainViewState.Loading
-        firebaseRemoteConfig.fetchAndActivate()
-            .addOnCompleteListener { remoteTask ->
-                if (remoteTask.isSuccessful) {
-                    Firebase.remoteConfig.getString("tmdb_api_key").also { apiKey ->
-                        encryptedPreferenceStorage.setTmdbApiKey(apiKey)
-                    }
-                    _viewState.value = MainViewState.Completed
-                } else {
-                    _viewState.value = MainViewState.Error(
-                        UIText.StringText("Something went wrong. Trying again...")
-                    )
-                }
+        viewModelScope.launch {
+            val result = setRemoteConfigUseCase.invoke(Unit)
+
+            if (result is Result.Success) {
+                _viewState.value = MainViewState.Completed
+            } else {
+                _viewState.value = MainViewState.Error(
+                    UIText.StringText("Something went wrong. Trying again...")
+                )
             }
+        }
     }
 }
