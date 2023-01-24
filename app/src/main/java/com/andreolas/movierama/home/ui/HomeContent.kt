@@ -37,6 +37,8 @@ fun HomeContent(
     modifier: Modifier = Modifier,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onSearchMovies: (String) -> Unit,
+    onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -59,11 +61,12 @@ fun HomeContent(
                         Icon(Icons.Filled.Settings, null)
                     }
                 },
-                onSearchFieldChanged = {
-                    // todo
+                searchValue = viewState.query,
+                onSearchFieldChanged = { query ->
+                    onSearchMovies(query)
                 },
                 onClearClicked = {
-                    // todo
+                    onClearClicked()
                 },
             )
         },
@@ -113,6 +116,8 @@ fun HomeContentPreview() {
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
                 onLoadNextPage = {},
+                onSearchMovies = {},
+                onClearClicked = {},
             )
         }
     }

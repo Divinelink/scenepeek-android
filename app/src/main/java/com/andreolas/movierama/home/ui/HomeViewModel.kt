@@ -28,10 +28,12 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private var currentPage: Int = 1
 
+    private var cachedMovies: MutableList<PopularMovie> = mutableListOf()
+
     private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
         HomeViewState(
             isLoading = true,
-            moviesList = listOf(),
+            moviesList = cachedMovies,
             selectedMovie = null,
             error = null,
         )
@@ -51,10 +53,11 @@ class HomeViewModel @Inject constructor(
             ).collectLatest { result ->
                 when (result) {
                     is Result.Success -> {
+                        cachedMovies = (_viewState.value.moviesList + result.data).distinctBy { it.id }.toMutableList()
                         _viewState.update { viewState ->
                             viewState.copy(
                                 isLoading = false,
-                                moviesList = (viewState.moviesList + result.data).distinctBy { it.id },
+                                moviesList = cachedMovies,
                             )
                         }
                     }
@@ -113,7 +116,35 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onLoadNextPage() {
-        currentPage++
-        fetchPopularMovies()
+        if (viewState.value.loadMorePopular) {
+            currentPage++
+            fetchPopularMovies()
+        } else {
+            // load next page for searching
+        }
+    }
+
+    fun onSearchMovies(query: String) {
+        if (query.isEmpty()) {
+            onClearClicked()
+        } else {
+            _viewState.update { viewState ->
+                viewState.copy(
+                    query = query,
+                    moviesList = emptyList(),
+                    loadMorePopular = false,
+                )
+            }
+        }
+    }
+
+    fun onClearClicked() {
+        _viewState.update { viewState ->
+            viewState.copy(
+                moviesList = cachedMovies,
+                loadMorePopular = true,
+                query = "",
+            )
+        }
     }
 }
