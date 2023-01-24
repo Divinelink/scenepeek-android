@@ -30,7 +30,11 @@ class ProdMovieService @Inject constructor(
 
     override suspend fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> {
         val baseUrl = "${ApiConstants.TMDB_URL}/search/movie?"
-        val url = baseUrl + "api_key=$apiKey&language=en-US&page=${request.page}&include_adult=false"
+        val url = baseUrl + "api_key=$apiKey" +
+            "&language=en-US" +
+            "&query=${request.query}" +
+            "&page=${request.page}" +
+            "&include_adult=false"
 
         val response = restClient.get<SearchResponseApi>(
             url = url,

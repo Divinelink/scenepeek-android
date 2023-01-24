@@ -3,8 +3,10 @@ package com.andreolas.movierama.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
+import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
@@ -23,10 +25,12 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getSearchMoviesUseCase: GetSearchMoviesUseCase,
     private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
     private val removeFavoriteUseCase: RemoveFavoriteUseCase,
 ) : ViewModel() {
     private var currentPage: Int = 1
+    private var searchPage: Int = 1
 
     private var cachedMovies: MutableList<PopularMovie> = mutableListOf()
 
@@ -115,36 +119,92 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Checks whether to load more popular movies,
+     * or make a search query with incremented page.
+     */
     fun onLoadNextPage() {
         if (viewState.value.loadMorePopular) {
             currentPage++
             fetchPopularMovies()
         } else {
             // load next page for searching
+            searchPage++
+            fetchFromSearchQuery(
+                query = viewState.value.query,
+                page = searchPage,
+            )
         }
     }
 
     fun onSearchMovies(query: String) {
+        searchPage = 1
         if (query.isEmpty()) {
             onClearClicked()
         } else {
             _viewState.update { viewState ->
                 viewState.copy(
                     query = query,
-                    moviesList = emptyList(),
                     loadMorePopular = false,
+                )
+            }.also {
+                fetchFromSearchQuery(
+                    query = query,
+                    page = 1
                 )
             }
         }
     }
 
     fun onClearClicked() {
+        searchPage = 1
         _viewState.update { viewState ->
             viewState.copy(
                 moviesList = cachedMovies,
                 loadMorePopular = true,
                 query = "",
             )
+        }
+    }
+
+    private fun fetchFromSearchQuery(
+        query: String,
+        page: Int,
+    ) {
+        viewModelScope.launch {
+            getSearchMoviesUseCase.invoke(
+                parameters = SearchRequestApi(
+                    query = query,
+                    page = page,
+                )
+            ).collectLatest { result ->
+                when (result) {
+                    Result.Loading -> {
+                        // todo
+                    }
+                    is Result.Success -> {
+                        val movies = if (page == 1) {
+                            result.data
+                        } else {
+                            (_viewState.value.moviesList + result.data).distinctBy { it.id }
+                        }
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                isLoading = false,
+                                moviesList = movies,
+                            )
+                        }
+                    }
+                    is Result.Error -> {
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                isLoading = false,
+                                error = UIText.StringText(result.exception.message ?: "Something went wrong."),
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
