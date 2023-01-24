@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.repository
 
-import com.andreolas.movierama.base.data.remote.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository

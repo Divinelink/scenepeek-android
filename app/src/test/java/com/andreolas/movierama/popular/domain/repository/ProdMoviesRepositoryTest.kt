@@ -1,9 +1,9 @@
 package com.andreolas.movierama.popular.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.base.data.remote.dto.PopularMovieApi
-import com.andreolas.movierama.base.data.remote.dto.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.dto.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularMovieApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.dao.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -78,7 +78,7 @@ class ProdMoviesRepositoryTest {
 
     @Test
     fun testFetchPopularMovies() = runTest {
-        val request = PopularRequestApi(apiKey = "", page = 1)
+        val request = PopularRequestApi(page = 1)
         val expectedResult = listOf(
             PopularMovie(
                 id = 0,

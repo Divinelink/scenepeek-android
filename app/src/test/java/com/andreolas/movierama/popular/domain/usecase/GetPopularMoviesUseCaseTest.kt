@@ -1,7 +1,7 @@
 package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
@@ -24,7 +24,7 @@ class GetPopularMoviesUseCaseTest {
 
     private lateinit var repository: FakeMoviesRepository
 
-    private val request = PopularRequestApi(apiKey = "", page = 0)
+    private val request = PopularRequestApi(page = 0)
 
     // Movies with id 1, 3, 5 are marked as favorite.
     private val localFavoriteMovies = (1..6 step 2).map { index ->
@@ -75,7 +75,7 @@ class GetPopularMoviesUseCaseTest {
             )
 
             repository.mockFetchPopularMovies(
-                request = PopularRequestApi(apiKey = "", page = 0),
+                request = PopularRequestApi(page = 0),
                 response = Result.Success(remoteMovies)
             )
 
@@ -137,7 +137,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Success(remoteMovies)
         )
 
@@ -158,7 +158,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Success(remoteMovies)
         )
 
@@ -179,7 +179,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Error(Exception())
         )
 
@@ -201,7 +201,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Error(Exception())
         )
 
