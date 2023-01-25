@@ -80,7 +80,9 @@ fun SearchBar(
                 ToolbarState.Focused -> {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.height(SearchBarSize),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(SearchBarSize),
                     ) {
                         SearchIconWithLoading(
                             isLoading = isLoading,
@@ -118,14 +120,13 @@ fun SearchBar(
                         Text(
                             text = stringResource(id = R.string.toolbar_search),
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth(TEXT_MAX_WIDTH)
                         )
                     }
                 }
             }
         }
         Row(
+            modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
             content = actions
@@ -143,7 +144,7 @@ private fun SearchIconWithLoading(
         true -> {
             Material3CircularProgressIndicator(
                 modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp)
                     .height(24.dp)
                     .width(24.dp)
             )
@@ -174,7 +175,7 @@ private fun FocusedSearchField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth(TEXT_MAX_WIDTH)
-            .padding(end = 16.dp),
+            .padding(end = 12.dp),
         value = value ?: "",
         textStyle = TextStyle(
             color = MaterialTheme.colorScheme.onSurface,
