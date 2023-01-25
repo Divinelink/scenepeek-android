@@ -56,6 +56,14 @@ class HomeViewModelTestRobot {
         )
     }
 
+    fun mockFetchSearchMovies(
+        response: MoviesListResult,
+    ) = apply {
+        fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
+            response = response,
+        )
+    }
+
     suspend fun mockMarkAsFavorite(
         result: Result<Unit>,
     ) = apply {
@@ -82,5 +90,19 @@ class HomeViewModelTestRobot {
 
     fun onMarkAsFavorite(movie: PopularMovie) = apply {
         viewModel.onMarkAsFavoriteClicked(movie)
+    }
+
+    fun onSearchMovies(query: String) = apply {
+        viewModel.onSearchMovies(query)
+    }
+
+    fun onClearClicked() = apply {
+        viewModel.onClearClicked()
+    }
+
+    suspend fun delay(
+        timeInMillis: Long,
+    ) = apply {
+        kotlinx.coroutines.delay(timeInMillis)
     }
 }

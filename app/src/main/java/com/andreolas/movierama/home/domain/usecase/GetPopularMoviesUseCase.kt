@@ -21,7 +21,6 @@ open class GetPopularMoviesUseCase @Inject constructor(
         parameters: PopularRequestApi,
     ): Flow<MoviesListResult> {
         val popularMovies = moviesRepository.fetchPopularMovies(parameters)
-
         return popularMovies.map { result ->
             when (result) {
                 is Result.Success -> result

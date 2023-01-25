@@ -44,12 +44,12 @@ class ProdMoviesRepositoryTest {
 
     private val apiPopularResponse = PopularResponseApi(
         page = 1,
-        results = listOf(
+        results = (1..10).map {
             PopularMovieApi(
                 adult = false,
                 backdropPath = "",
                 genreIds = listOf(),
-                id = 0,
+                id = it,
                 originalLanguage = "",
                 originalTitle = "",
                 overview = "",
@@ -61,7 +61,7 @@ class ProdMoviesRepositoryTest {
                 voteAverage = 0.0,
                 voteCount = 0
             )
-        ),
+        }.toList(),
         totalPages = 0,
         totalResults = 0
     )
@@ -73,7 +73,7 @@ class ProdMoviesRepositoryTest {
                 adult = false,
                 backdropPath = "",
                 genreIds = listOf(),
-                id = 0,
+                id = it,
                 originalLanguage = "",
                 originalTitle = "",
                 overview = "",
@@ -106,18 +106,22 @@ class ProdMoviesRepositoryTest {
     @Test
     fun testFetchPopularMovies() = runTest {
         val request = PopularRequestApi(page = 1)
-        val expectedResult = listOf(
+        val expectedResult = (1..10).map {
             PopularMovie(
-                id = 0,
+                id = it,
                 posterPath = "",
                 releaseDate = "",
                 title = "",
                 rating = "0.0",
                 isFavorite = false
             )
-        )
+        }
 
         val expectApiPopularResponse = flowOf(apiPopularResponse)
+
+        expectedResult.forEach { movie ->
+            movieDAO.mockCheckIfFavorite(movie.id, 0)
+        }
 
         movieRemote.mockFetchPopularMovies(
             request = request,
@@ -130,21 +134,84 @@ class ProdMoviesRepositoryTest {
     }
 
     @Test
-    fun testFetchSearchMovies() = runTest {
-        val request = SearchRequestApi(query = "test123", 3)
+    fun `correctly find favorite movies when fetching popular movies`() = runTest {
+        val request = PopularRequestApi(3)
         val expectedResult = (1..10).map {
             PopularMovie(
-                id = 0,
+                id = it,
                 posterPath = "",
                 releaseDate = "",
                 title = "",
                 rating = "0.0",
-                isFavorite = false
+                isFavorite = it % 2 != 1
+            )
+        }.toList()
+
+        val expectedApiSearchResponse = flowOf(apiPopularResponse)
+        expectedResult.forEachIndexed { index, movie ->
+            movieDAO.mockCheckIfFavorite(movie.id, index % 2)
+        }
+        movieRemote.mockFetchPopularMovies(
+            request = request,
+            result = expectedApiSearchResponse
+        )
+
+        val actualResult = repository.fetchPopularMovies(
+            request = request,
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun `given all movies are not favorite, when fetching movies from search api, then I expect non favorite movies`() =
+        runTest {
+            val request = SearchRequestApi(query = "test123", 3)
+            val expectedResult = (1..10).map {
+                PopularMovie(
+                    id = it,
+                    posterPath = "",
+                    releaseDate = "",
+                    title = "",
+                    rating = "0.0",
+                    isFavorite = false
+                )
+            }.toList()
+
+            val expectedApiSearchResponse = flowOf(apiSearchResponse)
+            expectedResult.forEach { movie ->
+                movieDAO.mockCheckIfFavorite(movie.id, 0)
+            }
+            movieRemote.mockFetchSearchMovies(
+                request = request,
+                result = expectedApiSearchResponse
+            )
+
+            val actualResult = repository.fetchSearchMovies(
+                request = request,
+            ).first() as Result.Success
+
+            assertThat(expectedResult).isEqualTo(actualResult.data)
+        }
+
+    @Test
+    fun `correctly find favorite movies`() = runTest {
+        val request = SearchRequestApi(query = "test123", 3)
+        val expectedResult = (1..10).map {
+            PopularMovie(
+                id = it,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                rating = "0.0",
+                isFavorite = it % 2 != 1
             )
         }.toList()
 
         val expectedApiSearchResponse = flowOf(apiSearchResponse)
-
+        expectedResult.forEachIndexed { index, movie ->
+            movieDAO.mockCheckIfFavorite(movie.id, index % 2)
+        }
         movieRemote.mockFetchSearchMovies(
             request = request,
             result = expectedApiSearchResponse

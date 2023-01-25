@@ -72,8 +72,7 @@ class GetSearchMoviesUseCaseTest {
             moviesRepository = repository.mock,
             dispatcher = testDispatcher,
         )
-        val result = useCase(request).last()
-        assertThat(useCase(request).first()).isEqualTo(Result.Loading)
+        val result = useCase(request).first()
         assertThat(result).isInstanceOf(expectedResult::class.java)
     }
 }

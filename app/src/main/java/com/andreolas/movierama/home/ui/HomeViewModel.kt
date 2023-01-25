@@ -197,7 +197,11 @@ class HomeViewModel @Inject constructor(
             ).collectLatest { result ->
                 when (result) {
                     Result.Loading -> {
-                        // todo
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                searchLoading = true,
+                            )
+                        }
                     }
                     is Result.Success -> {
                         if (allowSearchResult) {

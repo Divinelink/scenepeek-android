@@ -49,30 +49,15 @@ class GetPopularMoviesUseCaseTest {
         )
     }.toMutableList()
 
-    private val mergedListResult = (1..6).map { index ->
-        PopularMovie(
-            id = index,
-            posterPath = "",
-            releaseDate = "2000",
-            title = "Fight Club $index",
-            isFavorite = index % 2 == 1,
-            rating = index.toString(),
-        )
-    }.toMutableList()
-
     @Before
     fun setUp() {
         repository = FakeMoviesRepository()
     }
 
     @Test
-    fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
+    fun `successfully fetch popular movies`() =
         runTest {
-            val expectedResult = Result.Success<List<PopularMovie>>(mergedListResult)
-
-            repository.mockFetchFavoriteMovies(
-                Result.Success(localFavoriteMovies)
-            )
+            val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
             repository.mockFetchPopularMovies(
                 request = PopularRequestApi(page = 0),
@@ -87,67 +72,6 @@ class GetPopularMoviesUseCaseTest {
 
             assertThat(result).isEqualTo(expectedResult)
         }
-
-    @Test
-    fun `favorite movie is not shown if it doesn't exist on popular movies`() = runTest {
-        val remoteMovies = (1..2).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = false,
-                rating = "1",
-            )
-        }.toMutableList()
-        val favoriteMovie = (2..3).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = true,
-                rating = "1",
-            )
-        }.toMutableList()
-
-        val expectedMovies = listOf(
-            PopularMovie(
-                id = 1,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = false,
-                rating = "1",
-            ),
-            PopularMovie(
-                id = 2,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = true,
-                rating = "1",
-            )
-        )
-
-        val expectedResult = Result.Success(expectedMovies)
-
-        repository.mockFetchFavoriteMovies(
-            Result.Success(favoriteMovie)
-        )
-
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(page = 0),
-            response = Result.Success(remoteMovies)
-        )
-
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).last()
-        assertThat(result).isEqualTo(expectedResult)
-    }
 
     @Test
     fun `given local data failed then I expect remote data`() = runTest {

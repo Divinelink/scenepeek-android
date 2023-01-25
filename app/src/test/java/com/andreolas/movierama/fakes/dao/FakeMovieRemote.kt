@@ -13,7 +13,7 @@ class FakeMovieRemote {
 
     val mock: MovieService = mock()
 
-    suspend fun mockFetchPopularMovies(
+    fun mockFetchPopularMovies(
         request: PopularRequestApi,
         result: Flow<PopularResponseApi>,
     ) {
@@ -24,7 +24,7 @@ class FakeMovieRemote {
         )
     }
 
-    suspend fun mockFetchSearchMovies(
+    fun mockFetchSearchMovies(
         request: SearchRequestApi,
         result: Flow<SearchResponseApi>,
     ) {
