@@ -17,7 +17,7 @@ interface MoviesRepository {
      * Request popular movies using pagination.
      * Uses [Flow] in order to observe changes to our popular movies list.
      */
-    suspend fun fetchPopularMovies(
+    fun fetchPopularMovies(
         request: PopularRequestApi,
     ): Flow<MoviesListResult>
 
@@ -30,7 +30,7 @@ interface MoviesRepository {
      * Request movies through a search query. Uses pagination.
      * Uses [Flow] in order to observe changes to our movies list.
      */
-    suspend fun fetchSearchMovies(
+    fun fetchSearchMovies(
         request: SearchRequestApi,
     ): Flow<MoviesListResult>
 
@@ -47,4 +47,8 @@ interface MoviesRepository {
     suspend fun removeFavoriteMovie(
         id: Int,
     ): Result<Unit>
+
+    suspend fun checkIfFavorite(
+        id: Int,
+    ): Result<Boolean>
 }

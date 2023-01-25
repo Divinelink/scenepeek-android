@@ -22,6 +22,10 @@ class HomeViewModelTest {
         PopularMovie(id = it, posterPath = "", releaseDate = "", title = "", rating = "", isFavorite = false)
     }.toMutableList()
 
+    private val searchMovies = (10..20).map {
+        PopularMovie(id = it, posterPath = "", releaseDate = "", title = "", rating = "", isFavorite = it % 2 == 0)
+    }.toMutableList()
+
     @Test
     fun `successful initialise viewModel`() = runTest {
         testRobot
@@ -230,9 +234,326 @@ class HomeViewModelTest {
             )
     }
 
+    @Test
+    fun `Given Search Data, when I searchMovies then I expect Success Result`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(emptyList()))
+            .mockFetchSearchMovies(Result.Success(popularMoviesList))
+            .buildViewModel()
+            .onSearchMovies("test query")
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = true,
+                    emptyResult = false,
+                )
+            )
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `search job is correctly delayed when user types fast`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(emptyList()))
+            .mockFetchSearchMovies(Result.Success(popularMoviesList))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("tes")
+            .onSearchMovies("test ")
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    isLoading = false,
+                    loadMorePopular = false,
+                    query = "test ",
+                    searchLoading = true,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `clearing query successfully cancels search job`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(emptyList()))
+            .mockFetchSearchMovies(Result.Success(searchMovies))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test ")
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    isLoading = false,
+                    loadMorePopular = false,
+                    query = "test ",
+                    searchLoading = true,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(200)
+            .onClearClicked()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    loadMorePopular = true,
+                    isLoading = false,
+                    query = "",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `clearing query successfully loads cached movies`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Success(searchMovies))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(400)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onClearClicked()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = true,
+                    isLoading = false,
+                    query = "",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `given loading state when I search then I expect SearchLoading to be true`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Loading)
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = true,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `given error state when I search then I expect Error Result`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Error(Exception("Oops.")))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                    error = UIText.StringText("Oops.")
+                )
+            )
+    }
+
+    @Test
+    fun `given empty search results when I search then I emptyResult`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Success(emptyList()))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = emptyList(),
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = true,
+                )
+            )
+    }
+
+    @Test
+    fun `given user is already searching when LoadingNextPage then I Expect fetchFromSearchQuery`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Success(searchMovies))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("test query")
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .mockFetchPopularMovies(Result.Success(searchMovies.plus(searchMovies)))
+            .onLoadNextPage()
+            .delay(300)
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    loadMorePopular = false,
+                    isLoading = false,
+                    query = "test query",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `given empty query when onSearchMovies then I expect onClearClicked`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .mockFetchSearchMovies(Result.Success(searchMovies))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onSearchMovies("")
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    loadMorePopular = true,
+                    isLoading = false,
+                    query = "",
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+    }
+
     private fun loadData(starting: Int, ending: Int): List<PopularMovie> {
         return (starting..ending).map {
-            PopularMovie(id = it, posterPath = "", releaseDate = "", title = "", rating = "", isFavorite = false)
+            PopularMovie(
+                id = it,
+                posterPath = "",
+                releaseDate = "",
+                title = "",
+                rating = "",
+                isFavorite = false
+            )
         }.toList()
     }
 }

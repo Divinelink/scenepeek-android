@@ -29,14 +29,14 @@ class MainViewModel @Inject constructor(
      * once we're ready.
      */
     init {
-        initialiseRemoteConfig()
+        setRemoteConfig()
     }
 
-    fun onFetchRemoteAgain() {
-        initialiseRemoteConfig()
+    fun retryFetchRemoteConfig() {
+        setRemoteConfig()
     }
 
-    private fun initialiseRemoteConfig() {
+    private fun setRemoteConfig() {
         _viewState.value = MainViewState.Loading
         viewModelScope.launch {
             val result = setRemoteConfigUseCase.invoke(Unit)

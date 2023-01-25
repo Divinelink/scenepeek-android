@@ -32,4 +32,12 @@ class FakeMovieDAO {
     ) {
         verify(mock).removeFavoriteMovie(id)
     }
+
+    suspend fun mockCheckIfFavorite(
+        id: Int,
+        result: Int
+    ) {
+//        verify(mock).checkIfFavorite(id)
+        whenever(mock.checkIfFavorite(id)).thenReturn(result)
+    }
 }

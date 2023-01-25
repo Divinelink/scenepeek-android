@@ -23,5 +23,7 @@ fun HomeScreen(
         onMovieClicked = viewModel::onMovieClicked,
         onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
         onLoadNextPage = viewModel::onLoadNextPage,
+        onSearchMovies = viewModel::onSearchMovies,
+        onClearClicked = viewModel::onClearClicked,
     )
 }

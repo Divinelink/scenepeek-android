@@ -22,14 +22,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.settings.app.AppSettingsActivity
+import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
+import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
 
-@Suppress("UnusedPrivateMember")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
@@ -37,6 +41,8 @@ fun HomeContent(
     modifier: Modifier = Modifier,
     onMovieClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onSearchMovies: (String) -> Unit,
+    onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -59,26 +65,33 @@ fun HomeContent(
                         Icon(Icons.Filled.Settings, null)
                     }
                 },
-                onSearchFieldChanged = {
-                    // todo
+                isLoading = viewState.searchLoading,
+                searchValue = viewState.query,
+                onSearchFieldChanged = { query ->
+                    onSearchMovies(query)
                 },
                 onClearClicked = {
-                    // todo
+                    onClearClicked()
                 },
             )
         },
     ) { paddingValues ->
-        PopularMoviesList(
-            modifier = modifier.padding(paddingValues),
-            //            isLoading = viewState.isLoading,
-            movies = viewState.moviesList,
-            onMovieClicked = onMovieClicked,
-            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-            onLoadNextPage = onLoadNextPage,
-        )
-
-        if (viewState.isLoading) {
-            LoadingContent()
+        if (viewState.emptyResult) {
+            EmptySectionCard(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .padding(start = 8.dp, end = 8.dp),
+                title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
+                description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
+            )
+        } else {
+            PopularMoviesList(
+                modifier = modifier.padding(paddingValues),
+                movies = viewState.moviesList,
+                onMovieClicked = onMovieClicked,
+                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+                onLoadNextPage = onLoadNextPage,
+            )
         }
     }
 }
@@ -113,6 +126,8 @@ fun HomeContentPreview() {
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
                 onLoadNextPage = {},
+                onSearchMovies = {},
+                onClearClicked = {},
             )
         }
     }

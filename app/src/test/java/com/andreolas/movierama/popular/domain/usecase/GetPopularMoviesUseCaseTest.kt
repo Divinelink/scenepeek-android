@@ -1,7 +1,7 @@
 package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.dto.PopularRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
@@ -24,7 +24,7 @@ class GetPopularMoviesUseCaseTest {
 
     private lateinit var repository: FakeMoviesRepository
 
-    private val request = PopularRequestApi(apiKey = "", page = 0)
+    private val request = PopularRequestApi(page = 0)
 
     // Movies with id 1, 3, 5 are marked as favorite.
     private val localFavoriteMovies = (1..6 step 2).map { index ->
@@ -49,33 +49,18 @@ class GetPopularMoviesUseCaseTest {
         )
     }.toMutableList()
 
-    private val mergedListResult = (1..6).map { index ->
-        PopularMovie(
-            id = index,
-            posterPath = "",
-            releaseDate = "2000",
-            title = "Fight Club $index",
-            isFavorite = index % 2 == 1,
-            rating = index.toString(),
-        )
-    }.toMutableList()
-
     @Before
     fun setUp() {
         repository = FakeMoviesRepository()
     }
 
     @Test
-    fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
+    fun `successfully fetch popular movies`() =
         runTest {
-            val expectedResult = Result.Success<List<PopularMovie>>(mergedListResult)
-
-            repository.mockFetchFavoriteMovies(
-                Result.Success(localFavoriteMovies)
-            )
+            val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
             repository.mockFetchPopularMovies(
-                request = PopularRequestApi(apiKey = "", page = 0),
+                request = PopularRequestApi(page = 0),
                 response = Result.Success(remoteMovies)
             )
 
@@ -89,67 +74,6 @@ class GetPopularMoviesUseCaseTest {
         }
 
     @Test
-    fun `favorite movie is not shown if it doesn't exist on popular movies`() = runTest {
-        val remoteMovies = (1..2).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = false,
-                rating = "1",
-            )
-        }.toMutableList()
-        val favoriteMovie = (2..3).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = true,
-                rating = "1",
-            )
-        }.toMutableList()
-
-        val expectedMovies = listOf(
-            PopularMovie(
-                id = 1,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = false,
-                rating = "1",
-            ),
-            PopularMovie(
-                id = 2,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                isFavorite = true,
-                rating = "1",
-            )
-        )
-
-        val expectedResult = Result.Success(expectedMovies)
-
-        repository.mockFetchFavoriteMovies(
-            Result.Success(favoriteMovie)
-        )
-
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
-            response = Result.Success(remoteMovies)
-        )
-
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).last()
-        assertThat(result).isEqualTo(expectedResult)
-    }
-
-    @Test
     fun `given local data failed then I expect remote data`() = runTest {
         val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
@@ -158,7 +82,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Success(remoteMovies)
         )
 
@@ -179,7 +103,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Error(Exception())
         )
 
@@ -201,7 +125,7 @@ class GetPopularMoviesUseCaseTest {
         )
 
         repository.mockFetchPopularMovies(
-            request = PopularRequestApi(apiKey = "", page = 0),
+            request = PopularRequestApi(page = 0),
             response = Result.Error(Exception())
         )
 

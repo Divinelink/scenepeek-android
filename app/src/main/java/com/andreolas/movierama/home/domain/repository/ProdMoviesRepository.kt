@@ -10,6 +10,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.toDomainMovies
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -21,11 +22,18 @@ class ProdMoviesRepository @Inject constructor(
     private val movieRemote: MovieService,
 ) : MoviesRepository {
 
-    override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<MoviesListResult> {
+    override fun fetchPopularMovies(request: PopularRequestApi): Flow<MoviesListResult> {
         return movieRemote
             .fetchPopularMovies(request)
             .map { apiResponse ->
-                Result.Success(apiResponse.toDomainMoviesList())
+                val listWithFavorites = apiResponse.toDomainMoviesList().map { movie ->
+                    if (checkIfFavorite(movie.id).data == true) {
+                        movie.copy(isFavorite = true)
+                    } else {
+                        movie
+                    }
+                }
+                Result.Success(listWithFavorites)
             }
             .catch { exception ->
                 flowOf(Result.Error(Exception(exception.message)))
@@ -40,11 +48,18 @@ class ProdMoviesRepository @Inject constructor(
             }
     }
 
-    override suspend fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
+    override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
         return movieRemote
             .fetchSearchMovies(request)
             .map { apiResponse ->
-                Result.Success(apiResponse.toDomainMoviesList())
+                val listWithFavorites = apiResponse.toDomainMoviesList().map { movie ->
+                    if (checkIfFavorite(movie.id).data == true) {
+                        movie.copy(isFavorite = true)
+                    } else {
+                        movie
+                    }
+                }
+                Result.Success(listWithFavorites)
             }
             .catch { exception ->
                 flowOf(Result.Error(Exception(exception.message)))
@@ -64,6 +79,15 @@ class ProdMoviesRepository @Inject constructor(
             .removeFavoriteMovie(id)
             .also {
                 return Result.Success(it)
+            }
+    }
+
+    override suspend fun checkIfFavorite(id: Int): Result<Boolean> {
+        movieDAO
+            .checkIfFavorite(
+                id = id,
+            ).also {
+                return Result.Success(it > 0)
             }
     }
 }

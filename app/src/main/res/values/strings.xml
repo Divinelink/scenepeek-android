@@ -9,6 +9,9 @@
     <string name="toolbar_search">Search MovieRama</string>
     <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
+    <string name="search__empty_result_title">Oops. We couldn\'t find that.</string>
+    <string name="search__empty_result_description">Try searching for something else.</string>
+
     <!-- Error -->
     <string name="empty_field_error_message">%s is required.</string>
     <string name="general_error_message">Something when wrong.</string>
