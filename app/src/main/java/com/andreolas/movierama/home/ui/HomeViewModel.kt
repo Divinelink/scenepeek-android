@@ -132,7 +132,12 @@ class HomeViewModel @Inject constructor(
                     } else {
                         currentMovie
                     }
-                }
+                },
+                selectedMovie = if (viewState.selectedMovie?.id == movie.id) {
+                    movie.copy(isFavorite = !movie.isFavorite)
+                } else {
+                    viewState.selectedMovie
+                },
             )
         }.also {
             // This is needed to keep the Favorite status on Popular Movies.

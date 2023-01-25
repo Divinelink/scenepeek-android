@@ -81,10 +81,26 @@ fun BottomSheetMovieContent(
                         .weight(2f)
                         .padding(12.dp),
                 ) {
-                    Text(
-                        text = movie.title,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+
+                        Text(
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .weight(1f),
+                            text = movie.title,
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+
+                        LikeButton(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(50.dp))
+                                .clickable { onMarkAsFavoriteClicked(movie) }
+                                .weight(1f),
+                            isFavorite = movie.isFavorite,
+                        )
+                    }
 
                     Column {
                         Row(
@@ -179,7 +195,7 @@ fun HomeContentPreview() {
                     releaseDate = "2023",
                     title = "Puss in Boots: The Last Wish",
                     rating = "7.66",
-                    isFavorite = false,
+                    isFavorite = true,
                     overview = "Puss in Boots discovers that his passion for adventure has taken its toll: " +
                         "He has burned through eight of his nine lives, leaving him with only one life left." +
                         " Puss sets out on an epic journey to find the mythical Last Wish and restore his nine lives."
