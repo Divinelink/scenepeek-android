@@ -60,6 +60,7 @@ internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
         title = this.title,
         rating = this.voteAverage.toString(),
         overview = this.overview,
+        genres = this.genres.map { it.name },
         director = this.crew.toDirector(),
         cast = this.cast.toActors(),
         isFavorite = false,

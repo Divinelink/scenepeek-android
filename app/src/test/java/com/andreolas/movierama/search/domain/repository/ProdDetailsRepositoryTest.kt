@@ -2,6 +2,7 @@ package com.andreolas.movierama.search.domain.repository
 
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.Genre
 import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Cast
 import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
 import com.andreolas.movierama.details.domain.model.Actor
@@ -35,6 +36,7 @@ class ProdDetailsRepositoryTest {
             Actor(id = 10, name = "Jack", profilePath = "AllWorkAndNoPlay.jpg", character = "HelloJohnny", order = 0),
             Actor(id = 20, name = "Nicholson", profilePath = "Cuckoo.jpg", character = "McMurphy", order = 1),
         ),
+        genres = listOf("Thriller", "Drama", "Comedy"),
     )
 
     private val request = DetailsRequestApi(movieId = "555")
@@ -43,7 +45,11 @@ class ProdDetailsRepositoryTest {
         backdropPath = "",
         belongToCollection = null,
         budget = 0,
-        genres = listOf(),
+        genres = listOf(
+            Genre(id = 0, name = "Thriller"),
+            Genre(id = 1, name = "Drama"),
+            Genre(id = 2, name = "Comedy"),
+        ),
         homepage = null,
         id = 1123,
         imdbId = null,

@@ -31,6 +31,7 @@ class GetMoviesDetailsUseCaseTest {
         posterPath = "",
         overview = null,
         director = null,
+        genres = listOf(),
         cast = listOf(),
         releaseDate = "",
         rating = "",
