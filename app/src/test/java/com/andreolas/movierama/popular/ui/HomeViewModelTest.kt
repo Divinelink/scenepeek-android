@@ -11,6 +11,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@Suppress("LargeClass")
 class HomeViewModelTest {
 
     private val testRobot = HomeViewModelTestRobot()
@@ -556,6 +557,143 @@ class HomeViewModelTest {
                     query = "",
                     searchLoading = false,
                     emptyResult = false,
+                )
+            )
+    }
+
+    @Test
+    fun `selecting a movie successfully updates selectedMovie`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onMovieClicked(
+                movie = popularMoviesList[0],
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    selectedMovie = popularMoviesList[0],
+                    isLoading = false,
+                )
+            )
+    }
+
+    @Test
+    fun `given a selected movie, when I mark it as favorite then update its status`() = runTest {
+        val selectedMovie = popularMoviesList[0]
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onMovieClicked(
+                movie = popularMoviesList[0],
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    selectedMovie = popularMoviesList[0]
+                )
+            )
+            .mockMarkAsFavorite(Result.Success(Unit))
+            .onMarkAsFavorite(
+                movie = selectedMovie,
+            )
+            // Update status of current movie
+            // At first, isFavorite is False, so it'll become True.
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList.map { movie ->
+                        if (movie == selectedMovie) movie.copy(isFavorite = !movie.isFavorite) else movie
+                    },
+                    isLoading = false,
+                    selectedMovie = selectedMovie.copy(isFavorite = !selectedMovie.isFavorite),
+                )
+            )
+            .mockMarkAsFavorite(Result.Success(Unit))
+            .onMarkAsFavorite(
+                movie = selectedMovie,
+            )
+            // Unmark it as favorite, so it becomes false again.
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList.map { movie ->
+                        if (movie == selectedMovie) movie.copy(isFavorite = !movie.isFavorite) else movie
+                    },
+                    isLoading = false,
+                    selectedMovie = selectedMovie.copy(isFavorite = !selectedMovie.isFavorite),
+                )
+            )
+    }
+
+    @Test
+    fun `given a selected movie, when I mark another movie as favorite, then selected movie's favorite status is not updated`() = runTest {
+        val selectedMovie = popularMoviesList[0]
+        testRobot
+            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+            .buildViewModel()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    loadMorePopular = true,
+                    searchLoading = false,
+                    emptyResult = false,
+                )
+            )
+            .onMovieClicked(
+                movie = selectedMovie,
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList,
+                    isLoading = false,
+                    selectedMovie = popularMoviesList[0]
+                )
+            )
+            .mockMarkAsFavorite(Result.Success(Unit))
+            .onMarkAsFavorite(
+                movie = popularMoviesList[1],
+            )
+            // Update Favorite Status of Movie in Index 1.
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList.map { movie ->
+                        if (movie == popularMoviesList[1]) movie.copy(isFavorite = !movie.isFavorite) else movie
+                    },
+                    isLoading = false,
+                    selectedMovie = selectedMovie,
+                )
+            )
+            .mockMarkAsFavorite(Result.Success(Unit))
+            .onMarkAsFavorite(
+                movie = popularMoviesList[1],
+            )
+            // Unmark it as favorite, so it becomes false again. But selected movie is not affected.
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = popularMoviesList.map { movie ->
+                        if (movie == popularMoviesList[1]) movie.copy(isFavorite = !movie.isFavorite) else movie
+                    },
+                    isLoading = false,
+                    selectedMovie = selectedMovie,
                 )
             )
     }
