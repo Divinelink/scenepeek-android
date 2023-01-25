@@ -41,5 +41,7 @@
     <!-- Popular Movie -->
     <string name="popular_movie__rating">Rating</string>
 
+    <string name="movie_extra_details">Details &amp; More</string>
+
 
 </resources>

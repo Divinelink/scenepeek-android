@@ -31,6 +31,7 @@ class ProdMoviesRepositoryTest {
         title = "Flight Club",
         rating = "99",
         isFavorite = true,
+        overview = "",
     )
 
     private val persistableMovie = PersistableMovie(
@@ -40,6 +41,7 @@ class ProdMoviesRepositoryTest {
         title = "Flight Club",
         rating = "99",
         isFavorite = true,
+        overview = "",
     )
 
     private val apiPopularResponse = PopularResponseApi(
@@ -113,7 +115,8 @@ class ProdMoviesRepositoryTest {
                 releaseDate = "",
                 title = "",
                 rating = "0.0",
-                isFavorite = false
+                isFavorite = false,
+                overview = "",
             )
         }
 
@@ -143,7 +146,8 @@ class ProdMoviesRepositoryTest {
                 releaseDate = "",
                 title = "",
                 rating = "0.0",
-                isFavorite = it % 2 != 1
+                isFavorite = it % 2 != 1,
+                overview = "",
             )
         }.toList()
 
@@ -174,7 +178,8 @@ class ProdMoviesRepositoryTest {
                     releaseDate = "",
                     title = "",
                     rating = "0.0",
-                    isFavorite = false
+                    isFavorite = false,
+                    overview = "",
                 )
             }.toList()
 
@@ -204,7 +209,8 @@ class ProdMoviesRepositoryTest {
                 releaseDate = "",
                 title = "",
                 rating = "0.0",
-                isFavorite = it % 2 != 1
+                isFavorite = it % 2 != 1,
+                overview = "",
             )
         }.toList()
 

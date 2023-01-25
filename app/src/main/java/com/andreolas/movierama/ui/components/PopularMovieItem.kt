@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod")
+
 package com.andreolas.movierama.ui.components
 
 import android.content.res.Configuration
@@ -92,7 +93,9 @@ fun PopularMovieItem(
                     .clip(RoundedCornerShape(bottomEnd = 8.dp))
                     .clickable { onLikeMovieClick() }
             ) {
-                LikeButton(movie.isFavorite)
+                LikeButton(
+                    isFavorite = movie.isFavorite,
+                )
             }
         }
 
@@ -124,7 +127,10 @@ fun PopularMovieItem(
 }
 
 @Composable
-private fun LikeButton(isFavorite: Boolean) {
+fun LikeButton(
+    modifier: Modifier = Modifier,
+    isFavorite: Boolean,
+) {
     Box {
         val color by animateColorAsState(
             targetValue = when (isFavorite) {
@@ -133,7 +139,7 @@ private fun LikeButton(isFavorite: Boolean) {
             }
         )
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(44.dp)
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
         ) {
@@ -199,6 +205,7 @@ fun PopularMovieItemPreview() {
                     title = "Fight Club",
                     rating = "72",
                     isFavorite = true,
+                    overview = "",
                 ),
                 onMovieItemClick = {},
                 onLikeMovieClick = {},
@@ -228,6 +235,7 @@ fun MovieItemPreview() {
                         " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
                     rating = "4.2",
                     isFavorite = false,
+                    overview = "",
                 ),
                 onMovieItemClick = {},
                 onLikeMovieClick = {},

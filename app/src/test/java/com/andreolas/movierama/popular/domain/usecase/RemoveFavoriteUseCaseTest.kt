@@ -34,6 +34,7 @@ class RemoveFavoriteUseCaseTest {
             title = "Fight Club $index",
             isFavorite = false,
             rating = index.toString(),
+            overview = "test",
         )
     }.toMutableList()
 

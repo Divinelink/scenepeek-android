@@ -13,6 +13,7 @@ data class PersistableMovie(
     val releaseDate: String,
     val rating: String,
     val isFavorite: Boolean,
+    val overview: String,
 )
 
 internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
@@ -22,7 +23,8 @@ internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
         posterPath = this.posterPath,
         releaseDate = this.releaseDate,
         rating = this.rating,
-        isFavorite = this.isFavorite
+        isFavorite = this.isFavorite,
+        overview = this.overview,
     )
 }
 
@@ -37,6 +39,7 @@ private fun PersistableMovie.toPopularMovie(): PopularMovie {
         releaseDate = this.releaseDate,
         title = this.title,
         rating = this.rating,
-        isFavorite = this.isFavorite
+        isFavorite = this.isFavorite,
+        overview = this.overview,
     )
 }

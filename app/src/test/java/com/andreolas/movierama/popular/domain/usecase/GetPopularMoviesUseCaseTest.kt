@@ -35,6 +35,7 @@ class GetPopularMoviesUseCaseTest {
             title = "Fight Club $index",
             isFavorite = true,
             rating = index.toString(),
+            overview = "",
         )
     }.toMutableList()
 
@@ -46,6 +47,7 @@ class GetPopularMoviesUseCaseTest {
             title = "Fight Club $index",
             isFavorite = false,
             rating = index.toString(),
+            overview = "",
         )
     }.toMutableList()
 
