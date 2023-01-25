@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieService {
 
-    suspend fun fetchPopularMovies(
+    fun fetchPopularMovies(
         request: PopularRequestApi,
     ): Flow<PopularResponseApi>
 
-    suspend fun fetchSearchMovies(
+    fun fetchSearchMovies(
         request: SearchRequestApi,
     ): Flow<SearchResponseApi>
 }

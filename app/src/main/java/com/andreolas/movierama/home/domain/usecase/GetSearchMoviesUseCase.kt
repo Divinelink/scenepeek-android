@@ -8,12 +8,8 @@ import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 open class GetSearchMoviesUseCase @Inject constructor(
@@ -23,13 +19,15 @@ open class GetSearchMoviesUseCase @Inject constructor(
 
     override fun execute(
         parameters: SearchRequestApi,
-    ): Flow<MoviesListResult> = flow {
-        coroutineScope {
-            emit(Result.Loading)
-            val result = withContext(dispatcher) {
-                moviesRepository.fetchSearchMovies(parameters)
+    ): Flow<MoviesListResult> {
+        val searchMovies = moviesRepository.fetchSearchMovies(parameters)
+
+        return searchMovies.map { result ->
+            when (result) {
+                is Result.Success -> result
+                is Result.Error -> result
+                Result.Loading -> result
             }
-            emitAll(result)
         }
-    }.flowOn(dispatcher)
+    }
 }

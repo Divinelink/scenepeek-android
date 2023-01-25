@@ -8,7 +8,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestA
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
 import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProdMovieService @Inject constructor(
@@ -17,7 +17,7 @@ class ProdMovieService @Inject constructor(
 ) : MovieService {
     private val apiKey = encryptedStorage.tmdbApiKey
 
-    override suspend fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> {
+    override fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> = flow {
         val baseUrl = "${ApiConstants.TMDB_URL}/movie/popular?"
         val url = baseUrl + "api_key=$apiKey&language=en-US&page=${request.page}"
 
@@ -25,10 +25,10 @@ class ProdMovieService @Inject constructor(
             url = url,
         )
 
-        return flowOf(response)
+        emit(response)
     }
 
-    override suspend fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> {
+    override fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> = flow {
         val baseUrl = "${ApiConstants.TMDB_URL}/search/movie?"
         val url = baseUrl + "api_key=$apiKey" +
             "&language=en-US" +
@@ -40,6 +40,6 @@ class ProdMovieService @Inject constructor(
             url = url,
         )
 
-        return flowOf(response)
+        emit(response)
     }
 }

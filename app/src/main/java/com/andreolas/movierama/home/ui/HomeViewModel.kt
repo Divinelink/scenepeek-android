@@ -17,7 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -58,13 +58,13 @@ class HomeViewModel @Inject constructor(
                 parameters = PopularRequestApi(
                     page = currentPage,
                 )
-            ).collect { result ->
+            ).collectLatest { result ->
                 when (result) {
                     is Result.Success -> {
-                        cachedMovies = (_viewState.value.moviesList + result.data)
-                            .distinctBy { it.id }
-                            .toMutableList()
                         _viewState.update { viewState ->
+                            cachedMovies = (viewState.moviesList + result.data)
+                                .distinctBy { it.id }
+                                .toMutableList()
                             viewState.copy(
                                 isLoading = false,
                                 moviesList = cachedMovies,
@@ -111,7 +111,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun updateFavoriteStatus(movie: PopularMovie) {
-        _viewState.getAndUpdate { viewState ->
+        _viewState.update { viewState ->
             viewState.copy(
                 moviesList = viewState.moviesList.map { currentMovie ->
                     if (currentMovie.id == movie.id) {
@@ -122,6 +122,11 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             )
+        }.also {
+            // This is needed to keep the Favorite status on Popular Movies.
+            if (viewState.value.query.isEmpty()) {
+                cachedMovies = viewState.value.moviesList.toMutableList()
+            }
         }
     }
 
@@ -189,15 +194,15 @@ class HomeViewModel @Inject constructor(
                     query = query,
                     page = page,
                 )
-            ).collect { result ->
+            ).collectLatest { result ->
                 when (result) {
                     Result.Loading -> {
                         // todo
                     }
                     is Result.Success -> {
                         if (allowSearchResult) {
-                            val movies = accumulateSearchMovies(page, result)
                             _viewState.update { viewState ->
+                                val movies = accumulateSearchMovies(page, result)
                                 viewState.copy(
                                     searchLoading = false,
                                     moviesList = movies,

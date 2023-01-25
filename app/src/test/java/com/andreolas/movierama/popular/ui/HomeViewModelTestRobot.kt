@@ -2,6 +2,7 @@ package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.FakeRemoveFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -24,12 +25,14 @@ class HomeViewModelTestRobot {
     private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
     private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     private val fakeRemoveFavoriteUseCase = FakeRemoveFavoriteUseCase()
+    private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
 
     fun buildViewModel() = apply {
         viewModel = HomeViewModel(
             getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
             markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
             removeFavoriteUseCase = fakeRemoveFavoriteUseCase.mock,
+            getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
         )
     }
 
