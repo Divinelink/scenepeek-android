@@ -34,6 +34,7 @@ class MarkAsFavoriteUseCaseTest {
             title = "Fight Club $index",
             isFavorite = false,
             rating = index.toString(),
+            overview = "over test",
         )
     }.toMutableList()
 

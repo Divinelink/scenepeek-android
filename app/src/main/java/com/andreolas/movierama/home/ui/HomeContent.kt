@@ -2,24 +2,35 @@ package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,14 +38,17 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Suppress("LongMethod")
 @Composable
 fun HomeContent(
     viewState: HomeViewState,
@@ -44,12 +58,50 @@ fun HomeContent(
     onSearchMovies: (String) -> Unit,
     onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
+    onBottomSheetClosed: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val coroutineScope = rememberCoroutineScope()
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(
+            initialValue = BottomSheetValue.Collapsed,
+        )
+    )
+
+    BackHandler(bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+        coroutineScope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
+    }
 
     val context = LocalContext.current
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    BottomSheetScaffold(
+        sheetElevation = 30.dp,
+        sheetPeekHeight = 1.dp,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            if (viewState.selectedMovie != null) {
+                BottomSheetMovieContent(
+                    onContentClicked = {
+                        // Go to more details
+                    },
+                    movie = viewState.selectedMovie,
+                    onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
+                )
+            }
+        },
+        modifier = Modifier
+            .navigationBarsPadding()
+            .pointerInput(Unit) {
+                detectDragGestures { change, dragAmount ->
+                    onBottomSheetClosed()
+                    //                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                }
+                detectTapGestures(onTap = {
+                })
+            }
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
                 modifier = Modifier
@@ -86,9 +138,23 @@ fun HomeContent(
             )
         } else {
             PopularMoviesList(
-                modifier = modifier.padding(paddingValues),
+                modifier = modifier
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                        }
+                        detectTapGestures(onTap = {
+                        })
+                    }
+                    .padding(paddingValues),
                 movies = viewState.moviesList,
-                onMovieClicked = onMovieClicked,
+                onMovieClicked = {
+                    onMovieClicked(it)
+                    coroutineScope.launch {
+                        if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                            bottomSheetScaffoldState.bottomSheetState.expand()
+                        }
+                    }
+                },
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 onLoadNextPage = onLoadNextPage,
             )
@@ -128,6 +194,7 @@ fun HomeContentPreview() {
                 onLoadNextPage = {},
                 onSearchMovies = {},
                 onClearClicked = {},
+                onBottomSheetClosed = {},
             )
         }
     }

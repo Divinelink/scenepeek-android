@@ -25,5 +25,6 @@ fun HomeScreen(
         onLoadNextPage = viewModel::onLoadNextPage,
         onSearchMovies = viewModel::onSearchMovies,
         onClearClicked = viewModel::onClearClicked,
+        onBottomSheetClosed = viewModel::onBottomSheetClosed,
     )
 }

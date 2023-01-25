@@ -33,6 +33,7 @@ class GetSearchMoviesUseCaseTest {
             title = "Fight Club $index",
             isFavorite = false,
             rating = index.toString(),
+            overview = "",
         )
     }.toMutableList()
 

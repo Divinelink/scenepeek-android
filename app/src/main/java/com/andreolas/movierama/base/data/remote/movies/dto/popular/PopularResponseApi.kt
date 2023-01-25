@@ -51,6 +51,7 @@ private fun PopularMovieApi.toPopularMovie(): PopularMovie {
         releaseDate = this.releaseDate,
         title = this.title,
         rating = this.voteAverage.toString(),
+        overview = this.overview,
         isFavorite = false,
     )
 }

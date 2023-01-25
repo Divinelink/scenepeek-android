@@ -19,11 +19,27 @@ class HomeViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val popularMoviesList = (1..10).map {
-        PopularMovie(id = it, posterPath = "", releaseDate = "", title = "", rating = "", isFavorite = false)
+        PopularMovie(
+            id = it,
+            posterPath = "",
+            releaseDate = "",
+            title = "",
+            rating = "",
+            isFavorite = false,
+            overview = "test",
+        )
     }.toMutableList()
 
     private val searchMovies = (10..20).map {
-        PopularMovie(id = it, posterPath = "", releaseDate = "", title = "", rating = "", isFavorite = it % 2 == 0)
+        PopularMovie(
+            id = it,
+            posterPath = "",
+            releaseDate = "",
+            title = "",
+            rating = "",
+            isFavorite = it % 2 == 0,
+            overview = "test",
+        )
     }.toMutableList()
 
     @Test
@@ -552,7 +568,8 @@ class HomeViewModelTest {
                 releaseDate = "",
                 title = "",
                 rating = "",
-                isFavorite = false
+                isFavorite = false,
+                overview = "test",
             )
         }.toList()
     }

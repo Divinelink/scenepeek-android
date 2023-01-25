@@ -93,7 +93,19 @@ class HomeViewModel @Inject constructor(
 
     @Suppress("UnusedPrivateMember")
     fun onMovieClicked(movie: PopularMovie) {
-        // todo
+        _viewState.update { viewState ->
+            viewState.copy(
+                selectedMovie = movie,
+            )
+        }
+    }
+
+    fun onBottomSheetClosed() {
+        _viewState.update { viewState ->
+            viewState.copy(
+                selectedMovie = null,
+            )
+        }
     }
 
     fun onMarkAsFavoriteClicked(movie: PopularMovie) {

@@ -6,5 +6,6 @@ data class PopularMovie(
     val releaseDate: String,
     val title: String,
     val rating: String,
+    val overview: String,
     val isFavorite: Boolean,
 )

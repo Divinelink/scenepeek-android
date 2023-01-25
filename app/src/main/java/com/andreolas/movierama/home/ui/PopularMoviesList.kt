@@ -64,6 +64,7 @@ fun MoviesListScreenPreview() {
             title = "Fight Club $index",
             isFavorite = index % 2 == 0,
             rating = index.toString(),
+            overview = "",
         )
     }.toMutableList()
 
