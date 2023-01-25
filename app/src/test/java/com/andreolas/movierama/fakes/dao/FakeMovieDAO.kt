@@ -37,7 +37,6 @@ class FakeMovieDAO {
         id: Int,
         result: Int
     ) {
-//        verify(mock).checkIfFavorite(id)
         whenever(mock.checkIfFavorite(id)).thenReturn(result)
     }
 }

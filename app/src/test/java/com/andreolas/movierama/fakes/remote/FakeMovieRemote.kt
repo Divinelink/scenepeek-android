@@ -1,5 +1,7 @@
-package com.andreolas.movierama.fakes.dao
+package com.andreolas.movierama.fakes.remote
 
+import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -32,6 +34,17 @@ class FakeMovieRemote {
             mock.fetchSearchMovies(request)
         ).thenReturn(
             result
+        )
+    }
+
+    fun mockFetchMovieDetails(
+        request: DetailsRequestApi,
+        response: Flow<DetailsResponseApi>,
+    ) {
+        whenever(
+            mock.fetchDetails(request)
+        ).thenReturn(
+            response
         )
     }
 

@@ -1,5 +1,7 @@
 package com.andreolas.movierama.base.data.remote.movies.service
 
+import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -15,4 +17,8 @@ interface MovieService {
     fun fetchSearchMovies(
         request: SearchRequestApi,
     ): Flow<SearchResponseApi>
+
+    fun fetchDetails(
+        request: DetailsRequestApi,
+    ): Flow<DetailsResponseApi>
 }

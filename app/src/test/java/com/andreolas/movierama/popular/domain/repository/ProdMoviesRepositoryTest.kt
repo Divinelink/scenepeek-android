@@ -8,7 +8,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
-import com.andreolas.movierama.fakes.dao.FakeMovieRemote
+import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
