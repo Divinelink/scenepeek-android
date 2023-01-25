@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.core.view.updateLayoutParams
 import com.andreolas.movierama.databinding.DslSpacePreferenceBinding
-import com.andreolas.movierama.settings.PreferenceModel
+import com.andreolas.movierama.settings.dsl.PreferenceModel
 import gr.divinelink.core.util.mapping.LayoutFactory
 import gr.divinelink.core.util.mapping.MappingAdapter
 import gr.divinelink.core.util.mapping.MappingViewHolder

@@ -5,11 +5,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.DSLConfiguration
-import com.andreolas.movierama.settings.DSLSettingsAdapter
-import com.andreolas.movierama.settings.DSLSettingsFragment
-import com.andreolas.movierama.settings.DSLSettingsText
-import com.andreolas.movierama.settings.configure
+import com.andreolas.movierama.settings.dsl.DSLConfiguration
+import com.andreolas.movierama.settings.dsl.DSLSettingsAdapter
+import com.andreolas.movierama.settings.dsl.DSLSettingsFragment
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.configure
 import com.andreolas.movierama.ui.theme.Theme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

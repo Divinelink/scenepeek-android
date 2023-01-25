@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.andreolas.movierama.databinding.DslTextPreferenceBinding
-import com.andreolas.movierama.settings.DSLSettingsText
-import com.andreolas.movierama.settings.PreferenceModel
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.PreferenceModel
 import gr.divinelink.core.util.mapping.LayoutFactory
 import gr.divinelink.core.util.mapping.MappingAdapter
 import gr.divinelink.core.util.mapping.MappingViewHolder

@@ -8,9 +8,9 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.databinding.DslButtonPrimaryBinding
 import com.andreolas.movierama.databinding.DslButtonSecondaryBinding
 import com.andreolas.movierama.databinding.DslButtonTonalBinding
-import com.andreolas.movierama.settings.DSLSettingsIcon
-import com.andreolas.movierama.settings.DSLSettingsText
-import com.andreolas.movierama.settings.PreferenceModel
+import com.andreolas.movierama.settings.dsl.DSLSettingsIcon
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.PreferenceModel
 import com.google.android.material.button.MaterialButton
 import gr.divinelink.core.util.mapping.LayoutFactory
 import gr.divinelink.core.util.mapping.MappingAdapter

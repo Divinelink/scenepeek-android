@@ -9,8 +9,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.DSLSettingsActivity
 import com.andreolas.movierama.settings.SettingsViewModel
+import com.andreolas.movierama.settings.dsl.DSLSettingsActivity
 import com.andreolas.movierama.ui.theme.updateForTheme
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor

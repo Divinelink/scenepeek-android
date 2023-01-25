@@ -1,4 +1,4 @@
-package com.andreolas.movierama.settings
+package com.andreolas.movierama.settings.dsl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
