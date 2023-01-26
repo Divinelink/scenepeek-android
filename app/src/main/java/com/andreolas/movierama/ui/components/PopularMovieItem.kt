@@ -148,15 +148,18 @@ fun LikeButton(
 }
 
 @Composable
-private fun Rating(
+fun Rating(
     modifier: Modifier,
     rating: String,
+    leadingContent: (@Composable () -> Unit) = {},
+    trailingContent: (@Composable () -> Unit) = {},
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        leadingContent()
         Icon(
             imageVector = Icons.Default.Star,
             tint = Color.Yellow,
@@ -168,6 +171,7 @@ private fun Rating(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
+        trailingContent()
     }
 }
 

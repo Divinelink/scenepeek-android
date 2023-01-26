@@ -66,6 +66,7 @@ internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
         runtime = this.runtime.toHourMinuteFormat(),
         isFavorite = false,
         similarMovies = null,
+        reviews = null,
     )
 }
 

@@ -14,6 +14,6 @@ data class MovieDetails(
     val rating: String,
     val runtime: String?,
     val isFavorite: Boolean,
-    //    val reviews: List<Review>
+    val reviews: List<Review>?,
     val similarMovies: List<PopularMovie>?,
 )

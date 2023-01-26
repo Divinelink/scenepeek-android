@@ -38,6 +38,7 @@ class GetMoviesDetailsUseCaseTest {
         isFavorite = false,
         runtime = "50m",
         similarMovies = null,
+        reviews = null,
     )
 
     @Before

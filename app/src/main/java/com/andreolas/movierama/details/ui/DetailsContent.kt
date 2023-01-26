@@ -53,12 +53,14 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
 import com.andreolas.movierama.ui.components.PopularMovieItem
+import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
@@ -179,7 +181,14 @@ fun DetailsMovieContent(
                 }
             }
 
-            // todo add reviews here
+            movieDetails.reviews?.let { reviews ->
+                item {
+                    Divider(thickness = 1.dp)
+                    ReviewsList(
+                        reviews = reviews,
+                    )
+                }
+            }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -442,6 +451,23 @@ private fun DetailsContentPreview(
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
     override val values: Sequence<DetailsViewState>
         get() {
+            val reviews = (1..2).map {
+                Review(
+                    authorName = "Author name $it",
+                    rating = 10,
+                    content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sodales " +
+                        "laoreet commodo. Phasellus a purus eu risus elementum consequat. Aenean eu" +
+                        "elit ut nunc convallis laoreet non ut libero. Suspendisse interdum placerat" +
+                        "risus vel ornare. Donec vehicula, turpis sed consectetur ullamcorper, ante" +
+                        "nunc egestas quam, ultricies adipiscing velit enim at nunc. Aenean id diam" +
+                        "neque. Praesent ut lacus sed justo viverra fermentum et ut sem. \n Fusce" +
+                        "convallis gravida lacinia. Integer semper dolor ut elit sagittis lacinia." +
+                        "Praesent sodales scelerisque eros at rhoncus. Duis posuere sapien vel ipsum" +
+                        "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
+                        "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
+                    date = "2022-10-22"
+                )
+            }
             val similarMovies = (1..10).map {
                 PopularMovie(
                     id = it,
@@ -506,6 +532,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 genres = listOf("Thriller", "Drama", "Comedy"),
                 runtime = "2h 10m",
                 similarMovies = similarMovies,
+                reviews = reviews,
             )
 
             return sequenceOf(

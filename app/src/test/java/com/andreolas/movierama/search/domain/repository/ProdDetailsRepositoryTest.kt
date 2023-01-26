@@ -39,6 +39,7 @@ class ProdDetailsRepositoryTest {
         genres = listOf("Thriller", "Drama", "Comedy"),
         runtime = "2h 10m",
         similarMovies = null,
+        reviews = null,
     )
 
     private val request = DetailsRequestApi(movieId = "555")
