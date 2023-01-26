@@ -5,6 +5,7 @@ import gr.divinelink.core.util.extensions.formatTo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class ReviewsResponseApi(
     val id: Int,
     val page: Int,
@@ -22,7 +23,7 @@ internal fun ReviewsResponseApi.toDomainReviewsList(): List<Review> {
 private fun ReviewResultsApi.toReview(): Review {
     return Review(
         authorName = this.author,
-        rating = this.authorDetails.rating,
+        rating = this.authorDetails.rating?.toInt(),
         content = this.content,
         date = this.createdAt.formatTo(
             inputFormat = TMDB_DATE_FORMAT,
@@ -48,9 +49,9 @@ data class ReviewResultsApi(
 @Serializable
 data class AuthorDetailsApi(
     @SerialName("avatar_path")
-    val avatarPath: String,
+    val avatarPath: String?,
     val name: String,
-    val rating: Int?,
+    val rating: Double?,
     val username: String,
 )
 

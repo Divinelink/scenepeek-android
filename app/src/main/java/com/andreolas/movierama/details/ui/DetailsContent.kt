@@ -178,11 +178,11 @@ fun DetailsMovieContent(
                 }
             }
 
-            movieDetails.reviews?.let { reviews ->
+            if (!movieDetails.reviews.isNullOrEmpty()) {
                 item {
                     Divider(thickness = 1.dp)
                     ReviewsList(
-                        reviews = reviews,
+                        reviews = movieDetails.reviews,
                     )
                 }
             }

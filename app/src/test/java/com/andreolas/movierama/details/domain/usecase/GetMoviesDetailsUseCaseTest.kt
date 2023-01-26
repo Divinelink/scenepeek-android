@@ -3,7 +3,6 @@ package com.andreolas.movierama.details.domain.usecase
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetails
-import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
@@ -22,7 +21,6 @@ class GetMoviesDetailsUseCaseTest {
     private val testDispatcher = mainDispatcherRule.testDispatcher
 
     private lateinit var repository: FakeDetailsRepository
-    private var movieDAO = FakeMovieDAO()
 
     private val request = DetailsRequestApi(movieId = 555)
     private val movieDetails = MovieDetails(
@@ -47,22 +45,16 @@ class GetMoviesDetailsUseCaseTest {
     }
 
     @Test
-    fun `successfully update favorite status when fetching a saved details movie`() = runTest {
-        val expectedResult = Result.Success(movieDetails.copy(isFavorite = true))
+    fun `successfully fetch `() = runTest {
+        val expectedResult = Result.Success(movieDetails)
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchMovieDetails(
             request = request,
             response = Result.Success(movieDetails)
         )
 
-        movieDAO.mockCheckIfFavorite(
-            id = movieDetails.id,
-            result = 1,
-        )
-
         val useCase = GetMovieDetailsUseCase(
             repository = repository.mock,
-            movieDAO = movieDAO.mock,
             dispatcher = testDispatcher,
         )
         val result = useCase(request).last()
@@ -74,19 +66,13 @@ class GetMoviesDetailsUseCaseTest {
     fun `successfully set favorite status to false when movie is not saved`() = runTest {
         val expectedResult = Result.Success(movieDetails)
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchMovieDetails(
             request = request,
             response = Result.Success(movieDetails)
         )
 
-        movieDAO.mockCheckIfFavorite(
-            id = movieDetails.id,
-            result = 0,
-        )
-
         val useCase = GetMovieDetailsUseCase(
             repository = repository.mock,
-            movieDAO = movieDAO.mock,
             dispatcher = testDispatcher,
         )
         val result = useCase(request).last()
@@ -98,19 +84,13 @@ class GetMoviesDetailsUseCaseTest {
     fun `given error result, I expect error result`() = runTest {
         val expectedResult = Result.Error(Exception("Oops."))
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchMovieDetails(
             request = request,
             response = Result.Error(Exception("Oops."))
         )
 
-        movieDAO.mockCheckIfFavorite(
-            id = movieDetails.id,
-            result = 0,
-        )
-
         val useCase = GetMovieDetailsUseCase(
             repository = repository.mock,
-            movieDAO = movieDAO.mock,
             dispatcher = testDispatcher,
         )
         val result = useCase(request).last()
@@ -122,19 +102,13 @@ class GetMoviesDetailsUseCaseTest {
     fun `loading state`() = runTest {
         val expectedResult = Result.Loading
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchMovieDetails(
             request = request,
             response = Result.Loading
         )
 
-        movieDAO.mockCheckIfFavorite(
-            id = movieDetails.id,
-            result = 0,
-        )
-
         val useCase = GetMovieDetailsUseCase(
             repository = repository.mock,
-            movieDAO = movieDAO.mock,
             dispatcher = testDispatcher,
         )
         val result = useCase(request).last()

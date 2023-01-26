@@ -13,6 +13,8 @@ import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +41,7 @@ class DetailsViewModel @Inject constructor(
                 parameters = DetailsRequestApi(
                     movieId = args.movie.id
                 )
-            ).collect { result ->
+            ).onEach { result ->
                 _viewState.value = when (result) {
                     Result.Loading -> DetailsViewState.Initial(
                         movie = args.movie,
@@ -53,7 +55,7 @@ class DetailsViewModel @Inject constructor(
                         movieDetails = result.data,
                     )
                 }
-            }
+            }.collect()
         }
     }
 }

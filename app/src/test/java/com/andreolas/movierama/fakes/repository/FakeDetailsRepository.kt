@@ -12,7 +12,7 @@ class FakeDetailsRepository {
 
     val mock: DetailsRepository = mock()
 
-    fun mockFetchFavoriteMovies(
+    fun mockFetchMovieDetails(
         request: DetailsRequestApi,
         response: Result<MovieDetails>,
     ) {
