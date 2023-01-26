@@ -19,5 +19,5 @@ data class Crew(
     val originalName: String,
     val popularity: Double,
     @SerialName("profile_path")
-    val profilePath: String
+    val profilePath: String?
 )

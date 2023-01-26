@@ -11,6 +11,7 @@ val SearchBarShape = RoundedCornerShape(50.dp)
 
 // Popular Movies
 val PopularMovieItemShape = RoundedCornerShape(8.dp)
+val MovieImageShape = RoundedCornerShape(8.dp)
 
 val HorizontalIconPadding = 12.dp
 // Bottom Sheet

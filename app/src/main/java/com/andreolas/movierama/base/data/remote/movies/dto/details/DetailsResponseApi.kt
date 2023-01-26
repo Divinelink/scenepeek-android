@@ -5,17 +5,17 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class DetailsResponseApi(
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerialName("belongs_to_collection")
-    @Contextual val belongToCollection: Any? = null,
+    val belongToCollection: JsonObject? = null,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String? = null,
@@ -48,8 +48,7 @@ data class DetailsResponseApi(
     val voteAverage: Double,
     @SerialName("vote_count")
     val voteCount: Int,
-    val cast: List<Cast>,
-    val crew: List<Crew>,
+    val credits: Credits,
 )
 
 internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
@@ -61,8 +60,8 @@ internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
         rating = this.voteAverage.toString(),
         overview = this.overview,
         genres = this.genres.map { it.name },
-        director = this.crew.toDirector(),
-        cast = this.cast.toActors(),
+        director = this.credits.crew.toDirector(),
+        cast = this.credits.cast.toActors(),
         runtime = this.runtime.toHourMinuteFormat(),
         isFavorite = false,
         similarMovies = null,
@@ -76,7 +75,7 @@ private fun List<Crew>.toDirector(): Director? {
         Director(
             id = director.id,
             name = director.name,
-            profilePath = director.profilePath,
+            profilePath = director.profilePath ?: "",
         )
     }
 }
@@ -89,7 +88,7 @@ private fun Cast.toActor(): Actor {
     return Actor(
         id = this.id,
         name = this.name,
-        profilePath = this.profilePath,
+        profilePath = this.profilePath ?: "",
         character = this.character,
         order = this.order,
     )
@@ -106,6 +105,12 @@ private fun Int?.toHourMinuteFormat(): String? {
         }
     }
 }
+
+@Serializable
+data class Credits(
+    val cast: List<Cast>,
+    val crew: List<Crew>,
+)
 
 @Serializable
 data class Genre(
@@ -134,5 +139,7 @@ data class ProductionCountry(
 data class SpokenLanguage(
     @SerialName("iso_639_1")
     val iso6391: String,
+    @SerialName("english_name")
+    val englishName: String,
     val name: String,
 )

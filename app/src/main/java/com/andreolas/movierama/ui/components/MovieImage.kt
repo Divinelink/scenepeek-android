@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -18,6 +19,8 @@ import com.andreolas.movierama.base.communication.ApiConstants
 @Composable
 fun MovieImage(
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
+    errorPlaceHolder: Painter = painterResource(R.drawable.ic_movie_placeholder),
     path: String,
 ) {
     AsyncImage(
@@ -30,8 +33,8 @@ fun MovieImage(
             .data(ApiConstants.TMDB_IMAGE_URL + path)
             .crossfade(true)
             .build(),
-        error = painterResource(R.drawable.ic_movie_placeholder),
-        contentDescription = stringResource(R.string.ok),
-        contentScale = ContentScale.Fit,
+        error = errorPlaceHolder,
+        contentDescription = stringResource(id = R.string.movie_image_placeholder),
+        contentScale = contentScale,
     )
 }

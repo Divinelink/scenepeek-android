@@ -48,8 +48,9 @@ class ProdMovieService @Inject constructor(
     override fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi> = flow {
         val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
         val url = baseUrl +
-            "${request.movieId}?append_to_response=credits" +
-            "api_key=$apiKey" +
+            "${request.movieId}" +
+            "?api_key=$apiKey" +
+            "&append_to_response=credits" +
             "&language=en-US"
 
         val response = restClient.get<DetailsResponseApi>(

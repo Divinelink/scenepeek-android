@@ -2,15 +2,20 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -53,6 +58,7 @@ import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
+import com.andreolas.movierama.ui.theme.MovieImageShape
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -142,7 +148,9 @@ fun DetailsMovieContent(
                         .padding(paddingValues = ListPaddingValues),
                 ) {
                     MovieImage(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .clip(MovieImageShape)
+                            .weight(1f),
                         path = movieDetails.posterPath,
                     )
 
@@ -230,15 +238,21 @@ private fun OverviewDetails(
             .padding(start = 12.dp)
             .fillMaxWidth(),
     ) {
-        if (movieDetails.genres?.isNotEmpty() == true) {
-            Row {
-                genres?.forEach { genre ->
-                    Text(
-                        text = genre,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
+        if (!movieDetails.genres.isNullOrEmpty()) {
+            LazyVerticalGrid(
+                modifier = Modifier.heightIn(max = 60.dp),
+                columns = GridCells.Adaptive(80.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                genres?.let {
+                    items(genres) { genre ->
+                        Text(
+                            text = genre,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
                 }
             }
         }
@@ -367,7 +381,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                         order = 1
                     ),
                 ),
-                genres = listOf("Thriller", "Drama", "Comedy"),
+                genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
                 runtime = "2h 10m",
                 similarMovies = similarMovies,
                 reviews = reviews,
