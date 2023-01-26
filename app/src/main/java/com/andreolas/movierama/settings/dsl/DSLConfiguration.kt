@@ -1,5 +1,5 @@
 @file:Suppress("LongParameterList", "MaximumLineLength", "TooManyFunctions")
-package com.andreolas.movierama.settings
+package com.andreolas.movierama.settings.dsl
 
 import androidx.annotation.CallSuper
 import androidx.annotation.Px

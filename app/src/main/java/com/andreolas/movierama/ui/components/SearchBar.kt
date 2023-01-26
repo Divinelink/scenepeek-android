@@ -42,6 +42,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.getString
@@ -206,6 +207,7 @@ enum class ToolbarState {
 private const val TEXT_MAX_WIDTH = 0.84F
 
 @Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun SearchBarPreview() {
@@ -221,6 +223,7 @@ fun SearchBarPreview() {
 }
 
 @Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun FocusedSearchBarPreview() {
@@ -237,6 +240,7 @@ fun FocusedSearchBarPreview() {
 }
 
 @Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun FilledSearchBarPreview() {

@@ -1,6 +1,6 @@
 @file:Suppress("LongParameterList", "MaxLineLength", "MagicNumbers")
 
-package com.andreolas.movierama.settings
+package com.andreolas.movierama.settings.dsl
 
 import android.text.Spanned
 import android.text.method.LinkMovementMethod

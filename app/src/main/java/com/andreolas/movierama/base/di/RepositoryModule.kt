@@ -1,5 +1,7 @@
 package com.andreolas.movierama.base.di
 
+import com.andreolas.movierama.details.domain.repository.DetailsRepository
+import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
 import dagger.Binds
@@ -19,4 +21,9 @@ abstract class RepositoryModule {
     abstract fun bindMovieRepository(
         moviesRepository: ProdMoviesRepository,
     ): MoviesRepository
+
+    @Binds
+    abstract fun bindDetailsRepository(
+        moviesRepository: ProdDetailsRepository,
+    ): DetailsRepository
 }

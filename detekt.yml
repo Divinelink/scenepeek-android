@@ -270,6 +270,7 @@ exceptions:
       - 'Exception'
       - 'RuntimeException'
       - 'Throwable'
+  excludes: ['**/ksp/**', '**/kspCaches/**']
 
 formatting:
   active: true

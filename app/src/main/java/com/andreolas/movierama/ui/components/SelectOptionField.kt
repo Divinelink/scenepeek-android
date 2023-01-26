@@ -21,6 +21,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.HorizontalIconPadding
@@ -85,6 +86,7 @@ fun SelectOptionField(
 }
 
 @Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(name = "Roast Level Light", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Roast Level Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun RoastLevelPreview() {

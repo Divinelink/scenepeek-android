@@ -2,11 +2,11 @@ package com.andreolas.movierama.settings.app.help
 
 import com.andreolas.movierama.BuildConfig
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.DSLConfiguration
-import com.andreolas.movierama.settings.DSLSettingsAdapter
-import com.andreolas.movierama.settings.DSLSettingsFragment
-import com.andreolas.movierama.settings.DSLSettingsText
-import com.andreolas.movierama.settings.configure
+import com.andreolas.movierama.settings.dsl.DSLConfiguration
+import com.andreolas.movierama.settings.dsl.DSLSettingsAdapter
+import com.andreolas.movierama.settings.dsl.DSLSettingsFragment
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.configure
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

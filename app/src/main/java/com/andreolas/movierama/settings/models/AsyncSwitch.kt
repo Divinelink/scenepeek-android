@@ -3,9 +3,9 @@ package com.andreolas.movierama.settings.models
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.andreolas.movierama.databinding.DslAsyncSwitchPreferenceItemBinding
-import com.andreolas.movierama.settings.DSLSettingsText
-import com.andreolas.movierama.settings.PreferenceModel
-import com.andreolas.movierama.settings.PreferenceViewHolder
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.PreferenceModel
+import com.andreolas.movierama.settings.dsl.PreferenceViewHolder
 import gr.divinelink.core.util.mapping.LayoutFactory
 import gr.divinelink.core.util.mapping.MappingAdapter
 

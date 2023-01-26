@@ -2,14 +2,14 @@ package com.andreolas.movierama.settings.app
 
 import androidx.fragment.app.FragmentTransaction
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.DSLConfiguration
-import com.andreolas.movierama.settings.DSLSettingsAdapter
-import com.andreolas.movierama.settings.DSLSettingsFragment
-import com.andreolas.movierama.settings.DSLSettingsIcon
-import com.andreolas.movierama.settings.DSLSettingsText
 import com.andreolas.movierama.settings.app.appearance.AppearanceSettingsFragment
 import com.andreolas.movierama.settings.app.help.HelpSettingsFragment
-import com.andreolas.movierama.settings.configure
+import com.andreolas.movierama.settings.dsl.DSLConfiguration
+import com.andreolas.movierama.settings.dsl.DSLSettingsAdapter
+import com.andreolas.movierama.settings.dsl.DSLSettingsFragment
+import com.andreolas.movierama.settings.dsl.DSLSettingsIcon
+import com.andreolas.movierama.settings.dsl.DSLSettingsText
+import com.andreolas.movierama.settings.dsl.configure
 
 class AppSettingsFragment : DSLSettingsFragment(R.string.settings) {
 

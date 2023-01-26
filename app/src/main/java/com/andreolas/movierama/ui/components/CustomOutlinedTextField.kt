@@ -18,6 +18,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.TextFieldShape
@@ -76,9 +77,10 @@ fun CustomOutlinedTextField(
     }
 }
 
+@Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
 fun ErrorCustomOutlinedTextFieldPreview() {
     AppTheme {
         Surface {
@@ -92,9 +94,10 @@ fun ErrorCustomOutlinedTextFieldPreview() {
     }
 }
 
+@Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
 fun CustomOutlinedTextFieldPreview() {
     AppTheme {
         Surface {
@@ -107,9 +110,10 @@ fun CustomOutlinedTextFieldPreview() {
     }
 }
 
+@Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
 fun CustomOutlinedTextFieldEmptyPreview() {
     AppTheme {
         Surface {
