@@ -1,4 +1,4 @@
-@file:Suppress("LongMethod")
+@file:Suppress("LongMethod", "MagicNumber")
 
 package com.andreolas.movierama.ui.components
 
@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -42,16 +44,13 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.theme.AppTheme
 
 @Composable
-@Suppress("UnusedPrivateMember")
 fun BottomSheetMovieContent(
     modifier: Modifier = Modifier,
     movie: PopularMovie,
     onContentClicked: () -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
-    Surface(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-    ) {
+    Surface {
         Column {
             Row(
                 modifier = modifier
@@ -59,6 +58,8 @@ fun BottomSheetMovieContent(
             ) {
                 AsyncImage(
                     modifier = Modifier
+                        .widthIn(max = 160.dp)
+                        .heightIn(max = 180.dp)
                         .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
                         .weight(1f)
                         .align(Alignment.Top)
@@ -78,7 +79,7 @@ fun BottomSheetMovieContent(
 
                 Column(
                     Modifier
-                        .weight(2f)
+                        .weight(3f)
                         .padding(12.dp),
                 ) {
                     Row(
