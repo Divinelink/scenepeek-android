@@ -24,7 +24,7 @@ class GetMoviesDetailsUseCaseTest {
     private lateinit var repository: FakeDetailsRepository
     private var movieDAO = FakeMovieDAO()
 
-    private val request = DetailsRequestApi(movieId = "555")
+    private val request = DetailsRequestApi(movieId = 555)
     private val movieDetails = MovieDetails(
         id = 0,
         title = "",

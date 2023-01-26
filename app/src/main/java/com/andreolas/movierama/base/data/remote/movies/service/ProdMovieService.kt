@@ -4,6 +4,8 @@ import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -54,6 +56,21 @@ class ProdMovieService @Inject constructor(
             "&language=en-US"
 
         val response = restClient.get<DetailsResponseApi>(
+            url = url,
+        )
+
+        emit(response)
+    }
+
+    override fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi> = flow {
+        val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
+        val url = baseUrl +
+            "${request.movieId}" +
+            "/reviews" +
+            "?api_key=$apiKey" +
+            "&language=en-US"
+
+        val response = restClient.get<ReviewsResponseApi>(
             url = url,
         )
 
