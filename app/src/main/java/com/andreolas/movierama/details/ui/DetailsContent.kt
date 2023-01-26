@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,7 +58,9 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.PopularMovieItem
 import com.andreolas.movierama.ui.theme.AppTheme
+import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -137,46 +139,68 @@ fun DetailsMovieContent(
     movieDetails: MovieDetails,
 ) {
     Surface {
-        Column(
+        LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp)
         ) {
-            TitleDetails(movieDetails)
+            item {
+                TitleDetails(movieDetails)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(paddingValues = ListPaddingValues),
+                ) {
+                    MovieImage(
+                        modifier = Modifier.weight(1f),
+                        path = movieDetails.posterPath,
+                    )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-            ) {
-                MovieImage(
-                    path = movieDetails.posterPath,
-                )
-
-                OverviewDetails(movieDetails, movieDetails.genres)
+                    OverviewDetails(
+                        modifier = modifier.weight(OVERVIEW_WEIGHT),
+                        movieDetails = movieDetails,
+                        genres = movieDetails.genres
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Divider(thickness = 1.dp)
-            Spacer(modifier = Modifier.height(8.dp))
-            Cast(
-                cast = movieDetails.cast,
-                director = movieDetails.director,
-            )
+            item {
+                Divider(thickness = 1.dp)
+                CastList(
+                    cast = movieDetails.cast,
+                    director = movieDetails.director,
+                )
+            }
+
+            movieDetails.similarMovies?.let {
+                item {
+                    Divider(thickness = 1.dp)
+                    SimilarMoviesList(
+                        movies = movieDetails.similarMovies
+                    )
+                }
+            }
+
+            // todo add reviews here
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
 
 @Composable
-private fun Cast(
+private fun CastList(
     cast: List<Actor>,
     director: Director?,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .padding(top = 16.dp, bottom = 16.dp)
+            .fillMaxWidth(),
     ) {
         Text(
             modifier = Modifier
-                .padding(start = 4.dp),
+                .padding(start = 12.dp, end = 12.dp),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             text = stringResource(id = R.string.details__cast_title),
@@ -184,11 +208,7 @@ private fun Cast(
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                start = 4.dp,
-                bottom = 8.dp,
-            ),
+            contentPadding = ListPaddingValues,
         ) {
             items(
                 items = cast,
@@ -206,6 +226,45 @@ private fun Cast(
             DirectorItem(
                 director = director,
             )
+        }
+    }
+}
+
+@Composable
+private fun SimilarMoviesList(
+    movies: List<PopularMovie>,
+) {
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp, bottom = 16.dp)
+            .fillMaxWidth(),
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(start = 12.dp, end = 12.dp),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            text = stringResource(id = R.string.details__more_like_this),
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = ListPaddingValues,
+        ) {
+            items(
+                items = movies,
+                key = {
+                    it.id
+                }
+            ) { movie ->
+
+                PopularMovieItem(
+                    movie = movie,
+                    withLikeButton = false,
+                    onMovieItemClick = {},
+                    onLikeMovieClick = {},
+                )
+            }
         }
     }
 }
@@ -231,7 +290,7 @@ private fun DirectorItem(
         Text(
             text = director.name,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
         )
     }
 }
@@ -275,7 +334,7 @@ private fun CrewItemCard(
             modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
             text = actor.character,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
         )
     }
 }
@@ -283,7 +342,9 @@ private fun CrewItemCard(
 @Composable
 private fun TitleDetails(movieDetails: MovieDetails) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, end = 12.dp)
     ) {
         Text(
             modifier = Modifier
@@ -294,7 +355,8 @@ private fun TitleDetails(movieDetails: MovieDetails) {
     }
 
     Row(
-        modifier = Modifier.padding(start = 4.dp),
+        modifier = Modifier
+            .padding(start = 16.dp, end = 12.dp),
     ) {
         Text(
             style = MaterialTheme.typography.bodySmall,
@@ -312,11 +374,13 @@ private fun TitleDetails(movieDetails: MovieDetails) {
 
 @Composable
 private fun OverviewDetails(
+    modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
     genres: List<String>?,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
+            .padding(start = 12.dp)
             .fillMaxWidth(),
     ) {
         if (movieDetails.genres?.isNotEmpty() == true) {
@@ -343,6 +407,8 @@ private fun OverviewDetails(
         }
     }
 }
+
+private const val OVERVIEW_WEIGHT = 3f
 
 @Preview(
     name = "Night Mode",
@@ -371,10 +437,22 @@ private fun DetailsContentPreview(
     }
 }
 
+@Suppress("MagicNumber")
+@ExcludeFromJacocoGeneratedReport
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
-
     override val values: Sequence<DetailsViewState>
         get() {
+            val similarMovies = (1..10).map {
+                PopularMovie(
+                    id = it,
+                    posterPath = "",
+                    releaseDate = "",
+                    title = "Flight Club",
+                    rating = "",
+                    overview = "This movie is good.",
+                    isFavorite = false,
+                )
+            }.toList()
             val popularMovie = PopularMovie(
                 id = 0,
                 posterPath = "",
@@ -424,37 +502,10 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                         character = "McMurphy",
                         order = 1
                     ),
-                    Actor(
-                        id = 5,
-                        name = "Jack",
-                        profilePath = "AllWorkAndNoPlay.jpg",
-                        character = "HelloJohnny",
-                        order = 0
-                    ),
-                    Actor(
-                        id = 6,
-                        name = "Nicholson",
-                        profilePath = "Cuckoo.jpg",
-                        character = "McMurphy",
-                        order = 1
-                    ),
-                    Actor(
-                        id = 7,
-                        name = "Jack",
-                        profilePath = "AllWorkAndNoPlay.jpg",
-                        character = "HelloJohnny",
-                        order = 0
-                    ),
-                    Actor(
-                        id = 8,
-                        name = "Nicholson",
-                        profilePath = "Cuckoo.jpg",
-                        character = "McMurphy",
-                        order = 1
-                    ),
                 ),
                 genres = listOf("Thriller", "Drama", "Comedy"),
-                runtime = "2h 10m"
+                runtime = "2h 10m",
+                similarMovies = similarMovies,
             )
 
             return sequenceOf(
