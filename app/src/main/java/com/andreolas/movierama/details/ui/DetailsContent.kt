@@ -2,16 +2,20 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -21,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,24 +36,20 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
@@ -56,7 +57,9 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
+import com.andreolas.movierama.ui.components.MovieImage
 import com.andreolas.movierama.ui.theme.AppTheme
+import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -146,27 +149,134 @@ fun DetailsMovieContent(
                     .fillMaxWidth()
                     .padding(top = 12.dp),
             ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .heightIn(min = 160.dp)
-                        .widthIn(min = 120.dp),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .memoryCachePolicy(CachePolicy.ENABLED)
-                        .diskCachePolicy(CachePolicy.ENABLED)
-                        .data(ApiConstants.TMDB_IMAGE_URL + movieDetails.posterPath)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.ic_movie_placeholder),
-                    error = painterResource(R.drawable.ic_movie_placeholder),
-                    contentDescription = stringResource(R.string.ok),
-                    contentScale = ContentScale.Fit,
+                MovieImage(
+                    path = movieDetails.posterPath,
                 )
 
                 OverviewDetails(movieDetails, movieDetails.genres)
             }
             Spacer(modifier = Modifier.height(4.dp))
             Divider(thickness = 1.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Cast(
+                cast = movieDetails.cast,
+                director = movieDetails.director,
+            )
         }
+    }
+}
+
+@Composable
+private fun Cast(
+    cast: List<Actor>,
+    director: Director?,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(start = 4.dp),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            text = stringResource(id = R.string.details__cast_title),
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(
+                top = 16.dp,
+                start = 4.dp,
+                bottom = 8.dp,
+            ),
+        ) {
+            items(
+                items = cast,
+                key = {
+                    it.id
+                }
+            ) {
+                CrewItemCard(
+                    actor = it,
+                )
+            }
+        }
+
+        if (director != null) {
+            DirectorItem(
+                director = director,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DirectorItem(
+    modifier: Modifier = Modifier,
+    director: Director,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.padding(
+            start = 8.dp, top = 16.dp,
+        )
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.details__director_title),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Text(
+            text = director.name,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+        )
+    }
+}
+
+@Composable
+private fun CrewItemCard(
+    modifier: Modifier = Modifier,
+    actor: Actor,
+) {
+    Card(
+        shape = PopularMovieItemShape,
+        modifier = Modifier
+            .clip(PopularMovieItemShape)
+            .clipToBounds()
+            .clickable {
+                //                onMovieItemClick()
+            },
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            MovieImage(path = actor.profilePath)
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
+                .height(40.dp),
+            text = actor.name,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Text(
+            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
+            text = actor.character,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+        )
     }
 }
 
@@ -178,7 +288,7 @@ private fun TitleDetails(movieDetails: MovieDetails) {
         Text(
             modifier = Modifier
                 .weight(1f),
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.displaySmall,
             text = movieDetails.title,
         )
     }
@@ -287,14 +397,56 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 director = Director(id = 123443321, name = "Forest Gump", profilePath = "BoxOfChocolates.jpg"),
                 cast = listOf(
                     Actor(
-                        id = 10,
+                        id = 1,
                         name = "Jack",
                         profilePath = "AllWorkAndNoPlay.jpg",
                         character = "HelloJohnny",
                         order = 0
                     ),
                     Actor(
-                        id = 20,
+                        id = 2,
+                        name = "Nicholson",
+                        profilePath = "Cuckoo.jpg",
+                        character = "McMurphy",
+                        order = 1
+                    ),
+                    Actor(
+                        id = 3,
+                        name = "Jack",
+                        profilePath = "AllWorkAndNoPlay.jpg",
+                        character = "HelloJohnny",
+                        order = 0
+                    ),
+                    Actor(
+                        id = 4,
+                        name = "Nicholson",
+                        profilePath = "Cuckoo.jpg",
+                        character = "McMurphy",
+                        order = 1
+                    ),
+                    Actor(
+                        id = 5,
+                        name = "Jack",
+                        profilePath = "AllWorkAndNoPlay.jpg",
+                        character = "HelloJohnny",
+                        order = 0
+                    ),
+                    Actor(
+                        id = 6,
+                        name = "Nicholson",
+                        profilePath = "Cuckoo.jpg",
+                        character = "McMurphy",
+                        order = 1
+                    ),
+                    Actor(
+                        id = 7,
+                        name = "Jack",
+                        profilePath = "AllWorkAndNoPlay.jpg",
+                        character = "HelloJohnny",
+                        order = 0
+                    ),
+                    Actor(
+                        id = 8,
                         name = "Nicholson",
                         profilePath = "Cuckoo.jpg",
                         character = "McMurphy",
