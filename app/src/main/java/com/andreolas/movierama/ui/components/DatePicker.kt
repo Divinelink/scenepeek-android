@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -57,6 +58,7 @@ private fun LocalDate.toUIString(): String {
 
 @Preview(name = "Light Mode - Filled", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode - Filled", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun SelectDateFieldPreview() {
     AppTheme {
@@ -71,6 +73,7 @@ fun SelectDateFieldPreview() {
 
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@ExcludeFromJacocoGeneratedReport
 @Composable
 fun SelectDateFieldNoValuePreview() {
     AppTheme {

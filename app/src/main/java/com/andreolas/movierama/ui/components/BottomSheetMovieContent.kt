@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -183,6 +184,7 @@ fun BottomSheetMovieContent(
 }
 
 @Composable
+@ExcludeFromJacocoGeneratedReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun HomeContentPreview() {
