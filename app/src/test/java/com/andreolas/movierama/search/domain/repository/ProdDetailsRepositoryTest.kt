@@ -37,6 +37,9 @@ class ProdDetailsRepositoryTest {
             Actor(id = 20, name = "Nicholson", profilePath = "Cuckoo.jpg", character = "McMurphy", order = 1),
         ),
         genres = listOf("Thriller", "Drama", "Comedy"),
+        runtime = "2h 10m",
+        similarMovies = null,
+        reviews = null,
     )
 
     private val request = DetailsRequestApi(movieId = "555")
@@ -62,7 +65,7 @@ class ProdDetailsRepositoryTest {
         productionCountries = listOf(),
         releaseDate = "2022",
         revenue = 0,
-        runtime = null,
+        runtime = 130,
         spokenLanguage = listOf(),
         status = null,
         tagline = "",

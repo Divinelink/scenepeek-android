@@ -43,5 +43,12 @@
 
     <string name="movie_extra_details">Details &amp; More</string>
 
+    <!-- Movie Details -->
+    <string name="details__director_title">Director</string>
+    <string name="details__cast_title">Cast</string>
+
+    <string name="details__more_like_this">More like this</string>
+    <string name="details__reviews">Reviews</string>
+
 
 </resources>

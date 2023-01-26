@@ -3,6 +3,7 @@ package com.andreolas.movierama.ui.theme
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -55,6 +56,13 @@ fun topBarColor(): Color {
 
 val FabSize = 56.dp
 val SearchBarSize = 48.dp
+
+val ListPaddingValues = PaddingValues(
+    top = 16.dp,
+    start = 12.dp,
+    end = 12.dp,
+    bottom = 16.dp,
+)
 
 enum class Theme(val storageKey: String) {
     SYSTEM("system"),

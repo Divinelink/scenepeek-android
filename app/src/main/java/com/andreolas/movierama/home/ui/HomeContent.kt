@@ -145,9 +145,11 @@ fun HomeContent(
 }
 
 @Composable
-fun LoadingContent() {
+fun LoadingContent(
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
     ) {
         Material3CircularProgressIndicator(

@@ -14,11 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,20 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
@@ -61,6 +52,7 @@ fun PopularMovieItem(
     movie: PopularMovie,
     onMovieItemClick: () -> Unit,
     onLikeMovieClick: () -> Unit,
+    withLikeButton: Boolean = true,
 ) {
     Card(
         shape = PopularMovieItemShape,
@@ -77,30 +69,18 @@ fun PopularMovieItem(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .heightIn(min = 160.dp)
-                    .widthIn(min = 120.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .data(ApiConstants.TMDB_IMAGE_URL + movie.posterPath)
-                    .crossfade(true)
-                    .build(),
-                error = painterResource(R.drawable.ic_movie_placeholder),
-                contentDescription = stringResource(R.string.ok),
-                contentScale = ContentScale.Fit,
-            )
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .clip(RoundedCornerShape(bottomEnd = 8.dp))
-                    .clickable { onLikeMovieClick() }
-            ) {
-                LikeButton(
-                    isFavorite = movie.isFavorite,
-                )
+            MovieImage(path = movie.posterPath)
+            if (withLikeButton) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .clip(RoundedCornerShape(bottomEnd = 8.dp))
+                        .clickable { onLikeMovieClick() }
+                ) {
+                    LikeButton(
+                        isFavorite = movie.isFavorite,
+                    )
+                }
             }
         }
 
@@ -168,15 +148,18 @@ fun LikeButton(
 }
 
 @Composable
-private fun Rating(
+fun Rating(
     modifier: Modifier,
     rating: String,
+    leadingContent: (@Composable () -> Unit) = {},
+    trailingContent: (@Composable () -> Unit) = {},
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        leadingContent()
         Icon(
             imageVector = Icons.Default.Star,
             tint = Color.Yellow,
@@ -188,6 +171,7 @@ private fun Rating(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
+        trailingContent()
     }
 }
 

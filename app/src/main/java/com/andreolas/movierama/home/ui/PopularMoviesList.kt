@@ -42,7 +42,12 @@ fun PopularMoviesList(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(movies) { movie ->
+        items(
+            key = {
+                it.id
+            },
+            items = movies
+        ) { movie ->
             PopularMovieItem(
                 movie = movie,
                 onMovieItemClick = { onMovieClicked(movie) },
