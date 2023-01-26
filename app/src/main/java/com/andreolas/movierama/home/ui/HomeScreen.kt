@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.andreolas.movierama.destinations.DetailsScreenDestination
+import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @RootNavGraph(start = true)
 @Destination
-@Suppress("UnusedPrivateMember")
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator,
@@ -25,6 +26,15 @@ fun HomeScreen(
         onLoadNextPage = viewModel::onLoadNextPage,
         onSearchMovies = viewModel::onSearchMovies,
         onClearClicked = viewModel::onClearClicked,
-        onBottomSheetClosed = viewModel::onBottomSheetClosed,
+        onGoToDetails = { movie ->
+            val navArgs = DetailsNavArguments(
+                movie = movie,
+            )
+            val destination = DetailsScreenDestination(
+                navArgs = navArgs,
+            )
+
+            navigator.navigate(destination)
+        }
     )
 }

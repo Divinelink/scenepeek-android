@@ -3,8 +3,6 @@ package com.andreolas.movierama.home.ui
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -30,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,7 +55,7 @@ fun HomeContent(
     onSearchMovies: (String) -> Unit,
     onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
-    onBottomSheetClosed: () -> Unit,
+    onGoToDetails: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val coroutineScope = rememberCoroutineScope()
@@ -83,9 +80,7 @@ fun HomeContent(
         sheetContent = {
             if (viewState.selectedMovie != null) {
                 BottomSheetMovieContent(
-                    onContentClicked = {
-                        // Go to more details
-                    },
+                    onContentClicked = onGoToDetails,
                     movie = viewState.selectedMovie,
                     onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
                 )
@@ -93,14 +88,6 @@ fun HomeContent(
         },
         modifier = Modifier
             .navigationBarsPadding()
-            .pointerInput(Unit) {
-                detectDragGestures { change, dragAmount ->
-                    onBottomSheetClosed()
-                    //                    bottomSheetScaffoldState.bottomSheetState.collapse()
-                }
-                detectTapGestures(onTap = {
-                })
-            }
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SearchBar(
@@ -139,12 +126,6 @@ fun HomeContent(
         } else {
             PopularMoviesList(
                 modifier = modifier
-                    .pointerInput(Unit) {
-                        detectDragGestures { change, dragAmount ->
-                        }
-                        detectTapGestures(onTap = {
-                        })
-                    }
                     .padding(paddingValues),
                 movies = viewState.moviesList,
                 onMovieClicked = {
@@ -194,7 +175,7 @@ fun HomeContentPreview() {
                 onLoadNextPage = {},
                 onSearchMovies = {},
                 onClearClicked = {},
-                onBottomSheetClosed = {},
+                onGoToDetails = {},
             )
         }
     }

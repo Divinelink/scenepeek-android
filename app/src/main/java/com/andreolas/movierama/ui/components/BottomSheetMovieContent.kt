@@ -47,7 +47,7 @@ import com.andreolas.movierama.ui.theme.AppTheme
 fun BottomSheetMovieContent(
     modifier: Modifier = Modifier,
     movie: PopularMovie,
-    onContentClicked: () -> Unit,
+    onContentClicked: (PopularMovie) -> Unit,
     onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
     Surface {
@@ -141,7 +141,7 @@ fun BottomSheetMovieContent(
             }
             Surface(
                 modifier = Modifier
-                    .clickable { onContentClicked() }
+                    .clickable { onContentClicked(movie) }
                     .fillMaxWidth()
                     .padding(
                         vertical = 20.dp,
