@@ -21,6 +21,7 @@ fun DetailsScreen(
         viewState = viewState.value,
         onNavigateUp = {
             navigator.popBackStack()
-        }
+        },
+        onMarkAsFavoriteClicked = {},
     )
 }

@@ -1,12 +1,22 @@
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -15,24 +25,37 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.R
+import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -41,6 +64,7 @@ fun DetailsContent(
     viewState: DetailsViewState,
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
+    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -75,11 +99,137 @@ fun DetailsContent(
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 },
+                actions = {
+                    LikeButton(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .clickable {
+                                onMarkAsFavoriteClicked(viewState.movie)
+                            },
+                        isFavorite = viewState.movie.isFavorite,
+                    )
+                }
             )
         }
     ) { paddingValues ->
-        if (viewState is DetailsViewState.Initial) {
-            LoadingContent()
+        when (viewState) {
+            is DetailsViewState.Completed -> {
+                DetailsMovieContent(
+                    modifier = Modifier,
+                    movieDetails = viewState.movieDetails,
+                )
+            }
+            is DetailsViewState.Error -> {
+                // todo
+            }
+            is DetailsViewState.Initial -> LoadingContent()
+        }
+    }
+}
+
+@Composable
+fun DetailsMovieContent(
+    modifier: Modifier = Modifier,
+    movieDetails: MovieDetails,
+) {
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            TitleDetails(movieDetails)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .heightIn(min = 160.dp)
+                        .widthIn(min = 120.dp),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .data(ApiConstants.TMDB_IMAGE_URL + movieDetails.posterPath)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(R.drawable.ic_movie_placeholder),
+                    error = painterResource(R.drawable.ic_movie_placeholder),
+                    contentDescription = stringResource(R.string.ok),
+                    contentScale = ContentScale.Fit,
+                )
+
+                OverviewDetails(movieDetails, movieDetails.genres)
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Divider(thickness = 1.dp)
+        }
+    }
+}
+
+@Composable
+private fun TitleDetails(movieDetails: MovieDetails) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(1f),
+            style = MaterialTheme.typography.displayMedium,
+            text = movieDetails.title,
+        )
+    }
+
+    Row(
+        modifier = Modifier.padding(start = 4.dp),
+    ) {
+        Text(
+            style = MaterialTheme.typography.bodySmall,
+            text = movieDetails.releaseDate,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        movieDetails.runtime?.let {
+            Text(
+                style = MaterialTheme.typography.bodySmall,
+                text = movieDetails.runtime,
+            )
+        }
+    }
+}
+
+@Composable
+private fun OverviewDetails(
+    movieDetails: MovieDetails,
+    genres: List<String>?,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        if (movieDetails.genres?.isNotEmpty() == true) {
+            Row {
+                genres?.forEach { genre ->
+                    Text(
+                        text = genre,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+            }
+        }
+        if (movieDetails.overview?.isNotEmpty() == true) {
+            Text(
+                modifier = Modifier.padding(
+                    top = 16.dp,
+                    bottom = 8.dp,
+                ),
+                text = movieDetails.overview,
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     }
 }
@@ -105,6 +255,7 @@ private fun DetailsContentPreview(
                 modifier = Modifier,
                 viewState = viewState,
                 onNavigateUp = {},
+                onMarkAsFavoriteClicked = {},
             )
         }
     }
@@ -120,17 +271,19 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 releaseDate = "",
                 title = "Flight Club",
                 rating = "",
-                overview = "",
+                overview = "This movie is good.",
                 isFavorite = false,
             )
             val movieDetails = MovieDetails(
                 id = 1123,
-                posterPath = "123456",
+                posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
                 releaseDate = "2022",
                 title = "Flight Club",
                 rating = "9.5",
                 isFavorite = false,
-                overview = "This movie is good.",
+                overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a " +
+                    "shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town," +
+                    " until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
                 director = Director(id = 123443321, name = "Forest Gump", profilePath = "BoxOfChocolates.jpg"),
                 cast = listOf(
                     Actor(
@@ -149,6 +302,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                     ),
                 ),
                 genres = listOf("Thriller", "Drama", "Comedy"),
+                runtime = "2h 10m"
             )
 
             return sequenceOf(

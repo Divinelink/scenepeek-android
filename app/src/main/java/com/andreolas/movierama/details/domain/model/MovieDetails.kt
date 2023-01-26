@@ -10,6 +10,7 @@ data class MovieDetails(
     val cast: List<Actor>,
     val releaseDate: String,
     val rating: String,
+    val runtime: String?,
     val isFavorite: Boolean,
     //    val reviews: List<Review>
     //    val similarMovies: List<SimilarMovie>

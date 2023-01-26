@@ -36,6 +36,7 @@ class GetMoviesDetailsUseCaseTest {
         releaseDate = "",
         rating = "",
         isFavorite = false,
+        runtime = "50m"
     )
 
     @Before

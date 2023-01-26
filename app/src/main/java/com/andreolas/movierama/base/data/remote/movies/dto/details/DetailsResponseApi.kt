@@ -63,11 +63,12 @@ internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
         genres = this.genres.map { it.name },
         director = this.crew.toDirector(),
         cast = this.cast.toActors(),
+        runtime = this.runtime.toHourMinuteFormat(),
         isFavorite = false,
     )
 }
 
-internal fun List<Crew>.toDirector(): Director? {
+private fun List<Crew>.toDirector(): Director? {
     val director = this.find { it.job == "Director" }
     return director?.let {
         Director(
@@ -78,11 +79,11 @@ internal fun List<Crew>.toDirector(): Director? {
     }
 }
 
-internal fun List<Cast>.toActors(): List<Actor> {
+private fun List<Cast>.toActors(): List<Actor> {
     return this.map(Cast::toActor)
 }
 
-internal fun Cast.toActor(): Actor {
+private fun Cast.toActor(): Actor {
     return Actor(
         id = this.id,
         name = this.name,
@@ -90,6 +91,18 @@ internal fun Cast.toActor(): Actor {
         character = this.character,
         order = this.order,
     )
+}
+
+@Suppress("MagicNumber")
+private fun Int?.toHourMinuteFormat(): String? {
+    return this?.let { minutes ->
+        val hours = minutes / 60
+        val remainingMinutes = minutes % 60
+        return when {
+            hours > 0 -> "${hours}h ${remainingMinutes}m"
+            else -> "${remainingMinutes}m"
+        }
+    }
 }
 
 @Serializable
