@@ -19,5 +19,8 @@ fun DetailsScreen(
 
     DetailsContent(
         viewState = viewState.value,
+        onNavigateUp = {
+            navigator.popBackStack()
+        }
     )
 }
