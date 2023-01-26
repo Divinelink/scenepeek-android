@@ -2,8 +2,6 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -25,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,20 +30,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
-import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
@@ -59,11 +48,11 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
-import com.andreolas.movierama.ui.components.PopularMovieItem
+import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
+import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
-import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -194,157 +183,6 @@ fun DetailsMovieContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
-}
-
-@Composable
-private fun CastList(
-    cast: List<Actor>,
-    director: Director?,
-) {
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp, bottom = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(id = R.string.details__cast_title),
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = ListPaddingValues,
-        ) {
-            items(
-                items = cast,
-                key = {
-                    it.id
-                }
-            ) {
-                CrewItemCard(
-                    actor = it,
-                )
-            }
-        }
-
-        if (director != null) {
-            DirectorItem(
-                director = director,
-            )
-        }
-    }
-}
-
-@Composable
-private fun SimilarMoviesList(
-    movies: List<PopularMovie>,
-) {
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp, bottom = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(id = R.string.details__more_like_this),
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = ListPaddingValues,
-        ) {
-            items(
-                items = movies,
-                key = {
-                    it.id
-                }
-            ) { movie ->
-
-                PopularMovieItem(
-                    movie = movie,
-                    withLikeButton = false,
-                    onMovieItemClick = {},
-                    onLikeMovieClick = {},
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DirectorItem(
-    modifier: Modifier = Modifier,
-    director: Director,
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.padding(
-            start = 8.dp, top = 16.dp,
-        )
-    ) {
-
-        Text(
-            text = stringResource(id = R.string.details__director_title),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Text(
-            text = director.name,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
-        )
-    }
-}
-
-@Composable
-private fun CrewItemCard(
-    modifier: Modifier = Modifier,
-    actor: Actor,
-) {
-    Card(
-        shape = PopularMovieItemShape,
-        modifier = Modifier
-            .clip(PopularMovieItemShape)
-            .clipToBounds()
-            .clickable {
-                //                onMovieItemClick()
-            },
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ) {
-            MovieImage(path = actor.profilePath)
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
-                .height(40.dp),
-            text = actor.name,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Text(
-            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
-            text = actor.character,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
-        )
     }
 }
 
