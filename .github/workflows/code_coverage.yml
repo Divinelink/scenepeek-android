@@ -11,27 +11,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 1.11
+
       - name: Run Coverage
         run: |
           chmod +x gradlew
-          ./gradlew app:coveralls
-
+          ./gradlew app:koverReport
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.3
         with:
-          api-level: 29
-          script: ./gradlew app:coveralls
           token: ${{ secrets.GITHUB_TOKEN }}
-#          paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
-#          min-coverage-overall: 40
-#          min-coverage-changed-files: 60
-#
+          paths: ${{ github.workspace }}/app/build/reports/kover/report.xml
+          min-coverage-overall: 10
+          min-coverage-changed-files: 20
 
 #jobs:
 #  android-coverage:
