@@ -28,27 +28,29 @@ fun CastList(
             .padding(top = 16.dp, bottom = 16.dp)
             .fillMaxWidth(),
     ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(id = R.string.details__cast_title),
-        )
+        if (cast.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp, end = 12.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                text = stringResource(id = R.string.details__cast_title),
+            )
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = ListPaddingValues,
-        ) {
-            items(
-                items = cast,
-                key = {
-                    it.id
-                }
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = ListPaddingValues,
             ) {
-                CrewItemCard(
-                    actor = it,
-                )
+                items(
+                    items = cast,
+                    key = {
+                        it.id
+                    }
+                ) {
+                    CrewItemCard(
+                        actor = it,
+                    )
+                }
             }
         }
 

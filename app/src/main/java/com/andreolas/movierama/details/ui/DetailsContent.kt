@@ -125,7 +125,7 @@ fun DetailsContent(
                 }
             )
         }
-    ) { paddingValues ->
+    ) {
         viewState.movieDetails?.let {
             DetailsMovieContent(
                 modifier = Modifier,
@@ -183,12 +183,11 @@ fun DetailsMovieContent(
                     director = movieDetails.director,
                 )
             }
-
-            similarMoviesList?.let { similarMovies ->
+            if (similarMoviesList?.isNotEmpty() == true) {
                 item {
                     Divider(thickness = 1.dp)
                     SimilarMoviesList(
-                        movies = similarMovies,
+                        movies = similarMoviesList,
                     )
                 }
             }
