@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod")
+
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
@@ -40,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -93,7 +95,9 @@ fun DetailsContent(
                 title = {
                     Text(
                         text = viewState.movie.title,
-                        style = MaterialTheme.typography.titleMedium
+                        maxLines = 2,
+                        style = MaterialTheme.typography.titleMedium,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 navigationIcon = {

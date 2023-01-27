@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
@@ -94,12 +95,14 @@ fun SearchBar(
                         FocusedSearchField(
                             value = searchValue,
                             onSearchFieldChanged = onSearchFieldChanged,
-                            modifier = Modifier.focusRequester(focusRequester)
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
                         )
                     }
                 }
                 ToolbarState.Unfocused -> {
                     Row(
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(SearchBarSize)
@@ -119,6 +122,7 @@ fun SearchBar(
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                         )
                         Text(
+                            overflow = TextOverflow.Ellipsis,
                             text = stringResource(id = R.string.toolbar_search),
                             style = MaterialTheme.typography.titleMedium,
                         )
@@ -191,6 +195,8 @@ private fun FocusedSearchField(
         decorationBox = { innerTextField ->
             if (value.isNullOrEmpty()) {
                 Text(
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     text = UIText.ResourceText(R.string.toolbar_search_placeholder).getString()
                 )
             }
