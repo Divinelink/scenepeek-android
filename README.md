@@ -17,10 +17,9 @@ use the release version for optimal performance.
 
 Welcome! The application uses an MVVM architecture which you can read about [here](documentation/Architecture.md). 
 
-
-## Unit Tests
-
 This application is built with a thorough suite of unit tests to ensure that all functionality is working as intended. These tests are run automatically with every build, and are a crucial part of our development process. They help us catch and fix bugs early on, and ensure that new changes don't break existing functionality. By using unit tests, we can have confidence that the app is working as expected, and that it will continue to work correctly as we make updates and improvements over time.
+
+In addition to the unit tests, the development process includes a system of pull requests. By reviewing the pull request history, you can get a detailed understanding of how the application was implemented. This can be especially helpful if you're looking to learn more about how a specific feature was developed or if you're trying to understand how the codebase is organized.
 
 ## Hiding Sensitive Information
 
