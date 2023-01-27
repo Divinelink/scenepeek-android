@@ -21,7 +21,7 @@ fun MovieImage(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
     errorPlaceHolder: Painter = painterResource(R.drawable.ic_movie_placeholder),
-    path: String,
+    path: String?,
 ) {
     AsyncImage(
         modifier = modifier

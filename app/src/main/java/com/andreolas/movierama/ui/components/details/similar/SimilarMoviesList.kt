@@ -14,13 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.ui.components.PopularMovieItem
+import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.home.domain.model.toMovie
+import com.andreolas.movierama.ui.components.MovieItem
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 
 @Composable
 fun SimilarMoviesList(
-    movies: List<PopularMovie>,
+    movies: List<SimilarMovie>,
 ) {
     Column(
         modifier = Modifier
@@ -44,11 +45,10 @@ fun SimilarMoviesList(
                 key = {
                     it.id
                 }
-            ) { movie ->
+            ) { similarMovie ->
 
-                PopularMovieItem(
-                    movie = movie,
-                    withLikeButton = false,
+                MovieItem(
+                    movie = similarMovie.toMovie(),
                     onMovieItemClick = {},
                     onLikeMovieClick = {},
                 )

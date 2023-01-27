@@ -48,6 +48,7 @@ import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
@@ -321,14 +322,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 )
             }
             val similarMovies = (1..10).map {
-                PopularMovie(
+                SimilarMovie(
                     id = it,
                     posterPath = "",
                     releaseDate = "",
                     title = "Flight Club",
                     rating = "",
                     overview = "This movie is good.",
-                    isFavorite = false,
                 )
             }.toList()
             val popularMovie = PopularMovie(

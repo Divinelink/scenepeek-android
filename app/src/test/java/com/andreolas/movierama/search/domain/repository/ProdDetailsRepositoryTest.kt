@@ -10,10 +10,14 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Autho
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewResultsApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarMovieApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
@@ -145,7 +149,7 @@ class ProdDetailsRepositoryTest {
         authorDetails = AuthorDetailsApi(
             avatarPath = "avatar.jpg",
             name = "testing",
-            rating = 10,
+            rating = 10.0,
             username = "testing"
         ),
         content = "Lorem ipsum test",
@@ -176,8 +180,33 @@ class ProdDetailsRepositoryTest {
         )
     }.toMutableList()
 
-    private
-    var movieRemote = FakeMovieRemote()
+    private val similarMovieApiList = (1..10).map {
+        SimilarMovieApi(
+            id = it,
+            adult = false,
+            backdropPath = if (it % 2 == 0) "backdrop.jpg" else null,
+            genreIds = listOf(it),
+            originalLanguage = "Lorem Ipsum language $it",
+            originalTitle = "Lorem Ipsum title $it",
+            overview = "Lorem Ipsum $it",
+            popularity = it.toDouble(),
+            posterPath = if (it % 2 == 0) ".jpg" else null,
+            releaseDate = (2000 + it).toString(),
+            title = "Lorem Ipsum title",
+            video = false,
+            voteAverage = it.toDouble(),
+            voteCount = null
+        )
+    }.toList()
+
+    private val similarResponseApi = SimilarResponseApi(
+        page = 1,
+        results = similarMovieApiList,
+        totalPages = 0,
+        totalResults = 0,
+    )
+
+    private var movieRemote = FakeMovieRemote()
 
     private lateinit var repository: DetailsRepository
 
@@ -219,6 +248,34 @@ class ProdDetailsRepositoryTest {
         )
 
         val actualResult = repository.fetchMovieReviews(
+            request = request
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun testFetchSimilarMoviesSuccessfully() = runTest {
+        val request = SimilarRequestApi(
+            movieId = 555,
+        )
+        val expectedResult = (1..10).map {
+            SimilarMovie(
+                id = it,
+                posterPath = if (it % 2 == 0) ".jpg" else null,
+                releaseDate = (2000 + it).toString(),
+                title = "Lorem Ipsum title",
+                rating = it.toDouble().toString(),
+                overview = "Lorem Ipsum $it"
+            )
+        }
+
+        movieRemote.mockFetchSimilarMovies(
+            request = request,
+            response = flowOf(similarResponseApi)
+        )
+
+        val actualResult = repository.fetchSimilarMovies(
             request = request
         ).first() as Result.Success
 

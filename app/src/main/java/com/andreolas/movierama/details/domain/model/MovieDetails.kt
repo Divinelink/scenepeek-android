@@ -1,7 +1,5 @@
 package com.andreolas.movierama.details.domain.model
 
-import com.andreolas.movierama.home.domain.model.PopularMovie
-
 data class MovieDetails(
     val id: Int,
     val title: String,
@@ -15,5 +13,5 @@ data class MovieDetails(
     val runtime: String?,
     val isFavorite: Boolean,
     val reviews: List<Review>?,
-    val similarMovies: List<PopularMovie>?,
+    val similarMovies: List<SimilarMovie>?,
 )
