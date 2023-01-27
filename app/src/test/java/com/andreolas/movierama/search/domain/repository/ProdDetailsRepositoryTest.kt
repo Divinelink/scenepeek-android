@@ -48,8 +48,6 @@ class ProdDetailsRepositoryTest {
         ),
         genres = listOf("Thriller", "Drama", "Comedy"),
         runtime = "2h 10m",
-        similarMovies = null,
-        reviews = null,
     )
 
     private val detailsResponseApi = DetailsResponseApi(
@@ -194,7 +192,7 @@ class ProdDetailsRepositoryTest {
             releaseDate = (2000 + it).toString(),
             title = "Lorem Ipsum title",
             video = false,
-            voteAverage = it.toDouble(),
+            voteAverage = 9.85444334,
             voteCount = null
         )
     }.toList()
@@ -265,7 +263,7 @@ class ProdDetailsRepositoryTest {
                 posterPath = if (it % 2 == 0) ".jpg" else null,
                 releaseDate = (2000 + it).toString(),
                 title = "Lorem Ipsum title",
-                rating = it.toDouble().toString(),
+                rating = 9.9.toString(),
                 overview = "Lorem Ipsum $it"
             )
         }
