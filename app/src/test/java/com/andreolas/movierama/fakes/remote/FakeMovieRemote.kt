@@ -2,6 +2,10 @@ package com.andreolas.movierama.fakes.remote
 
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -43,6 +47,28 @@ class FakeMovieRemote {
     ) {
         whenever(
             mock.fetchDetails(request)
+        ).thenReturn(
+            response
+        )
+    }
+
+    fun mockFetchMovieReviews(
+        request: ReviewsRequestApi,
+        response: Flow<ReviewsResponseApi>,
+    ) {
+        whenever(
+            mock.fetchReviews(request)
+        ).thenReturn(
+            response
+        )
+    }
+
+    fun mockFetchSimilarMovies(
+        request: SimilarRequestApi,
+        response: Flow<SimilarResponseApi>,
+    ) {
+        whenever(
+            mock.fetchSimilarMovies(request)
         ).thenReturn(
             response
         )

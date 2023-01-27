@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package com.andreolas.movierama.ui.components.details.reviews
 
 import android.content.res.Configuration
@@ -66,14 +67,16 @@ fun ReviewItemCard(
                 maxWidth = if (!expanded) MINIMUM_CARD_SIZE else MAXIMUM_CARD_SIZE
             },
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Rating(
-                modifier = Modifier
-                    .padding(top = 12.dp, start = 12.dp, end = 12.dp),
-                rating = review.rating.toString(),
-            )
+        review.rating?.let {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Rating(
+                    modifier = Modifier
+                        .padding(top = 12.dp, start = 12.dp, end = 12.dp),
+                    rating = review.rating.toString(),
+                )
+            }
         }
 
         Text(

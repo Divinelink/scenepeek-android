@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,21 +44,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 @Composable
-fun PopularMovieItem(
+fun MovieItem(
     modifier: Modifier = Modifier,
-    movie: PopularMovie,
+    movie: Movie,
     onMovieItemClick: () -> Unit,
     onLikeMovieClick: () -> Unit,
-    withLikeButton: Boolean = true,
 ) {
     Card(
         shape = PopularMovieItemShape,
         modifier = Modifier
+            .widthIn(max = 140.dp)
             .clip(PopularMovieItemShape)
             .clipToBounds()
             .clickable {
@@ -69,8 +71,12 @@ fun PopularMovieItem(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            MovieImage(path = movie.posterPath)
-            if (withLikeButton) {
+            MovieImage(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(180.dp),
+                path = movie.posterPath,
+            )
+            movie.isFavorite?.let {
                 Column(
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -186,9 +192,9 @@ fun PopularMovieItemPreview() {
                 .width(160.dp)
                 .height(340.dp)
         ) {
-            PopularMovieItem(
+            MovieItem(
                 modifier = Modifier,
-                movie = PopularMovie(
+                movie = Movie(
                     id = 0,
                     posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
                     releaseDate = "2023",
@@ -213,9 +219,9 @@ fun MovieItemPreview() {
         Surface(
             modifier = Modifier
         ) {
-            PopularMovieItem(
+            MovieItem(
                 modifier = Modifier,
-                movie = PopularMovie(
+                movie = Movie(
                     id = 0,
                     posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
                     releaseDate = "2023",
@@ -223,7 +229,7 @@ fun MovieItemPreview() {
                         "Return of the Revenge of the Terror of the Attack of the Evil," +
                         " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
                     rating = "4.2",
-                    isFavorite = false,
+                    isFavorite = null,
                     overview = "",
                 ),
                 onMovieItemClick = {},

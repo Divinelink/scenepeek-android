@@ -1,16 +1,24 @@
+@file:Suppress("LongMethod")
+
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -30,10 +38,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -43,6 +53,7 @@ import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
@@ -53,6 +64,7 @@ import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
+import com.andreolas.movierama.ui.theme.MovieImageShape
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +72,7 @@ fun DetailsContent(
     viewState: DetailsViewState,
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
-    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    //    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -84,8 +96,10 @@ fun DetailsContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = viewState.movie.title,
-                        style = MaterialTheme.typography.titleMedium
+                        text = viewState.movieDetails?.title ?: "",
+                        maxLines = 2,
+                        style = MaterialTheme.typography.titleMedium,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 navigationIcon = {
@@ -100,26 +114,31 @@ fun DetailsContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clip(RoundedCornerShape(50.dp))
-                            .clickable {
-                                onMarkAsFavoriteClicked(viewState.movie)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                // todo
                             },
-                        isFavorite = viewState.movie.isFavorite,
+                        isFavorite = viewState.movieDetails?.isFavorite ?: false,
                     )
                 }
             )
         }
     ) { paddingValues ->
-        when (viewState) {
-            is DetailsViewState.Completed -> {
-                DetailsMovieContent(
-                    modifier = Modifier,
-                    movieDetails = viewState.movieDetails,
-                )
-            }
-            is DetailsViewState.Error -> {
-                // todo
-            }
-            is DetailsViewState.Initial -> LoadingContent()
+        viewState.movieDetails?.let {
+            DetailsMovieContent(
+                modifier = Modifier,
+                movieDetails = viewState.movieDetails,
+                similarMoviesList = viewState.similarMovies,
+                reviewsList = viewState.reviews,
+            )
+        }
+        if (viewState.isLoading) {
+            LoadingContent()
+        }
+        if (viewState.error != null) {
+            // Handle Error State
         }
     }
 }
@@ -128,6 +147,8 @@ fun DetailsContent(
 fun DetailsMovieContent(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
+    similarMoviesList: List<SimilarMovie>?,
+    reviewsList: List<Review>?,
 ) {
     Surface {
         LazyColumn(
@@ -142,7 +163,9 @@ fun DetailsMovieContent(
                         .padding(paddingValues = ListPaddingValues),
                 ) {
                     MovieImage(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .clip(MovieImageShape)
+                            .weight(1f),
                         path = movieDetails.posterPath,
                     )
 
@@ -161,20 +184,20 @@ fun DetailsMovieContent(
                 )
             }
 
-            movieDetails.similarMovies?.let {
+            similarMoviesList?.let { similarMovies ->
                 item {
                     Divider(thickness = 1.dp)
                     SimilarMoviesList(
-                        movies = movieDetails.similarMovies
+                        movies = similarMovies,
                     )
                 }
             }
 
-            movieDetails.reviews?.let { reviews ->
+            if (!reviewsList.isNullOrEmpty()) {
                 item {
                     Divider(thickness = 1.dp)
                     ReviewsList(
-                        reviews = reviews,
+                        reviews = reviewsList,
                     )
                 }
             }
@@ -230,15 +253,21 @@ private fun OverviewDetails(
             .padding(start = 12.dp)
             .fillMaxWidth(),
     ) {
-        if (movieDetails.genres?.isNotEmpty() == true) {
-            Row {
-                genres?.forEach { genre ->
-                    Text(
-                        text = genre,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
+        if (!movieDetails.genres.isNullOrEmpty()) {
+            LazyVerticalGrid(
+                modifier = Modifier.heightIn(max = 60.dp),
+                columns = GridCells.Adaptive(80.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                genres?.let {
+                    items(genres) { genre ->
+                        Text(
+                            text = genre,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
                 }
             }
         }
@@ -278,7 +307,6 @@ private fun DetailsContentPreview(
                 modifier = Modifier,
                 viewState = viewState,
                 onNavigateUp = {},
-                onMarkAsFavoriteClicked = {},
             )
         }
     }
@@ -307,14 +335,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 )
             }
             val similarMovies = (1..10).map {
-                PopularMovie(
+                SimilarMovie(
                     id = it,
                     posterPath = "",
                     releaseDate = "",
                     title = "Flight Club",
                     rating = "",
                     overview = "This movie is good.",
-                    isFavorite = false,
                 )
             }.toList()
             val popularMovie = PopularMovie(
@@ -367,24 +394,36 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                         order = 1
                     ),
                 ),
-                genres = listOf("Thriller", "Drama", "Comedy"),
+                genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
                 runtime = "2h 10m",
-                similarMovies = similarMovies,
-                reviews = reviews,
             )
 
             return sequenceOf(
-                DetailsViewState.Initial(
-                    movie = popularMovie,
+                DetailsViewState(
+                    movieId = popularMovie.id,
+                    isLoading = true,
                 ),
 
-                DetailsViewState.Completed(
-                    movie = popularMovie,
+                DetailsViewState(
+                    movieId = popularMovie.id,
                     movieDetails = movieDetails,
                 ),
 
-                DetailsViewState.Error(
-                    movie = popularMovie,
+                DetailsViewState(
+                    movieId = popularMovie.id,
+                    movieDetails = movieDetails,
+                    similarMovies = similarMovies,
+                ),
+
+                DetailsViewState(
+                    movieId = popularMovie.id,
+                    movieDetails = movieDetails,
+                    similarMovies = similarMovies,
+                    reviews = reviews,
+                ),
+
+                DetailsViewState(
+                    movieId = popularMovie.id,
                     error = UIText.StringText("Something went wrong.")
                 ),
             )

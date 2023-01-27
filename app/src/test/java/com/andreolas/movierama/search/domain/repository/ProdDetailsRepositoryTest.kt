@@ -1,13 +1,23 @@
 package com.andreolas.movierama.search.domain.repository
 
+import com.andreolas.movierama.base.data.remote.movies.dto.details.Credits
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.Genre
 import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Cast
 import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.AuthorDetailsApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewResultsApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarMovieApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
@@ -38,11 +48,8 @@ class ProdDetailsRepositoryTest {
         ),
         genres = listOf("Thriller", "Drama", "Comedy"),
         runtime = "2h 10m",
-        similarMovies = null,
-        reviews = null,
     )
 
-    private val request = DetailsRequestApi(movieId = "555")
     private val detailsResponseApi = DetailsResponseApi(
         adult = false,
         backdropPath = "",
@@ -73,64 +80,128 @@ class ProdDetailsRepositoryTest {
         video = false,
         voteAverage = 9.5,
         voteCount = 0,
-        cast = listOf(
-            Cast(
-                adult = false,
-                castId = 10,
-                character = "HelloJohnny",
-                creditId = "",
-                gender = 0,
-                id = 10,
-                knownForDepartment = "",
-                name = "Jack",
-                order = 0,
-                originalName = "",
-                popularity = 0.0,
-                profilePath = "AllWorkAndNoPlay.jpg"
+        credits = Credits(
+            cast = listOf(
+                Cast(
+                    adult = false,
+                    castId = 10,
+                    character = "HelloJohnny",
+                    creditId = "",
+                    gender = 0,
+                    id = 10,
+                    knownForDepartment = "",
+                    name = "Jack",
+                    order = 0,
+                    originalName = "",
+                    popularity = 0.0,
+                    profilePath = "AllWorkAndNoPlay.jpg"
+                ),
+                Cast(
+                    adult = false,
+                    castId = 10,
+                    character = "McMurphy",
+                    creditId = "",
+                    gender = 0,
+                    id = 20,
+                    knownForDepartment = "",
+                    name = "Nicholson",
+                    order = 1,
+                    originalName = "",
+                    popularity = 0.0,
+                    profilePath = "Cuckoo.jpg"
+                )
             ),
-            Cast(
-                adult = false,
-                castId = 10,
-                character = "McMurphy",
-                creditId = "",
-                gender = 0,
-                id = 20,
-                knownForDepartment = "",
-                name = "Nicholson",
-                order = 1,
-                originalName = "",
-                popularity = 0.0,
-                profilePath = "Cuckoo.jpg"
-            )
-        ),
-        crew = listOf(
-            Crew(
-                adult = false,
-                creditId = "",
-                department = "",
-                gender = 0,
-                id = 123443321,
-                job = "Director",
-                knownForDepartment = "",
-                name = "Forest Gump",
-                originalName = "",
-                popularity = 0.0,
-                profilePath = "BoxOfChocolates.jpg"
-            ),
-            Crew(
-                adult = false,
-                creditId = "",
-                department = "",
-                gender = 0,
-                id = 123443321,
-                job = "Guy with an irrelevant job",
-                knownForDepartment = "",
-                name = "The one for the sound",
-                originalName = "Boomer",
-                popularity = 0.0,
-                profilePath = "BoxOfChocolates.jpg"
+            crew = listOf(
+                Crew(
+                    adult = false,
+                    creditId = "",
+                    department = "",
+                    gender = 0,
+                    id = 123443321,
+                    job = "Director",
+                    knownForDepartment = "",
+                    name = "Forest Gump",
+                    originalName = "",
+                    popularity = 0.0,
+                    profilePath = "BoxOfChocolates.jpg"
+                ),
+                Crew(
+                    adult = false,
+                    creditId = "",
+                    department = "",
+                    gender = 0,
+                    id = 123443321,
+                    job = "Guy with an irrelevant job",
+                    knownForDepartment = "",
+                    name = "The one for the sound",
+                    originalName = "Boomer",
+                    popularity = 0.0,
+                    profilePath = "BoxOfChocolates.jpg"
+                )
             )
         )
+    )
+
+    private val reviewsResultsApi = ReviewResultsApi(
+        author = "AuthorName",
+        authorDetails = AuthorDetailsApi(
+            avatarPath = "avatar.jpg",
+            name = "testing",
+            rating = 10.0,
+            username = "testing"
+        ),
+        content = "Lorem ipsum test",
+        createdAt = "2017-02-13T23:16:19.538Z",
+        id = "",
+        updatedAt = "",
+        url = "",
+    )
+
+    private val reviewsResponseApi = ReviewsResponseApi(
+        id = 1,
+        page = 1,
+        results = listOf(
+            reviewsResultsApi,
+            reviewsResultsApi,
+            reviewsResultsApi,
+        ),
+        totalPages = 1,
+        totalResults = 3,
+    )
+
+    private val expectedReviews: List<Review> = (1..3).map {
+        Review(
+            authorName = "AuthorName",
+            rating = 10,
+            content = "Lorem ipsum test",
+            date = "13-02-2017",
+        )
+    }.toMutableList()
+
+    private val similarMovieApiList = (1..10).map {
+        SimilarMovieApi(
+            id = it,
+            adult = false,
+            backdropPath = if (it % 2 == 0) "backdrop.jpg" else null,
+            genreIds = listOf(it),
+            originalLanguage = "Lorem Ipsum language $it",
+            originalTitle = "Lorem Ipsum title $it",
+            overview = "Lorem Ipsum $it",
+            popularity = it.toDouble(),
+            posterPath = if (it % 2 == 0) ".jpg" else null,
+            releaseDate = (2000 + it).toString(),
+            title = "Lorem Ipsum title",
+            video = false,
+            voteAverage = 9.85444334,
+            voteCount = null
+        )
+    }.toList()
+
+    private val similarResponseApi = SimilarResponseApi(
+        page = 1,
+        results = similarMovieApiList,
+        totalPages = 0,
+        totalResults = 0,
     )
 
     private var movieRemote = FakeMovieRemote()
@@ -146,6 +217,8 @@ class ProdDetailsRepositoryTest {
 
     @Test
     fun testFetchMovieDetailsSuccessfully() = runTest {
+        val request = DetailsRequestApi(movieId = 555)
+
         val expectedResult = movieDetails
 
         movieRemote.mockFetchMovieDetails(
@@ -154,7 +227,54 @@ class ProdDetailsRepositoryTest {
         )
 
         val actualResult = repository.fetchMovieDetails(
-            request = DetailsRequestApi(movieId = "555")
+            request = DetailsRequestApi(movieId = 555)
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun testFetchMovieReviewsSuccessfully() = runTest {
+        val request = ReviewsRequestApi(
+            movieId = 555,
+        )
+        val expectedResult = expectedReviews
+
+        movieRemote.mockFetchMovieReviews(
+            request = request,
+            response = flowOf(reviewsResponseApi)
+        )
+
+        val actualResult = repository.fetchMovieReviews(
+            request = request
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun testFetchSimilarMoviesSuccessfully() = runTest {
+        val request = SimilarRequestApi(
+            movieId = 555,
+        )
+        val expectedResult = (1..10).map {
+            SimilarMovie(
+                id = it,
+                posterPath = if (it % 2 == 0) ".jpg" else null,
+                releaseDate = (2000 + it).toString(),
+                title = "Lorem Ipsum title",
+                rating = 9.9.toString(),
+                overview = "Lorem Ipsum $it"
+            )
+        }
+
+        movieRemote.mockFetchSimilarMovies(
+            request = request,
+            response = flowOf(similarResponseApi)
+        )
+
+        val actualResult = repository.fetchSimilarMovies(
+            request = request
         ).first() as Result.Success
 
         assertThat(expectedResult).isEqualTo(actualResult.data)

@@ -14,7 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.ui.components.PopularMovieItem
+import com.andreolas.movierama.home.domain.model.toMovie
+import com.andreolas.movierama.ui.components.MovieItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
 import com.andreolas.movierama.ui.theme.AppTheme
 
@@ -47,11 +48,11 @@ fun PopularMoviesList(
                 it.id
             },
             items = movies
-        ) { movie ->
-            PopularMovieItem(
-                movie = movie,
-                onMovieItemClick = { onMovieClicked(movie) },
-                onLikeMovieClick = { onMarkAsFavoriteClicked(movie) }
+        ) { popularMovie ->
+            MovieItem(
+                movie = popularMovie.toMovie(),
+                onMovieItemClick = { onMovieClicked(popularMovie) },
+                onLikeMovieClick = { onMarkAsFavoriteClicked(popularMovie) }
             )
         }
     }
