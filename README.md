@@ -1,4 +1,4 @@
-[![Coverage Status](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_19.svg)
+![Coverage Status](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_19.svg)
 
 # MovieRama
 
@@ -15,13 +15,12 @@ use the release version for optimal performance.
 
 ## Getting Started
 
-If you've found this repository for the first time, welcome! The application uses an MVVM
-architecture which you can read about [here](documentation/Architecture.md). You can also find some
-screenshots defining the Aesthetics & UI of the application [here](documentation/Screenshots.md)
+Welcome! The application uses an MVVM architecture which you can read about [here](documentation/Architecture.md). 
 
-The [documentation folder](documentation) can also serve as a guide to getting familiar with this
-project. This can help build an understanding before you join a live stream - but if you have any
-questions, just ask in chat.
+
+## Unit Tests
+
+This application is built with a thorough suite of unit tests to ensure that all functionality is working as intended. These tests are run automatically with every build, and are a crucial part of our development process. They help us catch and fix bugs early on, and ensure that new changes don't break existing functionality. By using unit tests, we can have confidence that the app is working as expected, and that it will continue to work correctly as we make updates and improvements over time.
 
 ## Hiding Sensitive Information
 
