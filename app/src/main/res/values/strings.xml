@@ -50,6 +50,8 @@
     <string name="details__more_like_this">More like this</string>
     <string name="details__reviews">Reviews</string>
 
+    <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
+
     <!-- Accessibility -->
     <string name="movie_image_placeholder">Movie image</string>
 

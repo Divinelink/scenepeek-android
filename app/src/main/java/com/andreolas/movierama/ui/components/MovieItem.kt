@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,6 +58,7 @@ fun MovieItem(
     Card(
         shape = PopularMovieItemShape,
         modifier = Modifier
+            .widthIn(max = 140.dp)
             .clip(PopularMovieItemShape)
             .clipToBounds()
             .clickable {
@@ -68,7 +71,11 @@ fun MovieItem(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            MovieImage(path = movie.posterPath)
+            MovieImage(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(180.dp),
+                path = movie.posterPath,
+            )
             movie.isFavorite?.let {
                 Column(
                     modifier = Modifier

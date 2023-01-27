@@ -83,7 +83,7 @@ class ProdMovieService @Inject constructor(
         val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
         val url = baseUrl +
             "${request.movieId}" +
-            "/reviews" +
+            "/similar" +
             "?api_key=$apiKey" +
             "&language=en-US"
 

@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
@@ -116,17 +117,19 @@ fun DetailsContent(
             )
         }
     ) { paddingValues ->
-        when (viewState) {
-            is DetailsViewState.Completed -> {
-                DetailsMovieContent(
-                    modifier = Modifier,
-                    movieDetails = viewState.movieDetails,
-                )
-            }
-            is DetailsViewState.Error -> {
-                // todo
-            }
-            is DetailsViewState.Initial -> LoadingContent()
+        viewState.movieDetails?.let {
+            DetailsMovieContent(
+                modifier = Modifier,
+                movieDetails = viewState.movieDetails,
+                similarMoviesList = viewState.similarMovies,
+                reviewsList = viewState.reviews,
+            )
+        }
+        if (viewState.isLoading) {
+            LoadingContent()
+        }
+        if (viewState.error != null) {
+            // Handle Error State
         }
     }
 }
@@ -135,6 +138,8 @@ fun DetailsContent(
 fun DetailsMovieContent(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
+    similarMoviesList: List<SimilarMovie>?,
+    reviewsList: List<Review>?,
 ) {
     Surface {
         LazyColumn(
@@ -170,20 +175,20 @@ fun DetailsMovieContent(
                 )
             }
 
-            movieDetails.similarMovies?.let {
+            similarMoviesList?.let { similarMovies ->
                 item {
                     Divider(thickness = 1.dp)
                     SimilarMoviesList(
-                        movies = movieDetails.similarMovies
+                        movies = similarMovies,
                     )
                 }
             }
 
-            if (!movieDetails.reviews.isNullOrEmpty()) {
+            if (!reviewsList.isNullOrEmpty()) {
                 item {
                     Divider(thickness = 1.dp)
                     ReviewsList(
-                        reviews = movieDetails.reviews,
+                        reviews = reviewsList,
                     )
                 }
             }
@@ -383,21 +388,35 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 ),
                 genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
                 runtime = "2h 10m",
-                similarMovies = similarMovies,
-                reviews = reviews,
+                //                similarMovies = similarMovies,
+                //                reviews = reviews,
             )
 
             return sequenceOf(
-                DetailsViewState.Initial(
+                DetailsViewState(
                     movie = popularMovie,
+                    isLoading = true,
                 ),
 
-                DetailsViewState.Completed(
+                DetailsViewState(
                     movie = popularMovie,
                     movieDetails = movieDetails,
                 ),
 
-                DetailsViewState.Error(
+                DetailsViewState(
+                    movie = popularMovie,
+                    movieDetails = movieDetails,
+                    similarMovies = similarMovies,
+                ),
+
+                DetailsViewState(
+                    movie = popularMovie,
+                    movieDetails = movieDetails,
+                    similarMovies = similarMovies,
+                    reviews = reviews,
+                ),
+
+                DetailsViewState(
                     movie = popularMovie,
                     error = UIText.StringText("Something went wrong.")
                 ),
