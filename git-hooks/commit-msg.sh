@@ -11,8 +11,6 @@ import re
 REGEX = "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z ]+\))?: [\w,\-\"().\/ ]+$|(Merge (.*\\s*)*)|(Initial commit$)"
 # e.g. ^(feat|fix|docs|style|refactor|test|build|ci|perf)(\(.+\))?\:\s(.{3,})
 
-GUIDELINE_LINK = 'Link to be added soon!'
-# e.g. https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
 
 with open(sys.argv[1]) as commit:
     lines = commit.readlines()
