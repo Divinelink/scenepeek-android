@@ -28,7 +28,8 @@ fun HomeScreen(
         onClearClicked = viewModel::onClearClicked,
         onGoToDetails = { movie ->
             val navArgs = DetailsNavArguments(
-                movie = movie,
+                movieId = movie.id,
+                isFavorite = movie.isFavorite,
             )
             val destination = DetailsScreenDestination(
                 navArgs = navArgs,

@@ -4,6 +4,7 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -70,7 +72,7 @@ fun DetailsContent(
     viewState: DetailsViewState,
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
-    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    //    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -94,7 +96,7 @@ fun DetailsContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = viewState.movie.title,
+                        text = viewState.movieDetails?.title ?: "",
                         maxLines = 2,
                         style = MaterialTheme.typography.titleMedium,
                         overflow = TextOverflow.Ellipsis,
@@ -112,10 +114,13 @@ fun DetailsContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clip(RoundedCornerShape(50.dp))
-                            .clickable {
-                                onMarkAsFavoriteClicked(viewState.movie)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                // todo
                             },
-                        isFavorite = viewState.movie.isFavorite,
+                        isFavorite = viewState.movieDetails?.isFavorite ?: false,
                     )
                 }
             )
@@ -302,7 +307,6 @@ private fun DetailsContentPreview(
                 modifier = Modifier,
                 viewState = viewState,
                 onNavigateUp = {},
-                onMarkAsFavoriteClicked = {},
             )
         }
     }
@@ -392,36 +396,34 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
                 ),
                 genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
                 runtime = "2h 10m",
-                //                similarMovies = similarMovies,
-                //                reviews = reviews,
             )
 
             return sequenceOf(
                 DetailsViewState(
-                    movie = popularMovie,
+                    movieId = popularMovie.id,
                     isLoading = true,
                 ),
 
                 DetailsViewState(
-                    movie = popularMovie,
+                    movieId = popularMovie.id,
                     movieDetails = movieDetails,
                 ),
 
                 DetailsViewState(
-                    movie = popularMovie,
+                    movieId = popularMovie.id,
                     movieDetails = movieDetails,
                     similarMovies = similarMovies,
                 ),
 
                 DetailsViewState(
-                    movie = popularMovie,
+                    movieId = popularMovie.id,
                     movieDetails = movieDetails,
                     similarMovies = similarMovies,
                     reviews = reviews,
                 ),
 
                 DetailsViewState(
-                    movie = popularMovie,
+                    movieId = popularMovie.id,
                     error = UIText.StringText("Something went wrong.")
                 ),
             )

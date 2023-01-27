@@ -10,7 +10,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
     navArgsDelegate = DetailsNavArguments::class,
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 fun DetailsScreen(
     navigator: DestinationsNavigator,
     viewModel: DetailsViewModel = hiltViewModel(),
@@ -22,6 +21,5 @@ fun DetailsScreen(
         onNavigateUp = {
             navigator.popBackStack()
         },
-        onMarkAsFavoriteClicked = {},
     )
 }

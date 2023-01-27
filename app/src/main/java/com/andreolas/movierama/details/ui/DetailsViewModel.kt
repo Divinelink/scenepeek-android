@@ -32,10 +32,10 @@ class DetailsViewModel @Inject constructor(
 
     private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
         value = DetailsViewState(
-            movie = args.movie,
+            movieId = args.movieId,
+            isFavorite = args.isFavorite,
             isLoading = true,
-
-            )
+        )
     )
     val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
 
@@ -43,7 +43,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getMovieDetailsUseCase(
                 parameters = DetailsRequestApi(
-                    movieId = args.movie.id
+                    movieId = args.movieId
                 )
             ).onEach { result ->
                 _viewState.update { viewState ->
@@ -52,35 +52,39 @@ class DetailsViewModel @Inject constructor(
                             when (result.data) {
                                 is MovieDetailsResult.DetailsSuccess -> viewState.copy(
                                     isLoading = false,
-                                    movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails
+                                    movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails.copy(isFavorite = args.isFavorite),
                                 )
                                 is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
-                                    reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews
+                                    reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
                                 )
                                 is MovieDetailsResult.SimilarSuccess -> viewState.copy(
-                                    similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar
+                                    similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
                                 )
                                 is MovieDetailsResult.Failure.FatalError -> viewState.copy(
-                                    error = (result.data as MovieDetailsResult.Failure.FatalError).message
+                                    error = (result.data as MovieDetailsResult.Failure.FatalError).message,
+                                    isLoading = false,
                                 )
                                 MovieDetailsResult.Failure.Unknown -> viewState.copy(
-                                    error = MovieDetailsResult.Failure.Unknown.message
+                                    error = MovieDetailsResult.Failure.Unknown.message,
+                                    isLoading = false,
                                 )
                             }
                         }
                         is Result.Error -> {
                             if (result.exception is MovieDetailsException) {
                                 viewState.copy(
-                                    error = MovieDetailsResult.Failure.FatalError().message
+                                    error = MovieDetailsResult.Failure.FatalError().message,
+                                    isLoading = false,
                                 )
                             } else {
                                 viewState.copy(
-                                    error = MovieDetailsResult.Failure.Unknown.message
+                                    error = MovieDetailsResult.Failure.Unknown.message,
+                                    isLoading = false,
                                 )
                             }
                         }
                         Result.Loading -> viewState.copy(
-                            isLoading = true
+                            isLoading = true,
                         )
                     }
                 }

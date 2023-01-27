@@ -36,7 +36,7 @@ data class DetailsResponseApi(
     val productionCountries: List<ProductionCountry>,
     @SerialName("release_date")
     val releaseDate: String,
-    val revenue: Int,
+    val revenue: Long,
     val runtime: Int? = null,
     @SerialName("spoken_languages")
     val spokenLanguage: List<SpokenLanguage>,
