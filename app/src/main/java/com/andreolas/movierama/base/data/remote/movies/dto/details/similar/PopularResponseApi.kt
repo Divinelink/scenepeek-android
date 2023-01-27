@@ -1,6 +1,7 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.details.similar
 
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -50,7 +51,7 @@ private fun SimilarMovieApi.toSimilarMovie(): SimilarMovie {
         posterPath = this.posterPath,
         releaseDate = this.releaseDate,
         title = this.title,
-        rating = this.voteAverage.toString(),
+        rating = this.voteAverage.round(1).toString(),
         overview = this.overview,
     )
 }
