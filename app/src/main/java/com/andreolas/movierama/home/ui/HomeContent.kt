@@ -141,6 +141,10 @@ fun HomeContent(
                 onLoadNextPage = onLoadNextPage,
             )
         }
+
+        if (viewState.isLoading) {
+            LoadingContent()
+        }
     }
 }
 

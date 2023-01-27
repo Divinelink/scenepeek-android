@@ -3,7 +3,7 @@
 buildscript {
     ext {
         kotlin_version = '1.7.20'
-        detektVersion = "1.19.0-RC2"
+        detektVersion = "1.22.0"
         hilt_version = "2.42"
         jacocoAndroidVersion = "0.2"
         koverVersion = "0.4.1"

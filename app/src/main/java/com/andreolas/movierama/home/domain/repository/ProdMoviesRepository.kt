@@ -10,7 +10,6 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.toDomainMovies
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -26,14 +25,7 @@ class ProdMoviesRepository @Inject constructor(
         return movieRemote
             .fetchPopularMovies(request)
             .map { apiResponse ->
-                val listWithFavorites = apiResponse.toDomainMoviesList().map { movie ->
-                    if (checkIfFavorite(movie.id).data == true) {
-                        movie.copy(isFavorite = true)
-                    } else {
-                        movie
-                    }
-                }
-                Result.Success(listWithFavorites)
+                Result.Success(apiResponse.toDomainMoviesList())
             }
             .catch { exception ->
                 flowOf(Result.Error(Exception(exception.message)))
@@ -52,14 +44,7 @@ class ProdMoviesRepository @Inject constructor(
         return movieRemote
             .fetchSearchMovies(request)
             .map { apiResponse ->
-                val listWithFavorites = apiResponse.toDomainMoviesList().map { movie ->
-                    if (checkIfFavorite(movie.id).data == true) {
-                        movie.copy(isFavorite = true)
-                    } else {
-                        movie
-                    }
-                }
-                Result.Success(listWithFavorites)
+                Result.Success(apiResponse.toDomainMoviesList())
             }
             .catch { exception ->
                 flowOf(Result.Error(Exception(exception.message)))
