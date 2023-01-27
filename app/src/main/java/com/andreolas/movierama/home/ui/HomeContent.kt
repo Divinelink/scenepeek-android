@@ -23,12 +23,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
@@ -45,7 +48,7 @@ import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
 @Composable
 fun HomeContent(
@@ -59,12 +62,21 @@ fun HomeContent(
     onGoToDetails: (PopularMovie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed,
         )
     )
+
+    DisposableEffect(viewState.selectedMovie) {
+        if (viewState.selectedMovie != null) {
+            keyboardController?.hide()
+        }
+
+        onDispose { }
+    }
 
     BackHandler(bottomSheetScaffoldState.bottomSheetState.isExpanded) {
         coroutineScope.launch {
