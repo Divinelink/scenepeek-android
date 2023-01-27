@@ -45,12 +45,23 @@ class GetSearchMoviesUseCaseTest {
     @Test
     fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
         runTest {
-            val expectedResult = Result.Success<List<PopularMovie>>(searchResult)
+            val expectedResult = Result.Success(
+                searchResult.mapIndexed { index, movie ->
+                    movie.copy(isFavorite = index % 2 == 0)
+                }
+            )
 
             repository.mockFetchSearchMovies(
                 request = request,
                 response = Result.Success(searchResult)
             )
+
+            searchResult.forEachIndexed { index, movie ->
+                repository.mockCheckFavorite(
+                    id = movie.id,
+                    response = Result.Success(index % 2 == 0)
+                )
+            }
 
             val useCase = GetSearchMoviesUseCase(
                 moviesRepository = repository.mock,
@@ -75,5 +86,23 @@ class GetSearchMoviesUseCaseTest {
         )
         val result = useCase(request).first()
         assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
+    fun `success loading`() = runTest {
+        val expectedResult = Result.Loading
+
+        repository.mockFetchSearchMovies(
+            request = SearchRequestApi(page = 0, query = "test query"),
+            response = Result.Loading
+        )
+
+        val useCase = GetSearchMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(SearchRequestApi(page = 0, query = "test query")).first()
+
+        assertThat(result).isEqualTo(expectedResult)
     }
 }

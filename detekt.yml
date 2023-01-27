@@ -567,7 +567,7 @@ potential-bugs:
   LateinitUsage:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    excludeAnnotatedProperties: []
+    ignoreAnnotated: []
     ignoreOnClassesPattern: ''
   MapGetWithNotNullAssertionOperator:
     active: false
@@ -655,7 +655,7 @@ style:
     ignoreOverridableFunction: true
     ignoreActualFunction: true
     excludedFunctions: ''
-    excludeAnnotatedFunction:
+    ignoreAnnotated:
       - 'dagger.Provides'
   LibraryCodeMustSpecifyReturnType:
     active: true
@@ -746,10 +746,10 @@ style:
     active: false
   UnderscoresInNumericLiterals:
     active: false
-    acceptableDecimalLength: 5
+    acceptableLength: 5
   UnnecessaryAbstractClass:
     active: true
-    excludeAnnotatedClasses:
+    ignoreAnnotated:
       - 'dagger.Module'
   UnnecessaryAnnotationUseSiteTarget:
     active: false
@@ -771,7 +771,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
-    allowedNames: '(_|ignored|expected|serialVersionUID)'
+    allowedNames: '(_|ignored|expected|serialVersionUID|modifier)'
   UseArrayLiteralsInAnnotations:
     active: false
   UseCheckNotNull:
@@ -780,7 +780,7 @@ style:
     active: false
   UseDataClass:
     active: false
-    excludeAnnotatedClasses: []
+    ignoreAnnotated:  []
     allowVars: false
   UseEmptyCounterpart:
     active: false

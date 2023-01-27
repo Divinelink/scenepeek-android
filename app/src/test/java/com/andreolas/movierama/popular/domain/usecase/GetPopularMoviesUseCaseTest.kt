@@ -59,12 +59,22 @@ class GetPopularMoviesUseCaseTest {
     @Test
     fun `successfully fetch popular movies`() =
         runTest {
-            val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
+            val expectedResult = Result.Success(
+                remoteMovies.mapIndexed { index, movie ->
+                    movie.copy(isFavorite = index % 2 == 0)
+                }
+            )
 
             repository.mockFetchPopularMovies(
                 request = PopularRequestApi(page = 0),
                 response = Result.Success(remoteMovies)
             )
+
+            remoteMovies.forEachIndexed { index, movie ->
+                repository.mockCheckFavorite(
+                    movie.id, Result.Success(index % 2 == 0)
+                )
+            }
 
             val useCase = GetPopularMoviesUseCase(
                 moviesRepository = repository.mock,
@@ -87,6 +97,12 @@ class GetPopularMoviesUseCaseTest {
             request = PopularRequestApi(page = 0),
             response = Result.Success(remoteMovies)
         )
+
+        remoteMovies.forEach {
+            repository.mockCheckFavorite(
+                it.id, Result.Success(false)
+            )
+        }
 
         val useCase = GetPopularMoviesUseCase(
             moviesRepository = repository.mock,
@@ -129,6 +145,24 @@ class GetPopularMoviesUseCaseTest {
         repository.mockFetchPopularMovies(
             request = PopularRequestApi(page = 0),
             response = Result.Error(Exception())
+        )
+
+        val useCase = GetPopularMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).first()
+
+        assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
+    fun `success loading`() = runTest {
+        val expectedResult = Result.Loading
+
+        repository.mockFetchPopularMovies(
+            request = PopularRequestApi(page = 0),
+            response = Result.Loading
         )
 
         val useCase = GetPopularMoviesUseCase(

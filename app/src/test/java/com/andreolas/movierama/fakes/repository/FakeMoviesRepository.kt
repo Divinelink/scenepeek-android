@@ -7,6 +7,7 @@ import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.flowOf
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -24,7 +25,7 @@ class FakeMoviesRepository {
         )
     }
 
-    suspend fun mockFetchPopularMovies(
+    fun mockFetchPopularMovies(
         request: PopularRequestApi,
         response: MoviesListResult,
     ) {
@@ -35,7 +36,7 @@ class FakeMoviesRepository {
         )
     }
 
-    suspend fun mockFetchSearchMovies(
+    fun mockFetchSearchMovies(
         request: SearchRequestApi,
         response: MoviesListResult,
     ) {
@@ -55,6 +56,23 @@ class FakeMoviesRepository {
         ).thenReturn(
             response
         )
+    }
+
+    suspend fun mockCheckFavorite(
+        id: Int,
+        response: Result<Boolean>,
+    ) {
+        whenever(
+            mock.checkIfFavorite(id)
+        ).thenReturn(response)
+    }
+
+    suspend fun verifyCheckIsFavorite(
+        response: Result<Boolean>,
+    ) {
+        whenever(
+            mock.checkIfFavorite(any())
+        ).thenReturn(response)
     }
 
     suspend fun mockRemoveFavorite(

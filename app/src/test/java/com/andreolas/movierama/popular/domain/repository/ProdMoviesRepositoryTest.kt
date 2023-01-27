@@ -137,37 +137,6 @@ class ProdMoviesRepositoryTest {
     }
 
     @Test
-    fun `correctly find favorite movies when fetching popular movies`() = runTest {
-        val request = PopularRequestApi(3)
-        val expectedResult = (1..10).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                rating = "0.0",
-                isFavorite = it % 2 != 1,
-                overview = "",
-            )
-        }.toList()
-
-        val expectedApiSearchResponse = flowOf(apiPopularResponse)
-        expectedResult.forEachIndexed { index, movie ->
-            movieDAO.mockCheckIfFavorite(movie.id, index % 2)
-        }
-        movieRemote.mockFetchPopularMovies(
-            request = request,
-            result = expectedApiSearchResponse
-        )
-
-        val actualResult = repository.fetchPopularMovies(
-            request = request,
-        ).first() as Result.Success
-
-        assertThat(expectedResult).isEqualTo(actualResult.data)
-    }
-
-    @Test
     fun `given all movies are not favorite, when fetching movies from search api, then I expect non favorite movies`() =
         runTest {
             val request = SearchRequestApi(query = "test123", 3)
@@ -198,37 +167,6 @@ class ProdMoviesRepositoryTest {
 
             assertThat(expectedResult).isEqualTo(actualResult.data)
         }
-
-    @Test
-    fun `correctly find favorite movies`() = runTest {
-        val request = SearchRequestApi(query = "test123", 3)
-        val expectedResult = (1..10).map {
-            PopularMovie(
-                id = it,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                rating = "0.0",
-                isFavorite = it % 2 != 1,
-                overview = "",
-            )
-        }.toList()
-
-        val expectedApiSearchResponse = flowOf(apiSearchResponse)
-        expectedResult.forEachIndexed { index, movie ->
-            movieDAO.mockCheckIfFavorite(movie.id, index % 2)
-        }
-        movieRemote.mockFetchSearchMovies(
-            request = request,
-            result = expectedApiSearchResponse
-        )
-
-        val actualResult = repository.fetchSearchMovies(
-            request = request,
-        ).first() as Result.Success
-
-        assertThat(expectedResult).isEqualTo(actualResult.data)
-    }
 
     //    @Test
     //    fun testFetchPopularMoviesErrorCase() = runTest {
@@ -264,6 +202,24 @@ class ProdMoviesRepositoryTest {
         val actualResult = repository.fetchFavoriteMovies().first() as Result.Success
 
         assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun `correctly check movie is favorite`() = runTest {
+        movieDAO.mockCheckIfFavorite(id = 1, result = 1)
+
+        val result = repository.checkIfFavorite(1)
+
+        assertThat(result).isEqualTo(Result.Success(true))
+    }
+
+    @Test
+    fun `correctly check movie is not favorite`() = runTest {
+        movieDAO.mockCheckIfFavorite(id = 1, result = 0)
+
+        val result = repository.checkIfFavorite(1)
+
+        assertThat(result).isEqualTo(Result.Success(false))
     }
 
     @Test

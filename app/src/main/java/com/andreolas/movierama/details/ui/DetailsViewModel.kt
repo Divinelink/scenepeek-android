@@ -52,7 +52,8 @@ class DetailsViewModel @Inject constructor(
                             when (result.data) {
                                 is MovieDetailsResult.DetailsSuccess -> viewState.copy(
                                     isLoading = false,
-                                    movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails.copy(isFavorite = args.isFavorite),
+                                    movieDetails = (result.data as MovieDetailsResult.DetailsSuccess)
+                                        .movieDetails.copy(isFavorite = args.isFavorite),
                                 )
                                 is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
                                     reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,

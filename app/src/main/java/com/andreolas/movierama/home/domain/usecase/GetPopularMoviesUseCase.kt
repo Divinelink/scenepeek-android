@@ -7,6 +7,7 @@ import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,10 +21,20 @@ open class GetPopularMoviesUseCase @Inject constructor(
     override fun execute(
         parameters: PopularRequestApi,
     ): Flow<MoviesListResult> {
+        Result.Loading
         val popularMovies = moviesRepository.fetchPopularMovies(parameters)
+
         return popularMovies.map { result ->
             when (result) {
-                is Result.Success -> result
+                is Result.Success -> {
+                    result.data.map { movie ->
+                        if (moviesRepository.checkIfFavorite(movie.id).data == true) {
+                            movie.copy(isFavorite = true)
+                        } else {
+                            movie
+                        }
+                    }.run { Result.Success(this) }
+                }
                 is Result.Error -> result
                 Result.Loading -> result
             }
