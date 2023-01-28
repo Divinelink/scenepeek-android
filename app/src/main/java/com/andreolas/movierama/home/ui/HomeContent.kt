@@ -140,7 +140,11 @@ fun HomeContent(
             PopularMoviesList(
                 modifier = modifier
                     .padding(paddingValues),
-                movies = viewState.moviesList,
+                movies = if (viewState.searchMovies?.isNotEmpty() == true) {
+                    viewState.searchMovies
+                } else {
+                    viewState.moviesList
+                },
                 onMovieClicked = {
                     onMovieClicked(it)
                     coroutineScope.launch {

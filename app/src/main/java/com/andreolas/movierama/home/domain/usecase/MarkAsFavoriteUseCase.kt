@@ -14,8 +14,11 @@ open class MarkAsFavoriteUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<PopularMovie, Unit>(dispatcher) {
     override suspend fun execute(parameters: PopularMovie) {
-        val result = repository.insertFavoriteMovie(parameters)
-
+        val result = if (parameters.isFavorite) {
+            repository.removeFavoriteMovie(parameters.id)
+        } else {
+            repository.insertFavoriteMovie(parameters)
+        }
         when (result) {
             is Result.Success -> result.data
             is Result.Error -> throw result.exception

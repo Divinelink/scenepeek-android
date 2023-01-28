@@ -8,11 +8,9 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.succeeded
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +25,6 @@ class HomeViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getSearchMoviesUseCase: GetSearchMoviesUseCase,
     private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
-    private val removeFavoriteUseCase: RemoveFavoriteUseCase,
 ) : ViewModel() {
     private var currentPage: Int = 1
     private var searchPage: Int = 1
@@ -62,12 +58,20 @@ class HomeViewModel @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         _viewState.update { viewState ->
-                            cachedMovies = (viewState.moviesList + result.data)
-                                .distinctBy { it.id }
-                                .toMutableList()
+
+                            val updatedList = getUpdatedMovies(
+                                currentMoviesList = viewState.moviesList,
+                                updatedMoviesList = result.data,
+                            )
+
+                            val newSelectedMovie = updatedList
+                                .find { it.id == viewState.selectedMovie?.id }
+                                ?: viewState.selectedMovie
+
                             viewState.copy(
                                 isLoading = false,
-                                moviesList = cachedMovies,
+                                moviesList = updatedList.distinctBy { it.id },
+                                selectedMovie = newSelectedMovie,
                             )
                         }
                     }
@@ -101,40 +105,7 @@ class HomeViewModel @Inject constructor(
 
     fun onMarkAsFavoriteClicked(movie: PopularMovie) {
         viewModelScope.launch {
-            val result = if (movie.isFavorite) {
-                removeFavoriteUseCase(movie.id)
-            } else {
-                markAsFavoriteUseCase(movie)
-            }
-            if (result.succeeded) {
-                // todo Add Snackbar when movie is added or removed.
-                updateFavoriteStatus(movie)
-            }
-        }
-    }
-
-    private fun updateFavoriteStatus(movie: PopularMovie) {
-        _viewState.update { viewState ->
-            viewState.copy(
-                moviesList = viewState.moviesList.map { currentMovie ->
-                    if (currentMovie.id == movie.id) {
-                        Timber.d("Movie ${movie.title} favorite property changed.")
-                        currentMovie.copy(isFavorite = !movie.isFavorite)
-                    } else {
-                        currentMovie
-                    }
-                },
-                selectedMovie = if (viewState.selectedMovie?.id == movie.id) {
-                    movie.copy(isFavorite = !movie.isFavorite)
-                } else {
-                    viewState.selectedMovie
-                },
-            )
-        }.also {
-            // This is needed to keep the Favorite status on Popular Movies.
-            if (viewState.value.query.isEmpty()) {
-                cachedMovies = viewState.value.moviesList.toMutableList()
-            }
+            markAsFavoriteUseCase(movie)
         }
     }
 
@@ -183,7 +154,7 @@ class HomeViewModel @Inject constructor(
         allowSearchResult = false
         _viewState.update { viewState ->
             viewState.copy(
-                moviesList = cachedMovies,
+                searchMovies = null,
                 loadMorePopular = true,
                 searchLoading = false,
                 query = "",
@@ -214,10 +185,11 @@ class HomeViewModel @Inject constructor(
                     is Result.Success -> {
                         if (allowSearchResult) {
                             _viewState.update { viewState ->
-                                val movies = accumulateSearchMovies(page, result)
+                                val movies = accumulateSearchMovies(page, result.data)
+
                                 viewState.copy(
                                     searchLoading = false,
-                                    moviesList = movies,
+                                    searchMovies = movies,
                                     emptyResult = movies.isEmpty(),
                                 )
                             }
@@ -236,14 +208,32 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun getUpdatedMovies(
+        currentMoviesList: List<PopularMovie>,
+        updatedMoviesList: List<PopularMovie>,
+    ): MutableList<PopularMovie> {
+        val combinedList = (currentMoviesList + updatedMoviesList).distinctBy { it.id }
+        val updatedList = combinedList.toMutableList()
+        updatedMoviesList.forEach { updatedMovie ->
+            val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
+            if (index != -1) {
+                updatedList[index] = updatedMovie
+            }
+        }
+        return updatedList
+    }
+
     private fun accumulateSearchMovies(
         page: Int,
-        result: Result.Success<List<PopularMovie>>,
+        result: List<PopularMovie>,
     ): List<PopularMovie> {
         val movies = if (page == 1) {
-            result.data
+            result
         } else {
-            (_viewState.value.moviesList + result.data).distinctBy { it.id }
+            _viewState.value.searchMovies
+                ?.plus(result)
+                ?.distinctBy { it.id }
+                ?: emptyList()
         }
         return movies
     }
