@@ -112,10 +112,7 @@ fun DetailsContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clip(RoundedCornerShape(50.dp))
-                            .clickable(
-//                                indication = null,
-//                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
+                            .clickable {
                                 onMarkAsFavoriteClicked()
                             },
                         isFavorite = viewState.movieDetails?.isFavorite ?: false,

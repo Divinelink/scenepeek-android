@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,12 +33,13 @@ class HomeViewModel @Inject constructor(
     private var searchJob: Job? = null
     private var allowSearchResult: Boolean = true
 
-    private var cachedMovies: MutableList<PopularMovie> = mutableListOf()
+    private var latestQuery: String? = null
+    private var cachedSearchResults: HashMap<String, SearchCache> = hashMapOf()
 
     private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
         HomeViewState(
             isLoading = true,
-            moviesList = cachedMovies,
+            moviesList = emptyList(),
             selectedMovie = null,
             error = null,
         )
@@ -64,14 +66,10 @@ class HomeViewModel @Inject constructor(
                                 updatedMoviesList = result.data,
                             )
 
-                            val newSelectedMovie = updatedList
-                                .find { it.id == viewState.selectedMovie?.id }
-                                ?: viewState.selectedMovie
-
                             viewState.copy(
                                 isLoading = false,
-                                moviesList = updatedList.distinctBy { it.id },
-                                selectedMovie = newSelectedMovie,
+                                moviesList = updatedList,
+                                selectedMovie = updatedSelectedMovie(updatedList, viewState.selectedMovie),
                             )
                         }
                     }
@@ -143,7 +141,23 @@ class HomeViewModel @Inject constructor(
             }
             searchJob = viewModelScope.launch {
                 delay(timeMillis = 300)
-                fetchFromSearchQuery(query = query, page = 1)
+                if (cachedSearchResults.contains(query) && searchPage == 1) {
+                    Timber.d("Fetching cached results")
+                    _viewState.update { viewState ->
+                        viewState.copy(
+                            searchLoading = false,
+                            searchMovies = cachedSearchResults[query]?.result,
+                            emptyResult = cachedSearchResults[query]?.result?.isEmpty() == true,
+                            selectedMovie = null, // updatedSelectedMovie(movies, viewState.selectedMovie)
+                        )
+                    }
+                    // If cache found, set search page to last cached search page
+                    searchPage = cachedSearchResults[query]?.page ?: 1
+                    Timber.d("Setting page to: $searchPage")
+                } else {
+                    Timber.d("Fetching data from web service..")
+                    fetchFromSearchQuery(query = query, page = 1)
+                }
             }
         }
     }
@@ -167,6 +181,13 @@ class HomeViewModel @Inject constructor(
         query: String,
         page: Int,
     ) {
+        if (query != latestQuery) {
+            _viewState.update {
+                it.copy(searchMovies = null)
+            }
+        }
+        latestQuery = query
+
         viewModelScope.launch {
             getSearchMoviesUseCase.invoke(
                 parameters = SearchRequestApi(
@@ -185,12 +206,21 @@ class HomeViewModel @Inject constructor(
                     is Result.Success -> {
                         if (allowSearchResult) {
                             _viewState.update { viewState ->
-                                val movies = accumulateSearchMovies(page, result.data)
+
+                                val list = getUpdatedMovies(
+                                    currentMoviesList = viewState.searchMovies ?: emptyList(),
+                                    updatedMoviesList = result.data.combinedList,
+                                )
+
+                                Timber.d(
+                                    "Cached list for $query contains:  ${cachedSearchResults[query]?.result?.size} items." +
+                                    " \n ${cachedSearchResults[query]?.result}"
+                                )
 
                                 viewState.copy(
                                     searchLoading = false,
-                                    searchMovies = movies,
-                                    emptyResult = movies.isEmpty(),
+                                    searchMovies = list, // cachedSearchResults[query]?.result ?: emptyList(),
+                                    emptyResult = list.isEmpty() // cachedSearchResults[query]?.result?.isEmpty() == true,
                                 )
                             }
                         }
@@ -208,21 +238,31 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getUpdatedMovies(
-        currentMoviesList: List<PopularMovie>,
-        updatedMoviesList: List<PopularMovie>,
-    ): MutableList<PopularMovie> {
-        val combinedList = (currentMoviesList + updatedMoviesList).distinctBy { it.id }
-        val updatedList = combinedList.toMutableList()
-        updatedMoviesList.forEach { updatedMovie ->
-            val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
-            if (index != -1) {
-                updatedList[index] = updatedMovie
-            }
-        }
-        return updatedList
+    private fun updatedSelectedMovie(
+        updatedList: List<PopularMovie>,
+        selectedMovie: PopularMovie?,
+    ): PopularMovie? {
+        return updatedList.find { it.id == selectedMovie?.id }
     }
 
+    private fun getUpdatedMovies(
+        currentMoviesList: List<PopularMovie>?,
+        updatedMoviesList: List<PopularMovie>,
+    ): List<PopularMovie> {
+        val combinedList = (currentMoviesList?.plus(updatedMoviesList))?.distinctBy { it.id }
+        val updatedList = combinedList?.toMutableList()
+        updatedMoviesList.forEach { updatedMovie ->
+            val index = updatedList?.indexOfFirst { it.id == updatedMovie.id }
+            if (index != -1) {
+                if (index != null) {
+                    updatedList[index] = updatedMovie
+                }
+            }
+        }
+        return updatedList?.distinctBy { it.id } ?: emptyList()
+    }
+
+    @Suppress("UnusedPrivateMember")
     private fun accumulateSearchMovies(
         page: Int,
         result: List<PopularMovie>,
@@ -238,3 +278,8 @@ class HomeViewModel @Inject constructor(
         return movies
     }
 }
+
+data class SearchCache(
+    var page: Int,
+    var result: MutableList<PopularMovie>,
+)
