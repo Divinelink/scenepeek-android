@@ -21,9 +21,11 @@ This application is built with a thorough suite of unit tests to ensure that all
 
 In addition to the unit tests, the development process includes a system of pull requests. By reviewing the pull request history, you can get a detailed understanding of how the application was implemented. This can be especially helpful if you're looking to learn more about how a specific feature was developed or if you're trying to understand how the codebase is organized.
 
+## Local Data Storage with Room
+
+Our application uses Room, a persistence library provided by Google as a part of the Android Architecture Components, to store information locally on the device. Room provides an abstraction layer over SQLite, making it easier to work with databases in Android. Room also allows for a more robust and maintainable codebase, by introducing features such as compile-time checks of SQLite statements, and the ability to define relationships between entities. Room is a great solution for our application's data storage needs, as it allows for quick and easy access to our data, while also providing a level of security and organization.
+
+
 ## Hiding Sensitive Information
 
-This app uses Firebase Remote Config to securely store and retrieve API keys, allowing for easy
-updates and management of sensitive information without the need for hard coding or additional
-configuration. This ensures that the app remains secure and in compliance with best practices for
-handling sensitive data.
+This app uses Firebase Remote Config and EncryptedSharedPreferences to securely store and retrieve API keys, allowing for easy updates and management of sensitive information without the need for hard coding or additional configuration. This ensures that the app remains secure and in compliance with best practices for handling sensitive data, as the information is encrypted.
