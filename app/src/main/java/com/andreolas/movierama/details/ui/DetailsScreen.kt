@@ -21,5 +21,6 @@ fun DetailsScreen(
         onNavigateUp = {
             navigator.popBackStack()
         },
+        onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
     )
 }

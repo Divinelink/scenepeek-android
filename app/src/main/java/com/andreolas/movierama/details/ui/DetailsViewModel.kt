@@ -8,9 +8,11 @@ import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
+import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.succeeded
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +23,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("UnusedPrivateMember")
 class DetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
@@ -38,6 +39,36 @@ class DetailsViewModel @Inject constructor(
         )
     )
     val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
+
+    fun onMarkAsFavorite() {
+        viewModelScope.launch {
+            viewState.value.movieDetails?.let { movie ->
+                PopularMovie(
+                    id = movie.id,
+                    posterPath = movie.posterPath,
+                    releaseDate = movie.releaseDate,
+                    title = movie.title,
+                    rating = movie.rating,
+                    overview = movie.overview ?: "",
+                    isFavorite = movie.isFavorite,
+                )
+            }?.let { movie ->
+                val result = onMarkAsFavoriteUseCase(
+                    parameters = movie,
+                )
+                if (result.succeeded) {
+                    _viewState.update { viewState ->
+                        viewState.copy(
+                            movieDetails = viewState.movieDetails?.copy(
+                                isFavorite = !viewState.movieDetails.isFavorite
+                            ),
+                            isFavorite = !viewState.isFavorite
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {

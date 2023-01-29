@@ -3,40 +3,51 @@ package com.andreolas.movierama.home.domain.usecase
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
-open class GetSearchMoviesUseCase @Inject constructor(
+data class SearchResult(
+    val query: String,
+    val searchList: List<PopularMovie>,
+)
+
+class GetSearchMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<SearchRequestApi, List<PopularMovie>>(dispatcher) {
-
+) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher) {
     override fun execute(
         parameters: SearchRequestApi,
-    ): Flow<MoviesListResult> {
+    ): Flow<Result<SearchResult>> {
+        val favoriteMovies = moviesRepository.fetchFavoriteMovies()
         val searchMovies = moviesRepository.fetchSearchMovies(parameters)
 
-        return searchMovies.map { result ->
-            when (result) {
-                is Result.Success -> {
-                    result.data.map { movie ->
-                        if (moviesRepository.checkIfFavorite(movie.id).data == true) {
-                            movie.copy(isFavorite = true)
-                        } else {
-                            movie
-                        }
-                    }.run { Result.Success(this) }
+        return favoriteMovies
+            .distinctUntilChanged()
+            .combineTransform(searchMovies) { favorite, search ->
+                emit(Result.Loading)
+                if (favorite is Result.Success && search is Result.Success) {
+                    val searchWithFavorites = getFavoritesAndPopularMoviesCombined(
+                        Result.Success(favorite.data),
+                        Result.Success(search.data)
+                    )
+                    emit(
+                        Result.Success(
+                            SearchResult(
+                                query = parameters.query,
+                                searchList = searchWithFavorites,
+                            )
+                        )
+                    )
+                } else if (search is Result.Error) {
+                    emit(Result.Error(Exception("Something went wrong.")))
                 }
-                is Result.Error -> result
-                Result.Loading -> result
-            }
-        }
+            }.conflate()
     }
 }

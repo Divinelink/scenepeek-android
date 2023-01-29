@@ -5,6 +5,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestA
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
+import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,6 +26,19 @@ class GetSearchMoviesUseCaseTest {
     private lateinit var repository: FakeMoviesRepository
 
     private val request = SearchRequestApi(query = "test query", page = 1)
+
+    // Movies with id 1, 3, 5 are marked as favorite.
+    private val localFavoriteMovies = (1..6 step 2).map { index ->
+        PopularMovie(
+            id = index,
+            posterPath = "",
+            releaseDate = "2000",
+            title = "Fight Club $index",
+            isFavorite = true,
+            rating = index.toString(),
+            overview = "",
+        )
+    }.toMutableList()
     private val searchResult = (1..6).map { index ->
         PopularMovie(
             id = index,
@@ -46,9 +60,12 @@ class GetSearchMoviesUseCaseTest {
     fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
         runTest {
             val expectedResult = Result.Success(
-                searchResult.mapIndexed { index, movie ->
-                    movie.copy(isFavorite = index % 2 == 0)
-                }
+                SearchResult(
+                    query = "test query",
+                    searchList = searchResult.mapIndexed { index, movie ->
+                        movie.copy(isFavorite = index % 2 == 0)
+                    }
+                )
             )
 
             repository.mockFetchSearchMovies(
@@ -56,12 +73,9 @@ class GetSearchMoviesUseCaseTest {
                 response = Result.Success(searchResult)
             )
 
-            searchResult.forEachIndexed { index, movie ->
-                repository.mockCheckFavorite(
-                    id = movie.id,
-                    response = Result.Success(index % 2 == 0)
-                )
-            }
+            repository.mockFetchFavoriteMovies(
+                response = Result.Success(localFavoriteMovies)
+            )
 
             val useCase = GetSearchMoviesUseCase(
                 moviesRepository = repository.mock,
@@ -89,12 +103,37 @@ class GetSearchMoviesUseCaseTest {
     }
 
     @Test
+    fun `test error result`() = runTest {
+        val expectedResult = Result.Error(Exception("Something went wrong."))
+
+        repository.mockFetchSearchMovies(
+            request = request,
+            response = Result.Error(Exception()),
+        )
+
+        repository.mockFetchFavoriteMovies(
+            response = Result.Loading,
+        )
+
+        val useCase = GetSearchMoviesUseCase(
+            moviesRepository = repository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).last()
+        assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
     fun `success loading`() = runTest {
         val expectedResult = Result.Loading
 
         repository.mockFetchSearchMovies(
             request = SearchRequestApi(page = 0, query = "test query"),
-            response = Result.Loading
+            response = Result.Loading,
+        )
+
+        repository.mockFetchFavoriteMovies(
+            response = Result.Loading,
         )
 
         val useCase = GetSearchMoviesUseCase(

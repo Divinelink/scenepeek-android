@@ -38,6 +38,9 @@ class ProdMoviesRepository @Inject constructor(
             .map { moviesList ->
                 Result.Success(moviesList.toDomainMoviesList())
             }
+            .catch { exception ->
+                flowOf(Result.Error(Exception(exception.message)))
+            }
     }
 
     override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {

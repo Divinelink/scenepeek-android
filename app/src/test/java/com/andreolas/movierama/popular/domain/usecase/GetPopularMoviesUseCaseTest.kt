@@ -70,11 +70,9 @@ class GetPopularMoviesUseCaseTest {
                 response = Result.Success(remoteMovies)
             )
 
-            remoteMovies.forEachIndexed { index, movie ->
-                repository.mockCheckFavorite(
-                    movie.id, Result.Success(index % 2 == 0)
-                )
-            }
+            repository.mockFetchFavoriteMovies(
+                response = Result.Success(localFavoriteMovies)
+            )
 
             val useCase = GetPopularMoviesUseCase(
                 moviesRepository = repository.mock,
@@ -129,7 +127,7 @@ class GetPopularMoviesUseCaseTest {
             moviesRepository = repository.mock,
             dispatcher = testDispatcher,
         )
-        val result = useCase(request).first()
+        val result = useCase(request).last()
 
         assertThat(result).isInstanceOf(expectedResult::class.java)
     }
@@ -151,7 +149,7 @@ class GetPopularMoviesUseCaseTest {
             moviesRepository = repository.mock,
             dispatcher = testDispatcher,
         )
-        val result = useCase(request).first()
+        val result = useCase(request).last()
 
         assertThat(result).isInstanceOf(expectedResult::class.java)
     }
@@ -163,6 +161,10 @@ class GetPopularMoviesUseCaseTest {
         repository.mockFetchPopularMovies(
             request = PopularRequestApi(page = 0),
             response = Result.Loading
+        )
+
+        repository.mockFetchFavoriteMovies(
+            Result.Error(Exception())
         )
 
         val useCase = GetPopularMoviesUseCase(

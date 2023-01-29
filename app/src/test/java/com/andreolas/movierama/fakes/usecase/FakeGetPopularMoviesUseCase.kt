@@ -4,6 +4,7 @@ import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class FakeGetPopularMoviesUseCase {
@@ -15,6 +16,14 @@ class FakeGetPopularMoviesUseCase {
      * :)
      */
     val mock: GetPopularMoviesUseCase = mockk()
+
+    fun mockFetchPopularMovies(
+        response: Flow<MoviesListResult>,
+    ) {
+        coEvery {
+            mock.invoke(any())
+        } returns response
+    }
 
     fun mockFetchPopularMovies(
         response: MoviesListResult,

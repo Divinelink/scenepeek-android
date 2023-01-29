@@ -5,6 +5,7 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.UseCase
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -14,7 +15,12 @@ open class MarkAsFavoriteUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<PopularMovie, Unit>(dispatcher) {
     override suspend fun execute(parameters: PopularMovie) {
-        val result = repository.insertFavoriteMovie(parameters)
+        val isFavorite = repository.checkIfFavorite(parameters.id).data == true
+        val result = if (isFavorite) {
+            repository.removeFavoriteMovie(parameters.id)
+        } else {
+            repository.insertFavoriteMovie(parameters)
+        }
 
         when (result) {
             is Result.Success -> result.data

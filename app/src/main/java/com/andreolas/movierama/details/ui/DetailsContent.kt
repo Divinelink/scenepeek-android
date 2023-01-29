@@ -4,7 +4,6 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +37,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -72,7 +70,7 @@ fun DetailsContent(
     viewState: DetailsViewState,
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
-    //    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onMarkAsFavoriteClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -114,11 +112,8 @@ fun DetailsContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clip(RoundedCornerShape(50.dp))
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
-                                // todo
+                            .clickable {
+                                onMarkAsFavoriteClicked()
                             },
                         isFavorite = viewState.movieDetails?.isFavorite ?: false,
                     )
@@ -306,6 +301,7 @@ private fun DetailsContentPreview(
                 modifier = Modifier,
                 viewState = viewState,
                 onNavigateUp = {},
+                onMarkAsFavoriteClicked = {},
             )
         }
     }
