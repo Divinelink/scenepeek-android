@@ -52,6 +52,7 @@ import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
@@ -71,6 +72,7 @@ fun DetailsContent(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
     onMarkAsFavoriteClicked: () -> Unit,
+    onSimilarMovieClicked: (Movie) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -127,6 +129,7 @@ fun DetailsContent(
                 movieDetails = viewState.movieDetails,
                 similarMoviesList = viewState.similarMovies,
                 reviewsList = viewState.reviews,
+                onSimilarMovieClicked = onSimilarMovieClicked,
             )
         }
         if (viewState.isLoading) {
@@ -144,6 +147,7 @@ fun DetailsMovieContent(
     movieDetails: MovieDetails,
     similarMoviesList: List<SimilarMovie>?,
     reviewsList: List<Review>?,
+    onSimilarMovieClicked: (Movie) -> Unit,
 ) {
     Surface {
         LazyColumn(
@@ -183,6 +187,7 @@ fun DetailsMovieContent(
                     Divider(thickness = 1.dp)
                     SimilarMoviesList(
                         movies = similarMoviesList,
+                        onSimilarMovieClicked = onSimilarMovieClicked,
                     )
                 }
             }
@@ -302,6 +307,7 @@ private fun DetailsContentPreview(
                 viewState = viewState,
                 onNavigateUp = {},
                 onMarkAsFavoriteClicked = {},
+                onSimilarMovieClicked = {},
             )
         }
     }

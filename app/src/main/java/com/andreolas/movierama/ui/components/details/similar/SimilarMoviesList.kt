@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.toMovie
 import com.andreolas.movierama.ui.components.MovieItem
 import com.andreolas.movierama.ui.theme.ListPaddingValues
@@ -22,6 +23,7 @@ import com.andreolas.movierama.ui.theme.ListPaddingValues
 @Composable
 fun SimilarMoviesList(
     movies: List<SimilarMovie>,
+    onSimilarMovieClicked: (Movie) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun SimilarMoviesList(
 
                 MovieItem(
                     movie = similarMovie.toMovie(),
-                    onMovieItemClick = {},
+                    onMovieItemClick = onSimilarMovieClicked,
                     onLikeMovieClick = {},
                 )
             }
