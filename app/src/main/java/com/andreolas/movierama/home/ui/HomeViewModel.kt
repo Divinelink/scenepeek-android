@@ -145,6 +145,7 @@ class HomeViewModel @Inject constructor(
                 if (cachedSearchResults.contains(query) && searchPage == 1) {
                     Timber.d("Fetching cached results")
                     _viewState.update { viewState ->
+                        latestQuery = query
                         viewState.copy(
                             searchLoading = false,
                             searchMovies = cachedSearchResults[query]?.result,
@@ -215,13 +216,14 @@ class HomeViewModel @Inject constructor(
                                         currentMoviesList = viewState.searchMovies ?: emptyList(),
                                         updatedMoviesList = result.data.searchList,
                                     ).also { updatedSearchList ->
-                                        updateSearchCaches(query, page, updatedSearchList)
+                                        // Fix caching
+                                        // updateSearchCaches(query, page, updatedSearchList)
                                     }
 
                                     viewState.copy(
                                         searchLoading = false,
-                                        searchMovies = updatedSearchList,
-                                        emptyResult = updatedSearchList.isEmpty(),
+                                        searchMovies = updatedSearchList, // cachedSearchResults[query]?.result,
+                                        emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
                                         selectedMovie = updatedSearchList.find { it.id == viewState.selectedMovie?.id },
                                     )
                                 }
@@ -247,6 +249,7 @@ class HomeViewModel @Inject constructor(
      * * This method updates the cached search results given a [query].
      * It appends to the current caches a list of movies that has been emitted and also updates the last page of the query.
      */
+    @Suppress("UnusedPrivateMember")
     private fun updateSearchCaches(
         query: String,
         page: Int,
@@ -255,7 +258,10 @@ class HomeViewModel @Inject constructor(
         val cacheList = cachedSearchResults[query]?.result ?: emptyList()
         cachedSearchResults[query] = SearchCache(
             page = page,
-            result = (cacheList + searchList).distinctBy { it.id }.toMutableList()
+            result = getUpdatedMovies(
+                currentMoviesList = cacheList,
+                updatedMoviesList = searchList,
+            ).toMutableList()
         )
     }
 
