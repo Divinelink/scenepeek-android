@@ -52,7 +52,7 @@ import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 fun MovieItem(
     modifier: Modifier = Modifier,
     movie: Movie,
-    onMovieItemClick: () -> Unit,
+    onMovieItemClick: (Movie) -> Unit,
     onLikeMovieClick: () -> Unit,
 ) {
     Card(
@@ -62,7 +62,7 @@ fun MovieItem(
             .clip(PopularMovieItemShape)
             .clipToBounds()
             .clickable {
-                onMovieItemClick()
+                onMovieItemClick(movie)
             },
     ) {
         Box(
