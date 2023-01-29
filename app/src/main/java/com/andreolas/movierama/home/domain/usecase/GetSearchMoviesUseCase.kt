@@ -31,6 +31,7 @@ class GetSearchMoviesUseCase @Inject constructor(
         return favoriteMovies
             .distinctUntilChanged()
             .combineTransform(searchMovies) { favorite, search ->
+                emit(Result.Loading)
                 if (favorite is Result.Success && search is Result.Success) {
                     val searchWithFavorites = getFavoritesAndPopularMoviesCombined(
                         Result.Success(favorite.data),

@@ -47,6 +47,11 @@ class MarkAsFavoriteUseCaseTest {
             response = Result.Success(Unit)
         )
 
+        repository.mockCheckFavorite(
+            id = remoteMovies[2].id,
+            response = Result.Success(true),
+        )
+
         val useCase = MarkAsFavoriteUseCase(
             repository = repository.mock,
             dispatcher = testDispatcher,

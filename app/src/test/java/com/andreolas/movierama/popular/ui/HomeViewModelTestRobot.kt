@@ -7,6 +7,7 @@ import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.FakeRemoveFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
+import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat
@@ -31,7 +32,6 @@ class HomeViewModelTestRobot {
         viewModel = HomeViewModel(
             getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
             markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
-            removeFavoriteUseCase = fakeRemoveFavoriteUseCase.mock,
             getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
         )
     }
@@ -57,7 +57,7 @@ class HomeViewModelTestRobot {
     }
 
     fun mockFetchSearchMovies(
-        response: MoviesListResult,
+        response: Result<SearchResult>,
     ) = apply {
         fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
             response = response,
