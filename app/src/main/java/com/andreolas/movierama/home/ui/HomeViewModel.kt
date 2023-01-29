@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -194,55 +195,80 @@ class HomeViewModel @Inject constructor(
                     query = query,
                     page = page,
                 )
-            ).collectLatest { result ->
-                when (result) {
-                    Result.Loading -> {
-                        _viewState.update { viewState ->
-                            viewState.copy(
-                                searchLoading = true,
-                            )
-                        }
-                    }
-                    is Result.Success -> {
-                        if (allowSearchResult) {
+            ).distinctUntilChanged()
+                .collectLatest { result ->
+                    when (result) {
+                        Result.Loading -> {
                             _viewState.update { viewState ->
-
-                                val list = getUpdatedMovies(
-                                    currentMoviesList = viewState.searchMovies ?: emptyList(),
-                                    updatedMoviesList = result.data.combinedList,
+                                viewState.copy(
+                                    searchLoading = true,
                                 )
+                            }
+                        }
+                        is Result.Success -> {
+                            if (
+                                allowSearchResult &&
+                                result.data.query == latestQuery
+                            ) {
+                                _viewState.update { viewState ->
+                                    val updatedSearchList = getUpdatedMovies(
+                                        currentMoviesList = viewState.searchMovies ?: emptyList(),
+                                        updatedMoviesList = result.data.searchList,
+                                    ).also { updatedSearchList ->
+                                        updateSearchCaches(query, page, updatedSearchList)
+                                    }
 
-                                Timber.d(
-                                    "Cached list for $query contains:  ${cachedSearchResults[query]?.result?.size} items." +
-                                    " \n ${cachedSearchResults[query]?.result}"
-                                )
-
+                                    viewState.copy(
+                                        searchLoading = false,
+                                        searchMovies = updatedSearchList,
+                                        emptyResult = updatedSearchList.isEmpty(),
+                                        selectedMovie = updatedSearchList.find { it.id == viewState.selectedMovie?.id },
+                                    )
+                                }
+                            }
+                        }
+                        is Result.Error -> {
+                            _viewState.update { viewState ->
                                 viewState.copy(
                                     searchLoading = false,
-                                    searchMovies = list, // cachedSearchResults[query]?.result ?: emptyList(),
-                                    emptyResult = list.isEmpty() // cachedSearchResults[query]?.result?.isEmpty() == true,
+                                    error = UIText.StringText(result.exception.message ?: "Something went wrong."),
                                 )
                             }
                         }
                     }
-                    is Result.Error -> {
-                        _viewState.update { viewState ->
-                            viewState.copy(
-                                searchLoading = false,
-                                error = UIText.StringText(result.exception.message ?: "Something went wrong."),
-                            )
-                        }
-                    }
                 }
-            }
         }
     }
 
+    /**
+     * @param [query] Current query the user has executed.
+     * @param [page] Page of the current query.
+     * @param [searchList] A list containing the updated version of all search movies lastly emitted.
+     * * This method updates the cached search results given a [query].
+     * It appends to the current caches a list of movies that has been emitted and also updates the last page of the query.
+     */
+    private fun updateSearchCaches(
+        query: String,
+        page: Int,
+        searchList: List<PopularMovie>,
+    ) {
+        val cacheList = cachedSearchResults[query]?.result ?: emptyList()
+        cachedSearchResults[query] = SearchCache(
+            page = page,
+            result = (cacheList + searchList).distinctBy { it.id }.toMutableList()
+        )
+    }
+
+    /**
+     * Update selected movie if exists on Popular Movies or in Search Movies List.
+     */
     private fun updatedSelectedMovie(
         updatedList: List<PopularMovie>,
         selectedMovie: PopularMovie?,
     ): PopularMovie? {
-        return updatedList.find { it.id == selectedMovie?.id }
+        return updatedList
+            .find { it.id == selectedMovie?.id } ?: viewState.value.searchMovies
+            ?.find { it.id == selectedMovie?.id }
     }
 
     private fun getUpdatedMovies(
@@ -260,22 +286,6 @@ class HomeViewModel @Inject constructor(
             }
         }
         return updatedList?.distinctBy { it.id } ?: emptyList()
-    }
-
-    @Suppress("UnusedPrivateMember")
-    private fun accumulateSearchMovies(
-        page: Int,
-        result: List<PopularMovie>,
-    ): List<PopularMovie> {
-        val movies = if (page == 1) {
-            result
-        } else {
-            _viewState.value.searchMovies
-                ?.plus(result)
-                ?.distinctBy { it.id }
-                ?: emptyList()
-        }
-        return movies
     }
 }
 

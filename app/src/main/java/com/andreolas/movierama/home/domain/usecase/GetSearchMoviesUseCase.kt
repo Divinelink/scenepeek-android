@@ -7,18 +7,15 @@ import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 data class SearchResult(
-    val combinedList: List<PopularMovie>,
-    val searchMovies: List<PopularMovie>,
+    val query: String,
+    val searchList: List<PopularMovie>,
 )
 
 class GetSearchMoviesUseCase @Inject constructor(
@@ -29,28 +26,27 @@ class GetSearchMoviesUseCase @Inject constructor(
         parameters: SearchRequestApi,
     ): Flow<Result<SearchResult>> {
         val favoriteMovies = moviesRepository.fetchFavoriteMovies()
-        val searchMovies = flow {
-            coroutineScope {
-                emit(Result.Loading)
-                val result = withContext(dispatcher) {
-                    moviesRepository.fetchSearchMovies(parameters)
-                }
-                emitAll(result)
-            }
-        }.flowOn(dispatcher)
+        val searchMovies = moviesRepository.fetchSearchMovies(parameters)
 
-        return favoriteMovies.combineTransform(searchMovies) { favorite, search ->
-            if (favorite is Result.Success && search is Result.Success) {
-                val mergedList = getFavoritesAndPopularMoviesCombined(
-                    Result.Success(favorite.data),
-                    Result.Success(search.data)
-                )
-                emit(Result.Success(SearchResult(combinedList = mergedList, searchMovies = search.data)))
-            } else if (search is Result.Success) {
-                // todo
-            } else if (search is Result.Error) {
-                emit(Result.Error(Exception("Something went wrong.")))
-            }
-        }
+        return favoriteMovies
+            .distinctUntilChanged()
+            .combineTransform(searchMovies) { favorite, search ->
+                if (favorite is Result.Success && search is Result.Success) {
+                    val searchWithFavorites = getFavoritesAndPopularMoviesCombined(
+                        Result.Success(favorite.data),
+                        Result.Success(search.data)
+                    )
+                    emit(
+                        Result.Success(
+                            SearchResult(
+                                query = parameters.query,
+                                searchList = searchWithFavorites,
+                            )
+                        )
+                    )
+                } else if (search is Result.Error) {
+                    emit(Result.Error(Exception("Something went wrong.")))
+                }
+            }.conflate()
     }
 }
