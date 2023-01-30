@@ -78,55 +78,52 @@ fun SearchBar(
     ) {
 
         Crossfade(targetState = toolbarState.value) { toolbar ->
-            when (toolbar) {
-                ToolbarState.Focused -> {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(SearchBarSize),
-                    ) {
-                        SearchIconWithLoading(
-                            isLoading = isLoading,
-                            onClearClicked = onClearClicked,
-                            toolbarState = toolbarState,
-                        )
+            if (toolbar == ToolbarState.Focused || searchValue?.isNotEmpty() == true) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(SearchBarSize),
+                ) {
+                    SearchIconWithLoading(
+                        isLoading = isLoading,
+                        onClearClicked = onClearClicked,
+                        toolbarState = toolbarState,
+                    )
 
-                        FocusedSearchField(
-                            value = searchValue,
-                            onSearchFieldChanged = onSearchFieldChanged,
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                        )
-                    }
-                }
-                ToolbarState.Unfocused -> {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
+                    FocusedSearchField(
+                        value = searchValue,
+                        onSearchFieldChanged = onSearchFieldChanged,
                         modifier = Modifier
-                            .height(SearchBarSize)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
-                                toolbarState.value = when (toolbarState.value) {
-                                    ToolbarState.Focused -> ToolbarState.Unfocused
-                                    ToolbarState.Unfocused -> ToolbarState.Focused
-                                }
+                            .focusRequester(focusRequester)
+                    )
+                }
+            } else {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .height(SearchBarSize)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            toolbarState.value = when (toolbarState.value) {
+                                ToolbarState.Focused -> ToolbarState.Unfocused
+                                ToolbarState.Unfocused -> ToolbarState.Focused
                             }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(id = R.string.toolbar_search),
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                        )
-                        Text(
-                            overflow = TextOverflow.Ellipsis,
-                            text = stringResource(id = R.string.toolbar_search),
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    }
+                        }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(id = R.string.toolbar_search),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                    )
+                    Text(
+                        overflow = TextOverflow.Ellipsis,
+                        text = stringResource(id = R.string.toolbar_search),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
                 }
             }
         }
