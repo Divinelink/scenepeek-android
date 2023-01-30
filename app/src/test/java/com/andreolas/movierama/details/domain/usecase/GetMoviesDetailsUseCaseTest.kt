@@ -9,6 +9,7 @@ import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
+import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,6 +28,7 @@ class GetMoviesDetailsUseCaseTest {
     private val testDispatcher = mainDispatcherRule.testDispatcher
 
     private lateinit var repository: FakeDetailsRepository
+    private lateinit var moviesRepository: FakeMoviesRepository
 
     private val request = DetailsRequestApi(movieId = 555)
     private val movieDetails = MovieDetails(
@@ -59,6 +61,7 @@ class GetMoviesDetailsUseCaseTest {
     @Before
     fun setUp() {
         repository = FakeDetailsRepository()
+        moviesRepository = FakeMoviesRepository()
     }
 
     @Test
@@ -68,6 +71,7 @@ class GetMoviesDetailsUseCaseTest {
         repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Loading)
         val flow = GetMovieDetailsUseCase(
             repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
             dispatcher = testDispatcher,
         )
 
@@ -78,11 +82,30 @@ class GetMoviesDetailsUseCaseTest {
 
     @Test
     fun `successfully get movie details`() = runTest {
+        moviesRepository.mockCheckFavorite(555, Result.Success(true))
         repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
         repository.mockFetchMovieReviews(ReviewsRequestApi(555), Result.Loading)
         repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Loading)
         val flow = GetMovieDetailsUseCase(
             repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+
+        val result = flow(request).first()
+
+        assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails.copy(isFavorite = true))))
+    }
+
+    @Test
+    fun `successfully get movie details with false favorite status`() = runTest {
+        moviesRepository.mockCheckFavorite(555, Result.Success(false))
+        repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
+        repository.mockFetchMovieReviews(ReviewsRequestApi(555), Result.Loading)
+        repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Loading)
+        val flow = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
             dispatcher = testDispatcher,
         )
 
@@ -98,6 +121,7 @@ class GetMoviesDetailsUseCaseTest {
         repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Loading)
         val flow = GetMovieDetailsUseCase(
             repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
             dispatcher = testDispatcher,
         )
 
@@ -113,6 +137,7 @@ class GetMoviesDetailsUseCaseTest {
         repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Success(similarList))
         val flow = GetMovieDetailsUseCase(
             repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
             dispatcher = testDispatcher,
         )
 
@@ -132,6 +157,7 @@ class GetMoviesDetailsUseCaseTest {
 
         val useCase = GetMovieDetailsUseCase(
             repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
             dispatcher = testDispatcher,
         )
         val result = useCase(request).last()
