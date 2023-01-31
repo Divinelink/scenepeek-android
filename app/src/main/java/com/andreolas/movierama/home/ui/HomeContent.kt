@@ -157,10 +157,9 @@ fun HomeContent(
                 onLoadNextPage = onLoadNextPage,
             )
         }
-
-        if (viewState.isLoading) {
-            LoadingContent()
-        }
+    }
+    if (viewState.isLoading) {
+        LoadingContent()
     }
 }
 
@@ -189,7 +188,7 @@ fun HomeContentPreview() {
         Surface {
             HomeContent(
                 viewState = HomeViewState(
-                    isLoading = true,
+                    isLoading = false,
                     moviesList = listOf(),
                     selectedMovie = null,
                     error = null,
