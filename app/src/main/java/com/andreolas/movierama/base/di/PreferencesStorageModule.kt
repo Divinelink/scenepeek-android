@@ -25,6 +25,12 @@ object PreferencesStorageModule {
 
     @Singleton
     @Provides
-    fun provideEncryptedPreferenceStorage(@ApplicationContext context: Context): EncryptedStorage =
-        EncryptedPreferenceStorage(context)
+    fun provideEncryptedPreferenceStorage(
+        preferenceStorage: DataStorePreferenceStorage,
+        @ApplicationContext context: Context,
+    ): EncryptedStorage =
+        EncryptedPreferenceStorage(
+            preferenceStorage = preferenceStorage,
+            context = context,
+        )
 }
