@@ -132,12 +132,12 @@ fun DetailsContent(
                 onSimilarMovieClicked = onSimilarMovieClicked,
             )
         }
-        if (viewState.isLoading) {
-            LoadingContent()
-        }
         if (viewState.error != null) {
             // Handle Error State
         }
+    }
+    if (viewState.isLoading) {
+        LoadingContent()
     }
 }
 

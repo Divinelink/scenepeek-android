@@ -183,10 +183,10 @@ class HomeViewModel @Inject constructor(
         query: String,
         page: Int,
     ) {
-        if (query != latestQuery) {
-            _viewState.update {
-                it.copy(searchMovies = null)
-            }
+        val currentMoviesList = if (query != latestQuery) {
+            emptyList()
+        } else {
+            viewState.value.searchMovies ?: emptyList()
         }
         latestQuery = query
 
@@ -213,7 +213,7 @@ class HomeViewModel @Inject constructor(
                             ) {
                                 _viewState.update { viewState ->
                                     val updatedSearchList = getUpdatedMovies(
-                                        currentMoviesList = viewState.searchMovies ?: emptyList(),
+                                        currentMoviesList = currentMoviesList,
                                         updatedMoviesList = result.data.searchList,
                                     ).also { updatedSearchList ->
                                         // Fix caching
@@ -278,20 +278,18 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getUpdatedMovies(
-        currentMoviesList: List<PopularMovie>?,
+        currentMoviesList: List<PopularMovie>,
         updatedMoviesList: List<PopularMovie>,
     ): List<PopularMovie> {
-        val combinedList = (currentMoviesList?.plus(updatedMoviesList))?.distinctBy { it.id }
-        val updatedList = combinedList?.toMutableList()
+        val combinedList = currentMoviesList.plus(updatedMoviesList).distinctBy { it.id }
+        val updatedList = combinedList.toMutableList()
         updatedMoviesList.forEach { updatedMovie ->
-            val index = updatedList?.indexOfFirst { it.id == updatedMovie.id }
+            val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
             if (index != -1) {
-                if (index != null) {
-                    updatedList[index] = updatedMovie
-                }
+                updatedList[index] = updatedMovie
             }
         }
-        return updatedList?.distinctBy { it.id } ?: emptyList()
+        return updatedList.distinctBy { it.id }
     }
 }
 
