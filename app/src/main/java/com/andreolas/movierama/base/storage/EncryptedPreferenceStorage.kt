@@ -22,29 +22,19 @@ class EncryptedPreferenceStorage @Inject constructor(
     @ApplicationContext val context: Context,
 ) : EncryptedStorage {
 
-    private var masterKey: MasterKey = MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
+    private var masterKey: MasterKey = MasterKey
+        .Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
 
     // Known issue: https://issuetracker.google.com/issues/158234058
-    // This library makes the app crash when re-installing, so we have to make a by-pass for now until Google fixes it.
-    private fun preferences(): SharedPreferences = runBlocking {
-        // TODO add this block when app runs for the first time
-        val fileName = if (preferenceStorage.encryptedPreferences.first() == null) {
-            val randomSecretFileName = UUID.randomUUID().toString()
-            preferenceStorage.setEncryptedPreferences(randomSecretFileName)
-            randomSecretFileName
-        } else {
-            preferenceStorage.encryptedPreferences.first()
-        }
-        EncryptedSharedPreferences(
-            context,
-            fileName!!,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-        )
-    }
-
-    private var encryptedPreferences = preferences()
+    private val encryptedPreferences: SharedPreferences = EncryptedSharedPreferences(
+        context,
+        getFileName(),
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+    )
 
     object PreferencesKeys {
         const val SECRET_TMDB_API_KEY = "secret.tmdb.api.key"
@@ -59,4 +49,23 @@ class EncryptedPreferenceStorage @Inject constructor(
 
     override val tmdbApiKey: String
         get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_API_KEY, "") ?: ""
+
+    /**
+     * Known issue: https://issuetracker.google.com/issues/158234058
+     * This library makes the app crash when re-installing, so we have to make a by-pass for now until Google fixes it.
+     *
+     * Therefore we have to create a new encryption file name in case the current one is not available
+     * and save that to our data store preferences.
+     */
+    private fun getFileName(): String = runBlocking {
+        val encryptedFileName = preferenceStorage.encryptedPreferences.first()
+        if (encryptedFileName == null) {
+            val newEncryptedFileName = UUID.randomUUID().toString() + ".encrypted.secrets"
+            preferenceStorage.setEncryptedPreferences(newEncryptedFileName)
+            return@runBlocking newEncryptedFileName
+        } else {
+            preferenceStorage.setEncryptedPreferences(encryptedFileName)
+            return@runBlocking encryptedFileName
+        }
+    }
 }
