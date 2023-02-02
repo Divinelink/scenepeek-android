@@ -9,6 +9,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'com.google.devtools.ksp' version '1.7.20-1.0.8'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.google.firebase.appdistribution'
 }
 
 apply {
@@ -21,13 +22,13 @@ apply {
 
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         applicationId "com.andreolas.movierama"
         minSdkVersion 26
         targetSdkVersion 33
-        versionCode 3
-        versionName "2.1.1"
+        versionCode 4
+        versionName "2.2.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         kapt {
@@ -36,11 +37,30 @@ android {
             }
         }
     }
+    signingConfigs {
+        release {
+            def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+            def allFilesFromDir = new File(tmpFilePath).listFiles()
+            if (allFilesFromDir != null) {
+                def keystoreFile = allFilesFromDir.first()
+                keystoreFile.renameTo("/keystore/keystore.jks")
+                storeFile = keystoreFile
+            }
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            firebaseAppDistribution {
+                artifactType="APK"
+                artifactPath="app/build/outputs/apk/release/app-release.apk"
+            }
         }
         debug {
             testCoverageEnabled true
@@ -88,9 +108,9 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
+    applicationVariants.configureEach { variant ->
         kotlin.sourceSets {
-            getByName(variant.name) {
+            named(variant.name) {
                 kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
             }
         }
