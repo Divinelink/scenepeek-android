@@ -6,6 +6,8 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
 
+    <string name="load_more">Loading more…</string>
+
     <string name="toolbar_search">Search MovieRama</string>
     <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
@@ -40,7 +42,6 @@
 
     <!-- Popular Movie -->
     <string name="popular_movie__rating">Rating</string>
-
     <string name="movie_extra_details">Details &amp; More</string>
 
     <!-- Movie Details -->

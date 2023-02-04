@@ -19,4 +19,7 @@ data class HomeViewState(
     val searchLoading: Boolean = false,
     val emptyResult: Boolean = false,
     val error: UIText? = null,
-)
+) {
+    val initialLoading = isLoading && moviesList.isEmpty()
+    val loadMore = isLoading && moviesList.isNotEmpty()
+}

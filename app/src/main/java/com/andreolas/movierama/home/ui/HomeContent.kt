@@ -155,10 +155,11 @@ fun HomeContent(
                 },
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 onLoadNextPage = onLoadNextPage,
+                isLoading = viewState.loadMore,
             )
         }
     }
-    if (viewState.isLoading) {
+    if (viewState.initialLoading) {
         LoadingContent()
     }
 }
