@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,9 @@ import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.theme.AppTheme
 
+const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
+const val DETAILS_BUTTON_TAG = "DETAILS_AND_MORE_BUTTON_TAG"
+
 @Composable
 fun BottomSheetMovieContent(
     modifier: Modifier = Modifier,
@@ -55,6 +59,7 @@ fun BottomSheetMovieContent(
         Column {
             Row(
                 modifier = modifier
+                    .testTag(MOVIE_BOTTOM_SHEET_TAG)
                     .fillMaxWidth(),
             ) {
                 AsyncImage(
@@ -161,6 +166,7 @@ fun BottomSheetMovieContent(
 
                     Text(
                         modifier = Modifier
+                            .testTag(DETAILS_BUTTON_TAG)
                             .padding(start = 8.dp),
                         text = stringResource(id = R.string.movie_extra_details),
                         style = MaterialTheme.typography.titleSmall,

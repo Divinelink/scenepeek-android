@@ -18,7 +18,7 @@ data class SearchResult(
     val searchList: List<PopularMovie>,
 )
 
-class GetSearchMoviesUseCase @Inject constructor(
+open class GetSearchMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher) {

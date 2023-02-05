@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +49,8 @@ import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
+const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
+
 @Composable
 fun MovieItem(
     modifier: Modifier = Modifier,
@@ -58,6 +61,7 @@ fun MovieItem(
     Card(
         shape = PopularMovieItemShape,
         modifier = Modifier
+            .testTag(MOVIE_CARD_ITEM_TAG)
             .widthIn(max = 140.dp)
             .clip(PopularMovieItemShape)
             .clipToBounds()
