@@ -161,7 +161,7 @@ private fun SearchIconWithLoading(
             ) {
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = stringResource(id = R.string.toolbar_search),
+                    contentDescription = stringResource(id = R.string.clear_search_button_content_description),
                 )
             }
         }

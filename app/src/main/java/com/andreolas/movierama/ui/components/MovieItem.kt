@@ -150,7 +150,7 @@ fun LikeButton(
                     modifier = Modifier.size(32.dp),
                     imageVector = image,
                     tint = color,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.mark_as_favorite_button_content_description),
                 )
             }
         }

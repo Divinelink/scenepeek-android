@@ -55,6 +55,8 @@
 
     <!-- Accessibility -->
     <string name="movie_image_placeholder">Movie image</string>
+    <string name="mark_as_favorite_button_content_description">Mark As Favorite Button</string>
+    <string name="clear_search_button_content_description">Clear Search Button</string>
 
 
 </resources>

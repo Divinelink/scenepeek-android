@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
@@ -47,6 +48,9 @@ import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
 import kotlinx.coroutines.launch
+
+const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
+const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -139,6 +143,7 @@ fun HomeContent(
         } else {
             PopularMoviesList(
                 modifier = modifier
+                    .testTag(MOVIES_LIST_TAG)
                     .padding(paddingValues),
                 movies = if (viewState.searchMovies?.isNotEmpty() == true) {
                     viewState.searchMovies
@@ -170,6 +175,7 @@ fun LoadingContent(
 ) {
     Box(
         modifier = modifier
+            .testTag(LOADING_CONTENT_TAG)
             .fillMaxSize(),
     ) {
         Material3CircularProgressIndicator(
