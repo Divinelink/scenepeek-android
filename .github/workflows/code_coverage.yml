@@ -20,15 +20,17 @@ jobs:
         with:
           java-version: 1.11
 
-      - name: Run Coverage
-        run: |
-          chmod +x gradlew
-          ./gradlew app:koverReport
+      - name: Run Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew app:combinedJacocoTestReport
+
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          paths: ${{ github.workspace }}/app/build/reports/kover/report.xml
+          paths: ${{ github.workspace }}/app/build/reports/jacoco/combinedJacocoTestReport/combinedJacocoTestReport.xml
           min-coverage-overall: 10
           min-coverage-changed-files: 20
