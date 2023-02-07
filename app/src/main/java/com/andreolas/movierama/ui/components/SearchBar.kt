@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -49,6 +50,8 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarSize
+
+const val SEARCH_BAR_LOADING_INDICATOR_TAG = "SEARCH_BAR_LOADING_INDICATOR"
 
 @Composable
 fun SearchBar(
@@ -146,6 +149,7 @@ private fun SearchIconWithLoading(
         true -> {
             Material3CircularProgressIndicator(
                 modifier = Modifier
+                    .testTag(SEARCH_BAR_LOADING_INDICATOR_TAG)
                     .padding(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp)
                     .height(24.dp)
                     .width(24.dp)
@@ -161,7 +165,7 @@ private fun SearchIconWithLoading(
             ) {
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = stringResource(id = R.string.toolbar_search),
+                    contentDescription = stringResource(id = R.string.clear_search_button_content_description),
                 )
             }
         }

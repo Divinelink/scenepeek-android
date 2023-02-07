@@ -112,7 +112,7 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
-    ignoreAnnotated: [IgnoreDetekt]
+    ignoreAnnotated: [IgnoreDetekt, Test]
   LongParameterList:
     active: false
     functionThreshold: 6

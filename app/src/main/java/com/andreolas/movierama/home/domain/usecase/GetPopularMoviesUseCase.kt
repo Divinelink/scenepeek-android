@@ -7,7 +7,6 @@ import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -15,11 +14,10 @@ import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetPopularMoviesUseCase @Inject constructor(
+open class GetPopularMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<PopularRequestApi, List<PopularMovie>>(dispatcher) {
