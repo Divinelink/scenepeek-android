@@ -1,4 +1,4 @@
-![Coverage Status](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_19.svg)
+![Coverage Status](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_37.svg)
 
 # MovieRama
 
