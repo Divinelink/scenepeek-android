@@ -7,9 +7,9 @@ import androidx.compose.ui.test.performClick
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
-import com.andreolas.movierama.fakes.FakeGetPopularMoviesUseCase
-import com.andreolas.movierama.fakes.FakeGetSearchMoviesUseCase
-import com.andreolas.movierama.fakes.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
+import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG

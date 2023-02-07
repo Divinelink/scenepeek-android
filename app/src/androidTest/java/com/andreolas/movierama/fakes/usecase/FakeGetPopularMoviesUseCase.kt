@@ -1,7 +1,8 @@
-package com.andreolas.movierama.fakes
+package com.andreolas.movierama.fakes.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
+import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,4 +1,4 @@
-package com.andreolas.movierama.fakes
+package com.andreolas.movierama.fakes.repository
 
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi

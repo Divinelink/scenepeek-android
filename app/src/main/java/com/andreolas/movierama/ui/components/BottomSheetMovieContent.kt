@@ -47,6 +47,7 @@ import com.andreolas.movierama.ui.theme.AppTheme
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
 const val DETAILS_BUTTON_TAG = "DETAILS_AND_MORE_BUTTON_TAG"
+const val BOTTOM_SHEET_MARK_AS_FAVORITE = "MARK_AS_FAVORITE_BUTTON"
 
 @Composable
 fun BottomSheetMovieContent(
@@ -102,6 +103,7 @@ fun BottomSheetMovieContent(
 
                         LikeButton(
                             modifier = Modifier
+                                .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
                                 .clip(RoundedCornerShape(50.dp))
                                 .clickable { onMarkAsFavoriteClicked(movie) }
                                 .weight(1f),

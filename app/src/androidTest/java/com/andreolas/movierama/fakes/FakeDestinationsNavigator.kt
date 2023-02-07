@@ -33,7 +33,8 @@ class FakeDestinationsNavigator : DestinationsNavigator {
     }
 
     override fun popBackStack(): Boolean {
-        TODO("Not yet implemented")
+        navigatedRoutes.removeLast()
+        return true
     }
 
     override fun popBackStack(route: String, inclusive: Boolean, saveState: Boolean): Boolean {

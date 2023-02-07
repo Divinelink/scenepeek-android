@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,8 @@ import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.toMovie
 import com.andreolas.movierama.ui.components.MovieItem
 import com.andreolas.movierama.ui.theme.ListPaddingValues
+
+const val SIMILAR_MOVIES_SCROLLABLE_LIST = "SIMILAR_MOVIES_LAZY_ROW_TAG"
 
 @Composable
 fun SimilarMoviesList(
@@ -39,6 +42,7 @@ fun SimilarMoviesList(
         )
 
         LazyRow(
+            modifier = Modifier.testTag(SIMILAR_MOVIES_SCROLLABLE_LIST),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = ListPaddingValues,
         ) {

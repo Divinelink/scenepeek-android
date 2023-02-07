@@ -2,6 +2,7 @@ package com.andreolas.movierama.home.ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -12,6 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.ui.components.BOTTOM_SHEET_MARK_AS_FAVORITE
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
@@ -222,5 +224,90 @@ class HomeContentTest {
         composeTestRule
             .onNodeWithText(loadingMoreLabel)
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun focusOnSearchBarTest() {
+        composeTestRule.setContent {
+            HomeContent(
+                viewState = HomeViewState(
+                    isLoading = false,
+                    moviesList = popularMovies,
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {},
+                onSearchMovies = {},
+                onClearClicked = {},
+                onLoadNextPage = {},
+                onGoToDetails = {},
+            )
+        }
+
+        val toolbarSearch = composeTestRule.activity
+            .getString(R.string.toolbar_search)
+
+        val toolbarSearchPlaceholder = composeTestRule.activity
+            .getString(R.string.toolbar_search_placeholder)
+
+        composeTestRule
+            .onNodeWithText(toolbarSearch)
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(toolbarSearchPlaceholder)
+            .assertIsFocused()
+    }
+
+    @Test
+    fun clickMarkAsFavoriteFromBottomSheetTest() {
+        var markAsFavoriteClicked = false
+        composeTestRule.setContent {
+            HomeContent(
+                viewState = HomeViewState(
+                    isLoading = false,
+                    moviesList = popularMovies,
+                    selectedMovie = popularMovies[2],
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {
+                    markAsFavoriteClicked = true
+                },
+                onSearchMovies = {},
+                onClearClicked = {},
+                onLoadNextPage = {},
+                onGoToDetails = {},
+            )
+        }
+        composeTestRule
+            .onNodeWithTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
+            .performClick()
+
+        assertThat(markAsFavoriteClicked).isTrue()
+    }
+
+    @Test
+    fun clickOnSettingsButtonTest() {
+        composeTestRule.setContent {
+            HomeContent(
+                viewState = HomeViewState(
+                    isLoading = false,
+                    moviesList = popularMovies,
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {},
+                onSearchMovies = {},
+                onClearClicked = {},
+                onLoadNextPage = {},
+                onGoToDetails = {},
+            )
+        }
+
+        val settingsButtonContentDescription = composeTestRule.activity
+            .getString(R.string.settings_button_content_description)
+
+        composeTestRule
+            .onNodeWithContentDescription(settingsButtonContentDescription)
+            .assertIsDisplayed()
+            .performClick()
     }
 }

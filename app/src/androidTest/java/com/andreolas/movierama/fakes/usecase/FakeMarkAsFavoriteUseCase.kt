@@ -1,6 +1,7 @@
-package com.andreolas.movierama.fakes
+package com.andreolas.movierama.fakes.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
