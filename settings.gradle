@@ -1,2 +1,6 @@
+enableFeaturePreview('VERSION_CATALOGS')
+
 include ':app'
 include ':core-util'
+
+apply from: 'dependencies.gradle'

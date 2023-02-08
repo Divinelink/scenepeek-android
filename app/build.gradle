@@ -124,141 +124,98 @@ kapt {
 }
 
 dependencies {
-    def appcompat_version = "1.5.1"
     def room_version = "2.5.0"
-    def hilt_version = "2.43.2"
-    def ktor_version = "2.2.2"
-
-
     implementation project(':core-util')
 
+    coreLibraryDesugaring libs.android.tools.desugar
+
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.0')
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.config
+    implementation libs.firebase.crashlytics
+    implementation libs.firebase.analytics
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
-    implementation 'com.google.code.gson:gson:2.9.1'
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-    implementation 'com.jakewharton.timber:timber:5.0.1'
-    implementation 'androidx.fragment:fragment-ktx:1.5.4'
-    implementation 'androidx.startup:startup-runtime:1.1.1'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.legacy.support
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.startup
+    implementation libs.androidx.core.ktx
 
-    def composeBom = platform('androidx.compose:compose-bom:2022.10.00')
-    implementation composeBom
-    androidTestImplementation composeBom
+    implementation libs.kotlin.stdlib.jdk7
+    implementation libs.kotlin.test.junit
+    implementation libs.kotlinx.datetime
+    implementation libs.kotlinx.coroutines.core
 
     // Compose
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.compose.material:material:1.3.1'
-    implementation 'androidx.compose.ui:ui-util:1.3.3'
-    // Material Dialog for Compose
-    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc"
-    // AsyncImage for Compose
-    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation libs.compose.material3
+    implementation libs.compose.material
+    implementation libs.compose.ui.util
+    implementation libs.compose.ui.preview
+    implementation libs.compose.hilt.navigation
+    debugImplementation libs.compose.ui.preview
+    debugImplementation libs.compose.ui.test.manifest
 
-    // Android Studio Preview support
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
+    // Third Party
+    implementation libs.timber
+    implementation libs.lottie
+    implementation libs.greenrobot.eventbus
+    implementation libs.compose.destinations.core
+    implementation libs.compose.destinations.animations
+    ksp libs.compose.destinations.ksp
 
-    // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
-    implementation 'androidx.fragment:fragment-ktx:1.5.3'
+    // UI Tools
+    implementation libs.material.material
+    implementation libs.coil.compose
+    implementation libs.vanpra.compose.dialogs
 
-    implementation 'androidx.test.ext:junit-ktx:1.1.3'
+    // Network & Serialization
+    implementation libs.ktor.client.core
+    implementation libs.ktor.client.android
+    implementation libs.ktor.client.logging
+    implementation libs.ktor.client.core
+    implementation libs.ktor.client.content.negotiation
+    implementation libs.ktor.serialization.kotlinx.json
+    implementation libs.kotlinx.serialization.json
 
+    // DI
+    kapt libs.dagger.hilt.compiler
+    implementation libs.dagger.hilt.android
+    kaptTest libs.dagger.hilt.compiler
+    testImplementation libs.dagger.hilt.android.testing
+    androidTestImplementation libs.dagger.hilt.android.testing
+    kaptAndroidTest libs.dagger.hilt.compiler
+    kaptAndroidTest libs.dagger.hilt.android.compiler
+
+    // Database
+    implementation libs.datastore
+    implementation libs.datastore.core
+    implementation libs.datastore.preferences
+    implementation libs.datastore.preferences.core
+    implementation libs.encrypted.preferences
+    implementation libs.room.ktx
+    implementation libs.room.runtime
+    kapt libs.room.compiler
+
+    // Testing Libs
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-
-    // Required -- JUnit 4 framework
     testImplementation "junit:junit:4.13.2"
-    // Optional -- Robolectric environment
     testImplementation "androidx.test:core-ktx:1.4.0"
-    // Optional -- Mockito framework
     testImplementation "org.mockito:mockito-core:4.6.1"
-    // Optional -- mockito-kotlin
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    // Optional -- Mockk framework
     testImplementation "io.mockk:mockk:1.12.4"
-
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
-    // For instrumentation tests
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
-
-    // For local unit tests
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
-
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:$hilt_version")
-
-    implementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-
-
-    // Room DB
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
-
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
-    implementation "androidx.room:room-guava:$room_version"
+    testImplementation libs.kotlin.test.junit
+    testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.room:room-testing:$room_version"
 
-    // Ktor
-    implementation "io.ktor:ktor-client-core:$ktor_version"
-    implementation "io.ktor:ktor-client-android:$ktor_version"
-    implementation "io.ktor:ktor-client-logging:$ktor_version"
-    implementation "io.ktor:ktor-client-core:$ktor_version"
-    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
-    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-
-    implementation 'com.airbnb.android:lottie:5.2.0'
-
-    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation "androidx.core:core-ktx:1.9.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation("org.greenrobot:eventbus:3.3.1")
 
-    // DataStore
-    implementation "androidx.datastore:datastore:1.0.0"
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-
-    implementation 'androidx.datastore:datastore-core:1.0.0'
-    implementation 'androidx.datastore:datastore-preferences-core:1.0.0'
-    // KeyStore - Encrypted Preferences
-    implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha04'
-
-
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
+    testImplementation "androidx.room:room-testing:$room_version"
     testImplementation "com.google.truth:truth:1.1.3"
     androidTestImplementation "com.google.truth:truth:1.1.3"
-
-    // Compose Navigation
-    implementation 'io.github.raamcosta.compose-destinations:core:1.7.27-beta'
-    implementation "io.github.raamcosta.compose-destinations:animations-core:1.7.27-beta"
-    ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.27-beta'
 }
 
 repositories {

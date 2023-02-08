@@ -99,7 +99,7 @@ internal class FullRightDirectedBehaviorDelegate(
                     0F
                 )
         } else {
-            lastActionStateController.onTranslate(mainView, actionView, actionSize, dx, index)
+            lastActionStateController.onTranslate(mainView, actionView, actionSize, index)
         }
     }
 
