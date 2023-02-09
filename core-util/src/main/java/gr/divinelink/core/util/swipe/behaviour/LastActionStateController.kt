@@ -48,7 +48,7 @@ internal class LastActionStateController(
     private var animation: Animator? = null
 
     @Suppress("UnusedPrivateMember")
-    fun onTranslate(mainView: View, actionView: View, actionSize: Size, dx: Int, index: Int) {
+    fun onTranslate(mainView: View, actionView: View, actionSize: Size, index: Int) {
         when {
             isFullyOpened(mainView, actionSize) && !isOpeningOrOpened() -> {
                 cancelAllPossibleAnimation()

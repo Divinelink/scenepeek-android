@@ -4,7 +4,6 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.andreolas.movierama.fakes.usecase.FakeRemoveFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesListResult
 import com.andreolas.movierama.home.domain.usecase.SearchResult
@@ -25,14 +24,13 @@ class HomeViewModelTestRobot {
 
     private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
     private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    private val fakeRemoveFavoriteUseCase = FakeRemoveFavoriteUseCase()
     private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
 
     fun buildViewModel() = apply {
         viewModel = HomeViewModel(
             getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
-            markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
             getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
+            markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
         )
     }
 
@@ -68,14 +66,6 @@ class HomeViewModelTestRobot {
         result: Result<Unit>,
     ) = apply {
         fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
-            result = result,
-        )
-    }
-
-    suspend fun mockRemoveFavorite(
-        result: Result<Unit>,
-    ) = apply {
-        fakeRemoveFavoriteUseCase.mockRemoveFavoriteResult(
             result = result,
         )
     }

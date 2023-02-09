@@ -124,7 +124,7 @@ internal class FullLeftDirectedBehaviorDelegate(
                 distance * (actionCount - index + 1).toFloat() / actionCount
             )
         } else {
-            lastActionStateController.onTranslate(mainView, actionView, actionSize, dx, index)
+            lastActionStateController.onTranslate(mainView, actionView, actionSize, index)
         }
     }
 

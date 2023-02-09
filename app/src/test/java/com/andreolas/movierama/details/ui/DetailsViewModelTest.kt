@@ -12,10 +12,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import java.lang.Exception
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeViewModelTest {
+class DetailsViewModelTest {
 
     private val testRobot = DetailsViewModelRobot()
 
@@ -224,6 +223,64 @@ class HomeViewModelTest {
                     reviews = reviewsList,
                     similarMovies = similarMovies,
                     error = MovieDetailsResult.Failure.Unknown.message
+                )
+            )
+    }
+
+    @Test
+    fun `given movie is liked when MaskAsFavorite clicked then I expect to un mark it`() = runTest {
+        testRobot
+            .mockFetchMovieDetails(
+                response = flowOf(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails.copy(isFavorite = true))))
+            )
+            .mockMarkAsFavoriteUseCase(
+                response = Result.Success(Unit)
+            )
+            .buildViewModel(
+                movieId
+            )
+            .assertViewState(
+                DetailsViewState(
+                    movieId = movieId,
+                    isLoading = false,
+                    movieDetails = movieDetails.copy(isFavorite = true),
+                )
+            )
+            .onMarkAsFavorite()
+            .assertViewState(
+                DetailsViewState(
+                    movieId = movieId,
+                    isLoading = false,
+                    movieDetails = movieDetails.copy(isFavorite = false),
+                )
+            )
+    }
+
+    @Test
+    fun `given movie is not favorite when MaskAsFavorite clicked then I expect to mark it`() = runTest {
+        testRobot
+            .mockFetchMovieDetails(
+                response = flowOf(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+            )
+            .mockMarkAsFavoriteUseCase(
+                response = Result.Success(Unit)
+            )
+            .buildViewModel(
+                movieId
+            )
+            .assertViewState(
+                DetailsViewState(
+                    movieId = movieId,
+                    isLoading = false,
+                    movieDetails = movieDetails.copy(isFavorite = false),
+                )
+            )
+            .onMarkAsFavorite()
+            .assertViewState(
+                DetailsViewState(
+                    movieId = movieId,
+                    isLoading = false,
+                    movieDetails = movieDetails.copy(isFavorite = true),
                 )
             )
     }
