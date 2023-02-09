@@ -25,12 +25,8 @@ jobs:
         with:
           api-level: 26
           script: ./gradlew app:combinedJacocoTestReport
-
-      - name: Add coverage to PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.3
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          paths: ${{ github.workspace }}/app/build/reports/jacoco/combinedJacocoTestReport/combinedJacocoTestReport.xml
-          min-coverage-overall: 10
-          min-coverage-changed-files: 20
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ github.workspace }}/app/build/reports/jacoco/combinedJacocoTestReport/combinedJacocoTestReport.xml
