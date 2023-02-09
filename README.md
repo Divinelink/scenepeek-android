@@ -1,4 +1,5 @@
-![Coverage Status](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_37.svg)
+[![codecov](https://img.shields.io/codecov/c/gh/Divinelink/MovieRama/main?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/MovieRama)
+
 
 # MovieRama
 
