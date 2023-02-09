@@ -1,5 +1,7 @@
-// Having a version catalog for dependencies helps ensure that the project is well-maintained,
-// up-to-date, reproducible, and suitable for collaboration.
+/**
+ * Having a version catalog for dependencies helps ensure that the project is well-maintained,
+ * up-to-date, reproducible, and suitable for collaboration.
+ */
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
@@ -108,36 +110,50 @@ dependencyResolutionManagement {
         }
 
         testLibs {
-            version('androidx-test', '1.4.0')
+            version('androidx-test', '1.5.0') // upgrade to 1.5.0
             version('androidx-test-ext-junit', '1.1.3')
-            version('robolectric', '4.8.1')
+            version('junit', '4.13.2')
+            version('kotlinx-coroutines', '1.6.4')
+            version('truth', '1.1.3')
 
-            alias('junit-junit').to('junit:junit:4.13.2')
+            // UI
+            version('espresso', '3.5.1')
+            version('robolectric', '4.8.1')
+            version('androidx-compose-ui-test', '1.3.3')
+
+            // Mockers
+            version('mockito', '5.1.1')
+            version('mockito-kotlin', '4.1.0')
+            version('mockk', '1.12.4')
+
+            alias('junit-junit').to('junit', 'junit').versionRef('junit')
             alias('androidx-test-core').to('androidx.test', 'core').versionRef('androidx-test')
             alias('androidx-test-core-ktx').to('androidx.test', 'core-ktx').versionRef('androidx-test')
             alias('androidx-test-ext-junit').to('androidx.test.ext', 'junit').versionRef('androidx-test-ext-junit')
             alias('androidx-test-ext-junit-ktx').to('androidx.test.ext', 'junit-ktx').versionRef('androidx-test-ext-junit')
             alias('androidx-test-orchestrator').to('androidx.test:orchestrator:1.4.1')
-            alias('espresso-core').to('androidx.test.espresso:espresso-core:3.4.0')
-            alias('mockito-core').to('org.mockito:mockito-inline:4.6.1')
-            alias('mockito-kotlin').to('org.mockito.kotlin:mockito-kotlin:4.0.0')
-            alias('mockito-android').to('org.mockito:mockito-android:4.6.1')
-            alias('robolectric-robolectric').to('org.robolectric', 'robolectric').versionRef('robolectric')
-            alias('robolectric-shadows-multidex').to('org.robolectric', 'shadows-multidex').versionRef('robolectric')
-            alias('bouncycastle-bcprov-jdk15on').to('org.bouncycastle:bcprov-jdk15on:1.70')
-            alias('hamcrest-hamcrest').to('org.hamcrest:hamcrest:2.2')
-            alias('assertj-core').to('org.assertj:assertj-core:3.11.1')
-            alias('square-okhttp-mockserver').to('com.squareup.okhttp3:mockwebserver:3.12.13')
+            alias('kotlix-coroutines-test').to('org.jetbrains.kotlinx', 'kotlinx-coroutines-test').versionRef('kotlinx-coroutines')
+            alias('truth').to('com.google.truth', 'truth').versionRef('truth')
 
-            alias('conscrypt-openjdk-uber').to('org.conscrypt:conscrypt-openjdk-uber:2.0.0')
+            // UI
+            alias('robolectric-robolectric').to('org.robolectric', 'robolectric').versionRef('robolectric')
+            alias('espresso-core').to('androidx.test.espresso', 'espresso-core').versionRef('espresso')
+            alias('androidx-compose-ui').to('androidx.compose.ui', 'ui-test-junit4').versionRef("androidx-compose-ui-test")
+
+
+            // Mockers
+            alias('mockito-core').to('org.mockito', 'mockito-core').versionRef("mockito")
+            alias('mockito-kotlin').to('org.mockito.kotlin', 'mockito-kotlin').versionRef('mockito-kotlin')
+            alias('mockk').to('io.mockk', 'mockk').versionRef('mockk')
         }
 
-//        lintLibs {
-//            version('lint', '30.2.2')
-//
-//            alias('lint-api').to('com.android.tools.lint', 'lint-api').versionRef('lint')
-//            alias('lint-checks').to('com.android.tools.lint', 'lint-checks').versionRef('lint')
-//            alias('lint-tests').to('com.android.tools.lint', 'lint-tests').versionRef('lint')
-//        }
+/*        lintLibs {
+            version('lint', '30.2.2')
+
+            alias('lint-api').to('com.android.tools.lint', 'lint-api').versionRef('lint')
+            alias('lint-checks').to('com.android.tools.lint', 'lint-checks').versionRef('lint')
+            alias('lint-tests').to('com.android.tools.lint', 'lint-tests').versionRef('lint')
+        }
+        */
     }
 }
