@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 26
           script: ./gradlew app:combinedJacocoTestReport
 
       - name: Add coverage to PR
