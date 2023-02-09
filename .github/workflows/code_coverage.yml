@@ -29,4 +29,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          paths: ${{ github.workspace }}/app/build/reports/jacoco/combinedJacocoTestReport/combinedJacocoTestReport.xml
+          files: ${{ github.workspace }}/app/build/reports/jacoco/combinedJacocoTestReport/combinedJacocoTestReport.xml
