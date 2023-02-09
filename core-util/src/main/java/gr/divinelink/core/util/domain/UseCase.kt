@@ -12,7 +12,7 @@ abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispat
      *
      * @param parameters the input parameters to run the use case with
      */
-    open suspend operator fun invoke(parameters: P): Result<R> {
+    suspend operator fun invoke(parameters: P): Result<R> {
         return try {
             // Moving all use case's executions to the injected dispatcher
             // In production code, this is usually the Default dispatcher (background thread)

@@ -34,7 +34,6 @@ class DetailsViewModel @Inject constructor(
     private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
         value = DetailsViewState(
             movieId = args.movieId,
-            isFavorite = args.isFavorite,
             isLoading = true,
         )
     )
@@ -62,7 +61,6 @@ class DetailsViewModel @Inject constructor(
                             movieDetails = viewState.movieDetails?.copy(
                                 isFavorite = !viewState.movieDetails.isFavorite
                             ),
-                            isFavorite = !viewState.isFavorite
                         )
                     }
                 }

@@ -56,9 +56,13 @@ open class GetMovieDetailsUseCase @Inject constructor(
             when (detailsFlow) {
                 Result.Loading -> emit(Result.Loading)
                 is Result.Error -> throw MovieDetailsException()
-                is Result.Success -> emit(Result.Success(MovieDetailsResult.DetailsSuccess(
-                    detailsFlow.data.copy(isFavorite = favoriteFlow.data == true)
-                )))
+                is Result.Success -> emit(
+                    Result.Success(
+                        data = MovieDetailsResult.DetailsSuccess(
+                            detailsFlow.data.copy(isFavorite = favoriteFlow.data == true)
+                        )
+                    )
+                )
             }
             if (reviewsFlow is Result.Success) {
                 emit(Result.Success(MovieDetailsResult.ReviewsSuccess(reviews = reviewsFlow.data)))

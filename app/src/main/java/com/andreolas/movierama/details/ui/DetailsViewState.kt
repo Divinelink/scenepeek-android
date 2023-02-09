@@ -8,7 +8,6 @@ import com.andreolas.movierama.ui.UIText
 data class DetailsViewState(
     val isLoading: Boolean = false,
     val movieId: Int,
-    val isFavorite: Boolean = false,
     val movieDetails: MovieDetails? = null,
     val reviews: List<Review>? = null,
     val similarMovies: List<SimilarMovie>? = null,

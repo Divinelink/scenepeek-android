@@ -48,4 +48,16 @@ class DetailsViewModelRobot {
             response = response,
         )
     }
+
+    fun onMarkAsFavorite() = apply {
+        viewModel.onMarkAsFavorite()
+    }
+
+    suspend fun mockMarkAsFavoriteUseCase(
+        response: Result<Unit>,
+    ) = apply {
+        fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
+            response
+        )
+    }
 }
