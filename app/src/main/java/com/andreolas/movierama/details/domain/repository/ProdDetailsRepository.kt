@@ -8,12 +8,14 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.toDom
 import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMovie
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.ReviewsException
+import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,8 +28,8 @@ class ProdDetailsRepository @Inject constructor(
             .fetchDetails(request)
             .map { apiResponse ->
                 Result.Success(apiResponse.toDomainMovie())
-            }.catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
+            }.catch {
+                throw MovieDetailsException()
             }
     }
 
@@ -36,8 +38,8 @@ class ProdDetailsRepository @Inject constructor(
             .fetchReviews(request)
             .map { apiResponse ->
                 Result.Success(apiResponse.toDomainReviewsList())
-            }.catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
+            }.catch {
+                throw ReviewsException()
             }
     }
 
@@ -46,8 +48,8 @@ class ProdDetailsRepository @Inject constructor(
             .fetchSimilarMovies(request)
             .map { apiResponse ->
                 Result.Success(apiResponse.toDomainMoviesList())
-            }.catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
+            }.catch {
+                throw SimilarException()
             }
     }
 }

@@ -6,6 +6,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.Simil
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
+import com.andreolas.movierama.details.domain.model.ReviewsException
+import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
@@ -14,6 +16,7 @@ import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -34,19 +37,25 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
         val details = repository.fetchMovieDetails(
             request = parameters,
-        )
+        ).catch {
+            emit(Result.Error(MovieDetailsException()))
+        }
 
         val reviews = repository.fetchMovieReviews(
             request = ReviewsRequestApi(
                 movieId = parameters.movieId,
             )
-        )
+        ).catch {
+            emit(Result.Error(ReviewsException()))
+        }
 
         val similar = repository.fetchSimilarMovies(
             request = SimilarRequestApi(
                 movieId = parameters.movieId,
             )
-        )
+        ).catch {
+            emit(Result.Error(SimilarException()))
+        }
         return combineTransform(
             flow = details,
             flow2 = reviews,
@@ -55,7 +64,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
         ) { detailsFlow, reviewsFlow, similarFlow, favoriteFlow ->
             when (detailsFlow) {
                 Result.Loading -> emit(Result.Loading)
-                is Result.Error -> throw MovieDetailsException()
+                is Result.Error -> emit(Result.Error(MovieDetailsException()))
                 is Result.Success -> emit(
                     Result.Success(
                         data = MovieDetailsResult.DetailsSuccess(

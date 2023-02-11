@@ -28,3 +28,5 @@ sealed class MovieDetailsResult {
 }
 
 class MovieDetailsException : Exception()
+class ReviewsException : Exception()
+class SimilarException : Exception()
