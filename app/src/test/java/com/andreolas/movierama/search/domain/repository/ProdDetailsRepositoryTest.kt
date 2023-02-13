@@ -1,5 +1,6 @@
 package com.andreolas.movierama.search.domain.repository
 
+import app.cash.turbine.test
 import com.andreolas.movierama.base.data.remote.movies.dto.details.Credits
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
@@ -16,7 +17,10 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.Simil
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.ReviewsException
+import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
@@ -278,5 +282,50 @@ class ProdDetailsRepositoryTest {
         ).first() as Result.Success
 
         assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun testSimilarMoviesError() = runTest {
+        val request = SimilarRequestApi(
+            movieId = 555,
+        )
+
+        val expectedResult = SimilarException()
+
+        repository.fetchSimilarMovies(
+            request = request
+        ).test {
+            assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+        }
+    }
+
+    @Test
+    fun testMovieReviewsError() = runTest {
+        val request = ReviewsRequestApi(
+            movieId = 555,
+        )
+
+        val expectedResult = ReviewsException()
+
+        repository.fetchMovieReviews(
+            request = request
+        ).test {
+            assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+        }
+    }
+
+    @Test
+    fun testMovieDetailsError() = runTest {
+        val request = DetailsRequestApi(
+            movieId = 555,
+        )
+
+        val expectedResult = MovieDetailsException()
+
+        repository.fetchMovieDetails(
+            request = request
+        ).test {
+            assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+        }
     }
 }
