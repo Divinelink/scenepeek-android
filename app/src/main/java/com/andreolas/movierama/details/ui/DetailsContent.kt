@@ -61,6 +61,7 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
@@ -138,7 +139,13 @@ fun DetailsContent(
             )
         }
         if (viewState.error != null) {
-            // Handle Error State
+            SimpleAlertDialog(
+                confirmClick = {
+                    onNavigateUp()
+                },
+                confirmText = UIText.ResourceText(R.string.ok),
+                text = viewState.error,
+            )
         }
     }
     if (viewState.isLoading) {

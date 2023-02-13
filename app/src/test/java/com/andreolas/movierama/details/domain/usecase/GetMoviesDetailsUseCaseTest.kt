@@ -5,8 +5,10 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsReques
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
@@ -163,5 +165,54 @@ class GetMoviesDetailsUseCaseTest {
         val result = useCase(request).last()
 
         assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
+    fun `catch error case in details`() = runTest {
+        val expectedResult = Result.Error(MovieDetailsException())
+
+        repository.mockFetchMovieReviews(ReviewsRequestApi(555), Result.Loading)
+        repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Error(SimilarException()))
+
+        val useCase = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).last()
+
+        assertThat(result).isInstanceOf(expectedResult::class.java)
+    }
+
+    @Test
+    fun `successfully get movie details even when similar call fails`() = runTest {
+        moviesRepository.mockCheckFavorite(555, Result.Success(false))
+        repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
+        repository.mockFetchMovieReviews(ReviewsRequestApi(555), Result.Loading)
+        repository.mockFetchSimilarMovies(SimilarRequestApi(movieId = 555), Result.Error(SimilarException()))
+        val flow = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+
+        val result = flow(request).first()
+
+        assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+    }
+
+    @Test
+    fun `successfully get movie details even when reviews and similar calls fail`() = runTest {
+        moviesRepository.mockCheckFavorite(555, Result.Success(false))
+        repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
+        val flow = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+
+        val result = flow(request).first()
+
+        assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
     }
 }

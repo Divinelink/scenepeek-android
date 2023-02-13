@@ -203,6 +203,7 @@ dependencies {
     testImplementation testLibs.kotlix.coroutines.test
     testImplementation testLibs.mockk
     testImplementation testLibs.truth
+    testImplementation testLibs.turbine
     testImplementation testLibs.androidx.test.core.ktx
     debugImplementation testLibs.androidx.test.core.ktx
 
