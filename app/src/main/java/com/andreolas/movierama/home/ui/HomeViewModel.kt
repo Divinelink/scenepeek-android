@@ -9,6 +9,7 @@ import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.Filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.Job
@@ -290,6 +291,20 @@ class HomeViewModel @Inject constructor(
             }
         }
         return updatedList.distinctBy { it.id }
+    }
+
+    fun onFilterClicked(filter: Filter) {
+        _viewState.update { viewState ->
+            viewState.copy(
+                filters = viewState.filters.map { currentFilter ->
+                    if (currentFilter == filter) {
+                        currentFilter.copy(isSelected = !currentFilter.isSelected)
+                    } else {
+                        currentFilter
+                    }
+                }
+            )
+        }
     }
 }
 

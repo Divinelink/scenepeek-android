@@ -36,6 +36,8 @@ fun HomeScreen(
             )
 
             navigator.navigate(destination)
-        }
+        },
+        onFilterClicked = viewModel::onFilterClicked,
+        onClearFiltersClicked = {}, // viewModel::onClearFiltersClicked,
     )
 }

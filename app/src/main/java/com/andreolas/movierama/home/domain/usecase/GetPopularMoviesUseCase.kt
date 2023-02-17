@@ -60,6 +60,7 @@ open class GetPopularMoviesUseCase @Inject constructor(
  * The returned list is a combination of both favorite and popular movies but with the same id movies,
  * the one with isFavorite = true will be present in the list.
  */
+
 fun getFavoritesAndPopularMoviesCombined(
     favorite: Result.Success<List<PopularMovie>>,
     popular: Result.Success<List<PopularMovie>>,

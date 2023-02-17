@@ -43,6 +43,8 @@ import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
+import com.andreolas.movierama.ui.components.Filter
+import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
 import com.andreolas.movierama.ui.getString
@@ -65,6 +67,8 @@ fun HomeContent(
     onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
     onGoToDetails: (PopularMovie) -> Unit,
+    onFilterClicked: (Filter) -> Unit,
+    onClearFiltersClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -133,6 +137,14 @@ fun HomeContent(
             )
         },
     ) { paddingValues ->
+        FilterBar(
+            modifier = modifier
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            filters = viewState.filters,
+            onFilterClick = onFilterClicked,
+            onClearClick = onClearFiltersClicked,
+        )
+
         if (viewState.emptyResult) {
             EmptySectionCard(
                 modifier = modifier
@@ -207,6 +219,8 @@ fun HomeContentPreview() {
                 onSearchMovies = {},
                 onClearClicked = {},
                 onGoToDetails = {},
+                onFilterClicked = {},
+                onClearFiltersClicked = {},
             )
         }
     }

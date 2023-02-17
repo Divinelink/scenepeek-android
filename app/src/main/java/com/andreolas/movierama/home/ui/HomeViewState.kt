@@ -2,6 +2,7 @@ package com.andreolas.movierama.home.ui
 
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.Filter
 
 /**
  * @param loadMorePopular indicates whether to load more popular movies when reaching the end of screen,
@@ -11,6 +12,7 @@ import com.andreolas.movierama.ui.UIText
  * */
 data class HomeViewState(
     val isLoading: Boolean = true,
+    val filters: List<Filter> = HomeFilters.values().map { it.filter },
     val moviesList: List<PopularMovie>,
     val searchMovies: List<PopularMovie>? = null,
     val selectedMovie: PopularMovie? = null,
@@ -22,4 +24,11 @@ data class HomeViewState(
 ) {
     val initialLoading = isLoading && moviesList.isEmpty()
     val loadMore = isLoading && moviesList.isNotEmpty()
+}
+
+enum class HomeFilters(val filter: Filter) {
+    POPULAR(Filter("Popular", false)),
+    TOP_RATED(Filter("Top Rated", false)),
+    UPCOMING(Filter("Upcoming", false)),
+    NOW_PLAYING(Filter("Now Playing", false)),
 }
