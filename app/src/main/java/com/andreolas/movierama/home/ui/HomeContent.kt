@@ -141,7 +141,9 @@ fun HomeContent(
             modifier = modifier
                 .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
             filters = viewState.filters,
-            onFilterClick = onFilterClicked,
+            onFilterClick = { homeFilter ->
+                onFilterClicked(homeFilter)
+            },
             onClearClick = onClearFiltersClicked,
         )
 
@@ -160,6 +162,8 @@ fun HomeContent(
                     .padding(paddingValues),
                 movies = if (viewState.searchMovies?.isNotEmpty() == true) {
                     viewState.searchMovies
+                } else if (viewState.filteredMovies?.isNotEmpty() == true) {
+                    viewState.filteredMovies
                 } else {
                     viewState.moviesList
                 },

@@ -12,9 +12,10 @@ import com.andreolas.movierama.ui.components.Filter
  * */
 data class HomeViewState(
     val isLoading: Boolean = true,
-    val filters: List<Filter> = HomeFilters.values().map { it.filter },
+    val filters: List<Filter> = HomeFilter.values().map { it.filter },
     val moviesList: List<PopularMovie>,
     val searchMovies: List<PopularMovie>? = null,
+    val filteredMovies: List<PopularMovie>? = null,
     val selectedMovie: PopularMovie? = null,
     val loadMorePopular: Boolean = true,
     val query: String = "",
@@ -24,11 +25,12 @@ data class HomeViewState(
 ) {
     val initialLoading = isLoading && moviesList.isEmpty()
     val loadMore = isLoading && moviesList.isNotEmpty()
+
+    val hasFiltersSelected = filters.any { it.isSelected }
+
+    val showFavorites = filters.find { it.name == HomeFilter.Liked.filter.name }?.isSelected
 }
 
-enum class HomeFilters(val filter: Filter) {
-    POPULAR(Filter("Popular", false)),
-    TOP_RATED(Filter("Top Rated", false)),
-    UPCOMING(Filter("Upcoming", false)),
-    NOW_PLAYING(Filter("Now Playing", false)),
+enum class HomeFilter(val filter: Filter) {
+    Liked(Filter(name = "Liked By You", isSelected = false)),
 }

@@ -27,6 +27,12 @@ interface MoviesRepository {
     fun fetchFavoriteMovies(): Flow<MoviesListResult>
 
     /**
+     * Fetch all favorite movie ids.
+     * Uses [Flow] in order to observe changes to our favorite movies list.
+     */
+    fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>>
+
+    /**
      * Request movies through a search query. Uses pagination.
      * Uses [Flow] in order to observe changes to our movies list.
      */

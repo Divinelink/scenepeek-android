@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
@@ -12,12 +13,16 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
+import gr.divinelink.core.util.domain.succeeded
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,6 +33,7 @@ class HomeViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getSearchMoviesUseCase: GetSearchMoviesUseCase,
     private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
+    private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
 ) : ViewModel() {
     private var currentPage: Int = 1
     private var searchPage: Int = 1
@@ -61,13 +67,11 @@ class HomeViewModel @Inject constructor(
             ).collectLatest { result ->
                 when (result) {
                     is Result.Success -> {
+                        val updatedList = getUpdatedMovies(
+                            currentMoviesList = viewState.value.moviesList,
+                            updatedMoviesList = result.data,
+                        )
                         _viewState.update { viewState ->
-
-                            val updatedList = getUpdatedMovies(
-                                currentMoviesList = viewState.moviesList,
-                                updatedMoviesList = result.data,
-                            )
-
                             viewState.copy(
                                 isLoading = false,
                                 moviesList = updatedList,
@@ -75,6 +79,7 @@ class HomeViewModel @Inject constructor(
                             )
                         }
                     }
+
                     is Result.Error -> {
                         _viewState.update { viewState ->
                             viewState.copy(
@@ -83,6 +88,7 @@ class HomeViewModel @Inject constructor(
                             )
                         }
                     }
+
                     Result.Loading -> {
                         _viewState.update { viewState ->
                             viewState.copy(
@@ -112,8 +118,13 @@ class HomeViewModel @Inject constructor(
     /**
      * Checks whether to load more popular movies,
      * or make a search query with incremented page.
+     * If there are filters selected, it will not load more movies.
      */
     fun onLoadNextPage() {
+        if (viewState.value.hasFiltersSelected) {
+            return
+        }
+
         if (viewState.value.loadMorePopular) {
             currentPage++
             fetchPopularMovies()
@@ -207,6 +218,7 @@ class HomeViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is Result.Success -> {
                             if (
                                 allowSearchResult &&
@@ -230,6 +242,7 @@ class HomeViewModel @Inject constructor(
                                 }
                             }
                         }
+
                         is Result.Error -> {
                             _viewState.update { viewState ->
                                 viewState.copy(
@@ -294,16 +307,45 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onFilterClicked(filter: Filter) {
+        val homeFilter = HomeFilter.values().find { it.filter.name == filter.name }
         _viewState.update { viewState ->
             viewState.copy(
                 filters = viewState.filters.map { currentFilter ->
-                    if (currentFilter == filter) {
+                    if (currentFilter.name == homeFilter?.filter?.name) {
                         currentFilter.copy(isSelected = !currentFilter.isSelected)
                     } else {
                         currentFilter
                     }
                 }
             )
+        }
+
+        when (homeFilter) {
+            HomeFilter.Liked -> {
+                if (viewState.value.showFavorites == true) {
+                    getFavoriteMoviesUseCase(Unit)
+                        .onEach { result ->
+                            if (result.succeeded && viewState.value.showFavorites == true) {
+                                _viewState.update { viewState ->
+                                    viewState.copy(
+                                        filteredMovies = result.data!!,
+                                    )
+                                }
+                            }
+                        }
+                        .launchIn(viewModelScope)
+                } else {
+                    _viewState.update { viewState ->
+                        viewState.copy(
+                            filteredMovies = null,
+                        )
+                    }
+                }
+            }
+
+            else -> {
+                // Do nothing
+            }
         }
     }
 }
