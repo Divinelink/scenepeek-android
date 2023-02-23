@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
+import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
@@ -42,6 +43,7 @@ class HomeScreenTest {
         val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
         val getSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
         val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+        val getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
         val destinationsNavigator = FakeDestinationsNavigator()
 
@@ -56,7 +58,8 @@ class HomeScreenTest {
                     getPopularMoviesUseCase = getPopularMoviesUseCase,
                     getSearchMoviesUseCase = getSearchMoviesUseCase,
                     markAsFavoriteUseCase = markAsFavoriteUseCase,
-                )
+                    getFavoriteMoviesUseCase = getFavoriteMoviesUseCase,
+                  )
             )
         }
 

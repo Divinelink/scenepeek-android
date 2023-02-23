@@ -53,6 +53,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -84,6 +86,8 @@ class HomeContentTest {
                 },
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -111,6 +115,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -139,6 +145,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -164,6 +172,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -189,6 +199,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -211,6 +223,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -240,6 +254,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 
@@ -276,6 +292,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
         composeTestRule
@@ -299,6 +317,8 @@ class HomeContentTest {
                 onClearClicked = {},
                 onLoadNextPage = {},
                 onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = {},
             )
         }
 

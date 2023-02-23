@@ -25,6 +25,16 @@ class FakeMoviesRepository {
         )
     }
 
+    fun mockFetchFavoriteMoviesIds(
+        response: Result<List<Int>>,
+    ) {
+        whenever(
+            mock.fetchFavoriteMoviesIds()
+        ).thenReturn(
+            flowOf(response)
+        )
+    }
+
     fun mockFetchPopularMovies(
         request: PopularRequestApi,
         response: MoviesListResult,

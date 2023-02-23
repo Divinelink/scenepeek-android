@@ -25,6 +25,10 @@ class FakeMoviesRepository : MoviesRepository {
         return favoriteMoviesResult
     }
 
+    override fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>> {
+        TODO("Not yet implemented")
+    }
+
     override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
         TODO("Not yet implemented")
     }
