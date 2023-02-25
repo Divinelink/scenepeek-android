@@ -3,6 +3,7 @@ package com.andreolas.movierama.home.ui
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -55,7 +56,7 @@ import kotlinx.coroutines.launch
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Suppress("LongMethod")
 @Composable
 fun HomeContent(
@@ -158,15 +159,10 @@ fun HomeContent(
         } else {
             PopularMoviesList(
                 modifier = modifier
+                    .fillMaxSize()
                     .testTag(MOVIES_LIST_TAG)
                     .padding(paddingValues),
-                movies = if (viewState.searchMovies?.isNotEmpty() == true) {
-                    viewState.searchMovies
-                } else if (viewState.filteredMovies?.isNotEmpty() == true) {
-                    viewState.filteredMovies
-                } else {
-                    viewState.moviesList
-                },
+                movies = viewState.getMoviesList(),
                 onMovieClicked = {
                     onMovieClicked(it)
                     coroutineScope.launch {

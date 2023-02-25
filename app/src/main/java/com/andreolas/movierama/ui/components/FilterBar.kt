@@ -5,6 +5,10 @@ package com.andreolas.movierama.ui.components
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
@@ -61,7 +65,11 @@ fun FilterBar(
         ) {
             val sortedFilters = filters.sortedBy { !it.isSelected }
             item {
-                AnimatedVisibility(visible = sortedFilters.any { it.isSelected }) {
+                AnimatedVisibility(
+                    enter = slideInHorizontally() + expandHorizontally(),
+                    exit = slideOutHorizontally() + shrinkHorizontally(),
+                    visible = sortedFilters.any { it.isSelected }
+                ) {
                     ClearButton(
                         onClearClick = onClearClick,
                     )

@@ -31,6 +31,16 @@ data class HomeViewState(
     val showFavorites = filters.find { it.name == HomeFilter.Liked.filter.name }?.isSelected
 }
 
+fun HomeViewState.getMoviesList(): List<PopularMovie> {
+    return if (searchMovies?.isNotEmpty() == true) {
+        searchMovies
+    } else if (filteredMovies?.isNotEmpty() == true) {
+        filteredMovies
+    } else {
+        moviesList
+    }
+}
+
 enum class HomeFilter(val filter: Filter) {
     Liked(Filter(name = "Liked By You", isSelected = false)),
 }

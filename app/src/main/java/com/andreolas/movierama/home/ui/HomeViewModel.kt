@@ -306,8 +306,63 @@ class HomeViewModel @Inject constructor(
         return updatedList.distinctBy { it.id }
     }
 
+    fun onClearFiltersClicked() {
+        _viewState.update { viewState ->
+            viewState.copy(
+                filters = HomeFilter.values().map { it.filter },
+                filteredMovies = null,
+            )
+        }
+    }
+
     fun onFilterClicked(filter: Filter) {
         val homeFilter = HomeFilter.values().find { it.filter.name == filter.name }
+        updateFilters(homeFilter)
+
+        when (homeFilter) {
+            HomeFilter.Liked -> {
+                updateLikedFilteredMovies()
+            }
+
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    /**
+     * Handles the filters for the liked movies.
+     * This method fetches the liked movies from the database and updates the view state.
+     */
+    private fun updateLikedFilteredMovies() {
+        getFavoriteMoviesUseCase(Unit)
+            .onEach { result ->
+                if (result.succeeded) {
+                    if (viewState.value.showFavorites == true) {
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                filteredMovies = result.data!!,
+                            )
+                        }
+                    } else {
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                filteredMovies = viewState.filteredMovies?.minus((result.data!!.toSet()).toSet()),
+                            )
+                        }
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    /**
+     * Updates the filters list.
+     * @param [homeFilter] The filter to be updated.
+     * This method updates the filters list by toggling the selected state of the filter.
+     * If the filter is already selected, it will be unselected and vice versa.
+     */
+    private fun updateFilters(homeFilter: HomeFilter?) {
         _viewState.update { viewState ->
             viewState.copy(
                 filters = viewState.filters.map { currentFilter ->
@@ -316,36 +371,8 @@ class HomeViewModel @Inject constructor(
                     } else {
                         currentFilter
                     }
-                }
+                },
             )
-        }
-
-        when (homeFilter) {
-            HomeFilter.Liked -> {
-                if (viewState.value.showFavorites == true) {
-                    getFavoriteMoviesUseCase(Unit)
-                        .onEach { result ->
-                            if (result.succeeded && viewState.value.showFavorites == true) {
-                                _viewState.update { viewState ->
-                                    viewState.copy(
-                                        filteredMovies = result.data!!,
-                                    )
-                                }
-                            }
-                        }
-                        .launchIn(viewModelScope)
-                } else {
-                    _viewState.update { viewState ->
-                        viewState.copy(
-                            filteredMovies = null,
-                        )
-                    }
-                }
-            }
-
-            else -> {
-                // Do nothing
-            }
         }
     }
 }
