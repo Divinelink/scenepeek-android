@@ -59,8 +59,8 @@ class FilterBarTest {
         composeTestRule.setContent {
             FilterBar(
                 filters = filters,
-                onFilterClick = {
-                    actionIsClicked = true
+                onFilterClick = { filter ->
+                    actionIsClicked = filter.name == "Action"
                 },
                 onClearClick = {}
             )

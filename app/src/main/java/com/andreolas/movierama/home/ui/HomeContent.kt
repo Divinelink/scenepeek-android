@@ -3,6 +3,7 @@ package com.andreolas.movierama.home.ui
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,7 +45,6 @@ import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
-import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
@@ -68,7 +68,7 @@ fun HomeContent(
     onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
     onGoToDetails: (PopularMovie) -> Unit,
-    onFilterClicked: (Filter) -> Unit,
+    onFilterClicked: (String) -> Unit,
     onClearFiltersClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -138,16 +138,19 @@ fun HomeContent(
             )
         },
     ) { paddingValues ->
-        FilterBar(
-            modifier = modifier
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-            filters = viewState.filters,
-            onFilterClick = { homeFilter ->
-                onFilterClicked(homeFilter)
-            },
-            onClearClick = onClearFiltersClicked,
-        )
-
+        AnimatedVisibility(
+            visible = viewState.query.isEmpty(),
+        ) {
+            FilterBar(
+                modifier = modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                filters = viewState.filters,
+                onFilterClick = { homeFilter ->
+                    onFilterClicked(homeFilter.name)
+                },
+                onClearClick = onClearFiltersClicked,
+            )
+        }
         if (viewState.emptyResult) {
             EmptySectionCard(
                 modifier = modifier

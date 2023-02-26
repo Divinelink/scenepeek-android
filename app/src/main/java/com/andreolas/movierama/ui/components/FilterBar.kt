@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,9 @@ import com.andreolas.movierama.ui.theme.AppTheme
  * @param onFilterClick A callback that will be called when a filter is clicked.
  * @param onClearClick A callback that will be called when the clear button is clicked.
  */
+
+const val FILTER_BAR_TEST_TAG = "FILTER_BAR"
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FilterBar(
@@ -58,6 +62,7 @@ fun FilterBar(
     ) {
         LazyRow(
             modifier = modifier
+                .testTag(FILTER_BAR_TEST_TAG)
                 .padding(start = 0.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -89,9 +94,7 @@ fun FilterBar(
                             ),
                         ),
                     filter = filter,
-                    onFilterClick = {
-                        onFilterClick(it)
-                    },
+                    onFilterClick = onFilterClick,
                 )
             }
         }

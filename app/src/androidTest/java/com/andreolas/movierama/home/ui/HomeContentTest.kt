@@ -330,4 +330,34 @@ class HomeContentTest {
             .assertIsDisplayed()
             .performClick()
     }
+
+    @Test
+    fun clickOnFilterButtonTest() {
+        var likedButtonClicked = false
+        composeTestRule.setContent {
+            HomeContent(
+                viewState = HomeViewState(
+                    isLoading = false,
+                    moviesList = popularMovies,
+                ),
+                onMovieClicked = {},
+                onMarkAsFavoriteClicked = {},
+                onSearchMovies = {},
+                onClearClicked = {},
+                onLoadNextPage = {},
+                onGoToDetails = {},
+                onClearFiltersClicked = {},
+                onFilterClicked = { filter ->
+                    likedButtonClicked = filter == HomeFilter.Liked.filter.name
+                },
+            )
+        }
+
+        composeTestRule
+            .onNodeWithText(HomeFilter.Liked.filter.name)
+            .assertIsDisplayed()
+            .performClick()
+
+        assertThat(likedButtonClicked).isTrue()
+    }
 }

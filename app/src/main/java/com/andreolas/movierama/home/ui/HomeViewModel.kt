@@ -10,7 +10,6 @@ import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.Filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.data
@@ -315,8 +314,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onFilterClicked(filter: Filter) {
-        val homeFilter = HomeFilter.values().find { it.filter.name == filter.name }
+    fun onFilterClicked(filter: String) {
+        val homeFilter = HomeFilter.values().find { it.filter.name == filter }
         updateFilters(homeFilter)
 
         when (homeFilter) {

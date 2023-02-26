@@ -57,6 +57,14 @@ class HomeViewModelTestRobot {
         )
     }
 
+    fun mockFetchFavoriteMovies(
+        response: MoviesListResult,
+    ) = apply {
+        fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
+            response = response,
+        )
+    }
+
     fun mockFetchSearchMovies(
         response: Result<SearchResult>,
     ) = apply {
@@ -91,6 +99,14 @@ class HomeViewModelTestRobot {
 
     fun onClearClicked() = apply {
         viewModel.onClearClicked()
+    }
+
+    fun onClearFiltersClicked() = apply {
+        viewModel.onClearFiltersClicked()
+    }
+
+    fun onFilterClicked(filter: String) = apply {
+        viewModel.onFilterClicked(filter)
     }
 
     suspend fun delay(
