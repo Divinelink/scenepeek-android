@@ -16,6 +16,7 @@
 
     <!-- Error -->
     <string name="empty_field_error_message">%s is required.</string>
+    <string name="general_error_title">An error occurred</string>
     <string name="general_error_message">Something when wrong.</string>
 
     <string name="delete">Delete</string>
@@ -59,6 +60,7 @@
     <string name="clear_search_button_content_description">Clear Search Button</string>
     <string name="settings_button_content_description">Settings Button</string>
     <string name="navigate_back_button_content_description">Navigate Back Button</string>
+    <string name="clear_filters_button_content_description">Clear Filters Button</string>
 
 
 </resources>

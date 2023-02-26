@@ -70,8 +70,10 @@ class GetPopularMoviesUseCaseTest {
                 response = Result.Success(remoteMovies)
             )
 
-            repository.mockFetchFavoriteMovies(
-                response = Result.Success(localFavoriteMovies)
+            repository.mockFetchFavoriteMoviesIds(
+                response = Result.Success(
+                    localFavoriteMovies.map { it.id }
+                )
             )
 
             val useCase = GetPopularMoviesUseCase(
@@ -87,7 +89,7 @@ class GetPopularMoviesUseCaseTest {
     fun `given local data failed then I expect remote data`() = runTest {
         val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchFavoriteMoviesIds(
             Result.Error(Exception())
         )
 
@@ -163,8 +165,8 @@ class GetPopularMoviesUseCaseTest {
             response = Result.Loading
         )
 
-        repository.mockFetchFavoriteMovies(
-            Result.Error(Exception())
+        repository.mockFetchFavoriteMoviesIds(
+            Result.Loading
         )
 
         val useCase = GetPopularMoviesUseCase(

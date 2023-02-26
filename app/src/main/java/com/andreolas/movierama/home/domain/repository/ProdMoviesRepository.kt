@@ -43,6 +43,17 @@ class ProdMoviesRepository @Inject constructor(
             }
     }
 
+    override fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>> {
+        return movieDAO
+            .fetchFavoriteMoviesIds()
+            .map { moviesList ->
+                Result.Success(moviesList)
+            }
+            .catch { exception ->
+                flowOf(Result.Error(Exception(exception.message)))
+            }
+    }
+
     override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
         return movieRemote
             .fetchSearchMovies(request)

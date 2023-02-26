@@ -25,7 +25,7 @@ open class GetSearchMoviesUseCase @Inject constructor(
     override fun execute(
         parameters: SearchRequestApi,
     ): Flow<Result<SearchResult>> {
-        val favoriteMovies = moviesRepository.fetchFavoriteMovies()
+        val favoriteMovies = moviesRepository.fetchFavoriteMoviesIds()
         val searchMovies = moviesRepository.fetchSearchMovies(parameters)
 
         return favoriteMovies
@@ -35,7 +35,7 @@ open class GetSearchMoviesUseCase @Inject constructor(
                     emit(Result.Loading)
                 }
                 if (favorite is Result.Success && search is Result.Success) {
-                    val searchWithFavorites = getFavoritesAndPopularMoviesCombined(
+                    val searchWithFavorites = getMoviesWithUpdatedFavoriteStatus(
                         Result.Success(favorite.data),
                         Result.Success(search.data)
                     )

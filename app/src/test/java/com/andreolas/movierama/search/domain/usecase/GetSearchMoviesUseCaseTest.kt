@@ -73,8 +73,10 @@ class GetSearchMoviesUseCaseTest {
                 response = Result.Success(searchResult)
             )
 
-            repository.mockFetchFavoriteMovies(
-                response = Result.Success(localFavoriteMovies)
+            repository.mockFetchFavoriteMoviesIds(
+                response = Result.Success(
+                    localFavoriteMovies.map { it.id }
+                )
             )
 
             val useCase = GetSearchMoviesUseCase(
@@ -132,7 +134,7 @@ class GetSearchMoviesUseCaseTest {
             response = Result.Loading,
         )
 
-        repository.mockFetchFavoriteMovies(
+        repository.mockFetchFavoriteMoviesIds(
             response = Result.Loading,
         )
 

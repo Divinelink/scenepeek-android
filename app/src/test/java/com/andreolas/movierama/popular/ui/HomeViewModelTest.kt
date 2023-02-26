@@ -3,6 +3,7 @@ package com.andreolas.movierama.popular.ui
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.SearchResult
+import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.andreolas.movierama.ui.UIText
 import gr.divinelink.core.util.domain.Result
@@ -673,6 +674,103 @@ class HomeViewModelTest {
                 )
             )
     }
+
+    @Test
+    fun `given unselected filter when I click filter then I expect filter to be selected`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(
+                response = Result.Success(
+                    searchMovies
+                )
+            )
+            .mockFetchFavoriteMovies(
+                response = Result.Success(
+                    searchMovies.filter { it.isFavorite }
+                )
+            )
+            .buildViewModel()
+            .onFilterClicked(
+                filter = HomeFilter.Liked.filter.name
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    filteredMovies = searchMovies.filter { it.isFavorite },
+                    isLoading = false,
+                    filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
+                )
+            )
+            .onFilterClicked(
+                filter = HomeFilter.Liked.filter.name
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    filteredMovies = emptyList(),
+                    isLoading = false,
+                    filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
+                )
+            )
+    }
+
+    @Test
+    fun `when onClearFiltersClicked I expect all filters to be unselected`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(
+                response = Result.Success(
+                    searchMovies
+                )
+            )
+            .mockFetchFavoriteMovies(
+                response = Result.Success(
+                    searchMovies.filter { it.isFavorite }
+                )
+            )
+            .buildViewModel()
+            .onFilterClicked(
+                filter = HomeFilter.Liked.filter.name
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    filteredMovies = searchMovies.filter { it.isFavorite },
+                    isLoading = false,
+                    filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
+                )
+            )
+            .onClearFiltersClicked()
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    filteredMovies = null,
+                    isLoading = false,
+                    filters = HomeFilter.values().map { it.filter },
+                )
+            )
+    }
+
+    @Test
+    fun `when clicking on filter that is now known doesnt do anything`() = runTest {
+        testRobot
+            .mockFetchPopularMovies(
+                response = Result.Success(
+                    searchMovies
+                )
+            )
+            .buildViewModel()
+            .onFilterClicked(
+                filter = "Some filter"
+            )
+            .assertViewState(
+                expectedViewState = HomeViewState(
+                    moviesList = searchMovies,
+                    isLoading = false,
+                    filters = listOf(HomeFilter.Liked.filter),
+                )
+            )
+    }
+
+    // fun `on clear filters clicked I expect to unselect filters`() = runTest {
 
     private fun loadData(starting: Int, ending: Int): List<PopularMovie> {
         return (starting..ending).map {

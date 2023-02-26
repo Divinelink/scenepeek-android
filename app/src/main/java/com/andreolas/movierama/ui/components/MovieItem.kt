@@ -60,7 +60,7 @@ fun MovieItem(
 ) {
     Card(
         shape = PopularMovieItemShape,
-        modifier = Modifier
+        modifier = modifier
             .testTag(MOVIE_CARD_ITEM_TAG)
             .widthIn(max = 140.dp)
             .clip(PopularMovieItemShape)

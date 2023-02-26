@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -41,13 +42,14 @@ fun PopularMoviesList(
     isLoading: Boolean,
 ) {
     val scrollState = rememberLazyGridState()
-
     scrollState.OnBottomReached {
         onLoadNextPage()
     }
+
     LazyVerticalGrid(
         state = scrollState,
         modifier = modifier
+            .fillMaxSize()
             .padding(
                 start = 8.dp,
                 end = 8.dp

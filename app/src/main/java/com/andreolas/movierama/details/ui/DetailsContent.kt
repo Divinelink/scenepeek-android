@@ -10,14 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -42,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -61,7 +58,9 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.details.cast.CastList
+import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -138,7 +137,13 @@ fun DetailsContent(
             )
         }
         if (viewState.error != null) {
-            // Handle Error State
+            SimpleAlertDialog(
+                confirmClick = {
+                    onNavigateUp()
+                },
+                confirmText = UIText.ResourceText(R.string.ok),
+                text = viewState.error,
+            )
         }
     }
     if (viewState.isLoading) {
@@ -177,7 +182,8 @@ fun DetailsMovieContent(
                     OverviewDetails(
                         modifier = modifier.weight(OVERVIEW_WEIGHT),
                         movieDetails = movieDetails,
-                        genres = movieDetails.genres
+                        genres = movieDetails.genres,
+                        onGenreClicked = {},
                     )
                 }
             }
@@ -252,6 +258,7 @@ private fun OverviewDetails(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
     genres: List<String>?,
+    onGenreClicked: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -259,18 +266,14 @@ private fun OverviewDetails(
             .fillMaxWidth(),
     ) {
         if (!movieDetails.genres.isNullOrEmpty()) {
-            LazyVerticalGrid(
-                modifier = Modifier.heightIn(max = 60.dp),
-                columns = GridCells.Adaptive(80.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                genres?.let {
+            genres?.let {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
                     items(genres) { genre ->
-                        Text(
-                            text = genre,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
+                        GenreLabel(
+                            genre = genre,
+                            onGenreClicked = { onGenreClicked(genre) }
                         )
                     }
                 }
