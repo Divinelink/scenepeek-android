@@ -1,6 +1,7 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
@@ -25,11 +26,13 @@ class HomeViewModelTestRobot {
     private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
     private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
+    private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
     fun buildViewModel() = apply {
         viewModel = HomeViewModel(
             getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
             getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
+            getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
             markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
         )
     }
@@ -50,6 +53,14 @@ class HomeViewModelTestRobot {
         response: MoviesListResult,
     ) = apply {
         fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
+            response = response,
+        )
+    }
+
+    fun mockFetchFavoriteMovies(
+        response: MoviesListResult,
+    ) = apply {
+        fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
             response = response,
         )
     }
@@ -88,6 +99,14 @@ class HomeViewModelTestRobot {
 
     fun onClearClicked() = apply {
         viewModel.onClearClicked()
+    }
+
+    fun onClearFiltersClicked() = apply {
+        viewModel.onClearFiltersClicked()
+    }
+
+    fun onFilterClicked(filter: String) = apply {
+        viewModel.onFilterClicked(filter)
     }
 
     suspend fun delay(

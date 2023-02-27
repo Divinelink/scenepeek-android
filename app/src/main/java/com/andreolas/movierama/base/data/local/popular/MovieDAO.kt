@@ -12,6 +12,9 @@ interface MovieDAO {
     @Query("SELECT * FROM movie")
     fun fetchFavoriteMovies(): Flow<List<PersistableMovie>>
 
+    @Query("SELECT id FROM movie")
+    fun fetchFavoriteMoviesIds(): Flow<List<Int>>
+
     @Insert(
         onConflict = OnConflictStrategy.REPLACE,
     )

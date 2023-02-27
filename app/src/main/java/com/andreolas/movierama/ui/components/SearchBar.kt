@@ -3,6 +3,7 @@
 package com.andreolas.movierama.ui.components
 
 import android.content.res.Configuration
+import android.provider.Settings.Global.getString
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,6 +40,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -172,14 +175,18 @@ private fun SearchIconWithLoading(
     }
 }
 
+const val SEARCH_INPUT_FIELD_TAG = "SEARCH_INPUT_FIELD"
+
 @Composable
 private fun FocusedSearchField(
     modifier: Modifier = Modifier,
     value: String? = null,
     onSearchFieldChanged: (String) -> Unit,
 ) {
+    val searchContentDescription = stringResource(R.string.toolbar_search_placeholder)
     BasicTextField(
         modifier = modifier
+            .semantics { contentDescription = searchContentDescription }
             .fillMaxWidth(TEXT_MAX_WIDTH)
             .padding(end = 12.dp),
         value = value ?: "",

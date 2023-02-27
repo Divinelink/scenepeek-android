@@ -3,6 +3,8 @@ package com.andreolas.movierama.home.ui
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -43,6 +45,7 @@ import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
+import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
 import com.andreolas.movierama.ui.getString
@@ -53,7 +56,7 @@ import kotlinx.coroutines.launch
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Suppress("LongMethod")
 @Composable
 fun HomeContent(
@@ -65,6 +68,8 @@ fun HomeContent(
     onClearClicked: () -> Unit,
     onLoadNextPage: () -> Unit,
     onGoToDetails: (PopularMovie) -> Unit,
+    onFilterClicked: (String) -> Unit,
+    onClearFiltersClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -133,6 +138,19 @@ fun HomeContent(
             )
         },
     ) { paddingValues ->
+        AnimatedVisibility(
+            visible = viewState.query.isEmpty(),
+        ) {
+            FilterBar(
+                modifier = modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                filters = viewState.filters,
+                onFilterClick = { homeFilter ->
+                    onFilterClicked(homeFilter.name)
+                },
+                onClearClick = onClearFiltersClicked,
+            )
+        }
         if (viewState.emptyResult) {
             EmptySectionCard(
                 modifier = modifier
@@ -144,13 +162,10 @@ fun HomeContent(
         } else {
             PopularMoviesList(
                 modifier = modifier
+                    .fillMaxSize()
                     .testTag(MOVIES_LIST_TAG)
                     .padding(paddingValues),
-                movies = if (viewState.searchMovies?.isNotEmpty() == true) {
-                    viewState.searchMovies
-                } else {
-                    viewState.moviesList
-                },
+                movies = viewState.getMoviesList(),
                 onMovieClicked = {
                     onMovieClicked(it)
                     coroutineScope.launch {
@@ -207,6 +222,8 @@ fun HomeContentPreview() {
                 onSearchMovies = {},
                 onClearClicked = {},
                 onGoToDetails = {},
+                onFilterClicked = {},
+                onClearFiltersClicked = {},
             )
         }
     }
