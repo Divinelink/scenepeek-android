@@ -19,8 +19,7 @@ import kotlinx.coroutines.launch
 private const val START_LOCATION = "app.settings.start.location"
 
 @AndroidEntryPoint
-class AppSettingsActivity :
-    DSLSettingsActivity() {
+class AppSettingsActivity : DSLSettingsActivity() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
