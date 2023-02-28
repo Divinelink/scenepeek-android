@@ -214,6 +214,7 @@ dependencies {
     androidTestImplementation testLibs.androidx.test.ext.junit
     androidTestImplementation testLibs.espresso.core
     androidTestImplementation testLibs.truth
+    androidTestImplementation testLibs.ui.automator
 }
 
 repositories {

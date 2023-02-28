@@ -110,7 +110,7 @@ fun DetailsContent(
                     IconButton(
                         onClick = onNavigateUp,
                     ) {
-                        Icon(Icons.Filled.ArrowBack, stringResource(R.string.navigate_back_button_content_description))
+                        Icon(Icons.Filled.ArrowBack, stringResource(R.string.navigate_up_button_content_description))
                     }
                 },
                 actions = {

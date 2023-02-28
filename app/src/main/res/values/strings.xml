@@ -59,7 +59,7 @@
     <string name="mark_as_favorite_button_content_description">Mark As Favorite Button</string>
     <string name="clear_search_button_content_description">Clear Search Button</string>
     <string name="settings_button_content_description">Settings Button</string>
-    <string name="navigate_back_button_content_description">Navigate Back Button</string>
+    <string name="navigate_up_button_content_description">Navigate Up Button</string>
     <string name="clear_filters_button_content_description">Clear Filters Button</string>
 
 

@@ -100,7 +100,7 @@ class DetailsScreenTest {
         )
 
         val navigateUpContentDescription = composeTestRule.activity
-            .getString(R.string.navigate_back_button_content_description)
+            .getString(R.string.navigate_up_button_content_description)
 
         composeTestRule
             .onNodeWithContentDescription(navigateUpContentDescription)
