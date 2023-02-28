@@ -12,14 +12,14 @@ import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularReques
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
-import com.andreolas.movierama.base.storage.EncryptedPreferenceStorage
+import com.andreolas.movierama.base.storage.EncryptedStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProdMovieService @Inject constructor(
     private val restClient: RestClient,
-    encryptedStorage: EncryptedPreferenceStorage,
+    encryptedStorage: EncryptedStorage,
 ) : MovieService {
     private val apiKey = encryptedStorage.tmdbApiKey
 

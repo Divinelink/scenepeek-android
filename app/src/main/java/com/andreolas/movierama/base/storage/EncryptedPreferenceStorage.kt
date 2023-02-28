@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface EncryptedStorage {
-    fun setTmdbApiKey(key: String)
+    suspend fun setTmdbApiKey(key: String)
     val tmdbApiKey: String
 }
 
@@ -40,7 +40,7 @@ class EncryptedPreferenceStorage @Inject constructor(
         const val SECRET_TMDB_API_KEY = "secret.tmdb.api.key"
     }
 
-    override fun setTmdbApiKey(key: String) {
+    override suspend fun setTmdbApiKey(key: String) {
         with(encryptedPreferences.edit()) {
             putString(PreferencesKeys.SECRET_TMDB_API_KEY, key)
             apply()
