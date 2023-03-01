@@ -74,7 +74,7 @@ fun ReviewItemCard(
                 Rating(
                     modifier = Modifier
                         .padding(top = 12.dp, start = 12.dp, end = 12.dp),
-                    rating = review.rating.toString(),
+                    rating = review.rating.toInt().toString(),
                 )
             }
         }

@@ -123,7 +123,7 @@ data class ProductionCompany(
     val logoPath: String? = null,
     val name: String,
     @SerialName("origin_country")
-    val originalCountry: String,
+    val originalCountry: String? = null,
 )
 
 @Serializable
