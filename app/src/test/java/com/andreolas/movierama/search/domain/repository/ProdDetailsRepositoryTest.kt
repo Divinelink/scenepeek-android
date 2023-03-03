@@ -14,6 +14,9 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Revie
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideoResultsApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
@@ -22,6 +25,9 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
+import com.andreolas.movierama.details.domain.model.VideosException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
@@ -208,6 +214,48 @@ class ProdDetailsRepositoryTest {
         totalResults = 0,
     )
 
+    private val videoResponseApi = VideosResponseApi(
+        id = 1,
+        videos = listOf(
+            VideoResultsApi(
+                id = "123",
+                iso6391 = "en",
+                iso31661 = "US",
+                key = "123",
+                name = "Lorem Ipsum",
+                site = "YouTube",
+                size = 1080,
+                type = "Trailer",
+                official = true,
+                publishedAt = "",
+            ),
+            VideoResultsApi(
+                id = "1234",
+                iso6391 = "en",
+                iso31661 = "US",
+                key = "1234",
+                name = "Lorem Ipsum",
+                site = "Vimeo",
+                size = 1080,
+                type = "Trailer",
+                official = false,
+                publishedAt = "",
+            ),
+            VideoResultsApi(
+                id = "567",
+                iso6391 = "en",
+                iso31661 = "US",
+                key = "567",
+                name = "Lorem Ipsum",
+                site = "Something Else",
+                size = 1080,
+                type = "Trailer",
+                official = true,
+                publishedAt = "",
+            )
+        )
+    )
+
     private var movieRemote = FakeMovieRemote()
 
     private lateinit var repository: DetailsRepository
@@ -323,6 +371,63 @@ class ProdDetailsRepositoryTest {
         val expectedResult = MovieDetailsException()
 
         repository.fetchMovieDetails(
+            request = request
+        ).test {
+            assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+        }
+    }
+
+    // Movie Videos success
+    @Test
+    fun testFetchMovieVideosSuccessfully() = runTest {
+        val request = VideosRequestApi(
+            movieId = 555,
+        )
+        val expectedResult = listOf(
+            Video(
+                id = "123",
+                key = "123",
+                name = "Lorem Ipsum",
+                site = VideoSite.YouTube,
+                officialTrailer = true,
+            ),
+            Video(
+                id = "1234",
+                key = "1234",
+                name = "Lorem Ipsum",
+                site = VideoSite.Vimeo,
+                officialTrailer = false,
+            ),
+            Video(
+                id = "567",
+                key = "567",
+                name = "Lorem Ipsum",
+                site = null,
+                officialTrailer = true,
+            )
+        )
+
+        movieRemote.mockFetchMovieVideos(
+            request = request,
+            response = flowOf(videoResponseApi)
+        )
+
+        val actualResult = repository.fetchVideos(
+            request = request
+        ).first() as Result.Success
+
+        assertThat(expectedResult).isEqualTo(actualResult.data)
+    }
+
+    @Test
+    fun testMovieVideosError() = runTest {
+        val request = VideosRequestApi(
+            movieId = 555,
+        )
+
+        val expectedResult = VideosException()
+
+        repository.fetchVideos(
             request = request
         ).test {
             assertThat(awaitError()).isInstanceOf(expectedResult::class.java)

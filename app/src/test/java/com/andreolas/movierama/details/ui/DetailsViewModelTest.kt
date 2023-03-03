@@ -6,6 +6,8 @@ import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -51,6 +53,14 @@ class DetailsViewModelTest {
     private val reviewsList = (1..10).map {
         Review(authorName = "$it", rating = it, content = "$it", date = "2022-22-11")
     }
+
+    private val trailer = Video(
+        id = "123",
+        key = "123",
+        name = "trailer",
+        site = VideoSite.YouTube,
+        officialTrailer = true,
+    )
 
     @Test
     fun `successful initialise viewModel`() = runTest {
@@ -281,6 +291,26 @@ class DetailsViewModelTest {
                     movieId = movieId,
                     isLoading = false,
                     movieDetails = movieDetails.copy(isFavorite = true),
+                )
+            )
+    }
+
+    @Test
+    fun `given success details and movies response then I expect combined flows`() = runTest {
+        testRobot
+            .mockFetchMovieDetails(
+                response = flowOf(
+                    Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)),
+                    Result.Success(MovieDetailsResult.VideosSuccess(trailer)),
+                )
+            )
+            .buildViewModel(movieId)
+            .assertViewState(
+                DetailsViewState(
+                    movieId = movieId,
+                    isLoading = false,
+                    movieDetails = movieDetails,
+                    trailer = trailer,
                 )
             )
     }
