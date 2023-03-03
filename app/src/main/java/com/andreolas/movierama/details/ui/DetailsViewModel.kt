@@ -83,22 +83,31 @@ class DetailsViewModel @Inject constructor(
                                     isLoading = false,
                                     movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails
                                 )
+
                                 is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
                                     reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
                                 )
+
                                 is MovieDetailsResult.SimilarSuccess -> viewState.copy(
                                     similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
                                 )
+
+                                is MovieDetailsResult.VideosSuccess -> viewState.copy(
+                                    trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
+                                )
+
                                 is MovieDetailsResult.Failure.FatalError -> viewState.copy(
                                     error = (result.data as MovieDetailsResult.Failure.FatalError).message,
                                     isLoading = false,
                                 )
+
                                 MovieDetailsResult.Failure.Unknown -> viewState.copy(
                                     error = MovieDetailsResult.Failure.Unknown.message,
                                     isLoading = false,
                                 )
                             }
                         }
+
                         is Result.Error -> {
                             if (result.exception is MovieDetailsException) {
                                 viewState.copy(
@@ -112,6 +121,7 @@ class DetailsViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         Result.Loading -> viewState.copy(
                             isLoading = true,
                         )

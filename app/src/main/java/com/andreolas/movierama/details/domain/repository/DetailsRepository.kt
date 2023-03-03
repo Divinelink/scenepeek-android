@@ -3,9 +3,11 @@ package com.andreolas.movierama.details.domain.repository
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -25,4 +27,8 @@ interface DetailsRepository {
     fun fetchSimilarMovies(
         request: SimilarRequestApi,
     ): Flow<Result<List<SimilarMovie>>>
+
+    fun fetchVideos(
+        request: VideosRequestApi,
+    ): Flow<Result<List<Video>>>
 }

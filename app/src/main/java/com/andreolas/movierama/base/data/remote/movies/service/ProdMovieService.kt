@@ -8,6 +8,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Revie
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -92,5 +94,22 @@ class ProdMovieService @Inject constructor(
         )
 
         emit(response)
+    }
+
+    override fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi> {
+        val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
+        val url = baseUrl +
+            "${request.movieId}" +
+            "/videos" +
+            "?api_key=$apiKey" +
+            "&language=en-US"
+
+        return flow {
+            val response = restClient.get<VideosResponseApi>(
+                url = url,
+            )
+
+            emit(response)
+        }
     }
 }

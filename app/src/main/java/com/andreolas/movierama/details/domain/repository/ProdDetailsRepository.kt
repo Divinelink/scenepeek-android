@@ -6,6 +6,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.toDom
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.toDomainMoviesList
 import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMovie
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.toDomainVideosList
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
@@ -13,6 +15,8 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideosException
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -50,6 +54,16 @@ class ProdDetailsRepository @Inject constructor(
                 Result.Success(apiResponse.toDomainMoviesList())
             }.catch {
                 throw SimilarException()
+            }
+    }
+
+    override fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>> {
+        return movieRemote
+            .fetchVideos(request)
+            .map { apiResponse ->
+                Result.Success(apiResponse.toDomainVideosList())
+            }.catch {
+                throw VideosException()
             }
     }
 }
