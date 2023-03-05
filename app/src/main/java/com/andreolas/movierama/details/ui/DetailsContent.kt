@@ -3,6 +3,7 @@
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -63,6 +65,7 @@ import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
+import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -133,6 +136,7 @@ fun DetailsContent(
                 movieDetails = viewState.movieDetails,
                 similarMoviesList = viewState.similarMovies,
                 reviewsList = viewState.reviews,
+                trailer = viewState.trailer,
                 onSimilarMovieClicked = onSimilarMovieClicked,
             )
         }
@@ -151,20 +155,31 @@ fun DetailsContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailsMovieContent(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
     similarMoviesList: List<SimilarMovie>?,
     reviewsList: List<Review>?,
+    trailer: Video?,
     onSimilarMovieClicked: (Movie) -> Unit,
 ) {
+
     Surface {
         LazyColumn(
             modifier = modifier
                 .testTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
                 .fillMaxWidth()
         ) {
+            if (trailer != null) {
+                stickyHeader(key = "trailer") {
+                    YoutubePlayer(
+                        trailer = trailer,
+                    )
+                }
+            }
+
             item {
                 TitleDetails(movieDetails)
                 Row(

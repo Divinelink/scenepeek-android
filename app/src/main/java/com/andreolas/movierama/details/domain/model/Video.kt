@@ -8,7 +8,7 @@ data class Video(
     val name: String,
     val officialTrailer: Boolean,
     private val site: VideoSite?,
-    private val key: String,
+    val key: String,
 ) {
     val url: String
         get() = site?.url + key

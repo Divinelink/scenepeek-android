@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class VideosResponseApi(
     val id: Int,
-    val videos: List<VideoResultsApi>,
+    val results: List<VideoResultsApi>,
 )
 
 @Serializable
@@ -29,7 +29,7 @@ data class VideoResultsApi(
 )
 
 internal fun VideosResponseApi.toDomainVideosList(): List<Video> {
-    return this.videos.map(VideoResultsApi::toVideo)
+    return this.results.map(VideoResultsApi::toVideo)
 }
 
 private fun VideoResultsApi.toVideo(): Video {

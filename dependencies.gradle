@@ -10,6 +10,7 @@ dependencyResolutionManagement {
 
             version('androidx-fragment', '1.5.4')
             version('androidx-lifecycle', '2.5.1')
+            version('exoplayer', '2.18.3')
 
             // Network & Serialization
             version('kotlinx-serialization', '1.4.1')
@@ -83,6 +84,10 @@ dependencyResolutionManagement {
             alias('material-material').to('com.google.android.material:material:1.7.0')
             alias('coil-compose').to('io.coil-kt:coil-compose:2.2.2')
             alias('vanpra-compose-dialogs').to('io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc')
+
+            // Video Players
+            alias('youtube-player').to('com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0')
+            alias('exoplayer').to('com.google.android.exoplayer','exoplayer').versionRef('exoplayer')
 
             // Network & Serialization
             alias('ktor-client-core').to('io.ktor', 'ktor-client-core').versionRef('ktor')

@@ -170,6 +170,10 @@ dependencies {
     implementation libs.coil.compose
     implementation libs.vanpra.compose.dialogs
 
+    // Video Players
+    implementation libs.exoplayer
+    implementation libs.youtube.player
+
     // Network & Serialization
     implementation libs.ktor.client.core
     implementation libs.ktor.client.android

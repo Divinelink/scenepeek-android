@@ -216,7 +216,7 @@ class ProdDetailsRepositoryTest {
 
     private val videoResponseApi = VideosResponseApi(
         id = 1,
-        videos = listOf(
+        results = listOf(
             VideoResultsApi(
                 id = "123",
                 iso6391 = "en",
