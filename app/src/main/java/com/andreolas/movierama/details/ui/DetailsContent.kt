@@ -36,6 +36,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -155,6 +158,31 @@ fun DetailsContent(
     }
 }
 
+enum class VideoState(val stickyVisibility: Boolean) {
+    PLAYING(stickyVisibility = true),
+    PAUSED(stickyVisibility = true),
+    NOT_PRESENT(stickyVisibility = false),
+}
+
+@Composable
+fun VideoPlayerSection(
+    modifier: Modifier = Modifier,
+    trailer: Video?,
+    videoState: VideoState,
+    onVideoStateChange: (VideoState) -> Unit,
+) {
+    if (trailer == null) return
+
+    YoutubePlayer(
+        modifier = modifier,
+        trailer = trailer,
+        onStateChange = { state ->
+            onVideoStateChange(state)
+        },
+        state = videoState,
+    )
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailsMovieContent(
@@ -165,6 +193,8 @@ fun DetailsMovieContent(
     trailer: Video?,
     onSimilarMovieClicked: (Movie) -> Unit,
 ) {
+    val videoState = remember { mutableStateOf(VideoState.NOT_PRESENT) }
+    val showStickyPlayer = remember { derivedStateOf { videoState.value.stickyVisibility } }
 
     Surface {
         LazyColumn(
@@ -172,16 +202,35 @@ fun DetailsMovieContent(
                 .testTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
                 .fillMaxWidth()
         ) {
-            if (trailer != null) {
-                stickyHeader(key = "trailer") {
-                    YoutubePlayer(
+            item {
+                TitleDetails(movieDetails)
+            }
+
+            if (showStickyPlayer.value) {
+                stickyHeader(key = "trailerSticky") {
+                    VideoPlayerSection(
                         trailer = trailer,
+                        videoState = videoState.value,
+                        onVideoStateChange = { state ->
+                            videoState.value = state
+                        },
+                    )
+                }
+            }
+
+            if (!showStickyPlayer.value) {
+                item(key = "trailer") {
+                    VideoPlayerSection(
+                        trailer = trailer,
+                        videoState = videoState.value,
+                        onVideoStateChange = { state ->
+                            videoState.value = state
+                        },
                     )
                 }
             }
 
             item {
-                TitleDetails(movieDetails)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -252,7 +301,7 @@ private fun TitleDetails(movieDetails: MovieDetails) {
 
     Row(
         modifier = Modifier
-            .padding(start = 16.dp, end = 12.dp),
+            .padding(start = 16.dp, end = 12.dp, bottom = 16.dp),
     ) {
         Text(
             style = MaterialTheme.typography.bodySmall,
