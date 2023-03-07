@@ -4,8 +4,10 @@ package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,9 +41,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,6 +62,7 @@ import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
 import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -74,6 +80,7 @@ import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
+private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -158,29 +165,40 @@ fun DetailsContent(
     }
 }
 
-enum class VideoState(val stickyVisibility: Boolean) {
-    PLAYING(stickyVisibility = true),
-    PAUSED(stickyVisibility = true),
-    NOT_PRESENT(stickyVisibility = false),
+enum class VideoState {
+    PLAYING,
+    PAUSED,
+    NOT_PRESENT,
 }
 
 @Composable
-fun VideoPlayerSection(
+private fun VideoPlayerSection(
     modifier: Modifier = Modifier,
     trailer: Video?,
-    videoState: VideoState,
     onVideoStateChange: (VideoState) -> Unit,
 ) {
     if (trailer == null) return
+    val orientation = LocalConfiguration.current.orientation
+    val playerWidth = remember {
+        derivedStateOf {
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) MAX_WIDTH_FOR_LANDSCAPE_PLAYER else 1f
+        }
+    }
+    when (trailer.site) {
+        VideoSite.YouTube ->
+            YoutubePlayer(
+                modifier = modifier
+                    .fillMaxWidth(playerWidth.value),
+                video = trailer,
+                onStateChange = { state ->
+                    onVideoStateChange(state)
+                },
+            )
 
-    YoutubePlayer(
-        modifier = modifier,
-        trailer = trailer,
-        onStateChange = { state ->
-            onVideoStateChange(state)
-        },
-        state = videoState,
-    )
+        else -> {
+            return
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -193,8 +211,7 @@ fun DetailsMovieContent(
     trailer: Video?,
     onSimilarMovieClicked: (Movie) -> Unit,
 ) {
-    val videoState = remember { mutableStateOf(VideoState.NOT_PRESENT) }
-    val showStickyPlayer = remember { derivedStateOf { videoState.value.stickyVisibility } }
+    val showStickyPlayer = remember { mutableStateOf(false) }
 
     Surface {
         LazyColumn(
@@ -206,27 +223,26 @@ fun DetailsMovieContent(
                 TitleDetails(movieDetails)
             }
 
-            if (showStickyPlayer.value) {
-                stickyHeader(key = "trailerSticky") {
+            stickyHeader(key = "trailerSticky") {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Black),
+                ) {
                     VideoPlayerSection(
+                        modifier = Modifier,
                         trailer = trailer,
-                        videoState = videoState.value,
                         onVideoStateChange = { state ->
-                            videoState.value = state
+                            showStickyPlayer.value = state == VideoState.PLAYING
                         },
                     )
                 }
             }
 
             if (!showStickyPlayer.value) {
-                item(key = "trailer") {
-                    VideoPlayerSection(
-                        trailer = trailer,
-                        videoState = videoState.value,
-                        onVideoStateChange = { state ->
-                            videoState.value = state
-                        },
-                    )
+                stickyHeader {
+                    Spacer(modifier = Modifier.height(0.dp))
                 }
             }
 
