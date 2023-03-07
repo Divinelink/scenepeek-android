@@ -74,6 +74,7 @@ import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
+import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
@@ -163,12 +164,6 @@ fun DetailsContent(
     if (viewState.isLoading) {
         LoadingContent()
     }
-}
-
-enum class VideoState {
-    PLAYING,
-    PAUSED,
-    NOT_PRESENT,
 }
 
 @Composable

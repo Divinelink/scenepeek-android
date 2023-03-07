@@ -5,13 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.ui.VideoState
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -23,15 +23,16 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiCo
 @Composable
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
-    trailer: Video,
+    video: Video,
     onStateChange: (VideoState) -> Unit,
-    state: VideoState,
 ) {
     val context = LocalContext.current
     val options = IFramePlayerOptions.Builder().controls(0).build()
-    val startSeconds = remember { mutableStateOf(0f) }
+    val startSeconds = rememberSaveable { mutableStateOf(0f) }
+    val playerState = rememberSaveable { mutableStateOf(VideoState.NOT_PRESENT) }
+    val playerController = remember { mutableStateOf<DefaultPlayerUiController?>(null) }
 
-    val youtubePlayer = remember {
+    val youtubePlayerView = remember {
         YouTubePlayerView(context).apply {
             enableAutomaticInitialization = false
             val listener = object : AbstractYouTubePlayerListener() {
@@ -40,38 +41,30 @@ fun YoutubePlayer(
                 }
 
                 override fun onReady(youTubePlayer: YouTubePlayer) {
-                    val playerController = DefaultPlayerUiController(
+                    playerController.value = DefaultPlayerUiController(
                         youTubePlayerView = this@apply,
                         youTubePlayer = youTubePlayer,
                     ).apply {
-                        showBufferingProgress(true)
+                        setCustomPlayerUi(rootView)
+                        showSeekBar(false)
+                        showYouTubeButton(false)
+                        showCurrentTime(false)
+                        showFullscreenButton(false)
+                        showDuration(false)
                     }
-                    setCustomPlayerUi(playerController.rootView)
-                    when (state) {
-                        VideoState.PLAYING -> {
-                            youTubePlayer.loadVideo(
-                                videoId = trailer.key,
-                                startSeconds = startSeconds.value,
-                            )
-                        }
-
-                        VideoState.PAUSED -> {
-                            // Intentionally Blank.
-                        }
-
-                        VideoState.NOT_PRESENT -> {
-                            youTubePlayer.cueVideo(
-                                videoId = trailer.key,
-                                startSeconds = 0f,
-                            )
-                            playerController.apply {
-                                showSeekBar(false)
-                                showYouTubeButton(false)
-                                showCurrentTime(false)
-                                showFullscreenButton(false)
-                                showDuration(false)
-                            }
-                        }
+                    if (playerState.value == VideoState.PLAYING) {
+                        youTubePlayer.loadVideo(
+                            videoId = video.key,
+                            startSeconds = startSeconds.value,
+                        )
+                    } else if (
+                        playerState.value == VideoState.PAUSED ||
+                        playerState.value == VideoState.NOT_PRESENT
+                    ) {
+                        youTubePlayer.cueVideo(
+                            videoId = video.key,
+                            startSeconds = startSeconds.value,
+                        )
                     }
                 }
 
@@ -80,8 +73,22 @@ fun YoutubePlayer(
                     state: PlayerConstants.PlayerState,
                 ) {
                     when (state) {
-                        PlayerConstants.PlayerState.PLAYING -> onStateChange(VideoState.PLAYING)
-                        PlayerConstants.PlayerState.PAUSED -> onStateChange(VideoState.PAUSED)
+                        PlayerConstants.PlayerState.PLAYING -> {
+                            onStateChange(VideoState.PLAYING)
+                            playerState.value = VideoState.PLAYING
+                            playerController.value?.apply {
+                                showSeekBar(true)
+                                showYouTubeButton(true)
+                                showCurrentTime(true)
+                                showDuration(true)
+                            }
+                        }
+
+                        PlayerConstants.PlayerState.PAUSED -> {
+                            onStateChange(VideoState.PAUSED)
+                            playerState.value = VideoState.PAUSED
+                        }
+
                         else -> {
                             // Intentionally Blank.
                         }
@@ -98,14 +105,20 @@ fun YoutubePlayer(
                 .fillMaxSize()
                 .testTag("VideoPlayer"),
             factory = {
-                youtubePlayer
+                youtubePlayerView
             }
         )
     ) {
         onDispose {
-            youtubePlayer.release()
+            youtubePlayerView.release()
         }
     }
+}
+
+enum class VideoState {
+    PLAYING,
+    PAUSED,
+    NOT_PRESENT,
 }
 
 @Preview
@@ -113,7 +126,7 @@ fun YoutubePlayer(
 fun VideoPlayerPreview() {
     AppTheme {
         YoutubePlayer(
-            trailer = Video(
+            video = Video(
                 id = "",
                 name = "",
                 officialTrailer = false,
@@ -121,7 +134,6 @@ fun VideoPlayerPreview() {
                 key = "",
             ),
             onStateChange = { },
-            state = VideoState.NOT_PRESENT,
         )
     }
 }
