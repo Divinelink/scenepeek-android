@@ -119,7 +119,7 @@ class DetailsScreenTest {
             posterPath = "",
             releaseDate = "",
             title = "Flight Club $it",
-            rating = "",
+            rating = it.toString(),
             overview = "This movie is good.",
         )
     }.toList()

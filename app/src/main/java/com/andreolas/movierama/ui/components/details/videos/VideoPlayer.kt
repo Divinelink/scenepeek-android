@@ -20,6 +20,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFram
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiController
 
+const val VIDEO_PLAYER_TAG = "VIDEO_PLAYER_TAG"
+
 @Composable
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
@@ -103,7 +105,7 @@ fun YoutubePlayer(
         AndroidView(
             modifier = modifier
                 .fillMaxSize()
-                .testTag("VideoPlayer"),
+                .testTag(VIDEO_PLAYER_TAG),
             factory = {
                 youtubePlayerView
             }

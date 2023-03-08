@@ -169,10 +169,9 @@ fun DetailsContent(
 @Composable
 private fun VideoPlayerSection(
     modifier: Modifier = Modifier,
-    trailer: Video?,
+    trailer: Video,
     onVideoStateChange: (VideoState) -> Unit,
 ) {
-    if (trailer == null) return
     val orientation = LocalConfiguration.current.orientation
     val playerWidth = remember {
         derivedStateOf {
@@ -217,27 +216,28 @@ fun DetailsMovieContent(
             item {
                 TitleDetails(movieDetails)
             }
-
-            stickyHeader(key = "trailerSticky") {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Black),
-                ) {
-                    VideoPlayerSection(
-                        modifier = Modifier,
-                        trailer = trailer,
-                        onVideoStateChange = { state ->
-                            showStickyPlayer.value = state == VideoState.PLAYING
-                        },
-                    )
+            if (trailer != null) {
+                stickyHeader(key = "trailerSticky") {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.Black),
+                    ) {
+                        VideoPlayerSection(
+                            modifier = Modifier,
+                            trailer = trailer,
+                            onVideoStateChange = { state ->
+                                showStickyPlayer.value = state == VideoState.PLAYING
+                            },
+                        )
+                    }
                 }
-            }
 
-            if (!showStickyPlayer.value) {
-                stickyHeader {
-                    Spacer(modifier = Modifier.height(0.dp))
+                if (!showStickyPlayer.value) {
+                    stickyHeader {
+                        Spacer(modifier = Modifier.height(0.dp))
+                    }
                 }
             }
 
