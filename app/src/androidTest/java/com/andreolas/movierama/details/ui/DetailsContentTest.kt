@@ -12,9 +12,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
 import com.andreolas.movierama.home.ui.LOADING_CONTENT_TAG
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_SCROLLABLE_LIST
+import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -153,6 +156,35 @@ class DetailsContentTest {
         composeTestRule
             .onNodeWithText(okText)
             .performClick()
+    }
+
+    // Render trailer tests
+    @Test
+    fun renderTrailerTest() {
+        val youtubeTrailer = Video(
+            id = "123",
+            key = "123",
+            name = "Trailer",
+            site = VideoSite.YouTube,
+            officialTrailer = true,
+        )
+        composeTestRule
+            .setContent {
+                DetailsContent(
+                    viewState = DetailsViewState(
+                        movieId = 0,
+                        movieDetails = movieDetails,
+                        trailer = youtubeTrailer,
+                    ),
+                    onNavigateUp = {},
+                    onMarkAsFavoriteClicked = {},
+                    onSimilarMovieClicked = {},
+                )
+            }
+
+        composeTestRule
+            .onNodeWithTag(VIDEO_PLAYER_TAG)
+            .assertIsDisplayed()
     }
 
     private val reviews = (1..2).map {

@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -113,21 +111,11 @@ fun BottomSheetMovieContent(
 
                     Column {
                         Row(
-                            modifier = modifier,
+                            modifier = modifier.padding(top = 4.dp),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Star,
-                                tint = Color.Yellow,
-                                contentDescription = stringResource(id = R.string.popular_movie__rating),
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = movie.rating,
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
-                            )
+                            Rating(rating = movie.rating)
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(
                                 text = movie.releaseDate,

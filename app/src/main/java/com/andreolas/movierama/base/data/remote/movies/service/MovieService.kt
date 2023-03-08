@@ -6,6 +6,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Revie
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
@@ -33,4 +35,8 @@ interface MovieService {
     fun fetchSimilarMovies(
         request: SimilarRequestApi,
     ): Flow<SimilarResponseApi>
+
+    fun fetchVideos(
+        request: VideosRequestApi,
+    ): Flow<VideosResponseApi>
 }

@@ -5,12 +5,11 @@ package com.andreolas.movierama.ui.components
 import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,10 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -158,30 +159,58 @@ fun LikeButton(
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun Rating(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     rating: String,
-    leadingContent: (@Composable () -> Unit) = {},
-    trailingContent: (@Composable () -> Unit) = {},
 ) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+    val sanitizedRating = if (rating.endsWith(".0")) {
+        rating.substring(0, rating.length - 2)
+    } else {
+        rating
+    }
+
+    val color = when (rating.toDouble()) {
+        in 0.0..3.0 -> Color.Red
+        in 3.0..6.0 -> Color.Yellow
+        in 6.0..10.0 -> Color.Green
+        else -> Color.White
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .padding(top = 4.dp, bottom = 4.dp)
     ) {
-        leadingContent()
-        Icon(
-            imageVector = Icons.Default.Star,
-            tint = Color.Yellow,
-            contentDescription = stringResource(id = R.string.popular_movie__rating),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+        Canvas(modifier = Modifier.size(36.dp)
+        ) {
+            drawArc(
+                color = color.copy(alpha = 0.2f),
+                startAngle = 0f,
+                sweepAngle = 360f,
+                useCenter = true,
+                style = Stroke(
+                    width = 4.dp.toPx(),
+                    miter = 4f,
+                )
+            )
+            drawArc(
+                color = color,
+                startAngle = 270f,
+                sweepAngle = (100f / 10f * rating.toDouble() * 3.6f).toFloat(),
+                useCenter = false,
+                style = Stroke(
+                    width = 4.dp.toPx(),
+                    miter = 2f,
+                    cap = StrokeCap.Round,
+                )
+            )
+        }
+
         Text(
-            text = rating,
+            text = sanitizedRating,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
         )
-        trailingContent()
     }
 }
 
@@ -203,7 +232,7 @@ fun PopularMovieItemPreview() {
                     posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
                     releaseDate = "2023",
                     title = "Fight Club",
-                    rating = "72",
+                    rating = "8.8",
                     isFavorite = true,
                     overview = "",
                 ),
@@ -232,7 +261,7 @@ fun MovieItemPreview() {
                     title = "Night of the Day of the Dawn of the Son of the Bride of the " +
                         "Return of the Revenge of the Terror of the Attack of the Evil," +
                         " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
-                    rating = "4.2",
+                    rating = "5.0",
                     isFavorite = null,
                     overview = "",
                 ),

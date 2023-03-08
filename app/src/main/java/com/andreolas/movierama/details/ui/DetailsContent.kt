@@ -3,8 +3,11 @@
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,9 +38,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +61,8 @@ import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
 import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -63,11 +74,14 @@ import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
+import com.andreolas.movierama.ui.components.details.videos.VideoState
+import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
+private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -133,6 +147,7 @@ fun DetailsContent(
                 movieDetails = viewState.movieDetails,
                 similarMoviesList = viewState.similarMovies,
                 reviewsList = viewState.reviews,
+                trailer = viewState.trailer,
                 onSimilarMovieClicked = onSimilarMovieClicked,
             )
         }
@@ -152,13 +167,46 @@ fun DetailsContent(
 }
 
 @Composable
+private fun VideoPlayerSection(
+    modifier: Modifier = Modifier,
+    trailer: Video,
+    onVideoStateChange: (VideoState) -> Unit,
+) {
+    val orientation = LocalConfiguration.current.orientation
+    val playerWidth = remember {
+        derivedStateOf {
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) MAX_WIDTH_FOR_LANDSCAPE_PLAYER else 1f
+        }
+    }
+    when (trailer.site) {
+        VideoSite.YouTube ->
+            YoutubePlayer(
+                modifier = modifier
+                    .fillMaxWidth(playerWidth.value),
+                video = trailer,
+                onStateChange = { state ->
+                    onVideoStateChange(state)
+                },
+            )
+
+        else -> {
+            return
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
 fun DetailsMovieContent(
     modifier: Modifier = Modifier,
     movieDetails: MovieDetails,
     similarMoviesList: List<SimilarMovie>?,
     reviewsList: List<Review>?,
+    trailer: Video?,
     onSimilarMovieClicked: (Movie) -> Unit,
 ) {
+    val showStickyPlayer = remember { mutableStateOf(false) }
+
     Surface {
         LazyColumn(
             modifier = modifier
@@ -167,6 +215,33 @@ fun DetailsMovieContent(
         ) {
             item {
                 TitleDetails(movieDetails)
+            }
+            if (trailer != null) {
+                stickyHeader(key = "trailerSticky") {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.Black),
+                    ) {
+                        VideoPlayerSection(
+                            modifier = Modifier,
+                            trailer = trailer,
+                            onVideoStateChange = { state ->
+                                showStickyPlayer.value = state == VideoState.PLAYING
+                            },
+                        )
+                    }
+                }
+
+                if (!showStickyPlayer.value) {
+                    stickyHeader {
+                        Spacer(modifier = Modifier.height(0.dp))
+                    }
+                }
+            }
+
+            item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -237,7 +312,7 @@ private fun TitleDetails(movieDetails: MovieDetails) {
 
     Row(
         modifier = Modifier
-            .padding(start = 16.dp, end = 12.dp),
+            .padding(start = 16.dp, end = 12.dp, bottom = 16.dp),
     ) {
         Text(
             style = MaterialTheme.typography.bodySmall,

@@ -1,6 +1,7 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.search
 
 import com.andreolas.movierama.home.domain.model.PopularMovie
+import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -50,7 +51,7 @@ private fun SearchMovieApi.toPopularMovie(): PopularMovie {
         posterPath = this.posterPath ?: "",
         releaseDate = this.releaseDate ?: "",
         title = this.title,
-        rating = this.voteAverage.toString(),
+        rating = this.voteAverage.round(1).toString(),
         overview = this.overview,
         isFavorite = false,
     )

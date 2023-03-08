@@ -4,12 +4,16 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.VideoSite
+import com.andreolas.movierama.details.domain.model.VideosException
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.google.common.truth.Truth.assertThat
@@ -214,5 +218,68 @@ class GetMoviesDetailsUseCaseTest {
         val result = flow(request).first()
 
         assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+    }
+
+    // Video tests
+    @Test
+    fun `successfully get movie videos`() = runTest {
+        val videoList = listOf(
+            Video(
+                id = "1",
+                name = "key",
+                officialTrailer = true,
+                site = VideoSite.YouTube,
+                key = "type",
+            )
+        )
+        repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Success(videoList))
+        val flow = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+
+        val result = flow(request).last()
+
+        assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.VideosSuccess(videoList.first())))
+    }
+
+    @Test
+    fun `successfully get movie videos with empty list`() = runTest {
+        val videoList = listOf(
+            Video(
+                id = "1",
+                name = "key",
+                officialTrailer = false,
+                site = VideoSite.Vimeo,
+                key = "type",
+            )
+        )
+        repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Success(videoList))
+        val flow = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+
+        val result = flow(request).last()
+
+        assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.VideosSuccess(null)))
+    }
+
+    @Test
+    fun `catch error case in videos`() = runTest {
+        val expectedResult = Result.Error(Exception("Oops."))
+
+        repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Error(VideosException()))
+
+        val useCase = GetMovieDetailsUseCase(
+            repository = repository.mock,
+            moviesRepository = moviesRepository.mock,
+            dispatcher = testDispatcher,
+        )
+        val result = useCase(request).last()
+
+        assertThat(result).isInstanceOf(expectedResult::class.java)
     }
 }

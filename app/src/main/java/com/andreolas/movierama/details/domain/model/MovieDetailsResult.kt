@@ -13,6 +13,8 @@ sealed class MovieDetailsResult {
 
     data class SimilarSuccess(val similar: List<SimilarMovie>) : MovieDetailsResult()
 
+    data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
+
     sealed class Failure(
         open val message: UIText = UIText.ResourceText(R.string.general_error_message),
     ) : MovieDetailsResult() {
@@ -30,3 +32,4 @@ sealed class MovieDetailsResult {
 class MovieDetailsException : Exception()
 class ReviewsException : Exception()
 class SimilarException : Exception()
+class VideosException : Exception()

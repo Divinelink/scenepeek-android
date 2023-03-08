@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 26
+          api-level: 28
           script: ./gradlew app:combinedJacocoTestReport
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

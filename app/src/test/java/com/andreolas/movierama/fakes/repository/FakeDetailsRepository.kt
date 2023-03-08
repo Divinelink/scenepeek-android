@@ -3,9 +3,11 @@ package com.andreolas.movierama.fakes.repository
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.SimilarMovie
+import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.flowOf
@@ -44,6 +46,17 @@ class FakeDetailsRepository {
     ) {
         whenever(
             mock.fetchSimilarMovies(request)
+        ).thenReturn(
+            flowOf(response)
+        )
+    }
+
+    fun mockFetchMovieVideos(
+        request: VideosRequestApi,
+        response: Result<List<Video>>,
+    ) {
+        whenever(
+            mock.fetchVideos(request)
         ).thenReturn(
             flowOf(response)
         )
