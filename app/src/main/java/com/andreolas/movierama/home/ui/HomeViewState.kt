@@ -34,8 +34,6 @@ data class HomeViewState(
 fun HomeViewState.getMoviesList(): List<PopularMovie> {
     return if (searchMovies?.isNotEmpty() == true) {
         searchMovies
-    } else if (filteredMovies?.isNotEmpty() == true) {
-        filteredMovies
     } else {
         moviesList
     }

@@ -1,17 +1,22 @@
+@file:Suppress("MagicNumber", "UnusedPrivateMember")
+
 package com.andreolas.movierama.home.ui
 
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
@@ -26,6 +31,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -48,15 +56,21 @@ import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
+import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterialApi::class,
+    ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class,
+)
 @Suppress("LongMethod")
 @Composable
 fun HomeContent(
@@ -79,6 +93,9 @@ fun HomeContent(
             initialValue = BottomSheetValue.Collapsed,
         )
     )
+    val selectedMovie = remember {
+        derivedStateOf { viewState.selectedMovie }
+    }
 
     DisposableEffect(viewState.selectedMovie) {
         if (viewState.selectedMovie != null) {
@@ -86,6 +103,12 @@ fun HomeContent(
         }
 
         onDispose { }
+    }
+
+    LaunchedEffect(selectedMovie.value) {
+        coroutineScope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
     }
 
     BackHandler(bottomSheetScaffoldState.bottomSheetState.isExpanded) {
@@ -160,29 +183,78 @@ fun HomeContent(
                 description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
             )
         } else {
-            PopularMoviesList(
-                modifier = modifier
-                    .fillMaxSize()
-                    .testTag(MOVIES_LIST_TAG)
-                    .padding(paddingValues),
-                movies = viewState.getMoviesList(),
-                onMovieClicked = {
-                    onMovieClicked(it)
-                    coroutineScope.launch {
-                        if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                            bottomSheetScaffoldState.bottomSheetState.expand()
-                        }
+            AnimatedContent(
+                targetState = viewState.filteredMovies.isNullOrEmpty(),
+                transitionSpec = fadeTransitionSpec(),
+            ) { unselectedFilters ->
+                when (unselectedFilters) {
+                    true -> {
+                        MoviesLazyGrid(
+                            modifier = modifier,
+                            paddingValues = paddingValues,
+                            onMovieClicked = onMovieClicked,
+                            coroutineScope = coroutineScope,
+                            bottomSheetScaffoldState = bottomSheetScaffoldState,
+                            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+                            moviesList = viewState.getMoviesList(),
+                            onLoadNextPage = onLoadNextPage,
+                            loadMore = viewState.loadMore,
+                        )
                     }
-                },
-                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                onLoadNextPage = onLoadNextPage,
-                isLoading = viewState.loadMore,
-            )
+
+                    false -> {
+                        MoviesLazyGrid(
+                            modifier = modifier,
+                            paddingValues = paddingValues,
+                            onMovieClicked = onMovieClicked,
+                            coroutineScope = coroutineScope,
+                            bottomSheetScaffoldState = bottomSheetScaffoldState,
+                            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+                            moviesList = viewState.filteredMovies ?: emptyList(),
+                            onLoadNextPage = onLoadNextPage,
+                            loadMore = viewState.loadMore,
+                        )
+                    }
+                }
+            }
         }
     }
     if (viewState.initialLoading) {
         LoadingContent()
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun MoviesLazyGrid(
+    modifier: Modifier,
+    paddingValues: PaddingValues,
+    moviesList: List<PopularMovie>,
+    onMovieClicked: (PopularMovie) -> Unit,
+    coroutineScope: CoroutineScope,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+    onLoadNextPage: () -> Unit,
+    loadMore: Boolean,
+) {
+    PopularMoviesList(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(MOVIES_LIST_TAG)
+            .padding(paddingValues),
+        movies = moviesList,
+        onMovieClicked = {
+            onMovieClicked(it)
+            coroutineScope.launch {
+                if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                    bottomSheetScaffoldState.bottomSheetState.expand()
+                }
+            }
+        },
+        onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+        onLoadNextPage = onLoadNextPage,
+        isLoading = loadMore,
+    )
 }
 
 @Composable
@@ -212,7 +284,18 @@ fun HomeContentPreview() {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = listOf(),
+                    moviesList =
+                    (1..10).map {
+                        PopularMovie(
+                            id = it,
+                            title = "Movie 1",
+                            posterPath = "/poster1",
+                            overview = "Overview 1",
+                            releaseDate = "2021-01-01",
+                            isFavorite = false,
+                            rating = it.toString(),
+                        )
+                    },
                     selectedMovie = null,
                     error = null,
                 ),
