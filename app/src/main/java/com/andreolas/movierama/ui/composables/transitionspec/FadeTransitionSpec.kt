@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.andreolas.movierama.ui.composables.transitionspec
 
 import androidx.compose.animation.AnimatedContentScope
