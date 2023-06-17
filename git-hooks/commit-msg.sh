@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Git commit hook:
  .git/hooks/commit-msg
