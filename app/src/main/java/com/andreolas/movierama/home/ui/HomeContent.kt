@@ -31,7 +31,6 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -61,6 +60,7 @@ import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
@@ -87,43 +87,36 @@ fun HomeContent(
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   val keyboardController = LocalSoftwareKeyboardController.current
-  val coroutineScope = rememberCoroutineScope()
-  val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+  val scope = rememberCoroutineScope()
+  val selectedMovie = remember { derivedStateOf { viewState.selectedMovie } }
+
+  val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
       initialValue = SheetValue.Hidden,
       skipHiddenState = false
-    ),
+    )
   )
-  val selectedMovie = remember { derivedStateOf { viewState.selectedMovie } }
 
-  DisposableEffect(viewState.selectedMovie) {
-    if (viewState.selectedMovie != null) {
+  DisposableEffect(selectedMovie.value) {
+    if (selectedMovie.value != null) {
       keyboardController?.hide()
     }
-
     onDispose { }
   }
 
-  LaunchedEffect(selectedMovie.value) {
-    coroutineScope.launch {
-      bottomSheetScaffoldState.bottomSheetState.hide()
-    }
-  }
-
-  BackHandler(bottomSheetScaffoldState.bottomSheetState.isVisible) {
-    coroutineScope.launch {
-      bottomSheetScaffoldState.bottomSheetState.hide()
-      bottomSheetScaffoldState.bottomSheetState.requireOffset()
+  BackHandler(scaffoldState.bottomSheetState.isVisible) {
+    scope.launch {
+      scaffoldState.bottomSheetState.hide()
     }
   }
 
   val context = LocalContext.current
   BottomSheetScaffold(
-    sheetPeekHeight = 1.dp,
     sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-    scaffoldState = bottomSheetScaffoldState,
+    scaffoldState = scaffoldState,
+    sheetPeekHeight = 0.dp,
     sheetContent = {
-      if (viewState.selectedMovie != null) {
+      viewState.selectedMovie?.let {
         BottomSheetMovieContent(
           onContentClicked = onGoToDetails,
           movie = viewState.selectedMovie,
@@ -167,8 +160,7 @@ fun HomeContent(
         visible = viewState.query.isEmpty(),
       ) {
         FilterBar(
-          modifier = modifier
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+          modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
           filters = viewState.filters,
           onFilterClick = { homeFilter ->
             onFilterClicked(homeFilter.name)
@@ -197,10 +189,10 @@ fun HomeContent(
                 modifier = modifier,
                 paddingValues = paddingValues,
                 onMovieClicked = onMovieClicked,
-                coroutineScope = coroutineScope,
-                bottomSheetScaffoldState = bottomSheetScaffoldState,
+                scope = scope,
+                bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                moviesList = viewState.getMoviesList(),
+                moviesList = viewState.moviesList,
                 onLoadNextPage = onLoadNextPage,
                 loadMore = viewState.loadMore,
               )
@@ -210,8 +202,8 @@ fun HomeContent(
                 modifier = modifier,
                 paddingValues = paddingValues,
                 onMovieClicked = onMovieClicked,
-                coroutineScope = coroutineScope,
-                bottomSheetScaffoldState = bottomSheetScaffoldState,
+                scope = scope,
+                bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 moviesList = viewState.filteredMovies ?: emptyList(),
                 onLoadNextPage = onLoadNextPage,
@@ -235,8 +227,8 @@ private fun MoviesLazyGrid(
   paddingValues: PaddingValues,
   moviesList: List<PopularMovie>,
   onMovieClicked: (PopularMovie) -> Unit,
-  coroutineScope: CoroutineScope,
-  bottomSheetScaffoldState: BottomSheetScaffoldState,
+  scope: CoroutineScope,
+  bottomSheetState: BottomSheetScaffoldState,
   onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
   onLoadNextPage: () -> Unit,
   loadMore: Boolean,
@@ -248,10 +240,16 @@ private fun MoviesLazyGrid(
       .padding(paddingValues),
     movies = moviesList,
     onMovieClicked = {
-      onMovieClicked(it)
-      coroutineScope.launch {
-        if (bottomSheetScaffoldState.bottomSheetState.currentValue == SheetValue.Hidden) {
-          bottomSheetScaffoldState.bottomSheetState.expand()
+      scope.launch {
+        // TODO replace the logic with a One Time Event
+        if (bottomSheetState.bottomSheetState.currentValue == SheetValue.Hidden) {
+          onMovieClicked(it)
+          bottomSheetState.bottomSheetState.expand()
+        } else if (bottomSheetState.bottomSheetState.currentValue == SheetValue.Expanded) {
+          bottomSheetState.bottomSheetState.hide()
+          onMovieClicked(it)
+          delay(50)
+          bottomSheetState.bottomSheetState.expand()
         }
       }
     },
@@ -288,7 +286,7 @@ fun HomeContentPreview() {
       HomeContent(
         viewState = HomeViewState(
           isLoading = false,
-          moviesList = (1..10).map {
+          popularMovies = (1..10).map {
             PopularMovie(
               id = it,
               title = "Movie 1",
