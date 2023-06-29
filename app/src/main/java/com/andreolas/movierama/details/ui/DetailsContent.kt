@@ -98,8 +98,6 @@ fun DetailsContent(
             initialValue = BottomSheetValue.Collapsed,
         )
     )
-    // I want to update the movies list content with a fade in and out animation
-    // I'll use this state to trigger the animation
 
     BottomSheetScaffold(
         sheetElevation = 32.dp,

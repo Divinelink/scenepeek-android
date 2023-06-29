@@ -43,7 +43,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {
@@ -75,7 +75,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                     query = "movie",
                 ),
                 onMovieClicked = {},
@@ -107,7 +107,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
@@ -135,7 +135,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {
                     hasClickedOnMovie = true
@@ -163,7 +163,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     emptyResult = true,
                 ),
                 onMovieClicked = {},
@@ -191,7 +191,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = true,
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
@@ -215,7 +215,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = true,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
@@ -246,7 +246,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
@@ -281,7 +281,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                     selectedMovie = popularMovies[2],
                 ),
                 onMovieClicked = {},
@@ -309,7 +309,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},
@@ -338,7 +338,7 @@ class HomeContentTest {
             HomeContent(
                 viewState = HomeViewState(
                     isLoading = false,
-                    moviesList = popularMovies,
+                    popularMovies = popularMovies,
                 ),
                 onMovieClicked = {},
                 onMarkAsFavoriteClicked = {},

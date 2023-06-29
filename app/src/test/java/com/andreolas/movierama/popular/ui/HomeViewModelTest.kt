@@ -52,7 +52,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = true,
-                    moviesList = listOf(),
+                    popularMovies = listOf(),
                     selectedMovie = null,
                     error = null,
                 )
@@ -69,7 +69,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     selectedMovie = null,
                     error = null,
                 )
@@ -86,7 +86,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     selectedMovie = null,
                     error = null,
                 )
@@ -98,7 +98,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = popularMoviesList + loadData(12, 20),
+                    popularMovies = popularMoviesList + loadData(12, 20),
                     selectedMovie = null,
                     error = null,
                 )
@@ -121,7 +121,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = loadData(1, 5),
+                    popularMovies = loadData(1, 5),
                     selectedMovie = null,
                     error = null,
                 )
@@ -133,7 +133,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = loadData(1, 10),
+                    popularMovies = loadData(1, 10),
                     selectedMovie = null,
                     error = null,
                 )
@@ -150,7 +150,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = false,
-                    moviesList = listOf(),
+                    popularMovies = listOf(),
                     selectedMovie = null,
                     error = UIText.StringText("oops")
                 )
@@ -167,7 +167,7 @@ class HomeViewModelTest {
             .assertViewState(
                 HomeViewState(
                     isLoading = true,
-                    moviesList = listOf(),
+                    popularMovies = listOf(),
                 )
             )
     }
@@ -184,7 +184,7 @@ class HomeViewModelTest {
 //            .assertViewState(
 //                HomeViewState(
 //                    isLoading = false,
-//                    moviesList = popularMoviesList.apply {
+//                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
 //                    selectedMovie = null,
@@ -196,7 +196,7 @@ class HomeViewModelTest {
 //            .assertViewState(
 //                HomeViewState(
 //                    isLoading = false,
-//                    moviesList = popularMoviesList.apply {
+//                    popularMovies = popularMoviesList.apply {
 //                        this[2] = this[2].copy(isFavorite = true)
 //                    },
 //                    selectedMovie = null,
@@ -207,7 +207,7 @@ class HomeViewModelTest {
 //            .assertFalseViewState(
 //                HomeViewState(
 //                    isLoading = false,
-//                    moviesList = popularMoviesList.apply {
+//                    popularMovies = popularMoviesList.apply {
 //                        this[2] = this[2].copy(isFavorite = false)
 //                    },
 //                    selectedMovie = null,
@@ -232,7 +232,7 @@ class HomeViewModelTest {
 //            .assertViewState(
 //                HomeViewState(
 //                    isLoading = false,
-//                    moviesList = popularMoviesList.apply {
+//                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
 //                    selectedMovie = null,
@@ -244,7 +244,7 @@ class HomeViewModelTest {
 //            .assertViewState(
 //                HomeViewState(
 //                    isLoading = false,
-//                    moviesList = popularMoviesList.apply {
+//                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = false)
 //                    },
 //                    selectedMovie = null,
@@ -269,7 +269,7 @@ class HomeViewModelTest {
             .onSearchMovies("test query")
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     loadMorePopular = false,
                     isLoading = false,
                     query = "test query",
@@ -280,7 +280,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     searchMovies = popularMoviesList,
                     loadMorePopular = false,
                     isLoading = false,
@@ -306,7 +306,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -317,7 +317,7 @@ class HomeViewModelTest {
             .onSearchMovies("test ")
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     isLoading = false,
                     loadMorePopular = false,
                     query = "test ",
@@ -329,7 +329,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     searchMovies = popularMoviesList,
                     loadMorePopular = false,
                     isLoading = false,
@@ -355,7 +355,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -365,7 +365,7 @@ class HomeViewModelTest {
             .onSearchMovies("test ")
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     isLoading = false,
                     loadMorePopular = false,
                     query = "test ",
@@ -378,7 +378,7 @@ class HomeViewModelTest {
             .onClearClicked()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = emptyList(),
+                    popularMovies = emptyList(),
                     loadMorePopular = true,
                     isLoading = false,
                     query = "",
@@ -403,7 +403,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -414,7 +414,7 @@ class HomeViewModelTest {
             .delay(400)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     searchMovies = searchMovies,
                     loadMorePopular = false,
                     isLoading = false,
@@ -426,7 +426,7 @@ class HomeViewModelTest {
             .onClearClicked()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     loadMorePopular = true,
                     isLoading = false,
                     query = "",
@@ -445,7 +445,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -456,7 +456,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     loadMorePopular = false,
                     isLoading = false,
                     query = "test query",
@@ -474,7 +474,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -485,7 +485,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     loadMorePopular = false,
                     isLoading = false,
                     query = "test query",
@@ -511,7 +511,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -522,7 +522,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     searchMovies = emptyList(),
                     loadMorePopular = false,
                     isLoading = false,
@@ -548,7 +548,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -559,7 +559,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     searchMovies = searchMovies,
                     loadMorePopular = false,
                     isLoading = false,
@@ -573,7 +573,7 @@ class HomeViewModelTest {
             .delay(300)
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     searchMovies = searchMovies,
                     loadMorePopular = false,
                     isLoading = false,
@@ -599,7 +599,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -609,7 +609,7 @@ class HomeViewModelTest {
             .onSearchMovies("")
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     loadMorePopular = true,
                     isLoading = false,
                     query = "",
@@ -626,7 +626,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -638,7 +638,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     selectedMovie = popularMoviesList[0],
                     isLoading = false,
                 )
@@ -652,7 +652,7 @@ class HomeViewModelTest {
             .buildViewModel()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     loadMorePopular = true,
                     searchLoading = false,
@@ -668,7 +668,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = popularMoviesList,
+                    popularMovies = popularMoviesList,
                     isLoading = false,
                     selectedMovie = popularMoviesList[0],
                 )
@@ -694,7 +694,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = searchMovies,
+                    popularMovies = searchMovies,
                     filteredMovies = searchMovies.filter { it.isFavorite },
                     isLoading = false,
                     filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
@@ -705,7 +705,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = searchMovies,
+                    popularMovies = searchMovies,
                     filteredMovies = emptyList(),
                     isLoading = false,
                     filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
@@ -732,7 +732,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = searchMovies,
+                    popularMovies = searchMovies,
                     filteredMovies = searchMovies.filter { it.isFavorite },
                     isLoading = false,
                     filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
@@ -741,7 +741,7 @@ class HomeViewModelTest {
             .onClearFiltersClicked()
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = searchMovies,
+                    popularMovies = searchMovies,
                     filteredMovies = null,
                     isLoading = false,
                     filters = HomeFilter.values().map { it.filter },
@@ -763,7 +763,7 @@ class HomeViewModelTest {
             )
             .assertViewState(
                 expectedViewState = HomeViewState(
-                    moviesList = searchMovies,
+                    popularMovies = searchMovies,
                     isLoading = false,
                     filters = listOf(HomeFilter.Liked.filter),
                 )
