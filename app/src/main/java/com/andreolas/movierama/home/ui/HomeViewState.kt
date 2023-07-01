@@ -3,6 +3,7 @@ package com.andreolas.movierama.home.ui
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
+import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
 
 /**
  * @param loadMorePopular indicates whether to load more popularMovies movies when reaching the end of screen,
@@ -34,6 +35,12 @@ data class HomeViewState(
     searchMovies
   } else {
     popularMovies
+  }
+
+  val bottomSheetUiState = if (selectedMovie != null) {
+    BottomSheetUiState.Visible(selectedMovie)
+  } else {
+    BottomSheetUiState.Hidden
   }
 }
 

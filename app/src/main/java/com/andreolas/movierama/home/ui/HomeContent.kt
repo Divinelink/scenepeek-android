@@ -30,9 +30,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -55,12 +53,13 @@ import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
+import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
+import com.andreolas.movierama.ui.components.bottomsheet.animateBottomSheet
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
@@ -84,24 +83,33 @@ fun HomeContent(
   onGoToDetails: (PopularMovie) -> Unit,
   onFilterClicked: (String) -> Unit,
   onClearFiltersClicked: () -> Unit,
+  onSwipeDown: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   val keyboardController = LocalSoftwareKeyboardController.current
   val scope = rememberCoroutineScope()
-  val selectedMovie = remember { derivedStateOf { viewState.selectedMovie } }
 
   val scaffoldState = rememberBottomSheetScaffoldState(
     bottomSheetState = rememberStandardBottomSheetState(
       initialValue = SheetValue.Hidden,
-      skipHiddenState = false
+      skipHiddenState = false,
+      confirmValueChange = {
+        if (it == SheetValue.Hidden) {
+          onSwipeDown()
+        }
+        true
+      },
     )
   )
 
-  DisposableEffect(selectedMovie.value) {
-    if (selectedMovie.value != null) {
+  LaunchedEffect(viewState.bottomSheetUiState) {
+    if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
       keyboardController?.hide()
     }
-    onDispose { }
+    animateBottomSheet(
+      uiState = viewState.bottomSheetUiState,
+      bottomSheetState = scaffoldState.bottomSheetState,
+    )
   }
 
   BackHandler(scaffoldState.bottomSheetState.isVisible) {
@@ -116,10 +124,10 @@ fun HomeContent(
     scaffoldState = scaffoldState,
     sheetPeekHeight = 0.dp,
     sheetContent = {
-      viewState.selectedMovie?.let {
+      if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
         BottomSheetMovieContent(
           onContentClicked = onGoToDetails,
-          movie = viewState.selectedMovie,
+          movie = viewState.bottomSheetUiState.data,
           onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
         )
       }
@@ -149,9 +157,7 @@ fun HomeContent(
         onSearchFieldChanged = { query ->
           onSearchMovies(query)
         },
-        onClearClicked = {
-          onClearClicked()
-        },
+        onClearClicked = onClearClicked,
       )
     },
   ) { paddingValues ->
@@ -241,16 +247,10 @@ private fun MoviesLazyGrid(
     movies = moviesList,
     onMovieClicked = {
       scope.launch {
-        // TODO replace the logic with a One Time Event
-        if (bottomSheetState.bottomSheetState.currentValue == SheetValue.Hidden) {
-          onMovieClicked(it)
-          bottomSheetState.bottomSheetState.expand()
-        } else if (bottomSheetState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        if (bottomSheetState.bottomSheetState.isVisible) {
           bottomSheetState.bottomSheetState.hide()
-          onMovieClicked(it)
-          delay(50)
-          bottomSheetState.bottomSheetState.expand()
         }
+        onMovieClicked(it)
       }
     },
     onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
@@ -319,6 +319,7 @@ fun HomeContentPreview() {
         onGoToDetails = {},
         onFilterClicked = {},
         onClearFiltersClicked = {},
+        onSwipeDown = {},
       )
     }
   }

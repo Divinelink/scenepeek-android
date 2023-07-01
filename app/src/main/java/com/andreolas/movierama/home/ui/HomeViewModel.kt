@@ -38,6 +38,8 @@ class HomeViewModel @Inject constructor(
   private var searchPage: Int = 1
 
   private var searchJob: Job? = null
+  private var bottomSheetJob: Job? = null
+
   private var allowSearchResult: Boolean = true
 
   private var latestQuery: String? = null
@@ -101,16 +103,20 @@ class HomeViewModel @Inject constructor(
   }
 
   fun onMovieClicked(movie: PopularMovie) {
-    val selectedMovie = if (movie == viewState.value.selectedMovie) {
-      null
-    } else {
-      movie
-    }
+    bottomSheetJob?.cancel()
 
-    _viewState.update { viewState ->
-      viewState.copy(
-        selectedMovie = selectedMovie,
-      )
+    bottomSheetJob = viewModelScope.launch {
+      delay(BOTTOM_SHEET_DEBOUNCE_TIME)
+
+      val selectedMovie = if (movie == viewState.value.selectedMovie) {
+        null
+      } else {
+        movie
+      }
+
+      _viewState.update { viewState ->
+        viewState.copy(selectedMovie = selectedMovie)
+      }
     }
   }
 
@@ -320,6 +326,17 @@ class HomeViewModel @Inject constructor(
     }
   }
 
+  fun onSwipeDown() {
+    viewModelScope.launch {
+      delay(BOTTOM_SHEET_DEBOUNCE_TIME)
+      _viewState.update { viewState ->
+        viewState.copy(
+          selectedMovie = null,
+        )
+      }
+    }
+  }
+
   fun onFilterClicked(filter: String) {
     val homeFilter = HomeFilter.values().find { it.filter.name == filter }
     updateFilters(homeFilter)
@@ -379,6 +396,10 @@ class HomeViewModel @Inject constructor(
         },
       )
     }
+  }
+
+  companion object {
+    const val BOTTOM_SHEET_DEBOUNCE_TIME = 200L
   }
 }
 
