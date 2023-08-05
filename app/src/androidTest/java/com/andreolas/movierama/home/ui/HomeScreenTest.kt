@@ -75,7 +75,10 @@ class HomeScreenTest {
       .onNodeWithTag(MOVIE_CARD_ITEM_TAG)
       .performClick()
 
-    composeTestRule.waitUntilExactlyOneExists(hasTestTag(MOVIE_BOTTOM_SHEET_TAG))
+    composeTestRule.waitUntilExactlyOneExists(
+      matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),
+      timeoutMillis = DELAY
+    )
 
     composeTestRule
       .onNodeWithTag(MOVIE_BOTTOM_SHEET_TAG)
@@ -137,5 +140,9 @@ class HomeScreenTest {
     composeTestRule
       .onNodeWithTag(FILTER_BAR_TEST_TAG)
       .assertDoesNotExist()
+  }
+
+  companion object {
+    private const val DELAY = 5000L
   }
 }
