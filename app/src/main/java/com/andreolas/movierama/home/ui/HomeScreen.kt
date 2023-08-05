@@ -39,5 +39,6 @@ fun HomeScreen(
         },
         onFilterClicked = viewModel::onFilterClicked,
         onClearFiltersClicked = viewModel::onClearFiltersClicked,
+        onSwipeDown = viewModel::onSwipeDown,
     )
 }

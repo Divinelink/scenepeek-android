@@ -18,100 +18,104 @@ import org.junit.Rule
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTestRobot {
 
-    private lateinit var viewModel: HomeViewModel
+  private lateinit var viewModel: HomeViewModel
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
-    private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
-    private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
+  private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
+  private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+  private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
+  private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
-    fun buildViewModel() = apply {
-        viewModel = HomeViewModel(
-            getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
-            getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
-            getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
-            markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = HomeViewModel(
+      getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
+      getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
+      getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
+      markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
+    )
+  }
 
-    fun assertViewState(
-        expectedViewState: HomeViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
-    }
+  fun assertViewState(
+    expectedViewState: HomeViewState,
+  ) = apply {
+    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  }
 
-    fun assertFalseViewState(
-        expectedViewState: HomeViewState,
-    ) = apply {
-        assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
-    }
+  fun assertFalseViewState(
+    expectedViewState: HomeViewState,
+  ) = apply {
+    assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
+  }
 
-    fun mockFetchPopularMovies(
-        response: MoviesListResult,
-    ) = apply {
-        fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
-            response = response,
-        )
-    }
+  fun mockFetchPopularMovies(
+    response: MoviesListResult,
+  ) = apply {
+    fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
+      response = response,
+    )
+  }
 
-    fun mockFetchFavoriteMovies(
-        response: MoviesListResult,
-    ) = apply {
-        fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
-            response = response,
-        )
-    }
+  fun mockFetchFavoriteMovies(
+    response: MoviesListResult,
+  ) = apply {
+    fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
+      response = response,
+    )
+  }
 
-    fun mockFetchSearchMovies(
-        response: Result<SearchResult>,
-    ) = apply {
-        fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
-            response = response,
-        )
-    }
+  fun mockFetchSearchMovies(
+    response: Result<SearchResult>,
+  ) = apply {
+    fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
+      response = response,
+    )
+  }
 
-    suspend fun mockMarkAsFavorite(
-        result: Result<Unit>,
-    ) = apply {
-        fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
-            result = result,
-        )
-    }
+  suspend fun mockMarkAsFavorite(
+    result: Result<Unit>,
+  ) = apply {
+    fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
+      result = result,
+    )
+  }
 
-    fun onLoadNextPage() = apply {
-        viewModel.onLoadNextPage()
-    }
+  fun onLoadNextPage() = apply {
+    viewModel.onLoadNextPage()
+  }
 
-    fun onMovieClicked(movie: PopularMovie) = apply {
-        viewModel.onMovieClicked(movie)
-    }
+  fun onMovieClicked(movie: PopularMovie) = apply {
+    viewModel.onMovieClicked(movie)
+  }
 
-    fun onMarkAsFavorite(movie: PopularMovie) = apply {
-        viewModel.onMarkAsFavoriteClicked(movie)
-    }
+  fun onSwipeDown() = apply {
+    viewModel.onSwipeDown()
+  }
 
-    fun onSearchMovies(query: String) = apply {
-        viewModel.onSearchMovies(query)
-    }
+  fun onMarkAsFavorite(movie: PopularMovie) = apply {
+    viewModel.onMarkAsFavoriteClicked(movie)
+  }
 
-    fun onClearClicked() = apply {
-        viewModel.onClearClicked()
-    }
+  fun onSearchMovies(query: String) = apply {
+    viewModel.onSearchMovies(query)
+  }
 
-    fun onClearFiltersClicked() = apply {
-        viewModel.onClearFiltersClicked()
-    }
+  fun onClearClicked() = apply {
+    viewModel.onClearClicked()
+  }
 
-    fun onFilterClicked(filter: String) = apply {
-        viewModel.onFilterClicked(filter)
-    }
+  fun onClearFiltersClicked() = apply {
+    viewModel.onClearFiltersClicked()
+  }
 
-    suspend fun delay(
-        timeInMillis: Long,
-    ) = apply {
-        kotlinx.coroutines.delay(timeInMillis)
-    }
+  fun onFilterClicked(filter: String) = apply {
+    viewModel.onFilterClicked(filter)
+  }
+
+  suspend fun delay(
+    timeInMillis: Long,
+  ) = apply {
+    kotlinx.coroutines.delay(timeInMillis)
+  }
 }

@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             // Compose
             version('compose', '1.3.3')
             version('compose-destinations', '1.7.27-beta')
-            version('compose-bom', '2022.10.00')
+            version('compose-bom', '2023.05.01')
 
             // Internal Database
             version('room', '2.5.0')
@@ -63,8 +63,8 @@ dependencyResolutionManagement {
 
             // Compose
             alias('compose-bom').to('androidx.compose', 'compose-bom').versionRef('compose-bom')
-            alias('compose-material3').to('androidx.compose.material3:material3:1.0.1')
-            alias('compose-material').to('androidx.compose.material:material:1.3.1')
+            alias('compose-material3').to('androidx.compose.material3:material3:1.1.0')
+            alias('compose-material').to('androidx.compose.material:material:1.4.3')
             alias('compose-ui-util').to('androidx.compose.ui', 'ui-util').versionRef('compose')
             alias('compose-ui-tooling').to('androidx.compose.ui', 'ui-tooling').versionRef('compose')
             alias('compose-ui-preview').to('androidx.compose.ui', 'ui-tooling-preview').versionRef('compose')

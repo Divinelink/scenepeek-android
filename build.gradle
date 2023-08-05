@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.8.10'
+        kotlin_version = '1.8.21'
         detektVersion = "1.22.0"
         jacocoAndroidVersion = "0.2"
         koverVersion = "0.6.1"
@@ -18,7 +18,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"

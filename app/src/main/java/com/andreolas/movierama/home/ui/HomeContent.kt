@@ -9,31 +9,28 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -56,6 +53,8 @@ import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.SearchBar
+import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
+import com.andreolas.movierama.ui.components.bottomsheet.animateBottomSheet
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -67,211 +66,214 @@ const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
 @OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class,
+  ExperimentalMaterial3Api::class,
+  ExperimentalComposeUiApi::class,
+  ExperimentalAnimationApi::class,
 )
 @Suppress("LongMethod")
 @Composable
 fun HomeContent(
-    viewState: HomeViewState,
-    modifier: Modifier = Modifier,
-    onMovieClicked: (PopularMovie) -> Unit,
-    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
-    onSearchMovies: (String) -> Unit,
-    onClearClicked: () -> Unit,
-    onLoadNextPage: () -> Unit,
-    onGoToDetails: (PopularMovie) -> Unit,
-    onFilterClicked: (String) -> Unit,
-    onClearFiltersClicked: () -> Unit,
+  viewState: HomeViewState,
+  modifier: Modifier = Modifier,
+  onMovieClicked: (PopularMovie) -> Unit,
+  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  onSearchMovies: (String) -> Unit,
+  onClearClicked: () -> Unit,
+  onLoadNextPage: () -> Unit,
+  onGoToDetails: (PopularMovie) -> Unit,
+  onFilterClicked: (String) -> Unit,
+  onClearFiltersClicked: () -> Unit,
+  onSwipeDown: () -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(
-            initialValue = BottomSheetValue.Collapsed,
-        )
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val keyboardController = LocalSoftwareKeyboardController.current
+  val scope = rememberCoroutineScope()
+
+  val scaffoldState = rememberBottomSheetScaffoldState(
+    bottomSheetState = rememberStandardBottomSheetState(
+      initialValue = SheetValue.Hidden,
+      skipHiddenState = false,
+      confirmValueChange = {
+        if (it == SheetValue.Hidden) {
+          onSwipeDown()
+        }
+        true
+      },
     )
-    val selectedMovie = remember {
-        derivedStateOf { viewState.selectedMovie }
+  )
+
+  LaunchedEffect(viewState.bottomSheetUiState) {
+    if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
+      keyboardController?.hide()
     }
+    animateBottomSheet(
+      uiState = viewState.bottomSheetUiState,
+      bottomSheetState = scaffoldState.bottomSheetState,
+    )
+  }
 
-    DisposableEffect(viewState.selectedMovie) {
-        if (viewState.selectedMovie != null) {
-            keyboardController?.hide()
-        }
-
-        onDispose { }
+  BackHandler(scaffoldState.bottomSheetState.isVisible) {
+    scope.launch {
+      scaffoldState.bottomSheetState.hide()
     }
+  }
 
-    LaunchedEffect(selectedMovie.value) {
-        coroutineScope.launch {
-            bottomSheetScaffoldState.bottomSheetState.collapse()
-        }
-    }
-
-    BackHandler(bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-        coroutineScope.launch {
-            bottomSheetScaffoldState.bottomSheetState.collapse()
-        }
-    }
-
-    val context = LocalContext.current
-    BottomSheetScaffold(
-        sheetElevation = 30.dp,
-        sheetPeekHeight = 1.dp,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            if (viewState.selectedMovie != null) {
-                BottomSheetMovieContent(
-                    onContentClicked = onGoToDetails,
-                    movie = viewState.selectedMovie,
-                    onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
-                )
-            }
+  val context = LocalContext.current
+  BottomSheetScaffold(
+    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+    scaffoldState = scaffoldState,
+    sheetPeekHeight = 0.dp,
+    sheetContent = {
+      if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
+        BottomSheetMovieContent(
+          onContentClicked = onGoToDetails,
+          movie = viewState.bottomSheetUiState.data,
+          onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
+        )
+      }
+    },
+    modifier = Modifier
+      .navigationBarsPadding()
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      SearchBar(
+        modifier = Modifier.clip(SearchBarShape),
+        actions = {
+          IconButton(
+            onClick = {
+              context.startActivity(
+                Intent(context, AppSettingsActivity::class.java)
+              )
+            },
+          ) {
+            Icon(
+              Icons.Filled.Settings,
+              stringResource(R.string.settings_button_content_description)
+            )
+          }
         },
-        modifier = Modifier
-            .navigationBarsPadding()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SearchBar(
-                modifier = Modifier
-                    .clip(SearchBarShape),
-                actions = {
-                    IconButton(
-                        onClick = {
-                            context.startActivity(
-                                Intent(context, AppSettingsActivity::class.java)
-                            )
-                        },
-                    ) {
-                        Icon(Icons.Filled.Settings, stringResource(R.string.settings_button_content_description))
-                    }
-                },
-                isLoading = viewState.searchLoading,
-                searchValue = viewState.query,
-                onSearchFieldChanged = { query ->
-                    onSearchMovies(query)
-                },
-                onClearClicked = {
-                    onClearClicked()
-                },
-            )
+        isLoading = viewState.searchLoading,
+        searchValue = viewState.query,
+        onSearchFieldChanged = { query ->
+          onSearchMovies(query)
         },
-    ) { paddingValues ->
-        AnimatedVisibility(
-            visible = viewState.query.isEmpty(),
-        ) {
-            FilterBar(
-                modifier = modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                filters = viewState.filters,
-                onFilterClick = { homeFilter ->
-                    onFilterClicked(homeFilter.name)
-                },
-                onClearClick = onClearFiltersClicked,
-            )
-        }
-        if (viewState.emptyResult) {
-            EmptySectionCard(
-                modifier = modifier
-                    .padding(paddingValues)
-                    .padding(start = 8.dp, end = 8.dp),
-                title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
-                description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
-            )
-        } else {
-            AnimatedContent(
-                targetState = viewState.filteredMovies.isNullOrEmpty(),
-                transitionSpec = fadeTransitionSpec(),
-            ) { unselectedFilters ->
-                when (unselectedFilters) {
-                    true -> {
-                        MoviesLazyGrid(
-                            modifier = modifier,
-                            paddingValues = paddingValues,
-                            onMovieClicked = onMovieClicked,
-                            coroutineScope = coroutineScope,
-                            bottomSheetScaffoldState = bottomSheetScaffoldState,
-                            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                            moviesList = viewState.getMoviesList(),
-                            onLoadNextPage = onLoadNextPage,
-                            loadMore = viewState.loadMore,
-                        )
-                    }
+        onClearClicked = onClearClicked,
+      )
+    },
+  ) { paddingValues ->
+    Column {
+      AnimatedVisibility(
+        visible = viewState.query.isEmpty(),
+      ) {
+        FilterBar(
+          modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+          filters = viewState.filters,
+          onFilterClick = { homeFilter ->
+            onFilterClicked(homeFilter.name)
+          },
+          onClearClick = onClearFiltersClicked,
+        )
+      }
 
-                    false -> {
-                        MoviesLazyGrid(
-                            modifier = modifier,
-                            paddingValues = paddingValues,
-                            onMovieClicked = onMovieClicked,
-                            coroutineScope = coroutineScope,
-                            bottomSheetScaffoldState = bottomSheetScaffoldState,
-                            onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                            moviesList = viewState.filteredMovies ?: emptyList(),
-                            onLoadNextPage = onLoadNextPage,
-                            loadMore = viewState.loadMore,
-                        )
-                    }
-                }
+      if (viewState.emptyResult) {
+        EmptySectionCard(
+          modifier = modifier
+            .padding(paddingValues)
+            .padding(start = 8.dp, end = 8.dp),
+          title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
+          description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
+        )
+      } else {
+        AnimatedContent(
+          targetState = viewState.filteredMovies.isNullOrEmpty(),
+          transitionSpec = fadeTransitionSpec(),
+          label = "Movies",
+        ) { unselectedFilters ->
+          when (unselectedFilters) {
+            true -> {
+              MoviesLazyGrid(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                onMovieClicked = onMovieClicked,
+                scope = scope,
+                bottomSheetState = scaffoldState,
+                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+                moviesList = viewState.moviesList,
+                onLoadNextPage = onLoadNextPage,
+                loadMore = viewState.loadMore,
+              )
             }
+            false -> {
+              MoviesLazyGrid(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                onMovieClicked = onMovieClicked,
+                scope = scope,
+                bottomSheetState = scaffoldState,
+                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+                moviesList = viewState.filteredMovies ?: emptyList(),
+                onLoadNextPage = onLoadNextPage,
+                loadMore = viewState.loadMore,
+              )
+            }
+          }
         }
+      }
     }
-    if (viewState.initialLoading) {
-        LoadingContent()
-    }
+  }
+  if (viewState.initialLoading) {
+    LoadingContent()
+  }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MoviesLazyGrid(
-    modifier: Modifier,
-    paddingValues: PaddingValues,
-    moviesList: List<PopularMovie>,
-    onMovieClicked: (PopularMovie) -> Unit,
-    coroutineScope: CoroutineScope,
-    bottomSheetScaffoldState: BottomSheetScaffoldState,
-    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
-    onLoadNextPage: () -> Unit,
-    loadMore: Boolean,
+  modifier: Modifier,
+  paddingValues: PaddingValues,
+  moviesList: List<PopularMovie>,
+  onMovieClicked: (PopularMovie) -> Unit,
+  scope: CoroutineScope,
+  bottomSheetState: BottomSheetScaffoldState,
+  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  onLoadNextPage: () -> Unit,
+  loadMore: Boolean,
 ) {
-    PopularMoviesList(
-        modifier = modifier
-            .fillMaxSize()
-            .testTag(MOVIES_LIST_TAG)
-            .padding(paddingValues),
-        movies = moviesList,
-        onMovieClicked = {
-            onMovieClicked(it)
-            coroutineScope.launch {
-                if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                    bottomSheetScaffoldState.bottomSheetState.expand()
-                }
-            }
-        },
-        onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-        onLoadNextPage = onLoadNextPage,
-        isLoading = loadMore,
-    )
+  PopularMoviesList(
+    modifier = modifier
+      .fillMaxSize()
+      .testTag(MOVIES_LIST_TAG)
+      .padding(paddingValues),
+    movies = moviesList,
+    onMovieClicked = {
+      scope.launch {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+          bottomSheetState.bottomSheetState.hide()
+        }
+        onMovieClicked(it)
+      }
+    },
+    onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+    onLoadNextPage = onLoadNextPage,
+    isLoading = loadMore,
+  )
 }
 
 @Composable
 fun LoadingContent(
-    modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .testTag(LOADING_CONTENT_TAG)
-            .fillMaxSize(),
-    ) {
-        Material3CircularProgressIndicator(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.Center),
-        )
-    }
+  Box(
+    modifier = modifier
+      .testTag(LOADING_CONTENT_TAG)
+      .fillMaxSize(),
+  ) {
+    Material3CircularProgressIndicator(
+      modifier = Modifier
+        .wrapContentSize()
+        .align(Alignment.Center),
+    )
+  }
 }
 
 @Composable
@@ -279,35 +281,46 @@ fun LoadingContent(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun HomeContentPreview() {
-    AppTheme {
-        Surface {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    moviesList =
-                    (1..10).map {
-                        PopularMovie(
-                            id = it,
-                            title = "Movie 1",
-                            posterPath = "/poster1",
-                            overview = "Overview 1",
-                            releaseDate = "2021-01-01",
-                            isFavorite = false,
-                            rating = it.toString(),
-                        )
-                    },
-                    selectedMovie = null,
-                    error = null,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onLoadNextPage = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onGoToDetails = {},
-                onFilterClicked = {},
-                onClearFiltersClicked = {},
+  AppTheme {
+    Surface {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = (1..10).map {
+            PopularMovie(
+              id = it,
+              title = "Movie 1",
+              posterPath = "/poster1",
+              overview = "Overview 1",
+              releaseDate = "2021-01-01",
+              isFavorite = false,
+              rating = it.toString(),
             )
-        }
+          },
+          selectedMovie = null,
+          error = null,
+          searchMovies = (1..10).map {
+            PopularMovie(
+              id = it,
+              title = "Movie 1",
+              posterPath = "/poster1",
+              overview = "Overview 1",
+              releaseDate = "2021-01-01",
+              isFavorite = false,
+              rating = it.toString(),
+            )
+          },
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onLoadNextPage = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onGoToDetails = {},
+        onFilterClicked = {},
+        onClearFiltersClicked = {},
+        onSwipeDown = {},
+      )
     }
+  }
 }
