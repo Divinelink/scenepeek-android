@@ -52,7 +52,7 @@ import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
-import com.andreolas.movierama.ui.components.SearchBar
+import com.andreolas.movierama.ui.components.MovieRamaSearchBar
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
 import com.andreolas.movierama.ui.components.bottomsheet.animateBottomSheet
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
@@ -85,7 +85,7 @@ fun HomeContent(
   onClearFiltersClicked: () -> Unit,
   onSwipeDown: () -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val keyboardController = LocalSoftwareKeyboardController.current
   val scope = rememberCoroutineScope()
 
@@ -133,11 +133,14 @@ fun HomeContent(
       }
     },
     modifier = Modifier
-      .navigationBarsPadding()
-      .nestedScroll(scrollBehavior.nestedScrollConnection),
+      .nestedScroll(scrollBehavior.nestedScrollConnection)
+      .navigationBarsPadding(),
     topBar = {
-      SearchBar(
-        modifier = Modifier.clip(SearchBarShape),
+      MovieRamaSearchBar(
+        scrollBehavior = scrollBehavior,
+        modifier = Modifier
+          .navigationBarsPadding()
+          .clip(SearchBarShape),
         actions = {
           IconButton(
             onClick = {
@@ -153,7 +156,7 @@ fun HomeContent(
           }
         },
         isLoading = viewState.searchLoading,
-        searchValue = viewState.query,
+        query = viewState.query,
         onSearchFieldChanged = { query ->
           onSearchMovies(query)
         },
@@ -166,7 +169,7 @@ fun HomeContent(
         visible = viewState.query.isEmpty(),
       ) {
         FilterBar(
-          modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+          modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp),
           filters = viewState.filters,
           onFilterClick = { homeFilter ->
             onFilterClicked(homeFilter.name)

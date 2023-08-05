@@ -1,4 +1,5 @@
-@file:Suppress("LongMethod")
+@file:Suppress("LongMethod", "MagicNumber")
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.andreolas.movierama.ui.components
 
@@ -8,13 +9,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,11 +24,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -56,15 +62,17 @@ import com.andreolas.movierama.ui.theme.SearchBarSize
 
 const val SEARCH_BAR_LOADING_INDICATOR_TAG = "SEARCH_BAR_LOADING_INDICATOR"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
+fun MovieRamaSearchBar(
   modifier: Modifier = Modifier,
-  searchValue: String? = null,
+  query: String? = null,
   onClearClicked: () -> Unit,
   onSearchFieldChanged: (String) -> Unit,
   actions: @Composable RowScope.() -> Unit = {},
   state: ToolbarState = ToolbarState.Unfocused,
   isLoading: Boolean = false,
+  scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
   val toolbarState = remember { mutableStateOf(state) }
   val focusRequester = remember { FocusRequester() }
@@ -75,74 +83,91 @@ fun SearchBar(
     }
   }
 
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(top = 36.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
-      .background(MaterialTheme.colorScheme.tertiaryContainer, CircleShape),
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-
-    Crossfade(
-      targetState = toolbarState.value,
-      label = DescriptionAttrs.AnimationLabels.SearchBarCrossfade,
-    ) { toolbar ->
-      if (toolbar == ToolbarState.Focused || searchValue?.isNotEmpty() == true) {
+  TopAppBar(
+    modifier = modifier,
+    scrollBehavior = scrollBehavior,
+    colors = TopAppBarDefaults.topAppBarColors(
+      scrolledContainerColor = MaterialTheme.colorScheme.surface,
+    ),
+    navigationIcon = {
+      // Do nothing
+    },
+    title = {
+      Box(
+        Modifier.offset(x = (-8).dp)
+      ) { // Add offset to center the title in the app bar
+        // //TODO 5/8/23 divinelink: Add offset value to dimens file
         Row(
-          verticalAlignment = Alignment.CenterVertically,
-          modifier = Modifier
-            .weight(1f)
-            .height(SearchBarSize),
+          modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.tertiaryContainer),
+          verticalAlignment = Alignment.CenterVertically
         ) {
-          SearchIconWithLoading(
-            isLoading = isLoading,
-            onClearClicked = onClearClicked,
-            toolbarState = toolbarState,
-          )
 
-          FocusedSearchField(
-            value = searchValue,
-            onSearchFieldChanged = onSearchFieldChanged,
-            modifier = Modifier
-              .focusRequester(focusRequester)
-          )
-        }
-      } else {
-        Row(
-          horizontalArrangement = Arrangement.Center,
-          verticalAlignment = Alignment.CenterVertically,
-          modifier = Modifier
-            .height(SearchBarSize)
-            .clickable(
-              indication = null,
-              interactionSource = remember { MutableInteractionSource() }
-            ) {
-              toolbarState.value = when (toolbarState.value) {
-                ToolbarState.Focused -> ToolbarState.Unfocused
-                ToolbarState.Unfocused -> ToolbarState.Focused
+          Crossfade(
+            targetState = toolbarState.value,
+            label = DescriptionAttrs.AnimationLabels.SearchBarCrossfade,
+          ) { toolbar ->
+            if (toolbar == ToolbarState.Focused || query?.isNotEmpty() == true) {
+              Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                  .weight(1f)
+                  .height(SearchBarSize),
+              ) {
+                SearchIconWithLoading(
+                  isLoading = isLoading,
+                  onClearClicked = onClearClicked,
+                  toolbarState = toolbarState,
+                )
+
+                FocusedSearchField(
+                  value = query,
+                  onSearchFieldChanged = onSearchFieldChanged,
+                  modifier = Modifier
+                    .focusRequester(focusRequester)
+                )
+              }
+            } else {
+              Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                  .height(SearchBarSize)
+                  .fillMaxWidth(TEXT_MAX_WIDTH)
+                  .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                  ) {
+                    toolbarState.value = when (toolbarState.value) {
+                      ToolbarState.Focused -> ToolbarState.Unfocused
+                      ToolbarState.Unfocused -> ToolbarState.Focused
+                    }
+                  }
+              ) {
+                Icon(
+                  imageVector = Icons.Default.Search,
+                  contentDescription = stringResource(id = R.string.toolbar_search),
+                  modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                )
+                Text(
+                  overflow = TextOverflow.Ellipsis,
+                  text = stringResource(id = R.string.toolbar_search),
+                  style = MaterialTheme.typography.bodyLarge,
+                )
               }
             }
-        ) {
-          Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = stringResource(id = R.string.toolbar_search),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-          )
-          Text(
-            overflow = TextOverflow.Ellipsis,
-            text = stringResource(id = R.string.toolbar_search),
-            style = MaterialTheme.typography.titleMedium,
+          }
+          Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            content = actions
           )
         }
       }
-    }
-    Row(
-      modifier = Modifier.weight(1f),
-      horizontalArrangement = Arrangement.End,
-      verticalAlignment = Alignment.CenterVertically,
-      content = actions
-    )
-  }
+    },
+  )
 }
 
 @Composable
@@ -187,6 +212,7 @@ private fun FocusedSearchField(
   onSearchFieldChanged: (String) -> Unit,
 ) {
   val searchContentDescription = stringResource(R.string.toolbar_search_placeholder)
+
   BasicTextField(
     modifier = modifier
       .semantics { contentDescription = searchContentDescription }
@@ -194,9 +220,9 @@ private fun FocusedSearchField(
       .padding(end = 12.dp),
     value = value ?: "",
     textStyle = TextStyle(
+      fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+      fontSize = MaterialTheme.typography.bodyMedium.fontSize,
       color = MaterialTheme.colorScheme.onSurface,
-      fontStyle = MaterialTheme.typography.titleMedium.fontStyle,
-      fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
     ),
     cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -207,6 +233,8 @@ private fun FocusedSearchField(
       if (value.isNullOrEmpty()) {
         Text(
           maxLines = 1,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurface,
           overflow = TextOverflow.Ellipsis,
           text = UIText.ResourceText(R.string.toolbar_search_placeholder).getString()
         )
@@ -230,7 +258,7 @@ private const val TEXT_MAX_WIDTH = 0.84F
 fun SearchBarPreview() {
   AppTheme {
     Surface {
-      SearchBar(
+      MovieRamaSearchBar(
         actions = {},
         onClearClicked = {},
         onSearchFieldChanged = {},
@@ -246,7 +274,7 @@ fun SearchBarPreview() {
 fun FocusedSearchBarPreview() {
   AppTheme {
     Surface {
-      SearchBar(
+      MovieRamaSearchBar(
         state = ToolbarState.Focused,
         actions = {},
         onClearClicked = {},
@@ -263,9 +291,9 @@ fun FocusedSearchBarPreview() {
 fun FilledSearchBarPreview() {
   AppTheme {
     Surface {
-      SearchBar(
+      MovieRamaSearchBar(
         state = ToolbarState.Focused,
-        searchValue = "Flight Club",
+        query = "Flight Club",
         actions = {
           IconButton(
             onClick = {},
