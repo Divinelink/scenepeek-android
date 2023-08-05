@@ -5,7 +5,6 @@ package com.andreolas.movierama.details.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -121,11 +120,9 @@ fun DetailsContent(
           LikeButton(
             modifier = Modifier
               .padding(end = 8.dp)
-              .clip(RoundedCornerShape(50.dp))
-              .clickable {
-                onMarkAsFavoriteClicked()
-              },
+              .clip(RoundedCornerShape(50.dp)),
             isFavorite = viewState.movieDetails?.isFavorite ?: false,
+            onClick = onMarkAsFavoriteClicked,
           )
         }
       )

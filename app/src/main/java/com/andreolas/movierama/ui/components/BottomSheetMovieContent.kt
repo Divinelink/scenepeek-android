@@ -103,10 +103,10 @@ fun BottomSheetMovieContent(
           LikeButton(
             modifier = Modifier
               .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
-              .clip(RoundedCornerShape(50.dp))
-              .clickable { onMarkAsFavoriteClicked(movie) },
+              .clip(RoundedCornerShape(50.dp)),
             isFavorite = movie.isFavorite,
             transparentBackground = true,
+            onClick = { onMarkAsFavoriteClicked(movie) },
           )
         }
 
@@ -196,8 +196,8 @@ fun HomeContentPreview() {
           rating = "7.66",
           isFavorite = true,
           overview = "Puss in Boots discovers that his passion for adventure has taken its toll: " +
-              "He has burned through eight of his nine lives, leaving him with only one life left." +
-              " Puss sets out on an epic journey to find the mythical Last Wish and restore his nine lives."
+            "He has burned through eight of his nine lives, leaving him with only one life left." +
+            " Puss sets out on an epic journey to find the mythical Last Wish and restore his nine lives."
         ),
         onContentClicked = {},
         onMarkAsFavoriteClicked = {},

@@ -34,110 +34,110 @@ import com.andreolas.movierama.ui.theme.textColorDisabled
 
 @Composable
 fun PopularMoviesList(
-    modifier: Modifier = Modifier,
-    movies: List<PopularMovie>,
-    onMovieClicked: (PopularMovie) -> Unit,
-    onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
-    onLoadNextPage: () -> Unit,
-    isLoading: Boolean,
+  modifier: Modifier = Modifier,
+  movies: List<PopularMovie>,
+  onMovieClicked: (PopularMovie) -> Unit,
+  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  onLoadNextPage: () -> Unit,
+  isLoading: Boolean,
 ) {
-    val scrollState = rememberLazyGridState()
-    scrollState.OnBottomReached {
-        onLoadNextPage()
+  val scrollState = rememberLazyGridState()
+  scrollState.OnBottomReached {
+    onLoadNextPage()
+  }
+
+  LazyVerticalGrid(
+    state = scrollState,
+    modifier = modifier
+      .fillMaxSize()
+      .padding(start = 8.dp, end = 8.dp),
+    columns = GridCells.Adaptive(120.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    items(
+      key = {
+        it.id
+      },
+      items = movies
+    ) { popularMovie ->
+      MovieItem(
+        movie = popularMovie.toMovie(),
+        onMovieItemClick = { onMovieClicked(popularMovie) },
+        onLikeMovieClick = { onMarkAsFavoriteClicked(popularMovie) }
+      )
     }
 
-    LazyVerticalGrid(
-        state = scrollState,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                start = 8.dp,
-                end = 8.dp
-            ),
-        columns = GridCells.Adaptive(120.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+    item(
+      span = {
+        GridItemSpan(maxLineSpan)
+      }
     ) {
-        items(
-            key = {
-                it.id
-            },
-            items = movies
-        ) { popularMovie ->
-            MovieItem(
-                movie = popularMovie.toMovie(),
-                onMovieItemClick = { onMovieClicked(popularMovie) },
-                onLikeMovieClick = { onMarkAsFavoriteClicked(popularMovie) }
-            )
-        }
-
-        item(
-            span = {
-                GridItemSpan(maxLineSpan)
-            }
-        ) {
-            AnimatedVisibility(
-                visible = isLoading,
-            ) {
-                LoadMoreContent()
-            }
-        }
+      AnimatedVisibility(
+        visible = isLoading,
+      ) {
+        LoadMoreContent()
+      }
     }
+  }
 }
 
 @Composable
 private fun LoadMoreContent(
-    modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .padding(
-                top = 16.dp,
-                bottom = 16.dp
-            )
-            .fillMaxWidth(),
-    ) {
-        Material3CircularProgressIndicator(
-            modifier = Modifier
-                .wrapContentSize(),
-        )
+  Column(
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = modifier
+      .padding(
+        top = 16.dp,
+        bottom = 16.dp
+      )
+      .fillMaxWidth(),
+  ) {
+    Material3CircularProgressIndicator(
+      modifier = Modifier
+        .wrapContentSize(),
+    )
 
-        Text(
-            color = MaterialTheme.colorScheme.textColorDisabled(),
-            text = stringResource(id = R.string.load_more)
-        )
-    }
+    Text(
+      color = MaterialTheme.colorScheme.textColorDisabled(),
+      text = stringResource(id = R.string.load_more)
+    )
+  }
 }
 
 @Composable
 @ExcludeFromJacocoGeneratedReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
+  device = "spec:width=1080px,height=2340px,dpi=640"
+)
 fun MoviesListScreenPreview() {
-    @Suppress("MagicNumber")
-    val movies = (1..8).map { index ->
-        PopularMovie(
-            id = index,
-            posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
-            releaseDate = (2000 + index).toString(),
-            title = "Fight Club $index",
-            isFavorite = index % 2 == 0,
-            rating = index.toString(),
-            overview = "",
-        )
-    }.toMutableList()
+  @Suppress("MagicNumber")
+  val movies = (1..8).map { index ->
+    PopularMovie(
+      id = index,
+      posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
+      releaseDate = (2000 + index).toString(),
+      title = "Fight Club $index",
+      isFavorite = index % 2 == 0,
+      rating = index.toString(),
+      overview = "",
+    )
+  }.toMutableList()
 
-    AppTheme {
-        Surface {
-            PopularMoviesList(
-                movies = movies,
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onLoadNextPage = {},
-                isLoading = true,
-            )
-        }
+  AppTheme {
+    Surface {
+      PopularMoviesList(
+        movies = movies,
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onLoadNextPage = {},
+        isLoading = true,
+      )
     }
+  }
 }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -49,6 +47,7 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
+import com.andreolas.movierama.ui.theme.RoundedShape
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 
@@ -82,16 +81,11 @@ fun MovieItem(
         path = movie.posterPath,
       )
       movie.isFavorite?.let {
-        Column(
-          modifier = Modifier
-            .align(Alignment.TopStart)
-            .clip(RoundedCornerShape(bottomEnd = 8.dp))
-            .clickable { onLikeMovieClick() }
-        ) {
-          LikeButton(
-            isFavorite = movie.isFavorite,
-          )
-        }
+        LikeButton(
+          modifier = Modifier.align(Alignment.TopStart),
+          isFavorite = movie.isFavorite,
+          onClick = onLikeMovieClick,
+        )
       }
     }
 
@@ -127,12 +121,14 @@ fun LikeButton(
   modifier: Modifier = Modifier,
   isFavorite: Boolean,
   transparentBackground: Boolean = false,
+  onClick: () -> Unit,
 ) {
   val color by animateColorAsState(
     targetValue = when (isFavorite) {
       true -> colorResource(id = R.color.core_red_highlight)
       false -> colorResource(id = R.color.core_grey_55)
-    }
+    },
+    label = "Like button color",
   )
 
   val backgroundColor = when (transparentBackground) {
@@ -142,7 +138,10 @@ fun LikeButton(
 
   Box(
     modifier = modifier
+      .padding(4.dp)
+      .clip(RoundedShape)
       .background(color = backgroundColor)
+      .clickable { onClick() }
       .size(44.dp)
   ) {
     Crossfade(
@@ -162,7 +161,6 @@ fun LikeButton(
       )
     }
   }
-//  }mark_as_favorite_button_content_description
 }
 
 @Composable
@@ -267,8 +265,8 @@ fun MovieItemPreview() {
           posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
           title = "Night of the Day of the Dawn of the Son of the Bride of the " +
-              "Return of the Revenge of the Terror of the Attack of the Evil," +
-              " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
+            "Return of the Revenge of the Terror of the Attack of the Evil," +
+            " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
           rating = "5.0",
           isFavorite = null,
           overview = "",

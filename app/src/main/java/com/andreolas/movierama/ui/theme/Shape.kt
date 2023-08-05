@@ -8,6 +8,7 @@ val TextFieldShape = RoundedCornerShape(8.dp)
 val MaterialCardShape = RoundedCornerShape(16.dp)
 
 val SearchBarShape = RoundedCornerShape(50.dp)
+val RoundedShape = RoundedCornerShape(50.dp)
 
 // Popular Movies
 val PopularMovieItemShape = RoundedCornerShape(8.dp)
