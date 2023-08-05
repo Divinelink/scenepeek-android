@@ -21,343 +21,354 @@ import org.junit.Test
 
 class HomeContentTest {
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+  @get:Rule
+  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val popularMovies = (1..10).map {
-        PopularMovie(
-            id = it,
-            posterPath = "",
-            releaseDate = "2022/10/20",
-            title = "test title $it",
-            rating = "$it",
-            overview = "lorem ipsum $it",
-            isFavorite = false,
-        )
-    }.toMutableList()
+  private val popularMovies = (1..10).map {
+    PopularMovie(
+      id = it,
+      posterPath = "",
+      releaseDate = "2022/10/20",
+      title = "test title $it",
+      rating = "$it",
+      overview = "lorem ipsum $it",
+      isFavorite = false,
+    )
+  }.toMutableList()
 
-    @Test
-    fun clickMarkAsFavoriteButton() {
-        var hasClickedMarkAsFavorite = false
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {
-                    hasClickedMarkAsFavorite = true
-                },
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
-
-        val markAsFavoriteContentDescription = composeTestRule.activity
-            .getString(R.string.mark_as_favorite_button_content_description)
-
-        composeTestRule
-            .onAllNodesWithContentDescription(markAsFavoriteContentDescription)[0]
-            .performClick()
-
-        assertThat(hasClickedMarkAsFavorite).isTrue()
+  @Test
+  fun clickMarkAsFavoriteButton() {
+    var hasClickedMarkAsFavorite = false
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {
+          hasClickedMarkAsFavorite = true
+        },
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clickClearSearchButton() {
-        var hasClickedClearSearchButton = false
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                    query = "movie",
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {
-                    hasClickedClearSearchButton = true
-                },
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val markAsFavoriteContentDescription = composeTestRule.activity
+      .getString(R.string.mark_as_favorite_button_content_description)
 
-        val clearSearchContentDescription = composeTestRule.activity
-            .getString(R.string.clear_search_button_content_description)
+    composeTestRule
+      .onAllNodesWithContentDescription(markAsFavoriteContentDescription)[0]
+      .performClick()
 
-        composeTestRule
-            .onNodeWithContentDescription(clearSearchContentDescription)
-            .performClick()
+    assertThat(hasClickedMarkAsFavorite).isTrue()
+  }
 
-        assertThat(hasClickedClearSearchButton).isTrue()
+  @Test
+  fun clickClearSearchButton() {
+    var hasClickedClearSearchButton = false
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+          query = "movie",
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {
+          hasClickedClearSearchButton = true
+        },
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clearButtonIsNotVisibleWhenQueryIsEmpty() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val clearSearchContentDescription = composeTestRule.activity
+      .getString(R.string.clear_search_button_content_description)
 
-        val clearSearchContentDescription = composeTestRule.activity
-            .getString(R.string.clear_search_button_content_description)
+    composeTestRule
+      .onNodeWithContentDescription(clearSearchContentDescription)
+      .performClick()
 
-        composeTestRule
-            .onNodeWithContentDescription(clearSearchContentDescription)
-            .assertDoesNotExist()
+    assertThat(hasClickedClearSearchButton).isTrue()
+  }
+
+  @Test
+  fun clearButtonIsNotVisibleWhenQueryIsEmpty() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clickOnMovieItem() {
-        var hasClickedOnMovie = false
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {
-                    hasClickedOnMovie = true
-                },
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val clearSearchContentDescription = composeTestRule.activity
+      .getString(R.string.clear_search_button_content_description)
 
-        composeTestRule
-            .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
-            .performClick()
+    composeTestRule
+      .onNodeWithContentDescription(clearSearchContentDescription)
+      .assertDoesNotExist()
+  }
 
-        assertThat(hasClickedOnMovie).isTrue()
+  @Test
+  fun clickOnMovieItem() {
+    var hasClickedOnMovie = false
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {
+          hasClickedOnMovie = true
+        },
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun renderWithNoMovies() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = emptyList(),
-                    emptyResult = true,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    composeTestRule
+      .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+      .performClick()
 
-        val emptyMoviesLabel = composeTestRule.activity
-            .getString(R.string.search__empty_result_title)
+    assertThat(hasClickedOnMovie).isTrue()
+  }
 
-        composeTestRule
-            .onNodeWithText(emptyMoviesLabel)
-            .assertIsDisplayed()
+  @Test
+  fun renderWithNoMovies() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = emptyList(),
+          emptyResult = true,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun initialLoadingTest() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = true,
-                    popularMovies = emptyList(),
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val emptyMoviesLabel = composeTestRule.activity
+      .getString(R.string.search__empty_result_title)
 
-        composeTestRule
-            .onNodeWithTag(LOADING_CONTENT_TAG)
-            .assertIsDisplayed()
+    composeTestRule
+      .onNodeWithText(emptyMoviesLabel)
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun initialLoadingTest() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = true,
+          popularMovies = emptyList(),
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun renderLoadingMoreTest() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = true,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    composeTestRule
+      .onNodeWithTag(LOADING_CONTENT_TAG)
+      .assertIsDisplayed()
+  }
 
-        val loadingMoreLabel = composeTestRule.activity
-            .getString(R.string.load_more)
-
-        composeTestRule
-            .onNodeWithTag(MOVIES_LIST_TAG)
-            .performScrollToIndex(10)
-
-        composeTestRule
-            .onNodeWithText(loadingMoreLabel)
-            .assertIsDisplayed()
+  @Test
+  fun renderLoadingMoreTest() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = true,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun focusOnSearchBarTest() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val loadingMoreLabel = composeTestRule.activity
+      .getString(R.string.load_more)
 
-        val toolbarSearch = composeTestRule.activity
-            .getString(R.string.toolbar_search)
+    composeTestRule
+      .onNodeWithTag(MOVIES_LIST_TAG)
+      .performScrollToIndex(10)
 
-        val toolbarSearchPlaceholder = composeTestRule.activity
-            .getString(R.string.toolbar_search_placeholder)
+    composeTestRule
+      .onNodeWithText(loadingMoreLabel)
+      .assertIsDisplayed()
+  }
 
-        composeTestRule
-            .onNodeWithText(toolbarSearch)
-            .performClick()
-
-        composeTestRule
-            .onNodeWithText(toolbarSearchPlaceholder)
-            .assertIsFocused()
+  @Test
+  fun focusOnSearchBarTest() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clickMarkAsFavoriteFromBottomSheetTest() {
-        var markAsFavoriteClicked = false
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                    selectedMovie = popularMovies[2],
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {
-                    markAsFavoriteClicked = true
-                },
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
-        composeTestRule
-            .onNodeWithTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
-            .performClick()
+    val toolbarSearch = composeTestRule.activity
+      .getString(R.string.toolbar_search)
 
-        assertThat(markAsFavoriteClicked).isTrue()
+    val toolbarSearchPlaceholder = composeTestRule.activity
+      .getString(R.string.toolbar_search_placeholder)
+
+    composeTestRule
+      .onNodeWithText(toolbarSearch)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithText(toolbarSearchPlaceholder)
+      .assertIsFocused()
+  }
+
+  @Test
+  fun clickMarkAsFavoriteFromBottomSheetTest() {
+    var markAsFavoriteClicked = false
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+          selectedMovie = popularMovies[2],
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {
+          markAsFavoriteClicked = true
+        },
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
+    }
+    composeTestRule
+      .onNodeWithTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
+      .performClick()
+
+    assertThat(markAsFavoriteClicked).isTrue()
+  }
+
+  @Test
+  fun clickOnSettingsButtonTest() {
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = {},
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clickOnSettingsButtonTest() {
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = {},
-            )
-        }
+    val settingsButtonContentDescription = composeTestRule.activity
+      .getString(R.string.settings_button_content_description)
 
-        val settingsButtonContentDescription = composeTestRule.activity
-            .getString(R.string.settings_button_content_description)
+    composeTestRule
+      .onNodeWithContentDescription(settingsButtonContentDescription)
+      .assertIsDisplayed()
+      .performClick()
+  }
 
-        composeTestRule
-            .onNodeWithContentDescription(settingsButtonContentDescription)
-            .assertIsDisplayed()
-            .performClick()
+  @Test
+  fun clickOnFilterButtonTest() {
+    var likedButtonClicked = false
+    composeTestRule.setContent {
+      HomeContent(
+        viewState = HomeViewState(
+          isLoading = false,
+          popularMovies = popularMovies,
+        ),
+        onMovieClicked = {},
+        onMarkAsFavoriteClicked = {},
+        onSearchMovies = {},
+        onClearClicked = {},
+        onLoadNextPage = {},
+        onGoToDetails = {},
+        onClearFiltersClicked = {},
+        onFilterClicked = { filter ->
+          likedButtonClicked = filter == HomeFilter.Liked.filter.name
+        },
+        onSwipeDown = {},
+      )
     }
 
-    @Test
-    fun clickOnFilterButtonTest() {
-        var likedButtonClicked = false
-        composeTestRule.setContent {
-            HomeContent(
-                viewState = HomeViewState(
-                    isLoading = false,
-                    popularMovies = popularMovies,
-                ),
-                onMovieClicked = {},
-                onMarkAsFavoriteClicked = {},
-                onSearchMovies = {},
-                onClearClicked = {},
-                onLoadNextPage = {},
-                onGoToDetails = {},
-                onClearFiltersClicked = {},
-                onFilterClicked = { filter ->
-                    likedButtonClicked = filter == HomeFilter.Liked.filter.name
-                },
-            )
-        }
+    composeTestRule
+      .onNodeWithText(HomeFilter.Liked.filter.name)
+      .assertIsDisplayed()
+      .performClick()
 
-        composeTestRule
-            .onNodeWithText(HomeFilter.Liked.filter.name)
-            .assertIsDisplayed()
-            .performClick()
-
-        assertThat(likedButtonClicked).isTrue()
-    }
+    assertThat(likedButtonClicked).isTrue()
+  }
 }
