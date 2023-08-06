@@ -155,7 +155,7 @@ fun HomeContent(
             )
           }
         },
-        isLoading = viewState.searchLoading,
+        isLoading = viewState.searchLoadingIndicator,
         query = viewState.query,
         onSearchFieldChanged = { query ->
           onSearchMovies(query)

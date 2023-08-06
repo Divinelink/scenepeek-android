@@ -61,6 +61,8 @@ class HomeViewModel @Inject constructor(
 
   private fun fetchPopularMovies() {
     viewModelScope.launch {
+      _viewState.setLoading()
+
       getPopularMoviesUseCase.invoke(
         parameters = PopularRequestApi(
           page = currentPage,
@@ -80,7 +82,6 @@ class HomeViewModel @Inject constructor(
               )
             }
           }
-
           is Result.Error -> {
             _viewState.update { viewState ->
               viewState.copy(
@@ -89,7 +90,6 @@ class HomeViewModel @Inject constructor(
               )
             }
           }
-
           Result.Loading -> {
             _viewState.update { viewState ->
               viewState.copy(
@@ -132,9 +132,7 @@ class HomeViewModel @Inject constructor(
    * If there are filters selected, it will not load more movies.
    */
   fun onLoadNextPage() {
-    if (viewState.value.hasFiltersSelected) {
-      return
-    }
+    if (viewState.value.hasFiltersSelected) return
 
     if (viewState.value.loadMorePopular) {
       currentPage++
@@ -160,7 +158,7 @@ class HomeViewModel @Inject constructor(
         viewState.copy(
           query = query,
           loadMorePopular = false,
-          searchLoading = true,
+          searchLoadingIndicator = true,
         )
       }
       searchJob = viewModelScope.launch {
@@ -170,7 +168,7 @@ class HomeViewModel @Inject constructor(
           _viewState.update { viewState ->
             latestQuery = query
             viewState.copy(
-              searchLoading = false,
+              isLoading = false,
               searchMovies = cachedSearchResults[query]?.result,
               emptyResult = cachedSearchResults[query]?.result?.isEmpty() == true,
               selectedMovie = null, // updatedSelectedMovie(movies, viewState.selectedMovie)
@@ -195,9 +193,10 @@ class HomeViewModel @Inject constructor(
       viewState.copy(
         searchMovies = null,
         loadMorePopular = true,
-        searchLoading = false,
         query = "",
         emptyResult = false,
+        isLoading = false,
+        searchLoadingIndicator = false,
       )
     }
   }
@@ -214,6 +213,8 @@ class HomeViewModel @Inject constructor(
     latestQuery = query
 
     viewModelScope.launch {
+      _viewState.setLoading()
+
       getSearchMoviesUseCase.invoke(
         parameters = SearchRequestApi(
           query = query,
@@ -225,7 +226,7 @@ class HomeViewModel @Inject constructor(
             Result.Loading -> {
               _viewState.update { viewState ->
                 viewState.copy(
-                  searchLoading = true,
+                  searchLoadingIndicator = true,
                 )
               }
             }
@@ -245,7 +246,8 @@ class HomeViewModel @Inject constructor(
                   }
 
                   viewState.copy(
-                    searchLoading = false,
+                    searchLoadingIndicator = false,
+                    isLoading = false,
                     searchMovies = updatedSearchList, // cachedSearchResults[query]?.result,
                     emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
                     selectedMovie = updatedSearchList.find { it.id == viewState.selectedMovie?.id },
@@ -257,7 +259,7 @@ class HomeViewModel @Inject constructor(
             is Result.Error -> {
               _viewState.update { viewState ->
                 viewState.copy(
-                  searchLoading = false,
+                  searchLoadingIndicator = false,
                   error = UIText.StringText(result.exception.message ?: "Something went wrong."),
                 )
               }
@@ -407,3 +409,9 @@ data class SearchCache(
   var page: Int,
   var result: MutableList<PopularMovie>,
 )
+
+private fun MutableStateFlow<HomeViewState>.setLoading() {
+  update { viewState ->
+    viewState.copy(isLoading = true)
+  }
+}
