@@ -21,12 +21,16 @@ fun MultiSearchResponseApi.map(): List<Search> = results.map {
       id = it.id,
       posterPath = it.posterPath,
       releaseDate = it.releaseDate,
-      title = it.title!!,
+      name = it.title!!,
       rating = it.voteAverage.round(1).toString(),
       overview = it.overview,
       isFavorite = false,
     )
-    MediaType.PERSON -> Search.Person()
-    MediaType.UNKNOWN -> TODO()
+    MediaType.PERSON -> Search.Person(
+      id = it.id,
+      posterPath = it.name!!,
+      name = it.posterPath!!,
+    )
+    MediaType.UNKNOWN -> Search.Unknown
   }
 }
