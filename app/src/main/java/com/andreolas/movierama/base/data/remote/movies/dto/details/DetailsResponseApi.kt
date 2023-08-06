@@ -5,6 +5,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
+import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -57,7 +58,7 @@ internal fun DetailsResponseApi.toDomainMovie(): MovieDetails {
         posterPath = this.posterPath ?: "",
         releaseDate = this.releaseDate,
         title = this.title,
-        rating = this.voteAverage.toString(),
+        rating = this.voteAverage.round(1).toString(),
         overview = this.overview,
         genres = this.genres.map { it.name },
         director = this.credits.crew.toDirector(),

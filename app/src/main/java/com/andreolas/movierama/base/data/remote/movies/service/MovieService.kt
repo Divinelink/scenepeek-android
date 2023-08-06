@@ -10,33 +10,39 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.Videos
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchResponseApi
 import kotlinx.coroutines.flow.Flow
 
 interface MovieService {
 
-    fun fetchPopularMovies(
-        request: PopularRequestApi,
-    ): Flow<PopularResponseApi>
+  fun fetchPopularMovies(
+    request: PopularRequestApi,
+  ): Flow<PopularResponseApi>
 
-    fun fetchSearchMovies(
-        request: SearchRequestApi,
-    ): Flow<SearchResponseApi>
+  fun fetchMultiInfo(
+    request: MultiSearchRequestApi,
+  ): Flow<MultiSearchResponseApi>
 
-    fun fetchDetails(
-        request: DetailsRequestApi,
-    ): Flow<DetailsResponseApi>
+  fun fetchSearchMovies(
+    request: SearchRequestApi,
+  ): Flow<SearchResponseApi>
 
-    fun fetchReviews(
-        request: ReviewsRequestApi,
-    ): Flow<ReviewsResponseApi>
+  fun fetchDetails(
+    request: DetailsRequestApi,
+  ): Flow<DetailsResponseApi>
 
-    fun fetchSimilarMovies(
-        request: SimilarRequestApi,
-    ): Flow<SimilarResponseApi>
+  fun fetchReviews(
+    request: ReviewsRequestApi,
+  ): Flow<ReviewsResponseApi>
 
-    fun fetchVideos(
-        request: VideosRequestApi,
-    ): Flow<VideosResponseApi>
+  fun fetchSimilarMovies(
+    request: SimilarRequestApi,
+  ): Flow<SimilarResponseApi>
+
+  fun fetchVideos(
+    request: VideosRequestApi,
+  ): Flow<VideosResponseApi>
 }
