@@ -13,8 +13,8 @@ dependencyResolutionManagement {
             version('exoplayer', '2.18.3')
 
             // Network & Serialization
-            version('kotlinx-serialization', '1.4.1')
-            version('ktor', '2.2.2')
+            version('kotlinx-serialization', '1.5.1')
+            version('ktor', '2.3.3')
 
             // DI
             version('hilt', '2.43.2')
