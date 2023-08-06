@@ -16,31 +16,26 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRe
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchResponseApi
-import com.andreolas.movierama.base.storage.EncryptedStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProdMovieService @Inject constructor(
   private val restClient: RestClient,
-  encryptedStorage: EncryptedStorage,
 ) : MovieService {
-  private val apiKey = encryptedStorage.tmdbApiKey
 
   override fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/popular?"
-    val url = baseUrl + "api_key=$apiKey&language=en-US&page=${request.page}"
+    val url = baseUrl + "&language=en-US&page=${request.page}"
 
-    val response = restClient.get<PopularResponseApi>(
-      url = url,
-    )
+    val response = restClient.get<PopularResponseApi>(url = url)
 
     emit(response)
   }
 
   override fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/search/multi?"
-    val url = baseUrl + "api_key=$apiKey" +
+    val url = baseUrl +
       "&language=en-US" +
       "&query=${request.query}" +
       "&page=${request.page}" +
@@ -53,7 +48,7 @@ class ProdMovieService @Inject constructor(
 
   override fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/search/movie?"
-    val url = baseUrl + "api_key=$apiKey" +
+    val url = baseUrl +
       "&language=en-US" +
       "&query=${request.query}" +
       "&page=${request.page}" +
@@ -67,14 +62,11 @@ class ProdMovieService @Inject constructor(
   override fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
     val url = baseUrl +
-      "${request.movieId}" +
-      "?api_key=$apiKey" +
+      "${request.movieId}?" +
       "&append_to_response=credits" +
       "&language=en-US"
 
-    val response = restClient.get<DetailsResponseApi>(
-      url = url,
-    )
+    val response = restClient.get<DetailsResponseApi>(url = url)
 
     emit(response)
   }
@@ -83,13 +75,10 @@ class ProdMovieService @Inject constructor(
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
     val url = baseUrl +
       "${request.movieId}" +
-      "/reviews" +
-      "?api_key=$apiKey" +
+      "/reviews?" +
       "&language=en-US"
 
-    val response = restClient.get<ReviewsResponseApi>(
-      url = url,
-    )
+    val response = restClient.get<ReviewsResponseApi>(url = url)
 
     emit(response)
   }
@@ -98,13 +87,10 @@ class ProdMovieService @Inject constructor(
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
     val url = baseUrl +
       "${request.movieId}" +
-      "/similar" +
-      "?api_key=$apiKey" +
+      "/similar?" +
       "&language=en-US"
 
-    val response = restClient.get<SimilarResponseApi>(
-      url = url,
-    )
+    val response = restClient.get<SimilarResponseApi>(url = url)
 
     emit(response)
   }
@@ -113,14 +99,11 @@ class ProdMovieService @Inject constructor(
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
     val url = baseUrl +
       "${request.movieId}" +
-      "/videos" +
-      "?api_key=$apiKey" +
+      "/videos?" +
       "&language=en-US"
 
     return flow {
-      val response = restClient.get<VideosResponseApi>(
-        url = url,
-      )
+      val response = restClient.get<VideosResponseApi>(url = url)
 
       emit(response)
     }

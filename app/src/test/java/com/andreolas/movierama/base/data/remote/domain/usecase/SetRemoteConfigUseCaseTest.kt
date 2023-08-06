@@ -43,7 +43,7 @@ class SetRemoteConfigUseCaseTest {
         )
 
         assertThat(
-            encryptedPreferenceStorage.tmdbApiKey
+            encryptedPreferenceStorage.tmdbAuthToken
         ).isEqualTo(
             apiKey
         )
