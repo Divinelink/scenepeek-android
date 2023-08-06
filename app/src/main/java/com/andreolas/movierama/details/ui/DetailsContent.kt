@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -49,7 +48,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
@@ -75,6 +73,8 @@ import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
+import com.andreolas.movierama.ui.theme.RoundedShape
+import com.andreolas.movierama.ui.theme.dimensions
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
@@ -88,7 +88,7 @@ fun DetailsContent(
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (Movie) -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val scaffoldState = rememberScaffoldState()
 
   Scaffold(
@@ -98,6 +98,10 @@ fun DetailsContent(
       .nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       TopAppBar(
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors(
+          scrolledContainerColor = MaterialTheme.colorScheme.surface,
+        ),
         title = {
           Text(
             text = viewState.movieDetails?.title ?: "",
@@ -119,8 +123,8 @@ fun DetailsContent(
         actions = {
           LikeButton(
             modifier = Modifier
-              .padding(end = 8.dp)
-              .clip(RoundedCornerShape(50.dp)),
+              .padding(end = MaterialTheme.dimensions.keyline_8)
+              .clip(RoundedShape),
             isFavorite = viewState.movieDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
           )
@@ -225,7 +229,7 @@ fun DetailsMovieContent(
 
         if (!showStickyPlayer.value) {
           stickyHeader {
-            Spacer(modifier = Modifier.height(0.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
           }
         }
       }
@@ -252,7 +256,7 @@ fun DetailsMovieContent(
         }
       }
       item {
-        Divider(thickness = 1.dp)
+        Divider(thickness = MaterialTheme.dimensions.keyline_1)
         CastList(
           cast = movieDetails.cast,
           director = movieDetails.director,
@@ -260,7 +264,7 @@ fun DetailsMovieContent(
       }
       if (similarMoviesList?.isNotEmpty() == true) {
         item {
-          Divider(thickness = 1.dp)
+          Divider(thickness = MaterialTheme.dimensions.keyline_1)
           SimilarMoviesList(
             movies = similarMoviesList,
             onSimilarMovieClicked = onSimilarMovieClicked,
@@ -270,7 +274,7 @@ fun DetailsMovieContent(
 
       if (!reviewsList.isNullOrEmpty()) {
         item {
-          Divider(thickness = 1.dp)
+          Divider(thickness = MaterialTheme.dimensions.keyline_1)
           ReviewsList(
             reviews = reviewsList,
           )
@@ -278,7 +282,7 @@ fun DetailsMovieContent(
       }
 
       item {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
       }
     }
   }
@@ -289,7 +293,7 @@ private fun TitleDetails(movieDetails: MovieDetails) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(start = 12.dp, end = 12.dp)
+      .padding(horizontal = MaterialTheme.dimensions.keyline_12)
   ) {
     Text(
       modifier = Modifier
@@ -301,13 +305,17 @@ private fun TitleDetails(movieDetails: MovieDetails) {
 
   Row(
     modifier = Modifier
-      .padding(start = 16.dp, end = 12.dp, bottom = 16.dp),
+      .padding(
+        start = MaterialTheme.dimensions.keyline_16,
+        end = MaterialTheme.dimensions.keyline_12,
+        bottom = MaterialTheme.dimensions.keyline_16
+      ),
   ) {
     Text(
       style = MaterialTheme.typography.bodySmall,
       text = movieDetails.releaseDate,
     )
-    Spacer(modifier = Modifier.width(12.dp))
+    Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_12))
     movieDetails.runtime?.let {
       Text(
         style = MaterialTheme.typography.bodySmall,
@@ -326,13 +334,13 @@ private fun OverviewDetails(
 ) {
   Column(
     modifier = modifier
-      .padding(start = 12.dp)
+      .padding(start = MaterialTheme.dimensions.keyline_12)
       .fillMaxWidth(),
   ) {
     if (!movieDetails.genres.isNullOrEmpty()) {
       genres?.let {
         LazyRow(
-          horizontalArrangement = Arrangement.spacedBy(16.dp),
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
         ) {
           items(genres) { genre ->
             GenreLabel(
@@ -346,8 +354,8 @@ private fun OverviewDetails(
     if (movieDetails.overview?.isNotEmpty() == true) {
       Text(
         modifier = Modifier.padding(
-          top = 16.dp,
-          bottom = 8.dp,
+          top = MaterialTheme.dimensions.keyline_16,
+          bottom = MaterialTheme.dimensions.keyline_8,
         ),
         text = movieDetails.overview,
         style = MaterialTheme.typography.bodyMedium,
