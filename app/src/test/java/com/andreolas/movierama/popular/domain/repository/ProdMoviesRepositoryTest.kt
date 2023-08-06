@@ -4,9 +4,9 @@ import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchMovieApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchMovieApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.PopularMovie

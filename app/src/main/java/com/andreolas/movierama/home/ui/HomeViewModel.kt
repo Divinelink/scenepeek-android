@@ -3,7 +3,7 @@ package com.andreolas.movierama.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase

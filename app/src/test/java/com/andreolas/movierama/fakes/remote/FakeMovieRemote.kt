@@ -10,8 +10,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.Videos
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.mock

@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.movies.dto.search
+package com.andreolas.movierama.base.data.remote.movies.dto.search.movie
 
 import kotlinx.serialization.Serializable
 

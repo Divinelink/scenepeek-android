@@ -1,6 +1,6 @@
 package com.andreolas.movierama.home.domain.usecase
 
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.repository.MoviesRepository

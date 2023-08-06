@@ -1,7 +1,7 @@
 package com.andreolas.movierama.home.domain.repository
 
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
