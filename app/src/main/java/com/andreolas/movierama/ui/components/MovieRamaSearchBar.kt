@@ -1,4 +1,4 @@
-@file:Suppress("LongMethod", "MagicNumber")
+@file:Suppress("LongMethod")
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.andreolas.movierama.ui.components
@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -51,7 +51,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.DescriptionAttrs
@@ -59,6 +58,8 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarSize
+import com.andreolas.movierama.ui.theme.dimensions
+import com.andreolas.movierama.ui.theme.keyline_negative8
 
 const val SEARCH_BAR_LOADING_INDICATOR_TAG = "SEARCH_BAR_LOADING_INDICATOR"
 
@@ -93,10 +94,8 @@ fun MovieRamaSearchBar(
       // Do nothing
     },
     title = {
-      Box(
-        Modifier.offset(x = (-8).dp)
-      ) { // Add offset to center the title in the app bar
-        // //TODO 5/8/23 divinelink: Add offset value to dimens file
+      // Add offset to center the title in the app bar
+      Box(Modifier.offset(x = MaterialTheme.dimensions.keyline_negative8)) {
         Row(
           modifier = modifier
             .fillMaxWidth()
@@ -148,7 +147,7 @@ fun MovieRamaSearchBar(
                 Icon(
                   imageVector = Icons.Default.Search,
                   contentDescription = stringResource(id = R.string.toolbar_search),
-                  modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                  modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
                 )
                 Text(
                   overflow = TextOverflow.Ellipsis,
@@ -181,14 +180,17 @@ private fun SearchIconWithLoading(
       Material3CircularProgressIndicator(
         modifier = Modifier
           .testTag(SEARCH_BAR_LOADING_INDICATOR_TAG)
-          .padding(start = 16.dp, end = 10.dp, top = 8.dp, bottom = 8.dp)
-          .height(24.dp)
-          .width(24.dp)
+          .padding(
+            start = MaterialTheme.dimensions.keyline_16,
+            end = MaterialTheme.dimensions.keyline_10
+          )
+          .padding(horizontal = MaterialTheme.dimensions.keyline_8)
+          .size(MaterialTheme.dimensions.keyline_24)
       )
     }
     false -> {
       IconButton(
-        modifier = Modifier.padding(start = 2.dp),
+        modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_2),
         onClick = {
           onClearClicked()
           toolbarState.value = ToolbarState.Unfocused
@@ -217,7 +219,7 @@ private fun FocusedSearchField(
     modifier = modifier
       .semantics { contentDescription = searchContentDescription }
       .fillMaxWidth(TEXT_MAX_WIDTH)
-      .padding(end = 12.dp),
+      .padding(end = MaterialTheme.dimensions.keyline_12),
     value = value ?: "",
     textStyle = TextStyle(
       fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
