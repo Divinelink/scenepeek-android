@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
+import com.andreolas.movierama.home.domain.model.Search
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -14,31 +15,32 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun HomeScreen(
-    navigator: DestinationsNavigator,
-    viewModel: HomeViewModel = hiltViewModel(),
+  navigator: DestinationsNavigator,
+  viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val viewState = viewModel.viewState.collectAsState()
-    HomeContent(
-        modifier = Modifier,
-        viewState = viewState.value,
-        onMovieClicked = viewModel::onMovieClicked,
-        onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
-        onLoadNextPage = viewModel::onLoadNextPage,
-        onSearchMovies = viewModel::onSearchMovies,
-        onClearClicked = viewModel::onClearClicked,
-        onGoToDetails = { movie ->
-            val navArgs = DetailsNavArguments(
-                movieId = movie.id,
-                isFavorite = movie.isFavorite,
-            )
-            val destination = DetailsScreenDestination(
-                navArgs = navArgs,
-            )
-
-            navigator.navigate(destination)
-        },
-        onFilterClicked = viewModel::onFilterClicked,
-        onClearFiltersClicked = viewModel::onClearFiltersClicked,
-        onSwipeDown = viewModel::onSwipeDown,
-    )
+  val viewState = viewModel.viewState.collectAsState()
+  HomeContent(
+    modifier = Modifier,
+    viewState = viewState.value,
+    onMovieClicked = viewModel::onMovieClicked,
+    onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
+    onLoadNextPage = viewModel::onLoadNextPage,
+    onSearchMovies = viewModel::onSearchMovies,
+    onClearClicked = viewModel::onClearClicked,
+    onGoToDetails = { movie ->
+      if (movie is Search.Media) { // FIXME
+        val navArgs = DetailsNavArguments(
+          movieId = movie.id,
+          isFavorite = movie.isFavorite,
+        )
+        val destination = DetailsScreenDestination(
+          navArgs = navArgs,
+        )
+        navigator.navigate(destination)
+      }
+    },
+    onFilterClicked = viewModel::onFilterClicked,
+    onClearFiltersClicked = viewModel::onClearFiltersClicked,
+    onSwipeDown = viewModel::onSwipeDown,
+  )
 }

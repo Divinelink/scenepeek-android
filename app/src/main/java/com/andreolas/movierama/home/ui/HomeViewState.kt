@@ -1,6 +1,7 @@
 package com.andreolas.movierama.home.ui
 
 import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
@@ -15,9 +16,9 @@ data class HomeViewState(
   val isLoading: Boolean = true,
   val filters: List<Filter> = HomeFilter.values().map { it.filter },
   val popularMovies: List<PopularMovie>,
-  val searchMovies: List<PopularMovie>? = null,
-  val filteredMovies: List<PopularMovie>? = null,
-  val selectedMovie: PopularMovie? = null,
+  val searchResults: List<Search>? = null,
+  val filteredResults: List<Search.Media>? = null,
+  val selectedMovie: Search.Media? = null,
   val loadMorePopular: Boolean = true,
   val query: String = "",
   val searchLoadingIndicator: Boolean = false,
@@ -31,10 +32,20 @@ data class HomeViewState(
 
   val showFavorites = filters.find { it.name == HomeFilter.Liked.filter.name }?.isSelected
 
-  val moviesList = if (searchMovies?.isNotEmpty() == true) {
-    searchMovies
+  val searchList = if (searchResults?.isNotEmpty() == true) {
+    searchResults
   } else {
-    popularMovies
+    popularMovies.map {
+      Search.Media.Movie(
+        id = it.id,
+        name = it.title,
+        posterPath = it.posterPath,
+        releaseDate = it.releaseDate,
+        rating = it.rating,
+        overview = it.overview,
+        isFavorite = it.isFavorite,
+      )
+    }
   }
 
   val bottomSheetUiState = if (selectedMovie != null) {

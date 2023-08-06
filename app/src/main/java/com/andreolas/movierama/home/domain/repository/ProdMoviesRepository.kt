@@ -34,16 +34,14 @@ class ProdMoviesRepository @Inject constructor(
       }
   }
 
-  override fun fetchFavoriteMovies(): Flow<MoviesListResult> {
-    return movieDAO
-      .fetchFavoriteMovies()
-      .map { moviesList ->
-        Result.Success(moviesList.toDomainMoviesList())
-      }
-      .catch { exception ->
-        flowOf(Result.Error(Exception(exception.message)))
-      }
-  }
+  override fun fetchFavoriteMovies(): Flow<MediaListResult> = movieDAO
+    .fetchFavoriteMovies()
+    .map { moviesList ->
+      Result.Success(moviesList.toDomainMoviesList())
+    }
+    .catch { exception ->
+      flowOf(Result.Error(Exception(exception.message)))
+    }
 
   override fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>> {
     return movieDAO
@@ -55,6 +53,16 @@ class ProdMoviesRepository @Inject constructor(
         flowOf(Result.Error(Exception(exception.message)))
       }
   }
+
+  // FIXME
+  override fun fetchFavoriteIds(): Flow<Result<List<Int>>> = movieDAO
+    .fetchFavoriteMoviesIds()
+    .map { moviesList ->
+      Result.Success(moviesList)
+    }
+    .catch { exception ->
+      flowOf(Result.Error(Exception(exception.message)))
+    }
 
   override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
     return movieRemote

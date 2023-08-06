@@ -43,7 +43,7 @@ import coil.request.ImageRequest
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.base.communication.ApiConstants
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.ui.theme.AppTheme
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
@@ -53,127 +53,129 @@ const val BOTTOM_SHEET_MARK_AS_FAVORITE = "MARK_AS_FAVORITE_BUTTON"
 @Composable
 fun BottomSheetMovieContent(
   modifier: Modifier = Modifier,
-  movie: PopularMovie,
-  onContentClicked: (PopularMovie) -> Unit,
-  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  movie: Search,
+  onContentClicked: (Search.Media) -> Unit,
+  onMarkAsFavoriteClicked: (Search.Media) -> Unit,
 ) {
-  Column(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
-    Row(
-      modifier = modifier
-        .testTag(MOVIE_BOTTOM_SHEET_TAG)
-        .fillMaxWidth(),
-    ) {
-      AsyncImage(
-        modifier = Modifier
-          .widthIn(max = 160.dp)
-          .heightIn(max = 180.dp)
-          .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
-          .weight(1f)
-          .align(Alignment.Top)
-          .clip(RoundedCornerShape(4.dp))
-          .clipToBounds(),
-        model = ImageRequest.Builder(LocalContext.current)
-          .memoryCachePolicy(CachePolicy.ENABLED)
-          .diskCachePolicy(CachePolicy.ENABLED)
-          .data(ApiConstants.TMDB_IMAGE_URL + movie.posterPath)
-          .crossfade(true)
-          .build(),
-        placeholder = painterResource(R.drawable.ic_movie_placeholder),
-        error = painterResource(R.drawable.ic_movie_placeholder),
-        contentDescription = stringResource(R.string.ok),
-        contentScale = ContentScale.Fit,
-      )
-
-      Column(
-        Modifier
-          .weight(3f)
-          .padding(12.dp),
+  if (movie is Search.Media) {
+      Column(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
+      Row(
+        modifier = modifier
+          .testTag(MOVIE_BOTTOM_SHEET_TAG)
+          .fillMaxWidth(),
       ) {
-        Row(
-          modifier = Modifier.fillMaxWidth()
+        AsyncImage(
+          modifier = Modifier
+            .widthIn(max = 160.dp)
+            .heightIn(max = 180.dp)
+            .padding(top = 12.dp, start = 12.dp, bottom = 12.dp)
+            .weight(1f)
+            .align(Alignment.Top)
+            .clip(RoundedCornerShape(4.dp))
+            .clipToBounds(),
+          model = ImageRequest.Builder(LocalContext.current)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .data(ApiConstants.TMDB_IMAGE_URL + movie.posterPath)
+            .crossfade(true)
+            .build(),
+          placeholder = painterResource(R.drawable.ic_movie_placeholder),
+          error = painterResource(R.drawable.ic_movie_placeholder),
+          contentDescription = stringResource(R.string.ok),
+          contentScale = ContentScale.Fit,
+        )
+
+        Column(
+          Modifier
+            .weight(3f)
+            .padding(12.dp),
         ) {
-          Text(
-            modifier = Modifier
-              .padding(end = 8.dp)
-              .weight(4f),
-            text = movie.title,
-            style = MaterialTheme.typography.titleLarge,
-          )
-
-          LikeButton(
-            modifier = Modifier
-              .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
-              .clip(RoundedCornerShape(50.dp)),
-            isFavorite = movie.isFavorite,
-            transparentBackground = true,
-            onClick = { onMarkAsFavoriteClicked(movie) },
-          )
-        }
-
-        Column {
           Row(
-            modifier = modifier.padding(top = 4.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
           ) {
-            Rating(rating = movie.rating)
-            Spacer(modifier = Modifier.width(16.dp))
             Text(
-              text = movie.releaseDate,
-              style = MaterialTheme.typography.labelMedium,
-              color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+              modifier = Modifier
+                .padding(end = 8.dp)
+                .weight(4f),
+              text = movie.name,
+              style = MaterialTheme.typography.titleLarge,
+            )
+
+            LikeButton(
+              modifier = Modifier
+                .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
+                .clip(RoundedCornerShape(50.dp)),
+              isFavorite = movie.isFavorite,
+              transparentBackground = true,
+              onClick = { onMarkAsFavoriteClicked(movie) },
             )
           }
 
-          Text(
-            modifier = Modifier.padding(
-              top = 8.dp,
-              bottom = 8.dp,
-            ),
-            text = movie.overview,
-            style = MaterialTheme.typography.bodyMedium,
-          )
+          Column {
+            Row(
+              modifier = modifier.padding(top = 4.dp),
+              horizontalArrangement = Arrangement.Center,
+              verticalAlignment = Alignment.CenterVertically,
+            ) {
+              Rating(rating = movie.rating)
+              Spacer(modifier = Modifier.width(16.dp))
+              Text(
+                text = movie.releaseDate,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+              )
+            }
+
+            Text(
+              modifier = Modifier.padding(
+                top = 8.dp,
+                bottom = 8.dp,
+              ),
+              text = movie.overview,
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          }
         }
       }
-    }
-    Surface(
-      modifier = Modifier
-        .clickable { onContentClicked(movie) }
-        .fillMaxWidth()
-        .padding(
-          vertical = 20.dp,
-          horizontal = 12.dp,
-        )
-    ) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-      ) {
-        Icon(
-          imageVector = Icons.Outlined.Info,
-          tint = MaterialTheme.colorScheme.onSurface,
-          contentDescription = stringResource(id = R.string.popular_movie__rating),
-        )
-
-        Text(
-          modifier = Modifier
-            .testTag(DETAILS_BUTTON_TAG)
-            .padding(start = 8.dp),
-          text = stringResource(id = R.string.movie_extra_details),
-          style = MaterialTheme.typography.titleSmall,
-          color = MaterialTheme.colorScheme.onSurface,
-        )
-      }
-      Box(
+      Surface(
         modifier = Modifier
-          .background(MaterialTheme.colorScheme.onSurface.copy(0f)),
-        contentAlignment = Alignment.CenterEnd,
+          .clickable { onContentClicked(movie) }
+          .fillMaxWidth()
+          .padding(
+            vertical = 20.dp,
+            horizontal = 12.dp,
+          )
       ) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_chevron_right),
-          tint = MaterialTheme.colorScheme.onSurface,
-          contentDescription = stringResource(id = R.string.popular_movie__rating),
-        )
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.Start,
+        ) {
+          Icon(
+            imageVector = Icons.Outlined.Info,
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = stringResource(id = R.string.popular_movie__rating),
+          )
+
+          Text(
+            modifier = Modifier
+              .testTag(DETAILS_BUTTON_TAG)
+              .padding(start = 8.dp),
+            text = stringResource(id = R.string.movie_extra_details),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+          )
+        }
+        Box(
+          modifier = Modifier
+            .background(MaterialTheme.colorScheme.onSurface.copy(0f)),
+          contentAlignment = Alignment.CenterEnd,
+        ) {
+          Icon(
+            painter = painterResource(id = R.drawable.ic_chevron_right),
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = stringResource(id = R.string.popular_movie__rating),
+          )
+        }
       }
     }
   }
@@ -188,11 +190,11 @@ fun HomeContentPreview() {
     Surface {
       BottomSheetMovieContent(
         modifier = Modifier,
-        movie = PopularMovie(
+        movie = Search.Media.TV(
           id = 0,
           posterPath = "",
           releaseDate = "2023",
-          title = "Puss in Boots: The Last Wish",
+          name = "Puss in Boots: The Last Wish",
           rating = "7.66",
           isFavorite = true,
           overview = "Puss in Boots discovers that his passion for adventure has taken its toll: " +

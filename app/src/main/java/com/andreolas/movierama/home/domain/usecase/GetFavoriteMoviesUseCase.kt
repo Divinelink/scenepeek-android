@@ -1,7 +1,7 @@
 package com.andreolas.movierama.home.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
@@ -13,8 +13,8 @@ import javax.inject.Inject
 open class GetFavoriteMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, List<PopularMovie>>(dispatcher) {
-    override fun execute(parameters: Unit): Flow<Result<List<PopularMovie>>> {
+) : FlowUseCase<Unit, List<Search.Media>>(dispatcher) {
+    override fun execute(parameters: Unit): Flow<Result<List<Search.Media>>> {
         val favoriteMovies = moviesRepository.fetchFavoriteMovies()
 
         return favoriteMovies.map { result ->

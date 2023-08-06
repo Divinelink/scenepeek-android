@@ -282,7 +282,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = emptyList(),
-          searchMovies = popularMoviesList,
+          searchResults = popularMoviesList,
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
@@ -331,7 +331,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = emptyList(),
-          searchMovies = popularMoviesList,
+          searchResults = popularMoviesList,
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
@@ -426,7 +426,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          searchMovies = searchMovies,
+          searchResults = searchMovies,
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
@@ -443,7 +443,7 @@ class HomeViewModelTest {
           query = "",
           searchLoadingIndicator = false,
           emptyResult = false,
-          searchMovies = null,
+          searchResults = null,
         )
       )
   }
@@ -534,7 +534,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          searchMovies = emptyList(),
+          searchResults = emptyList(),
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
@@ -572,7 +572,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
-            searchMovies = searchMovies,
+            searchResults = searchMovies,
             loadMorePopular = false,
             isLoading = false,
             query = "test query",
@@ -586,7 +586,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
-            searchMovies = searchMovies,
+            searchResults = searchMovies,
             loadMorePopular = false,
             isLoading = false,
             query = "test query",
@@ -810,7 +810,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = searchMovies,
-            filteredMovies = searchMovies.filter { it.isFavorite },
+            filteredResults = searchMovies.filter { it.isFavorite },
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
           )
@@ -821,7 +821,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = searchMovies,
-            filteredMovies = emptyList(),
+            filteredResults = emptyList(),
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
           )
@@ -848,7 +848,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = searchMovies,
-          filteredMovies = searchMovies.filter { it.isFavorite },
+          filteredResults = searchMovies.filter { it.isFavorite },
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
         )
@@ -857,7 +857,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = searchMovies,
-          filteredMovies = null,
+          filteredResults = null,
           isLoading = false,
           filters = HomeFilter.values().map { it.filter },
         )

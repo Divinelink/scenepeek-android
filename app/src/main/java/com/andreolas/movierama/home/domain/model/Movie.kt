@@ -16,12 +16,24 @@ data class Movie(
   val isFavorite: Boolean?,
 )
 
-fun PopularMovie.toMovie(): Movie {
+fun Search.Media.Movie.toMediaItem(): Movie {
   return Movie(
     id = this.id,
     posterPath = this.posterPath,
     releaseDate = this.releaseDate,
-    title = this.title,
+    title = this.name,
+    rating = this.rating,
+    overview = this.overview,
+    isFavorite = this.isFavorite,
+  )
+}
+
+fun Search.Media.TV.toMediaItem(): Movie {
+  return Movie(
+    id = this.id,
+    posterPath = this.posterPath,
+    releaseDate = this.releaseDate,
+    title = this.name,
     rating = this.rating,
     overview = this.overview,
     isFavorite = this.isFavorite,

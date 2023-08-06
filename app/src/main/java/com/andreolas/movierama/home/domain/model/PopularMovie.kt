@@ -3,6 +3,7 @@ package com.andreolas.movierama.home.domain.model
 import kotlinx.serialization.Serializable
 
 @Serializable
+// FIXME maybe remove this altogether
 data class PopularMovie(
   val id: Int,
   val posterPath: String,

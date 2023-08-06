@@ -52,7 +52,7 @@ import com.andreolas.movierama.ui.theme.RoundedShape
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 
 @Composable
-fun MovieItem(
+fun MediaItem(
   modifier: Modifier = Modifier,
   movie: Movie,
   onMovieItemClick: (Movie) -> Unit,
@@ -231,7 +231,7 @@ fun PopularMovieItemPreview() {
         .width(160.dp)
         .height(340.dp)
     ) {
-      MovieItem(
+      MediaItem(
         modifier = Modifier,
         movie = Movie(
           id = 0,
@@ -258,7 +258,7 @@ fun MovieItemPreview() {
     Surface(
       modifier = Modifier
     ) {
-      MovieItem(
+      MediaItem(
         modifier = Modifier,
         movie = Movie(
           id = 0,

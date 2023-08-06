@@ -18,7 +18,7 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.home.domain.model.Movie
 import com.andreolas.movierama.home.domain.model.toMovie
-import com.andreolas.movierama.ui.components.MovieItem
+import com.andreolas.movierama.ui.components.MediaItem
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 
 const val SIMILAR_MOVIES_SCROLLABLE_LIST = "SIMILAR_MOVIES_LAZY_ROW_TAG"
@@ -53,7 +53,7 @@ fun SimilarMoviesList(
                 }
             ) { similarMovie ->
 
-                MovieItem(
+                MediaItem(
                     movie = similarMovie.toMovie(),
                     onMovieItemClick = onSimilarMovieClicked,
                     onLikeMovieClick = {},
