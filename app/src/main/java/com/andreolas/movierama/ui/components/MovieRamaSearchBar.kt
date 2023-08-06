@@ -123,8 +123,7 @@ fun MovieRamaSearchBar(
                 FocusedSearchField(
                   value = query,
                   onSearchFieldChanged = onSearchFieldChanged,
-                  modifier = Modifier
-                    .focusRequester(focusRequester)
+                  modifier = Modifier.focusRequester(focusRequester)
                 )
               }
             } else {
@@ -144,11 +143,16 @@ fun MovieRamaSearchBar(
                     }
                   }
               ) {
-                Icon(
-                  imageVector = Icons.Default.Search,
-                  contentDescription = stringResource(id = R.string.toolbar_search),
-                  modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
-                )
+                IconButton(
+                  onClick = {
+                    toolbarState.value = ToolbarState.Focused
+                  },
+                ) {
+                  Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(id = R.string.toolbar_search),
+                  )
+                }
                 Text(
                   overflow = TextOverflow.Ellipsis,
                   text = stringResource(id = R.string.toolbar_search),
@@ -181,16 +185,14 @@ private fun SearchIconWithLoading(
         modifier = Modifier
           .testTag(SEARCH_BAR_LOADING_INDICATOR_TAG)
           .padding(
-            start = MaterialTheme.dimensions.keyline_16,
-            end = MaterialTheme.dimensions.keyline_10
+            horizontal = MaterialTheme.dimensions.keyline_12,
+            vertical = MaterialTheme.dimensions.keyline_8
           )
-          .padding(horizontal = MaterialTheme.dimensions.keyline_8)
           .size(MaterialTheme.dimensions.keyline_24)
       )
     }
     false -> {
       IconButton(
-        modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_2),
         onClick = {
           onClearClicked()
           toolbarState.value = ToolbarState.Unfocused
