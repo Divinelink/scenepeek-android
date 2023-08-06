@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MovieItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
 import com.andreolas.movierama.ui.theme.AppTheme
+import com.andreolas.movierama.ui.theme.dimensions
 import com.andreolas.movierama.ui.theme.textColorDisabled
 
 @Composable
@@ -48,17 +50,18 @@ fun PopularMoviesList(
 
   LazyVerticalGrid(
     state = scrollState,
-    modifier = modifier
-      .fillMaxSize()
-      .padding(start = 8.dp, end = 8.dp),
+    modifier = modifier.fillMaxSize(),
+    contentPadding = PaddingValues(
+      start = MaterialTheme.dimensions.keyline_8,
+      end = MaterialTheme.dimensions.keyline_8,
+      top = MaterialTheme.dimensions.keyline_8
+    ),
     columns = GridCells.Adaptive(120.dp),
-    horizontalArrangement = Arrangement.spacedBy(8.dp),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     items(
-      key = {
-        it.id
-      },
+      key = { it.id },
       items = movies
     ) { popularMovie ->
       MovieItem(
@@ -87,18 +90,14 @@ private fun LoadMoreContent(
   modifier: Modifier = Modifier,
 ) {
   Column(
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
-      .padding(
-        top = 16.dp,
-        bottom = 16.dp
-      )
+      .padding(vertical = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
     Material3CircularProgressIndicator(
-      modifier = Modifier
-        .wrapContentSize(),
+      modifier = Modifier.wrapContentSize(),
     )
 
     Text(

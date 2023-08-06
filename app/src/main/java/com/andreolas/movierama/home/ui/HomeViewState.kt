@@ -20,7 +20,7 @@ data class HomeViewState(
   val selectedMovie: PopularMovie? = null,
   val loadMorePopular: Boolean = true,
   val query: String = "",
-  val searchLoading: Boolean = false,
+  val searchLoadingIndicator: Boolean = false,
   val emptyResult: Boolean = false,
   val error: UIText? = null,
 ) {

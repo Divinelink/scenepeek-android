@@ -15,46 +15,52 @@ import androidx.compose.runtime.snapshotFlow
 
 @Composable
 fun LazyGridState.OnBottomReached(
-    loadMore: () -> Unit,
+  loadMore: () -> Unit,
 ) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
+  var initialLoad = remember { true }
 
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
-        }
-    }
+  val shouldLoadMore = remember {
+    derivedStateOf {
+      val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+        ?: return@derivedStateOf true
 
-    // Convert the state into a cold flow and collect
-    LaunchedEffect(shouldLoadMore) {
-        snapshotFlow { shouldLoadMore.value }
-            .collect {
-                // if should load more, then invoke loadMore
-                if (it) loadMore()
-            }
+      lastVisibleItem.index == layoutInfo.totalItemsCount - 1 && !initialLoad
     }
+  }
+
+  // Convert the state into a cold flow and collect
+  LaunchedEffect(shouldLoadMore) {
+    snapshotFlow { shouldLoadMore.value }
+      .collect {
+        // if should load more, then invoke loadMore
+        if (it) loadMore()
+        initialLoad = false
+      }
+  }
 }
 
 @Composable
 fun LazyListState.OnBottomReached(
-    loadMore: () -> Unit,
+  loadMore: () -> Unit,
 ) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
+  var initialLoad = remember { true }
 
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
-        }
-    }
+  val shouldLoadMore = remember {
+    derivedStateOf {
+      val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+        ?: return@derivedStateOf true
 
-    // Convert the state into a cold flow and collect
-    LaunchedEffect(shouldLoadMore) {
-        snapshotFlow { shouldLoadMore.value }
-            .collect {
-                // if should load more, then invoke loadMore
-                if (it) loadMore()
-            }
+      lastVisibleItem.index == layoutInfo.totalItemsCount - 1 && !initialLoad
     }
+  }
+
+  // Convert the state into a cold flow and collect
+  LaunchedEffect(shouldLoadMore) {
+    snapshotFlow { shouldLoadMore.value }
+      .collect {
+        // if should load more, then invoke loadMore
+        if (it) loadMore()
+        initialLoad = false
+      }
+  }
 }

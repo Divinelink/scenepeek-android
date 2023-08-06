@@ -274,7 +274,7 @@ class HomeViewModelTest {
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
-          searchLoading = true,
+          searchLoadingIndicator = true,
           emptyResult = false,
         )
       )
@@ -286,7 +286,7 @@ class HomeViewModelTest {
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -310,7 +310,7 @@ class HomeViewModelTest {
           popularMovies = emptyList(),
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -322,7 +322,7 @@ class HomeViewModelTest {
           isLoading = false,
           loadMorePopular = false,
           query = "test ",
-          searchLoading = true,
+          searchLoadingIndicator = true,
           emptyResult = false,
         )
       )
@@ -335,7 +335,7 @@ class HomeViewModelTest {
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -359,7 +359,7 @@ class HomeViewModelTest {
           popularMovies = emptyList(),
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -370,7 +370,7 @@ class HomeViewModelTest {
           isLoading = false,
           loadMorePopular = false,
           query = "test ",
-          searchLoading = true,
+          searchLoadingIndicator = true,
           emptyResult = false,
         )
       )
@@ -383,7 +383,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           isLoading = false,
           query = "",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -407,11 +407,21 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
       .onSearchMovies("test query")
+      .assertViewState(
+        expectedViewState = HomeViewState(
+          popularMovies = popularMoviesList,
+          loadMorePopular = false,
+          isLoading = false,
+          query = "test query",
+          searchLoadingIndicator = true,
+          emptyResult = false,
+        )
+      )
       .delay(400)
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -420,7 +430,7 @@ class HomeViewModelTest {
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -431,7 +441,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           isLoading = false,
           query = "",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
           searchMovies = null,
         )
@@ -449,7 +459,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -459,9 +469,9 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           loadMorePopular = false,
-          isLoading = false,
+          isLoading = true,
           query = "test query",
-          searchLoading = true,
+          searchLoadingIndicator = true,
           emptyResult = false,
         )
       )
@@ -478,7 +488,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -488,9 +498,9 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           loadMorePopular = false,
-          isLoading = false,
+          isLoading = true,
           query = "test query",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
           error = UIText.StringText("Oops.")
         )
@@ -515,7 +525,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -528,7 +538,7 @@ class HomeViewModelTest {
           loadMorePopular = false,
           isLoading = false,
           query = "test query",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = true,
         )
       )
@@ -553,7 +563,7 @@ class HomeViewModelTest {
             popularMovies = popularMoviesList,
             isLoading = false,
             loadMorePopular = true,
-            searchLoading = false,
+            searchLoadingIndicator = false,
             emptyResult = false,
           )
         )
@@ -566,7 +576,7 @@ class HomeViewModelTest {
             loadMorePopular = false,
             isLoading = false,
             query = "test query",
-            searchLoading = false,
+            searchLoadingIndicator = false,
             emptyResult = false,
           )
         )
@@ -580,7 +590,7 @@ class HomeViewModelTest {
             loadMorePopular = false,
             isLoading = false,
             query = "test query",
-            searchLoading = false,
+            searchLoadingIndicator = false,
             emptyResult = false,
           )
         )
@@ -604,7 +614,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -615,7 +625,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           isLoading = false,
           query = "",
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -631,7 +641,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -658,7 +668,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -692,7 +702,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )
@@ -724,7 +734,7 @@ class HomeViewModelTest {
             popularMovies = popularMoviesList,
             isLoading = false,
             loadMorePopular = true,
-            searchLoading = false,
+            searchLoadingIndicator = false,
             emptyResult = false,
           )
         )
@@ -758,7 +768,7 @@ class HomeViewModelTest {
           popularMovies = popularMoviesList,
           isLoading = false,
           loadMorePopular = true,
-          searchLoading = false,
+          searchLoadingIndicator = false,
           emptyResult = false,
         )
       )

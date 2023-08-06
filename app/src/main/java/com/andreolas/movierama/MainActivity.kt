@@ -12,7 +12,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
 import com.andreolas.movierama.destinations.HomeScreenDestination
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -31,65 +30,65 @@ import gr.divinelink.core.util.utils.setNavigationBarColor
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+  private val viewModel: MainViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
-        // Update for Dark Mode straight away
-        updateForTheme(viewModel.currentTheme)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+    setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+    // Update for Dark Mode straight away
+    updateForTheme(viewModel.currentTheme)
 
-        setContent {
-            AppTheme {
-                Surface(
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    val mainState = viewModel.viewState.collectAsState()
+    setContent {
+      AppTheme {
+        Surface(
+          color = MaterialTheme.colorScheme.background,
+        ) {
+          val mainState = viewModel.viewState.collectAsState()
 
-                    when (mainState.value) {
-                        MainViewState.Completed -> {
-                            AppNavHost(
-                                startRoute = HomeScreenDestination,
-                            )
-                        }
-                        MainViewState.Loading -> {
-                            LoadingContent()
-                        }
-                        is MainViewState.Error -> {
-                            viewModel.retryFetchRemoteConfig()
-                        }
-                    }
-                }
+          when (mainState.value) {
+            MainViewState.Completed -> {
+              AppNavHost(
+                startRoute = HomeScreenDestination,
+              )
             }
+            MainViewState.Loading -> {
+              LoadingContent()
+            }
+            is MainViewState.Error -> {
+              viewModel.retryFetchRemoteConfig()
+            }
+          }
         }
+      }
     }
+  }
 
-    @OptIn(ExperimentalMaterialNavigationApi::class)
-    @Composable
-    private fun AppNavHost(
-        startRoute: Route,
-    ) {
-        DestinationsNavHost(
-            startRoute = startRoute,
-            navGraph = NavGraphs.root,
-            engine = rememberAnimatedNavHostEngine(
-                rootDefaultAnimations = RootNavGraphDefaultAnimations(
-                    enterTransition = {
-                        slideInHorizontally()
-                    },
-                    exitTransition = {
-                        fadeOut()
-                    },
-                ),
-            ),
-            manualComposableCallsBuilder = {
-                composable(HomeScreenDestination) {
-                    HomeScreen(
-                        navigator = destinationsNavigator,
-                    )
-                }
-            }
-        )
-    }
+  @OptIn(ExperimentalMaterialNavigationApi::class)
+  @Composable
+  private fun AppNavHost(
+    startRoute: Route,
+  ) {
+    DestinationsNavHost(
+      startRoute = startRoute,
+      navGraph = NavGraphs.root,
+      engine = rememberAnimatedNavHostEngine(
+        rootDefaultAnimations = RootNavGraphDefaultAnimations(
+          enterTransition = {
+            slideInHorizontally()
+          },
+          exitTransition = {
+            fadeOut()
+          },
+        ),
+      ),
+      manualComposableCallsBuilder = {
+        composable(HomeScreenDestination) {
+          HomeScreen(
+            navigator = destinationsNavigator,
+          )
+        }
+      }
+    )
+  }
 }
