@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun onMovieClicked(movie: Search) {
+  fun onMovieClicked(movie: MediaItem) {
     bottomSheetJob?.cancel()
 
     bottomSheetJob = viewModelScope.launch {
@@ -117,7 +117,7 @@ class HomeViewModel @Inject constructor(
         movie
       }
 
-      if (selectedMovie is Search.Media) {
+      if (selectedMovie is MediaItem.Media) {
             // FIXME
 
         _viewState.update { viewState ->
@@ -127,8 +127,8 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun onMarkAsFavoriteClicked(movie: Search) {
-    if (movie is Search.Media) {
+  fun onMarkAsFavoriteClicked(movie: MediaItem) {
+    if (movie is MediaItem.Media) {
           // FIXME
       viewModelScope.launch {
         markAsFavoriteUseCase(
@@ -321,9 +321,9 @@ class HomeViewModel @Inject constructor(
    * Update selected movie if exists on Popular Movies or in Search Movies List.
    */
   private fun updatedSelectedMovie( // FIXME
-    updatedList: List<Search>,
-    selectedMovie: Search?,
-  ): Search? {
+    updatedList: List<MediaItem>,
+    selectedMovie: MediaItem?,
+  ): MediaItem? {
     return updatedList
       .find { it.id == selectedMovie?.id } ?: viewState.value.searchResults
       ?.find { it.id == selectedMovie?.id }
@@ -345,9 +345,9 @@ class HomeViewModel @Inject constructor(
   }
 
   private fun getUpdatedSearchResult(
-    currentMoviesList: List<Search>,
-    updatedMoviesList: List<Search>,
-  ): List<Search> {
+    currentMoviesList: List<MediaItem>,
+    updatedMoviesList: List<MediaItem>,
+  ): List<MediaItem> {
     val combinedList = currentMoviesList.plus(updatedMoviesList).distinctBy { it.id }
     val updatedList = combinedList.toMutableList()
     updatedMoviesList.forEach { updatedMovie ->
@@ -447,7 +447,7 @@ class HomeViewModel @Inject constructor(
 
 data class SearchCache(
   var page: Int,
-  var result: MutableList<Search>,
+  var result: MutableList<MediaItem>,
 )
 
 private fun MutableStateFlow<HomeViewState>.setLoading() {

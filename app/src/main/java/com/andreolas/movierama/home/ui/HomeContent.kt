@@ -45,8 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
@@ -76,12 +76,12 @@ const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 fun HomeContent(
   viewState: HomeViewState,
   modifier: Modifier = Modifier,
-  onMovieClicked: (Search) -> Unit,
-  onMarkAsFavoriteClicked: (Search) -> Unit,
+  onMovieClicked: (MediaItem) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onSearchMovies: (String) -> Unit,
   onClearClicked: () -> Unit,
   onLoadNextPage: () -> Unit,
-  onGoToDetails: (Search) -> Unit,
+  onGoToDetails: (MediaItem) -> Unit,
   onFilterClicked: (String) -> Unit,
   onClearFiltersClicked: () -> Unit,
   onSwipeDown: () -> Unit,
@@ -235,11 +235,11 @@ fun HomeContent(
 private fun MoviesLazyGrid(
   modifier: Modifier,
   paddingValues: PaddingValues,
-  searchList: List<Search>,
-  onMovieClicked: (Search) -> Unit,
+  searchList: List<MediaItem>,
+  onMovieClicked: (MediaItem) -> Unit,
   scope: CoroutineScope,
   bottomSheetState: BottomSheetScaffoldState,
-  onMarkAsFavoriteClicked: (Search) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   loadMore: Boolean,
 ) {
@@ -304,7 +304,7 @@ fun HomeContentPreview() {
           selectedMovie = null,
           error = null,
           searchResults = (1..10).map {
-            Search.Media.Movie(
+            MediaItem.Media.Movie(
               id = it,
               name = "Movie 1",
               posterPath = "/poster1",

@@ -2,7 +2,7 @@ package com.andreolas.movierama.home.domain.usecase
 
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.model.Search
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 data class MultiSearchResult(
   val query: String,
-  val searchList: List<Search>,
+  val searchList: List<MediaItem>,
 )
 
 open class FetchMultiInfoSearchUseCase @Inject constructor(
@@ -56,20 +56,20 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
 
 fun getInfoWithUpdatedFavoriteStatus(
   favoriteIds: Result.Success<List<Int>>,
-  search: Result.Success<List<Search>>,
-): List<Search> {
+  search: Result.Success<List<MediaItem>>,
+): List<MediaItem> {
   return search.data.map { search ->
     when (search) {
-      is Search.Media.Movie -> favoriteIds.data.find { id -> id == search.id }?.let {
+      is MediaItem.Media.Movie -> favoriteIds.data.find { id -> id == search.id }?.let {
         search.copy(isFavorite = true)
       } ?: search
-      is Search.Person -> {
+      is MediaItem.Person -> {
         search
       }
-      is Search.Media.TV -> favoriteIds.data.find { id -> id == search.id }?.let {
+      is MediaItem.Media.TV -> favoriteIds.data.find { id -> id == search.id }?.let {
         search.copy(isFavorite = true)
       } ?: search
-      Search.Unknown -> TODO()
+      MediaItem.Unknown -> TODO()
     }
   }
 }

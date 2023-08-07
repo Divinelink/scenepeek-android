@@ -1,6 +1,6 @@
 package com.andreolas.movierama.home.domain.model
 
-sealed class Search(
+sealed class MediaItem(
   open val id: Int,
   open val name: String,
   open val posterPath: String?,
@@ -14,7 +14,7 @@ sealed class Search(
     open val rating: String,
     open val overview: String,
     open val isFavorite: Boolean,
-  ) : Search(
+  ) : MediaItem(
     id = id,
     posterPath = posterPath,
     name = name
@@ -61,13 +61,13 @@ sealed class Search(
     override val id: Int,
     override val name: String,
     override val posterPath: String,
-  ) : Search(
+  ) : MediaItem(
     id = id,
     posterPath = name,
     name = posterPath
   )
 
-  object Unknown : Search(
+  object Unknown : MediaItem(
     id = -1,
     posterPath = null,
     name = ""

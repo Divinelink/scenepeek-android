@@ -3,15 +3,15 @@ package com.andreolas.movierama.home.domain.repository
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.Search
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
 typealias MoviesListResult = Result<List<PopularMovie>>
-typealias MultiListResult = Result<List<Search>>
+typealias MultiListResult = Result<List<MediaItem>>
 
-typealias MediaListResult = Result<List<Search.Media>>
+typealias MediaListResult = Result<List<MediaItem.Media>>
 
 /**
  * The data layer for any requests related to Popular Movies.

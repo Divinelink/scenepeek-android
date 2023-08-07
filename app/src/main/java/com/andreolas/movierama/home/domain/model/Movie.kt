@@ -16,7 +16,7 @@ data class Movie(
   val isFavorite: Boolean?,
 )
 
-fun Search.Media.Movie.toMediaItem(): Movie {
+fun MediaItem.Media.Movie.toMediaItem(): Movie {
   return Movie(
     id = this.id,
     posterPath = this.posterPath,
@@ -28,7 +28,7 @@ fun Search.Media.Movie.toMediaItem(): Movie {
   )
 }
 
-fun Search.Media.TV.toMediaItem(): Movie {
+fun MediaItem.Media.TV.toMediaItem(): Movie {
   return Movie(
     id = this.id,
     posterPath = this.posterPath,

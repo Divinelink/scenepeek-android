@@ -1,7 +1,7 @@
 package com.andreolas.movierama.home.ui
 
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.Search
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
@@ -16,9 +16,9 @@ data class HomeViewState(
   val isLoading: Boolean = true,
   val filters: List<Filter> = HomeFilter.values().map { it.filter },
   val popularMovies: List<PopularMovie>,
-  val searchResults: List<Search>? = null,
-  val filteredResults: List<Search.Media>? = null,
-  val selectedMovie: Search.Media? = null,
+  val searchResults: List<MediaItem>? = null,
+  val filteredResults: List<MediaItem.Media>? = null,
+  val selectedMovie: MediaItem.Media? = null,
   val loadMorePopular: Boolean = true,
   val query: String = "",
   val searchLoadingIndicator: Boolean = false,
@@ -36,7 +36,7 @@ data class HomeViewState(
     searchResults
   } else {
     popularMovies.map {
-      Search.Media.Movie(
+      MediaItem.Media.Movie(
         id = it.id,
         name = it.title,
         posterPath = it.posterPath,

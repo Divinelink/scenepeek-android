@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.Search
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.toMediaItem
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MediaItem
@@ -37,9 +37,9 @@ import com.andreolas.movierama.ui.theme.textColorDisabled
 @Composable
 fun MediaList(
   modifier: Modifier = Modifier,
-  searches: List<Search>,
-  onMovieClicked: (Search) -> Unit,
-  onMarkAsFavoriteClicked: (Search) -> Unit,
+  searches: List<MediaItem>,
+  onMovieClicked: (MediaItem) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   isLoading: Boolean,
 ) {
@@ -65,22 +65,22 @@ fun MediaList(
       items = searches
     ) { search ->
       when (search) {
-        is Search.Media.Movie -> MediaItem(
+        is MediaItem.Media.Movie -> MediaItem(
           movie = search.toMediaItem(),
           onMovieItemClick = { onMovieClicked(search) },
           onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
         )
-        is Search.Media.TV -> {
+        is MediaItem.Media.TV -> {
           MediaItem(
             movie = search.toMediaItem(),
             onMovieItemClick = { onMovieClicked(search) },
             onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
           )
         }
-        is Search.Person -> {
+        is MediaItem.Person -> {
           // FIXME Do nothing yet
         }
-        Search.Unknown -> {
+        MediaItem.Unknown -> {
           // Do nothing
         }
       }
@@ -132,7 +132,7 @@ private fun LoadMoreContent(
 fun MoviesListScreenPreview() {
   @Suppress("MagicNumber")
   val movies = (1..8).map { index ->
-    Search.Media.Movie(
+    MediaItem.Media.Movie(
       id = index,
       posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
       releaseDate = (2000 + index).toString(),

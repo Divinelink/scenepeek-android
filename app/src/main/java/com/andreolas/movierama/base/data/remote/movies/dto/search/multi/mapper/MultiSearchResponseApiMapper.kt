@@ -1,14 +1,14 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.search.multi.mapper
 
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchResponseApi
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
-import com.andreolas.movierama.home.domain.model.Search
 import gr.divinelink.core.util.extensions.round
 
-fun MultiSearchResponseApi.map(): List<Search> = results.map {
+fun MultiSearchResponseApi.map(): List<MediaItem> = results.map {
   when (MediaType.from(it.mediaType)) {
 
-    MediaType.TV -> Search.Media.TV(
+    MediaType.TV -> MediaItem.Media.TV(
       id = it.id,
       posterPath = it.posterPath,
       releaseDate = it.releaseDate ?: "",
@@ -17,7 +17,7 @@ fun MultiSearchResponseApi.map(): List<Search> = results.map {
       overview = it.overview ?: "",
       isFavorite = false,
     )
-    MediaType.MOVIE -> Search.Media.Movie(
+    MediaType.MOVIE -> MediaItem.Media.Movie(
       id = it.id,
       posterPath = it.posterPath,
       releaseDate = it.releaseDate ?: "",
@@ -26,11 +26,11 @@ fun MultiSearchResponseApi.map(): List<Search> = results.map {
       overview = it.overview!!,
       isFavorite = false,
     )
-    MediaType.PERSON -> Search.Person(
+    MediaType.PERSON -> MediaItem.Person(
       id = it.id,
       posterPath = it.posterPath ?: "",
       name = it.name ?: "",
     )
-    MediaType.UNKNOWN -> Search.Unknown
+    MediaType.UNKNOWN -> MediaItem.Unknown
   }
 }

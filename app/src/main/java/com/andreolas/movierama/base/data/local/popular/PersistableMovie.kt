@@ -2,8 +2,8 @@ package com.andreolas.movierama.base.data.local.popular
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.Search
 
 @Entity(tableName = "movie") // FIXME rename to media or smt.
 data class PersistableMovie(
@@ -31,7 +31,7 @@ internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
   )
 }
 
-internal fun List<PersistableMovie>.toDomainMoviesList(): List<Search.Media> {
+internal fun List<PersistableMovie>.toDomainMoviesList(): List<MediaItem.Media> {
   return this.map(PersistableMovie::toMovie)
 }
 
@@ -47,8 +47,8 @@ private fun PersistableMovie.toPopularMovie(): PopularMovie {
   )
 }
 
-private fun PersistableMovie.toMovie(): Search.Media.Movie {
-  return Search.Media.Movie(
+private fun PersistableMovie.toMovie(): MediaItem.Media.Movie {
+  return MediaItem.Media.Movie(
     id = this.id,
     posterPath = this.posterPath,
     releaseDate = this.releaseDate,

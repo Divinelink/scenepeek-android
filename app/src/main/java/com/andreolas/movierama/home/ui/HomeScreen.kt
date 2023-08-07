@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
-import com.andreolas.movierama.home.domain.model.Search
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -28,7 +28,7 @@ fun HomeScreen(
     onSearchMovies = viewModel::onSearchMovies,
     onClearClicked = viewModel::onClearClicked,
     onGoToDetails = { movie ->
-      if (movie is Search.Media) { // FIXME
+      if (movie is MediaItem.Media) { // FIXME
         val navArgs = DetailsNavArguments(
           movieId = movie.id,
           isFavorite = movie.isFavorite,
