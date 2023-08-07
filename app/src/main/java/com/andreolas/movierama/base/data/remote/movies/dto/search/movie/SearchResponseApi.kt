@@ -1,6 +1,6 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.search.movie
 
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -31,16 +31,16 @@ data class SearchMovieApi(
   @SerialName("vote_count") val voteCount: Int?,
 )
 
-internal fun SearchResponseApi.toDomainMoviesList(): List<PopularMovie> {
-  return this.results.map(SearchMovieApi::toPopularMovie)
+internal fun SearchResponseApi.toDomainMoviesList(): List<MediaItem.Media.Movie> {
+  return this.results.map(SearchMovieApi::toMovieMediaItem)
 }
 
-private fun SearchMovieApi.toPopularMovie(): PopularMovie {
-  return PopularMovie(
+private fun SearchMovieApi.toMovieMediaItem(): MediaItem.Media.Movie {
+  return MediaItem.Media.Movie(
     id = this.id,
     posterPath = this.posterPath ?: "",
     releaseDate = this.releaseDate ?: "",
-    title = this.title,
+    name = this.title,
     rating = this.voteAverage.round(1).toString(),
     overview = this.overview,
     isFavorite = false,

@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
+// TODO Update this usecase add only ID and MediaType as parameters
 open class MarkAsFavoriteUseCase @Inject constructor(
     private val repository: MoviesRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher,

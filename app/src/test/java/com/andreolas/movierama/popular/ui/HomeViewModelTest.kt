@@ -54,7 +54,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = true,
           popularMovies = listOf(),
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -71,7 +71,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = popularMoviesList,
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -88,7 +88,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = popularMoviesList,
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -100,7 +100,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = popularMoviesList + loadData(12, 20),
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -123,7 +123,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = loadData(1, 5),
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -135,7 +135,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = loadData(1, 10),
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
         )
       )
@@ -152,7 +152,7 @@ class HomeViewModelTest {
         HomeViewState(
           isLoading = false,
           popularMovies = listOf(),
-          selectedMovie = null,
+          selectedMedia = null,
           error = UIText.StringText("oops")
         )
       )
@@ -188,7 +188,7 @@ class HomeViewModelTest {
 //                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
-//                    selectedMovie = null,
+//                    selectedMedia = null,
 //                    error = null
 //
 //                )
@@ -200,7 +200,7 @@ class HomeViewModelTest {
 //                    popularMovies = popularMoviesList.apply {
 //                        this[2] = this[2].copy(isFavorite = true)
 //                    },
-//                    selectedMovie = null,
+//                    selectedMedia = null,
 //                    error = null
 //
 //                )
@@ -211,7 +211,7 @@ class HomeViewModelTest {
 //                    popularMovies = popularMoviesList.apply {
 //                        this[2] = this[2].copy(isFavorite = false)
 //                    },
-//                    selectedMovie = null,
+//                    selectedMedia = null,
 //                    error = null
 //
 //                )
@@ -236,7 +236,7 @@ class HomeViewModelTest {
 //                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
-//                    selectedMovie = null,
+//                    selectedMedia = null,
 //                    error = null
 //
 //                )
@@ -248,7 +248,7 @@ class HomeViewModelTest {
 //                    popularMovies = popularMoviesList.apply {
 //                        this[5] = this[5].copy(isFavorite = false)
 //                    },
-//                    selectedMovie = null,
+//                    selectedMedia = null,
 //                    error = null
 //                )
 //            )
@@ -652,7 +652,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          selectedMovie = popularMoviesList[0],
+          selectedMedia = popularMoviesList[0],
           isLoading = false,
         )
       )
@@ -677,7 +677,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          selectedMovie = popularMoviesList[1],
+          selectedMedia = popularMoviesList[1],
           isLoading = false,
         )
       )
@@ -686,7 +686,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          selectedMovie = null,
+          selectedMedia = null,
           isLoading = false,
         )
       )
@@ -717,7 +717,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
-          selectedMovie = popularMoviesList[1],
+          selectedMedia = popularMoviesList[1],
           isLoading = false,
         )
       )
@@ -743,7 +743,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
-            selectedMovie = popularMoviesList[0],
+            selectedMedia = popularMoviesList[0],
             isLoading = false,
           )
         )
@@ -752,7 +752,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
-            selectedMovie = null,
+            selectedMedia = null,
             isLoading = false,
           )
         )
@@ -784,7 +784,7 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-          selectedMovie = popularMoviesList[0],
+          selectedMedia = popularMoviesList[0],
         )
       )
   }

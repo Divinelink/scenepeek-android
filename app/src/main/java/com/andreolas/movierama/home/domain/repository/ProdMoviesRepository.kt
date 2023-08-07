@@ -23,7 +23,7 @@ class ProdMoviesRepository @Inject constructor(
   private val movieRemote: MovieService,
 ) : MoviesRepository {
 
-  override fun fetchPopularMovies(request: PopularRequestApi): Flow<MoviesListResult> {
+  override fun fetchPopularMovies(request: PopularRequestApi): Flow<MediaListResult> {
     return movieRemote
       .fetchPopularMovies(request)
       .map { apiResponse ->
@@ -64,7 +64,7 @@ class ProdMoviesRepository @Inject constructor(
       flowOf(Result.Error(Exception(exception.message)))
     }
 
-  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
+  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> {
     return movieRemote
       .fetchSearchMovies(request)
       .map { apiResponse ->

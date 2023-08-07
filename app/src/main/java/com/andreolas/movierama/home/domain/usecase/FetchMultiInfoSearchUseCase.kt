@@ -35,7 +35,7 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
           emit(Result.Loading)
         }
         if (favorite is Result.Success && search is Result.Success) {
-          val searchWithFavorites = getInfoWithUpdatedFavoriteStatus(
+          val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
             Result.Success(favorite.data),
             Result.Success(search.data)
           )
@@ -54,22 +54,20 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
   }
 }
 
-fun getInfoWithUpdatedFavoriteStatus(
+fun getMediaWithUpdatedFavoriteStatus(
   favoriteIds: Result.Success<List<Int>>,
-  search: Result.Success<List<MediaItem>>,
+  mediaResult: Result.Success<List<MediaItem>>,
 ): List<MediaItem> {
-  return search.data.map { search ->
-    when (search) {
-      is MediaItem.Media.Movie -> favoriteIds.data.find { id -> id == search.id }?.let {
-        search.copy(isFavorite = true)
-      } ?: search
-      is MediaItem.Person -> {
-        search
-      }
-      is MediaItem.Media.TV -> favoriteIds.data.find { id -> id == search.id }?.let {
-        search.copy(isFavorite = true)
-      } ?: search
-      MediaItem.Unknown -> TODO()
+  return mediaResult.data.map { searchItem ->
+    when (searchItem) {
+      is MediaItem.Media.Movie -> favoriteIds.data.find { id -> id == searchItem.id }?.let {
+        searchItem.copy(isFavorite = true)
+      } ?: searchItem
+      is MediaItem.Media.TV -> favoriteIds.data.find { id -> id == searchItem.id }?.let {
+        searchItem.copy(isFavorite = true)
+      } ?: searchItem
+      is MediaItem.Person -> searchItem
+      MediaItem.Unknown -> searchItem
     }
   }
 }

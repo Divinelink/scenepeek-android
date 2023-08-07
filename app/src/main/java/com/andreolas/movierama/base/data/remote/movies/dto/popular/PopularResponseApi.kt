@@ -1,6 +1,6 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.popular
 
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,16 +40,16 @@ data class PopularMovieApi(
     val voteCount: Int?,
 )
 
-internal fun PopularResponseApi.toDomainMoviesList(): List<PopularMovie> {
+internal fun PopularResponseApi.toDomainMoviesList(): List<MediaItem.Media.Movie> {
     return this.results.map(PopularMovieApi::toPopularMovie)
 }
 
-private fun PopularMovieApi.toPopularMovie(): PopularMovie {
-    return PopularMovie(
+private fun PopularMovieApi.toPopularMovie(): MediaItem.Media.Movie {
+    return MediaItem.Media.Movie(
         id = this.id,
         posterPath = this.posterPath ?: "",
         releaseDate = this.releaseDate,
-        title = this.title,
+        name = this.title,
         rating = this.voteAverage.toString(),
         overview = this.overview,
         isFavorite = false,

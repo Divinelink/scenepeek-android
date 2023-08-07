@@ -8,9 +8,7 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
-typealias MoviesListResult = Result<List<PopularMovie>>
 typealias MultiListResult = Result<List<MediaItem>>
-
 typealias MediaListResult = Result<List<MediaItem.Media>>
 
 /**
@@ -24,7 +22,7 @@ interface MoviesRepository {
    */
   fun fetchPopularMovies(
     request: PopularRequestApi,
-  ): Flow<MoviesListResult>
+  ): Flow<MediaListResult>
 
   /**
    * Fetch all popular movies that the user has marked as favorite.
@@ -49,7 +47,7 @@ interface MoviesRepository {
    */
   fun fetchSearchMovies(
     request: SearchRequestApi,
-  ): Flow<MoviesListResult>
+  ): Flow<MediaListResult>
 
   /**
    * Request movies, tv series and persons through a search query.

@@ -290,7 +290,7 @@ class HomeContentTest {
         viewState = HomeViewState(
           isLoading = false,
           popularMovies = popularMovies,
-          selectedMovie = popularMovies[2],
+          selectedMedia = popularMovies[2],
         ),
         onMovieClicked = {},
         onMarkAsFavoriteClicked = {
