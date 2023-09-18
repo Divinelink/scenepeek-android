@@ -176,9 +176,9 @@ fun Rating(
   }
 
   val color = when (rating.toDouble()) {
-    in 0.0..3.0 -> Color.Red
-    in 3.0..6.0 -> Color.Yellow
-    in 6.0..10.0 -> Color.Green
+    in 0.0..3.5 -> Color.Red
+    in 3.5..7.0 -> Color.Yellow
+    in 7.0..10.0 -> Color.Green
     else -> Color.White
   }
   Box(
