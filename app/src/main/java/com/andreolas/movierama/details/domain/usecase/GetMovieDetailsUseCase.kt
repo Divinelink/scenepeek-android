@@ -26,79 +26,93 @@ import javax.inject.Inject
 
 @Suppress("LongMethod")
 open class GetMovieDetailsUseCase @Inject constructor(
-    private val repository: DetailsRepository,
-    private val moviesRepository: MoviesRepository,
-    @IoDispatcher val dispatcher: CoroutineDispatcher,
+  private val repository: DetailsRepository,
+  private val moviesRepository: MoviesRepository,
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<DetailsRequestApi, MovieDetailsResult>(dispatcher) {
-    override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> {
-        val favorite = flow {
-            coroutineScope {
-                val result = moviesRepository.checkIfFavorite(parameters.movieId)
-                emit(result)
-            }
-        }.flowOn(dispatcher)
-
-        val details = repository.fetchMovieDetails(
-            request = parameters,
-        ).catch {
-            emit(Result.Error(MovieDetailsException()))
-        }
-
-        val reviews = repository.fetchMovieReviews(
-            request = ReviewsRequestApi(
-                movieId = parameters.movieId,
-            )
-        ).catch {
-            emit(Result.Error(ReviewsException()))
-        }
-
-        val similar = repository.fetchSimilarMovies(
-            request = SimilarRequestApi(
-                movieId = parameters.movieId,
-            )
-        ).catch {
-            emit(Result.Error(SimilarException()))
-        }
-
-        val videos = repository.fetchVideos(
-            request = VideosRequestApi(
-                movieId = parameters.movieId,
-            )
-        ).catch {
-            emit(Result.Error(VideosException()))
-        }
-
-        return combineTransform(
-            flow = details,
-            flow2 = reviews,
-            flow3 = similar,
-            flow4 = favorite,
-            flow5 = videos,
-        ) { detailsFlow, reviewsFlow, similarFlow, favoriteFlow, videosFlow ->
-            when (detailsFlow) {
-                Result.Loading -> emit(Result.Loading)
-                is Result.Error -> emit(Result.Error(MovieDetailsException()))
-                is Result.Success -> emit(
-                    Result.Success(
-                        data = MovieDetailsResult.DetailsSuccess(
-                            detailsFlow.data.copy(isFavorite = favoriteFlow.data == true)
-                        )
-                    )
-                )
-            }
-            if (reviewsFlow is Result.Success) {
-                emit(Result.Success(MovieDetailsResult.ReviewsSuccess(reviews = reviewsFlow.data)))
-            }
-
-            if (similarFlow is Result.Success) {
-                emit(Result.Success(MovieDetailsResult.SimilarSuccess(similar = similarFlow.data)))
-            }
-
-            if (videosFlow is Result.Success) {
-                emit(Result.Success(MovieDetailsResult.VideosSuccess(
-                    trailer = videosFlow.data.firstOrNull { it.officialTrailer }
-                )))
-            }
-        }
+  override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> {
+    val requestApi = when (parameters) {
+      is DetailsRequestApi.Movie -> parameters
+      is DetailsRequestApi.TV -> parameters
     }
+
+    val favorite = flow {
+      coroutineScope {
+        val result = moviesRepository.checkIfFavorite(requestApi.id)
+        emit(result)
+      }
+    }.flowOn(dispatcher)
+
+    val detailsRequestApi = when (parameters) {
+      is DetailsRequestApi.Movie -> DetailsRequestApi.Movie(parameters.id)
+      is DetailsRequestApi.TV -> DetailsRequestApi.TV(parameters.id)
+    }
+
+    val details = repository.fetchMovieDetails(
+      request = detailsRequestApi,
+    ).catch {
+      emit(Result.Error(MovieDetailsException()))
+    }
+
+    val reviewsApi = when (parameters) {
+      is DetailsRequestApi.Movie -> ReviewsRequestApi.Movie(parameters.id)
+      is DetailsRequestApi.TV -> ReviewsRequestApi.TV(parameters.id)
+    }
+
+    val reviews = repository.fetchMovieReviews(reviewsApi)
+      .catch {
+        emit(Result.Error(ReviewsException()))
+      }
+
+    val similarApi = when (parameters) {
+      is DetailsRequestApi.Movie -> SimilarRequestApi.Movie(parameters.id)
+      is DetailsRequestApi.TV -> SimilarRequestApi.TV(parameters.id)
+    }
+    val similar = repository.fetchSimilarMovies(
+      request = similarApi,
+    ).catch {
+      emit(Result.Error(SimilarException()))
+    }
+
+    val videos = repository.fetchVideos(
+      request = VideosRequestApi(
+        movieId = parameters.id,
+      )
+    ).catch {
+      emit(Result.Error(VideosException()))
+    }
+
+    return combineTransform(
+      flow = details,
+      flow2 = reviews,
+      flow3 = similar,
+      flow4 = favorite,
+      flow5 = videos,
+    ) { detailsFlow, reviewsFlow, similarFlow, favoriteFlow, videosFlow ->
+      when (detailsFlow) {
+        Result.Loading -> emit(Result.Loading)
+        is Result.Error -> emit(Result.Error(MovieDetailsException()))
+        is Result.Success -> emit(
+          Result.Success(
+            data = MovieDetailsResult.DetailsSuccess(
+              detailsFlow.data.copy(isFavorite = favoriteFlow.data == true)
+            )
+          )
+        )
+      }
+      if (reviewsFlow is Result.Success) {
+        emit(Result.Success(MovieDetailsResult.ReviewsSuccess(reviews = reviewsFlow.data)))
+      }
+
+      if (similarFlow is Result.Success) {
+        emit(Result.Success(MovieDetailsResult.SimilarSuccess(similar = similarFlow.data)))
+      }
+
+      if (videosFlow is Result.Success) {
+        emit(Result.Success(MovieDetailsResult.VideosSuccess(
+          trailer = videosFlow.data.firstOrNull { it.officialTrailer }
+        )))
+      }
+    }
+  }
 }

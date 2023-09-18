@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
             posterPath = movie.posterPath!!,
             overview = movie.overview,
             releaseDate = movie.releaseDate,
-            isFavorite = movie.isFavorite,
+            isFavorite = movie.isFavorite ?: false, // Fixme remove conditional
             rating = movie.rating,
           )
         )

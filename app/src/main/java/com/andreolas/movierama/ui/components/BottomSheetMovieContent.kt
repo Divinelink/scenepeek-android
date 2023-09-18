@@ -101,14 +101,17 @@ fun BottomSheetMovieContent(
               style = MaterialTheme.typography.titleLarge,
             )
 
-            LikeButton(
-              modifier = Modifier
-                .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
-                .clip(RoundedCornerShape(50.dp)),
-              isFavorite = movie.isFavorite,
-              transparentBackground = true,
-              onClick = { onMarkAsFavoriteClicked(movie) },
-            )
+            // FIXME null check for isFavorite
+            movie.isFavorite?.let {
+              LikeButton(
+                modifier = Modifier
+                  .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
+                  .clip(RoundedCornerShape(50.dp)),
+                isFavorite = it,
+                transparentBackground = true,
+                onClick = { onMarkAsFavoriteClicked(movie) },
+              )
+            }
           }
 
           Column {

@@ -1,6 +1,7 @@
 package com.andreolas.movierama.details.domain.model
 
 import com.andreolas.movierama.R
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.UIText
 
 /**
@@ -11,7 +12,7 @@ sealed class MovieDetailsResult {
 
     data class ReviewsSuccess(val reviews: List<Review>) : MovieDetailsResult()
 
-    data class SimilarSuccess(val similar: List<SimilarMovie>) : MovieDetailsResult()
+    data class SimilarSuccess(val similar: List<MediaItem.Media>) : MovieDetailsResult()
 
     data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
 

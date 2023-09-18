@@ -40,7 +40,8 @@ fun MediaItem.Media.TV.toMediaItem(): Movie {
   )
 }
 
-fun SimilarMovie.toMovie(): Movie {
+// toMediaItem() is used to convert from the API model to the UI model
+fun SimilarMovie.toMediaItem(): Movie {
   return Movie(
     id = this.id,
     posterPath = this.posterPath,

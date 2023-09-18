@@ -30,7 +30,8 @@ fun HomeScreen(
     onGoToDetails = { movie ->
       if (movie is MediaItem.Media) { // FIXME
         val navArgs = DetailsNavArguments(
-          movieId = movie.id,
+          id = movie.id,
+          mediaType = movie.mediaType.value,
           isFavorite = movie.isFavorite,
         )
         val destination = DetailsScreenDestination(

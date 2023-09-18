@@ -1,6 +1,6 @@
 package com.andreolas.movierama.home.domain.model
 
-enum class MediaType(val type: String) {
+enum class MediaType(val value: String) {
   TV("tv"),
   MOVIE("movie"),
   PERSON("person"),
@@ -8,9 +8,9 @@ enum class MediaType(val type: String) {
 
   companion object {
     fun from(type: String) = when (type) {
-      TV.type -> TV
-      MOVIE.type -> MOVIE
-      PERSON.type -> PERSON
+      TV.value -> TV
+      MOVIE.value -> MOVIE
+      PERSON.value -> PERSON
       else -> UNKNOWN
     }
   }

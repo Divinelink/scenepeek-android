@@ -4,6 +4,7 @@ sealed class MediaItem(
   open val id: Int,
   open val name: String,
   open val posterPath: String?,
+  open val mediaType: MediaType,
 ) {
 
   sealed class Media(
@@ -13,11 +14,13 @@ sealed class MediaItem(
     open val releaseDate: String,
     open val rating: String,
     open val overview: String,
-    open val isFavorite: Boolean,
+    open val isFavorite: Boolean?,
+    override val mediaType: MediaType,
   ) : MediaItem(
     id = id,
     posterPath = posterPath,
-    name = name
+    name = name,
+    mediaType = mediaType
   ) {
 
     data class TV(
@@ -27,7 +30,7 @@ sealed class MediaItem(
       override val releaseDate: String,
       override val rating: String,
       override val overview: String,
-      override val isFavorite: Boolean,
+      override val isFavorite: Boolean?,
     ) : Media(
       id = id,
       posterPath = posterPath,
@@ -35,7 +38,8 @@ sealed class MediaItem(
       releaseDate = releaseDate,
       rating = rating,
       overview = overview,
-      isFavorite = isFavorite
+      isFavorite = isFavorite,
+      mediaType = MediaType.TV
     )
 
     data class Movie(
@@ -45,7 +49,7 @@ sealed class MediaItem(
       override val releaseDate: String,
       override val rating: String,
       override val overview: String,
-      override val isFavorite: Boolean,
+      override val isFavorite: Boolean?,
     ) : Media(
       id = id,
       posterPath = posterPath,
@@ -53,7 +57,8 @@ sealed class MediaItem(
       releaseDate = releaseDate,
       rating = rating,
       overview = overview,
-      isFavorite = isFavorite
+      isFavorite = isFavorite == true,
+      mediaType = MediaType.MOVIE
     )
   }
 
@@ -64,12 +69,14 @@ sealed class MediaItem(
   ) : MediaItem(
     id = id,
     posterPath = name,
-    name = posterPath
+    name = posterPath,
+    mediaType = MediaType.PERSON
   )
 
   object Unknown : MediaItem(
     id = -1,
     posterPath = null,
-    name = ""
+    name = "",
+    mediaType = MediaType.UNKNOWN
   )
 }

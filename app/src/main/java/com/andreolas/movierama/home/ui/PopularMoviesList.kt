@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.toMediaItem
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MediaItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
@@ -66,13 +65,13 @@ fun MediaList(
     ) { search ->
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
-          movie = search.toMediaItem(),
+          movie = search,
           onMovieItemClick = { onMovieClicked(search) },
           onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
         )
         is MediaItem.Media.TV -> {
           MediaItem(
-            movie = search.toMediaItem(),
+            movie = search,
             onMovieItemClick = { onMovieClicked(search) },
             onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
           )

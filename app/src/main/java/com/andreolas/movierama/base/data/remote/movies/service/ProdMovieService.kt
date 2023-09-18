@@ -60,9 +60,9 @@ class ProdMovieService @Inject constructor(
   }
 
   override fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi> = flow {
-    val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
     val url = baseUrl +
-      "${request.movieId}?" +
+      "${request.id}?" +
       "&append_to_response=credits" +
       "&language=en-US"
 
@@ -72,9 +72,9 @@ class ProdMovieService @Inject constructor(
   }
 
   override fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi> = flow {
-    val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
     val url = baseUrl +
-      "${request.movieId}" +
+      "${request.id}" +
       "/reviews?" +
       "&language=en-US"
 
@@ -84,9 +84,9 @@ class ProdMovieService @Inject constructor(
   }
 
   override fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi> = flow {
-    val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
     val url = baseUrl +
-      "${request.movieId}" +
+      "${request.id}" +
       "/similar?" +
       "&language=en-US"
 

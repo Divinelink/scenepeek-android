@@ -54,10 +54,10 @@ import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.details.domain.model.SimilarMovie
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideoSite
-import com.andreolas.movierama.home.domain.model.Movie
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
@@ -86,7 +86,7 @@ fun DetailsContent(
   modifier: Modifier = Modifier,
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
-  onSimilarMovieClicked: (Movie) -> Unit,
+  onSimilarMovieClicked: (MediaItem.Media) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val scaffoldState = rememberScaffoldState()
@@ -193,10 +193,10 @@ private fun VideoPlayerSection(
 fun DetailsMovieContent(
   modifier: Modifier = Modifier,
   movieDetails: MovieDetails,
-  similarMoviesList: List<SimilarMovie>?,
+  similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
-  onSimilarMovieClicked: (Movie) -> Unit,
+  onSimilarMovieClicked: (MediaItem.Media) -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -417,13 +417,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         )
       }
       val similarMovies = (1..10).map {
-        SimilarMovie(
+        MediaItem.Media.Movie(
           id = it,
           posterPath = "",
           releaseDate = "",
-          title = "Flight Club",
+          name = "Flight Club",
           rating = "",
           overview = "This movie is good.",
+          isFavorite = false,
         )
       }.toList()
       val popularMovie = PopularMovie(
@@ -487,22 +488,26 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
       return sequenceOf(
         DetailsViewState(
           movieId = popularMovie.id,
+          mediaType = MediaType.MOVIE,
           isLoading = true,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
+          mediaType = MediaType.MOVIE,
           movieDetails = movieDetails,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
+          mediaType = MediaType.TV,
           movieDetails = movieDetails,
           similarMovies = similarMovies,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
+          mediaType = MediaType.MOVIE,
           movieDetails = movieDetails,
           similarMovies = similarMovies,
           reviews = reviews,
@@ -510,6 +515,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
 
         DetailsViewState(
           movieId = popularMovie.id,
+          mediaType = MediaType.MOVIE,
           error = UIText.StringText("Something went wrong.")
         ),
       )
