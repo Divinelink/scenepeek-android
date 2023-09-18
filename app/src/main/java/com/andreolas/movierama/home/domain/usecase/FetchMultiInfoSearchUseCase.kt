@@ -37,7 +37,7 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
         if (favorite is Result.Success && search is Result.Success) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
             Result.Success(favorite.data),
-            Result.Success(search.data)
+            Result.Success(search.data.filterNot { it is MediaItem.Person }) // Filter out persons for now
           )
           emit(
             Result.Success(

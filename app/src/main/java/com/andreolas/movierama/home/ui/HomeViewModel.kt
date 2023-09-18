@@ -9,7 +9,6 @@ import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
-import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +31,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-  private val getSearchMoviesUseCase: GetSearchMoviesUseCase,
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
