@@ -88,7 +88,7 @@ class DetailsViewModel @Inject constructor(
               when (result.data) {
                 is MovieDetailsResult.DetailsSuccess -> viewState.copy(
                   isLoading = false,
-                  movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails
+                  movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
                 )
 
                 is MovieDetailsResult.ReviewsSuccess -> viewState.copy(

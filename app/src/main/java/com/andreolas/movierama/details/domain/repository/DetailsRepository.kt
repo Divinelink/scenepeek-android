@@ -4,7 +4,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsReques
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
-import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.home.domain.model.MediaItem
@@ -18,7 +18,7 @@ interface DetailsRepository {
 
     fun fetchMovieDetails(
         request: DetailsRequestApi,
-    ): Flow<Result<MovieDetails>>
+    ): Flow<Result<MediaDetails>>
 
     fun fetchMovieReviews(
         request: ReviewsRequestApi,

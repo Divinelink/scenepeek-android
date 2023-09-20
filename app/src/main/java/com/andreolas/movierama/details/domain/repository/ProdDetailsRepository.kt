@@ -5,11 +5,11 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Revie
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.toDomainReviewsList
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.toDomainMoviesList
-import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMovie
+import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMedia
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.toDomainVideosList
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
-import com.andreolas.movierama.details.domain.model.MovieDetails
+import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.ReviewsException
@@ -28,11 +28,11 @@ class ProdDetailsRepository @Inject constructor(
   private val movieRemote: MovieService,
 ) : DetailsRepository {
 
-  override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MovieDetails>> {
+  override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> {
     return movieRemote
       .fetchDetails(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainMovie())
+        Result.Success(apiResponse.toDomainMedia())
       }.catch {
         throw MovieDetailsException()
       }

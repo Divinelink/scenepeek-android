@@ -54,6 +54,7 @@ import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
+import com.andreolas.movierama.details.domain.model.TVDetails
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideoSite
 import com.andreolas.movierama.home.domain.model.MediaItem
@@ -132,15 +133,22 @@ fun DetailsContent(
       )
     },
     content = { paddingValues ->
-      viewState.movieDetails?.let {
-        DetailsMovieContent(
-          modifier = Modifier.padding(paddingValues = paddingValues),
-          movieDetails = viewState.movieDetails,
-          similarMoviesList = viewState.similarMovies,
-          reviewsList = viewState.reviews,
-          trailer = viewState.trailer,
-          onSimilarMovieClicked = onSimilarMovieClicked,
-        )
+      viewState.movieDetails?.let { mediaDetails ->
+        when (mediaDetails) {
+          is MovieDetails -> {
+            DetailsMovieContent(
+              modifier = Modifier.padding(paddingValues = paddingValues),
+              movieDetails = mediaDetails,
+              similarMoviesList = viewState.similarMovies,
+              reviewsList = viewState.reviews,
+              trailer = viewState.trailer,
+              onSimilarMovieClicked = onSimilarMovieClicked,
+            )
+          }
+          is TVDetails -> {
+            // TODO Add TV Details Content
+          }
+        }
       }
       if (viewState.error != null) {
         SimpleAlertDialog(

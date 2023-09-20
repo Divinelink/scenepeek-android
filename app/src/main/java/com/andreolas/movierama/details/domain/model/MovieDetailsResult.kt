@@ -8,26 +8,26 @@ import com.andreolas.movierama.ui.UIText
  * A collection of possible results for an attempt to fetch movie details, similar movies and reviews.
  */
 sealed class MovieDetailsResult {
-    data class DetailsSuccess(val movieDetails: MovieDetails) : MovieDetailsResult()
+  data class DetailsSuccess(val mediaDetails: MediaDetails) : MovieDetailsResult()
 
-    data class ReviewsSuccess(val reviews: List<Review>) : MovieDetailsResult()
+  data class ReviewsSuccess(val reviews: List<Review>) : MovieDetailsResult()
 
-    data class SimilarSuccess(val similar: List<MediaItem.Media>) : MovieDetailsResult()
+  data class SimilarSuccess(val similar: List<MediaItem.Media>) : MovieDetailsResult()
 
-    data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
+  data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
 
-    sealed class Failure(
-        open val message: UIText = UIText.ResourceText(R.string.general_error_message),
-    ) : MovieDetailsResult() {
+  sealed class Failure(
+    open val message: UIText = UIText.ResourceText(R.string.general_error_message),
+  ) : MovieDetailsResult() {
 
-        data class FatalError(
-            override val message: UIText = UIText.ResourceText(R.string.details__fatal_error_fetching_details),
-        ) : Failure(
-            message = message,
-        )
+    data class FatalError(
+      override val message: UIText = UIText.ResourceText(R.string.details__fatal_error_fetching_details),
+    ) : Failure(
+      message = message,
+    )
 
-        object Unknown : Failure()
-    }
+    object Unknown : Failure()
+  }
 }
 
 class MovieDetailsException : Exception()
