@@ -95,17 +95,15 @@ class ProdMovieService @Inject constructor(
     emit(response)
   }
 
-  override fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi> {
+  override fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/movie/"
     val url = baseUrl +
       "${request.movieId}" +
       "/videos?" +
       "&language=en-US"
 
-    return flow {
-      val response = restClient.get<VideosResponseApi>(url = url)
+    val response = restClient.get<VideosResponseApi>(url = url)
 
-      emit(response)
-    }
+    emit(response)
   }
 }

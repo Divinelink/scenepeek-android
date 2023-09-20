@@ -52,7 +52,7 @@ sealed class DetailsResponseApi {
     val video: Boolean,
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
-    val credits: Credits? = null,
+    val credits: Credits,
   ) : DetailsResponseApi()
 
   @Serializable
@@ -72,7 +72,7 @@ sealed class DetailsResponseApi {
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<JsonObject>,
-    val credits: Credits? = null,
+    val credits: Credits,
   ) : DetailsResponseApi()
 }
 
@@ -89,8 +89,8 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = MovieDetail
   rating = this.voteAverage.round(1).toString(),
   overview = this.overview,
   genres = this.genres.map { it.name },
-  director = this.credits?.crew?.toDirector(), // FIXME this is null
-  cast = this.credits?.cast?.toActors()!!,
+  director = this.credits.crew.toDirector(),
+  cast = this.credits.cast.toActors(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
 )
@@ -102,8 +102,8 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TVDetails(
   title = this.name,
   rating = this.voteAverage.round(1).toString(),
   overview = this.overview,
-  director = this.credits?.crew?.toDirector(), // FIXME
-  cast = this.credits?.cast!!.toActors(), // FIXME
+  director = this.credits.crew.toDirector(),
+  cast = this.credits.cast.toActors(),
   isFavorite = false,
 )
 

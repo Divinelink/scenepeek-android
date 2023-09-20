@@ -21,31 +21,32 @@ sealed class MediaDetails {
     releaseDate: String = this.releaseDate,
     rating: String = this.rating,
     isFavorite: Boolean = this.isFavorite,
-  ): MediaDetails {
-    return when (this) {
-      is MovieDetails -> this.copy(
-        id = id,
-        title = title,
-        posterPath = posterPath,
-        overview = overview,
-        director = director,
-        cast = cast,
-        releaseDate = releaseDate,
-        rating = rating,
-        isFavorite = isFavorite,
-      )
-      is TVDetails -> this.copy(
-        id = id,
-        title = title,
-        posterPath = posterPath,
-        overview = overview,
-        director = director,
-        cast = cast,
-        releaseDate = releaseDate,
-        rating = rating,
-        isFavorite = isFavorite,
-      )
-    }
+  ): MediaDetails = when (this) {
+    is MovieDetails -> MovieDetails(
+      id = id,
+      title = title,
+      posterPath = posterPath,
+      overview = overview,
+      director = director,
+      cast = cast,
+      releaseDate = releaseDate,
+      rating = rating,
+      isFavorite = isFavorite,
+      genres = genres,
+      runtime = runtime,
+    )
+    is TVDetails -> TVDetails(
+      id = id,
+      title = title,
+      posterPath = posterPath,
+      overview = overview,
+      director = director,
+      cast = cast,
+      releaseDate = releaseDate,
+      rating = rating,
+      isFavorite = isFavorite,
+      seasons = seasons,
+    )
   }
 }
 
