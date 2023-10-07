@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
@@ -126,18 +125,7 @@ class HomeViewModel @Inject constructor(
   fun onMarkAsFavoriteClicked(movie: MediaItem) {
     if (movie is MediaItem.Media) {
       viewModelScope.launch {
-        markAsFavoriteUseCase(
-          PopularMovie(
-            // FIXME
-            id = movie.id,
-            title = movie.name,
-            posterPath = movie.posterPath!!,
-            overview = movie.overview,
-            releaseDate = movie.releaseDate,
-            isFavorite = movie.isFavorite ?: false, // Fixme remove conditional
-            rating = movie.rating,
-          )
-        )
+        markAsFavoriteUseCase(movie)
       }
     }
   }

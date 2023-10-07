@@ -29,7 +29,7 @@ class FakeMoviesRepository {
         response: Result<List<Int>>,
     ) {
         whenever(
-            mock.fetchFavoriteMoviesIds()
+            mock.fetchFavoriteMediaIDs()
         ).thenReturn(
             flowOf(response)
         )
@@ -62,7 +62,7 @@ class FakeMoviesRepository {
         response: Result<Unit>,
     ) {
         whenever(
-            mock.insertFavoriteMovie(movie)
+            mock.insertFavoriteMedia(movie)
         ).thenReturn(
             response
         )
@@ -73,7 +73,7 @@ class FakeMoviesRepository {
         response: Result<Boolean>,
     ) {
         whenever(
-            mock.checkIfFavorite(id)
+            mock.checkIfMediaIsFavorite(id)
         ).thenReturn(response)
     }
 
@@ -81,7 +81,7 @@ class FakeMoviesRepository {
         response: Result<Boolean>,
     ) {
         whenever(
-            mock.checkIfFavorite(any())
+            mock.checkIfMediaIsFavorite(any())
         ).thenReturn(response)
     }
 
@@ -90,7 +90,7 @@ class FakeMoviesRepository {
         response: Result<Unit>,
     ) {
         whenever(
-            mock.removeFavoriteMovie(id)
+            mock.removeFavoriteMedia(id)
         ).thenReturn(
             response
         )

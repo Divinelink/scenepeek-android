@@ -25,7 +25,7 @@ class FakeMoviesRepository : MoviesRepository {
         return favoriteMoviesResult
     }
 
-    override fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>> {
+    override fun fetchFavoriteMediaIDs(): Flow<Result<List<Int>>> {
         TODO("Not yet implemented")
     }
 
@@ -37,11 +37,11 @@ class FakeMoviesRepository : MoviesRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeFavoriteMovie(id: Int): Result<Unit> {
+    override suspend fun removeFavoriteMedia(id: Int): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun checkIfFavorite(id: Int): Result<Boolean> {
+    override suspend fun checkIfMediaIsFavorite(id: Int): Result<Boolean> {
         return checkIfFavoriteResult[id]!!
     }
 }

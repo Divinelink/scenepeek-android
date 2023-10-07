@@ -4,22 +4,34 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.model.MediaType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 @Dao
 interface MovieDAO {
 
-  @Query("SELECT * FROM movie UNION SELECT * FROM tv")
+  @Query("SELECT * FROM movie")
   fun fetchFavoriteMovies(): Flow<List<PersistableMovie>>
 
-  @Query("SELECT id FROM movie")
-  fun fetchFavoriteMoviesIds(): Flow<List<Int>>
+  @Query("SELECT * FROM tv")
+  fun fetchFavoriteTVSeries(): Flow<List<PersistableTV>>
 
-  @Insert(
-    onConflict = OnConflictStrategy.REPLACE,
-  )
+  @Query("SELECT id FROM movie")
+  fun fetchFavoriteMovieIds(): Flow<List<Int>>
+
+  @Query("SELECT id FROM tv")
+  fun fetchFavoriteTVIds(): Flow<List<Int>>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertFavoriteMovie(
     movie: PersistableMovie,
+  )
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertFavoriteTV(
+    tv: PersistableTV,
   )
 
   @Query("DELETE FROM movie WHERE id=:id")
@@ -27,8 +39,78 @@ interface MovieDAO {
     id: Int,
   )
 
+  @Query("DELETE FROM tv WHERE id=:id")
+  suspend fun removeFavoriteTV(
+    id: Int,
+  )
+
   @Query("SELECT COUNT(*) FROM movie WHERE id = :id")
   suspend fun checkIfFavorite(
     id: Int,
   ): Int
+
+  @Query("SELECT COUNT(*) FROM tv WHERE id = :id")
+  suspend fun checkIfFavoriteTV(
+    id: Int,
+  ): Int
+}
+
+suspend fun MovieDAO.insertFavoriteMedia(
+  media: MediaItem,
+) {
+  when (media) {
+    is MediaItem.Media.Movie -> insertFavoriteMovie(
+      media.copy(isFavorite = true).toPersistableMovie()
+    )
+    is MediaItem.Media.TV -> insertFavoriteTV(media.copy(isFavorite = true).toPersistableTV())
+    is MediaItem.Person -> TODO()
+    MediaItem.Unknown -> {
+      // Do nothing
+    }
+  }
+}
+
+suspend fun MovieDAO.removeFavoriteMedia(
+  id: Int,
+  mediaType: MediaType,
+) {
+  when (mediaType) {
+    MediaType.MOVIE -> removeFavoriteMovie(id)
+    MediaType.TV -> removeFavoriteTV(id)
+    MediaType.PERSON -> TODO()
+    MediaType.UNKNOWN -> {
+      // Do nothing
+    }
+  }
+}
+
+suspend fun MovieDAO.checkIfMediaIsFavorite(
+  id: Int,
+  mediaType: MediaType,
+): Boolean {
+  return when (mediaType) {
+    MediaType.MOVIE -> checkIfFavorite(id) > 0
+    MediaType.TV -> checkIfFavoriteTV(id) > 0
+    MediaType.PERSON -> TODO()
+    MediaType.UNKNOWN -> false
+  }
+}
+
+fun MovieDAO.fetchFavoriteMediaIDs(): Flow<List<Pair<Int, MediaType>>> {
+  val movieIdsFlow = fetchFavoriteMovieIds()
+  val tvIdsFlow = fetchFavoriteTVIds()
+
+  return movieIdsFlow.combine(tvIdsFlow) { movieIds, tvIds ->
+    val combinedList = mutableListOf<Pair<Int, MediaType>>()
+
+    movieIds.forEach { id ->
+      combinedList.add(id to MediaType.MOVIE)
+    }
+
+    tvIds.forEach {
+      combinedList.add(it to MediaType.TV)
+    }
+
+    combinedList
+  }
 }

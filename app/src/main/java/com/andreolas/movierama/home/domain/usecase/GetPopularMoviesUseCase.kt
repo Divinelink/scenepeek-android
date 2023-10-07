@@ -20,10 +20,10 @@ open class GetPopularMoviesUseCase @Inject constructor(
   override fun execute(
     parameters: PopularRequestApi,
   ): Flow<MultiListResult> {
-    val favoriteMoviesIdsFlow = moviesRepository.fetchFavoriteMoviesIds()
+    val favoriteMediaIdsFlow = moviesRepository.fetchFavoriteIds()
     val popularMoviesFlow = moviesRepository.fetchPopularMovies(parameters)
 
-    return combine(favoriteMoviesIdsFlow, popularMoviesFlow) { favorite, popular ->
+    return combine(favoriteMediaIdsFlow, popularMoviesFlow) { favorite, popular ->
       when {
         favorite is Result.Success && popular is Result.Success -> {
           Result.Success(

@@ -3,6 +3,7 @@ package com.andreolas.movierama.home.domain.usecase
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
@@ -55,17 +56,23 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
 }
 
 fun getMediaWithUpdatedFavoriteStatus(
-  favoriteIds: Result.Success<List<Int>>,
+  favoriteIds: Result.Success<List<Pair<Int, MediaType>>>,
   mediaResult: Result.Success<List<MediaItem>>,
 ): List<MediaItem> {
   return mediaResult.data.map { searchItem ->
     when (searchItem) {
-      is MediaItem.Media.Movie -> favoriteIds.data.find { id -> id == searchItem.id }?.let {
-        searchItem.copy(isFavorite = true)
-      } ?: searchItem
-      is MediaItem.Media.TV -> favoriteIds.data.find { id -> id == searchItem.id }?.let {
-        searchItem.copy(isFavorite = true)
-      } ?: searchItem
+      is MediaItem.Media.Movie -> favoriteIds.data.find { favorite ->
+        val id = favorite.first
+        val mediaType = favorite.second
+
+        id == searchItem.id && mediaType == MediaType.MOVIE
+      }?.let { searchItem.copy(isFavorite = true) } ?: searchItem
+      is MediaItem.Media.TV -> favoriteIds.data.find { favorite ->
+        val id = favorite.first
+        val mediaType = favorite.second
+
+        id == searchItem.id && mediaType == MediaType.TV
+      }?.let { searchItem.copy(isFavorite = true) } ?: searchItem
       is MediaItem.Person -> searchItem
       MediaItem.Unknown -> searchItem
     }

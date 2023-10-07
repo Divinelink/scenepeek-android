@@ -11,6 +11,7 @@ import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.VideosException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
+import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.Result
@@ -38,7 +39,10 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
     val favorite = flow {
       coroutineScope {
-        val result = moviesRepository.checkIfFavorite(requestApi.id)
+        val result = moviesRepository.checkIfMediaIsFavorite(
+          id = requestApi.id,
+          mediaType = MediaType.from(requestApi.endpoint)
+        )
         emit(result)
       }
     }.flowOn(dispatcher)

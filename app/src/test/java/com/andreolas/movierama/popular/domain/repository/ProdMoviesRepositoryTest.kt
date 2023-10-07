@@ -208,7 +208,7 @@ class ProdMoviesRepositoryTest {
     fun `correctly check movie is favorite`() = runTest {
         movieDAO.mockCheckIfFavorite(id = 1, result = 1)
 
-        val result = repository.checkIfFavorite(1)
+        val result = repository.checkIfMediaIsFavorite(1)
 
         assertThat(result).isEqualTo(Result.Success(true))
     }
@@ -217,21 +217,21 @@ class ProdMoviesRepositoryTest {
     fun `correctly check movie is not favorite`() = runTest {
         movieDAO.mockCheckIfFavorite(id = 1, result = 0)
 
-        val result = repository.checkIfFavorite(1)
+        val result = repository.checkIfMediaIsFavorite(1)
 
         assertThat(result).isEqualTo(Result.Success(false))
     }
 
     @Test
     fun testInsertMovie() = runTest {
-        repository.insertFavoriteMovie(movie)
+        repository.insertFavoriteMedia(movie)
 
         movieDAO.verifyInsertFavoriteMovie(persistableMovie)
     }
 
     @Test
     fun testRemoveMovie() = runTest {
-        repository.removeFavoriteMovie(movie.id)
+        repository.removeFavoriteMedia(movie.id)
 
         movieDAO.verifyRemoveMovie(persistableMovie.id)
     }

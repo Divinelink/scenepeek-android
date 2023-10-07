@@ -2,8 +2,8 @@ package com.andreolas.movierama.base.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.andreolas.movierama.base.data.local.popular.MovieDAO
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
+import com.andreolas.movierama.base.data.local.popular.MovieDAO
 import com.andreolas.movierama.base.data.local.popular.PersistableTV
 
 @Database(

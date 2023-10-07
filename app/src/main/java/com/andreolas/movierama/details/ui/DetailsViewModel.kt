@@ -9,7 +9,6 @@ import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
-import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
@@ -43,20 +42,9 @@ class DetailsViewModel @Inject constructor(
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
-      viewState.value.movieDetails?.let { movie ->
-        PopularMovie(
-          id = movie.id,
-          posterPath = movie.posterPath,
-          releaseDate = movie.releaseDate,
-          title = movie.title,
-          rating = movie.rating,
-          overview = movie.overview ?: "",
-          isFavorite = movie.isFavorite,
-        )
-      }?.let { movie ->
-        val result = onMarkAsFavoriteUseCase(
-          parameters = movie,
-        )
+      viewState.value.mediaItem?.let { mediaItem ->
+        val result = onMarkAsFavoriteUseCase(mediaItem)
+
         if (result.succeeded) {
           _viewState.update { viewState ->
             viewState.copy(

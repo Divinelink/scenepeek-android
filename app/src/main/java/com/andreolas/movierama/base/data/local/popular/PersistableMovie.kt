@@ -3,7 +3,6 @@ package com.andreolas.movierama.base.data.local.popular
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.PopularMovie
 
 @Entity(tableName = "movie")
 data class PersistableMovie(
@@ -17,14 +16,14 @@ data class PersistableMovie(
   val overview: String,
 )
 
-internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
+internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie {
   return PersistableMovie(
     id = this.id,
-    title = this.title,
-    posterPath = this.posterPath,
+    title = this.name,
+    posterPath = this.posterPath ?: "",
     releaseDate = this.releaseDate,
     rating = this.rating,
-    isFavorite = this.isFavorite,
+    isFavorite = this.isFavorite ?: false,
     overview = this.overview,
   )
 }

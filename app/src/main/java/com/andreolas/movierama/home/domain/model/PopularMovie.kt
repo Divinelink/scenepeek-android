@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 // FIXME maybe remove this altogether
+@Deprecated("Use MediaItem.Media instead")
 data class PopularMovie(
   val id: Int,
   val posterPath: String,

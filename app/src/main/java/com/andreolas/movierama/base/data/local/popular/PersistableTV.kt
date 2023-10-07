@@ -26,9 +26,11 @@ internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
   overview = this.overview,
 )
 
-internal fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(PersistableTV::toTV)
+internal fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(
+  PersistableTV::toTV
+)
 
-private fun PersistableTV.toTV() = MediaItem.Media.TV(
+internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   id = this.id,
   name = this.title,
   posterPath = this.posterPath,

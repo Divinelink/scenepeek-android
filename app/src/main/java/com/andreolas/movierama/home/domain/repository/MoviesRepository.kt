@@ -4,7 +4,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularReques
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaType
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -30,16 +30,15 @@ interface MoviesRepository {
   fun fetchFavoriteMovies(): Flow<MediaListResult>
 
   /**
-   * Fetch all favorite movie ids.
-   * Uses [Flow] in order to observe changes to our favorite movies list.
+   * Fetch all favorite tv series.
    */
-  fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>>
+  fun fetchFavoriteTVSeries(): Flow<MediaListResult>
 
   /**
-   * Fetch all favorite ids. Movies, series, persons.
+   * Fetch all favorite ids: movies, series and persons.
    * Uses [Flow] in order to observe changes to our favorite list.
    */
-  fun fetchFavoriteIds(): Flow<Result<List<Int>>>
+  fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>>
 
   /**
    * Request movies through a search query. Uses pagination.
@@ -57,20 +56,22 @@ interface MoviesRepository {
   ): Flow<MultiListResult>
 
   /**
-   * Add favorite [movie] to local storage.
+   * Add favorite [media] to local storage.
    */
-  suspend fun insertFavoriteMovie(
-    movie: PopularMovie,
+  suspend fun insertFavoriteMedia(
+    media: MediaItem.Media,
   ): Result<Unit>
 
   /**
    * Remove favorite movie using its [id] from local storage.
    */
-  suspend fun removeFavoriteMovie(
+  suspend fun removeFavoriteMedia(
     id: Int,
+    mediaType: MediaType,
   ): Result<Unit>
 
-  suspend fun checkIfFavorite(
+  suspend fun checkIfMediaIsFavorite(
     id: Int,
+    mediaType: MediaType,
   ): Result<Boolean>
 }

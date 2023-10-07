@@ -25,7 +25,7 @@ open class GetSearchMoviesUseCase @Inject constructor(
   override fun execute(
     parameters: SearchRequestApi,
   ): Flow<Result<SearchResult>> {
-    val favoriteMovies = moviesRepository.fetchFavoriteMoviesIds()
+    val favoriteMovies = moviesRepository.fetchFavoriteIds()
     val searchMovies = moviesRepository.fetchSearchMovies(parameters)
 
     return favoriteMovies
