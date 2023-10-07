@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDAO {
 
-  @Query("SELECT * FROM movie")
+  @Query("SELECT * FROM movie UNION SELECT * FROM tv")
   fun fetchFavoriteMovies(): Flow<List<PersistableMovie>>
 
   @Query("SELECT id FROM movie")

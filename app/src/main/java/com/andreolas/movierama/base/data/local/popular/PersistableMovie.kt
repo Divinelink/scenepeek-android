@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.PopularMovie
 
-@Entity(tableName = "movie") // FIXME rename to media or smt.
+@Entity(tableName = "movie")
 data class PersistableMovie(
   @PrimaryKey
   val id: Int,
@@ -15,7 +15,6 @@ data class PersistableMovie(
   val rating: String,
   val isFavorite: Boolean,
   val overview: String,
-  val mediaType: String,
 )
 
 internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
@@ -27,24 +26,11 @@ internal fun PopularMovie.toPersistableMovie(): PersistableMovie {
     rating = this.rating,
     isFavorite = this.isFavorite,
     overview = this.overview,
-    mediaType = "movie", // FIXME update this when we add tv shows
   )
 }
 
 internal fun List<PersistableMovie>.toDomainMoviesList(): List<MediaItem.Media> {
   return this.map(PersistableMovie::toMovie)
-}
-
-private fun PersistableMovie.toPopularMovie(): PopularMovie {
-  return PopularMovie(
-    id = this.id,
-    posterPath = this.posterPath,
-    releaseDate = this.releaseDate,
-    title = this.title,
-    rating = this.rating,
-    isFavorite = this.isFavorite,
-    overview = this.overview,
-  )
 }
 
 private fun PersistableMovie.toMovie(): MediaItem.Media.Movie {
