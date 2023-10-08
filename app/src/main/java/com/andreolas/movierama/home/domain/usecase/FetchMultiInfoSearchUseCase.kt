@@ -37,8 +37,9 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
         }
         if (favorite is Result.Success && search is Result.Success) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
-            Result.Success(favorite.data),
-            Result.Success(search.data.filterNot { it is MediaItem.Person }) // Filter out persons for now
+            favoriteIds = Result.Success(favorite.data).data,
+            // Filter out persons for now
+            mediaResult = Result.Success(search.data.filterNot { it is MediaItem.Person }).data
           )
           emit(
             Result.Success(
@@ -56,25 +57,21 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
 }
 
 fun getMediaWithUpdatedFavoriteStatus(
-  favoriteIds: Result.Success<List<Pair<Int, MediaType>>>,
-  mediaResult: Result.Success<List<MediaItem>>,
+  favoriteIds: List<Pair<Int, MediaType>>,
+  mediaResult: List<MediaItem>,
 ): List<MediaItem> {
-  return mediaResult.data.map { searchItem ->
-    when (searchItem) {
-      is MediaItem.Media.Movie -> favoriteIds.data.find { favorite ->
-        val id = favorite.first
-        val mediaType = favorite.second
+  val favoriteIdSet = favoriteIds.map { it.first to it.second }.toSet()
 
-        id == searchItem.id && mediaType == MediaType.MOVIE
-      }?.let { searchItem.copy(isFavorite = true) } ?: searchItem
-      is MediaItem.Media.TV -> favoriteIds.data.find { favorite ->
-        val id = favorite.first
-        val mediaType = favorite.second
-
-        id == searchItem.id && mediaType == MediaType.TV
-      }?.let { searchItem.copy(isFavorite = true) } ?: searchItem
-      is MediaItem.Person -> searchItem
-      MediaItem.Unknown -> searchItem
+  return mediaResult.map { mediaItem ->
+    when (mediaItem) {
+      is MediaItem.Media -> {
+        val isFavorite = mediaItem.id to mediaItem.mediaType in favoriteIdSet
+        when (mediaItem) {
+          is MediaItem.Media.Movie -> mediaItem.copy(isFavorite = isFavorite)
+          is MediaItem.Media.TV -> mediaItem.copy(isFavorite = isFavorite)
+        }
+      }
+      is MediaItem.Person, MediaItem.Unknown -> mediaItem
     }
   }
 }

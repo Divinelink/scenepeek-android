@@ -36,8 +36,8 @@ open class GetSearchMoviesUseCase @Inject constructor(
         }
         if (favorite is Result.Success && search is Result.Success) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
-            Result.Success(favorite.data),
-            Result.Success(search.data)
+            Result.Success(favorite.data).data,
+            Result.Success(search.data).data
           )
           emit(
             Result.Success(
