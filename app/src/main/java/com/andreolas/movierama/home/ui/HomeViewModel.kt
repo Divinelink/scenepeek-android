@@ -253,7 +253,8 @@ class HomeViewModel @Inject constructor(
                     isLoading = false,
                     searchResults = updatedSearchList, // cachedSearchResults[query]?.result,
                     emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
-                  )
+                    selectedMedia = updatedSelectedMedia(updatedSearchList, viewState.selectedMedia),
+                    )
                 }
               }
             }
