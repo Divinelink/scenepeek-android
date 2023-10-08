@@ -23,9 +23,9 @@ open class GetFavoriteMoviesUseCase @Inject constructor(
       favoriteTVSeries,
     ) { moviesFlow, tvFlow ->
       if (moviesFlow is Result.Success && tvFlow is Result.Success) {
-        Result.Success(moviesFlow.data + tvFlow.data)
+        emit(Result.Success(moviesFlow.data + tvFlow.data))
       } else {
-        Result.Error(Exception("Something went wrong."))
+        emit(Result.Error(Exception("Something went wrong.")))
       }
     }
   }
