@@ -1,7 +1,9 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.factories.MediaItemFactory
+import com.andreolas.movierama.factories.MediaItemFactory.wizard
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewModel
@@ -22,28 +24,17 @@ class HomeViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val popularMoviesList = (1..10).map {
-    PopularMovie(
-      id = it,
-      posterPath = "",
-      releaseDate = "",
-      title = "",
-      rating = "",
-      isFavorite = false,
-      overview = "test",
-    )
-  }.toMutableList()
+  private val popularMoviesList = (1..10).map { id ->
+    MediaItemFactory.Movie().wizard {
+      withId(id)
+    }
+  }
 
   private val searchMovies = (10..20).map {
-    PopularMovie(
-      id = it,
-      posterPath = "",
-      releaseDate = "",
-      title = "",
-      rating = "",
-      isFavorite = it % 2 == 0,
-      overview = "test",
-    )
+    MediaItemFactory.Movie().wizard {
+      withId(it)
+      withFavorite(it % 2 == 0)
+    }
   }.toMutableList()
 
   @Test
@@ -800,7 +791,7 @@ class HomeViewModelTest {
         )
         .mockFetchFavoriteMovies(
           response = Result.Success(
-            searchMovies.filter { it.isFavorite }
+            searchMovies.filter { it.isFavorite == true }
           )
         )
         .buildViewModel()
@@ -810,7 +801,7 @@ class HomeViewModelTest {
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = searchMovies,
-            filteredResults = searchMovies.filter { it.isFavorite },
+            filteredResults = searchMovies.filter { it.isFavorite == true },
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
           )
@@ -838,7 +829,7 @@ class HomeViewModelTest {
       )
       .mockFetchFavoriteMovies(
         response = Result.Success(
-          searchMovies.filter { it.isFavorite }
+          searchMovies.filter { it.isFavorite == true }
         )
       )
       .buildViewModel()
@@ -848,7 +839,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = searchMovies,
-          filteredResults = searchMovies.filter { it.isFavorite },
+          filteredResults = searchMovies.filter { it.isFavorite == true },
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
         )
@@ -885,17 +876,11 @@ class HomeViewModelTest {
       )
   }
 
-  private fun loadData(starting: Int, ending: Int): List<PopularMovie> {
+  private fun loadData(starting: Int, ending: Int): List<MediaItem.Media.Movie> {
     return (starting..ending).map {
-      PopularMovie(
-        id = it,
-        posterPath = "",
-        releaseDate = "",
-        title = "",
-        rating = "",
-        isFavorite = false,
-        overview = "test",
-      )
+      MediaItemFactory.Movie().wizard {
+        withId(it)
+      }
     }.toList()
   }
 }

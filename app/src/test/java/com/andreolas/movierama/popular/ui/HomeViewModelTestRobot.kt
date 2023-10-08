@@ -5,8 +5,8 @@ import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.repository.MoviesListResult
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.repository.MediaListResult
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
@@ -31,7 +31,7 @@ class HomeViewModelTestRobot {
   fun buildViewModel() = apply {
     viewModel = HomeViewModel(
       getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
-      getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
+      fetchMultiInfoSearchUseCase = TODO(),
       getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
       markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
     )
@@ -50,7 +50,7 @@ class HomeViewModelTestRobot {
   }
 
   fun mockFetchPopularMovies(
-    response: MoviesListResult,
+    response: MediaListResult,
   ) = apply {
     fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
       response = response,
@@ -58,7 +58,7 @@ class HomeViewModelTestRobot {
   }
 
   fun mockFetchFavoriteMovies(
-    response: MoviesListResult,
+    response: MediaListResult,
   ) = apply {
     fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
       response = response,
@@ -85,7 +85,7 @@ class HomeViewModelTestRobot {
     viewModel.onLoadNextPage()
   }
 
-  fun onMovieClicked(movie: PopularMovie) = apply {
+  fun onMovieClicked(movie: MediaItem.Media) = apply {
     viewModel.onMovieClicked(movie)
   }
 
@@ -93,7 +93,7 @@ class HomeViewModelTestRobot {
     viewModel.onSwipeDown()
   }
 
-  fun onMarkAsFavorite(movie: PopularMovie) = apply {
+  fun onMarkAsFavorite(movie: MediaItem.Media) = apply {
     viewModel.onMarkAsFavoriteClicked(movie)
   }
 

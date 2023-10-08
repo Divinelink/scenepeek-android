@@ -43,7 +43,7 @@ class MarkAsFavoriteUseCaseTest {
         val expectedResult = Result.Success(Unit)
 
         repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+            media = remoteMovies[2],
             response = Result.Success(Unit)
         )
 
@@ -66,7 +66,7 @@ class MarkAsFavoriteUseCaseTest {
         val expectedResult = Result.Error(Exception("Failed to mark as favorite."))
 
         repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+            media = remoteMovies[2],
             response = Result.Error(Exception())
         )
 
@@ -84,7 +84,7 @@ class MarkAsFavoriteUseCaseTest {
         val expectedResult = Result.Error(IllegalStateException())
 
         repository.mockMarkAsFavorite(
-            movie = remoteMovies[2],
+            media = remoteMovies[2],
             response = Result.Loading
         )
 

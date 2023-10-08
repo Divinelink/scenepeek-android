@@ -30,7 +30,7 @@ sealed class MediaItem(
       override val releaseDate: String,
       override val rating: String,
       override val overview: String,
-      override val isFavorite: Boolean?,
+      override val isFavorite: Boolean?, // TODO: Remove nullable and add visibility state instead.
     ) : Media(
       id = id,
       posterPath = posterPath,
@@ -49,7 +49,7 @@ sealed class MediaItem(
       override val releaseDate: String,
       override val rating: String,
       override val overview: String,
-      override val isFavorite: Boolean?,
+      override val isFavorite: Boolean?, // TODO: Remove nullable and add visibility state instead.
     ) : Media(
       id = id,
       posterPath = posterPath,

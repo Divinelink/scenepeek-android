@@ -87,13 +87,11 @@ suspend fun MovieDAO.removeFavoriteMedia(
 suspend fun MovieDAO.checkIfMediaIsFavorite(
   id: Int,
   mediaType: MediaType,
-): Boolean {
-  return when (mediaType) {
-    MediaType.MOVIE -> checkIfFavorite(id) > 0
-    MediaType.TV -> checkIfFavoriteTV(id) > 0
-    MediaType.PERSON -> TODO()
-    MediaType.UNKNOWN -> false
-  }
+): Boolean = when (mediaType) {
+  MediaType.MOVIE -> checkIfFavorite(id) > 0
+  MediaType.TV -> checkIfFavoriteTV(id) > 0
+  MediaType.PERSON -> TODO()
+  MediaType.UNKNOWN -> false
 }
 
 fun MovieDAO.fetchFavoriteMediaIDs(): Flow<List<Pair<Int, MediaType>>> {
