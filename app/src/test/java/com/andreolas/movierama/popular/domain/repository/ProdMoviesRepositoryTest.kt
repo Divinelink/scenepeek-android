@@ -1,13 +1,14 @@
 package com.andreolas.movierama.popular.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.factories.MediaItemFactory
+import com.andreolas.movierama.factories.MediaItemFactory.toWizard
+import com.andreolas.movierama.factories.api.PopularMovieApiFactory
+import com.andreolas.movierama.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.MediaType
@@ -23,7 +24,9 @@ import org.junit.Test
 
 class ProdMoviesRepositoryTest {
 
-  private val movie = MediaItemFactory.Movie()
+  private val movie = MediaItemFactory.Movie().toWizard {
+    withFavorite(true)
+  }
 
   private val persistableMovie = PersistableMovie(
     id = 1,
@@ -32,53 +35,19 @@ class ProdMoviesRepositoryTest {
     title = "movie - name",
     rating = "10",
     overview = "overview",
-    isFavorite = false,
+    isFavorite = true,
   )
 
   private val apiPopularResponse = PopularResponseApi(
     page = 1,
-    results = (1..10).map {
-      PopularMovieApi(
-        adult = false,
-        backdropPath = "",
-        genreIds = listOf(),
-        id = it,
-        originalLanguage = "",
-        originalTitle = "",
-        overview = "",
-        popularity = 0.0,
-        posterPath = "",
-        releaseDate = "",
-        title = "",
-        video = false,
-        voteAverage = 0.0,
-        voteCount = 0
-      )
-    }.toList(),
+    results = PopularMovieApiFactory.EmptyList(),
     totalPages = 0,
     totalResults = 0
   )
 
   private val apiSearchResponse = SearchResponseApi(
     page = 1,
-    results = (1..10).map {
-      SearchMovieApi(
-        adult = false,
-        backdropPath = "",
-        genreIds = listOf(),
-        id = it,
-        originalLanguage = "",
-        originalTitle = "",
-        overview = "",
-        popularity = 0.0,
-        posterPath = "",
-        releaseDate = "",
-        title = "",
-        video = false,
-        voteAverage = 0.0,
-        voteCount = 0
-      )
-    }.toList(),
+    results = SearchMovieApiFactory.EmptyList(),
     totalPages = 0,
     totalResults = 0
   )

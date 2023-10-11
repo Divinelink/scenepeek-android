@@ -14,75 +14,75 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class SetRemoteConfigUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var useCase: SetRemoteConfigUseCase
+  private lateinit var useCase: SetRemoteConfigUseCase
 
-    private val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
+  private val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
 
-    @Test
-    fun `should return success when remote config is fetched successfully`() = runTest {
-        val apiKey = "12345"
-        val fakeRemoteConfig = FakeRemoteConfig()
+  @Test
+  fun `should return success when remote config is fetched successfully`() = runTest {
+    val apiKey = "12345"
+    val fakeRemoteConfig = FakeRemoteConfig()
 
-        fakeRemoteConfig.mockFetchAndActivate(true)
-        fakeRemoteConfig.mockGetApiKey("tmdb_api_key", apiKey)
+    fakeRemoteConfig.mockFetchAndActivate(true)
+    fakeRemoteConfig.mockGetApiKey("tmdb_auth_token", apiKey)
 
-        useCase = SetRemoteConfigUseCase(
-            firebaseRemoteConfig = fakeRemoteConfig.mock,
-            encryptedPreferenceStorage = encryptedPreferenceStorage,
-            dispatcher = testDispatcher,
-        )
+    useCase = SetRemoteConfigUseCase(
+      firebaseRemoteConfig = fakeRemoteConfig.mock,
+      encryptedPreferenceStorage = encryptedPreferenceStorage,
+      dispatcher = testDispatcher,
+    )
 
-        val result = useCase.invoke(Unit)
+    val result = useCase.invoke(Unit)
 
-        assertThat(result).isEqualTo(
-            Result.Success(Unit)
-        )
+    assertThat(result).isEqualTo(
+      Result.Success(Unit)
+    )
 
-        assertThat(
-            encryptedPreferenceStorage.tmdbAuthToken
-        ).isEqualTo(
-            apiKey
-        )
-    }
+    assertThat(
+      encryptedPreferenceStorage.tmdbAuthToken
+    ).isEqualTo(
+      apiKey
+    )
+  }
 
-    @Test
-    fun `should return error when remote config is not fetched successfully`() = runTest {
-        val fakeRemoteConfig = FakeRemoteConfig()
+  @Test
+  fun `should return error when remote config is not fetched successfully`() = runTest {
+    val fakeRemoteConfig = FakeRemoteConfig()
 
-        fakeRemoteConfig.mockFetchAndActivate(false)
+    fakeRemoteConfig.mockFetchAndActivate(false)
 
-        useCase = SetRemoteConfigUseCase(
-            firebaseRemoteConfig = fakeRemoteConfig.mock,
-            encryptedPreferenceStorage = encryptedPreferenceStorage,
-            dispatcher = testDispatcher,
-        )
+    useCase = SetRemoteConfigUseCase(
+      firebaseRemoteConfig = fakeRemoteConfig.mock,
+      encryptedPreferenceStorage = encryptedPreferenceStorage,
+      dispatcher = testDispatcher,
+    )
 
-        val result = useCase.invoke(Unit)
+    val result = useCase.invoke(Unit)
 
-        assertThat(result).isInstanceOf(
-            Result.Error(Exception("Couldn't fetch api key."))::class.java
-        )
-    }
+    assertThat(result).isInstanceOf(
+      Result.Error(Exception("Couldn't fetch api key."))::class.java
+    )
+  }
 
-    @Test
-    fun `should return error when remote config has exception`() = runTest {
-        val fakeRemoteConfig = FakeRemoteConfig()
-        fakeRemoteConfig.mockException(Exception("General Error."))
+  @Test
+  fun `should return error when remote config has exception`() = runTest {
+    val fakeRemoteConfig = FakeRemoteConfig()
+    fakeRemoteConfig.mockException(Exception("General Error."))
 
-        useCase = SetRemoteConfigUseCase(
-            firebaseRemoteConfig = fakeRemoteConfig.mock,
-            encryptedPreferenceStorage = encryptedPreferenceStorage,
-            dispatcher = testDispatcher,
-        )
+    useCase = SetRemoteConfigUseCase(
+      firebaseRemoteConfig = fakeRemoteConfig.mock,
+      encryptedPreferenceStorage = encryptedPreferenceStorage,
+      dispatcher = testDispatcher,
+    )
 
-        val result = useCase.invoke(Unit)
+    val result = useCase.invoke(Unit)
 
-        assertThat(result).isInstanceOf(
-            Result.Error(Exception("General Εrror."))::class.java
-        )
-    }
+    assertThat(result).isInstanceOf(
+      Result.Error(Exception("General Εrror."))::class.java
+    )
+  }
 }

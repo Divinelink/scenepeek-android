@@ -3,7 +3,7 @@ package com.andreolas.movierama.search.domain.usecase
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.wizard
+import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
@@ -31,7 +31,7 @@ class GetSearchMoviesUseCaseTest {
 
   // Movies with id 1, 3, 5, 7, 9 are marked as favorite.
   private val localFavoriteMovies = MediaItemFactory.MoviesList(1..10 step 2).map {
-    it.wizard { withFavorite(true) }
+    it.toWizard { withFavorite(true) }
   }
 
   private val searchResult = MediaItemFactory.MoviesList()

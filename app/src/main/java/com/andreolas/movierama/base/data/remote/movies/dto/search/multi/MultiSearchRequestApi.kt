@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MultiSearchRequestApi(
-    val query: String,
-    val page: Int,
+  val query: String,
+  val page: Int,
 )

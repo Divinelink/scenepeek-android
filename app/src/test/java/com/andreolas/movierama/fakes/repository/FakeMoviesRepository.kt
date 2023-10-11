@@ -26,6 +26,16 @@ class FakeMoviesRepository {
     )
   }
 
+  fun mockFetchFavoriteTVSeries(
+    response: MediaListResult,
+  ) {
+    whenever(
+      mock.fetchFavoriteTVSeries()
+    ).thenReturn(
+      flowOf(response)
+    )
+  }
+
   fun mockFetchFavoriteMoviesIds(
     response: Result<List<Pair<Int, MediaType>>>,
   ) {

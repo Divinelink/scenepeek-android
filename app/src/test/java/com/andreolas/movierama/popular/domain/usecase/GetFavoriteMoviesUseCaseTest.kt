@@ -2,7 +2,7 @@ package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.wizard
+import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
@@ -29,7 +29,7 @@ class GetFavoriteMoviesUseCaseTest {
   }
 
   private val favorites = MediaItemFactory.MoviesList(1..6).map { movie ->
-    movie.wizard {
+    movie.toWizard {
       withFavorite(true)
     }
   }
@@ -40,6 +40,9 @@ class GetFavoriteMoviesUseCaseTest {
 
     repository.mockFetchFavoriteMovies(
       response = Result.Success(favorites)
+    )
+    repository.mockFetchFavoriteTVSeries(
+      response = Result.Success(emptyList())
     )
 
     val useCase = GetFavoriteMoviesUseCase(

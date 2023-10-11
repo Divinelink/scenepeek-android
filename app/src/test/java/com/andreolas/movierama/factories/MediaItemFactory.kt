@@ -26,27 +26,29 @@ object MediaItemFactory {
 
   fun MoviesList(
     range: IntProgression = 1..10,
-  ): List<MediaItem.Media.Movie> = (range).map {
+  ): List<MediaItem.Media.Movie> = range.map {
     MediaItem.Media.Movie(
       id = it,
       posterPath = "movie $it - posterPath",
       releaseDate = "movie $it - releaseDate",
-      name = "movie $it  - name",
-      rating = it.toString(),
+      name = "movie $it - name",
+      rating = "$it.0",
       overview = "overview $it",
-      isFavorite = it % 2 == 0,
+      isFavorite = false,
     )
   }
 
-  fun TVList(): List<MediaItem.Media.TV> = (1..10).map {
+  fun TVList(
+    range: IntProgression = 1..10,
+  ): List<MediaItem.Media.TV> = range.map {
     MediaItem.Media.TV(
       id = it,
       posterPath = "tv $it - posterPath",
       releaseDate = "tv $it - releaseDate",
       name = "tv $it  - name",
-      rating = it.toString(),
+      rating = "$it.0",
       overview = "overview $it",
-      isFavorite = it % 2 == 0,
+      isFavorite = false,
     )
   }
 
@@ -76,7 +78,7 @@ object MediaItemFactory {
       mediaItem = mediaItem.copy(overview = overview)
     }
 
-    fun withFavorite(isFavorite: Boolean) = apply {
+    fun withFavorite(isFavorite: Boolean?) = apply {
       mediaItem = mediaItem.copy(isFavorite = isFavorite)
     }
 
@@ -116,9 +118,9 @@ object MediaItemFactory {
     fun build(): MediaItem.Media.TV = mediaItem
   }
 
-  fun MediaItem.Media.TV.wizard(block: TVMediaItemFactoryWizard.() -> Unit) =
+  fun MediaItem.Media.TV.toWizard(block: TVMediaItemFactoryWizard.() -> Unit) =
     TVMediaItemFactoryWizard(this).apply(block).build()
 
-  fun MediaItem.Media.Movie.wizard(block: MovieMediaItemFactoryWizard.() -> Unit) =
+  fun MediaItem.Media.Movie.toWizard(block: MovieMediaItemFactoryWizard.() -> Unit) =
     MovieMediaItemFactoryWizard(this).apply(block).build()
 }

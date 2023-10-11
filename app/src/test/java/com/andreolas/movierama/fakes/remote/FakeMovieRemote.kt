@@ -19,71 +19,71 @@ import org.mockito.kotlin.whenever
 
 class FakeMovieRemote {
 
-    val mock: MovieService = mock()
+  val mock: MovieService = mock()
 
-    fun mockFetchPopularMovies(
-        request: PopularRequestApi,
-        result: Flow<PopularResponseApi>,
-    ) {
-        whenever(
-            mock.fetchPopularMovies(request)
-        ).thenReturn(
-            result
-        )
-    }
+  fun mockFetchPopularMovies(
+    request: PopularRequestApi,
+    result: Flow<PopularResponseApi>,
+  ) {
+    whenever(
+      mock.fetchPopularMovies(request)
+    ).thenReturn(
+      result
+    )
+  }
 
-    fun mockFetchSearchMovies(
-        request: SearchRequestApi,
-        result: Flow<SearchResponseApi>,
-    ) {
-        whenever(
-            mock.fetchSearchMovies(request)
-        ).thenReturn(
-            result
-        )
-    }
+  fun mockFetchSearchMovies(
+    request: SearchRequestApi,
+    result: Flow<SearchResponseApi>,
+  ) {
+    whenever(
+      mock.fetchSearchMovies(request)
+    ).thenReturn(
+      result
+    )
+  }
 
-    fun mockFetchMovieDetails(
-        request: DetailsRequestApi,
-        response: Flow<DetailsResponseApi>,
-    ) {
-        whenever(
-            mock.fetchDetails(request)
-        ).thenReturn(
-            response
-        )
-    }
+  fun mockFetchMovieDetails(
+    request: DetailsRequestApi,
+    response: Flow<DetailsResponseApi>,
+  ) {
+    whenever(
+      mock.fetchDetails(request)
+    ).thenReturn(
+      response
+    )
+  }
 
-    fun mockFetchMovieReviews(
-        request: ReviewsRequestApi,
-        response: Flow<ReviewsResponseApi>,
-    ) {
-        whenever(
-            mock.fetchReviews(request)
-        ).thenReturn(
-            response
-        )
-    }
+  fun mockFetchMovieReviews(
+    request: ReviewsRequestApi,
+    response: Flow<ReviewsResponseApi>,
+  ) {
+    whenever(
+      mock.fetchReviews(request)
+    ).thenReturn(
+      response
+    )
+  }
 
-    fun mockFetchSimilarMovies(
-        request: SimilarRequestApi,
-        response: Flow<SimilarResponseApi>,
-    ) {
-        whenever(
-            mock.fetchSimilarMovies(request)
-        ).thenReturn(
-            response
-        )
-    }
+  fun mockFetchSimilarMovies(
+    request: SimilarRequestApi,
+    response: Flow<SimilarResponseApi>,
+  ) {
+    whenever(
+      mock.fetchSimilarMovies(request)
+    ).thenReturn(
+      response
+    )
+  }
 
-    fun mockFetchMovieVideos(
-        request: VideosRequestApi,
-        response: Flow<VideosResponseApi>,
-    ) {
-        whenever(
-            mock.fetchVideos(request)
-        ).thenReturn(
-            response
-        )
-    }
+  fun mockFetchMovieVideos(
+    request: VideosRequestApi,
+    response: Flow<VideosResponseApi>,
+  ) {
+    whenever(
+      mock.fetchVideos(request)
+    ).thenReturn(
+      response
+    )
+  }
 }

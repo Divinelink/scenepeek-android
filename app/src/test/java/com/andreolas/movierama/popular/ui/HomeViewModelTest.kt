@@ -2,7 +2,7 @@ package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.wizard
+import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
@@ -869,7 +869,7 @@ class HomeViewModelTest {
 
   private fun loadData(starting: Int, ending: Int): List<MediaItem.Media.Movie> {
     return (starting..ending).map {
-      MediaItemFactory.Movie().wizard {
+      MediaItemFactory.Movie().toWizard {
         withId(it)
       }
     }.toList()

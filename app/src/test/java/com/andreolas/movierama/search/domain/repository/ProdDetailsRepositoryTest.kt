@@ -27,7 +27,7 @@ import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.factories.MediaDetailsFactory
 import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.wizard
+import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.factories.ReviewFactory
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.google.common.truth.Truth.assertThat
@@ -284,12 +284,13 @@ class ProdDetailsRepositoryTest {
     val request = SimilarRequestApi.Movie(movieId = 555)
 
     val expectedResult = MediaItemFactory.MoviesList().map { movie ->
-      movie.wizard {
+      movie.toWizard {
         withPosterPath(posterPath = if (movie.id % 2 == 0) ".jpg" else null)
         withReleaseDate(releaseDate = (2000 + movie.id).toString())
         withName(name = "Lorem Ipsum title")
         withRating(rating = "9.9")
         withOverview(overview = "Lorem Ipsum ${movie.id}")
+        withFavorite(null)
       }
     }
 

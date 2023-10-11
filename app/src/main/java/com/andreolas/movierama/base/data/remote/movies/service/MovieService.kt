@@ -26,6 +26,7 @@ interface MovieService {
     request: MultiSearchRequestApi,
   ): Flow<MultiSearchResponseApi>
 
+  @Deprecated("Use fetchMultiInfo instead")
   fun fetchSearchMovies(
     request: SearchRequestApi,
   ): Flow<SearchResponseApi>

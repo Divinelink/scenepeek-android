@@ -66,6 +66,7 @@ class ProdMoviesRepository @Inject constructor(
       flowOf(Result.Error(Exception(exception.message)))
     }
 
+  @Deprecated("Use fetchMultiInfo instead")
   override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> {
     return movieRemote
       .fetchSearchMovies(request)
