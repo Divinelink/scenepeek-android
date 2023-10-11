@@ -14,8 +14,8 @@ object MediaItemFactory {
     isFavorite = false,
   )
 
-  fun TV(id: Int): MediaItem.Media.TV = MediaItem.Media.TV(
-    id = id,
+  fun TV(): MediaItem.Media.TV = MediaItem.Media.TV(
+    id = 1,
     posterPath = "tv - posterPath",
     releaseDate = "tv - releaseDate",
     name = "tv - name",
@@ -23,6 +23,32 @@ object MediaItemFactory {
     overview = "overview",
     isFavorite = false,
   )
+
+  fun MoviesList(
+    range: IntProgression = 1..10,
+  ): List<MediaItem.Media.Movie> = (range).map {
+    MediaItem.Media.Movie(
+      id = it,
+      posterPath = "movie $it - posterPath",
+      releaseDate = "movie $it - releaseDate",
+      name = "movie $it  - name",
+      rating = it.toString(),
+      overview = "overview $it",
+      isFavorite = it % 2 == 0,
+    )
+  }
+
+  fun TVList(): List<MediaItem.Media.TV> = (1..10).map {
+    MediaItem.Media.TV(
+      id = it,
+      posterPath = "tv $it - posterPath",
+      releaseDate = "tv $it - releaseDate",
+      name = "tv $it  - name",
+      rating = it.toString(),
+      overview = "overview $it",
+      isFavorite = it % 2 == 0,
+    )
+  }
 
   class MovieMediaItemFactoryWizard(private var mediaItem: MediaItem.Media.Movie) {
 
@@ -83,7 +109,7 @@ object MediaItemFactory {
       mediaItem = mediaItem.copy(overview = overview)
     }
 
-    fun withIsFavorite(isFavorite: Boolean) = apply {
+    fun withFavorite(isFavorite: Boolean) = apply {
       mediaItem = mediaItem.copy(isFavorite = isFavorite)
     }
 

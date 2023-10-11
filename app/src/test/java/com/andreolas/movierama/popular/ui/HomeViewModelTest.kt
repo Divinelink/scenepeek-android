@@ -24,18 +24,9 @@ class HomeViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val popularMoviesList = (1..10).map { id ->
-    MediaItemFactory.Movie().wizard {
-      withId(id)
-    }
-  }
+  private val popularMoviesList = MediaItemFactory.MoviesList()
 
-  private val searchMovies = (10..20).map {
-    MediaItemFactory.Movie().wizard {
-      withId(it)
-      withFavorite(it % 2 == 0)
-    }
-  }.toMutableList()
+  private val searchMovies = MediaItemFactory.MoviesList(10..20)
 
   @Test
   fun `successful initialise viewModel`() = runTest {
