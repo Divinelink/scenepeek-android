@@ -15,7 +15,7 @@ object ActorFactory {
   fun AaronPaul() = Actor(
     id = 20,
     name = "Aaron Paul",
-    profilePath = "Aaraon_paul.jpg",
+    profilePath = "Aaron_paul.jpg",
     character = "Jessee Pinkman",
     order = 1
   )

@@ -1,17 +1,9 @@
 package com.andreolas.movierama.search.domain.repository
 
 import app.cash.turbine.test
-import com.andreolas.movierama.base.data.remote.movies.dto.details.Credits
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.Genre
-import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Cast
-import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.AuthorDetailsApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewResultsApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarMovieApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideoResultsApi
@@ -29,6 +21,9 @@ import com.andreolas.movierama.factories.MediaDetailsFactory
 import com.andreolas.movierama.factories.MediaItemFactory
 import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.factories.ReviewFactory
+import com.andreolas.movierama.factories.api.DetailsResponseApiFactory
+import com.andreolas.movierama.factories.api.ReviewsResultsApiFactory
+import com.andreolas.movierama.factories.api.SimilarMovieApiFactory
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
@@ -42,146 +37,19 @@ class ProdDetailsRepositoryTest {
 
   private val movieDetails = MediaDetailsFactory.FightClub()
 
-  // TODO Make a factory for this API
-  private val detailsResponseApi = DetailsResponseApi.Movie(
-    adult = false,
-    backdropPath = "",
-    belongToCollection = null,
-    budget = 0,
-    genres = listOf(
-      Genre(id = 0, name = "Thriller"),
-      Genre(id = 1, name = "Drama"),
-      Genre(id = 2, name = "Comedy"),
-    ),
-    homepage = null,
-    id = 1123,
-    imdbId = null,
-    originalLanguage = "",
-    originalTitle = "",
-    overview = "This movie is good.",
-    popularity = 0.0,
-    posterPath = "123456",
-    productionCompanies = listOf(),
-    productionCountries = listOf(),
-    releaseDate = "2022",
-    revenue = 0,
-    runtime = 130,
-    spokenLanguage = listOf(),
-    status = null,
-    tagline = "",
-    title = "Flight Club",
-    video = false,
-    voteAverage = 9.5,
-    voteCount = 0,
-    credits = Credits(
-      cast = listOf(
-        Cast.Movie(
-          adult = false,
-          castId = 10,
-          character = "HelloJohnny",
-          creditId = "",
-          gender = 0,
-          id = 10,
-          knownForDepartment = "",
-          name = "Jack",
-          order = 0,
-          originalName = "",
-          popularity = 0.0,
-          profilePath = "AllWorkAndNoPlay.jpg"
-        ),
-        Cast.Movie(
-          adult = false,
-          castId = 10,
-          character = "McMurphy",
-          creditId = "",
-          gender = 0,
-          id = 20,
-          knownForDepartment = "",
-          name = "Nicholson",
-          order = 1,
-          originalName = "",
-          popularity = 0.0,
-          profilePath = "Cuckoo.jpg"
-        )
-      ),
-      crew = listOf(
-        Crew(
-          adult = false,
-          creditId = "",
-          department = "",
-          gender = 0,
-          id = 123443321,
-          job = "Director",
-          knownForDepartment = "",
-          name = "Forest Gump",
-          originalName = "",
-          popularity = 0.0,
-          profilePath = "BoxOfChocolates.jpg"
-        ),
-        Crew(
-          adult = false,
-          creditId = "",
-          department = "",
-          gender = 0,
-          id = 123443321,
-          job = "Guy with an irrelevant job",
-          knownForDepartment = "",
-          name = "The one for the sound",
-          originalName = "Boomer",
-          popularity = 0.0,
-          profilePath = "BoxOfChocolates.jpg"
-        )
-      )
-    )
-  )
-
-  private val reviewsResultsApi = ReviewResultsApi(
-    author = "AuthorName",
-    authorDetails = AuthorDetailsApi(
-      avatarPath = "avatar.jpg",
-      name = "testing",
-      rating = 10.0,
-      username = "testing"
-    ),
-    content = "Lorem ipsum test",
-    createdAt = "2017-02-13T23:16:19.538Z",
-    id = "",
-    updatedAt = "",
-    url = "",
-  )
+  private val detailsResponseApi = DetailsResponseApiFactory.Movie()
 
   private val reviewsResponseApi = ReviewsResponseApi(
     id = 1,
     page = 1,
-    results = listOf(
-      reviewsResultsApi,
-      reviewsResultsApi,
-      reviewsResultsApi,
-    ),
+    results = ReviewsResultsApiFactory.all(),
     totalPages = 1,
     totalResults = 3,
   )
 
-  private val expectedReviews = ReviewFactory.ReviewList(1..3)
+  private val expectedReviews = ReviewFactory.all()
 
-  private val similarMovieApiList = (1..10).map {
-    SimilarMovieApi(
-      id = it,
-      adult = false,
-      backdropPath = if (it % 2 == 0) "backdrop.jpg" else null,
-      genreIds = listOf(it),
-      originalLanguage = "Lorem Ipsum language $it",
-      originalTitle = "Lorem Ipsum title $it",
-      overview = "Lorem Ipsum $it",
-      popularity = it.toDouble(),
-      posterPath = if (it % 2 == 0) ".jpg" else null,
-      releaseDate = (2000 + it).toString(),
-      title = "Lorem Ipsum title",
-      video = false,
-      voteAverage = 9.85444334,
-      voteCount = null
-    )
-  }.toList()
+  private val similarMovieApiList = SimilarMovieApiFactory.SimilarMovieApiList()
 
   private val similarResponseApi = SimilarResponseApi(
     page = 1,

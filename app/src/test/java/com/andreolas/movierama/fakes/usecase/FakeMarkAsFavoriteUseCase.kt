@@ -8,11 +8,11 @@ import org.mockito.kotlin.whenever
 
 class FakeMarkAsFavoriteUseCase {
 
-    val mock: MarkAsFavoriteUseCase = mock()
+  val mock: MarkAsFavoriteUseCase = mock()
 
-    suspend fun mockMarkAsFavoriteResult(
-        result: Result<Unit>,
-    ) {
-        whenever(mock(any())).thenReturn(result)
-    }
+  suspend fun mockMarkAsFavoriteResult(
+    result: Result<Unit>,
+  ) {
+    whenever(mock(any())).thenReturn(result)
+  }
 }

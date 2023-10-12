@@ -1,13 +1,13 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
-import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MediaListResult
-import com.andreolas.movierama.home.domain.usecase.SearchResult
+import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat
@@ -25,13 +25,13 @@ class HomeViewModelTestRobot {
 
   private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-  private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
   private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
+  private val fakeFetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
 
   fun buildViewModel() = apply {
     viewModel = HomeViewModel(
       getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
-      fetchMultiInfoSearchUseCase = TODO(),
+      fetchMultiInfoSearchUseCase = fakeFetchMultiInfoSearchUseCase.mock,
       getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
       markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
     )
@@ -65,10 +65,10 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun mockFetchSearchMovies(
-    response: Result<SearchResult>,
+  fun mockFetchSearchMedia(
+    response: Result<MultiSearchResult>,
   ) = apply {
-    fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
+    fakeFetchMultiInfoSearchUseCase.mockFetchMultiInfoSearch(
       response = response,
     )
   }

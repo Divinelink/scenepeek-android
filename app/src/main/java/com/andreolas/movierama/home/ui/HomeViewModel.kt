@@ -123,10 +123,10 @@ class HomeViewModel @Inject constructor(
   }
 
   fun onMarkAsFavoriteClicked(movie: MediaItem) {
-    if (movie is MediaItem.Media) {
-      viewModelScope.launch {
-        markAsFavoriteUseCase(movie)
-      }
+    if (movie !is MediaItem.Media) return
+
+    viewModelScope.launch {
+      markAsFavoriteUseCase(movie)
     }
   }
 
@@ -253,8 +253,11 @@ class HomeViewModel @Inject constructor(
                     isLoading = false,
                     searchResults = updatedSearchList, // cachedSearchResults[query]?.result,
                     emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
-                    selectedMedia = updatedSelectedMedia(updatedSearchList, viewState.selectedMedia),
-                    )
+                    selectedMedia = updatedSelectedMedia(
+                      updatedSearchList,
+                      viewState.selectedMedia
+                    ),
+                  )
                 }
               }
             }

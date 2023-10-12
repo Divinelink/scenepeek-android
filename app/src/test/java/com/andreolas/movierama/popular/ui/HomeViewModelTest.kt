@@ -4,6 +4,7 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.factories.MediaItemFactory
 import com.andreolas.movierama.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewModel
@@ -31,6 +32,7 @@ class HomeViewModelTest {
   @Test
   fun `successful initialise viewModel`() = runTest {
     testRobot
+      .mockFetchPopularMovies(Result.Loading)
       .buildViewModel()
       .assertViewState(
         HomeViewState(
@@ -240,9 +242,9 @@ class HomeViewModelTest {
   fun `Given Search Data, when I searchMovies then I expect Success Result`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(emptyList()))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          SearchResult(
+          MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
           )
@@ -278,9 +280,9 @@ class HomeViewModelTest {
   fun `search job is correctly delayed when user types fast`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(emptyList()))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          SearchResult(
+          MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
           )
@@ -327,9 +329,9 @@ class HomeViewModelTest {
   fun `clearing query successfully cancels search job`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(emptyList()))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          SearchResult(
+          MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
           )
@@ -375,9 +377,9 @@ class HomeViewModelTest {
   fun `clearing query successfully loads cached movies`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          data = SearchResult(
+          data = MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
           )
@@ -434,7 +436,7 @@ class HomeViewModelTest {
   fun `given loading state when I search then I expect SearchLoading to be true`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMovies(Result.Loading)
+      .mockFetchSearchMedia(Result.Loading)
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -463,7 +465,7 @@ class HomeViewModelTest {
   fun `given error state when I search then I expect Error Result`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMovies(Result.Error(Exception("Oops.")))
+      .mockFetchSearchMedia(Result.Error(Exception("Oops.")))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -493,9 +495,9 @@ class HomeViewModelTest {
   fun `given empty search results when I search then I emptyResult`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          SearchResult(
+          MultiSearchResult(
             query = "test query",
             searchList = emptyList(),
           )
@@ -531,9 +533,9 @@ class HomeViewModelTest {
     runTest {
       testRobot
         .mockFetchPopularMovies(Result.Success(popularMoviesList))
-        .mockFetchSearchMovies(
+        .mockFetchSearchMedia(
           response = Result.Success(
-            SearchResult(
+            MultiSearchResult(
               query = "test query",
               searchList = searchMovies,
             )
@@ -582,9 +584,9 @@ class HomeViewModelTest {
   fun `given empty query when onSearchMovies then I expect onClearClicked`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMovies(
+      .mockFetchSearchMedia(
         response = Result.Success(
-          SearchResult(
+          MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
           )
