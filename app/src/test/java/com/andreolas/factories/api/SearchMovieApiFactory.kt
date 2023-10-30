@@ -37,7 +37,7 @@ object SearchMovieApiFactory {
       releaseDate = "movie $it - releaseDate",
       title = "movie $it - name",
       video = false,
-      voteAverage = it.toDouble(),
+      voteAverage = it + 0.713,
       voteCount = null
     )
   }

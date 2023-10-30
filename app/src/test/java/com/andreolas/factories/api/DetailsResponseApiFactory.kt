@@ -30,7 +30,7 @@ object DetailsResponseApiFactory {
     tagline = "",
     title = "Flight Club",
     video = false,
-    voteAverage = 9.5,
+    voteAverage = 7.316,
     voteCount = 0,
     credits = CreditsFactory.all()
   )

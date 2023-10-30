@@ -11,7 +11,7 @@ object MediaDetailsFactory {
     posterPath = "123456",
     releaseDate = "2022",
     title = "Flight Club",
-    rating = "9.5",
+    rating = "7.3",
     isFavorite = false,
     overview = "This movie is good.",
     director = Director(id = 123443321, name = "Forest Gump", profilePath = "BoxOfChocolates.jpg"),

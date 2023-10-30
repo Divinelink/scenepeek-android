@@ -9,7 +9,7 @@ object MediaItemFactory {
     posterPath = "movie - posterPath",
     releaseDate = "movie - releaseDate",
     name = "movie - name",
-    rating = "10",
+    rating = "9.5",
     overview = "overview",
     isFavorite = false,
   )
@@ -32,7 +32,7 @@ object MediaItemFactory {
       posterPath = "movie $it - posterPath",
       releaseDate = "movie $it - releaseDate",
       name = "movie $it - name",
-      rating = "$it.0",
+      rating = "$it.7",
       overview = "overview $it",
       isFavorite = false,
     )
