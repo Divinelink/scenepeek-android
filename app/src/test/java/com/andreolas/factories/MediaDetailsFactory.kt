@@ -1,4 +1,4 @@
-package com.andreolas.movierama.factories
+package com.andreolas.factories
 
 import com.andreolas.movierama.details.domain.model.Director
 import com.andreolas.movierama.details.domain.model.MovieDetails

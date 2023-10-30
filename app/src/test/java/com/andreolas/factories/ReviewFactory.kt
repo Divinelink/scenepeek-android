@@ -1,4 +1,4 @@
-package com.andreolas.movierama.factories
+package com.andreolas.factories
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.andreolas.movierama.details.domain.model.Review

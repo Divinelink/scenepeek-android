@@ -3,10 +3,10 @@ package com.andreolas.movierama.details.ui
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
-import com.andreolas.movierama.factories.MediaDetailsFactory
-import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.ReviewFactory
-import com.andreolas.movierama.factories.VideoFactory
+import com.andreolas.factories.MediaDetailsFactory
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.ReviewFactory
+import com.andreolas.factories.VideoFactory
 import com.andreolas.movierama.home.domain.model.MediaType
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi

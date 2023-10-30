@@ -1,4 +1,4 @@
-package com.andreolas.movierama.factories
+package com.andreolas.factories
 
 import com.andreolas.movierama.base.data.remote.movies.dto.details.Genre
 

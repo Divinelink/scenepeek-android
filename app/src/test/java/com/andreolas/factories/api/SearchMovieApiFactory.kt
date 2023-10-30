@@ -1,4 +1,4 @@
-package com.andreolas.movierama.factories.api
+package com.andreolas.factories.api
 
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchMovieApi
 

@@ -2,8 +2,8 @@ package com.andreolas.movierama.search.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
-import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase

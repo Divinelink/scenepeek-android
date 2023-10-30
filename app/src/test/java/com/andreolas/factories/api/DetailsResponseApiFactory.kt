@@ -1,8 +1,8 @@
-package com.andreolas.movierama.factories.api
+package com.andreolas.factories.api
 
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
-import com.andreolas.movierama.factories.CreditsFactory
-import com.andreolas.movierama.factories.GenreFactory
+import com.andreolas.factories.CreditsFactory
+import com.andreolas.factories.GenreFactory
 
 object DetailsResponseApiFactory {
 

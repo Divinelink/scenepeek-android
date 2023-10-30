@@ -1,11 +1,10 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
-import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState

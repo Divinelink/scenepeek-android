@@ -5,10 +5,10 @@ import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularReques
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
-import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.toWizard
-import com.andreolas.movierama.factories.api.PopularMovieApiFactory
-import com.andreolas.movierama.factories.api.SearchMovieApiFactory
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.api.PopularMovieApiFactory
+import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.fakes.dao.FakeMovieDAO
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.andreolas.movierama.home.domain.model.MediaType

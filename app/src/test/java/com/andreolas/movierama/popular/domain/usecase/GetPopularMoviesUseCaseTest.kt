@@ -2,7 +2,7 @@ package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase

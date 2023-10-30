@@ -1,8 +1,8 @@
 package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.factories.MediaItemFactory
-import com.andreolas.movierama.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
