@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             version('encrypted-prefs', '1.1.0-alpha04')
 
             // Multithreading
-            version('kotlinx-coroutines', '1.6.4')
+            version('kotlinx-coroutines', '1.7.3')
 
             // Desugaring
             alias('android-tools-desugar').to('com.android.tools:desugar_jdk_libs:1.1.5')
