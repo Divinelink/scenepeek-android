@@ -4,13 +4,13 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 
 object MediaItemFactory {
 
-  fun Movie(): MediaItem.Media.Movie = MediaItem.Media.Movie(
-    id = 1,
-    posterPath = "movie - posterPath",
-    releaseDate = "movie - releaseDate",
-    name = "movie - name",
-    rating = "9.5",
-    overview = "overview",
+  fun FightClub(): MediaItem.Media.Movie = MediaItem.Media.Movie(
+    id = 1123,
+    posterPath = "123456",
+    releaseDate = "2022",
+    name = "Flight Club",
+    rating = "7.3",
+    overview = "This movie is good.",
     isFavorite = false,
   )
 

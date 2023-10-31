@@ -33,7 +33,7 @@ class HomeViewModelTestRobot {
       getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
       fetchMultiInfoSearchUseCase = fakeFetchMultiInfoSearchUseCase.mock,
       getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
-      markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
+      markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
     )
   }
 
@@ -73,10 +73,12 @@ class HomeViewModelTestRobot {
     )
   }
 
-  suspend fun mockMarkAsFavorite(
+  fun mockMarkAsFavorite(
+    mediaItem: MediaItem.Media,
     result: Result<Unit>,
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
+      media = mediaItem,
       result = result,
     )
   }

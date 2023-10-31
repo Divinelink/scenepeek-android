@@ -5,6 +5,7 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
@@ -28,7 +29,7 @@ class DetailsViewModelRobot {
     mediaType: MediaType,
   ) = apply {
     viewModel = DetailsViewModel(
-      onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
+      onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
@@ -58,11 +59,13 @@ class DetailsViewModelRobot {
     viewModel.onMarkAsFavorite()
   }
 
-  suspend fun mockMarkAsFavoriteUseCase(
+  fun mockMarkAsFavoriteUseCase(
+    media: MediaItem.Media,
     response: Result<Unit>,
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
-      response
+      media = media,
+      result = response
     )
   }
 }

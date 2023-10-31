@@ -1,79 +1,84 @@
-package com.andreolas.movierama.home.ui
+package com.andreolas.ui.home
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
+import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
-import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.model.MediaType
+import com.andreolas.movierama.home.ui.HomeScreen
+import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import gr.divinelink.core.util.domain.Result
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenTest {
 
   @get:Rule
   val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
   private val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
-  private val getSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
+  private val fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
   private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
-  private val popularMovies = (1..10).map {
-    PopularMovie(
-      id = 0,
-      posterPath = "",
-      releaseDate = "2022/10/20",
-      title = "test title $it",
-      rating = "$it",
-      overview = "lorem ipsum $it",
-      isFavorite = false,
-    )
-  }.toMutableList()
-
-  @OptIn(ExperimentalTestApi::class)
+  @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
   @Test
-  fun navigateToDetailsScreenTest() = runBlocking {
+  fun navigateToDetailsScreenTest() = runTest {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      result = flowOf(Result.Success(popularMovies))
+      response = flowOf(Result.Success(MediaItemFactory.MoviesList()))
     )
 
     composeTestRule.setContent {
       HomeScreen(
         navigator = destinationsNavigator,
         viewModel = HomeViewModel(
-          getPopularMoviesUseCase = getPopularMoviesUseCase,
-          getSearchMoviesUseCase = getSearchMoviesUseCase,
+          getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
-          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase,
+          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+          fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock
         )
       )
     }
     composeTestRule
-      .onNodeWithTag(MOVIE_CARD_ITEM_TAG)
+      .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
+
+    advanceTimeBy(210)
 
     composeTestRule.waitUntilExactlyOneExists(
       matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),
@@ -90,7 +95,11 @@ class HomeScreenTest {
 
     destinationsNavigator.verifyNavigatedToDirection(
       expectedDirection = DetailsScreenDestination(
-        DetailsNavArguments(movieId = 0, isFavorite = false)
+        DetailsNavArguments(
+          id = 1,
+          mediaType = MediaType.MOVIE.value,
+          isFavorite = false,
+        )
       )
     )
   }
@@ -99,22 +108,26 @@ class HomeScreenTest {
   fun filtersAreHiddenWhenSearchingTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
+    val moviesList = MediaItemFactory.MoviesList()
+
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      result = flowOf(Result.Success(popularMovies))
+      response = flowOf(Result.Success(moviesList))
     )
 
-    getFavoriteMoviesUseCase.mockFetchFavoriteMovies(
-      result = flowOf(Result.Success(popularMovies.filter { it.isFavorite }))
+    getFavoriteMoviesUseCase.mockGetFavoriteMovies(
+      response = Result.Success(
+        moviesList.filter { it.isFavorite == true } as List<MediaItem.Media>
+      )
     )
 
     composeTestRule.setContent {
       HomeScreen(
         navigator = destinationsNavigator,
         viewModel = HomeViewModel(
-          getPopularMoviesUseCase = getPopularMoviesUseCase,
-          getSearchMoviesUseCase = getSearchMoviesUseCase,
+          getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
+          fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
-          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase,
+          getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
         )
       )
     }

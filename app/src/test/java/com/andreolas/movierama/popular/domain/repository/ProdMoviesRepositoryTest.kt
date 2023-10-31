@@ -24,17 +24,17 @@ import org.junit.Test
 
 class ProdMoviesRepositoryTest {
 
-  private val movie = MediaItemFactory.Movie().toWizard {
+  private val movie = MediaItemFactory.FightClub().toWizard {
     withFavorite(true)
   }
 
   private val persistableMovie = PersistableMovie(
-    id = 1,
-    posterPath = "movie - posterPath",
-    releaseDate = "movie - releaseDate",
-    title = "movie - name",
-    rating = "9.5",
-    overview = "overview",
+    id = 1123,
+    posterPath = "123456",
+    releaseDate = "2022",
+    title = "Flight Club",
+    rating = "7.3",
+    overview = "This movie is good.",
     isFavorite = true,
   )
 

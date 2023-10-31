@@ -1,12 +1,13 @@
 package com.andreolas.movierama.details.ui
 
+import com.andreolas.factories.MediaDetailsFactory
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.ReviewFactory
+import com.andreolas.factories.VideoFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
-import com.andreolas.factories.MediaDetailsFactory
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.ReviewFactory
-import com.andreolas.factories.VideoFactory
 import com.andreolas.movierama.home.domain.model.MediaType
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -230,6 +231,7 @@ class DetailsViewModelTest {
         )
       )
       .mockMarkAsFavoriteUseCase(
+        media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
         response = Result.Success(Unit)
       )
       .buildViewModel(
@@ -263,7 +265,8 @@ class DetailsViewModelTest {
           response = flowOf(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
         )
         .mockMarkAsFavoriteUseCase(
-          response = Result.Success(Unit)
+          media = MediaItemFactory.FightClub(),
+          response = Result.Success(Unit),
         )
         .buildViewModel(
           id = mediaId,

@@ -1,8 +1,8 @@
 package com.andreolas.movierama.popular.ui
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
+import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
@@ -759,7 +759,10 @@ class HomeViewModelTest {
         movie = popularMoviesList[0],
       )
       .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
-      .mockMarkAsFavorite(Result.Success(Unit))
+      .mockMarkAsFavorite(
+        mediaItem = popularMoviesList[0],
+        result = Result.Success(Unit),
+      )
       .onMarkAsFavorite(
         movie = popularMoviesList[0],
       )
@@ -870,7 +873,7 @@ class HomeViewModelTest {
 
   private fun loadData(starting: Int, ending: Int): List<MediaItem.Media.Movie> {
     return (starting..ending).map {
-      MediaItemFactory.Movie().toWizard {
+      MediaItemFactory.FightClub().toWizard {
         withId(it)
       }
     }.toList()
