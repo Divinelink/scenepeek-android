@@ -48,7 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
@@ -384,7 +384,7 @@ private const val OVERVIEW_WEIGHT = 3f
 )
 @Composable
 @Suppress("UnusedPrivateMember")
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 private fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
   viewState: DetailsViewState,
@@ -403,7 +403,7 @@ private fun DetailsContentPreview(
 }
 
 @Suppress("MagicNumber")
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
   override val values: Sequence<DetailsViewState>
     get() {

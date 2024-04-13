@@ -67,14 +67,14 @@ val ListPaddingValues = PaddingValues(
 enum class Theme(val storageKey: String) {
   SYSTEM("system"),
   LIGHT("light"),
-  DARK("dark");
+  DARK("dark")
 }
 
 /**
  * Returns the matching [Theme] for the given [storageKey] value.
  */
 fun themeFromStorageKey(storageKey: String): Theme? {
-  return Theme.values().firstOrNull { it.storageKey == storageKey }
+  return Theme.entries.firstOrNull { it.storageKey == storageKey }
 }
 
 fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {

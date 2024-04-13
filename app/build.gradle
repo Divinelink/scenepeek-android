@@ -14,7 +14,6 @@ plugins {
 apply {
   from '../buildscripts/detekt.gradle'
   from '../buildscripts/git-hooks.gradle'
-  from '../buildscripts/jacoco.gradle'
   from '../buildscripts/kover.gradle'
   from '../buildscripts/coveralls.gradle'
 }
@@ -93,18 +92,6 @@ android {
   testOptions {
     unitTests {
       includeAndroidResources = true
-    }
-
-    unitTests.all {
-      kover {
-        enabled = true
-        excludes = ["dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
-                    ".*ComposableSingletons.*",
-                    ".*Hilt.*",
-                    ".*BuildConfig.*",
-                    ".*_Factory.*",]
-      }
     }
   }
 

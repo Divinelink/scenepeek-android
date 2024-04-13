@@ -1,4 +1,4 @@
-////apply plugin: "com.hiya.jacoco-android"
+//apply plugin: "com.hiya.jacoco-android"
 //
 //jacoco {
 //    toolVersion = "0.8.8"
@@ -8,7 +8,7 @@
 //    resolutionStrategy {
 //        eachDependency { details ->
 //            if ('org.jacoco' == details.requested.group) {
-//                details.useVersion "0.8.7"
+//                details.useVersion "0.8.8"
 //            }
 //        }
 //    }

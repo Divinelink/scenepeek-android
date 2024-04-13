@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.ui.theme.AppTheme
 
 @Composable
@@ -53,7 +53,7 @@ fun GenreLabel(
     }
 }
 
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 @Preview(
     name = "Night Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,

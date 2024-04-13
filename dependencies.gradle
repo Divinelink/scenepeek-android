@@ -134,9 +134,9 @@ dependencyResolutionManagement {
       version('ui-automator', '2.2.0')
 
       // Mockers
-      version('mockito', '5.1.1')
-      version('mockito-kotlin', '4.1.0')
-      version('mockk', '1.12.4')
+      version('mockito', '5.11.0')
+      version('mockito-kotlin', '5.3.1')
+      version('mockk', '1.13.1')
 
       library('junit-junit', 'junit', 'junit').versionRef('junit')
       library('androidx-test-core', 'androidx.test', 'core').versionRef('androidx-test')

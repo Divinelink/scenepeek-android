@@ -3,9 +3,8 @@
 buildscript {
     ext {
         kotlin_version = '1.9.20'
-        detektVersion = "1.22.0"
-//        jacocoAndroidVersion = "0.2"
-        koverVersion = "0.6.1"
+        detektVersion = "1.23.6"
+        koverVersion = "0.7.6"
         coverallsVersion = "2.12.0"
         daggerHiltVersion = "2.49"
         firebaseDistributionVersion = "3.2.0"
@@ -24,14 +23,10 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
-        classpath 'com.google.gms:google-services:4.3.14'
-        // Add the Crashlytics Gradle plugin
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
-        classpath "org.jetbrains.kotlinx:kover:$koverVersion"
-//        classpath "com.hiya:jacoco-android:$jacocoAndroidVersion"
-        classpath "gradle.plugin.org.kt3k.gradle.plugin:coveralls-gradle-plugin:$coverallsVersion"
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath "org.jetbrains.kotlinx:kover-gradle-plugin:$koverVersion"
         classpath "com.google.firebase:firebase-appdistribution-gradle:$firebaseDistributionVersion"
-
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -55,3 +50,12 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+subprojects {
+    plugins.apply('org.jetbrains.kotlinx.kover')
+
+//    project.tasks.withType<KotlinCompile> {
+//        kotlinOptions.jvmTarget = "17"
+//    }
+}
+

@@ -43,7 +43,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.settings.app.AppSettingsActivity
@@ -280,7 +280,7 @@ fun LoadingContent(
 }
 
 @Composable
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun HomeContentPreview() {

@@ -1,22 +1,63 @@
-apply plugin: "kover"
+plugins.apply("org.jetbrains.kotlinx.kover")
 
+dependencies {
+  kover(project(":core-util"))
+}
 
-//tasks.withType(Test) {
-//    kover {
-//        generateXml = false
-//        generateHtml = true
-//        coverageEngine = 'INTELLIJ'
-//        xmlReportFile.set(file("$buildDir/kover-coverage-report/report.xml"))
-//        htmlReportDir.set(file("$buildDir/kover-coverage-report/html"))
-//        binaryReportFile.set(file("$buildDir/kover-coverage-report/result.bin"))
-//    }
-//}
+koverReport {
+  filters {
+    excludes {
+      classes(
+          "dagger.hilt.internal.aggregatedroot.codegen.*",
+          "hilt_aggregated_deps.*",
+          "*ComposableSingletons*",
+          "*Hilt*",
+          "*BuildConfig*",
+          "*_Factory*",
+          "*_Impl",
+          "*_Provide*",
+          "*Module*",
 
-//tasks.koverVerify {
-//    rule {
-//        name = "Minimal line coverage rate in percents"
-//        bound {
-//            minValue = 98
-//        }
-//    }
-//}
+          "*Fragment*",
+          "*Activity*",
+          "*Service*",
+          "*Controller*",
+          "*Manifest*",
+          "*.databinding.*",
+          "*.BuildConfig",
+          "*.BR",
+          "*androidx*",
+          "*.DebugUtil",
+      )
+      annotatedBy(
+          "androidx.compose.ui.tooling.preview.Preview",
+          "com.andreolas.movierama.ExcludeFromKoverReport"
+      )
+    }
+    includes {
+      packages("com.andreolas")
+    }
+  }
+
+  defaults {
+    mergeWith("debug")
+
+    html {
+      setReportDir(layout.buildDirectory.dir("all-projects-reports"))
+    }
+
+    xml {
+      setReportFile(layout.buildDirectory.file("all-projects-reports/kover.xml"))
+    }
+  }
+
+  androidReports("debug") {
+    html {
+      setReportDir(layout.buildDirectory.dir("all-projects-reports"))
+    }
+
+    xml {
+      setReportFile(layout.buildDirectory.file("all-projects-reports/kover.xml"))
+    }
+  }
+}
