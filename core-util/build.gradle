@@ -1,43 +1,45 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    compileSdk 33
+  namespace = "gr.divinelink.core.util"
 
-    defaultConfig {
-        minSdk 21
-        targetSdk 33
+  compileSdk 34
+  defaultConfig {
+    minSdk 21
+    targetSdk 34
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
 
-    buildFeatures {
-        viewBinding true
-    }
+  kotlinOptions {
+    jvmTarget = '17'
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
 }
 
 dependencies {
-    implementation libs.androidx.core.ktx
-    implementation libs.androidx.appcompat
-    implementation libs.kotlinx.datetime
-    implementation libs.material.material
-    implementation libs.lottie
-    implementation libs.timber
+  implementation libs.androidx.core.ktx
+  implementation libs.androidx.appcompat
+  implementation libs.kotlinx.datetime
+  implementation libs.material.material
+  implementation libs.lottie
+  implementation libs.timber
 }

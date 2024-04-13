@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.ui.components.Rating
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -105,7 +105,7 @@ fun ReviewItemCard(
     }
 }
 
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 @Preview
 @Composable
 @Preview(

@@ -2,12 +2,11 @@ plugins {
   id 'kotlin-android'
   id 'io.gitlab.arturbosch.detekt'
   id 'org.jlleitschuh.gradle.ktlint' version '11.0.0'
-  id 'kotlin-kapt'
   id 'dagger.hilt.android.plugin'
   id 'com.android.application'
   id 'com.google.gms.google-services'
   id 'com.google.firebase.crashlytics'
-  id 'com.google.devtools.ksp' version '1.8.21-1.0.11'
+  id 'com.google.devtools.ksp' version '1.9.20-1.0.13'
   id 'org.jetbrains.kotlin.plugin.serialization'
   id 'com.google.firebase.appdistribution'
 }
@@ -15,26 +14,21 @@ plugins {
 apply {
   from '../buildscripts/detekt.gradle'
   from '../buildscripts/git-hooks.gradle'
-  from '../buildscripts/jacoco.gradle'
   from '../buildscripts/kover.gradle'
   from '../buildscripts/coveralls.gradle'
 }
 
 android {
-  compileSdk 33
+  namespace = "com.andreolas.movierama"
+
+  compileSdk 34
   defaultConfig {
     applicationId "com.andreolas.movierama"
     minSdkVersion 26
-    targetSdkVersion 33
+    targetSdkVersion 34
     versionCode 5
     versionName "2.2.1"
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
-    kapt {
-      arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-      }
-    }
   }
   signingConfigs {
     release {
@@ -72,16 +66,20 @@ android {
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.7"
+    kotlinCompilerExtensionVersion = "1.5.4"
   }
 
   android {
     compileOptions {
       coreLibraryDesugaringEnabled true
 
-      sourceCompatibility JavaVersion.VERSION_1_8
-      targetCompatibility JavaVersion.VERSION_1_8
+      sourceCompatibility JavaVersion.VERSION_17
+      targetCompatibility JavaVersion.VERSION_17
     }
+  }
+
+  kotlinOptions {
+    jvmTarget = '17'
   }
 
   android {
@@ -95,18 +93,6 @@ android {
     unitTests {
       includeAndroidResources = true
     }
-
-    unitTests.all {
-      kover {
-        enabled = true
-        excludes = ["dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
-                    ".*ComposableSingletons.*",
-                    ".*Hilt.*",
-                    ".*BuildConfig.*",
-                    ".*_Factory.*",]
-      }
-    }
   }
 
   applicationVariants.configureEach { variant ->
@@ -118,10 +104,6 @@ android {
     variant.buildConfigField "String", "TMDB_BASE_URL", '"https://api.themoviedb.org/3"'
     variant.buildConfigField "String", "TMDB_IMAGE_URL", '"https://image.tmdb.org/t/p/original"'
   }
-}
-
-kapt {
-  correctErrorTypes true
 }
 
 dependencies {
@@ -185,13 +167,13 @@ dependencies {
   implementation libs.kotlinx.serialization.json
 
   // DI
-  kapt libs.dagger.hilt.compiler
+  ksp libs.dagger.hilt.compiler
   implementation libs.dagger.hilt.android
-  kaptTest libs.dagger.hilt.compiler
+  kspTest libs.dagger.hilt.compiler
   testImplementation libs.dagger.hilt.android.testing
   androidTestImplementation libs.dagger.hilt.android.testing
-  kaptAndroidTest libs.dagger.hilt.compiler
-  kaptAndroidTest libs.dagger.hilt.android.compiler
+  kspAndroidTest libs.dagger.hilt.compiler
+  kspAndroidTest libs.dagger.hilt.android.compiler
 
   // Database
   implementation libs.datastore
@@ -201,7 +183,7 @@ dependencies {
   implementation libs.encrypted.preferences
   implementation libs.room.ktx
   implementation libs.room.runtime
-  kapt libs.room.compiler
+  ksp libs.room.compiler
   // Testing Libs
   testImplementation testLibs.junit.junit
   testImplementation testLibs.mockito.core

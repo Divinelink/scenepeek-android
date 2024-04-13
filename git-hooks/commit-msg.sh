@@ -23,7 +23,6 @@ with open(sys.argv[1]) as commit:
 
     if match_regex is None:
         sys.stderr.write("\nYour commit message subject line does not follow the guideline\n")
-        sys.stderr.write("\n - Refer commit guideline: {}\n\n".format(GUIDELINE_LINK))
         sys.stderr.write("The commit message should be structured as follows:\n<type>[optional scope]: <description>\n\nAvailable types: build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test\n")
         sys.stderr.write("\nExample 1: feat: allow provided config object to extend other configs\nExample 2: feat(lang): add english language\n\n")
         sys.exit(1)

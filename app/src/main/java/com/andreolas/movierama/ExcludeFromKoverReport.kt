@@ -11,4 +11,4 @@ package com.andreolas.movierama
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-annotation class ExcludeFromJacocoGeneratedReport
+annotation class ExcludeFromKoverReport

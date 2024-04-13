@@ -42,7 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
+import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.theme.AppTheme
@@ -221,7 +221,7 @@ fun Rating(
 }
 
 @Composable
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun PopularMovieItemPreview() {
@@ -250,7 +250,7 @@ fun PopularMovieItemPreview() {
 }
 
 @Composable
-@ExcludeFromJacocoGeneratedReport
+@ExcludeFromKoverReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun MovieItemPreview() {
