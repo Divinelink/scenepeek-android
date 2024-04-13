@@ -70,7 +70,7 @@ sealed class DSLSettingsText {
     }
 
     object TitleLargeModifier : TextAppearanceModifier(R.style.Text_TitleLarge)
-    object Body1BoldModifier : TextAppearanceModifier(R.style.TextAppearance_AppCompat_Body1)
+    object Body1BoldModifier : TextAppearanceModifier(R.style.TextAppearance_Body1)
 
     open class TextAppearanceModifier(@StyleRes private val textAppearance: Int) : Modifier {
         override fun modify(context: Context, charSequence: CharSequence): CharSequence {
