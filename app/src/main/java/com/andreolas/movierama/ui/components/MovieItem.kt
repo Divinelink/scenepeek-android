@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.Movie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 import com.andreolas.movierama.ui.theme.RoundedShape
@@ -52,10 +52,10 @@ import com.andreolas.movierama.ui.theme.RoundedShape
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 
 @Composable
-fun MovieItem(
+fun MediaItem(
   modifier: Modifier = Modifier,
-  movie: Movie,
-  onMovieItemClick: (Movie) -> Unit,
+  movie: MediaItem.Media,
+  onMovieItemClick: (MediaItem.Media) -> Unit,
   onLikeMovieClick: () -> Unit,
 ) {
   Card(
@@ -80,10 +80,10 @@ fun MovieItem(
         modifier = Modifier.height(180.dp),
         path = movie.posterPath,
       )
-      movie.isFavorite?.let {
+      movie.isFavorite?.let { isFavorite ->
         LikeButton(
           modifier = Modifier.align(Alignment.TopStart),
-          isFavorite = movie.isFavorite,
+          isFavorite = isFavorite,
           onClick = onLikeMovieClick,
         )
       }
@@ -101,7 +101,7 @@ fun MovieItem(
         .fillMaxWidth()
         .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
         .height(40.dp),
-      text = movie.title,
+      text = movie.name,
       overflow = TextOverflow.Ellipsis,
       style = MaterialTheme.typography.labelLarge,
       color = MaterialTheme.colorScheme.onSurface,
@@ -176,9 +176,9 @@ fun Rating(
   }
 
   val color = when (rating.toDouble()) {
-    in 0.0..3.0 -> Color.Red
-    in 3.0..6.0 -> Color.Yellow
-    in 6.0..10.0 -> Color.Green
+    in 0.0..3.5 -> Color.Red
+    in 3.5..7.0 -> Color.Yellow
+    in 7.0..10.0 -> Color.Green
     else -> Color.White
   }
   Box(
@@ -231,13 +231,13 @@ fun PopularMovieItemPreview() {
         .width(160.dp)
         .height(340.dp)
     ) {
-      MovieItem(
+      MediaItem(
         modifier = Modifier,
-        movie = Movie(
+        movie = MediaItem.Media.TV(
           id = 0,
           posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
-          title = "Fight Club",
+          name = "Fight Club",
           rating = "8.8",
           isFavorite = true,
           overview = "",
@@ -258,13 +258,13 @@ fun MovieItemPreview() {
     Surface(
       modifier = Modifier
     ) {
-      MovieItem(
+      MediaItem(
         modifier = Modifier,
-        movie = Movie(
+        movie = MediaItem.Media.Movie(
           id = 0,
           posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
-          title = "Night of the Day of the Dawn of the Son of the Bride of the " +
+          name = "Night of the Day of the Dawn of the Son of the Bride of the " +
             "Return of the Revenge of the Terror of the Attack of the Evil," +
             " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
           rating = "5.0",

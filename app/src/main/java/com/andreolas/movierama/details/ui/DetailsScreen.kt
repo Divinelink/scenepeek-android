@@ -8,32 +8,33 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination(
-    navArgsDelegate = DetailsNavArguments::class,
+  navArgsDelegate = DetailsNavArguments::class,
 )
 @Composable
 fun DetailsScreen(
-    navigator: DestinationsNavigator,
-    viewModel: DetailsViewModel = hiltViewModel(),
+  navigator: DestinationsNavigator,
+  viewModel: DetailsViewModel = hiltViewModel(),
 ) {
-    val viewState = viewModel.viewState.collectAsState()
+  val viewState = viewModel.viewState.collectAsState()
 
-    DetailsContent(
-        viewState = viewState.value,
-        onNavigateUp = {
-            navigator.popBackStack()
-        },
-        onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
-        onSimilarMovieClicked = {
-            val navArgs = DetailsNavArguments(
-                movieId = it.id,
-                isFavorite = it.isFavorite ?: false,
-            )
-            val destination = DetailsScreenDestination(
-                navArgs = navArgs,
-            )
+  DetailsContent(
+    viewState = viewState.value,
+    onNavigateUp = {
+      navigator.popBackStack()
+    },
+    onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
+    onSimilarMovieClicked = { movie ->
+      val navArgs = DetailsNavArguments(
+        id = movie.id,
+        mediaType = movie.mediaType.value,
+        isFavorite = movie.isFavorite ?: false,
+      )
+      val destination = DetailsScreenDestination(
+        navArgs = navArgs,
+      )
 
-            navigator.navigate(destination)
-        }
+      navigator.navigate(destination)
+    }
 
-    )
+  )
 }

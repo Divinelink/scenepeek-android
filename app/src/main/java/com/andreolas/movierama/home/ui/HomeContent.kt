@@ -45,7 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
@@ -75,12 +75,12 @@ const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 fun HomeContent(
   viewState: HomeViewState,
   modifier: Modifier = Modifier,
-  onMovieClicked: (PopularMovie) -> Unit,
-  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  onMovieClicked: (MediaItem) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onSearchMovies: (String) -> Unit,
   onClearClicked: () -> Unit,
   onLoadNextPage: () -> Unit,
-  onGoToDetails: (PopularMovie) -> Unit,
+  onGoToDetails: (MediaItem) -> Unit,
   onFilterClicked: (String) -> Unit,
   onClearFiltersClicked: () -> Unit,
   onSwipeDown: () -> Unit,
@@ -188,7 +188,7 @@ fun HomeContent(
         )
       } else {
         AnimatedContent(
-          targetState = viewState.filteredMovies.isNullOrEmpty(),
+          targetState = viewState.filteredResults.isNullOrEmpty(),
           transitionSpec = fadeTransitionSpec(),
           label = "Movies",
         ) { unselectedFilters ->
@@ -201,7 +201,7 @@ fun HomeContent(
                 scope = scope,
                 bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                moviesList = viewState.moviesList,
+                searchList = viewState.searchList,
                 onLoadNextPage = onLoadNextPage,
                 loadMore = viewState.loadMore,
               )
@@ -214,7 +214,7 @@ fun HomeContent(
                 scope = scope,
                 bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                moviesList = viewState.filteredMovies ?: emptyList(),
+                searchList = viewState.filteredResults ?: emptyList(),
                 onLoadNextPage = onLoadNextPage,
                 loadMore = viewState.loadMore,
               )
@@ -234,20 +234,20 @@ fun HomeContent(
 private fun MoviesLazyGrid(
   modifier: Modifier,
   paddingValues: PaddingValues,
-  moviesList: List<PopularMovie>,
-  onMovieClicked: (PopularMovie) -> Unit,
+  searchList: List<MediaItem>,
+  onMovieClicked: (MediaItem) -> Unit,
   scope: CoroutineScope,
   bottomSheetState: BottomSheetScaffoldState,
-  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   loadMore: Boolean,
 ) {
-  PopularMoviesList(
+  MediaList(
     modifier = modifier
       .fillMaxSize()
       .testTag(MOVIES_LIST_TAG)
       .padding(paddingValues),
-    movies = moviesList,
+    searches = searchList,
     onMovieClicked = {
       scope.launch {
         if (bottomSheetState.bottomSheetState.isVisible) {
@@ -290,9 +290,9 @@ fun HomeContentPreview() {
         viewState = HomeViewState(
           isLoading = false,
           popularMovies = (1..10).map {
-            PopularMovie(
+            MediaItem.Media.Movie(
               id = it,
-              title = "Movie 1",
+              name = "Movie 1",
               posterPath = "/poster1",
               overview = "Overview 1",
               releaseDate = "2021-01-01",
@@ -300,12 +300,12 @@ fun HomeContentPreview() {
               rating = it.toString(),
             )
           },
-          selectedMovie = null,
+          selectedMedia = null,
           error = null,
-          searchMovies = (1..10).map {
-            PopularMovie(
+          searchResults = (1..10).map {
+            MediaItem.Media.Movie(
               id = it,
-              title = "Movie 1",
+              name = "Movie 1",
               posterPath = "/poster1",
               overview = "Overview 1",
               releaseDate = "2021-01-01",

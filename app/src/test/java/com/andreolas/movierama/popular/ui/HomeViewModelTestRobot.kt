@@ -1,13 +1,13 @@
 package com.andreolas.movierama.popular.ui
 
 import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
-import com.andreolas.movierama.fakes.usecase.FakeGetSearchMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.repository.MoviesListResult
-import com.andreolas.movierama.home.domain.usecase.SearchResult
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.repository.MediaListResult
+import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat
@@ -25,15 +25,15 @@ class HomeViewModelTestRobot {
 
   private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-  private val fakeGetSearchMoviesUseCase = FakeGetSearchMoviesUseCase()
   private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
+  private val fakeFetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
 
   fun buildViewModel() = apply {
     viewModel = HomeViewModel(
       getPopularMoviesUseCase = fakeGetPopularMoviesUseCase.mock,
-      getSearchMoviesUseCase = fakeGetSearchMoviesUseCase.mock,
+      fetchMultiInfoSearchUseCase = fakeFetchMultiInfoSearchUseCase.mock,
       getFavoriteMoviesUseCase = fakeGetFavoriteMoviesUseCase.mock,
-      markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase.mock,
+      markAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
     )
   }
 
@@ -50,7 +50,7 @@ class HomeViewModelTestRobot {
   }
 
   fun mockFetchPopularMovies(
-    response: MoviesListResult,
+    response: MediaListResult,
   ) = apply {
     fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
       response = response,
@@ -58,25 +58,27 @@ class HomeViewModelTestRobot {
   }
 
   fun mockFetchFavoriteMovies(
-    response: MoviesListResult,
+    response: MediaListResult,
   ) = apply {
     fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
       response = response,
     )
   }
 
-  fun mockFetchSearchMovies(
-    response: Result<SearchResult>,
+  fun mockFetchSearchMedia(
+    response: Result<MultiSearchResult>,
   ) = apply {
-    fakeGetSearchMoviesUseCase.mockFetchSearchMovies(
+    fakeFetchMultiInfoSearchUseCase.mockFetchMultiInfoSearch(
       response = response,
     )
   }
 
-  suspend fun mockMarkAsFavorite(
+  fun mockMarkAsFavorite(
+    mediaItem: MediaItem.Media,
     result: Result<Unit>,
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
+      media = mediaItem,
       result = result,
     )
   }
@@ -85,7 +87,7 @@ class HomeViewModelTestRobot {
     viewModel.onLoadNextPage()
   }
 
-  fun onMovieClicked(movie: PopularMovie) = apply {
+  fun onMovieClicked(movie: MediaItem.Media) = apply {
     viewModel.onMovieClicked(movie)
   }
 
@@ -93,7 +95,7 @@ class HomeViewModelTestRobot {
     viewModel.onSwipeDown()
   }
 
-  fun onMarkAsFavorite(movie: PopularMovie) = apply {
+  fun onMarkAsFavorite(movie: MediaItem.Media) = apply {
     viewModel.onMarkAsFavoriteClicked(movie)
   }
 

@@ -3,11 +3,11 @@ package com.andreolas.movierama.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
-import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-  private val getSearchMoviesUseCase: GetSearchMoviesUseCase,
+  private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase,
 ) : ViewModel() {
@@ -43,13 +43,15 @@ class HomeViewModel @Inject constructor(
   private var allowSearchResult: Boolean = true
 
   private var latestQuery: String? = null
+
+  // Cached search results is a work in progress. It's not used yet.
   private var cachedSearchResults: HashMap<String, SearchCache> = hashMapOf()
 
   private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
     HomeViewState(
       isLoading = true,
       popularMovies = emptyList(),
-      selectedMovie = null,
+      selectedMedia = null,
       error = null,
     )
   )
@@ -70,15 +72,15 @@ class HomeViewModel @Inject constructor(
       ).collectLatest { result ->
         when (result) {
           is Result.Success -> {
-            val updatedList = getUpdatedMovies(
-              currentMoviesList = viewState.value.popularMovies,
-              updatedMoviesList = result.data,
+            val updatedList = getUpdatedMedia(
+              currentMediaList = viewState.value.popularMovies,
+              updatedMediaList = result.data,
             )
             _viewState.update { viewState ->
               viewState.copy(
                 isLoading = false,
-                popularMovies = updatedList,
-                selectedMovie = updatedSelectedMovie(updatedList, viewState.selectedMovie),
+                popularMovies = updatedList.filterIsInstance<MediaItem.Media.Movie>(),
+                selectedMedia = updatedSelectedMedia(updatedList, viewState.selectedMedia),
               )
             }
           }
@@ -102,25 +104,27 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun onMovieClicked(movie: PopularMovie) {
+  fun onMovieClicked(movie: MediaItem) {
     bottomSheetJob?.cancel()
 
     bottomSheetJob = viewModelScope.launch {
       delay(BOTTOM_SHEET_DEBOUNCE_TIME)
 
-      val selectedMovie = if (movie == viewState.value.selectedMovie) {
+      val selectedMovie = if (movie == viewState.value.selectedMedia) {
         null
       } else {
         movie
       }
 
       _viewState.update { viewState ->
-        viewState.copy(selectedMovie = selectedMovie)
+        viewState.copy(selectedMedia = selectedMovie)
       }
     }
   }
 
-  fun onMarkAsFavoriteClicked(movie: PopularMovie) {
+  fun onMarkAsFavoriteClicked(movie: MediaItem) {
+    if (movie !is MediaItem.Media) return
+
     viewModelScope.launch {
       markAsFavoriteUseCase(movie)
     }
@@ -169,9 +173,9 @@ class HomeViewModel @Inject constructor(
             latestQuery = query
             viewState.copy(
               isLoading = false,
-              searchMovies = cachedSearchResults[query]?.result,
+              searchResults = cachedSearchResults[query]?.result,
               emptyResult = cachedSearchResults[query]?.result?.isEmpty() == true,
-              selectedMovie = null, // updatedSelectedMovie(movies, viewState.selectedMovie)
+              selectedMedia = null, // updatedSelectedMovie(movies, viewState.selectedMovie)
             )
           }
           // If cache found, set search page to last cached search page
@@ -191,7 +195,7 @@ class HomeViewModel @Inject constructor(
     allowSearchResult = false
     _viewState.update { viewState ->
       viewState.copy(
-        searchMovies = null,
+        searchResults = null,
         loadMorePopular = true,
         query = "",
         emptyResult = false,
@@ -208,15 +212,15 @@ class HomeViewModel @Inject constructor(
     val currentMoviesList = if (query != latestQuery) {
       emptyList()
     } else {
-      viewState.value.searchMovies ?: emptyList()
+      viewState.value.searchResults ?: emptyList()
     }
     latestQuery = query
 
     viewModelScope.launch {
       _viewState.setLoading()
 
-      getSearchMoviesUseCase.invoke(
-        parameters = SearchRequestApi(
+      fetchMultiInfoSearchUseCase.invoke(
+        parameters = MultiSearchRequestApi(
           query = query,
           page = page,
         )
@@ -237,20 +241,22 @@ class HomeViewModel @Inject constructor(
                 result.data.query == latestQuery
               ) {
                 _viewState.update { viewState ->
-                  val updatedSearchList = getUpdatedMovies(
-                    currentMoviesList = currentMoviesList,
-                    updatedMoviesList = result.data.searchList,
-                  ).also { updatedSearchList ->
-                    // Fix caching
-                    // updateSearchCaches(query, page, updatedSearchList)
-                  }
+                  val updatedSearchList = getUpdatedMedia(
+                    currentMediaList = currentMoviesList,
+                    updatedMediaList = result.data.searchList,
+                  )/*.also { updatedSearchList -> TODO: Implement caching
+                    updateSearchCaches(query, page, updatedSearchList)
+                  }*/
 
                   viewState.copy(
                     searchLoadingIndicator = false,
                     isLoading = false,
-                    searchMovies = updatedSearchList, // cachedSearchResults[query]?.result,
+                    searchResults = updatedSearchList, // cachedSearchResults[query]?.result,
                     emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
-                    selectedMovie = updatedSearchList.find { it.id == viewState.selectedMovie?.id },
+                    selectedMedia = updatedSelectedMedia(
+                      updatedSearchList,
+                      viewState.selectedMedia
+                    ),
                   )
                 }
               }
@@ -276,41 +282,42 @@ class HomeViewModel @Inject constructor(
    * * This method updates the cached search results given a [query].
    * It appends to the current caches a list of movies that has been emitted and also updates the last page of the query.
    */
-  @Suppress("UnusedPrivateMember")
+  /*
   private fun updateSearchCaches(
     query: String,
     page: Int,
-    searchList: List<PopularMovie>,
+    searchList: List<MediaItem>,
   ) {
     val cacheList = cachedSearchResults[query]?.result ?: emptyList()
     cachedSearchResults[query] = SearchCache(
       page = page,
-      result = getUpdatedMovies(
-        currentMoviesList = cacheList,
-        updatedMoviesList = searchList,
+      result = getUpdatedMedia(
+        currentMediaList = cacheList,
+        updatedMediaList = searchList,
       ).toMutableList()
     )
   }
+   */
 
   /**
    * Update selected movie if exists on Popular Movies or in Search Movies List.
    */
-  private fun updatedSelectedMovie(
-    updatedList: List<PopularMovie>,
-    selectedMovie: PopularMovie?,
-  ): PopularMovie? {
+  private fun updatedSelectedMedia(
+    updatedList: List<MediaItem>,
+    selectedMedia: MediaItem?,
+  ): MediaItem? {
     return updatedList
-      .find { it.id == selectedMovie?.id } ?: viewState.value.searchMovies
-      ?.find { it.id == selectedMovie?.id }
+      .find { it.id == selectedMedia?.id } ?: viewState.value.searchResults
+      ?.find { it.id == selectedMedia?.id }
   }
 
-  private fun getUpdatedMovies(
-    currentMoviesList: List<PopularMovie>,
-    updatedMoviesList: List<PopularMovie>,
-  ): List<PopularMovie> {
-    val combinedList = currentMoviesList.plus(updatedMoviesList).distinctBy { it.id }
+  private fun getUpdatedMedia(
+    currentMediaList: List<MediaItem>,
+    updatedMediaList: List<MediaItem>,
+  ): List<MediaItem> {
+    val combinedList = currentMediaList.plus(updatedMediaList).distinctBy { it.id }
     val updatedList = combinedList.toMutableList()
-    updatedMoviesList.forEach { updatedMovie ->
+    updatedMediaList.forEach { updatedMovie ->
       val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
       if (index != -1) {
         updatedList[index] = updatedMovie
@@ -323,7 +330,7 @@ class HomeViewModel @Inject constructor(
     _viewState.update { viewState ->
       viewState.copy(
         filters = HomeFilter.values().map { it.filter },
-        filteredMovies = null,
+        filteredResults = null,
       )
     }
   }
@@ -333,7 +340,7 @@ class HomeViewModel @Inject constructor(
       delay(BOTTOM_SHEET_DEBOUNCE_TIME)
       _viewState.update { viewState ->
         viewState.copy(
-          selectedMovie = null,
+          selectedMedia = null,
         )
       }
     }
@@ -365,13 +372,13 @@ class HomeViewModel @Inject constructor(
           if (viewState.value.showFavorites == true) {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredMovies = result.data!!,
+                filteredResults = result.data!!,
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredMovies = viewState.filteredMovies?.minus((result.data!!.toSet()).toSet()),
+                filteredResults = viewState.filteredResults?.minus((result.data!!.toSet()).toSet()),
               )
             }
           }
@@ -407,7 +414,7 @@ class HomeViewModel @Inject constructor(
 
 data class SearchCache(
   var page: Int,
-  var result: MutableList<PopularMovie>,
+  var result: MutableList<MediaItem>,
 )
 
 private fun MutableStateFlow<HomeViewState>.setLoading() {

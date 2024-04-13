@@ -1,14 +1,21 @@
 package com.andreolas.movierama.home.domain.repository
 
 import com.andreolas.movierama.base.data.local.popular.MovieDAO
+import com.andreolas.movierama.base.data.local.popular.checkIfMediaIsFavorite
+import com.andreolas.movierama.base.data.local.popular.fetchFavoriteMediaIDs
+import com.andreolas.movierama.base.data.local.popular.insertFavoriteMedia
+import com.andreolas.movierama.base.data.local.popular.map
+import com.andreolas.movierama.base.data.local.popular.removeFavoriteMedia
 import com.andreolas.movierama.base.data.local.popular.toDomainMoviesList
-import com.andreolas.movierama.base.data.local.popular.toPersistableMovie
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.toDomainMoviesList
-import com.andreolas.movierama.base.data.remote.movies.dto.search.SearchRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.toDomainMoviesList
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.toDomainMoviesList
+import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.mapper.map
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.home.domain.model.MediaType
 import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,76 +24,97 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProdMoviesRepository @Inject constructor(
-    private val movieDAO: MovieDAO,
-    private val movieRemote: MovieService,
+  private val movieDAO: MovieDAO,
+  private val movieRemote: MovieService,
 ) : MoviesRepository {
 
-    override fun fetchPopularMovies(request: PopularRequestApi): Flow<MoviesListResult> {
-        return movieRemote
-            .fetchPopularMovies(request)
-            .map { apiResponse ->
-                Result.Success(apiResponse.toDomainMoviesList())
-            }
-            .catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
-            }
+  override fun fetchPopularMovies(request: PopularRequestApi): Flow<MediaListResult> {
+    return movieRemote
+      .fetchPopularMovies(request)
+      .map { apiResponse ->
+        Result.Success(apiResponse.toDomainMoviesList())
+      }
+      .catch { exception ->
+        flowOf(Result.Error(Exception(exception.message)))
+      }
+  }
+
+  override fun fetchFavoriteMovies(): Flow<MediaListResult> = movieDAO
+    .fetchFavoriteMovies()
+    .map { moviesList ->
+      Result.Success(moviesList.toDomainMoviesList())
+    }
+    .catch { exception ->
+      flowOf(Result.Error(Exception(exception.message)))
     }
 
-    override fun fetchFavoriteMovies(): Flow<MoviesListResult> {
-        return movieDAO
-            .fetchFavoriteMovies()
-            .map { moviesList ->
-                Result.Success(moviesList.toDomainMoviesList())
-            }
-            .catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
-            }
+  override fun fetchFavoriteTVSeries(): Flow<MediaListResult> = movieDAO
+    .fetchFavoriteTVSeries()
+    .map { tvList ->
+      Result.Success(tvList.map())
+    }
+    .catch { exception ->
+      flowOf(Result.Error(Exception(exception.message)))
     }
 
-    override fun fetchFavoriteMoviesIds(): Flow<Result<List<Int>>> {
-        return movieDAO
-            .fetchFavoriteMoviesIds()
-            .map { moviesList ->
-                Result.Success(moviesList)
-            }
-            .catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
-            }
+  override fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>> = movieDAO
+    .fetchFavoriteMediaIDs()
+    .map { moviesList ->
+      Result.Success(moviesList)
+    }
+    .catch { exception ->
+      flowOf(Result.Error(Exception(exception.message)))
     }
 
-    override fun fetchSearchMovies(request: SearchRequestApi): Flow<MoviesListResult> {
-        return movieRemote
-            .fetchSearchMovies(request)
-            .map { apiResponse ->
-                Result.Success(apiResponse.toDomainMoviesList())
-            }
-            .catch { exception ->
-                flowOf(Result.Error(Exception(exception.message)))
-            }
-    }
+  @Deprecated("Use fetchMultiInfo instead")
+  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> {
+    return movieRemote
+      .fetchSearchMovies(request)
+      .map { apiResponse ->
+        Result.Success(apiResponse.toDomainMoviesList())
+      }
+      .catch { exception ->
+        flowOf(Result.Error(Exception(exception.message)))
+      }
+  }
 
-    override suspend fun insertFavoriteMovie(movie: PopularMovie): Result<Unit> {
-        movieDAO
-            .insertFavoriteMovie(movie.copy(isFavorite = true).toPersistableMovie())
-            .also {
-                return Result.Success(it)
-            }
-    }
+  override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult> {
+    return movieRemote
+      .fetchMultiInfo(requestApi)
+      .map { apiResponse ->
+        Result.Success(apiResponse.map())
+      }
+      .catch { exception ->
+        flowOf(Result.Error(Exception(exception.message)))
+      }
+  }
 
-    override suspend fun removeFavoriteMovie(id: Int): Result<Unit> {
-        movieDAO
-            .removeFavoriteMovie(id)
-            .also {
-                return Result.Success(it)
-            }
-    }
+  override suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit> {
+    movieDAO
+      .insertFavoriteMedia(media)
+      .also { return Result.Success(it) }
+  }
 
-    override suspend fun checkIfFavorite(id: Int): Result<Boolean> {
-        movieDAO
-            .checkIfFavorite(
-                id = id,
-            ).also {
-                return Result.Success(it > 0)
-            }
+  override suspend fun removeFavoriteMedia(
+    id: Int,
+    mediaType: MediaType,
+  ): Result<Unit> {
+    movieDAO.removeFavoriteMedia(
+      id = id,
+      mediaType = mediaType,
+    ).also {
+      return Result.Success(it)
     }
+  }
+
+  override suspend fun checkIfMediaIsFavorite(
+    id: Int,
+    mediaType: MediaType,
+  ): Result<Boolean> {
+    movieDAO.checkIfMediaIsFavorite(
+      id = id, mediaType = mediaType
+    ).also {
+      return Result.Success(it)
+    }
+  }
 }

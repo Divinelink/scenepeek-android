@@ -12,8 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface EncryptedStorage {
-    suspend fun setTmdbApiKey(key: String)
-    val tmdbApiKey: String
+    suspend fun setTmdbAuthToken(key: String)
+    val tmdbAuthToken: String
 }
 
 @Singleton
@@ -37,18 +37,18 @@ class EncryptedPreferenceStorage @Inject constructor(
     )
 
     object PreferencesKeys {
-        const val SECRET_TMDB_API_KEY = "secret.tmdb.api.key"
+        const val SECRET_TMDB_AUTH_TOKEN = "secret.tmdb.auth.token"
     }
 
-    override suspend fun setTmdbApiKey(key: String) {
+    override suspend fun setTmdbAuthToken(key: String) {
         with(encryptedPreferences.edit()) {
-            putString(PreferencesKeys.SECRET_TMDB_API_KEY, key)
+            putString(PreferencesKeys.SECRET_TMDB_AUTH_TOKEN, key)
             apply()
         }
     }
 
-    override val tmdbApiKey: String
-        get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_API_KEY, "") ?: ""
+    override val tmdbAuthToken: String
+        get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_AUTH_TOKEN, "") ?: ""
 
     /**
      * Known issue: https://issuetracker.google.com/issues/158234058

@@ -3,7 +3,6 @@ package com.andreolas.movierama.base.di
 import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.base.data.remote.movies.service.ProdMovieService
-import com.andreolas.movierama.base.storage.EncryptedStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,11 +17,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
 
-    @Singleton
-    @Provides
-    fun provideMovieService(
-        restClient: RestClient,
-        encryptedPreferenceStorage: EncryptedStorage,
-    ): MovieService =
-        ProdMovieService(restClient, encryptedPreferenceStorage)
+  @Singleton
+  @Provides
+  fun provideMovieService(
+    restClient: RestClient,
+  ): MovieService = ProdMovieService(restClient)
 }

@@ -9,34 +9,34 @@ import org.mockito.kotlin.whenever
 
 class FakeMovieDAO {
 
-    val mock: MovieDAO = mock()
+  val mock: MovieDAO = mock()
 
-    fun mockFetchFavoritesMovies(
-        result: Flow<List<PersistableMovie>>,
-    ) {
-        whenever(
-            mock.fetchFavoriteMovies()
-        ).thenReturn(
-            result
-        )
-    }
+  fun mockFetchFavoritesMovies(
+    result: Flow<List<PersistableMovie>>,
+  ) {
+    whenever(
+      mock.fetchFavoriteMovies()
+    ).thenReturn(
+      result
+    )
+  }
 
-    suspend fun verifyInsertFavoriteMovie(
-        movie: PersistableMovie,
-    ) {
-        verify(mock).insertFavoriteMovie(movie)
-    }
+  suspend fun verifyInsertFavoriteMovie(
+    movie: PersistableMovie,
+  ) {
+    verify(mock).insertFavoriteMovie(movie)
+  }
 
-    suspend fun verifyRemoveMovie(
-        id: Int,
-    ) {
-        verify(mock).removeFavoriteMovie(id)
-    }
+  suspend fun verifyRemoveMovie(
+    id: Int,
+  ) {
+    verify(mock).removeFavoriteMovie(id)
+  }
 
-    suspend fun mockCheckIfFavorite(
-        id: Int,
-        result: Int
-    ) {
-        whenever(mock.checkIfFavorite(id)).thenReturn(result)
-    }
+  suspend fun mockCheckIfFavorite(
+    id: Int,
+    result: Int,
+  ) {
+    whenever(mock.checkIfFavorite(id)).thenReturn(result)
+  }
 }

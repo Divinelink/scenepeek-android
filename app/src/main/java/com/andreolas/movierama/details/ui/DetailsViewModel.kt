@@ -8,7 +8,7 @@ import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.Result
@@ -24,110 +24,105 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
-    savedStateHandle: SavedStateHandle,
+  private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+  private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
+  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val args: DetailsNavArguments = DetailsScreenDestination.argsFrom(savedStateHandle)
+  private val args: DetailsNavArguments = DetailsScreenDestination.argsFrom(savedStateHandle)
 
-    private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
-        value = DetailsViewState(
-            movieId = args.movieId,
-            isLoading = true,
-        )
+  private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
+    value = DetailsViewState(
+      movieId = args.id,
+      mediaType = MediaType.from(args.mediaType),
+      isLoading = true,
     )
-    val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
+  )
+  val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
 
-    fun onMarkAsFavorite() {
-        viewModelScope.launch {
-            viewState.value.movieDetails?.let { movie ->
-                PopularMovie(
-                    id = movie.id,
-                    posterPath = movie.posterPath,
-                    releaseDate = movie.releaseDate,
-                    title = movie.title,
-                    rating = movie.rating,
-                    overview = movie.overview ?: "",
-                    isFavorite = movie.isFavorite,
+  fun onMarkAsFavorite() {
+    viewModelScope.launch {
+      viewState.value.mediaItem?.let { mediaItem ->
+        val result = onMarkAsFavoriteUseCase(mediaItem)
+
+        if (result.succeeded) {
+          _viewState.update { viewState ->
+            viewState.copy(
+              movieDetails = viewState.movieDetails?.copy(
+                isFavorite = !viewState.movieDetails.isFavorite
+              ),
+            )
+          }
+        }
+      }
+    }
+  }
+
+  init {
+    viewModelScope.launch {
+
+      val requestApi = when (viewState.value.mediaType) {
+        MediaType.TV -> DetailsRequestApi.TV(args.id)
+        MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
+        else -> throw IllegalArgumentException("Unknown media value")
+      }
+
+      getMovieDetailsUseCase(
+        parameters = requestApi,
+      ).onEach { result ->
+        _viewState.update { viewState ->
+          when (result) {
+            is Result.Success -> {
+              when (result.data) {
+                is MovieDetailsResult.DetailsSuccess -> viewState.copy(
+                  isLoading = false,
+                  movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
                 )
-            }?.let { movie ->
-                val result = onMarkAsFavoriteUseCase(
-                    parameters = movie,
+
+                is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
+                  reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
                 )
-                if (result.succeeded) {
-                    _viewState.update { viewState ->
-                        viewState.copy(
-                            movieDetails = viewState.movieDetails?.copy(
-                                isFavorite = !viewState.movieDetails.isFavorite
-                            ),
-                        )
-                    }
-                }
+
+                is MovieDetailsResult.SimilarSuccess -> viewState.copy(
+                  similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
+                )
+
+                is MovieDetailsResult.VideosSuccess -> viewState.copy(
+                  trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
+                )
+
+                is MovieDetailsResult.Failure.FatalError -> viewState.copy(
+                  error = (result.data as MovieDetailsResult.Failure.FatalError).message,
+                  isLoading = false,
+                )
+
+                MovieDetailsResult.Failure.Unknown -> viewState.copy(
+                  error = MovieDetailsResult.Failure.Unknown.message,
+                  isLoading = false,
+                )
+              }
             }
-        }
-    }
 
-    init {
-        viewModelScope.launch {
-            getMovieDetailsUseCase(
-                parameters = DetailsRequestApi(
-                    movieId = args.movieId
+            is Result.Error -> {
+              if (result.exception is MovieDetailsException) {
+                viewState.copy(
+                  error = MovieDetailsResult.Failure.FatalError().message,
+                  isLoading = false,
                 )
-            ).onEach { result ->
-                _viewState.update { viewState ->
-                    when (result) {
-                        is Result.Success -> {
-                            when (result.data) {
-                                is MovieDetailsResult.DetailsSuccess -> viewState.copy(
-                                    isLoading = false,
-                                    movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).movieDetails
-                                )
+              } else {
+                viewState.copy(
+                  error = MovieDetailsResult.Failure.Unknown.message,
+                  isLoading = false,
+                )
+              }
+            }
 
-                                is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
-                                    reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
-                                )
-
-                                is MovieDetailsResult.SimilarSuccess -> viewState.copy(
-                                    similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
-                                )
-
-                                is MovieDetailsResult.VideosSuccess -> viewState.copy(
-                                    trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
-                                )
-
-                                is MovieDetailsResult.Failure.FatalError -> viewState.copy(
-                                    error = (result.data as MovieDetailsResult.Failure.FatalError).message,
-                                    isLoading = false,
-                                )
-
-                                MovieDetailsResult.Failure.Unknown -> viewState.copy(
-                                    error = MovieDetailsResult.Failure.Unknown.message,
-                                    isLoading = false,
-                                )
-                            }
-                        }
-
-                        is Result.Error -> {
-                            if (result.exception is MovieDetailsException) {
-                                viewState.copy(
-                                    error = MovieDetailsResult.Failure.FatalError().message,
-                                    isLoading = false,
-                                )
-                            } else {
-                                viewState.copy(
-                                    error = MovieDetailsResult.Failure.Unknown.message,
-                                    isLoading = false,
-                                )
-                            }
-                        }
-
-                        Result.Loading -> viewState.copy(
-                            isLoading = true,
-                        )
-                    }
-                }
-            }.collect()
+            Result.Loading -> viewState.copy(
+              isLoading = true,
+            )
+          }
         }
+      }.collect()
     }
+  }
 }

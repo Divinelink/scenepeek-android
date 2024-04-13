@@ -11,22 +11,22 @@ import javax.inject.Inject
 
 @Suppress("TooGenericExceptionThrown")
 open class SetRemoteConfigUseCase @Inject constructor(
-    private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    private val encryptedPreferenceStorage: EncryptedStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val firebaseRemoteConfig: FirebaseRemoteConfig,
+  private val encryptedPreferenceStorage: EncryptedStorage,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, Unit>(dispatcher) {
-    override suspend fun execute(parameters: Unit) {
-        val remoteTask = firebaseRemoteConfig.fetchAndActivate()
-        if (remoteTask.exception != null) {
-            throw Exception(remoteTask.exception?.message)
-        }
-        remoteTask.await()
-        if (remoteTask.isSuccessful) {
-            val apiKey = firebaseRemoteConfig.getString("tmdb_api_key")
-            encryptedPreferenceStorage.setTmdbApiKey(apiKey)
-            Result.Success(Unit)
-        } else {
-            throw Exception("Couldn't fetch api key.")
-        }
+  override suspend fun execute(parameters: Unit) {
+    val remoteTask = firebaseRemoteConfig.fetchAndActivate()
+    if (remoteTask.exception != null) {
+      throw Exception(remoteTask.exception?.message)
     }
+    remoteTask.await()
+    if (remoteTask.isSuccessful) {
+      val apiKey = firebaseRemoteConfig.getString("tmdb_auth_token")
+      encryptedPreferenceStorage.setTmdbAuthToken(apiKey)
+      Result.Success(Unit)
+    } else {
+      throw Exception("Couldn't fetch api key.")
+    }
+  }
 }

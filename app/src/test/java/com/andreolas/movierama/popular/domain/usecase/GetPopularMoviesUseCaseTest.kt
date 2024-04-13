@@ -1,9 +1,10 @@
 package com.andreolas.movierama.popular.domain.usecase
 
+import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
-import com.andreolas.movierama.home.domain.model.PopularMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result
@@ -18,163 +19,147 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetPopularMoviesUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var repository: FakeMoviesRepository
+  private lateinit var repository: FakeMoviesRepository
 
-    private val request = PopularRequestApi(page = 0)
+  private val request = PopularRequestApi(page = 0)
 
-    // Movies with id 1, 3, 5 are marked as favorite.
-    private val localFavoriteMovies = (1..6 step 2).map { index ->
-        PopularMovie(
-            id = index,
-            posterPath = "",
-            releaseDate = "2000",
-            title = "Fight Club $index",
-            isFavorite = true,
-            rating = index.toString(),
-            overview = "",
-        )
-    }.toMutableList()
+  // Movies with id 1, 3, 5 are marked as favorite.
+  private val localFavoriteMovies = MediaItemFactory.MoviesList(1..6 step 2)
 
-    private val remoteMovies = (1..6).map { index ->
-        PopularMovie(
-            id = index,
-            posterPath = "",
-            releaseDate = "2000",
-            title = "Fight Club $index",
-            isFavorite = false,
-            rating = index.toString(),
-            overview = "",
-        )
-    }.toMutableList()
+  private val remoteMovies = MediaItemFactory.MoviesList(1..6)
 
-    @Before
-    fun setUp() {
-        repository = FakeMoviesRepository()
-    }
+  @Before
+  fun setUp() {
+    repository = FakeMoviesRepository()
+  }
 
-    @Test
-    fun `successfully fetch popular movies`() =
-        runTest {
-            val expectedResult = Result.Success(
-                remoteMovies.mapIndexed { index, movie ->
-                    movie.copy(isFavorite = index % 2 == 0)
-                }
-            )
-
-            repository.mockFetchPopularMovies(
-                request = PopularRequestApi(page = 0),
-                response = Result.Success(remoteMovies)
-            )
-
-            repository.mockFetchFavoriteMoviesIds(
-                response = Result.Success(
-                    localFavoriteMovies.map { it.id }
-                )
-            )
-
-            val useCase = GetPopularMoviesUseCase(
-                moviesRepository = repository.mock,
-                dispatcher = testDispatcher,
-            )
-            val result = useCase(request).last()
-
-            assertThat(result).isEqualTo(expectedResult)
+  @Test
+  fun `successfully fetch popular movies`() =
+    runTest {
+      val expectedResult = Result.Success(
+        remoteMovies.mapIndexed { index, movie ->
+          movie.copy(isFavorite = index % 2 == 0)
         }
+      )
 
-    @Test
-    fun `given local data failed then I expect remote data`() = runTest {
-        val expectedResult = Result.Success<List<PopularMovie>>(remoteMovies)
+      repository.mockFetchPopularMovies(
+        request = PopularRequestApi(page = 0),
+        response = Result.Success(remoteMovies)
+      )
 
-        repository.mockFetchFavoriteMoviesIds(
-            Result.Error(Exception())
+      repository.mockFetchFavoriteMoviesIds(
+        response = Result.Success(
+          localFavoriteMovies.map {
+            Pair(it.id, it.mediaType)
+          }
         )
+      )
 
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(page = 0),
-            response = Result.Success(remoteMovies)
-        )
+      val useCase = GetPopularMoviesUseCase(
+        moviesRepository = repository.mock,
+        dispatcher = testDispatcher,
+      )
+      val result = useCase(request).last()
 
-        remoteMovies.forEach {
-            repository.mockCheckFavorite(
-                it.id, Result.Success(false)
-            )
-        }
-
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).last()
-        assertThat(result).isEqualTo(expectedResult)
+      assertThat(result).isEqualTo(expectedResult)
     }
 
-    @Test
-    fun `given remote data failed then I expect Error Result`() = runTest {
-        val expectedResult = Result.Error(Exception("Something went wrong."))
+  @Test
+  fun `given local data failed then I expect remote data`() = runTest {
+    val expectedResult = Result.Success<List<MediaItem>>(remoteMovies)
 
-        repository.mockFetchFavoriteMovies(
-            Result.Success(localFavoriteMovies)
-        )
+    repository.mockFetchFavoriteMoviesIds(
+      Result.Error(Exception())
+    )
 
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(page = 0),
-            response = Result.Error(Exception())
-        )
+    repository.mockFetchPopularMovies(
+      request = PopularRequestApi(page = 0),
+      response = Result.Success(remoteMovies)
+    )
 
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).last()
-
-        assertThat(result).isInstanceOf(expectedResult::class.java)
+    remoteMovies.forEach {
+      repository.mockCheckFavorite(
+        id = it.id,
+        mediaType = it.mediaType,
+        response = Result.Success(false),
+      )
     }
 
-    @Test
-    fun `given both data resources failed then I expect Error Results`() = runTest {
-        val expectedResult = Result.Error(Exception("Something went wrong."))
+    val useCase = GetPopularMoviesUseCase(
+      moviesRepository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(request).last()
+    assertThat(result).isEqualTo(expectedResult)
+  }
 
-        repository.mockFetchFavoriteMovies(
-            Result.Error(Exception())
-        )
+  @Test
+  fun `given remote data failed then I expect Error Result`() = runTest {
+    val expectedResult = Result.Error(Exception("Something went wrong."))
 
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(page = 0),
-            response = Result.Error(Exception())
-        )
+    repository.mockFetchFavoriteMovies(
+      Result.Success(localFavoriteMovies)
+    )
 
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).last()
+    repository.mockFetchPopularMovies(
+      request = PopularRequestApi(page = 0),
+      response = Result.Error(Exception())
+    )
 
-        assertThat(result).isInstanceOf(expectedResult::class.java)
-    }
+    val useCase = GetPopularMoviesUseCase(
+      moviesRepository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(request).last()
 
-    @Test
-    fun `success loading`() = runTest {
-        val expectedResult = Result.Loading
+    assertThat(result).isInstanceOf(expectedResult::class.java)
+  }
 
-        repository.mockFetchPopularMovies(
-            request = PopularRequestApi(page = 0),
-            response = Result.Loading
-        )
+  @Test
+  fun `given both data resources failed then I expect Error Results`() = runTest {
+    val expectedResult = Result.Error(Exception("Something went wrong."))
 
-        repository.mockFetchFavoriteMoviesIds(
-            Result.Loading
-        )
+    repository.mockFetchFavoriteMovies(
+      Result.Error(Exception())
+    )
 
-        val useCase = GetPopularMoviesUseCase(
-            moviesRepository = repository.mock,
-            dispatcher = testDispatcher,
-        )
-        val result = useCase(request).first()
+    repository.mockFetchPopularMovies(
+      request = PopularRequestApi(page = 0),
+      response = Result.Error(Exception())
+    )
 
-        assertThat(result).isInstanceOf(expectedResult::class.java)
-    }
+    val useCase = GetPopularMoviesUseCase(
+      moviesRepository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(request).last()
+
+    assertThat(result).isInstanceOf(expectedResult::class.java)
+  }
+
+  @Test
+  fun `success loading`() = runTest {
+    val expectedResult = Result.Loading
+
+    repository.mockFetchPopularMovies(
+      request = PopularRequestApi(page = 0),
+      response = Result.Loading
+    )
+
+    repository.mockFetchFavoriteMoviesIds(
+      Result.Loading
+    )
+
+    val useCase = GetPopularMoviesUseCase(
+      moviesRepository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(request).first()
+
+    assertThat(result).isInstanceOf(expectedResult::class.java)
+  }
 }

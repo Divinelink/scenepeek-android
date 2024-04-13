@@ -25,21 +25,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.PopularMovie
-import com.andreolas.movierama.home.domain.model.toMovie
+import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
-import com.andreolas.movierama.ui.components.MovieItem
+import com.andreolas.movierama.ui.components.MediaItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.dimensions
 import com.andreolas.movierama.ui.theme.textColorDisabled
 
 @Composable
-fun PopularMoviesList(
+fun MediaList(
   modifier: Modifier = Modifier,
-  movies: List<PopularMovie>,
-  onMovieClicked: (PopularMovie) -> Unit,
-  onMarkAsFavoriteClicked: (PopularMovie) -> Unit,
+  searches: List<MediaItem>,
+  onMovieClicked: (MediaItem) -> Unit,
+  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   isLoading: Boolean,
 ) {
@@ -62,13 +61,28 @@ fun PopularMoviesList(
   ) {
     items(
       key = { it.id },
-      items = movies
-    ) { popularMovie ->
-      MovieItem(
-        movie = popularMovie.toMovie(),
-        onMovieItemClick = { onMovieClicked(popularMovie) },
-        onLikeMovieClick = { onMarkAsFavoriteClicked(popularMovie) }
-      )
+      items = searches
+    ) { search ->
+      when (search) {
+        is MediaItem.Media.Movie -> MediaItem(
+          movie = search,
+          onMovieItemClick = { onMovieClicked(search) },
+          onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
+        )
+        is MediaItem.Media.TV -> {
+          MediaItem(
+            movie = search,
+            onMovieItemClick = { onMovieClicked(search) },
+            onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
+          )
+        }
+        is MediaItem.Person -> {
+          // FIXME Do nothing yet
+        }
+        MediaItem.Unknown -> {
+          // Do nothing
+        }
+      }
     }
 
     item(
@@ -117,11 +131,11 @@ private fun LoadMoreContent(
 fun MoviesListScreenPreview() {
   @Suppress("MagicNumber")
   val movies = (1..8).map { index ->
-    PopularMovie(
+    MediaItem.Media.Movie(
       id = index,
       posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
       releaseDate = (2000 + index).toString(),
-      title = "Fight Club $index",
+      name = "Fight Club $index",
       isFavorite = index % 2 == 0,
       rating = index.toString(),
       overview = "",
@@ -130,8 +144,8 @@ fun MoviesListScreenPreview() {
 
   AppTheme {
     Surface {
-      PopularMoviesList(
-        movies = movies,
+      MediaList(
+        searches = movies,
         onMovieClicked = {},
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
