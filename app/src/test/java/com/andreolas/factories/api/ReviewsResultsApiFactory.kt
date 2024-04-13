@@ -56,5 +56,4 @@ object ReviewsResultsApiFactory {
     Review_2(),
     Review_3(),
   )
-
 }

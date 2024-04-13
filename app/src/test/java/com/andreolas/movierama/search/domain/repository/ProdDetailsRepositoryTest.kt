@@ -1,6 +1,13 @@
 package com.andreolas.movierama.search.domain.repository
 
 import app.cash.turbine.test
+import com.andreolas.factories.MediaDetailsFactory
+import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.MediaItemFactory.toWizard
+import com.andreolas.factories.ReviewFactory
+import com.andreolas.factories.api.DetailsResponseApiFactory
+import com.andreolas.factories.api.ReviewsResultsApiFactory
+import com.andreolas.factories.api.SimilarMovieApiFactory
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
@@ -17,13 +24,6 @@ import com.andreolas.movierama.details.domain.model.VideoSite
 import com.andreolas.movierama.details.domain.model.VideosException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
-import com.andreolas.factories.MediaDetailsFactory
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.MediaItemFactory.toWizard
-import com.andreolas.factories.ReviewFactory
-import com.andreolas.factories.api.DetailsResponseApiFactory
-import com.andreolas.factories.api.ReviewsResultsApiFactory
-import com.andreolas.factories.api.SimilarMovieApiFactory
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.Result

@@ -9,6 +9,7 @@ import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
+@Suppress("ThrowingExceptionsWithoutMessageOrCause")
 open class MarkAsFavoriteUseCase @Inject constructor(
   private val repository: MoviesRepository,
   @IoDispatcher dispatcher: CoroutineDispatcher,

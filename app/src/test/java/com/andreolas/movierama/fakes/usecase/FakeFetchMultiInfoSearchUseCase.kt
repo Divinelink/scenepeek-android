@@ -2,10 +2,10 @@ package com.andreolas.movierama.fakes.usecase
 
 import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
+import gr.divinelink.core.util.domain.Result
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import gr.divinelink.core.util.domain.Result
 
 class FakeFetchMultiInfoSearchUseCase {
 
@@ -18,5 +18,4 @@ class FakeFetchMultiInfoSearchUseCase {
       mock.invoke(any())
     } returns flowOf(response)
   }
-
 }

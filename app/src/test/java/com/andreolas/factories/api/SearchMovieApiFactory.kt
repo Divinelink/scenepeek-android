@@ -41,5 +41,4 @@ object SearchMovieApiFactory {
       voteCount = null
     )
   }
-
 }

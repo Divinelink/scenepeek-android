@@ -1,9 +1,9 @@
 package com.andreolas.movierama.search.domain.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
+import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
@@ -42,7 +42,7 @@ class GetSearchMoviesUseCaseTest {
   }
 
   @Test
-  fun `given 3 favorite movies and 3 non favorites when I fetch Popular movies then I expect combined list with favorites`() =
+  fun `given both favorites and non favorites when I fetch popular then I expect combined list`() =
     runTest {
       val expectedResult = Result.Success(
         SearchResult(

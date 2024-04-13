@@ -6,9 +6,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.FilterBar
-import com.andreolas.movierama.R
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test

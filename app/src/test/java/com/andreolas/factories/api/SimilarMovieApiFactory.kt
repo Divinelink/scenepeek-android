@@ -58,5 +58,4 @@ object SimilarMovieApiFactory {
       voteCount = null
     )
   }
-
 }
