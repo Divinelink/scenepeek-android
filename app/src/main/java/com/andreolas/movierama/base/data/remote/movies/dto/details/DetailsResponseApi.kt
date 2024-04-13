@@ -16,6 +16,7 @@ import kotlinx.serialization.json.JsonObject
 sealed class DetailsResponseApi {
   abstract val id: Int
   abstract val adult: Boolean
+  abstract val genres: List<Genre>
   @SerialName("backdrop_path") abstract val backdropPath: String?
   abstract val originalLanguage: String
   abstract val overview: String?
@@ -32,7 +33,7 @@ sealed class DetailsResponseApi {
     @SerialName("backdrop_path") override val backdropPath: String?,
     @SerialName("belongs_to_collection") val belongToCollection: JsonObject? = null,
     val budget: Int,
-    val genres: List<Genre>,
+    override val genres: List<Genre>,
     val homepage: String? = null,
     @SerialName("imdb_id") val imdbId: String? = null,
     @SerialName("original_language") override val originalLanguage: String,
@@ -60,7 +61,7 @@ sealed class DetailsResponseApi {
     override val id: Int,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
-    @SerialName("genre_ids") val genreIds: List<Int>? = null,
+    override val genres: List<Genre>,
     @SerialName("origin_country") val originCountry: List<String>,
     @SerialName("original_language") override val originalLanguage: String,
     @SerialName("original_name") val originalName: String,
@@ -100,6 +101,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TVDetails(
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
   title = this.name,
+  genres = this.genres.map { it.name },
   rating = this.voteAverage.round(1).toString(),
   overview = this.overview,
   director = this.credits.crew.toDirector(),

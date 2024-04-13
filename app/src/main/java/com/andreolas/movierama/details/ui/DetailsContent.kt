@@ -18,11 +18,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,6 +52,7 @@ import com.andreolas.movierama.ExcludeFromJacocoGeneratedReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
 import com.andreolas.movierama.details.domain.model.Director
+import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.TVDetails
@@ -135,18 +136,15 @@ fun DetailsContent(
     content = { paddingValues ->
       viewState.movieDetails?.let { mediaDetails ->
         when (mediaDetails) {
-          is MovieDetails -> {
-            DetailsMovieContent(
+          is MovieDetails, is TVDetails -> {
+            MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
-              movieDetails = mediaDetails,
+              mediaDetails = mediaDetails,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
             )
-          }
-          is TVDetails -> {
-            // TODO Add TV Details Content
           }
         }
       }
@@ -198,9 +196,9 @@ private fun VideoPlayerSection(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailsMovieContent(
+fun MediaDetailsContent(
   modifier: Modifier = Modifier,
-  movieDetails: MovieDetails,
+  mediaDetails: MediaDetails,
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
@@ -215,7 +213,7 @@ fun DetailsMovieContent(
         .fillMaxWidth()
     ) {
       item {
-        TitleDetails(movieDetails)
+        TitleDetails(mediaDetails)
       }
       if (trailer != null) {
         stickyHeader(key = "trailerSticky") {
@@ -252,13 +250,13 @@ fun DetailsMovieContent(
             modifier = Modifier
               .clip(MovieImageShape)
               .weight(1f),
-            path = movieDetails.posterPath,
+            path = mediaDetails.posterPath,
           )
 
           OverviewDetails(
             modifier = modifier.weight(OVERVIEW_WEIGHT),
-            movieDetails = movieDetails,
-            genres = movieDetails.genres,
+            movieDetails = mediaDetails,
+            genres = mediaDetails.genres,
             onGenreClicked = {},
           )
         }
@@ -266,8 +264,8 @@ fun DetailsMovieContent(
       item {
         Divider(thickness = MaterialTheme.dimensions.keyline_1)
         CastList(
-          cast = movieDetails.cast,
-          director = movieDetails.director,
+          cast = mediaDetails.cast,
+          director = mediaDetails.director,
         )
       }
       if (similarMoviesList?.isNotEmpty() == true) {
@@ -297,17 +295,16 @@ fun DetailsMovieContent(
 }
 
 @Composable
-private fun TitleDetails(movieDetails: MovieDetails) {
+private fun TitleDetails(mediaDetails: MediaDetails) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
       .padding(horizontal = MaterialTheme.dimensions.keyline_12)
   ) {
     Text(
-      modifier = Modifier
-        .weight(1f),
+      modifier = Modifier.weight(1f),
       style = MaterialTheme.typography.displaySmall,
-      text = movieDetails.title,
+      text = mediaDetails.title,
     )
   }
 
@@ -321,14 +318,17 @@ private fun TitleDetails(movieDetails: MovieDetails) {
   ) {
     Text(
       style = MaterialTheme.typography.bodySmall,
-      text = movieDetails.releaseDate,
+      text = mediaDetails.releaseDate,
     )
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_12))
-    movieDetails.runtime?.let {
-      Text(
-        style = MaterialTheme.typography.bodySmall,
-        text = movieDetails.runtime,
-      )
+
+    if (mediaDetails is MovieDetails) {
+      mediaDetails.runtime?.let {
+        Text(
+          style = MaterialTheme.typography.bodySmall,
+          text = mediaDetails.runtime,
+        )
+      }
     }
   }
 }
@@ -336,7 +336,7 @@ private fun TitleDetails(movieDetails: MovieDetails) {
 @Composable
 private fun OverviewDetails(
   modifier: Modifier = Modifier,
-  movieDetails: MovieDetails,
+  movieDetails: MediaDetails,
   genres: List<String>?,
   onGenreClicked: (String) -> Unit,
 ) {
@@ -345,7 +345,7 @@ private fun OverviewDetails(
       .padding(start = MaterialTheme.dimensions.keyline_12)
       .fillMaxWidth(),
   ) {
-    if (!movieDetails.genres.isNullOrEmpty()) {
+    if (movieDetails.genres?.isNotEmpty() == true) {
       genres?.let {
         LazyRow(
           horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
@@ -359,13 +359,13 @@ private fun OverviewDetails(
         }
       }
     }
-    if (movieDetails.overview?.isNotEmpty() == true) {
+    if (!movieDetails.overview.isNullOrEmpty()) {
       Text(
         modifier = Modifier.padding(
           top = MaterialTheme.dimensions.keyline_16,
           bottom = MaterialTheme.dimensions.keyline_8,
         ),
-        text = movieDetails.overview,
+        text = movieDetails.overview!!,
         style = MaterialTheme.typography.bodyMedium,
       )
     }
@@ -451,9 +451,10 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         title = "Flight Club",
         rating = "9.5",
         isFavorite = false,
-        overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a " +
-          "shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town," +
-          " until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
+        overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal" +
+          " male aggression into a shocking new form of therapy. Their concept catches on," +
+          " with underground fight clubs forming in every town, until an eccentric gets in the" +
+          " way and ignites an out-of-control spiral toward oblivion.",
         director = Director(
           id = 123443321,
           name = "Forest Gump",

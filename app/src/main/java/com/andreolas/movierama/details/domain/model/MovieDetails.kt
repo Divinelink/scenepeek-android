@@ -9,6 +9,7 @@ sealed class MediaDetails {
   abstract val cast: List<Actor>
   abstract val releaseDate: String
   abstract val rating: String
+  abstract val genres: List<String>?
   abstract val isFavorite: Boolean
 
   fun copy(
@@ -19,6 +20,7 @@ sealed class MediaDetails {
     director: Director? = this.director,
     cast: List<Actor> = this.cast,
     releaseDate: String = this.releaseDate,
+    genres: List<String>? = this.genres,
     rating: String = this.rating,
     isFavorite: Boolean = this.isFavorite,
   ): MediaDetails = when (this) {
@@ -45,6 +47,7 @@ sealed class MediaDetails {
       releaseDate = releaseDate,
       rating = rating,
       isFavorite = isFavorite,
+      genres = genres,
       seasons = seasons,
     )
   }
@@ -55,7 +58,7 @@ data class MovieDetails(
   override val title: String,
   override val posterPath: String,
   override val overview: String?,
-  val genres: List<String>?,
+  override val genres: List<String>?,
   override val director: Director?,
   override val cast: List<Actor>,
   override val releaseDate: String,
@@ -70,6 +73,7 @@ data class TVDetails(
   override val posterPath: String,
   override val overview: String?,
   override val director: Director?,
+  override val genres: List<String>?,
   override val cast: List<Actor>,
   override val releaseDate: String,
   override val rating: String,

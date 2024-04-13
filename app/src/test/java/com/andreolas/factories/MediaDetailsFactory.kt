@@ -21,7 +21,7 @@ object MediaDetailsFactory {
   )
 
   fun TheOffice() = TVDetails(
-    id = 6159,
+    id = 2316,
     title = "The Office",
     posterPath = "the_office.jpg",
     overview = "Michael Scarn is the best.",
@@ -30,6 +30,7 @@ object MediaDetailsFactory {
     releaseDate = "2005-03-24",
     rating = "9.5",
     isFavorite = false,
+    genres = listOf("Comedy, Romance"),
     seasons = listOf()
   )
 }
