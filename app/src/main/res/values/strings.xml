@@ -30,11 +30,16 @@
 
     <!-- preferences.xml -->
     <string name="preferences__none">None</string>
+    <string name="preferences__account">Account</string>
     <string name="preferences__appearance">Appearance</string>
     <string name="preferences__theme">Theme</string>
     <string name="preferences__light_theme">Light</string>
     <string name="preferences__dark_theme">Dark</string>
     <string name="preferences__system_default">System default</string>
+
+    <!-- AccountSettingsFragment -->
+    <string name="AccountSettingsFragment__account">Account</string>
+    <string name="AccountSettingsFragment__login">Login to TMDB</string>
 
     <!-- HelpSettingsFragment -->
     <string name="HelpSettingsFragment__help">Help</string>

@@ -21,34 +21,34 @@ private const val START_LOCATION = "app.settings.start.location"
 @AndroidEntryPoint
 class AppSettingsActivity : DSLSettingsActivity() {
 
-    private val viewModel: SettingsViewModel by viewModels()
+  private val viewModel: SettingsViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.theme.collect { theme ->
-                        updateForTheme(theme)
-                    }
-                }
-            }
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        launch {
+          viewModel.theme.collect { theme ->
+            updateForTheme(theme)
+          }
         }
-
-        intent = intent.putExtra(START_LOCATION, StartLocation.HOME)
+      }
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        finish()
-        startActivity(intent)
-    }
+    intent = intent.putExtra(START_LOCATION, StartLocation.HOME)
+  }
 
-    private enum class StartLocation(val code: Int) {
-        HOME(0),
-        HELP(1),
-    }
+  @SuppressLint("MissingSuperCall")
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    finish()
+    startActivity(intent)
+  }
+
+  private enum class StartLocation(val code: Int) {
+    HOME(0),
+    HELP(1),
+  }
 }

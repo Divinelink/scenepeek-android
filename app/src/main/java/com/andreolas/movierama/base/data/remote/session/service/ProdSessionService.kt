@@ -14,8 +14,8 @@ class ProdSessionService @Inject constructor(
     return try {
       val response = restClient.get<CreateRequestTokenResponseApi>(url)
       Result.success(response)
-    } catch (e: Exception) {
-      Result.failure(e)
+    } finally {
+      // todo
     }
   }
 }
