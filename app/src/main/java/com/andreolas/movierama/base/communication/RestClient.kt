@@ -29,6 +29,7 @@ import javax.inject.Inject
 class RestClient @Inject constructor(
   encryptedStorage: EncryptedStorage,
 ) {
+  val tmdbUrl = ApiConstants.TMDB_URL
   private val authToken = encryptedStorage.tmdbAuthToken
 
   private val localJson = Json {
