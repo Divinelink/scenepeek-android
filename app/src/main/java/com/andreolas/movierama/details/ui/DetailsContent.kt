@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -117,7 +117,7 @@ fun DetailsContent(
             onClick = onNavigateUp,
           ) {
             Icon(
-              Icons.Filled.ArrowBack,
+              Icons.AutoMirrored.Rounded.ArrowBack,
               stringResource(R.string.navigate_up_button_content_description)
             )
           }
