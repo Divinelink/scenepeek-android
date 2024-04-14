@@ -1,4 +1,2 @@
 include ':app'
 include ':core-util'
-
-apply from: 'dependencies.gradle'

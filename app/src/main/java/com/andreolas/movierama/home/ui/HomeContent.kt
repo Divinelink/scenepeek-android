@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomSheetScaffold
@@ -33,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -67,8 +64,6 @@ const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
 @OptIn(
   ExperimentalMaterial3Api::class,
-  ExperimentalComposeUiApi::class,
-  ExperimentalAnimationApi::class,
 )
 @Suppress("LongMethod")
 @Composable
@@ -120,9 +115,8 @@ fun HomeContent(
 
   val context = LocalContext.current
   BottomSheetScaffold(
-    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     scaffoldState = scaffoldState,
-    sheetPeekHeight = 0.dp,
+    sheetPeekHeight = 1.dp,
     sheetContent = {
       if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
         BottomSheetMovieContent(

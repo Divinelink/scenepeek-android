@@ -7,7 +7,7 @@ sealed class MainViewState(
     open val error: UIText? = null,
 ) {
 
-    object Loading : MainViewState(
+    data object Loading : MainViewState(
         isLoading = true,
     )
 
@@ -18,7 +18,7 @@ sealed class MainViewState(
         error = error,
     )
 
-    object Completed : MainViewState(
+    data object Completed : MainViewState(
         isLoading = false,
     )
 }

@@ -5,7 +5,7 @@ import androidx.compose.material3.SheetState
 
 sealed class BottomSheetUiState<T> {
 
-  object Hidden : BottomSheetUiState<Nothing>()
+  data object Hidden : BottomSheetUiState<Nothing>()
 
   data class Visible<T>(val data: T) : BottomSheetUiState<T>()
 }

@@ -39,7 +39,7 @@ dependencies {
   implementation libs.androidx.core.ktx
   implementation libs.androidx.appcompat
   implementation libs.kotlinx.datetime
-  implementation libs.material.material
+  implementation libs.material
   implementation libs.lottie
   implementation libs.timber
 }
