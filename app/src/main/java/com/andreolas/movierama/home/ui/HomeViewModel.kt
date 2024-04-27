@@ -329,7 +329,7 @@ class HomeViewModel @Inject constructor(
   fun onClearFiltersClicked() {
     _viewState.update { viewState ->
       viewState.copy(
-        filters = HomeFilter.values().map { it.filter },
+        filters = HomeFilter.entries.map { it.filter },
         filteredResults = null,
       )
     }
@@ -347,7 +347,7 @@ class HomeViewModel @Inject constructor(
   }
 
   fun onFilterClicked(filter: String) {
-    val homeFilter = HomeFilter.values().find { it.filter.name == filter }
+    val homeFilter = HomeFilter.entries.find { it.filter.name == filter }
     updateFilters(homeFilter)
 
     when (homeFilter) {
