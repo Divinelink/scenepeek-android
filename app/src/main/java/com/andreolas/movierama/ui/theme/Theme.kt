@@ -22,21 +22,11 @@ fun AppTheme(
     LightColors
   }
 
-  // Used to converse Material 2 to Material 3 when needed.
-  androidx.compose.material.MaterialTheme(
-    typography = MD2Typography,
-    colors = if (useDarkTheme) {
-      DarkMD2Colors
-    } else {
-      LightMD2Colors
-    }
-  ) {
-    MaterialTheme(
-      colorScheme = colors,
-      typography = AppTypography,
-      content = content
-    )
-  }
+  MaterialTheme(
+    colorScheme = colors,
+    typography = AppTypography,
+    content = content
+  )
 }
 
 @Composable

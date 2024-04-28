@@ -16,12 +16,5 @@ class LoginUseCase @Inject constructor(
     val result = repository.createRequestToken()
 
     return result
-//    return result.data?.url
-//    return when (result) {
-//     .isSuccess -> {
-//        Result.success(result.data.url)
-//      }
-//      is Result.failure -> Result.failure(result.exception)
-//      is Result.Loading -> Result.Loading
   }
 }

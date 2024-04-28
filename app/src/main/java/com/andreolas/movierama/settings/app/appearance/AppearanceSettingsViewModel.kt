@@ -23,41 +23,40 @@ import javax.inject.Inject
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppearanceSettingsViewModel @Inject constructor(
-    val setThemeUseCase: SetThemeUseCase,
-    getThemeUseCase: GetThemeUseCase,
-    getAvailableThemesUseCase: GetAvailableThemesUseCase
+  val setThemeUseCase: SetThemeUseCase,
+  getThemeUseCase: GetThemeUseCase,
+  getAvailableThemesUseCase: GetAvailableThemesUseCase
 ) : ViewModel() {
 
-    private val refreshSignal = MutableSharedFlow<Unit>()
-    private val loadDataSignal: Flow<Unit> = flow {
-        emit(Unit)
-        emitAll(refreshSignal)
-    }
+  private val refreshSignal = MutableSharedFlow<Unit>()
+  private val loadDataSignal: Flow<Unit> = flow {
+    emit(Unit)
+    emitAll(refreshSignal)
+  }
 
-    private suspend fun refreshData() {
-        refreshSignal.emit(Unit)
-    }
+  private suspend fun refreshData() {
+    refreshSignal.emit(Unit)
+  }
 
-    private val _uiState: StateFlow<UpdateSettingsState> = loadDataSignal.mapLatest {
-        UpdateSettingsState(
-            theme = getThemeUseCase(Unit).data ?: Theme.SYSTEM
-        )
-    }.stateIn(
-        viewModelScope, WhileViewSubscribed, initialValue = UpdateSettingsState(Theme.SYSTEM)
+  private val _uiState: StateFlow<UpdateSettingsState> = loadDataSignal.mapLatest {
+    UpdateSettingsState(
+      theme = getThemeUseCase(Unit).data ?: Theme.SYSTEM,
+      availableThemes = getAvailableThemesUseCase(Unit).data ?: listOf()
     )
-    val uiState: StateFlow<UpdateSettingsState> = _uiState
+  }.stateIn(
+    viewModelScope, WhileViewSubscribed, initialValue = UpdateSettingsState(Theme.SYSTEM, listOf())
+  )
+  val uiState: StateFlow<UpdateSettingsState> = _uiState
 
-    // Theme setting
-    val availableThemes: StateFlow<List<Theme>> = loadDataSignal.mapLatest {
-        getAvailableThemesUseCase(Unit).data ?: listOf()
-    }.stateIn(viewModelScope, WhileViewSubscribed, listOf())
-
-    fun setTheme(theme: Theme) {
-        viewModelScope.launch {
-            setThemeUseCase(theme)
-            refreshData()
-        }
+  fun setTheme(theme: Theme) {
+    viewModelScope.launch {
+      setThemeUseCase(theme)
+      refreshData()
     }
+  }
 }
 
-data class UpdateSettingsState(val theme: Theme)
+data class UpdateSettingsState(
+  val theme: Theme,
+  val availableThemes: List<Theme>
+)

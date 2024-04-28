@@ -2,7 +2,6 @@
 
 package com.andreolas.movierama.home.ui
 
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -34,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -43,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.settings.app.AppSettingsActivity
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
@@ -79,6 +76,7 @@ fun HomeContent(
   onFilterClicked: (String) -> Unit,
   onClearFiltersClicked: () -> Unit,
   onSwipeDown: () -> Unit,
+  onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val keyboardController = LocalSoftwareKeyboardController.current
@@ -113,7 +111,6 @@ fun HomeContent(
     }
   }
 
-  val context = LocalContext.current
   BottomSheetScaffold(
     scaffoldState = scaffoldState,
     sheetPeekHeight = 1.dp,
@@ -136,13 +133,7 @@ fun HomeContent(
           .navigationBarsPadding()
           .clip(SearchBarShape),
         actions = {
-          IconButton(
-            onClick = {
-              context.startActivity(
-                Intent(context, AppSettingsActivity::class.java)
-              )
-            },
-          ) {
+          IconButton(onClick = onNavigateToSettings) {
             Icon(
               Icons.Filled.Settings,
               stringResource(R.string.settings_button_content_description)
@@ -317,6 +308,7 @@ fun HomeContentPreview() {
         onFilterClicked = {},
         onClearFiltersClicked = {},
         onSwipeDown = {},
+        onNavigateToSettings = {},
       )
     }
   }

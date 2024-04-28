@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.settings.app.account.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,18 +16,29 @@ class AccountSettingsViewModel @Inject constructor(
   private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-  private val _openWebView = MutableSharedFlow<String>()
-  val openWebView = _openWebView.asSharedFlow()
+  private val _viewState = MutableStateFlow(AccountSettingsViewState(url = null))
+  val viewState: StateFlow<AccountSettingsViewState> = _viewState
 
   fun login() {
     viewModelScope.launch {
-
       loginUseCase(Unit)
-        .onSuccess {
-          _openWebView.emit(it.data.url)
+        .onSuccess { response ->
+          _viewState.update {
+            it.copy(url = response.data.url)
+          }
         }.onFailure {
           TODO()
         }
     }
   }
+
+  fun onWebViewScreenNavigated() {
+    _viewState.update {
+      it.copy(url = null)
+    }
+  }
 }
+
+data class AccountSettingsViewState(
+  val url: String?
+)

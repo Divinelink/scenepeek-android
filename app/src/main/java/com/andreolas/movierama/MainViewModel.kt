@@ -15,8 +15,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
   themedActivityDelegate: ThemedActivityDelegate,
   private val setRemoteConfigUseCase: SetRemoteConfigUseCase,
-) : ViewModel(),
-    ThemedActivityDelegate by themedActivityDelegate {
+) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
 
   private val _viewState: MutableStateFlow<MainViewState> = MutableStateFlow(MainViewState.Loading)
   val viewState: StateFlow<MainViewState> = _viewState

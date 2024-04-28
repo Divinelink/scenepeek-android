@@ -12,7 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.app.AppSettingsActivity
+import com.andreolas.movierama.settings.app.SettingsScreen
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
 class AppSettingsTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(AppSettingsActivity::class.java)
+    val activityRule = ActivityScenarioRule(SettingsScreen::class.java)
 //    private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
     @Test

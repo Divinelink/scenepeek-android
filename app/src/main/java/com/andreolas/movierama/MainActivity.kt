@@ -12,6 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.andreolas.movierama.destinations.HomeScreenDestination
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -25,6 +28,7 @@ import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.spec.Route
 import dagger.hilt.android.AndroidEntryPoint
 import gr.divinelink.core.util.utils.setNavigationBarColor
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -36,8 +40,16 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
     setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
-    // Update for Dark Mode straight away
-    updateForTheme(viewModel.currentTheme)
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        launch {
+          viewModel.theme.collect { theme ->
+            updateForTheme(theme)
+          }
+        }
+      }
+    }
 
     setContent {
       AppTheme {
