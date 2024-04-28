@@ -18,7 +18,6 @@ import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
@@ -80,27 +79,11 @@ class GetMoviesDetailsUseCaseTest {
   }
 
   @Test
-  fun `execute should return Loading state`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.Loading)
-    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
-    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
-    val flow = GetMovieDetailsUseCase(
-      repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-    )
-
-    val result = flow(request).first()
-
-    assertThat(result).isEqualTo(Result.Loading)
-  }
-
-  @Test
   fun `successfully get movie details`() = runTest {
-    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.Success(true))
-    repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
-    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
-    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
+    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.failure<Exception>())
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -110,7 +93,7 @@ class GetMoviesDetailsUseCaseTest {
     val result = flow(request).first()
 
     assertThat(result).isEqualTo(
-      Result.Success(
+      Result.success(
         MovieDetailsResult.DetailsSuccess(
           movieDetails.copy(
             isFavorite = true
@@ -122,10 +105,10 @@ class GetMoviesDetailsUseCaseTest {
 
   @Test
   fun `successfully get movie details with false favorite status`() = runTest {
-    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.Success(false))
-    repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
-    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
-    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
+    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -134,17 +117,17 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
   }
 
   @Test
   fun `successfully fetch movie reviews`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.Loading)
+//    repository.mockFetchMovieDetails(request, Result.Loading)
     repository.mockFetchMovieReviews(
       ReviewsRequestApi.Movie(movieId = 555),
-      Result.Success(reviewsList)
+      Result.success(reviewsList)
     )
-    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -153,19 +136,19 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)))
   }
 
   @Test
   fun `successfully fetch similar movies`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.Loading)
+//    repository.mockFetchMovieDetails(request, Result.Loading)
     repository.mockFetchMovieReviews(
       ReviewsRequestApi.Movie(movieId = 555),
-      Result.Success(reviewsList)
+      Result.success(reviewsList)
     )
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.Success(similarList)
+      Result.success(similarList)
     )
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
@@ -175,16 +158,16 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.SimilarSuccess(similarList)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.SimilarSuccess(similarList)))
   }
 
   @Test
   fun `given error result, I expect error result`() = runTest {
-    val expectedResult = Result.Error(Exception("Oops."))
+    val expectedResult = Result.failure<Exception>(Exception("Oops."))
 
     repository.mockFetchMovieDetails(
       request = request,
-      response = Result.Error(Exception("Oops."))
+      response = Result.failure(Exception("Oops."))
     )
 
     val useCase = GetMovieDetailsUseCase(
@@ -199,12 +182,12 @@ class GetMoviesDetailsUseCaseTest {
 
   @Test
   fun `catch error case in details`() = runTest {
-    val expectedResult = Result.Error(MovieDetailsException())
+    val expectedResult = Result.failure<Exception>(MovieDetailsException())
 
-    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
+//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.Error(SimilarException())
+      Result.failure(SimilarException())
     )
 
     val useCase = GetMovieDetailsUseCase(
@@ -219,12 +202,12 @@ class GetMoviesDetailsUseCaseTest {
 
   @Test
   fun `successfully get movie details even when similar call fails`() = runTest {
-    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.Success(false))
-    repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
-    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
+    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.Error(SimilarException())
+      Result.failure(SimilarException())
     )
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
@@ -234,13 +217,13 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
   }
 
   @Test
   fun `successfully get movie details even when reviews and similar calls fail`() = runTest {
-    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.Success(false))
-    repository.mockFetchMovieDetails(request, Result.Success(movieDetails))
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
+    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -249,7 +232,7 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
   }
 
   // Video tests
@@ -264,7 +247,7 @@ class GetMoviesDetailsUseCaseTest {
         key = "type",
       )
     )
-    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Success(videoList))
+    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -273,7 +256,7 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.VideosSuccess(videoList.first())))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.VideosSuccess(videoList.first())))
   }
 
   @Test
@@ -287,7 +270,7 @@ class GetMoviesDetailsUseCaseTest {
         key = "type",
       )
     )
-    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Success(videoList))
+    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       moviesRepository = moviesRepository.mock,
@@ -296,14 +279,14 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.Success(MovieDetailsResult.VideosSuccess(null)))
+    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.VideosSuccess(null)))
   }
 
   @Test
   fun `catch error case in videos`() = runTest {
-    val expectedResult = Result.Error(Exception("Oops."))
+    val expectedResult = Result.failure<Exception>(Exception("Oops."))
 
-    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.Error(VideosException()))
+    repository.mockFetchMovieVideos(VideosRequestApi(555), Result.failure(VideosException()))
 
     val useCase = GetMovieDetailsUseCase(
       repository = repository.mock,

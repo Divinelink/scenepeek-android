@@ -3,7 +3,6 @@ package com.andreolas.movierama.base.data.remote.firebase.usecase
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.EncryptedStorage
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.tasks.await
@@ -24,7 +23,7 @@ open class SetRemoteConfigUseCase @Inject constructor(
     if (remoteTask.isSuccessful) {
       val apiKey = firebaseRemoteConfig.getString("tmdb_auth_token")
       encryptedPreferenceStorage.setTmdbAuthToken(apiKey)
-      Result.Success(Unit)
+      Result.success(Unit)
     } else {
       throw Exception("Couldn't fetch api key.")
     }

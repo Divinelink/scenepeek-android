@@ -5,7 +5,6 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRe
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
 typealias MultiListResult = Result<List<MediaItem>>

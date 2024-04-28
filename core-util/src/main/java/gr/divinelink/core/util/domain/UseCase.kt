@@ -19,12 +19,12 @@ abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispat
       // In tests, this becomes a TestCoroutineDispatcher
       withContext(coroutineDispatcher) {
         execute(parameters).let {
-          Result.Success(it)
+          Result.success(it)
         }
       }
     } catch (e: Exception) {
       Timber.d(e)
-      Result.Error(e)
+      Result.failure(e)
     }
   }
 

@@ -3,7 +3,6 @@ package com.andreolas.movierama.home.domain.usecase
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
-import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.UseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,10 +28,15 @@ open class MarkAsFavoriteUseCase @Inject constructor(
       repository.insertFavoriteMedia(parameters)
     }
 
-    when (result) {
-      is Result.Success -> result.data
-      is Result.Error -> throw result.exception
-      Result.Loading -> throw IllegalStateException()
-    }
+    return result.data
+//    if (result.isSuccess) {
+//      result.data
+//    } else if (result.isFailure) {
+//      throw result.exceptionOrNull()!!
+//    }
+//      when (result) {
+//      isSuccess -> result.data
+//      is result -> throw result.exception
+//    }
   }
 }

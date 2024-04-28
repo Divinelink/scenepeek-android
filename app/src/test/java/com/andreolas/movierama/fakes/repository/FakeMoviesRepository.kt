@@ -6,7 +6,6 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MediaListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

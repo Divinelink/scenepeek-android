@@ -19,8 +19,7 @@ package com.andreolas.movierama.ui.theme
 import com.andreolas.movierama.base.di.ApplicationScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeUseCase
-import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.successOr
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -43,31 +42,31 @@ import javax.inject.Inject
  * ```
  */
 interface ThemedActivityDelegate {
-    /**
-     * Allows observing of the current theme
-     */
-    val theme: StateFlow<Theme>
+  /**
+   * Allows observing of the current theme
+   */
+  val theme: StateFlow<Theme>
 
-    /**
-     * Allows querying of the current theme synchronously
-     */
-    val currentTheme: Theme
+  /**
+   * Allows querying of the current theme synchronously
+   */
+  val currentTheme: Theme
 }
 
 class ThemedActivityDelegateImpl @Inject constructor(
-    @ApplicationScope externalScope: CoroutineScope,
-    observeThemeUseCase: ObserveThemeModeUseCase,
-    private val getThemeUseCase: GetThemeUseCase
+  @ApplicationScope externalScope: CoroutineScope,
+  observeThemeUseCase: ObserveThemeModeUseCase,
+  private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
 
-    override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map {
-        it.successOr(Theme.SYSTEM)
-    }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
+  override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map { result ->
+    if (result.isSuccess) result.data else Theme.SYSTEM
+  }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
 
-    override val currentTheme: Theme
-        get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
-            getThemeUseCase(Unit).let {
-                if (it is Result.Success) it.data else Theme.SYSTEM
-            }
-        }
+  override val currentTheme: Theme
+    get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+      getThemeUseCase(Unit).let {
+        if (it.isSuccess) it.data else Theme.SYSTEM
+      }
+    }
 }

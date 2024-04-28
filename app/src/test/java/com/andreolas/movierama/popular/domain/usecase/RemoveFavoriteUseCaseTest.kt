@@ -6,7 +6,6 @@ import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -31,12 +30,12 @@ class RemoveFavoriteUseCaseTest {
 
   @Test
   fun `given movies is successfully saved I expect Success Result`() = runTest {
-    val expectedResult = Result.Success(Unit)
+    val expectedResult = Result.success(Unit)
 
     repository.mockRemoveFavorite(
       id = remoteMovies[2].id,
       mediaType = MediaType.MOVIE,
-      response = Result.Success(Unit)
+      response = Result.success(Unit)
     )
 
     val useCase = RemoveFavoriteUseCase(
@@ -50,31 +49,12 @@ class RemoveFavoriteUseCaseTest {
 
   @Test
   fun `given movie failed to save I expect Error Result`() = runTest {
-    val expectedResult = Result.Error(Exception("Failed to mark as favorite."))
+    val expectedResult = Result.failure<Exception>(Exception("Failed to mark as favorite."))
 
     repository.mockRemoveFavorite(
       id = remoteMovies[2].id,
       mediaType = MediaType.MOVIE,
-      response = Result.Error(Exception())
-    )
-
-    val useCase = RemoveFavoriteUseCase(
-      repository = repository.mock,
-      dispatcher = testDispatcher,
-    )
-
-    val result = useCase(remoteMovies[2].id)
-    assertThat(result).isInstanceOf(expectedResult::class.java)
-  }
-
-  @Test
-  fun `given loading result then I expect general exception`() = runTest {
-    val expectedResult = Result.Error(IllegalStateException())
-
-    repository.mockRemoveFavorite(
-      id = remoteMovies[2].id,
-      mediaType = MediaType.MOVIE,
-      response = Result.Loading
+      response = Result.failure(Exception())
     )
 
     val useCase = RemoveFavoriteUseCase(

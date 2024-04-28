@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.flowOn
 /**
  * Executes business logic in its execute method and keep posting updates to the result as
  * [Result<R>].
- * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
+ * Handling an exception (emit [Result.failure] to the result) is the subclasses's responsibility.
  */
 abstract class FlowUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
-    operator fun invoke(parameters: P): Flow<Result<R>> = execute(parameters)
-        .catch { e -> emit(Result.Error(Exception(e))) }
-        .flowOn(coroutineDispatcher)
+  operator fun invoke(parameters: P): Flow<Result<R>> = execute(parameters)
+    .catch { e -> emit(Result.failure(Exception(e))) }
+    .flowOn(coroutineDispatcher)
 
-    protected abstract fun execute(parameters: P): Flow<Result<R>>
+  protected abstract fun execute(parameters: P): Flow<Result<R>>
 }

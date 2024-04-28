@@ -1,7 +1,6 @@
 package com.andreolas.movierama.base.data.remote.session.service
 
 import com.andreolas.movierama.base.data.remote.session.dto.CreateRequestTokenResponseApi
-import gr.divinelink.core.util.domain.Result
 
 interface SessionService {
 

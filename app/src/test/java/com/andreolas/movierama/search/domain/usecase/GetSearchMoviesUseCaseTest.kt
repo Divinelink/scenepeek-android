@@ -9,7 +9,6 @@ import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
@@ -44,7 +43,7 @@ class GetSearchMoviesUseCaseTest {
   @Test
   fun `given both favorites and non favorites when I fetch popular then I expect combined list`() =
     runTest {
-      val expectedResult = Result.Success(
+      val expectedResult = Result.success(
         SearchResult(
           query = "test query",
           searchList = searchResult.mapIndexed { index, movie ->
@@ -55,11 +54,11 @@ class GetSearchMoviesUseCaseTest {
 
       repository.mockFetchSearchMovies(
         request = request,
-        response = Result.Success(searchResult)
+        response = Result.success(searchResult)
       )
 
       repository.mockFetchFavoriteMoviesIds(
-        response = Result.Success(
+        response = Result.success(
           localFavoriteMovies.map {
             Pair(it.id, MediaType.MOVIE)
           }
@@ -77,11 +76,11 @@ class GetSearchMoviesUseCaseTest {
 
   @Test
   fun `given remote data failed then I expect Error Result`() = runTest {
-    val expectedResult = Result.Error(Exception("Something went wrong."))
+    val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchSearchMovies(
       request = request,
-      response = Result.Error(Exception()),
+      response = Result.failure(Exception()),
     )
     val useCase = GetSearchMoviesUseCase(
       moviesRepository = repository.mock,
@@ -93,15 +92,11 @@ class GetSearchMoviesUseCaseTest {
 
   @Test
   fun `test error result`() = runTest {
-    val expectedResult = Result.Error(Exception("Something went wrong."))
+    val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchSearchMovies(
       request = request,
-      response = Result.Error(Exception()),
-    )
-
-    repository.mockFetchFavoriteMovies(
-      response = Result.Loading,
+      response = Result.failure(Exception()),
     )
 
     val useCase = GetSearchMoviesUseCase(
@@ -110,27 +105,5 @@ class GetSearchMoviesUseCaseTest {
     )
     val result = useCase(request).last()
     assertThat(result).isInstanceOf(expectedResult::class.java)
-  }
-
-  @Test
-  fun `success loading`() = runTest {
-    val expectedResult = Result.Loading
-
-    repository.mockFetchSearchMovies(
-      request = SearchRequestApi(page = 0, query = "test query"),
-      response = Result.Loading,
-    )
-
-    repository.mockFetchFavoriteMoviesIds(
-      response = Result.Loading,
-    )
-
-    val useCase = GetSearchMoviesUseCase(
-      moviesRepository = repository.mock,
-      dispatcher = testDispatcher,
-    )
-    val result = useCase(SearchRequestApi(page = 0, query = "test query")).first()
-
-    assertThat(result).isEqualTo(expectedResult)
   }
 }

@@ -5,7 +5,7 @@ import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
@@ -31,24 +31,24 @@ open class GetSearchMoviesUseCase @Inject constructor(
     return favoriteMovies
       .distinctUntilChanged()
       .combineTransform(searchMovies) { favorite, search ->
-        if (search is Result.Loading) {
-          emit(Result.Loading)
-        }
-        if (favorite is Result.Success && search is Result.Success) {
+//        if (search is Result.Loading) {
+//          emit(Result.Loading)
+//        }
+        if (favorite.isSuccess && search.isSuccess) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
-            Result.Success(favorite.data).data,
-            Result.Success(search.data).data
+            Result.success(favorite.data).data,
+            Result.success(search.data).data
           )
           emit(
-            Result.Success(
+            Result.success(
               SearchResult(
                 query = parameters.query,
                 searchList = searchWithFavorites.filterIsInstance<MediaItem.Media>(),
               )
             )
           )
-        } else if (search is Result.Error) {
-          emit(Result.Error(Exception("Something went wrong.")))
+        } else if (search.isFailure) {
+          emit(Result.failure(Exception("Something went wrong.")))
         }
       }.conflate()
   }

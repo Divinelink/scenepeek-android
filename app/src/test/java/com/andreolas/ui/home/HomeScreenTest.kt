@@ -29,7 +29,6 @@ import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -60,7 +59,7 @@ class HomeScreenTest {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.Success(MediaItemFactory.MoviesList()))
+      response = flowOf(Result.success(MediaItemFactory.MoviesList()))
     )
 
     composeTestRule.setContent {
@@ -111,11 +110,11 @@ class HomeScreenTest {
     val moviesList = MediaItemFactory.MoviesList()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.Success(moviesList))
+      response = flowOf(Result.success(moviesList))
     )
 
     getFavoriteMoviesUseCase.mockGetFavoriteMovies(
-      response = Result.Success(
+      response = Result.success(
         moviesList.filter { it.isFavorite == true } as List<MediaItem.Media>
       )
     )

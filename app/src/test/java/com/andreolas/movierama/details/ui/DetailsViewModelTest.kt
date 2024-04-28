@@ -9,7 +9,6 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.home.domain.model.MediaType
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -36,14 +35,15 @@ class DetailsViewModelTest {
   fun `successful initialise viewModel`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.Loading)
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
-          isLoading = true,
+          isLoading = false,
+          movieDetails = movieDetails,
         )
       )
   }
@@ -52,7 +52,7 @@ class DetailsViewModelTest {
   fun `given success details response then I expect MovieDetails`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -69,7 +69,7 @@ class DetailsViewModelTest {
   fun `given success reviews response then I expect ReviewsList`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)))
+        response = flowOf(Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)))
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -87,8 +87,8 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
-          Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails))
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(MovieDetailsResult.DetailsSuccess(movieDetails))
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -108,8 +108,8 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
-          Result.Success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -129,9 +129,9 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(MovieDetailsResult.Failure.FatalError()),
-          Result.Success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(MovieDetailsResult.Failure.FatalError()),
+          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -152,9 +152,9 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(MovieDetailsResult.Failure.Unknown),
-          Result.Success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(MovieDetailsResult.Failure.Unknown),
+          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -175,9 +175,9 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Error(MovieDetailsException()),
-          Result.Success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.failure(MovieDetailsException()),
+          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -198,9 +198,9 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Error(Exception()),
-          Result.Success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.Success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.failure(Exception()),
+          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -221,7 +221,7 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(
+          Result.success(
             MovieDetailsResult.DetailsSuccess(
               movieDetails.copy(
                 isFavorite = true
@@ -232,7 +232,7 @@ class DetailsViewModelTest {
       )
       .mockMarkAsFavoriteUseCase(
         media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
-        response = Result.Success(Unit)
+        response = Result.success(Unit)
       )
       .buildViewModel(
         id = mediaId,
@@ -262,11 +262,11 @@ class DetailsViewModelTest {
     runTest {
       testRobot
         .mockFetchMovieDetails(
-          response = flowOf(Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+          response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
         )
         .mockMarkAsFavoriteUseCase(
           media = MediaItemFactory.FightClub(),
-          response = Result.Success(Unit),
+          response = Result.success(Unit),
         )
         .buildViewModel(
           id = mediaId,
@@ -296,8 +296,8 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.Success(MovieDetailsResult.DetailsSuccess(movieDetails)),
-          Result.Success(MovieDetailsResult.VideosSuccess(VideoFactory.Youtube())),
+          Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)),
+          Result.success(MovieDetailsResult.VideosSuccess(VideoFactory.Youtube())),
         )
       )
       .buildViewModel(

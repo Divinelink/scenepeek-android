@@ -24,7 +24,6 @@ import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
@@ -56,12 +55,12 @@ class DetailsScreenTest {
 
     getMovieDetailsUseCase.mockFetchMovieDetails(
       response = flowOf(
-        Result.Success(
+        Result.success(
           MovieDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub()
           )
         ),
-        Result.Success(
+        Result.success(
           MovieDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
           )

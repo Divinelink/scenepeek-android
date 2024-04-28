@@ -11,12 +11,11 @@ import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.succeeded
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-  private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+  getMovieDetailsUseCase: GetMovieDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -43,9 +42,7 @@ class DetailsViewModel @Inject constructor(
   fun onMarkAsFavorite() {
     viewModelScope.launch {
       viewState.value.mediaItem?.let { mediaItem ->
-        val result = onMarkAsFavoriteUseCase(mediaItem)
-
-        if (result.succeeded) {
+        onMarkAsFavoriteUseCase(mediaItem).onSuccess {
           _viewState.update { viewState ->
             viewState.copy(
               movieDetails = viewState.movieDetails?.copy(
@@ -59,70 +56,63 @@ class DetailsViewModel @Inject constructor(
   }
 
   init {
-    viewModelScope.launch {
+    val requestApi = when (viewState.value.mediaType) {
+      MediaType.TV -> DetailsRequestApi.TV(args.id)
+      MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
+      else -> throw IllegalArgumentException("Unknown media value")
+    }
 
-      val requestApi = when (viewState.value.mediaType) {
-        MediaType.TV -> DetailsRequestApi.TV(args.id)
-        MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
-        else -> throw IllegalArgumentException("Unknown media value")
-      }
-
-      getMovieDetailsUseCase(
-        parameters = requestApi,
-      ).onEach { result ->
+    getMovieDetailsUseCase(
+      parameters = requestApi,
+    ).onEach { result ->
+      result.onSuccess {
         _viewState.update { viewState ->
-          when (result) {
-            is Result.Success -> {
-              when (result.data) {
-                is MovieDetailsResult.DetailsSuccess -> viewState.copy(
-                  isLoading = false,
-                  movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
-                )
+          when (result.data) {
+            is MovieDetailsResult.DetailsSuccess -> viewState.copy(
+              isLoading = false,
+              movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
+            )
 
-                is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
-                  reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
-                )
+            is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
+              reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
+            )
 
-                is MovieDetailsResult.SimilarSuccess -> viewState.copy(
-                  similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
-                )
+            is MovieDetailsResult.SimilarSuccess -> viewState.copy(
+              similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
+            )
 
-                is MovieDetailsResult.VideosSuccess -> viewState.copy(
-                  trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
-                )
+            is MovieDetailsResult.VideosSuccess -> viewState.copy(
+              trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
+            )
 
-                is MovieDetailsResult.Failure.FatalError -> viewState.copy(
-                  error = (result.data as MovieDetailsResult.Failure.FatalError).message,
-                  isLoading = false,
-                )
+            is MovieDetailsResult.Failure.FatalError -> viewState.copy(
+              error = (result.data as MovieDetailsResult.Failure.FatalError).message,
+              isLoading = false,
+            )
 
-                MovieDetailsResult.Failure.Unknown -> viewState.copy(
-                  error = MovieDetailsResult.Failure.Unknown.message,
-                  isLoading = false,
-                )
-              }
-            }
-
-            is Result.Error -> {
-              if (result.exception is MovieDetailsException) {
-                viewState.copy(
-                  error = MovieDetailsResult.Failure.FatalError().message,
-                  isLoading = false,
-                )
-              } else {
-                viewState.copy(
-                  error = MovieDetailsResult.Failure.Unknown.message,
-                  isLoading = false,
-                )
-              }
-            }
-
-            Result.Loading -> viewState.copy(
-              isLoading = true,
+            MovieDetailsResult.Failure.Unknown -> viewState.copy(
+              error = MovieDetailsResult.Failure.Unknown.message,
+              isLoading = false,
             )
           }
         }
-      }.collect()
-    }
+      }.onFailure {
+        if (it is MovieDetailsException) {
+          _viewState.update { viewState ->
+            viewState.copy(
+              error = MovieDetailsResult.Failure.FatalError().message,
+              isLoading = false,
+            )
+          }
+        } else {
+          _viewState.update { viewState ->
+            viewState.copy(
+              error = MovieDetailsResult.Failure.Unknown.message,
+              isLoading = false,
+            )
+          }
+        }
+      }
+    }.launchIn(viewModelScope)
   }
 }

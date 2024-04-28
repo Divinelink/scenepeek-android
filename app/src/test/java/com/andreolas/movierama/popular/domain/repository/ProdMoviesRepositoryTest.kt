@@ -15,7 +15,7 @@ import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -81,7 +81,7 @@ class ProdMoviesRepositoryTest {
       result = expectApiPopularResponse
     )
 
-    val actualResult = repository.fetchPopularMovies(request).first() as Result.Success
+    val actualResult = repository.fetchPopularMovies(request).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -103,7 +103,7 @@ class ProdMoviesRepositoryTest {
 
       val actualResult = repository.fetchSearchMovies(
         request = request,
-      ).first() as Result.Success
+      ).first()
 
       assertThat(expectedResult).isEqualTo(actualResult.data)
     }
@@ -111,7 +111,7 @@ class ProdMoviesRepositoryTest {
   //    @Test
   //    fun testFetchPopularMoviesErrorCase() = runTest {
   //        val request = PopularRequestApi(apiKey = "", page = 1)
-  //        val expectedResult = Result.Error(Exception("response is empty"))
+  //        val expectedResult = Result.failure(Exception("response is empty"))
   //
   //        movieRemote.mockFetchPopularMovies(
   //            request = request,
@@ -139,7 +139,7 @@ class ProdMoviesRepositoryTest {
 
     movieDAO.mockFetchFavoritesMovies(expectedPersistableMovieResult)
 
-    val actualResult = repository.fetchFavoriteMovies().first() as Result.Success
+    val actualResult = repository.fetchFavoriteMovies().first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -150,7 +150,7 @@ class ProdMoviesRepositoryTest {
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
-    assertThat(result).isEqualTo(Result.Success(true))
+    assertThat(result).isEqualTo(Result.success(true))
   }
 
   @Test
@@ -159,7 +159,7 @@ class ProdMoviesRepositoryTest {
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
-    assertThat(result).isEqualTo(Result.Success(false))
+    assertThat(result).isEqualTo(Result.success(false))
   }
 
   @Test

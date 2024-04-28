@@ -46,6 +46,7 @@ class ProdMovieService @Inject constructor(
     emit(response)
   }
 
+  @Deprecated("Use fetchMultiInfo instead")
   override fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> = flow {
     val baseUrl = "${ApiConstants.TMDB_URL}/search/movie?"
     val url = baseUrl +

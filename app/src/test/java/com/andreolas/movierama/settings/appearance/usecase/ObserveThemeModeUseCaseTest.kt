@@ -5,7 +5,6 @@ import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeU
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.andreolas.movierama.ui.theme.Theme
 import com.google.common.truth.Truth
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -24,7 +23,7 @@ class ObserveThemeModeUseCaseTest {
     @Test
     fun `correct theme is observed`() = runTest {
         // Given
-        val response = Result.Success(Theme.LIGHT)
+        val response = Result.success(Theme.LIGHT)
 
         fakePreferenceStorage = FakePreferenceStorage(
             selectedTheme = Theme.LIGHT.storageKey,
@@ -41,7 +40,7 @@ class ObserveThemeModeUseCaseTest {
     @Test
     fun `correct theme is observed - dark`() = runTest {
         // Given
-        val response = Result.Success(Theme.DARK)
+        val response = Result.success(Theme.DARK)
 
         fakePreferenceStorage = FakePreferenceStorage(
             selectedTheme = Theme.DARK.storageKey,
@@ -58,7 +57,7 @@ class ObserveThemeModeUseCaseTest {
     @Test
     fun `correct theme is observed - system`() = runTest {
         // Given
-        val response = Result.Success(Theme.SYSTEM)
+        val response = Result.success(Theme.SYSTEM)
 
         fakePreferenceStorage = FakePreferenceStorage(
             selectedTheme = Theme.SYSTEM.storageKey,

@@ -9,7 +9,6 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.home.domain.model.MediaItem
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

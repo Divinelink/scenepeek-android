@@ -8,7 +8,6 @@ import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule

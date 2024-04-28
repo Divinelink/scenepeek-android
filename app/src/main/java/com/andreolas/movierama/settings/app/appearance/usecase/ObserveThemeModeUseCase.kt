@@ -5,7 +5,6 @@ import com.andreolas.movierama.base.storage.PreferenceStorage
 import com.andreolas.movierama.ui.theme.Theme
 import com.andreolas.movierama.ui.theme.themeFromStorageKey
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,7 +17,7 @@ open class ObserveThemeModeUseCase @Inject constructor(
     override fun execute(parameters: Unit): Flow<Result<Theme>> {
         return preferenceStorage.selectedTheme.map {
             val theme = themeFromStorageKey(it) ?: Theme.SYSTEM
-            Result.Success(theme)
+            Result.success(theme)
         }
     }
 }
