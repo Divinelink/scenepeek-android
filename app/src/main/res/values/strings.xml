@@ -1,72 +1,71 @@
 <resources>
-    <string name="app_name">MovieRama</string>
+  <string name="app_name">MovieRama</string>
 
-    <string name="ok">OK</string>
-    <string name="close">Close</string>
-    <string name="save">Save</string>
-    <string name="update">Update</string>
+  <string name="ok">OK</string>
+  <string name="close">Close</string>
+  <string name="save">Save</string>
+  <string name="update">Update</string>
 
-    <string name="load_more">Loading more…</string>
+  <string name="load_more">Loading more…</string>
 
-    <string name="toolbar_search">Search MovieRama</string>
-    <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
+  <string name="toolbar_search">Search MovieRama</string>
+  <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
-    <string name="search__empty_result_title">Oops. We couldn\'t find that.</string>
-    <string name="search__empty_result_description">Try searching for something else.</string>
+  <string name="search__empty_result_title">Oops. We couldn\'t find that.</string>
+  <string name="search__empty_result_description">Try searching for something else.</string>
 
-    <!-- Error -->
-    <string name="empty_field_error_message">%s is required.</string>
-    <string name="general_error_title">An error occurred</string>
-    <string name="general_error_message">Something when wrong.</string>
+  <!-- Error -->
+  <string name="empty_field_error_message">%s is required.</string>
+  <string name="general_error_title">An error occurred</string>
+  <string name="general_error_message">Something when wrong.</string>
 
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
+  <string name="delete">Delete</string>
+  <string name="cancel">Cancel</string>
 
-    <string name="good_morning">Good morning</string>
-    <string name="good_afternoon">Good afternoon</string>
-    <string name="good_evening">Good evening</string>
+  <string name="settings">Settings</string>
 
-    <string name="settings">Settings</string>
+  <!-- preferences.xml -->
+  <string name="preferences__none">None</string>
+  <string name="preferences__account">Account</string>
+  <string name="preferences__appearance">Appearance</string>
+  <string name="preferences__help">Help</string>
+  <string name="preferences__theme">Theme</string>
+  <string name="preferences__light_theme">Light</string>
+  <string name="preferences__dark_theme">Dark</string>
+  <string name="preferences__system_default">System default</string>
 
-    <!-- preferences.xml -->
-    <string name="preferences__none">None</string>
-    <string name="preferences__account">Account</string>
-    <string name="preferences__appearance">Appearance</string>
-    <string name="preferences__help">Help</string>
-    <string name="preferences__theme">Theme</string>
-    <string name="preferences__light_theme">Light</string>
-    <string name="preferences__dark_theme">Dark</string>
-    <string name="preferences__system_default">System default</string>
+  <!-- AppearanceSettingsScreen -->
+  <string name="AppearanceSettingsScreen__material_you">Material You</string>
+  <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
 
-    <!-- AccountSettingsFragment -->
-    <string name="AccountSettingsFragment__account">Account</string>
-    <string name="AccountSettingsFragment__login">Login to TMDB</string>
+  <!-- AccountSettingsFragment -->
+  <string name="AccountSettingsFragment__account">Account</string>
+  <string name="AccountSettingsFragment__login">Login to TMDB</string>
 
-    <!-- HelpSettingsFragment -->
-    <string name="HelpSettingsFragment__help">Help</string>
-    <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
-    <string name="HelpSettingsFragment__version">Version</string>
+  <!-- HelpSettingsFragment -->
+  <string name="HelpSettingsFragment__help">Help</string>
+  <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
+  <string name="HelpSettingsFragment__version">Version</string>
 
-    <!-- Popular Movie -->
-    <string name="popular_movie__rating">Rating</string>
-    <string name="movie_extra_details">Details &amp; More</string>
+  <!-- Popular Movie -->
+  <string name="popular_movie__rating">Rating</string>
+  <string name="movie_extra_details">Details &amp; More</string>
 
-    <!-- Movie Details -->
-    <string name="details__director_title">Director</string>
-    <string name="details__cast_title">Cast</string>
+  <!-- Movie Details -->
+  <string name="details__director_title">Director</string>
+  <string name="details__cast_title">Cast</string>
 
-    <string name="details__more_like_this">More like this</string>
-    <string name="details__reviews">Reviews</string>
+  <string name="details__more_like_this">More like this</string>
+  <string name="details__reviews">Reviews</string>
 
-    <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
+  <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
 
-    <!-- Accessibility -->
-    <string name="movie_image_placeholder">Movie image</string>
-    <string name="mark_as_favorite_button_content_description">Mark As Favorite Button</string>
-    <string name="clear_search_button_content_description">Clear Search Button</string>
-    <string name="settings_button_content_description">Settings Button</string>
-    <string name="navigate_up_button_content_description">Navigate Up Button</string>
-    <string name="clear_filters_button_content_description">Clear Filters Button</string>
-
+  <!-- Accessibility -->
+  <string name="movie_image_placeholder">Movie image</string>
+  <string name="mark_as_favorite_button_content_description">Mark As Favorite Button</string>
+  <string name="clear_search_button_content_description">Clear Search Button</string>
+  <string name="settings_button_content_description">Settings Button</string>
+  <string name="navigate_up_button_content_description">Navigate Up Button</string>
+  <string name="clear_filters_button_content_description">Clear Filters Button</string>
 
 </resources>

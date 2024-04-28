@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 open class ObserveThemeModeUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage,
-    @DefaultDispatcher dispatcher: CoroutineDispatcher
+  private val preferenceStorage: PreferenceStorage,
+  @DefaultDispatcher dispatcher: CoroutineDispatcher
 ) : FlowUseCase<Unit, Theme>(dispatcher) {
-    override fun execute(parameters: Unit): Flow<Result<Theme>> {
-        return preferenceStorage.selectedTheme.map {
-            val theme = themeFromStorageKey(it) ?: Theme.SYSTEM
-            Result.success(theme)
-        }
+  override fun execute(parameters: Unit): Flow<Result<Theme>> {
+    return preferenceStorage.selectedTheme.map {
+      val theme = themeFromStorageKey(it) ?: Theme.SYSTEM
+      Result.success(theme)
     }
+  }
 }

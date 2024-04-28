@@ -1,10 +1,13 @@
 package com.andreolas.movierama.settings.app.appearance
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetAvailableThemesUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.SetThemeUseCase
+import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
+import com.andreolas.movierama.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.andreolas.movierama.ui.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.WhileViewSubscribed
@@ -25,7 +28,9 @@ import javax.inject.Inject
 class AppearanceSettingsViewModel @Inject constructor(
   val setThemeUseCase: SetThemeUseCase,
   getThemeUseCase: GetThemeUseCase,
-  getAvailableThemesUseCase: GetAvailableThemesUseCase
+  getAvailableThemesUseCase: GetAvailableThemesUseCase,
+  val setMaterialYouUseCase: SetMaterialYouUseCase,
+  getMaterialYouUseCase: GetMaterialYouUseCase,
 ) : ViewModel() {
 
   private val refreshSignal = MutableSharedFlow<Unit>()
@@ -40,11 +45,19 @@ class AppearanceSettingsViewModel @Inject constructor(
 
   private val _uiState: StateFlow<UpdateSettingsState> = loadDataSignal.mapLatest {
     UpdateSettingsState(
-      theme = getThemeUseCase(Unit).data ?: Theme.SYSTEM,
-      availableThemes = getAvailableThemesUseCase(Unit).data ?: listOf()
+      theme = getThemeUseCase(Unit).data,
+      availableThemes = getAvailableThemesUseCase(Unit).data,
+      materialYouEnabled = getMaterialYouUseCase(Unit).data,
+      materialYouVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S // TODO UseCase
     )
   }.stateIn(
-    viewModelScope, WhileViewSubscribed, initialValue = UpdateSettingsState(Theme.SYSTEM, listOf())
+    viewModelScope, WhileViewSubscribed,
+    initialValue = UpdateSettingsState(
+      theme = Theme.SYSTEM,
+      availableThemes = listOf(),
+      materialYouEnabled = false,
+      materialYouVisible = false
+    )
   )
   val uiState: StateFlow<UpdateSettingsState> = _uiState
 
@@ -54,9 +67,18 @@ class AppearanceSettingsViewModel @Inject constructor(
       refreshData()
     }
   }
+
+  fun setMaterialYou(isEnabled: Boolean) {
+    viewModelScope.launch {
+      setMaterialYouUseCase(isEnabled)
+      refreshData()
+    }
+  }
 }
 
 data class UpdateSettingsState(
   val theme: Theme,
-  val availableThemes: List<Theme>
+  val availableThemes: List<Theme>,
+  val materialYouEnabled: Boolean,
+  val materialYouVisible: Boolean
 )

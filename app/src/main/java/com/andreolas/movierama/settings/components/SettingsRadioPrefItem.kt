@@ -59,13 +59,13 @@ fun SettingsRadioPrefItem(
       )
     }
 
-    Column {
-
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
       Text(
         text = title,
         style = MaterialTheme.typography.bodyLarge
       )
-
       Text(
         text = selected,
         style = MaterialTheme.typography.bodyMedium,

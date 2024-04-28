@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -27,7 +26,6 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.spec.Route
 import dagger.hilt.android.AndroidEntryPoint
-import gr.divinelink.core.util.utils.setNavigationBarColor
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -38,8 +36,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-    setNavigationBarColor(ContextCompat.getColor(this, R.color.colorBackground))
+    // WindowCompat.setDecorFitsSystemWindows(window, false)
 
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -50,9 +47,8 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
-
     setContent {
-      AppTheme {
+      AppTheme(dynamicColor = viewModel.materialYou.collectAsState().value) {
         Surface(
           color = MaterialTheme.colorScheme.background,
         ) {

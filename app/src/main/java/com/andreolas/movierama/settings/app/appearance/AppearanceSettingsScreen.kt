@@ -8,8 +8,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.R
+import com.andreolas.movierama.settings.components.SettingsDivider
 import com.andreolas.movierama.settings.components.SettingsRadioPrefItem
 import com.andreolas.movierama.settings.components.SettingsScaffold
+import com.andreolas.movierama.settings.components.SettingsSwitchItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -41,6 +43,20 @@ fun AppearanceSettingsScreen(
             viewModel.setTheme(viewState.availableThemes[index])
           }
         )
+      }
+
+      if (viewState.materialYouVisible) {
+        item {
+          SettingsDivider()
+        }
+        item {
+          SettingsSwitchItem(
+            title = stringResource(id = R.string.AppearanceSettingsScreen__material_you),
+            summary = stringResource(id = R.string.AppearanceSettingsScreen__material_you_summary),
+            isChecked = viewState.materialYouEnabled,
+            onCheckedChange = viewModel::setMaterialYou
+          )
+        }
       }
     }
   }

@@ -19,6 +19,7 @@ package com.andreolas.movierama.ui.theme
 import com.andreolas.movierama.base.di.ApplicationScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeUseCase
+import com.andreolas.movierama.settings.app.appearance.usecase.material.you.ObserveMaterialYouModeUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,12 +52,18 @@ interface ThemedActivityDelegate {
    * Allows querying of the current theme synchronously
    */
   val currentTheme: Theme
+
+  /**
+   * Allows observing of the current Material You state
+   */
+  val materialYou: StateFlow<Boolean>
 }
 
 class ThemedActivityDelegateImpl @Inject constructor(
   @ApplicationScope externalScope: CoroutineScope,
   observeThemeUseCase: ObserveThemeModeUseCase,
-  private val getThemeUseCase: GetThemeUseCase
+  private val getThemeUseCase: GetThemeUseCase,
+  observeMaterialYouUseCase: ObserveMaterialYouModeUseCase
 ) : ThemedActivityDelegate {
 
   override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map { result ->
@@ -69,4 +76,8 @@ class ThemedActivityDelegateImpl @Inject constructor(
         if (it.isSuccess) it.data else Theme.SYSTEM
       }
     }
+
+  override val materialYou: StateFlow<Boolean> = observeMaterialYouUseCase(Unit).map { result ->
+    if (result.isSuccess) result.data else false
+  }.stateIn(externalScope, SharingStarted.Eagerly, false)
 }
