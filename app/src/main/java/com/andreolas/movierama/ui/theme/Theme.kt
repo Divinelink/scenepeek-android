@@ -1,6 +1,5 @@
 package com.andreolas.movierama.ui.theme
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
@@ -67,7 +66,7 @@ fun themeFromStorageKey(storageKey: String): Theme? {
   return Theme.entries.firstOrNull { it.storageKey == storageKey }
 }
 
-fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
+fun updateForTheme(theme: Theme) = when (theme) {
   Theme.SYSTEM -> {
     Timber.d("Setting to follow system")
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

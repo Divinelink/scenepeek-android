@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.andreolas.movierama.R
-import com.andreolas.movierama.settings.app.appearance.AlertDialogSelectOption
 import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
