@@ -1,5 +1,6 @@
 package com.andreolas.movierama.ui.components
 
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
@@ -15,10 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
-fun WebViewScreen(url: String) {
+fun AutoCloseWebViewScreen(
+  navigator: DestinationsNavigator,
+  url: String,
+  redirectUrl: String
+) {
   val context = LocalContext.current
   val currentUrl by remember { mutableStateOf(url) }
 
@@ -26,7 +32,10 @@ fun WebViewScreen(url: String) {
     WebView(context).apply {
       settings.javaScriptEnabled = true
       settings.domStorageEnabled = true
-      webViewClient = WebViewClient()
+      webViewClient = AutoCloseWebView(
+        redirectUrl = redirectUrl,
+        onCloseWebView = navigator::navigateUp
+      )
     }
   }
 
@@ -40,5 +49,22 @@ fun WebViewScreen(url: String) {
 
   BackHandler(enabled = webView.canGoBack()) {
     webView.goBack()
+  }
+}
+
+class AutoCloseWebView(
+  private val redirectUrl: String,
+  private val onCloseWebView: () -> Unit
+) : WebViewClient() {
+  override fun shouldOverrideUrlLoading(
+    view: WebView?,
+    request: WebResourceRequest?
+  ): Boolean {
+    val url = request?.url.toString()
+    if (url.contains(redirectUrl)) {
+      onCloseWebView()
+      return true
+    }
+    return super.shouldOverrideUrlLoading(view, request)
   }
 }
