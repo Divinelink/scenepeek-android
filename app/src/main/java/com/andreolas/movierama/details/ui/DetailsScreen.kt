@@ -35,6 +35,5 @@ fun DetailsScreen(
 
       navigator.navigate(destination)
     }
-
   )
 }
