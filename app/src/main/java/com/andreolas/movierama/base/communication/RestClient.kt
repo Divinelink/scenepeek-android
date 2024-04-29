@@ -72,9 +72,17 @@ class RestClient @Inject constructor(
     }
   }
 
-  suspend inline fun <reified T : Any> post(url: String, body: T): HttpResponse {
-    return client.post(url) {
+  @OptIn(InternalSerializationApi::class)
+  internal suspend inline fun <reified T : Any, reified V : Any> post(url: String, body: T): V {
+    val json = client.post(url) {
       setBody(body)
+    }.bodyAsText()
+
+    try {
+      return localJson.decodeFromString(V::class.serializer(), json)
+    } catch (e: Exception) {
+      Timber.e("${e.message}")
+      throw e
     }
   }
 
