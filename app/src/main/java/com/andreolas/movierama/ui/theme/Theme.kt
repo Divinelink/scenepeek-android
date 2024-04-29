@@ -16,19 +16,25 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import timber.log.Timber
 
 @Composable
 fun AppTheme(
   useDarkTheme: Boolean = isSystemInDarkTheme(),
   dynamicColor: Boolean = false,
+  blackBackground: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  val colors = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+  var colors = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
     val context = LocalContext.current
     if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
   } else {
     if (useDarkTheme) DarkColors else LightColors
+  }
+
+  if (blackBackground && useDarkTheme) {
+    colors = colors.copy(background = Color.Black, surface = Color.Black)
   }
 
   val view = LocalView.current
@@ -36,7 +42,8 @@ fun AppTheme(
     SideEffect {
       val window = (view.context as Activity).window
       window.statusBarColor = colors.background.toArgb()
-//    WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = useDarkTheme
+      window.navigationBarColor = colors.background.toArgb()
+      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
     }
   }
 

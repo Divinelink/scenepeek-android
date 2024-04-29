@@ -35,6 +35,8 @@
   <string name="preferences__system_default">System default</string>
 
   <!-- AppearanceSettingsScreen -->
+  <string name="AppearanceSettingsScreen__black_backgrounds">Black background</string>
+  <string name="AppearanceSettingsScreen__black_backgrounds_summary">Use black backgrounds when using dark mode. This will save battery on OLED screens.</string>
   <string name="AppearanceSettingsScreen__material_you">Material You</string>
   <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
 

@@ -45,11 +45,19 @@ fun AppearanceSettingsScreen(
         )
       }
 
+      item {
+        SettingsDivider()
+        SettingsSwitchItem(
+          title = stringResource(R.string.AppearanceSettingsScreen__black_backgrounds),
+          summary = stringResource(R.string.AppearanceSettingsScreen__black_backgrounds_summary),
+          isChecked = viewState.blackBackgroundsEnabled,
+          onCheckedChange = viewModel::setBlackBackgrounds
+        )
+      }
+
       if (viewState.materialYouVisible) {
         item {
           SettingsDivider()
-        }
-        item {
           SettingsSwitchItem(
             title = stringResource(id = R.string.AppearanceSettingsScreen__material_you),
             summary = stringResource(id = R.string.AppearanceSettingsScreen__material_you_summary),

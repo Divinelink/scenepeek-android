@@ -48,7 +48,10 @@ class MainActivity : AppCompatActivity() {
       }
     }
     setContent {
-      AppTheme(dynamicColor = viewModel.materialYou.collectAsState().value) {
+      AppTheme(
+        dynamicColor = viewModel.materialYou.collectAsState().value,
+        blackBackground = viewModel.blackBackgrounds.collectAsState().value,
+      ) {
         Surface(
           color = MaterialTheme.colorScheme.background,
         ) {
