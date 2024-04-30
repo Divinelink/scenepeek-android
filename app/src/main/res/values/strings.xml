@@ -34,6 +34,9 @@
   <string name="preferences__dark_theme">Dark</string>
   <string name="preferences__system_default">System default</string>
 
+  <!-- Login -->
+  <string name="login__title">Login to TMDB</string>
+
   <!-- AppearanceSettingsScreen -->
   <string name="AppearanceSettingsScreen__black_backgrounds">Black background</string>
   <string name="AppearanceSettingsScreen__black_backgrounds_summary">Use black backgrounds when using dark mode. This will save battery on OLED screens.</string>

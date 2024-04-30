@@ -4,8 +4,8 @@ import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
-import com.andreolas.movierama.session.ProdSessionRepository
-import com.andreolas.movierama.session.SessionRepository
+import com.andreolas.movierama.session.repository.ProdSessionRepository
+import com.andreolas.movierama.session.repository.SessionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

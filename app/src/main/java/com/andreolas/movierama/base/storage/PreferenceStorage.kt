@@ -2,11 +2,14 @@ package com.andreolas.movierama.base.storage
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
+import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
+import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.andreolas.movierama.ui.theme.Theme
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +30,14 @@ interface PreferenceStorage {
 
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
+
+  // TODO Remove from here probably
+  suspend fun clearToken()
+  suspend fun setToken(token: String)
+  val token: Flow<String?>
+
+  suspend fun setHasSession(hasSession: Boolean)
+  val hasSession: Flow<Boolean>
 }
 
 @Singleton
@@ -42,6 +53,9 @@ class DataStorePreferenceStorage @Inject constructor(
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
     val PREF_MATERIAL_YOU = stringPreferencesKey("settings.material.you")
     val PREF_BLACK_BACKGROUNDS = stringPreferencesKey("settings.black.backgrounds")
+
+    val PREF_REQUEST_TOKEN = stringPreferencesKey("request.token")
+    val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -83,5 +97,36 @@ class DataStorePreferenceStorage @Inject constructor(
 
   override val encryptedPreferences = dataStore.data.map {
     it[PREF_ENCRYPTED_SHARED_PREFS]
+  }
+
+  override suspend fun clearToken() {
+    dataStore.edit {
+      it.remove(PREF_REQUEST_TOKEN)
+    }
+  }
+
+  override suspend fun setToken(token: String) {
+    dataStore.edit {
+      it[PREF_REQUEST_TOKEN] = token
+    }
+  }
+
+  override val token = dataStore.data.map {
+    val token = it[PREF_REQUEST_TOKEN]
+    if (token.isNullOrEmpty()) {
+      return@map null
+    } else {
+      token
+    }
+  }
+
+  override suspend fun setHasSession(hasSession: Boolean) {
+    dataStore.edit {
+      it[PREF_HAS_SESSION] = hasSession
+    }
+  }
+
+  override val hasSession: Flow<Boolean> = dataStore.data.map {
+    it[PREF_HAS_SESSION] ?: false
   }
 }

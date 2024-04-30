@@ -1,7 +1,12 @@
 package com.andreolas.movierama.base.data.remote.session.service
 
 import com.andreolas.movierama.base.communication.RestClient
+import com.andreolas.movierama.base.data.remote.session.dto.AccountDetailsResponseApi
 import com.andreolas.movierama.base.data.remote.session.dto.CreateRequestTokenResponseApi
+import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionRequestApi
+import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionResponseApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProdSessionService @Inject constructor(
@@ -11,15 +16,28 @@ class ProdSessionService @Inject constructor(
   override suspend fun createRequestToken(): Result<CreateRequestTokenResponseApi> {
     val url = "${restClient.tmdbUrl}/authentication/token/new"
 
-    return try {
-      val response = restClient.get<CreateRequestTokenResponseApi>(url)
-      Result.success(response)
-    } finally {
-      // todo
-    }
+    val response = restClient.get<CreateRequestTokenResponseApi>(url)
+    return Result.success(response)
   }
 
-  override suspend fun createSession(requestToken: String): Result<CreateRequestTokenResponseApi> {
-    TODO("Not yet implemented")
+  override suspend fun createSession(
+    requestToken: CreateSessionRequestApi
+  ): Result<CreateSessionResponseApi> {
+    val url = "${restClient.tmdbUrl}/authentication/session/new"
+
+    val response = restClient.post<CreateSessionRequestApi, CreateSessionResponseApi>(
+      url = url,
+      body = requestToken
+    )
+
+    return Result.success(response)
+  }
+
+  override fun getAccountDetails(sessionId: String): Flow<AccountDetailsResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account?session_id=$sessionId"
+
+    val response = restClient.get<AccountDetailsResponseApi>(url = url)
+
+    emit(response)
   }
 }
