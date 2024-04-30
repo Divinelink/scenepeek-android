@@ -44,8 +44,10 @@
   <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
 
   <!-- AccountSettingsFragment -->
-  <string name="AccountSettingsFragment__account">Account</string>
-  <string name="AccountSettingsFragment__login">Login to TMDB</string>
+  <string name="AccountSettingsScreen__account">Account</string>
+  <string name="AccountSettingsScreen__login">Login to TMDB</string>
+  <string name="AccountSettingsScreen__logout">Logout</string>
+  <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
 
   <!-- HelpSettingsFragment -->
   <string name="HelpSettingsFragment__help">Help</string>

@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.session.login.domain.session.ObserveSessionUseCase
 import com.andreolas.movierama.session.login.domain.token.CreateRequestTokenUseCase
 import com.andreolas.movierama.settings.app.account.usecase.GetAccountDetailsUseCase
+import com.andreolas.movierama.settings.app.account.usecase.LogoutUseCase
+import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,21 +21,22 @@ import javax.inject.Inject
 class AccountSettingsViewModel @Inject constructor(
   private val createRequestTokenUseCase: CreateRequestTokenUseCase,
   private val observeSessionUseCase: ObserveSessionUseCase,
-  private val getAccountDetailsUseCase: GetAccountDetailsUseCase
+  private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
+  private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
+
+  private val _viewState = MutableStateFlow(AccountSettingsViewState.initial())
+  val viewState: StateFlow<AccountSettingsViewState> = _viewState
 
   init {
     observeSession()
   }
 
-  private val _viewState = MutableStateFlow(AccountSettingsViewState(requestToken = null))
-  val viewState: StateFlow<AccountSettingsViewState> = _viewState
-
   private fun observeSession() {
     observeSessionUseCase.invoke(Unit).onEach { result ->
       result
         .onSuccess {
-          println("User has session")
+          println("User has session, fetching account details")
           fetchAccountDetails()
         }.onFailure {
           println("User does not have session")
@@ -44,10 +47,10 @@ class AccountSettingsViewModel @Inject constructor(
   private fun fetchAccountDetails() {
     getAccountDetailsUseCase.invoke(Unit).onEach { result ->
       result
-        .onSuccess { response ->
-          println(response)
-        }.onFailure {
-          println("Error fetching account details")
+        .onSuccess { accountDetails ->
+          _viewState.update {
+            it.copy(accountDetails = accountDetails)
+          }
         }
     }.launchIn(viewModelScope)
   }
@@ -62,9 +65,39 @@ class AccountSettingsViewModel @Inject constructor(
               navigateToWebView = true
             )
           }
-        }.onFailure {
-          TODO()
         }
+    }
+  }
+
+  fun logoutDialog() {
+    _viewState.update {
+      it.copy(
+        dialogTitle = UIText.StringText("Logout"),
+        dialogMessage = UIText.StringText(
+          "You're currently logged in as" +
+            " ${it.accountDetails?.username}. Are you sure you want to logout?"
+        )
+      )
+    }
+  }
+
+  fun confirmLogout() {
+    viewModelScope.launch {
+      logoutUseCase.invoke(Unit).onSuccess {
+        _viewState.update {
+          it.copy(
+            accountDetails = null,
+            dialogMessage = null,
+            dialogTitle = null
+          )
+        }
+      }
+    }
+  }
+
+  fun dismissLogoutDialog() {
+    _viewState.update {
+      it.copy(dialogMessage = null, dialogTitle = null)
     }
   }
 
