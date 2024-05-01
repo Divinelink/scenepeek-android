@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.destinations.LoginWebViewScreenDestination
-import com.andreolas.movierama.session.login.domain.token.HandleAuthenticationRequestUseCase
+import com.andreolas.movierama.session.login.domain.token.usecase.HandleAuthenticationRequestUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -11,30 +11,30 @@ import org.junit.Rule
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelRobot {
-    private lateinit var viewModel: MainViewModel
+  private lateinit var viewModel: MainViewModel
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
-    private val fakeSetRemoteConfigUseCase = FakeSetRemoteConfigUseCase()
-    private val fakeThemedActivityDelegate = FakeThemedActivityDelegate()
+  private val fakeSetRemoteConfigUseCase = FakeSetRemoteConfigUseCase()
+  private val fakeThemedActivityDelegate = FakeThemedActivityDelegate()
 
-    fun buildViewModel() = apply {
-        viewModel = MainViewModel(
-            themedActivityDelegate = fakeThemedActivityDelegate,
-            setRemoteConfigUseCase = fakeSetRemoteConfigUseCase,
-        )
-    }
+  fun buildViewModel() = apply {
+    viewModel = MainViewModel(
+      themedActivityDelegate = fakeThemedActivityDelegate,
+      setRemoteConfigUseCase = fakeSetRemoteConfigUseCase,
+    )
+  }
 
-    fun assertViewState(expectedViewState: MainViewState) = apply {
-        assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
-    }
+  fun assertViewState(expectedViewState: MainViewState) = apply {
+    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  }
 
-    fun mockSetRemoteConfigResult(result: Unit) = apply {
-        fakeSetRemoteConfigUseCase.mockSetRemoteConfigResult(result)
-    }
+  fun mockSetRemoteConfigResult(result: Unit) = apply {
+    fakeSetRemoteConfigUseCase.mockSetRemoteConfigResult(result)
+  }
 
-    fun onRetryFetchRemoteConfig() = apply {
-        viewModel.retryFetchRemoteConfig()
-    }
+  fun onRetryFetchRemoteConfig() = apply {
+    viewModel.retryFetchRemoteConfig()
+  }
 }

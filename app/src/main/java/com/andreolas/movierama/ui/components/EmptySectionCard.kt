@@ -12,34 +12,34 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EmptySectionCard(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String,
+  modifier: Modifier = Modifier,
+  title: String,
+  description: String,
 ) {
-    Material3Card(
-        modifier = modifier
-            .fillMaxWidth(),
-    ) {
-        Column {
-            Text(
-                style = MaterialTheme.typography.titleMedium,
-                text = title,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(
-                        top = 24.dp,
-                        start = 24.dp
-                    ),
-            )
-            Text(
-                text = description,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(
-                        bottom = 24.dp,
-                        start = 24.dp
-                    ),
-            )
-        }
+  Material3Card(
+    modifier = modifier
+      .fillMaxWidth(),
+  ) {
+    Column {
+      Text(
+        style = MaterialTheme.typography.titleMedium,
+        text = title,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+          .padding(
+            top = 24.dp,
+            start = 24.dp
+          ),
+      )
+      Text(
+        text = description,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+          .padding(
+            bottom = 24.dp,
+            start = 24.dp
+          ),
+      )
     }
+  }
 }

@@ -52,53 +52,53 @@ const val FILTER_BAR_TEST_TAG = "FILTER_BAR"
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FilterBar(
-    modifier: Modifier = Modifier,
-    filters: List<Filter>,
-    onFilterClick: (Filter) -> Unit,
-    onClearClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  filters: List<Filter>,
+  onFilterClick: (Filter) -> Unit,
+  onClearClick: () -> Unit,
 ) {
-    CompositionLocalProvider(
-        LocalOverscrollConfiguration provides null
+  CompositionLocalProvider(
+    LocalOverscrollConfiguration provides null
+  ) {
+    LazyRow(
+      modifier = modifier
+        .testTag(FILTER_BAR_TEST_TAG)
+        .padding(start = 0.dp)
+        .fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
-        LazyRow(
-            modifier = modifier
-                .testTag(FILTER_BAR_TEST_TAG)
-                .padding(start = 0.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+      val sortedFilters = filters.sortedBy { !it.isSelected }
+      item {
+        AnimatedVisibility(
+          enter = slideInHorizontally() + expandHorizontally(),
+          exit = slideOutHorizontally() + shrinkHorizontally(),
+          visible = sortedFilters.any { it.isSelected }
         ) {
-            val sortedFilters = filters.sortedBy { !it.isSelected }
-            item {
-                AnimatedVisibility(
-                    enter = slideInHorizontally() + expandHorizontally(),
-                    exit = slideOutHorizontally() + shrinkHorizontally(),
-                    visible = sortedFilters.any { it.isSelected }
-                ) {
-                    ClearButton(
-                        onClearClick = onClearClick,
-                    )
-                }
-            }
-
-            items(
-                count = sortedFilters.size,
-                key = { index -> sortedFilters[index].name },
-            ) { index ->
-                val filter = sortedFilters[index]
-                FilterItem(
-                    modifier = Modifier
-                        .animateItemPlacement(
-                            animationSpec = tween(
-                                durationMillis = 600,
-                            ),
-                        ),
-                    filter = filter,
-                    onFilterClick = onFilterClick,
-                )
-            }
+          ClearButton(
+            onClearClick = onClearClick,
+          )
         }
+      }
+
+      items(
+        count = sortedFilters.size,
+        key = { index -> sortedFilters[index].name },
+      ) { index ->
+        val filter = sortedFilters[index]
+        FilterItem(
+          modifier = Modifier
+            .animateItemPlacement(
+              animationSpec = tween(
+                durationMillis = 600,
+              ),
+            ),
+          filter = filter,
+          onFilterClick = onFilterClick,
+        )
+      }
     }
+  }
 }
 
 /**
@@ -108,68 +108,68 @@ fun FilterBar(
  */
 @Composable
 private fun ClearButton(
-    modifier: Modifier = Modifier,
-    onClearClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  onClearClick: () -> Unit,
 ) {
-    val containerColor = MaterialTheme.colorScheme.surfaceVariant
-    OutlinedButton(
-        onClick = onClearClick,
-        modifier = modifier
-            .size(40.dp),
-        border = null,
-        shape = CircleShape,
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = containerColor,
-            contentColor = contentColorFor(containerColor),
-        )
-    ) {
-        Icon(
-            imageVector = Icons.Default.Clear,
-            contentDescription = stringResource(id = R.string.clear_filters_button_content_description),
-        )
-    }
+  val containerColor = MaterialTheme.colorScheme.surfaceVariant
+  OutlinedButton(
+    onClick = onClearClick,
+    modifier = modifier
+      .size(40.dp),
+    border = null,
+    shape = CircleShape,
+    contentPadding = PaddingValues(0.dp),
+    colors = ButtonDefaults.outlinedButtonColors(
+      containerColor = containerColor,
+      contentColor = contentColorFor(containerColor),
+    )
+  ) {
+    Icon(
+      imageVector = Icons.Default.Clear,
+      contentDescription = stringResource(id = R.string.clear_filters_button_content_description),
+    )
+  }
 }
 
 @Composable
 private fun FilterItem(
-    modifier: Modifier = Modifier,
-    filter: Filter,
-    onFilterClick: (Filter) -> Unit,
+  modifier: Modifier = Modifier,
+  filter: Filter,
+  onFilterClick: (Filter) -> Unit,
 ) {
-    val color = if (filter.isSelected) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.surfaceVariant
-    }
-    Button(
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color,
-            contentColor = contentColorFor(color),
-        ),
-        modifier = modifier,
-        onClick = { onFilterClick(filter) },
-    ) {
-        Text(text = filter.name)
-    }
+  val color = if (filter.isSelected) {
+    MaterialTheme.colorScheme.primary
+  } else {
+    MaterialTheme.colorScheme.surfaceVariant
+  }
+  Button(
+    colors = ButtonDefaults.buttonColors(
+      containerColor = color,
+      contentColor = contentColorFor(color),
+    ),
+    modifier = modifier,
+    onClick = { onFilterClick(filter) },
+  ) {
+    Text(text = filter.name)
+  }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun FilterBarPreview() {
-    AppTheme {
-        FilterBar(
-            filters = listOf(
-                Filter("All", true),
-                Filter("Popular", false),
-                Filter("Top Rated", true),
-                Filter("Upcoming", false),
-            ),
-            onFilterClick = { },
-            onClearClick = { },
-        )
-    }
+  AppTheme {
+    FilterBar(
+      filters = listOf(
+        Filter("All", true),
+        Filter("Popular", false),
+        Filter("Top Rated", true),
+        Filter("Upcoming", false),
+      ),
+      onFilterClick = { },
+      onClearClick = { },
+    )
+  }
 }
 
 /**
@@ -178,25 +178,25 @@ fun FilterBarPreview() {
  * @param isSelected Whether the filter is selected or not.
  */
 data class Filter(
-    val name: String,
-    val isSelected: Boolean,
+  val name: String,
+  val isSelected: Boolean,
 )
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun FilterBarUnselectedPreview() {
-    AppTheme {
-        val filters = mutableListOf(
-            Filter("All", false),
-            Filter("Popular", false),
-            Filter("Top Rated", false),
-            Filter("Upcoming", false),
-        )
-        FilterBar(
-            filters = filters,
-            onFilterClick = { },
-            onClearClick = { },
-        )
-    }
+  AppTheme {
+    val filters = mutableListOf(
+      Filter("All", false),
+      Filter("Popular", false),
+      Filter("Top Rated", false),
+      Filter("Upcoming", false),
+    )
+    FilterBar(
+      filters = filters,
+      onFilterClick = { },
+      onClearClick = { },
+    )
+  }
 }

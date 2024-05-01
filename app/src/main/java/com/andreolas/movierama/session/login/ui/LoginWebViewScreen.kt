@@ -31,9 +31,6 @@ fun LoginWebViewScreen(
 ) {
   val context = LocalContext.current
 
-//  val scope = rememberCoroutineScope()
-//  val snackbarHostState = remember { SnackbarHostState() }
-
   val viewState = viewModel.viewState.collectAsState()
 
   LaunchedEffect(viewState.value.navigateBack) {
@@ -42,25 +39,13 @@ fun LoginWebViewScreen(
     }
   }
 
-//  LaunchedEffect(key1 = viewState.value.toastText) {
-//    if (viewState.value.toastText != null) {
-//      scope.launch {
-//        snackbarHostState.showSnackbar(
-//          message = viewState.value.toastText.toString()
-//        )
-//      }
-//    }
-//  }
-
   val webView = remember {
     WebView(context).apply {
       settings.javaScriptEnabled = true
       settings.domStorageEnabled = true
       webViewClient = AutoRedirectWebView(
         redirectUrl = viewState.value.redirectUrl,
-        onCloseWebView = { successUrl ->
-          viewModel.handleSession(successUrl)
-        }
+        onCloseWebView = viewModel::handleSession
       )
     }
   }

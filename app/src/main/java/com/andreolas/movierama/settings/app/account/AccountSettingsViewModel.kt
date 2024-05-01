@@ -2,10 +2,10 @@ package com.andreolas.movierama.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andreolas.movierama.session.login.domain.session.ObserveSessionUseCase
-import com.andreolas.movierama.session.login.domain.token.CreateRequestTokenUseCase
+import com.andreolas.movierama.session.login.domain.session.usecase.LogoutUseCase
+import com.andreolas.movierama.session.login.domain.session.usecase.ObserveSessionUseCase
+import com.andreolas.movierama.session.login.domain.token.usecase.CreateRequestTokenUseCase
 import com.andreolas.movierama.settings.app.account.usecase.GetAccountDetailsUseCase
-import com.andreolas.movierama.settings.app.account.usecase.LogoutUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data

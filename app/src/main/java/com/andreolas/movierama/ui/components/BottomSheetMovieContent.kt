@@ -58,7 +58,7 @@ fun BottomSheetMovieContent(
   onMarkAsFavoriteClicked: (MediaItem.Media) -> Unit,
 ) {
   if (movie is MediaItem.Media) {
-      Column(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
+    Column(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
       Row(
         modifier = modifier
           .testTag(MOVIE_BOTTOM_SHEET_TAG)

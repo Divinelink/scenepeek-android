@@ -21,66 +21,66 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class AppSettingsTest {
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(SettingsScreen::class.java)
+  @get:Rule
+  val activityRule = ActivityScenarioRule(SettingsScreen::class.java)
 //    private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-    @Test
-    fun navigateBetweenSettingsFragments() {
-        dismissANRSystemDialog()
-        onView(withText(R.string.preferences__appearance))
-            .check(matches(isDisplayed()))
-            .perform(click())
+  @Test
+  fun navigateBetweenSettingsFragments() {
+    dismissANRSystemDialog()
+    onView(withText(R.string.preferences__appearance))
+      .check(matches(isDisplayed()))
+      .perform(click())
 
-        pressBack()
+    pressBack()
 
-        onView(withText(R.string.HelpSettingsFragment__help))
-            .check(matches(isDisplayed()))
-            .perform(click())
+    onView(withText(R.string.HelpSettingsFragment__help))
+      .check(matches(isDisplayed()))
+      .perform(click())
 
-        onView(withText(R.string.HelpSettingsFragment__version))
-            .check(matches(isDisplayed()))
+    onView(withText(R.string.HelpSettingsFragment__version))
+      .check(matches(isDisplayed()))
+  }
+
+  @Test
+  fun updateThemeTest() {
+    dismissANRSystemDialog()
+    onView(withText(R.string.preferences__appearance))
+      .check(matches(isDisplayed()))
+      .perform(click())
+
+    onView(withText(R.string.preferences__theme))
+      .check(matches(isDisplayed()))
+      .perform(click())
+
+    onView(withText(R.string.preferences__light_theme))
+      .check(matches(isDisplayed()))
+      .perform(click())
+
+    onView(withText(R.string.preferences__theme))
+      .check(matches(isDisplayed()))
+      .perform(click())
+
+    onView(withText(R.string.preferences__dark_theme))
+      .check(matches(isDisplayed()))
+      .perform(click())
+  }
+
+  companion object {
+    @JvmStatic
+    @BeforeClass
+    fun dismissANRSystemDialog() {
+      val device = UiDevice.getInstance(getInstrumentation())
+      // If running the device in English Locale
+      var waitButton = device.findObject(UiSelector().textContains("wait"))
+      if (waitButton.exists()) {
+        waitButton.click()
+      }
+      // If running the device in Japanese Locale
+      waitButton = device.findObject(UiSelector().textContains("待機"))
+      if (waitButton.exists()) {
+        waitButton.click()
+      }
     }
-
-    @Test
-    fun updateThemeTest() {
-        dismissANRSystemDialog()
-        onView(withText(R.string.preferences__appearance))
-            .check(matches(isDisplayed()))
-            .perform(click())
-
-        onView(withText(R.string.preferences__theme))
-            .check(matches(isDisplayed()))
-            .perform(click())
-
-        onView(withText(R.string.preferences__light_theme))
-            .check(matches(isDisplayed()))
-            .perform(click())
-
-        onView(withText(R.string.preferences__theme))
-            .check(matches(isDisplayed()))
-            .perform(click())
-
-        onView(withText(R.string.preferences__dark_theme))
-            .check(matches(isDisplayed()))
-            .perform(click())
-    }
-
-    companion object {
-        @JvmStatic
-        @BeforeClass
-        fun dismissANRSystemDialog() {
-            val device = UiDevice.getInstance(getInstrumentation())
-            // If running the device in English Locale
-            var waitButton = device.findObject(UiSelector().textContains("wait"))
-            if (waitButton.exists()) {
-                waitButton.click()
-            }
-            // If running the device in Japanese Locale
-            waitButton = device.findObject(UiSelector().textContains("待機"))
-            if (waitButton.exists()) {
-                waitButton.click()
-            }
-        }
-    }
+  }
 }

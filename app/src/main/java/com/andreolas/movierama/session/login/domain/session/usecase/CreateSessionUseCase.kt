@@ -1,4 +1,4 @@
-package com.andreolas.movierama.session.login.domain.session
+package com.andreolas.movierama.session.login.domain.session.usecase
 
 import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher

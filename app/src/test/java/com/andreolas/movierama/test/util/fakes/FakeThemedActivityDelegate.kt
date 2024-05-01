@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class FakeThemedActivityDelegate(
-    override val theme: StateFlow<Theme> = MutableStateFlow(Theme.SYSTEM),
-    override val currentTheme: Theme = Theme.SYSTEM,
+  override val theme: StateFlow<Theme> = MutableStateFlow(Theme.SYSTEM),
+  override val currentTheme: Theme = Theme.SYSTEM,
 ) : ThemedActivityDelegate

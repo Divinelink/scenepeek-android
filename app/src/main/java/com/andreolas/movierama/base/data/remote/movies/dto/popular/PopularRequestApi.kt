@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PopularRequestApi(
-    val page: Int,
+  val page: Int,
 )

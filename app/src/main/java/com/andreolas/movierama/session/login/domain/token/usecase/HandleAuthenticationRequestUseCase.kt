@@ -1,9 +1,9 @@
-package com.andreolas.movierama.session.login.domain.token
+package com.andreolas.movierama.session.login.domain.token.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
 import com.andreolas.movierama.session.SessionStorage
-import com.andreolas.movierama.session.login.domain.session.CreateSessionUseCase
+import com.andreolas.movierama.session.login.domain.session.usecase.CreateSessionUseCase
 import com.andreolas.movierama.session.model.tokenIsApproved
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher

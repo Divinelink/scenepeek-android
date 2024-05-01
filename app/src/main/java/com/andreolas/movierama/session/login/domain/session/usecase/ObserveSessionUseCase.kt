@@ -1,4 +1,4 @@
-package com.andreolas.movierama.session.login.domain.session
+package com.andreolas.movierama.session.login.domain.session.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage

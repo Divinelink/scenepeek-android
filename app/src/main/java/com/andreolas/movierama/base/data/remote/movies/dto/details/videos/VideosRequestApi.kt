@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class VideosRequestApi(
-    @SerialName("movie_id")
-    val movieId: Int,
+  @SerialName("movie_id")
+  val movieId: Int,
 )

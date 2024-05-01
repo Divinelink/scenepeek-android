@@ -1,4 +1,4 @@
-package com.andreolas.movierama.settings.app.account.usecase
+package com.andreolas.movierama.session.login.domain.session.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.session.SessionStorage
@@ -14,8 +14,9 @@ class LogoutUseCase @Inject constructor(
 ) : UseCase<Unit, Unit>(dispatcher) {
 
   override suspend fun execute(parameters: Unit) {
-    val sessionId: String = sessionStorage.sessionId
-      ?: throw IllegalStateException("No session id found.")
+    val sessionId: String = sessionStorage.sessionId ?: throw IllegalStateException(
+      "No session id found."
+    )
 
     val deleteResult = repository.deleteSession(sessionId)
 

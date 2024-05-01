@@ -1,112 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="light_seed">#00677e</color>
+  <color name="light_seed">#00677e</color>
 
-    <color name="light_colorPrimary">#00677E</color>
-    <color name="light_colorOnPrimary">#FFFFFF</color>
-    <color name="light_colorPrimaryContainer">#B5EBFF</color>
-    <color name="light_colorOnPrimaryContainer">#001F28</color>
-    <color name="light_colorSecondary">#4C626A</color>
-    <color name="light_colorOnSecondary">#FFFFFF</color>
-    <color name="light_colorSecondaryContainer">#CFE6F0</color>
-    <color name="light_colorOnSecondaryContainer">#071E26</color>
-    <color name="light_colorTertiary">#595C7E</color>
-    <color name="light_colorOnTertiary">#FFFFFF</color>
-    <color name="light_colorTertiaryContainer">#E0E0FF</color>
-    <color name="light_colorOnTertiaryContainer">#161937</color>
-    <color name="light_colorError">#BA1A1A</color>
-    <color name="light_colorErrorContainer">#FFDAD6</color>
-    <color name="light_colorOnError">#FFFFFF</color>
-    <color name="light_colorOnErrorContainer">#410002</color>
-    <color name="light_colorBackground">#FBFCFE</color>
-    <color name="light_colorOnBackground">#191C1D</color>
-    <color name="light_colorSurface">#FBFCFE</color>
-    <color name="light_colorOnSurface">#191C1D</color>
-    <color name="light_colorSurfaceVariant">#DBE4E8</color>
-    <color name="light_colorOnSurfaceVariant">#40484C</color>
-    <color name="light_colorOutline">#70787C</color>
-    <color name="light_colorInverseOnSurface">#EFF1F2</color>
-    <color name="light_colorInverseSurface">#2E3132</color>
-    <color name="light_colorInversePrimary">#5BD5FA</color>
-    <color name="light_colorShadow">#000000</color>
-    <color name="light_colorSurfaceTint">#00677E</color>
-    <color name="light_colorSurfaceTintColor">#00677E</color>
+  <color name="light_colorPrimary">#00677E</color>
+  <color name="light_colorOnPrimary">#FFFFFF</color>
+  <color name="light_colorPrimaryContainer">#B5EBFF</color>
+  <color name="light_colorOnPrimaryContainer">#001F28</color>
+  <color name="light_colorSecondary">#4C626A</color>
+  <color name="light_colorOnSecondary">#FFFFFF</color>
+  <color name="light_colorSecondaryContainer">#CFE6F0</color>
+  <color name="light_colorOnSecondaryContainer">#071E26</color>
+  <color name="light_colorTertiary">#595C7E</color>
+  <color name="light_colorOnTertiary">#FFFFFF</color>
+  <color name="light_colorTertiaryContainer">#E0E0FF</color>
+  <color name="light_colorOnTertiaryContainer">#161937</color>
+  <color name="light_colorError">#BA1A1A</color>
+  <color name="light_colorErrorContainer">#FFDAD6</color>
+  <color name="light_colorOnError">#FFFFFF</color>
+  <color name="light_colorOnErrorContainer">#410002</color>
+  <color name="light_colorBackground">#FBFCFE</color>
+  <color name="light_colorOnBackground">#191C1D</color>
+  <color name="light_colorSurface">#FBFCFE</color>
+  <color name="light_colorOnSurface">#191C1D</color>
+  <color name="light_colorSurfaceVariant">#DBE4E8</color>
+  <color name="light_colorOnSurfaceVariant">#40484C</color>
+  <color name="light_colorOutline">#70787C</color>
+  <color name="light_colorInverseOnSurface">#EFF1F2</color>
+  <color name="light_colorInverseSurface">#2E3132</color>
+  <color name="light_colorInversePrimary">#5BD5FA</color>
+  <color name="light_colorShadow">#000000</color>
+  <color name="light_colorSurfaceTint">#00677E</color>
+  <color name="light_colorSurfaceTintColor">#00677E</color>
 
-<!--    <color name="light_colorSurface1">#F2F5F8</color>-->
-    <color name="light_colorSurface2">#F0F9FE</color>
-<!--    <color name="light_colorSurface3">#E8ECF4</color>-->
-<!--    <color name="light_colorSurface4">#E6EAF3</color>-->
-<!--    <color name="light_colorSurface5">#E3E7F1</color>-->
-
-    <color name="light_text_primary">@color/light_colorOnSurface</color>
-    <color name="light_text_primary_disabled">@color/core_grey_25</color>
-    <color name="light_text_primary_dialog">@color/core_grey_65</color>
-
-    <color name="light_text_secondary">@color/light_colorOnSurfaceVariant</color>
-
-    <color name="light_conversation_toolbar_color">@color/light_colorSurface</color>
-
-    <color name="light_accent_primary">@color/core_ultramarine</color>
-    <color name="light_accent_stroke_primary">@color/light_colorBackground</color>
-
-    <color name="light_inverse_primary">@color/core_black</color>
-
-    <color name="light_background_primary">@color/light_colorBackground</color>
-    <color name="light_background_secondary">@color/light_colorSurface</color>
-    <color name="light_background_tertiary">@color/core_grey_02</color>
-    <color name="light_background_dialog">@color/light_colorSurface</color>
-    <color name="light_background_dialog_secondary">@color/light_background_secondary</color>
-
-    <color name="light_text_hint">@color/core_grey_45</color>
-
-    <color name="light_text_toolbar_title">@color/light_colorBackground</color>
-    <color name="light_text_toolbar_subtitle">@color/transparent_white_90</color>
-
-    <color name="light_icon_tint_primary">@color/light_colorOnSurface</color>
-    <color name="light_icon_tint_secondary">@color/light_colorOnSurfaceVariant</color>
-    <color name="light_icon_tint_action">@color/core_black</color>
-
-    <color name="light_icon_tint_tab_selected">@color/light_colorOnSurface</color>
-    <color name="light_icon_tint_tab_unselected">@color/light_colorOnSurfaceVariant</color>
-
-    <color name="light_button_primary">@color/core_ultramarine</color>
-    <color name="light_button_primary_ripple">@color/transparent_black_15</color>
-    <color name="light_button_primary_text">@color/core_white</color>
-    <color name="light_button_primary_text_disabled">@color/transparent_white_20</color>
-
-    <color name="light_button_secondary">@color/core_grey_05</color>
-    <color name="light_button_secondary_ripple">@color/core_grey_02</color>
-    <color name="light_button_secondary_text">@color/core_ultramarine</color>
-    <color name="light_button_secondary_text_disabled">@color/core_grey_25</color>
-    <color name="light_button_secondary_stroke">@color/core_grey_15</color>
-
-    <color name="light_divider_minor">@color/core_grey_15</color>
-    <color name="light_divider_major">@color/core_grey_25</color>
-
-    <color name="light_alert_primary">@color/core_red_highlight</color>
-
-    <color name="light_transparent_20">@color/transparent_white_20</color>
-    <color name="light_transparent_40">@color/transparent_white_40</color>
-    <color name="light_transparent_60">@color/transparent_white_60</color>
-    <color name="light_transparent_80">@color/transparent_white_80</color>
-
-    <color name="light_inverse_transparent">@color/transparent_black</color>
-    <color name="light_inverse_transparent_05">@color/transparent_black_05</color>
-    <color name="light_inverse_transparent_08">@color/transparent_black_08</color>
-    <color name="light_inverse_transparent_10">@color/transparent_black_10</color>
-    <color name="light_inverse_transparent_15">@color/transparent_black_15</color>
-    <color name="light_inverse_transparent_20">@color/transparent_black_20</color>
-    <color name="light_inverse_transparent_25">@color/transparent_black_25</color>
-    <color name="light_inverse_transparent_40">@color/transparent_black_40</color>
-    <color name="light_inverse_transparent_60">@color/transparent_black_60</color>
-    <color name="light_inverse_transparent_80">@color/transparent_black_80</color>
-
-    <color name="light_colorSecondaryContainer_12">#1FDCE5F9</color>
-    <color name="light_colorSurface_60">#99FBFCFF</color>
-    <color name="light_colorSurfaceVariant_38">#61E7EBF3</color>
-    <color name="light_colorOnSurface_12">#1F1B1B1D</color>
-    <color name="light_colorOnSurfaceVariant_60">#99545863</color>
-    <color name="light_colorOnBackground_60">#991B1D1D</color>
-    <color name="light_colorOutline_38">#61808389</color>
-    <color name="light_colorBackground_0">#00FBFCFF</color>
+  <color name="light_colorSurface2">#F0F9FE</color>
+  <color name="light_colorSurface_60">#99FBFCFF</color>
 </resources>

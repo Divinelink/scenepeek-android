@@ -17,51 +17,51 @@ import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppearanceSettingsViewModelTest {
-    private lateinit var viewModel: AppearanceSettingsViewModel
+  private lateinit var viewModel: AppearanceSettingsViewModel
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private fun buildViewModel(fakePreferenceStorage: FakePreferenceStorage) = apply {
-        viewModel = AppearanceSettingsViewModel(
-            setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
-            getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
-            getAvailableThemesUseCase = GetAvailableThemesUseCase(testDispatcher)
-        )
-    }
+  private fun buildViewModel(fakePreferenceStorage: FakePreferenceStorage) = apply {
+    viewModel = AppearanceSettingsViewModel(
+      setThemeUseCase = SetThemeUseCase(fakePreferenceStorage, testDispatcher),
+      getThemeUseCase = GetThemeUseCase(fakePreferenceStorage, testDispatcher),
+      getAvailableThemesUseCase = GetAvailableThemesUseCase(testDispatcher)
+    )
+  }
 
-    @Test
-    fun `given theme is system, when I set theme to dark, then I expect dark theme`() = runTest {
-        // Given
-        buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
-        // When
-        viewModel.setTheme(Theme.DARK)
-        // Then
-        assertEquals(UpdateSettingsState(theme = Theme.DARK), viewModel.uiState.first())
-    }
+  @Test
+  fun `given theme is system, when I set theme to dark, then I expect dark theme`() = runTest {
+    // Given
+    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
+    // When
+    viewModel.setTheme(Theme.DARK)
+    // Then
+    assertEquals(UpdateSettingsState(theme = Theme.DARK), viewModel.uiState.first())
+  }
 
-    @Test
-    fun `given theme is system, then I expect system theme`() = runTest {
-        // Given
-        buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
-        // Then
-        assertEquals(UpdateSettingsState(theme = Theme.SYSTEM), viewModel.uiState.first())
-    }
+  @Test
+  fun `given theme is system, then I expect system theme`() = runTest {
+    // Given
+    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.SYSTEM.storageKey))
+    // Then
+    assertEquals(UpdateSettingsState(theme = Theme.SYSTEM), viewModel.uiState.first())
+  }
 
-    @Test
-    fun `given theme is dark, then I expect dark theme`() = runTest {
-        // Given
-        buildViewModel(FakePreferenceStorage(selectedTheme = Theme.DARK.storageKey))
-        // Then
-        assertEquals(UpdateSettingsState(theme = Theme.DARK), viewModel.uiState.first())
-    }
+  @Test
+  fun `given theme is dark, then I expect dark theme`() = runTest {
+    // Given
+    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.DARK.storageKey))
+    // Then
+    assertEquals(UpdateSettingsState(theme = Theme.DARK), viewModel.uiState.first())
+  }
 
-    @Test
-    fun `given theme is light, then I expect light theme`() = runTest {
-        // Given
-        buildViewModel(FakePreferenceStorage(selectedTheme = Theme.LIGHT.storageKey))
-        // Then
-        assertEquals(UpdateSettingsState(theme = Theme.LIGHT), viewModel.uiState.first())
-    }
+  @Test
+  fun `given theme is light, then I expect light theme`() = runTest {
+    // Given
+    buildViewModel(FakePreferenceStorage(selectedTheme = Theme.LIGHT.storageKey))
+    // Then
+    assertEquals(UpdateSettingsState(theme = Theme.LIGHT), viewModel.uiState.first())
+  }
 }

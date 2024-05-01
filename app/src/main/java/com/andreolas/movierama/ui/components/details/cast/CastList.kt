@@ -20,44 +20,44 @@ import com.andreolas.movierama.ui.theme.ListPaddingValues
 
 @Composable
 fun CastList(
-    cast: List<Actor>,
-    director: Director?,
+  cast: List<Actor>,
+  director: Director?,
 ) {
-    Column(
+  Column(
+    modifier = Modifier
+      .padding(top = 16.dp, bottom = 16.dp)
+      .fillMaxWidth(),
+  ) {
+    if (cast.isNotEmpty()) {
+      Text(
         modifier = Modifier
-            .padding(top = 16.dp, bottom = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        if (cast.isNotEmpty()) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 12.dp),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                text = stringResource(id = R.string.details__cast_title),
-            )
+          .padding(start = 12.dp, end = 12.dp),
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold,
+        text = stringResource(id = R.string.details__cast_title),
+      )
 
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = ListPaddingValues,
-            ) {
-                items(
-                    items = cast,
-                    key = {
-                        it.id
-                    }
-                ) {
-                    CrewItemCard(
-                        actor = it,
-                    )
-                }
-            }
+      LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = ListPaddingValues,
+      ) {
+        items(
+          items = cast,
+          key = {
+            it.id
+          }
+        ) {
+          CrewItemCard(
+            actor = it,
+          )
         }
-
-        if (director != null) {
-            DirectorItem(
-                director = director,
-            )
-        }
+      }
     }
+
+    if (director != null) {
+      DirectorItem(
+        director = director,
+      )
+    }
+  }
 }

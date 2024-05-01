@@ -10,36 +10,36 @@ import com.andreolas.movierama.ui.getString
 
 @Composable
 fun SimpleAlertDialog(
-    confirmClick: () -> Unit,
-    dismissClick: (() -> Unit) = {},
-    confirmText: UIText,
-    dismissText: UIText? = null,
-    title: UIText = UIText.ResourceText(R.string.general_error_title),
-    text: UIText,
+  confirmClick: () -> Unit,
+  dismissClick: (() -> Unit) = {},
+  confirmText: UIText,
+  dismissText: UIText? = null,
+  title: UIText = UIText.ResourceText(R.string.general_error_title),
+  text: UIText,
 ) {
-    AlertDialog(
-        onDismissRequest = dismissClick,
-        confirmButton = {
-            TextButton(
-                onClick = confirmClick,
-            ) {
-                Text(text = confirmText.getString())
-            }
-        },
-        dismissButton = dismissText?.let {
-            {
-                TextButton(
-                    onClick = dismissClick,
-                ) {
-                    Text(text = dismissText.getString())
-                }
-            }
-        },
-        title = {
-            Text(text = title.getString())
-        },
-        text = {
-            Text(text = text.getString())
-        },
-    )
+  AlertDialog(
+    onDismissRequest = dismissClick,
+    confirmButton = {
+      TextButton(
+        onClick = confirmClick,
+      ) {
+        Text(text = confirmText.getString())
+      }
+    },
+    dismissButton = dismissText?.let {
+      {
+        TextButton(
+          onClick = dismissClick,
+        ) {
+          Text(text = dismissText.getString())
+        }
+      }
+    },
+    title = {
+      Text(text = title.getString())
+    },
+    text = {
+      Text(text = text.getString())
+    },
+  )
 }

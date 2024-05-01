@@ -21,7 +21,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun SettingsScreen(
   navigator: DestinationsNavigator,
 
-) {
+  ) {
   SettingsScaffold(
     title = stringResource(R.string.settings),
     onNavigationClick = navigator::navigateUp,

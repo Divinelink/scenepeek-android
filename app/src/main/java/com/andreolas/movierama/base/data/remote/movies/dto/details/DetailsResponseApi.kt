@@ -17,13 +17,17 @@ sealed class DetailsResponseApi {
   abstract val id: Int
   abstract val adult: Boolean
   abstract val genres: List<Genre>
-  @SerialName("backdrop_path") abstract val backdropPath: String?
+  @SerialName("backdrop_path")
+  abstract val backdropPath: String?
   abstract val originalLanguage: String
   abstract val overview: String?
   abstract val popularity: Double
-  @SerialName("poster_path") abstract val posterPath: String?
-  @SerialName("vote_average") abstract val voteAverage: Double
-  @SerialName("vote_count") abstract val voteCount: Int
+  @SerialName("poster_path")
+  abstract val posterPath: String?
+  @SerialName("vote_average")
+  abstract val voteAverage: Double
+  @SerialName("vote_count")
+  abstract val voteCount: Int
   abstract val releaseDate: String
 
   @Serializable

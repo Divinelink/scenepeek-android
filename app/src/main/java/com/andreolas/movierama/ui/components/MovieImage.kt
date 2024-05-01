@@ -18,23 +18,23 @@ import com.andreolas.movierama.base.communication.ApiConstants
 
 @Composable
 fun MovieImage(
-    modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
-    errorPlaceHolder: Painter = painterResource(R.drawable.ic_movie_placeholder),
-    path: String?,
+  modifier: Modifier = Modifier,
+  contentScale: ContentScale = ContentScale.Fit,
+  errorPlaceHolder: Painter = painterResource(R.drawable.ic_movie_placeholder),
+  path: String?,
 ) {
-    AsyncImage(
-        modifier = modifier
-            .heightIn(min = 160.dp)
-            .widthIn(min = 120.dp),
-        model = ImageRequest.Builder(LocalContext.current)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .data(ApiConstants.TMDB_IMAGE_URL + path)
-            .crossfade(true)
-            .build(),
-        error = errorPlaceHolder,
-        contentDescription = stringResource(id = R.string.movie_image_placeholder),
-        contentScale = contentScale,
-    )
+  AsyncImage(
+    modifier = modifier
+      .heightIn(min = 160.dp)
+      .widthIn(min = 120.dp),
+    model = ImageRequest.Builder(LocalContext.current)
+      .memoryCachePolicy(CachePolicy.ENABLED)
+      .diskCachePolicy(CachePolicy.ENABLED)
+      .data(ApiConstants.TMDB_IMAGE_URL + path)
+      .crossfade(true)
+      .build(),
+    error = errorPlaceHolder,
+    contentDescription = stringResource(id = R.string.movie_image_placeholder),
+    contentScale = contentScale,
+  )
 }
