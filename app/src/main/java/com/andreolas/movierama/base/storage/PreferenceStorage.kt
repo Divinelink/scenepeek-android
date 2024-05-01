@@ -31,7 +31,6 @@ interface PreferenceStorage {
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
 
-  // TODO Remove from here probably
   suspend fun clearToken()
   suspend fun setToken(token: String)
   val token: Flow<String?>
