@@ -1,15 +1,14 @@
 package com.andreolas.ui.details
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
+import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.R
@@ -25,16 +24,9 @@ import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class DetailsScreenTest {
-
-  @get:Rule
-  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun navigateToAnotherDetailsScreen() {

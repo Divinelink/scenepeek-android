@@ -1,16 +1,15 @@
 package com.andreolas.ui.home
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
@@ -35,15 +34,9 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeScreenTest {
-
-  @get:Rule
-  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+class HomeScreenTest : ComposeTest() {
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
