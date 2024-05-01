@@ -28,6 +28,12 @@ class ProdSessionRepository @Inject constructor(
     return Result.success(response.data.map())
   }
 
+  override suspend fun deleteSession(sessionId: String): Result<Boolean> {
+    val response = remote.deleteSession(sessionId = sessionId)
+
+    return Result.success(response.data.success)
+  }
+
   override fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>> = remote
     .getAccountDetails(sessionId)
     .map { apiResponse ->

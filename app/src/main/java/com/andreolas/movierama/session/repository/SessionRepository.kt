@@ -12,5 +12,7 @@ interface SessionRepository {
 
   suspend fun createSession(token: CreateSessionRequestApi): Result<SessionId>
 
+  suspend fun deleteSession(sessionId: String): Result<Boolean>
+
   fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>>
 }

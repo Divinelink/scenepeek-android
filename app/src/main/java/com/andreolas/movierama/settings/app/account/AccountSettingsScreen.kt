@@ -75,7 +75,6 @@ fun AccountSettingsScreen(
                 Text(text = stringResource(id = R.string.AccountSettingsScreen__logout))
               }
             }
-
           } else {
             SettingsClickItem(
               text = stringResource(id = R.string.AccountSettingsScreen__login),

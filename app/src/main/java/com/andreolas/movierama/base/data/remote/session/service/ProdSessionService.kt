@@ -5,6 +5,8 @@ import com.andreolas.movierama.base.data.remote.session.dto.AccountDetailsRespon
 import com.andreolas.movierama.base.data.remote.session.dto.CreateRequestTokenResponseApi
 import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionRequestApi
 import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionResponseApi
+import com.andreolas.movierama.base.data.remote.session.dto.delete.DeleteSessionRequestApi
+import com.andreolas.movierama.base.data.remote.session.dto.delete.DeleteSessionResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -28,6 +30,17 @@ class ProdSessionService @Inject constructor(
     val response = restClient.post<CreateSessionRequestApi, CreateSessionResponseApi>(
       url = url,
       body = requestToken
+    )
+
+    return Result.success(response)
+  }
+
+  override suspend fun deleteSession(sessionId: String): Result<DeleteSessionResponseApi> {
+    val url = "${restClient.tmdbUrl}/authentication/session"
+
+    val response = restClient.delete<DeleteSessionRequestApi, DeleteSessionResponseApi>(
+      url = url,
+      body = DeleteSessionRequestApi(sessionId)
     )
 
     return Result.success(response)

@@ -11,6 +11,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -75,6 +76,20 @@ class RestClient @Inject constructor(
   @OptIn(InternalSerializationApi::class)
   internal suspend inline fun <reified T : Any, reified V : Any> post(url: String, body: T): V {
     val json = client.post(url) {
+      setBody(body)
+    }.bodyAsText()
+
+    try {
+      return localJson.decodeFromString(V::class.serializer(), json)
+    } catch (e: Exception) {
+      Timber.e("${e.message}")
+      throw e
+    }
+  }
+
+  @OptIn(InternalSerializationApi::class)
+  internal suspend inline fun <reified T : Any, reified V : Any> delete(url: String, body: T): V {
+    val json = client.delete(url) {
       setBody(body)
     }.bodyAsText()
 

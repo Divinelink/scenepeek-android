@@ -2,6 +2,7 @@ package com.andreolas.movierama.session
 
 import com.andreolas.movierama.base.storage.EncryptedStorage
 import com.andreolas.movierama.base.storage.PreferenceStorage
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,6 +20,9 @@ class SessionStorage @Inject constructor(
     storage.setToken(token)
   }
 
+  val sessionId: String?
+    get() = encryptedStorage.sessionId
+
   suspend fun setSession(sessionId: String) {
     encryptedStorage.setSessionId(sessionId)
     storage.setHasSession(true)
@@ -26,6 +30,7 @@ class SessionStorage @Inject constructor(
   }
 
   suspend fun clearSession() {
+    Timber.d("Cleared session.")
     encryptedStorage.clearSession()
     storage.setHasSession(false)
     storage.clearToken()
