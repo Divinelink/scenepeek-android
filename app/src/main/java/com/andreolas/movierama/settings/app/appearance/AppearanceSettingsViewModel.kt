@@ -1,6 +1,5 @@
 package com.andreolas.movierama.settings.app.appearance
 
-import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetAvailableThemesUseCase
@@ -9,6 +8,7 @@ import com.andreolas.movierama.settings.app.appearance.usecase.SetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.GetBlackBackgroundsUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.SetBlackBackgroundsUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
+import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.andreolas.movierama.ui.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +34,8 @@ class AppearanceSettingsViewModel @Inject constructor(
   val setMaterialYouUseCase: SetMaterialYouUseCase,
   getMaterialYouUseCase: GetMaterialYouUseCase,
   val setBlackBackgroundsUseCase: SetBlackBackgroundsUseCase,
-  getBlackBackgroundsUseCase: GetBlackBackgroundsUseCase
+  getBlackBackgroundsUseCase: GetBlackBackgroundsUseCase,
+  getMaterialYouVisibleUseCase: GetMaterialYouVisibleUseCase
 ) : ViewModel() {
 
   private val refreshSignal = MutableSharedFlow<Unit>()
@@ -52,7 +53,7 @@ class AppearanceSettingsViewModel @Inject constructor(
       theme = getThemeUseCase(Unit).data,
       availableThemes = getAvailableThemesUseCase(Unit).data,
       materialYouEnabled = getMaterialYouUseCase(Unit).data,
-      materialYouVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S, // TODO UseCase
+      materialYouVisible = getMaterialYouVisibleUseCase(Unit).data,
       blackBackgroundsEnabled = getBlackBackgroundsUseCase(Unit).data
     )
   }.stateIn(

@@ -56,7 +56,7 @@ android {
       }
     }
     debug {
-      testCoverageEnabled true
+      testCoverageEnabled false
     }
   }
 
@@ -117,12 +117,9 @@ dependencies {
   implementation libs.firebase.crashlytics
   implementation libs.firebase.analytics
 
-  implementation libs.androidx.appcompat
-  implementation libs.androidx.constraintlayout
-  implementation libs.androidx.recyclerview
-  implementation libs.androidx.fragment.ktx
   implementation libs.androidx.startup
   implementation libs.androidx.core.ktx
+  implementation libs.androidx.lifecycle.runtime.ktx
 
   implementation libs.kotlin.stdlib.jdk7
   implementation libs.kotlin.test.junit

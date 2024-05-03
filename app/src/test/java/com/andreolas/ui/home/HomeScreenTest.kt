@@ -38,13 +38,16 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenTest : ComposeTest() {
 
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
-
   private val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
   private val fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
   private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  @OptIn(ExperimentalCoroutinesApi::class)
+  val testDispatcher = mainDispatcherRule.testDispatcher
 
   @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
   @Test
