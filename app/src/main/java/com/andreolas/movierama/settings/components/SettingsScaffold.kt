@@ -1,5 +1,6 @@
 package com.andreolas.movierama.settings.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -16,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
+import com.andreolas.movierama.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +27,7 @@ fun SettingsScaffold(
   title: String,
   onNavigationClick: () -> Unit,
   navigationIconPainter: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-  navigationContentDescription: String? = null,
+  @StringRes navigationContentDescription: Int = R.string.navigate_up_button_content_description,
   content: @Composable (PaddingValues) -> Unit
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -42,7 +45,7 @@ fun SettingsScaffold(
           IconButton(onClick = onNavigationClick) {
             Icon(
               imageVector = navigationIconPainter,
-              contentDescription = navigationContentDescription
+              contentDescription = stringResource(id = navigationContentDescription)
             )
           }
         },

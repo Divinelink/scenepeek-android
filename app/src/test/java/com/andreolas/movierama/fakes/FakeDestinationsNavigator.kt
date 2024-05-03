@@ -40,7 +40,8 @@ class FakeDestinationsNavigator : DestinationsNavigator {
   }
 
   override fun navigateUp(): Boolean {
-    TODO("Not yet implemented")
+    navigatedRoutes.removeLast()
+    return true
   }
 
   override fun popBackStack(): Boolean {

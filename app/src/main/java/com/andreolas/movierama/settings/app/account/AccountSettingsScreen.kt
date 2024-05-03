@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,7 +32,6 @@ fun AccountSettingsScreen(
   viewModel: AccountSettingsViewModel = hiltViewModel()
 ) {
   val viewState = viewModel.viewState.collectAsState()
-  val scope = rememberCoroutineScope()
 
   DisposableEffect(viewState.value.navigateToWebView) {
     if (viewState.value.navigateToWebView == true) {

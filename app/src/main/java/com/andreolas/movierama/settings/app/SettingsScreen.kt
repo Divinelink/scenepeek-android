@@ -19,9 +19,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun SettingsScreen(
-  navigator: DestinationsNavigator,
-
-  ) {
+  navigator: DestinationsNavigator
+) {
   SettingsScaffold(
     title = stringResource(R.string.settings),
     onNavigationClick = navigator::navigateUp,
