@@ -12,6 +12,9 @@ class SessionStorage @Inject constructor(
   private val encryptedStorage: EncryptedStorage
 ) {
 
+  val sessionId: String?
+    get() = encryptedStorage.sessionId
+
   suspend fun clearToken() {
     storage.clearToken()
   }
@@ -19,9 +22,6 @@ class SessionStorage @Inject constructor(
   suspend fun setToken(token: String) {
     storage.setToken(token)
   }
-
-  val sessionId: String?
-    get() = encryptedStorage.sessionId
 
   suspend fun setSession(sessionId: String) {
     encryptedStorage.setSessionId(sessionId)

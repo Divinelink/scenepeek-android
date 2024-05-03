@@ -43,6 +43,7 @@ interface PreferenceStorage {
 class DataStorePreferenceStorage @Inject constructor(
   private val dataStore: DataStore<Preferences>,
 ) : PreferenceStorage {
+
   companion object {
     const val PREFS_NAME = "application_preferences"
   }
@@ -50,8 +51,8 @@ class DataStorePreferenceStorage @Inject constructor(
   object PreferencesKeys {
     val PREF_ENCRYPTED_SHARED_PREFS = stringPreferencesKey("encrypted.shared.prefs")
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
-    val PREF_MATERIAL_YOU = stringPreferencesKey("settings.material.you")
-    val PREF_BLACK_BACKGROUNDS = stringPreferencesKey("settings.black.backgrounds")
+    val PREF_MATERIAL_YOU = booleanPreferencesKey("settings.material.you")
+    val PREF_BLACK_BACKGROUNDS = booleanPreferencesKey("settings.black.backgrounds")
 
     val PREF_REQUEST_TOKEN = stringPreferencesKey("request.token")
     val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
@@ -70,22 +71,22 @@ class DataStorePreferenceStorage @Inject constructor(
 
   override suspend fun setMaterialYou(isEnabled: Boolean) {
     dataStore.edit {
-      it[PREF_MATERIAL_YOU] = isEnabled.toString()
+      it[PREF_MATERIAL_YOU] = isEnabled
     }
   }
 
   override val isMaterialYouEnabled = dataStore.data.map {
-    it[PREF_MATERIAL_YOU]?.toBoolean() ?: false
+    it[PREF_MATERIAL_YOU] ?: false
   }
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {
     dataStore.edit {
-      it[PREF_BLACK_BACKGROUNDS] = isEnabled.toString()
+      it[PREF_BLACK_BACKGROUNDS] = isEnabled
     }
   }
 
   override val isBlackBackgroundsEnabled: Flow<Boolean> = dataStore.data.map {
-    it[PREF_BLACK_BACKGROUNDS]?.toBoolean() ?: false
+    it[PREF_BLACK_BACKGROUNDS] ?: false
   }
 
   override suspend fun setEncryptedPreferences(value: String) {
@@ -94,8 +95,8 @@ class DataStorePreferenceStorage @Inject constructor(
     }
   }
 
-  override val encryptedPreferences = dataStore.data.map {
-    it[PREF_ENCRYPTED_SHARED_PREFS]
+  override val encryptedPreferences = dataStore.data.map { preferences ->
+    preferences[PREF_ENCRYPTED_SHARED_PREFS]
   }
 
   override suspend fun clearToken() {
