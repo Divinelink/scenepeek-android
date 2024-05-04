@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.andreolas.movierama.R
+import com.andreolas.movierama.ui.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +37,7 @@ fun SettingsScaffold(
   Scaffold(
     topBar = {
       TopAppBar(
+        modifier = Modifier.testTag(TestTags.Settings.TOP_APP_BAR),
         title = {
           Text(
             text = title,
@@ -42,7 +45,9 @@ fun SettingsScaffold(
           )
         },
         navigationIcon = {
-          IconButton(onClick = onNavigationClick) {
+          IconButton(
+            modifier = Modifier.testTag(TestTags.Settings.NAVIGATION_ICON),
+            onClick = onNavigationClick) {
             Icon(
               imageVector = navigationIconPainter,
               contentDescription = stringResource(id = navigationContentDescription)

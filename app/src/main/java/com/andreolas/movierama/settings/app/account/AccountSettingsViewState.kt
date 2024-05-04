@@ -1,13 +1,12 @@
 package com.andreolas.movierama.settings.app.account
 
 import com.andreolas.movierama.session.model.AccountDetails
-import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 
 data class AccountSettingsViewState(
   val requestToken: String?,
   val navigateToWebView: Boolean?,
-  val dialogMessage: UIText?, // TODO Create a dialog wrapper class
-  val dialogTitle: UIText?,
+  val alertDialogUiState: AlertDialogUiState?,
   val accountDetails: AccountDetails?
 ) {
   companion object {
@@ -15,8 +14,7 @@ data class AccountSettingsViewState(
       return AccountSettingsViewState(
         requestToken = null,
         navigateToWebView = null,
-        dialogMessage = null,
-        dialogTitle = null,
+        alertDialogUiState = null,
         accountDetails = null
       )
     }

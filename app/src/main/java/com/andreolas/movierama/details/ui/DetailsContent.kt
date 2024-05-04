@@ -64,13 +64,14 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
-import com.andreolas.movierama.ui.components.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
+import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
+import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -151,7 +152,7 @@ fun DetailsContent(
             onNavigateUp()
           },
           confirmText = UIText.ResourceText(R.string.ok),
-          text = viewState.error,
+          uiState = AlertDialogUiState(text = viewState.error)
         )
       }
 

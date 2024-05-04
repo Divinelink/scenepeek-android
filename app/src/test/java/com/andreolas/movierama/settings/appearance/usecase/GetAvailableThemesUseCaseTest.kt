@@ -25,7 +25,6 @@ class GetAvailableThemesUseCaseTest : UnitTest() {
   @OptIn(ExperimentalCoroutinesApi::class)
   val testDispatcher = mainDispatcherRule.testDispatcher
 
-
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
   @Before

@@ -18,6 +18,7 @@ import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
 fun SettingsClickItem(
+  modifier: Modifier = Modifier,
   icon: Painter? = null,
   text: String,
   onClick: () -> Unit
@@ -25,7 +26,7 @@ fun SettingsClickItem(
   Row(
     verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-    modifier = Modifier
+    modifier = modifier
       .clickable { onClick() }
       .padding(MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth()

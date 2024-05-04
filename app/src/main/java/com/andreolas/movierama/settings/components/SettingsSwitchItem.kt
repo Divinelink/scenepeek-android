@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.andreolas.movierama.settings.components
 
 import androidx.compose.foundation.clickable

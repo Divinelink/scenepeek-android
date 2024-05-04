@@ -7,8 +7,8 @@ import com.andreolas.movierama.session.login.domain.session.usecase.ObserveSessi
 import com.andreolas.movierama.session.login.domain.token.usecase.CreateRequestTokenUseCase
 import com.andreolas.movierama.settings.app.account.usecase.GetAccountDetailsUseCase
 import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -61,7 +61,7 @@ class AccountSettingsViewModel @Inject constructor(
         .onSuccess { response ->
           _viewState.update {
             it.copy(
-              requestToken = response.data,
+              requestToken = response,
               navigateToWebView = true
             )
           }
@@ -72,11 +72,13 @@ class AccountSettingsViewModel @Inject constructor(
   fun logoutDialog() {
     _viewState.update {
       it.copy(
-        dialogTitle = UIText.StringText("Logout"),
-        dialogMessage = UIText.StringText(
-          "You're currently logged in as" +
-            " ${it.accountDetails?.username}. Are you sure you want to logout?"
-        )
+        alertDialogUiState = AlertDialogUiState(
+          title = UIText.StringText("Logout"),
+          text = UIText.StringText(
+            "You're currently logged in as" +
+              " ${it.accountDetails?.username}. Are you sure you want to logout?"
+          )
+        ),
       )
     }
   }
@@ -87,8 +89,7 @@ class AccountSettingsViewModel @Inject constructor(
         _viewState.update {
           it.copy(
             accountDetails = null,
-            dialogMessage = null,
-            dialogTitle = null
+            alertDialogUiState = null
           )
         }
       }
@@ -97,7 +98,7 @@ class AccountSettingsViewModel @Inject constructor(
 
   fun dismissLogoutDialog() {
     _viewState.update {
-      it.copy(dialogMessage = null, dialogTitle = null)
+      it.copy(alertDialogUiState = null)
     }
   }
 
