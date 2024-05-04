@@ -104,7 +104,7 @@ fun DetailsContent(
         ),
         title = {
           Text(
-            text = viewState.movieDetails?.title ?: "",
+            text = viewState.mediaDetails?.title ?: "",
             maxLines = 2,
             style = MaterialTheme.typography.titleMedium,
             overflow = TextOverflow.Ellipsis,
@@ -125,14 +125,14 @@ fun DetailsContent(
             modifier = Modifier
               .padding(end = MaterialTheme.dimensions.keyline_8)
               .clip(RoundedShape),
-            isFavorite = viewState.movieDetails?.isFavorite ?: false,
+            isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
           )
         }
       )
     },
     content = { paddingValues ->
-      viewState.movieDetails?.let { mediaDetails ->
+      viewState.mediaDetails?.let { mediaDetails ->
         when (mediaDetails) {
           is MovieDetails, is TVDetails -> {
             MediaDetailsContent(
@@ -259,6 +259,7 @@ fun MediaDetailsContent(
           )
         }
       }
+
       item {
         Divider(thickness = MaterialTheme.dimensions.keyline_1)
         CastList(
@@ -502,20 +503,20 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.TV,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           similarMovies = similarMovies,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           similarMovies = similarMovies,
           reviews = reviews,
         ),

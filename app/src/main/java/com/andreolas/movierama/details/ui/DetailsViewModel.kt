@@ -45,8 +45,8 @@ class DetailsViewModel @Inject constructor(
         onMarkAsFavoriteUseCase(mediaItem).onSuccess {
           _viewState.update { viewState ->
             viewState.copy(
-              movieDetails = viewState.movieDetails?.copy(
-                isFavorite = !viewState.movieDetails.isFavorite
+              mediaDetails = viewState.mediaDetails?.copy(
+                isFavorite = !viewState.mediaDetails.isFavorite
               ),
             )
           }
@@ -70,7 +70,7 @@ class DetailsViewModel @Inject constructor(
           when (result.data) {
             is MovieDetailsResult.DetailsSuccess -> viewState.copy(
               isLoading = false,
-              movieDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
+              mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
             )
 
             is MovieDetailsResult.ReviewsSuccess -> viewState.copy(

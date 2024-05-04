@@ -105,7 +105,7 @@ class DetailsContentTest : ComposeTest() {
           viewState = DetailsViewState(
             movieId = 0,
             mediaType = MediaType.MOVIE,
-            movieDetails = MediaDetailsFactory.FightClub(),
+            mediaDetails = MediaDetailsFactory.FightClub(),
             reviews = reviews,
           ),
           onNavigateUp = {},
@@ -177,7 +177,7 @@ class DetailsContentTest : ComposeTest() {
           viewState = DetailsViewState(
             movieId = 0,
             mediaType = MediaType.MOVIE,
-            movieDetails = MediaDetailsFactory.FightClub(),
+            mediaDetails = MediaDetailsFactory.FightClub(),
             trailer = youtubeTrailer,
           ),
           onNavigateUp = {},

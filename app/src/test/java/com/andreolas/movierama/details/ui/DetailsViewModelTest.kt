@@ -43,7 +43,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -60,7 +60,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -98,7 +98,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           isLoading = false,
           reviews = reviewsList,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -243,7 +243,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails.copy(isFavorite = true),
+          mediaDetails = movieDetails.copy(isFavorite = true),
         )
       )
       .onMarkAsFavorite()
@@ -252,7 +252,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails.copy(isFavorite = false),
+          mediaDetails = movieDetails.copy(isFavorite = false),
         )
       )
   }
@@ -277,7 +277,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
-            movieDetails = movieDetails.copy(isFavorite = false),
+            mediaDetails = movieDetails.copy(isFavorite = false),
           )
         )
         .onMarkAsFavorite()
@@ -286,7 +286,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
-            movieDetails = movieDetails.copy(isFavorite = true),
+            mediaDetails = movieDetails.copy(isFavorite = true),
           )
         )
     }
@@ -309,7 +309,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           trailer = VideoFactory.Youtube(),
         )
       )
