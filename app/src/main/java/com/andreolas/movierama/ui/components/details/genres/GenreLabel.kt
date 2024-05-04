@@ -24,53 +24,53 @@ import com.andreolas.movierama.ui.theme.AppTheme
 
 @Composable
 fun GenreLabel(
-    modifier: Modifier = Modifier,
-    genre: String,
-    onGenreClicked: () -> Unit,
+  modifier: Modifier = Modifier,
+  genre: String,
+  onGenreClicked: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(4.dp),
-        modifier = modifier
-            .wrapContentSize(Alignment.Center)
-            .wrapContentHeight()
-            .clip(RoundedCornerShape(4.dp))
-            .clickable {
-                onGenreClicked()
-            },
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onBackground),
-    ) {
-        Box {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-                textAlign = TextAlign.Center,
-                text = genre,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold,
-            )
-        }
+  Surface(
+    shape = RoundedCornerShape(4.dp),
+    modifier = modifier
+      .wrapContentSize(Alignment.Center)
+      .wrapContentHeight()
+      .clip(RoundedCornerShape(4.dp))
+      .clickable {
+        onGenreClicked()
+      },
+    border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onBackground),
+  ) {
+    Box {
+      Text(
+        modifier = Modifier
+          .align(Alignment.Center)
+          .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+        textAlign = TextAlign.Center,
+        text = genre,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.Bold,
+      )
     }
+  }
 }
 
 @ExcludeFromKoverReport
 @Preview(
-    name = "Night Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
+  name = "Night Mode",
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
-    name = "Day Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
+  name = "Day Mode",
+  uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Suppress("UnusedPrivateMember")
 @Composable
 private fun GenreLabelPreview() {
-    AppTheme {
-        Surface {
-            GenreLabel(
-                genre = "Documentary",
-                onGenreClicked = {},
-            )
-        }
+  AppTheme {
+    Surface {
+      GenreLabel(
+        genre = "Documentary",
+        onGenreClicked = {},
+      )
     }
+  }
 }

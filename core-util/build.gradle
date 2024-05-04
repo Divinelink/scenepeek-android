@@ -29,15 +29,10 @@ android {
   kotlinOptions {
     jvmTarget = '17'
   }
-
-  buildFeatures {
-    viewBinding true
-  }
 }
 
 dependencies {
   implementation libs.androidx.core.ktx
-  implementation libs.androidx.appcompat
   implementation libs.kotlinx.datetime
   implementation libs.material
   implementation libs.lottie

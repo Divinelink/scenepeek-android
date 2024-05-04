@@ -8,15 +8,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class GetAvailableThemesUseCase @Inject constructor(
-    @MainDispatcher dispatcher: CoroutineDispatcher,
+  @MainDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, List<Theme>>(dispatcher) {
 
-    override suspend fun execute(parameters: Unit): List<Theme> = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
-            listOf(Theme.SYSTEM, Theme.LIGHT, Theme.DARK)
-        }
-        else -> {
-            listOf(Theme.LIGHT, Theme.DARK)
-        }
+  override suspend fun execute(parameters: Unit): List<Theme> = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+      listOf(Theme.SYSTEM, Theme.LIGHT, Theme.DARK)
     }
+    else -> {
+      listOf(Theme.LIGHT, Theme.DARK)
+    }
+  }
 }

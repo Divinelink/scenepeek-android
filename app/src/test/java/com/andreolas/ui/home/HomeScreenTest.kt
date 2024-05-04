@@ -1,16 +1,15 @@
 package com.andreolas.ui.home
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
@@ -29,30 +28,26 @@ import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeScreenTest {
-
-  @get:Rule
-  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
+class HomeScreenTest : ComposeTest() {
 
   private val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
   private val fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
   private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  @OptIn(ExperimentalCoroutinesApi::class)
+  val testDispatcher = mainDispatcherRule.testDispatcher
 
   @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
   @Test
@@ -60,7 +55,7 @@ class HomeScreenTest {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.Success(MediaItemFactory.MoviesList()))
+      response = flowOf(Result.success(MediaItemFactory.MoviesList()))
     )
 
     composeTestRule.setContent {
@@ -111,11 +106,11 @@ class HomeScreenTest {
     val moviesList = MediaItemFactory.MoviesList()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.Success(moviesList))
+      response = flowOf(Result.success(moviesList))
     )
 
     getFavoriteMoviesUseCase.mockGetFavoriteMovies(
-      response = Result.Success(
+      response = Result.success(
         moviesList.filter { it.isFavorite == true } as List<MediaItem.Media>
       )
     )

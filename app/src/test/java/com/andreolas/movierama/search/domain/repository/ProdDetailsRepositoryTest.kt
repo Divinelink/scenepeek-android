@@ -26,7 +26,7 @@ import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.fakes.remote.FakeMovieRemote
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -124,7 +124,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.fetchMovieDetails(
       request = DetailsRequestApi.Movie(movieId = 555)
-    ).first() as Result.Success
+    ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -142,7 +142,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.fetchMovieReviews(
       request = request
-    ).first() as Result.Success
+    ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -169,7 +169,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.fetchSimilarMovies(
       request = request
-    ).first() as Result.Success
+    ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -250,7 +250,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.fetchVideos(
       request = request
-    ).first() as Result.Success
+    ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }

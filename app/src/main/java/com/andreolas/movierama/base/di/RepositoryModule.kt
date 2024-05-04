@@ -4,6 +4,8 @@ import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
+import com.andreolas.movierama.session.repository.ProdSessionRepository
+import com.andreolas.movierama.session.repository.SessionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,13 +19,18 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
-    @Binds
-    abstract fun bindMovieRepository(
-        moviesRepository: ProdMoviesRepository,
-    ): MoviesRepository
+  @Binds
+  abstract fun bindMovieRepository(
+    moviesRepository: ProdMoviesRepository,
+  ): MoviesRepository
 
-    @Binds
-    abstract fun bindDetailsRepository(
-        moviesRepository: ProdDetailsRepository,
-    ): DetailsRepository
+  @Binds
+  abstract fun bindDetailsRepository(
+    moviesRepository: ProdDetailsRepository,
+  ): DetailsRepository
+
+  @Binds
+  abstract fun bindSessionRepository(
+    sessionRepository: ProdSessionRepository,
+  ): SessionRepository
 }

@@ -8,19 +8,19 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FakeSetRemoteConfigUseCase : SetRemoteConfigUseCase(
-    firebaseRemoteConfig = FakeRemoteConfig().mock,
-    encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),
-    dispatcher = MainDispatcherRule().testDispatcher,
+  firebaseRemoteConfig = FakeRemoteConfig().mock,
+  encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),
+  dispatcher = MainDispatcherRule().testDispatcher,
 ) {
-    private var resultSetRemoteConfig: MutableMap<Unit, Unit> = mutableMapOf()
+  private var resultSetRemoteConfig: MutableMap<Unit, Unit> = mutableMapOf()
 
-    fun mockSetRemoteConfigResult(
-        result: Unit,
-    ) {
-        resultSetRemoteConfig[Unit] = result
-    }
+  fun mockSetRemoteConfigResult(
+    result: Unit,
+  ) {
+    resultSetRemoteConfig[Unit] = result
+  }
 
-    override suspend fun execute(parameters: Unit) {
-        return resultSetRemoteConfig[parameters]!!
-    }
+  override suspend fun execute(parameters: Unit) {
+    return resultSetRemoteConfig[parameters]!!
+  }
 }

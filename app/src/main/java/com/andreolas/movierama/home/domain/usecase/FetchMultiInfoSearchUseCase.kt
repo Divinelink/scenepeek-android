@@ -6,7 +6,7 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
@@ -32,25 +32,22 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
     return favoriteMovies
       .distinctUntilChanged()
       .combineTransform(searchResult) { favorite, search ->
-        if (search is Result.Loading) {
-          emit(Result.Loading)
-        }
-        if (favorite is Result.Success && search is Result.Success) {
+        if (favorite.isSuccess && search.isSuccess) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
-            favoriteIds = Result.Success(favorite.data).data,
+            favoriteIds = Result.success(favorite.data).data,
             // Filter out persons for now
-            mediaResult = Result.Success(search.data.filterNot { it is MediaItem.Person }).data
+            mediaResult = Result.success(search.data.filterNot { it is MediaItem.Person }).data
           )
           emit(
-            Result.Success(
+            Result.success(
               MultiSearchResult(
                 query = parameters.query,
                 searchList = searchWithFavorites,
               )
             )
           )
-        } else if (search is Result.Error) {
-          emit(Result.Error(Exception("Something went wrong.")))
+        } else if (search.isFailure) {
+          emit(Result.failure(Exception("Something went wrong.")))
         }
       }.conflate()
   }

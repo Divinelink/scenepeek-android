@@ -11,9 +11,7 @@ import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.data
-import gr.divinelink.core.util.domain.succeeded
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,34 +68,24 @@ class HomeViewModel @Inject constructor(
           page = currentPage,
         )
       ).collectLatest { result ->
-        when (result) {
-          is Result.Success -> {
-            val updatedList = getUpdatedMedia(
-              currentMediaList = viewState.value.popularMovies,
-              updatedMediaList = result.data,
+        result.onSuccess {
+          val updatedList = getUpdatedMedia(
+            currentMediaList = viewState.value.popularMovies,
+            updatedMediaList = result.data,
+          )
+          _viewState.update { viewState ->
+            viewState.copy(
+              isLoading = false,
+              popularMovies = updatedList.filterIsInstance<MediaItem.Media.Movie>(),
+              selectedMedia = updatedSelectedMedia(updatedList, viewState.selectedMedia),
             )
-            _viewState.update { viewState ->
-              viewState.copy(
-                isLoading = false,
-                popularMovies = updatedList.filterIsInstance<MediaItem.Media.Movie>(),
-                selectedMedia = updatedSelectedMedia(updatedList, viewState.selectedMedia),
-              )
-            }
           }
-          is Result.Error -> {
-            _viewState.update { viewState ->
-              viewState.copy(
-                isLoading = false,
-                error = UIText.StringText(result.exception.message ?: "Something went wrong."),
-              )
-            }
-          }
-          Result.Loading -> {
-            _viewState.update { viewState ->
-              viewState.copy(
-                isLoading = true,
-              )
-            }
+        }.onFailure {
+          _viewState.update { viewState ->
+            viewState.copy(
+              isLoading = false,
+              error = UIText.StringText(it.message ?: "Something went wrong."),
+            )
           }
         }
       }
@@ -224,51 +212,39 @@ class HomeViewModel @Inject constructor(
           query = query,
           page = page,
         )
-      ).distinctUntilChanged()
+      )
+        .distinctUntilChanged()
         .collectLatest { result ->
-          when (result) {
-            Result.Loading -> {
+          result.onSuccess {
+            if (allowSearchResult && result.data.query == latestQuery) {
               _viewState.update { viewState ->
-                viewState.copy(
-                  searchLoadingIndicator = true,
-                )
-              }
-            }
-
-            is Result.Success -> {
-              if (
-                allowSearchResult &&
-                result.data.query == latestQuery
-              ) {
-                _viewState.update { viewState ->
-                  val updatedSearchList = getUpdatedMedia(
-                    currentMediaList = currentMoviesList,
-                    updatedMediaList = result.data.searchList,
-                  )/*.also { updatedSearchList -> TODO: Implement caching
+                val updatedSearchList = getUpdatedMedia(
+                  currentMediaList = currentMoviesList,
+                  updatedMediaList = result.data.searchList,
+                )/*.also { updatedSearchList -> TODO: Implement caching
                     updateSearchCaches(query, page, updatedSearchList)
                   }*/
 
-                  viewState.copy(
-                    searchLoadingIndicator = false,
-                    isLoading = false,
-                    searchResults = updatedSearchList, // cachedSearchResults[query]?.result,
-                    emptyResult = updatedSearchList.isEmpty(), // cachedSearchResults[query]?.result?.isEmpty() == true,
-                    selectedMedia = updatedSelectedMedia(
-                      updatedSearchList,
-                      viewState.selectedMedia
-                    ),
-                  )
-                }
-              }
-            }
-
-            is Result.Error -> {
-              _viewState.update { viewState ->
                 viewState.copy(
                   searchLoadingIndicator = false,
-                  error = UIText.StringText(result.exception.message ?: "Something went wrong."),
+                  isLoading = false,
+                  // cachedSearchResults[query]?.result,
+                  searchResults = updatedSearchList,
+                  // cachedSearchResults[query]?.result?.isEmpty() == true,
+                  emptyResult = updatedSearchList.isEmpty(),
+                  selectedMedia = updatedSelectedMedia(
+                    updatedSearchList,
+                    viewState.selectedMedia
+                  ),
                 )
               }
+            }
+          }.onFailure {
+            _viewState.update { viewState ->
+              viewState.copy(
+                searchLoadingIndicator = false,
+                error = UIText.StringText(it.message ?: "Something went wrong."),
+              )
             }
           }
         }
@@ -329,7 +305,7 @@ class HomeViewModel @Inject constructor(
   fun onClearFiltersClicked() {
     _viewState.update { viewState ->
       viewState.copy(
-        filters = HomeFilter.values().map { it.filter },
+        filters = HomeFilter.entries.map { it.filter },
         filteredResults = null,
       )
     }
@@ -347,7 +323,7 @@ class HomeViewModel @Inject constructor(
   }
 
   fun onFilterClicked(filter: String) {
-    val homeFilter = HomeFilter.values().find { it.filter.name == filter }
+    val homeFilter = HomeFilter.entries.find { it.filter.name == filter }
     updateFilters(homeFilter)
 
     when (homeFilter) {
@@ -368,17 +344,17 @@ class HomeViewModel @Inject constructor(
   private fun updateLikedFilteredMovies() {
     getFavoriteMoviesUseCase(Unit)
       .onEach { result ->
-        if (result.succeeded) {
+        if (result.isSuccess) {
           if (viewState.value.showFavorites == true) {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredResults = result.data!!,
+                filteredResults = result.data,
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredResults = viewState.filteredResults?.minus((result.data!!.toSet()).toSet()),
+                filteredResults = viewState.filteredResults?.minus((result.data.toSet()).toSet()),
               )
             }
           }

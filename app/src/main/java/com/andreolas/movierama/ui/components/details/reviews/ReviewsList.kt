@@ -22,32 +22,32 @@ const val REVIEWS_SCROLLABLE_LIST = "REVIEWS_LAZY_ROW_TAG"
 
 @Composable
 fun ReviewsList(
-    reviews: List<Review>,
+  reviews: List<Review>,
 ) {
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp, bottom = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            text = stringResource(id = R.string.details__reviews),
-        )
+  Column(
+    modifier = Modifier
+      .padding(top = 16.dp, bottom = 16.dp)
+      .fillMaxWidth(),
+  ) {
+    Text(
+      modifier = Modifier
+        .padding(start = 12.dp, end = 12.dp),
+      style = MaterialTheme.typography.titleLarge,
+      fontWeight = FontWeight.Bold,
+      text = stringResource(id = R.string.details__reviews),
+    )
 
-        LazyRow(
-            modifier = Modifier
-                .testTag(REVIEWS_SCROLLABLE_LIST),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = ListPaddingValues,
-        ) {
-            items(
-                items = reviews,
-            ) { review ->
-                ReviewItemCard(review = review)
-            }
-        }
+    LazyRow(
+      modifier = Modifier
+        .testTag(REVIEWS_SCROLLABLE_LIST),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      contentPadding = ListPaddingValues,
+    ) {
+      items(
+        items = reviews,
+      ) { review ->
+        ReviewItemCard(review = review)
+      }
     }
+  }
 }

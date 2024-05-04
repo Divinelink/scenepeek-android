@@ -12,7 +12,7 @@ import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
  * */
 data class HomeViewState(
   val isLoading: Boolean = true,
-  val filters: List<Filter> = HomeFilter.values().map { it.filter },
+  val filters: List<Filter> = HomeFilter.entries.map { it.filter },
   val popularMovies: List<MediaItem.Media.Movie>,
   val searchResults: List<MediaItem>? = null,
   val filteredResults: List<MediaItem.Media>? = null,

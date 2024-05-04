@@ -11,9 +11,11 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
@@ -29,6 +31,7 @@ import javax.inject.Inject
 class RestClient @Inject constructor(
   encryptedStorage: EncryptedStorage,
 ) {
+  val tmdbUrl = ApiConstants.TMDB_URL
   private val authToken = encryptedStorage.tmdbAuthToken
 
   private val localJson = Json {
@@ -70,10 +73,31 @@ class RestClient @Inject constructor(
     }
   }
 
-  @OptIn(InternalAPI::class)
-  suspend fun post(url: String, body: String): HttpResponse {
-    return client.post(url) {
-      this.body = body
+  @OptIn(InternalSerializationApi::class)
+  internal suspend inline fun <reified T : Any, reified V : Any> post(url: String, body: T): V {
+    val json = client.post(url) {
+      setBody(body)
+    }.bodyAsText()
+
+    try {
+      return localJson.decodeFromString(V::class.serializer(), json)
+    } catch (e: Exception) {
+      Timber.e("${e.message}")
+      throw e
+    }
+  }
+
+  @OptIn(InternalSerializationApi::class)
+  internal suspend inline fun <reified T : Any, reified V : Any> delete(url: String, body: T): V {
+    val json = client.delete(url) {
+      setBody(body)
+    }.bodyAsText()
+
+    try {
+      return localJson.decodeFromString(V::class.serializer(), json)
+    } catch (e: Exception) {
+      Timber.e("${e.message}")
+      throw e
     }
   }
 

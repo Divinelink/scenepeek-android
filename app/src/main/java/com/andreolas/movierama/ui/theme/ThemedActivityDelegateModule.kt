@@ -11,9 +11,9 @@ import javax.inject.Singleton
 @Suppress("UNUSED")
 abstract class ThemedActivityDelegateModule {
 
-    @Singleton
-    @Binds
-    abstract fun provideThemedActivityDelegate(
-        impl: ThemedActivityDelegateImpl
-    ): ThemedActivityDelegate
+  @Singleton
+  @Binds
+  abstract fun provideThemedActivityDelegate(
+    impl: ThemedActivityDelegateImpl
+  ): ThemedActivityDelegate
 }

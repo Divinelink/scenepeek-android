@@ -5,7 +5,6 @@ import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeU
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.andreolas.movierama.ui.theme.Theme
 import com.google.common.truth.Truth
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -15,60 +14,60 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class ObserveThemeModeUseCaseTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-    private val testDispatcher = mainDispatcherRule.testDispatcher
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
-    private lateinit var fakePreferenceStorage: FakePreferenceStorage
+  private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
-    @Test
-    fun `correct theme is observed`() = runTest {
-        // Given
-        val response = Result.Success(Theme.LIGHT)
+  @Test
+  fun `correct theme is observed`() = runTest {
+    // Given
+    val response = Result.success(Theme.LIGHT)
 
-        fakePreferenceStorage = FakePreferenceStorage(
-            selectedTheme = Theme.LIGHT.storageKey,
-        )
+    fakePreferenceStorage = FakePreferenceStorage(
+      selectedTheme = Theme.LIGHT.storageKey,
+    )
 
-        // When
-        val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
+    // When
+    val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
+    val result = useCase(Unit)
 
-        // Then
-        Truth.assertThat(response).isEqualTo(result.first())
-    }
+    // Then
+    Truth.assertThat(response).isEqualTo(result.first())
+  }
 
-    @Test
-    fun `correct theme is observed - dark`() = runTest {
-        // Given
-        val response = Result.Success(Theme.DARK)
+  @Test
+  fun `correct theme is observed - dark`() = runTest {
+    // Given
+    val response = Result.success(Theme.DARK)
 
-        fakePreferenceStorage = FakePreferenceStorage(
-            selectedTheme = Theme.DARK.storageKey,
-        )
+    fakePreferenceStorage = FakePreferenceStorage(
+      selectedTheme = Theme.DARK.storageKey,
+    )
 
-        // When
-        val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
+    // When
+    val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
+    val result = useCase(Unit)
 
-        // Then
-        Truth.assertThat(response).isEqualTo(result.first())
-    }
+    // Then
+    Truth.assertThat(response).isEqualTo(result.first())
+  }
 
-    @Test
-    fun `correct theme is observed - system`() = runTest {
-        // Given
-        val response = Result.Success(Theme.SYSTEM)
+  @Test
+  fun `correct theme is observed - system`() = runTest {
+    // Given
+    val response = Result.success(Theme.SYSTEM)
 
-        fakePreferenceStorage = FakePreferenceStorage(
-            selectedTheme = Theme.SYSTEM.storageKey,
-        )
+    fakePreferenceStorage = FakePreferenceStorage(
+      selectedTheme = Theme.SYSTEM.storageKey,
+    )
 
-        // When
-        val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
-        val result = useCase(Unit)
+    // When
+    val useCase = ObserveThemeModeUseCase(fakePreferenceStorage, testDispatcher)
+    val result = useCase(Unit)
 
-        // Then
-        Truth.assertThat(response).isEqualTo(result.first())
-    }
+    // Then
+    Truth.assertThat(response).isEqualTo(result.first())
+  }
 }

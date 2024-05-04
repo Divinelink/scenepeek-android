@@ -18,7 +18,6 @@ import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideosException
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -32,7 +31,7 @@ class ProdDetailsRepository @Inject constructor(
     return movieRemote
       .fetchDetails(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainMedia())
+        Result.success(apiResponse.toDomainMedia())
       }.catch {
         throw MovieDetailsException()
       }
@@ -42,7 +41,7 @@ class ProdDetailsRepository @Inject constructor(
     return movieRemote
       .fetchReviews(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainReviewsList())
+        Result.success(apiResponse.toDomainReviewsList())
       }.catch {
         throw ReviewsException()
       }
@@ -54,7 +53,7 @@ class ProdDetailsRepository @Inject constructor(
     return movieRemote
       .fetchSimilarMovies(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainMoviesList(MediaType.from(request.endpoint)))
+        Result.success(apiResponse.toDomainMoviesList(MediaType.from(request.endpoint)))
       }.catch {
         throw SimilarException()
       }
@@ -64,7 +63,7 @@ class ProdDetailsRepository @Inject constructor(
     return movieRemote
       .fetchVideos(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainVideosList())
+        Result.success(apiResponse.toDomainVideosList())
       }.catch {
         throw VideosException()
       }

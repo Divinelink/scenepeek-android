@@ -6,7 +6,6 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -36,13 +35,13 @@ class GetFavoriteMoviesUseCaseTest {
 
   @Test
   fun `successfully fetch favorite movies test`() = runTest {
-    val expectedResult = Result.Success(favorites)
+    val expectedResult = Result.success(favorites)
 
     repository.mockFetchFavoriteMovies(
-      response = Result.Success(favorites)
+      response = Result.success(favorites)
     )
     repository.mockFetchFavoriteTVSeries(
-      response = Result.Success(emptyList())
+      response = Result.success(emptyList())
     )
 
     val useCase = GetFavoriteMoviesUseCase(
@@ -56,10 +55,10 @@ class GetFavoriteMoviesUseCaseTest {
 
   @Test
   fun `getFavoriteMovies failure test`() = runTest {
-    val expectedResult = Result.Error(Exception("Something went wrong."))
+    val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      response = Result.Error(Exception("Oops"))
+      response = Result.failure(Exception("Oops"))
     )
 
     val useCase = GetFavoriteMoviesUseCase(

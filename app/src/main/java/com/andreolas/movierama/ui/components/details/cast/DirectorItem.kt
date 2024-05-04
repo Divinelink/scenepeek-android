@@ -14,26 +14,26 @@ import com.andreolas.movierama.details.domain.model.Director
 
 @Composable
 fun DirectorItem(
-    modifier: Modifier = Modifier,
-    director: Director,
+  modifier: Modifier = Modifier,
+  director: Director,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.padding(
-            start = 8.dp, top = 16.dp,
-        )
-    ) {
+  Column(
+    verticalArrangement = Arrangement.spacedBy(4.dp),
+    modifier = Modifier.padding(
+      start = 8.dp, top = 16.dp,
+    )
+  ) {
 
-        Text(
-            text = stringResource(id = R.string.details__director_title),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+    Text(
+      text = stringResource(id = R.string.details__director_title),
+      style = MaterialTheme.typography.bodyLarge,
+      color = MaterialTheme.colorScheme.onSurface,
+    )
 
-        Text(
-            text = director.name,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
-        )
-    }
+    Text(
+      text = director.name,
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
+    )
+  }
 }

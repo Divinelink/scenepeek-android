@@ -14,21 +14,21 @@ import com.andreolas.movierama.ui.theme.MaterialCardShape
 
 @Composable
 fun Material3Card(
-    modifier: Modifier = Modifier,
-    shape: Shape = MaterialCardShape,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = MaterialTheme.colorScheme.contentColorFor(backgroundColor),
-    border: BorderStroke? = null,
-    elevation: Dp = 1.dp,
-    content: @Composable () -> Unit,
+  modifier: Modifier = Modifier,
+  shape: Shape = MaterialCardShape,
+  backgroundColor: Color = MaterialTheme.colorScheme.surface,
+  contentColor: Color = MaterialTheme.colorScheme.contentColorFor(backgroundColor),
+  border: BorderStroke? = null,
+  elevation: Dp = 1.dp,
+  content: @Composable () -> Unit,
 ) {
-    Surface(
-        modifier = modifier,
-        shape = shape,
-        color = backgroundColor,
-        contentColor = contentColor,
-        tonalElevation = elevation,
-        border = border,
-        content = content
-    )
+  Surface(
+    modifier = modifier,
+    shape = shape,
+    color = backgroundColor,
+    contentColor = contentColor,
+    tonalElevation = elevation,
+    border = border,
+    content = content
+  )
 }

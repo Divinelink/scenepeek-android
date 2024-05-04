@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="transparent_black_05">#0D000000</color>
-    <color name="transparent_black_08">#14000000</color>
-    <color name="transparent_black_10">#18000000</color>
-    <color name="transparent_black_15">#26000000</color>
-    <color name="transparent_black_20">#33000000</color>
-    <color name="transparent_black_25">#40000000</color>
-    <color name="transparent_black_40">#66000000</color>
-    <color name="transparent_black_50">#80000000</color>
-    <color name="transparent_black_60">#99000000</color>
-    <color name="transparent_black_70">#b3000000</color>
-    <color name="transparent_black_80">#CC000000</color>
-    <color name="transparent_black_90">#e6000000</color>
+  <color name="transparent_black_05">#0D000000</color>
+  <color name="transparent_black_08">#14000000</color>
+  <color name="transparent_black_10">#18000000</color>
+  <color name="transparent_black_15">#26000000</color>
+  <color name="transparent_black_20">#33000000</color>
+  <color name="transparent_black_25">#40000000</color>
+  <color name="transparent_black_40">#66000000</color>
+  <color name="transparent_black_50">#80000000</color>
+  <color name="transparent_black_60">#99000000</color>
+  <color name="transparent_black_70">#b3000000</color>
+  <color name="transparent_black_80">#CC000000</color>
+  <color name="transparent_black_90">#e6000000</color>
 
-    <color name="transparent_white_05">#0Dffffff</color>
-    <color name="transparent_white_08">#14ffffff</color>
-    <color name="transparent_white_10">#18ffffff</color>
-    <color name="transparent_white_15">#26ffffff</color>
-    <color name="transparent_white_20">#33ffffff</color>
-    <color name="transparent_white_25">#40ffffff</color>
-    <color name="transparent_white_30">#4Dffffff</color>
-    <color name="transparent_white_40">#66ffffff</color>
-    <color name="transparent_white_60">#99ffffff</color>
-    <color name="transparent_white_70">#b2ffffff</color>
-    <color name="transparent_white_80">#ccffffff</color>
-    <color name="transparent_white_87">#dfffffff</color>
-    <color name="transparent_white_90">#e6ffffff</color>
-    <color name="transparent_white_95">#f3ffffff</color>
+  <color name="transparent_white_05">#0Dffffff</color>
+  <color name="transparent_white_08">#14ffffff</color>
+  <color name="transparent_white_10">#18ffffff</color>
+  <color name="transparent_white_15">#26ffffff</color>
+  <color name="transparent_white_20">#33ffffff</color>
+  <color name="transparent_white_25">#40ffffff</color>
+  <color name="transparent_white_30">#4Dffffff</color>
+  <color name="transparent_white_40">#66ffffff</color>
+  <color name="transparent_white_60">#99ffffff</color>
+  <color name="transparent_white_70">#b2ffffff</color>
+  <color name="transparent_white_80">#ccffffff</color>
+  <color name="transparent_white_87">#dfffffff</color>
+  <color name="transparent_white_90">#e6ffffff</color>
+  <color name="transparent_white_95">#f3ffffff</color>
 
-    <color name="transparent">#00FFFFFF</color>
-    <color name="transparent_black">#00000000</color>
+  <color name="transparent">#00FFFFFF</color>
+  <color name="transparent_black">#00000000</color>
 
 </resources>

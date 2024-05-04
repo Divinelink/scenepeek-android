@@ -3,6 +3,6 @@ package com.andreolas.movierama.ui
 object DescriptionAttrs {
 
   object AnimationLabels {
-    const val SearchBarCrossfade = "SearchBar Crossfade"
+    const val SEARCHBAR_CROSSFADE = "SearchBar Crossfade"
   }
 }

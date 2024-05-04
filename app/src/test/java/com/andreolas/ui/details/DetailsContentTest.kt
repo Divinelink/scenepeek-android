@@ -1,15 +1,14 @@
 package com.andreolas.ui.details
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.movierama.R
@@ -24,16 +23,9 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_SCROLLABLE_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.google.common.truth.Truth.assertThat
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class DetailsContentTest {
-
-  @get:Rule
-  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+class DetailsContentTest : ComposeTest() {
 
   @Test
   fun clickMarkAsFavoriteTest() {
@@ -132,7 +124,7 @@ class DetailsContentTest {
 
     composeTestRule
       .onNodeWithTag(REVIEWS_SCROLLABLE_LIST)
-//      .assertIsDisplayed() // TODO Fix this
+      .assertIsDisplayed()
 
     composeTestRule
       .onAllNodesWithText(reviews[0].content)[0]

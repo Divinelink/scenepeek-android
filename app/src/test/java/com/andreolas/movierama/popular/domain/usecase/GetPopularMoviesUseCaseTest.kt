@@ -7,9 +7,7 @@ import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -40,7 +38,7 @@ class GetPopularMoviesUseCaseTest {
   @Test
   fun `successfully fetch popular movies`() =
     runTest {
-      val expectedResult = Result.Success(
+      val expectedResult = Result.success(
         remoteMovies.mapIndexed { index, movie ->
           movie.copy(isFavorite = index % 2 == 0)
         }
@@ -48,11 +46,11 @@ class GetPopularMoviesUseCaseTest {
 
       repository.mockFetchPopularMovies(
         request = PopularRequestApi(page = 0),
-        response = Result.Success(remoteMovies)
+        response = Result.success(remoteMovies)
       )
 
       repository.mockFetchFavoriteMoviesIds(
-        response = Result.Success(
+        response = Result.success(
           localFavoriteMovies.map {
             Pair(it.id, it.mediaType)
           }
@@ -70,22 +68,22 @@ class GetPopularMoviesUseCaseTest {
 
   @Test
   fun `given local data failed then I expect remote data`() = runTest {
-    val expectedResult = Result.Success<List<MediaItem>>(remoteMovies)
+    val expectedResult = Result.success<List<MediaItem>>(remoteMovies)
 
     repository.mockFetchFavoriteMoviesIds(
-      Result.Error(Exception())
+      Result.failure(Exception())
     )
 
     repository.mockFetchPopularMovies(
       request = PopularRequestApi(page = 0),
-      response = Result.Success(remoteMovies)
+      response = Result.success(remoteMovies)
     )
 
     remoteMovies.forEach {
       repository.mockCheckFavorite(
         id = it.id,
         mediaType = it.mediaType,
-        response = Result.Success(false),
+        response = Result.success(false),
       )
     }
 
@@ -99,15 +97,15 @@ class GetPopularMoviesUseCaseTest {
 
   @Test
   fun `given remote data failed then I expect Error Result`() = runTest {
-    val expectedResult = Result.Error(Exception("Something went wrong."))
+    val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      Result.Success(localFavoriteMovies)
+      Result.success(localFavoriteMovies)
     )
 
     repository.mockFetchPopularMovies(
       request = PopularRequestApi(page = 0),
-      response = Result.Error(Exception())
+      response = Result.failure(Exception())
     )
 
     val useCase = GetPopularMoviesUseCase(
@@ -121,15 +119,15 @@ class GetPopularMoviesUseCaseTest {
 
   @Test
   fun `given both data resources failed then I expect Error Results`() = runTest {
-    val expectedResult = Result.Error(Exception("Something went wrong."))
+    val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      Result.Error(Exception())
+      Result.failure(Exception())
     )
 
     repository.mockFetchPopularMovies(
       request = PopularRequestApi(page = 0),
-      response = Result.Error(Exception())
+      response = Result.failure(Exception())
     )
 
     val useCase = GetPopularMoviesUseCase(
@@ -137,28 +135,6 @@ class GetPopularMoviesUseCaseTest {
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
-
-    assertThat(result).isInstanceOf(expectedResult::class.java)
-  }
-
-  @Test
-  fun `success loading`() = runTest {
-    val expectedResult = Result.Loading
-
-    repository.mockFetchPopularMovies(
-      request = PopularRequestApi(page = 0),
-      response = Result.Loading
-    )
-
-    repository.mockFetchFavoriteMoviesIds(
-      Result.Loading
-    )
-
-    val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
-      dispatcher = testDispatcher,
-    )
-    val result = useCase(request).first()
 
     assertThat(result).isInstanceOf(expectedResult::class.java)
   }

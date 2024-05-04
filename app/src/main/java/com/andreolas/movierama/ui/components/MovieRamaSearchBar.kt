@@ -105,7 +105,7 @@ fun MovieRamaSearchBar(
 
           Crossfade(
             targetState = toolbarState.value,
-            label = DescriptionAttrs.AnimationLabels.SearchBarCrossfade,
+            label = DescriptionAttrs.AnimationLabels.SEARCHBAR_CROSSFADE,
           ) { toolbar ->
             if (toolbar == ToolbarState.Focused || query?.isNotEmpty() == true) {
               Row(

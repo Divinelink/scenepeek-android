@@ -9,7 +9,6 @@ import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.andreolas.movierama.ui.UIText
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -31,11 +30,11 @@ class HomeViewModelTest {
   @Test
   fun `successful initialise viewModel`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Loading)
+      .mockFetchPopularMovies(Result.success(emptyList()))
       .buildViewModel()
       .assertViewState(
         HomeViewState(
-          isLoading = true,
+          isLoading = false,
           popularMovies = listOf(),
           selectedMedia = null,
           error = null,
@@ -47,7 +46,7 @@ class HomeViewModelTest {
   fun `given popular movies list when I init then I expect Success Result`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Success(popularMoviesList),
+        response = Result.success(popularMoviesList),
       )
       .buildViewModel()
       .assertViewState(
@@ -64,7 +63,7 @@ class HomeViewModelTest {
   fun `given more data, when I loadNextPage then I expect accumulated data`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Success(popularMoviesList),
+        response = Result.success(popularMoviesList),
       )
       .buildViewModel()
       .assertViewState(
@@ -76,7 +75,7 @@ class HomeViewModelTest {
         )
       )
       .mockFetchPopularMovies(
-        response = Result.Success(loadData(12, 20))
+        response = Result.success(loadData(12, 20))
       )
       .onLoadNextPage()
       .assertViewState(
@@ -99,7 +98,7 @@ class HomeViewModelTest {
      */
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Success(loadData(1, 5))
+        response = Result.success(loadData(1, 5))
       )
       .buildViewModel()
       .assertViewState(
@@ -111,7 +110,7 @@ class HomeViewModelTest {
         )
       )
       .mockFetchPopularMovies(
-        response = Result.Success(loadData(1, 10))
+        response = Result.success(loadData(1, 10))
       )
       .onLoadNextPage()
       .assertViewState(
@@ -128,7 +127,7 @@ class HomeViewModelTest {
   fun `given error result when i init then i expect Error`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Error(Exception("oops"))
+        response = Result.failure(Exception("oops"))
       )
       .buildViewModel()
       .assertViewState(
@@ -141,28 +140,13 @@ class HomeViewModelTest {
       )
   }
 
-  @Test
-  fun `given loading result when i init then i expect loading state`() = runTest {
-    testRobot
-      .mockFetchPopularMovies(
-        response = Result.Loading
-      )
-      .buildViewModel()
-      .assertViewState(
-        HomeViewState(
-          isLoading = true,
-          popularMovies = listOf(),
-        )
-      )
-  }
-
 //    @Test
 //    fun `given a list of movies, when I mark a movie as favorite then i expect updated favorite status`() = runTest {
 //        testRobot
-//            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+//            .mockFetchPopularMovies(Result.success(popularMoviesList))
 //            .buildViewModel()
 //            .mockMarkAsFavorite(
-//                result = Result.Success(Unit)
+//                result = Result.success(Unit)
 //            )
 //            .onMarkAsFavorite(popularMoviesList[5])
 //            .assertViewState(
@@ -204,13 +188,13 @@ class HomeViewModelTest {
 //    @Test
 //    fun `given a list of movies, when I unMark a movie as favorite then i expect updated favorite status`() = runTest {
 //        testRobot
-//            .mockFetchPopularMovies(Result.Success(popularMoviesList))
+//            .mockFetchPopularMovies(Result.success(popularMoviesList))
 //            .buildViewModel()
 //            .mockMarkAsFavorite(
-//                result = Result.Success(Unit)
+//                result = Result.success(Unit)
 //            )
 //            .mockRemoveFavorite(
-//                result = Result.Success(Unit)
+//                result = Result.success(Unit)
 //            )
 //            .onMarkAsFavorite(popularMoviesList[5])
 //            .assertViewState(
@@ -240,9 +224,9 @@ class HomeViewModelTest {
   @Test
   fun `Given Search Data, when I searchMovies then I expect Success Result`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(emptyList()))
+      .mockFetchPopularMovies(Result.success(emptyList()))
       .mockFetchSearchMedia(
-        response = Result.Success(
+        response = Result.success(
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
@@ -278,9 +262,9 @@ class HomeViewModelTest {
   @Test
   fun `search job is correctly delayed when user types fast`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(emptyList()))
+      .mockFetchPopularMovies(Result.success(emptyList()))
       .mockFetchSearchMedia(
-        response = Result.Success(
+        response = Result.success(
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
@@ -327,9 +311,9 @@ class HomeViewModelTest {
   @Test
   fun `clearing query successfully cancels search job`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(emptyList()))
+      .mockFetchPopularMovies(Result.success(emptyList()))
       .mockFetchSearchMedia(
-        response = Result.Success(
+        response = Result.success(
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
@@ -375,10 +359,10 @@ class HomeViewModelTest {
   @Test
   fun `clearing query successfully loads cached movies`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .mockFetchSearchMedia(
-        response = Result.Success(
-          data = MultiSearchResult(
+        response = Result.success(
+          MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
           )
@@ -434,8 +418,8 @@ class HomeViewModelTest {
   @Test
   fun `given loading state when I search then I expect SearchLoading to be true`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMedia(Result.Loading)
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
+      .mockFetchSearchMedia(Result.success(MultiSearchResult("test query", emptyList())))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -447,15 +431,25 @@ class HomeViewModelTest {
         )
       )
       .onSearchMovies("test query")
+      .assertViewState(
+        expectedViewState = HomeViewState(
+          popularMovies = popularMoviesList,
+          loadMorePopular = false,
+          isLoading = false,
+          query = "test query",
+          searchLoadingIndicator = true,
+        )
+      )
       .delay(300)
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           loadMorePopular = false,
-          isLoading = true,
+          isLoading = false,
           query = "test query",
-          searchLoadingIndicator = true,
-          emptyResult = false,
+          searchLoadingIndicator = false,
+          emptyResult = true,
+          searchResults = emptyList(),
         )
       )
   }
@@ -463,8 +457,8 @@ class HomeViewModelTest {
   @Test
   fun `given error state when I search then I expect Error Result`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
-      .mockFetchSearchMedia(Result.Error(Exception("Oops.")))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
+      .mockFetchSearchMedia(Result.failure(Exception("Oops.")))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -493,9 +487,9 @@ class HomeViewModelTest {
   @Test
   fun `given empty search results when I search then I emptyResult`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .mockFetchSearchMedia(
-        response = Result.Success(
+        response = Result.success(
           MultiSearchResult(
             query = "test query",
             searchList = emptyList(),
@@ -531,9 +525,9 @@ class HomeViewModelTest {
   fun `given user is already searching when LoadingNextPage then I Expect fetchFromSearchQuery`() =
     runTest {
       testRobot
-        .mockFetchPopularMovies(Result.Success(popularMoviesList))
+        .mockFetchPopularMovies(Result.success(popularMoviesList))
         .mockFetchSearchMedia(
-          response = Result.Success(
+          response = Result.success(
             MultiSearchResult(
               query = "test query",
               searchList = searchMovies,
@@ -563,7 +557,7 @@ class HomeViewModelTest {
             emptyResult = false,
           )
         )
-        .mockFetchPopularMovies(Result.Success(searchMovies.plus(searchMovies)))
+        .mockFetchPopularMovies(Result.success(searchMovies.plus(searchMovies)))
         .onLoadNextPage()
         .delay(300)
         .assertViewState(
@@ -582,9 +576,9 @@ class HomeViewModelTest {
   @Test
   fun `given empty query when onSearchMovies then I expect onClearClicked`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .mockFetchSearchMedia(
-        response = Result.Success(
+        response = Result.success(
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
@@ -617,7 +611,7 @@ class HomeViewModelTest {
   @Test
   fun `selecting a movie successfully updates selectedMovie`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -644,7 +638,7 @@ class HomeViewModelTest {
   @Test
   fun `selecting the same movie sets selectedMovie movie to null`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -678,7 +672,7 @@ class HomeViewModelTest {
   @Test
   fun `selecting movies within debounce time discards them`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -710,7 +704,7 @@ class HomeViewModelTest {
   fun `given a selected movie, when I swipe down then Ie null expect selectedMovie to be null`() =
     runTest {
       testRobot
-        .mockFetchPopularMovies(Result.Success(popularMoviesList))
+        .mockFetchPopularMovies(Result.success(popularMoviesList))
         .buildViewModel()
         .assertViewState(
           expectedViewState = HomeViewState(
@@ -744,7 +738,7 @@ class HomeViewModelTest {
   @Test
   fun `given a selected movie, when I mark it as favorite then update its status`() = runTest {
     testRobot
-      .mockFetchPopularMovies(Result.Success(popularMoviesList))
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -761,7 +755,7 @@ class HomeViewModelTest {
       .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .mockMarkAsFavorite(
         mediaItem = popularMoviesList[0],
-        result = Result.Success(Unit),
+        result = Result.success(Unit),
       )
       .onMarkAsFavorite(
         movie = popularMoviesList[0],
@@ -780,12 +774,12 @@ class HomeViewModelTest {
     runTest {
       testRobot
         .mockFetchPopularMovies(
-          response = Result.Success(
+          response = Result.success(
             searchMovies
           )
         )
         .mockFetchFavoriteMovies(
-          response = Result.Success(
+          response = Result.success(
             searchMovies.filter { it.isFavorite == true }
           )
         )
@@ -818,12 +812,12 @@ class HomeViewModelTest {
   fun `when onClearFiltersClicked I expect all filters to be unselected`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Success(
+        response = Result.success(
           searchMovies
         )
       )
       .mockFetchFavoriteMovies(
-        response = Result.Success(
+        response = Result.success(
           searchMovies.filter { it.isFavorite == true }
         )
       )
@@ -845,16 +839,16 @@ class HomeViewModelTest {
           popularMovies = searchMovies,
           filteredResults = null,
           isLoading = false,
-          filters = HomeFilter.values().map { it.filter },
+          filters = HomeFilter.entries.map { it.filter },
         )
       )
   }
 
   @Test
-  fun `when clicking on filter that is now known doesnt do anything`() = runTest {
+  fun `when clicking on filter that is now known doesn't do anything`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.Success(
+        response = Result.success(
           searchMovies
         )
       )

@@ -16,21 +16,21 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PreferencesStorageModule {
-    private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
+  private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
 
-    @Singleton
-    @Provides
-    fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage =
-        DataStorePreferenceStorage(context.dataStore)
+  @Singleton
+  @Provides
+  fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage =
+    DataStorePreferenceStorage(context.dataStore)
 
-    @Singleton
-    @Provides
-    fun provideEncryptedPreferenceStorage(
-        preferenceStorage: PreferenceStorage,
-        @ApplicationContext context: Context,
-    ): EncryptedStorage =
-        EncryptedPreferenceStorage(
-            preferenceStorage = preferenceStorage,
-            context = context,
-        )
+  @Singleton
+  @Provides
+  fun provideEncryptedPreferenceStorage(
+    preferenceStorage: PreferenceStorage,
+    @ApplicationContext context: Context,
+  ): EncryptedStorage =
+    EncryptedPreferenceStorage(
+      preferenceStorage = preferenceStorage,
+      context = context,
+    )
 }

@@ -10,15 +10,11 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class GetThemeUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
+  private val preferenceStorage: PreferenceStorage,
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, Theme>(dispatcher) {
-    override suspend fun execute(parameters: Unit): Theme {
-        val selectedTheme = preferenceStorage.selectedTheme.first()
-        return themeFromStorageKey(selectedTheme) ?: Theme.SYSTEM
-//        when {
-//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> Theme.SYSTEM
-//                else -> Theme.SYSTEM
-//            }
-    }
+  override suspend fun execute(parameters: Unit): Theme {
+    val selectedTheme = preferenceStorage.selectedTheme.first()
+    return themeFromStorageKey(selectedTheme) ?: Theme.SYSTEM
+  }
 }

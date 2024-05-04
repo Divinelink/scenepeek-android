@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.destinations.DetailsScreenDestination
+import com.andreolas.movierama.destinations.SettingsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.ramcosta.composedestinations.annotation.Destination
@@ -19,6 +20,7 @@ fun HomeScreen(
   viewModel: HomeViewModel = hiltViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
+
   HomeContent(
     modifier = Modifier,
     viewState = viewState.value,
@@ -43,5 +45,8 @@ fun HomeScreen(
     onFilterClicked = viewModel::onFilterClicked,
     onClearFiltersClicked = viewModel::onClearFiltersClicked,
     onSwipeDown = viewModel::onSwipeDown,
+    onNavigateToSettings = {
+      navigator.navigate(SettingsScreenDestination())
+    }
   )
 }

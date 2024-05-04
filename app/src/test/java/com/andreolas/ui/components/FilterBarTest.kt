@@ -1,25 +1,17 @@
 package com.andreolas.ui.components
 
-import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.andreolas.ComposeTest
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.FilterBar
 import com.google.common.truth.Truth.assertThat
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class FilterBarTest {
-
-  @get:Rule
-  val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+class FilterBarTest : ComposeTest() {
 
   private val filters = listOf(
     Filter("Action", isSelected = true),

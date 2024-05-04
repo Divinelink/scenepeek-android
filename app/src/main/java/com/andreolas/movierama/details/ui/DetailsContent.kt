@@ -18,15 +18,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -65,13 +64,14 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
-import com.andreolas.movierama.ui.components.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
 import com.andreolas.movierama.ui.components.details.similar.SimilarMoviesList
 import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
+import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
+import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -91,10 +91,8 @@ fun DetailsContent(
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-  val scaffoldState = rememberScaffoldState()
 
   Scaffold(
-    scaffoldState = scaffoldState,
     modifier = modifier
       .navigationBarsPadding()
       .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -117,7 +115,7 @@ fun DetailsContent(
             onClick = onNavigateUp,
           ) {
             Icon(
-              Icons.Filled.ArrowBack,
+              Icons.AutoMirrored.Rounded.ArrowBack,
               stringResource(R.string.navigate_up_button_content_description)
             )
           }
@@ -154,7 +152,7 @@ fun DetailsContent(
             onNavigateUp()
           },
           confirmText = UIText.ResourceText(R.string.ok),
-          text = viewState.error,
+          uiState = AlertDialogUiState(text = viewState.error)
         )
       }
 

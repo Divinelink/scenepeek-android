@@ -16,7 +16,6 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.mapper.m
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -32,38 +31,38 @@ class ProdMoviesRepository @Inject constructor(
     return movieRemote
       .fetchPopularMovies(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainMoviesList())
+        Result.success(apiResponse.toDomainMoviesList())
       }
       .catch { exception ->
-        flowOf(Result.Error(Exception(exception.message)))
+        flowOf(Result.failure<Exception>(Exception(exception.message)))
       }
   }
 
   override fun fetchFavoriteMovies(): Flow<MediaListResult> = movieDAO
     .fetchFavoriteMovies()
     .map { moviesList ->
-      Result.Success(moviesList.toDomainMoviesList())
+      Result.success(moviesList.toDomainMoviesList())
     }
     .catch { exception ->
-      flowOf(Result.Error(Exception(exception.message)))
+      flowOf(Result.failure<Exception>(exception))
     }
 
   override fun fetchFavoriteTVSeries(): Flow<MediaListResult> = movieDAO
     .fetchFavoriteTVSeries()
     .map { tvList ->
-      Result.Success(tvList.map())
+      Result.success(tvList.map())
     }
     .catch { exception ->
-      flowOf(Result.Error(Exception(exception.message)))
+      flowOf(Result.failure<Exception>(exception))
     }
 
   override fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>> = movieDAO
     .fetchFavoriteMediaIDs()
     .map { moviesList ->
-      Result.Success(moviesList)
+      Result.success(moviesList)
     }
     .catch { exception ->
-      flowOf(Result.Error(Exception(exception.message)))
+      flowOf(Result.failure<Exception>(exception))
     }
 
   @Deprecated("Use fetchMultiInfo instead")
@@ -71,10 +70,10 @@ class ProdMoviesRepository @Inject constructor(
     return movieRemote
       .fetchSearchMovies(request)
       .map { apiResponse ->
-        Result.Success(apiResponse.toDomainMoviesList())
+        Result.success(apiResponse.toDomainMoviesList())
       }
       .catch { exception ->
-        flowOf(Result.Error(Exception(exception.message)))
+        flowOf(Result.failure<Exception>(exception))
       }
   }
 
@@ -82,17 +81,17 @@ class ProdMoviesRepository @Inject constructor(
     return movieRemote
       .fetchMultiInfo(requestApi)
       .map { apiResponse ->
-        Result.Success(apiResponse.map())
+        Result.success(apiResponse.map())
       }
       .catch { exception ->
-        flowOf(Result.Error(Exception(exception.message)))
+        flowOf(Result.failure<Exception>(exception))
       }
   }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit> {
     movieDAO
       .insertFavoriteMedia(media)
-      .also { return Result.Success(it) }
+      .also { return Result.success(it) }
   }
 
   override suspend fun removeFavoriteMedia(
@@ -103,7 +102,7 @@ class ProdMoviesRepository @Inject constructor(
       id = id,
       mediaType = mediaType,
     ).also {
-      return Result.Success(it)
+      return Result.success(it)
     }
   }
 
@@ -114,7 +113,7 @@ class ProdMoviesRepository @Inject constructor(
     movieDAO.checkIfMediaIsFavorite(
       id = id, mediaType = mediaType
     ).also {
-      return Result.Success(it)
+      return Result.success(it)
     }
   }
 }

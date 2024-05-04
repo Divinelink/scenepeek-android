@@ -112,7 +112,7 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
-    ignoreAnnotated: [IgnoreDetekt, Test]
+    ignoreAnnotated: [IgnoreDetekt, Test, Composable]
   LongParameterList:
     active: false
     functionThreshold: 6
@@ -771,6 +771,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
+    ignoreAnnotated:  [Preview]
     allowedNames: '(_|ignored|expected|serialVersionUID|modifier)'
   UseArrayLiteralsInAnnotations:
     active: false

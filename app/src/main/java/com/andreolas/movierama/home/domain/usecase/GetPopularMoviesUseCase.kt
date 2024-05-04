@@ -6,7 +6,7 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.MultiListResult
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -16,27 +16,27 @@ open class GetPopularMoviesUseCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<PopularRequestApi, List<MediaItem>>(dispatcher) {
-  override fun execute(
-    parameters: PopularRequestApi,
-  ): Flow<MultiListResult> {
+  override fun execute(parameters: PopularRequestApi): Flow<MultiListResult> {
     val favoriteMediaIdsFlow = moviesRepository.fetchFavoriteIds()
     val popularMoviesFlow = moviesRepository.fetchPopularMovies(parameters)
 
     return combine(favoriteMediaIdsFlow, popularMoviesFlow) { favorite, popular ->
       when {
-        favorite is Result.Success && popular is Result.Success -> {
-          Result.Success(
+        favorite.isSuccess && popular.isSuccess -> {
+          Result.success(
             getMediaWithUpdatedFavoriteStatus(
               favoriteIds = favorite.data,
               mediaResult = popular.data,
             )
           )
         }
-
-        popular is Result.Success -> Result.Success(popular.data)
-        favorite is Result.Error -> favorite
-        popular is Result.Error -> popular
-        else -> Result.Loading
+        popular.isSuccess -> Result.success(popular.data)
+//        favorite.isFailure -> Result.failure // TODO Fix this
+//        popular is Result.Error -> popular
+//        else -> Result.Loading
+        else -> {
+          Result.failure(Exception("Something went wrong."))
+        }
       }
     }
   }

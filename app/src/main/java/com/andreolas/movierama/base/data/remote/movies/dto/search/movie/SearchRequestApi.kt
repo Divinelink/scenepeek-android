@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SearchRequestApi(
-    val query: String,
-    val page: Int,
+  val query: String,
+  val page: Int,
 )

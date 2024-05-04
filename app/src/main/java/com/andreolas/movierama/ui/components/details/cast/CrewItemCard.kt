@@ -25,48 +25,48 @@ import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 @Composable
 fun CrewItemCard(
-    modifier: Modifier = Modifier,
-    actor: Actor,
+  modifier: Modifier = Modifier,
+  actor: Actor,
 ) {
-    Card(
-        shape = PopularMovieItemShape,
-        modifier = Modifier
-            .clip(PopularMovieItemShape)
-            .clipToBounds()
-            .widthIn(max = 140.dp)
-            .heightIn(min = 200.dp)
-            .clickable {
-                // todo
-            },
-    ) {
-        MovieImage(
-            modifier = Modifier
-                .height(200.dp),
-            contentScale = ContentScale.Crop,
-            path = actor.profilePath,
-            errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder)
-        )
+  Card(
+    shape = PopularMovieItemShape,
+    modifier = Modifier
+      .clip(PopularMovieItemShape)
+      .clipToBounds()
+      .widthIn(max = 140.dp)
+      .heightIn(min = 200.dp)
+      .clickable {
+        // todo
+      },
+  ) {
+    MovieImage(
+      modifier = Modifier
+        .height(200.dp),
+      contentScale = ContentScale.Crop,
+      path = actor.profilePath,
+      errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder)
+    )
 
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
-                .height(40.dp),
-            text = actor.name,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
+        .height(40.dp),
+      text = actor.name,
+      overflow = TextOverflow.Ellipsis,
+      style = MaterialTheme.typography.labelMedium,
+      color = MaterialTheme.colorScheme.onSurface,
+    )
 
-        Text(
-            modifier = Modifier
-                .padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
-            text = actor.character,
-            maxLines = 1,
-            style = MaterialTheme.typography.bodySmall,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
-        )
-    }
+    Text(
+      modifier = Modifier
+        .padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
+      text = actor.character,
+      maxLines = 1,
+      style = MaterialTheme.typography.bodySmall,
+      overflow = TextOverflow.Ellipsis,
+      color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
+    )
+  }
 }

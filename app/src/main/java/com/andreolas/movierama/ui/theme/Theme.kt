@@ -1,42 +1,57 @@
 package com.andreolas.movierama.ui.theme
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import timber.log.Timber
 
 @Composable
 fun AppTheme(
   useDarkTheme: Boolean = isSystemInDarkTheme(),
+  dynamicColor: Boolean = false,
+  blackBackground: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  val colors = if (useDarkTheme) {
-    DarkColors
+  var colors = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val context = LocalContext.current
+    if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
   } else {
-    LightColors
+    if (useDarkTheme) DarkColors else LightColors
   }
 
-  // Used to converse Material 2 to Material 3 when needed.
-  androidx.compose.material.MaterialTheme(
-    typography = MD2Typography,
-    colors = if (useDarkTheme) {
-      DarkMD2Colors
-    } else {
-      LightMD2Colors
-    }
-  ) {
-    MaterialTheme(
-      colorScheme = colors,
-      typography = AppTypography,
-      content = content
-    )
+  if (blackBackground && useDarkTheme) {
+    colors = colors.copy(background = Color.Black, surface = Color.Black)
   }
+
+  val view = LocalView.current
+  if (!view.isInEditMode) {
+    SideEffect {
+      val window = (view.context as Activity).window
+      window.statusBarColor = colors.background.toArgb()
+      window.navigationBarColor = colors.background.toArgb()
+      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
+    }
+  }
+
+  MaterialTheme(
+    colorScheme = colors,
+    typography = AppTypography,
+    content = content
+  )
 }
 
 @Composable
@@ -77,7 +92,7 @@ fun themeFromStorageKey(storageKey: String): Theme? {
   return Theme.entries.firstOrNull { it.storageKey == storageKey }
 }
 
-fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
+fun updateForTheme(theme: Theme) = when (theme) {
   Theme.SYSTEM -> {
     Timber.d("Setting to follow system")
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

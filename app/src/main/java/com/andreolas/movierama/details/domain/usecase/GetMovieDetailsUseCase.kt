@@ -14,7 +14,6 @@ import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -55,7 +54,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val details = repository.fetchMovieDetails(
       request = detailsRequestApi,
     ).catch {
-      emit(Result.Error(MovieDetailsException()))
+      emit(Result.failure(MovieDetailsException()))
     }
 
     val reviewsApi = when (parameters) {
@@ -65,7 +64,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
     val reviews = repository.fetchMovieReviews(reviewsApi)
       .catch {
-        emit(Result.Error(ReviewsException()))
+        emit(Result.failure(ReviewsException()))
       }
 
     val similarApi = when (parameters) {
@@ -75,7 +74,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val similar = repository.fetchSimilarMovies(
       request = similarApi,
     ).catch {
-      emit(Result.Error(SimilarException()))
+      emit(Result.failure(SimilarException()))
     }
 
     val videos = repository.fetchVideos(
@@ -83,7 +82,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
         movieId = parameters.id,
       )
     ).catch {
-      emit(Result.Error(VideosException()))
+      emit(Result.failure(VideosException()))
     }
 
     return combineTransform(
@@ -93,29 +92,34 @@ open class GetMovieDetailsUseCase @Inject constructor(
       flow4 = favorite,
       flow5 = videos,
     ) { detailsFlow, reviewsFlow, similarFlow, favoriteFlow, videosFlow ->
-      when (detailsFlow) {
-        Result.Loading -> emit(Result.Loading)
-        is Result.Error -> emit(Result.Error(MovieDetailsException()))
-        is Result.Success -> emit(
-          Result.Success(
-            data = MovieDetailsResult.DetailsSuccess(
-              detailsFlow.data.copy(isFavorite = favoriteFlow.data == true)
+      detailsFlow.onSuccess {
+        emit(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              detailsFlow.data.copy(isFavorite = favoriteFlow.data)
             )
           )
         )
-      }
-      if (reviewsFlow is Result.Success) {
-        emit(Result.Success(MovieDetailsResult.ReviewsSuccess(reviews = reviewsFlow.data)))
-      }
-
-      if (similarFlow is Result.Success) {
-        emit(Result.Success(MovieDetailsResult.SimilarSuccess(similar = similarFlow.data)))
+      }.onFailure {
+        emit(Result.failure(MovieDetailsException()))
       }
 
-      if (videosFlow is Result.Success) {
-        emit(Result.Success(MovieDetailsResult.VideosSuccess(
-          trailer = videosFlow.data.firstOrNull { it.officialTrailer }
-        )))
+      if (reviewsFlow.isSuccess) {
+        emit(Result.success(MovieDetailsResult.ReviewsSuccess(reviews = reviewsFlow.data)))
+      }
+
+      if (similarFlow.isSuccess) {
+        emit(Result.success(MovieDetailsResult.SimilarSuccess(similar = similarFlow.data)))
+      }
+
+      if (videosFlow.isSuccess) {
+        emit(
+          Result.success(
+            MovieDetailsResult.VideosSuccess(
+              trailer = videosFlow.data.firstOrNull { it.officialTrailer }
+            )
+          )
+        )
       }
     }
   }

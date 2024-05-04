@@ -5,7 +5,6 @@ import com.andreolas.movierama.base.data.remote.firebase.usecase.SetRemoteConfig
 import com.andreolas.movierama.fakes.remote.FakeRemoteConfig
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -39,7 +38,7 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isEqualTo(
-      Result.Success(Unit)
+      Result.success(Unit)
     )
 
     assertThat(
@@ -64,7 +63,7 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isInstanceOf(
-      Result.Error(Exception("Couldn't fetch api key."))::class.java
+      Result.failure<Exception>(Exception("Couldn't fetch api key."))::class.java
     )
   }
 
@@ -82,7 +81,7 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isInstanceOf(
-      Result.Error(Exception("General Εrror."))::class.java
+      Result.failure<Exception>(Exception("General Εrror."))::class.java
     )
   }
 }

@@ -4,7 +4,7 @@ import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.Result
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
@@ -22,10 +22,10 @@ open class GetFavoriteMoviesUseCase @Inject constructor(
       favoriteMovies,
       favoriteTVSeries,
     ) { moviesFlow, tvFlow ->
-      if (moviesFlow is Result.Success && tvFlow is Result.Success) {
-        emit(Result.Success(moviesFlow.data + tvFlow.data))
+      if (moviesFlow.isSuccess && tvFlow.isSuccess) {
+        emit(Result.success(moviesFlow.data + tvFlow.data))
       } else {
-        emit(Result.Error(Exception("Something went wrong.")))
+        emit(Result.failure(Exception("Something went wrong.")))
       }
     }
   }

@@ -8,7 +8,6 @@ import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.home.domain.model.MediaItem
-import gr.divinelink.core.util.domain.Result
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -16,19 +15,19 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DetailsRepository {
 
-    fun fetchMovieDetails(
-        request: DetailsRequestApi,
-    ): Flow<Result<MediaDetails>>
+  fun fetchMovieDetails(
+    request: DetailsRequestApi,
+  ): Flow<Result<MediaDetails>>
 
-    fun fetchMovieReviews(
-        request: ReviewsRequestApi,
-    ): Flow<Result<List<Review>>>
+  fun fetchMovieReviews(
+    request: ReviewsRequestApi,
+  ): Flow<Result<List<Review>>>
 
-    fun fetchSimilarMovies(
-        request: SimilarRequestApi,
-    ): Flow<Result<List<MediaItem.Media>>>
+  fun fetchSimilarMovies(
+    request: SimilarRequestApi,
+  ): Flow<Result<List<MediaItem.Media>>>
 
-    fun fetchVideos(
-        request: VideosRequestApi,
-    ): Flow<Result<List<Video>>>
+  fun fetchVideos(
+    request: VideosRequestApi,
+  ): Flow<Result<List<Video>>>
 }

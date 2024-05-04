@@ -19,8 +19,9 @@ package com.andreolas.movierama.ui.theme
 import com.andreolas.movierama.base.di.ApplicationScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeUseCase
-import gr.divinelink.core.util.domain.Result
-import gr.divinelink.core.util.domain.successOr
+import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.ObserveBlackBackgroundsUseCase
+import com.andreolas.movierama.settings.app.appearance.usecase.material.you.ObserveMaterialYouModeUseCase
+import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -43,31 +44,51 @@ import javax.inject.Inject
  * ```
  */
 interface ThemedActivityDelegate {
-    /**
-     * Allows observing of the current theme
-     */
-    val theme: StateFlow<Theme>
+  /**
+   * Allows observing of the current theme
+   */
+  val theme: StateFlow<Theme>
 
-    /**
-     * Allows querying of the current theme synchronously
-     */
-    val currentTheme: Theme
+  /**
+   * Allows querying of the current theme synchronously
+   */
+  val currentTheme: Theme
+
+  /**
+   * Allows observing of the current Material You state
+   */
+  val materialYou: StateFlow<Boolean>
+
+  /**
+   * Allows observing of the current black backgrounds state
+   */
+  val blackBackgrounds: StateFlow<Boolean>
 }
 
 class ThemedActivityDelegateImpl @Inject constructor(
-    @ApplicationScope externalScope: CoroutineScope,
-    observeThemeUseCase: ObserveThemeModeUseCase,
-    private val getThemeUseCase: GetThemeUseCase
+  @ApplicationScope externalScope: CoroutineScope,
+  observeThemeUseCase: ObserveThemeModeUseCase,
+  private val getThemeUseCase: GetThemeUseCase,
+  observeMaterialYouUseCase: ObserveMaterialYouModeUseCase,
+  observeBlackBackgroundsUseCase: ObserveBlackBackgroundsUseCase,
 ) : ThemedActivityDelegate {
 
-    override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map {
-        it.successOr(Theme.SYSTEM)
-    }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
+  override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map { result ->
+    if (result.isSuccess) result.data else Theme.SYSTEM
+  }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
 
-    override val currentTheme: Theme
-        get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
-            getThemeUseCase(Unit).let {
-                if (it is Result.Success) it.data else Theme.SYSTEM
-            }
-        }
+  override val currentTheme: Theme
+    get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+      getThemeUseCase(Unit).let {
+        if (it.isSuccess) it.data else Theme.SYSTEM
+      }
+    }
+
+  override val materialYou: StateFlow<Boolean> = observeMaterialYouUseCase(Unit).map { result ->
+    if (result.isSuccess) result.data else false
+  }.stateIn(externalScope, SharingStarted.Eagerly, false)
+
+  override val blackBackgrounds: StateFlow<Boolean> = observeBlackBackgroundsUseCase(Unit).map {
+    if (it.isSuccess) it.data else false
+  }.stateIn(externalScope, SharingStarted.Eagerly, false)
 }
