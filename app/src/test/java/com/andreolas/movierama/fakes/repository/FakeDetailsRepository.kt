@@ -7,9 +7,11 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.Videos
 import com.andreolas.movierama.details.domain.model.MovieDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.Video
+import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.home.domain.model.MediaItem
 import kotlinx.coroutines.flow.flowOf
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -56,6 +58,16 @@ class FakeDetailsRepository {
   ) {
     whenever(
       mock.fetchVideos(request)
+    ).thenReturn(
+      flowOf(response)
+    )
+  }
+
+  fun mockFetchAccountMediaDetails(
+    response: Result<AccountMediaDetails>,
+  ) {
+    whenever(
+      mock.fetchAccountMediaDetails(any())
     ).thenReturn(
       flowOf(response)
     )

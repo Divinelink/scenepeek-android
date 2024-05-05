@@ -1,5 +1,7 @@
 package com.andreolas.movierama.fakes.remote
 
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
@@ -82,6 +84,17 @@ class FakeMovieRemote {
   ) {
     whenever(
       mock.fetchVideos(request)
+    ).thenReturn(
+      response
+    )
+  }
+
+  fun mockFetchAccountMediaDetails(
+    request: AccountMediaDetailsRequestApi,
+    response: Flow<AccountMediaDetailsResponseApi>,
+  ) {
+    whenever(
+      mock.fetchAccountMediaDetails(request)
     ).thenReturn(
       response
     )

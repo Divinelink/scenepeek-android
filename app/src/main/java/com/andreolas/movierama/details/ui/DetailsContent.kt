@@ -66,6 +66,7 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
@@ -476,7 +477,7 @@ fun SpannableRating(
   }
 
   Text(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Details.YOUR_RATING),
     text = annotatedString,
     lineHeight = MaterialTheme.typography.headlineSmall.lineHeight,
     color = MaterialTheme.colorScheme.onSurface,

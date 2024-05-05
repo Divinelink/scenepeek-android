@@ -19,6 +19,7 @@ import com.andreolas.movierama.details.ui.DetailsViewState
 import com.andreolas.movierama.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.ui.LOADING_CONTENT_TAG
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_SCROLLABLE_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
@@ -188,6 +189,63 @@ class DetailsContentTest : ComposeTest() {
 
     composeTestRule
       .onNodeWithTag(VIDEO_PLAYER_TAG)
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun `given user rating rating score is displayed`() {
+    composeTestRule
+      .setContent {
+        DetailsContent(
+          viewState = DetailsViewState(
+            movieId = 0,
+            mediaType = MediaType.MOVIE,
+            userRating = "8",
+            mediaDetails = MediaDetailsFactory.FightClub(),
+          ),
+          onNavigateUp = {},
+          onMarkAsFavoriteClicked = {},
+          onSimilarMovieClicked = {},
+        )
+      }
+
+    val userScore = composeTestRule.activity.getString(R.string.details__user_score, "7.3")
+
+    composeTestRule
+      .onNodeWithTag(
+        testTag = TestTags.Details.YOUR_RATING,
+        useUnmergedTree = true
+      )
+      .assertIsDisplayed()
+
+    composeTestRule
+      .onNodeWithText(userScore)
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun `given unrated movie add your rate button is displayed`() {
+    composeTestRule
+      .setContent {
+        DetailsContent(
+          viewState = DetailsViewState(
+            movieId = 0,
+            mediaType = MediaType.MOVIE,
+            mediaDetails = MediaDetailsFactory.FightClub(),
+          ),
+          onNavigateUp = {},
+          onMarkAsFavoriteClicked = {},
+          onSimilarMovieClicked = {},
+        )
+      }
+
+    val addYourRate = composeTestRule.activity.getString(R.string.details__add_rating)
+
+    composeTestRule
+      .onNodeWithText(
+        text = addYourRate,
+        useUnmergedTree = true
+      )
       .assertIsDisplayed()
   }
 

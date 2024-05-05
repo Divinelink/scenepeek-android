@@ -1,5 +1,7 @@
 package com.andreolas.movierama.base.data.remote.movies.service
 
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
@@ -46,4 +48,8 @@ interface MovieService {
   fun fetchVideos(
     request: VideosRequestApi,
   ): Flow<VideosResponseApi>
+
+  fun fetchAccountMediaDetails(
+    request: AccountMediaDetailsRequestApi
+  ): Flow<AccountMediaDetailsResponseApi>
 }

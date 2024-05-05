@@ -2,6 +2,10 @@ package com.andreolas.movierama.ui
 
 object TestTags {
 
+  object Details {
+    const val YOUR_RATING = "Details Your Rating"
+  }
+
   object Dialogs {
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"

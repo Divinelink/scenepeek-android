@@ -7,6 +7,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsReques
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
+import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
+import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
@@ -15,7 +17,9 @@ import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +29,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
   getMovieDetailsUseCase: GetMovieDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
+  private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -61,17 +66,18 @@ class DetailsViewModel @Inject constructor(
       MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
       else -> throw IllegalArgumentException("Unknown media value")
     }
-
     getMovieDetailsUseCase(
       parameters = requestApi,
     ).onEach { result ->
       result.onSuccess {
         _viewState.update { viewState ->
           when (result.data) {
-            is MovieDetailsResult.DetailsSuccess -> viewState.copy(
-              isLoading = false,
-              mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
-            )
+            is MovieDetailsResult.DetailsSuccess -> {
+              viewState.copy(
+                isLoading = false,
+                mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
+              )
+            }
 
             is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
               reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
@@ -113,6 +119,26 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }
+    }.onCompletion {
+      fetchAccountMediaDetails()
     }.launchIn(viewModelScope)
+  }
+
+  private suspend fun fetchAccountMediaDetails() {
+    val params = AccountMediaDetailsParams(
+      id = viewState.value.movieId,
+      mediaType = viewState.value.mediaType
+    )
+
+    fetchAccountMediaDetailsUseCase.invoke(params)
+      .collectLatest { result ->
+        result.onSuccess {
+          _viewState.update { viewState ->
+            viewState.copy(
+              userRating = result.data.rating?.toInt()?.toString(),
+            )
+          }
+        }
+      }
   }
 }
