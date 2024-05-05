@@ -44,6 +44,7 @@ import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.theme.AppTheme
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
@@ -120,7 +121,7 @@ fun BottomSheetMovieContent(
               horizontalArrangement = Arrangement.Center,
               verticalAlignment = Alignment.CenterVertically,
             ) {
-              Rating(rating = movie.rating)
+              MediaRatingItem(rating = movie.rating)
               Spacer(modifier = Modifier.width(16.dp))
               Text(
                 text = movie.releaseDate,

@@ -3,8 +3,10 @@ package com.andreolas.movierama.details.ui
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
+import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
@@ -22,6 +24,7 @@ class DetailsViewModelRobot {
 
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val fakeGetMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+  private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -30,6 +33,7 @@ class DetailsViewModelRobot {
     viewModel = DetailsViewModel(
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
+      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -65,6 +69,14 @@ class DetailsViewModelRobot {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = media,
       result = response
+    )
+  }
+
+  fun mockFetchAccountMediaDetails(
+    response: Flow<Result<AccountMediaDetails>>,
+  ) = apply {
+    fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = response
     )
   }
 }

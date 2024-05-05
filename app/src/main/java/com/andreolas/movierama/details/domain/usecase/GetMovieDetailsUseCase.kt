@@ -71,6 +71,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
       is DetailsRequestApi.Movie -> SimilarRequestApi.Movie(parameters.id)
       is DetailsRequestApi.TV -> SimilarRequestApi.TV(parameters.id)
     }
+
     val similar = repository.fetchSimilarMovies(
       request = similarApi,
     ).catch {

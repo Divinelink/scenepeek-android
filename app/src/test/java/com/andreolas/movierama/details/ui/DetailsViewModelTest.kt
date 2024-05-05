@@ -5,6 +5,7 @@ import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
@@ -18,7 +19,11 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelTest {
 
-  private val testRobot = DetailsViewModelRobot()
+  private val testRobot = DetailsViewModelRobot().apply {
+    mockFetchAccountMediaDetails(
+      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
+    )
+  }
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -43,7 +48,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -60,7 +65,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -98,7 +103,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           isLoading = false,
           reviews = reviewsList,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         )
       )
   }
@@ -243,7 +248,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails.copy(isFavorite = true),
+          mediaDetails = movieDetails.copy(isFavorite = true),
         )
       )
       .onMarkAsFavorite()
@@ -252,7 +257,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails.copy(isFavorite = false),
+          mediaDetails = movieDetails.copy(isFavorite = false),
         )
       )
   }
@@ -277,7 +282,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
-            movieDetails = movieDetails.copy(isFavorite = false),
+            mediaDetails = movieDetails.copy(isFavorite = false),
           )
         )
         .onMarkAsFavorite()
@@ -286,7 +291,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
-            movieDetails = movieDetails.copy(isFavorite = true),
+            mediaDetails = movieDetails.copy(isFavorite = true),
           )
         )
     }
@@ -309,8 +314,50 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           trailer = VideoFactory.Youtube(),
+        )
+      )
+  }
+
+  @Test
+  fun `given account media details with rated I expect user rating`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = "8",
+        )
+      )
+  }
+
+  @Test
+  fun `given non rated media I expect no user rating`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
         )
       )
   }

@@ -1,5 +1,3 @@
-@file:Suppress("LongMethod")
-
 package com.andreolas.movierama.details.ui
 
 import android.content.res.Configuration
@@ -10,10 +8,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -43,7 +44,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -61,6 +66,7 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
@@ -72,6 +78,8 @@ import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
+import com.andreolas.movierama.ui.components.media.MediaRatingItem
+import com.andreolas.movierama.ui.getColorRating
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -104,7 +112,7 @@ fun DetailsContent(
         ),
         title = {
           Text(
-            text = viewState.movieDetails?.title ?: "",
+            text = viewState.mediaDetails?.title ?: "",
             maxLines = 2,
             style = MaterialTheme.typography.titleMedium,
             overflow = TextOverflow.Ellipsis,
@@ -125,19 +133,20 @@ fun DetailsContent(
             modifier = Modifier
               .padding(end = MaterialTheme.dimensions.keyline_8)
               .clip(RoundedShape),
-            isFavorite = viewState.movieDetails?.isFavorite ?: false,
+            isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
           )
         }
       )
     },
     content = { paddingValues ->
-      viewState.movieDetails?.let { mediaDetails ->
+      viewState.mediaDetails?.let { mediaDetails ->
         when (mediaDetails) {
           is MovieDetails, is TVDetails -> {
             MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
+              userRating = viewState.userRating,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
@@ -197,6 +206,7 @@ private fun VideoPlayerSection(
 fun MediaDetailsContent(
   modifier: Modifier = Modifier,
   mediaDetails: MediaDetails,
+  userRating: String?,
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
@@ -259,8 +269,19 @@ fun MediaDetailsContent(
           )
         }
       }
+
       item {
-        Divider(thickness = MaterialTheme.dimensions.keyline_1)
+        UserRating(
+          overallUserScore = mediaDetails.rating,
+          userRating = userRating,
+        )
+      }
+
+      item {
+        Divider(
+          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+          thickness = MaterialTheme.dimensions.keyline_1
+        )
         CastList(
           cast = mediaDetails.cast,
           director = mediaDetails.director,
@@ -289,6 +310,71 @@ fun MediaDetailsContent(
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
       }
     }
+  }
+}
+
+@Composable
+private fun UserRating(
+  modifier: Modifier = Modifier,
+  overallUserScore: String,
+  userRating: String?,
+) {
+  Row(
+    modifier = modifier.fillMaxSize(),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+
+    Spacer(
+      modifier = Modifier
+        .weight(1f)
+        .size(MaterialTheme.dimensions.keyline_24)
+    )
+
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      MediaRatingItem(
+        rating = overallUserScore,
+        enlarged = true,
+      )
+      Text(
+        text = stringResource(id = R.string.details__user_score),
+        style = MaterialTheme.typography.titleMedium,
+      )
+    }
+
+    Spacer(
+      modifier = Modifier
+        .weight(1f)
+        .size(MaterialTheme.dimensions.keyline_24)
+    )
+
+    TextButton(
+      modifier = Modifier.align(Alignment.CenterVertically),
+      onClick = {
+        // Add Rating
+      }
+    ) {
+      if (userRating != null) {
+        SpannableRating(
+          modifier = Modifier.align(Alignment.CenterVertically),
+          text = stringResource(id = R.string.details__your_rating),
+          rating = userRating
+        )
+      } else {
+        Text(
+          text = stringResource(id = R.string.details__add_rating),
+          style = MaterialTheme.typography.titleMedium
+        )
+      }
+    }
+
+    Spacer(
+      modifier = Modifier
+        .weight(1f)
+        .size(MaterialTheme.dimensions.keyline_24)
+    )
   }
 }
 
@@ -370,6 +456,36 @@ private fun OverviewDetails(
   }
 }
 
+@Composable
+fun SpannableRating(
+  modifier: Modifier = Modifier,
+  text: String,
+  rating: String
+) {
+  val color = rating.getColorRating()
+
+  val annotatedString = buildAnnotatedString {
+    append(text)
+    withStyle(
+      style = SpanStyle(
+        color = color,
+        fontSize = MaterialTheme.typography.headlineMedium.fontSize
+      )
+    ) {
+      append("\n$rating")
+    }
+  }
+
+  Text(
+    modifier = modifier.testTag(TestTags.Details.YOUR_RATING),
+    text = annotatedString,
+    lineHeight = MaterialTheme.typography.headlineSmall.lineHeight,
+    color = MaterialTheme.colorScheme.onSurface,
+    style = MaterialTheme.typography.titleMedium,
+    textAlign = TextAlign.Center,
+  )
+}
+
 private const val OVERVIEW_WEIGHT = 3f
 
 @Preview(
@@ -381,7 +497,6 @@ private const val OVERVIEW_WEIGHT = 3f
   uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Composable
-@Suppress("UnusedPrivateMember")
 @ExcludeFromKoverReport
 private fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
@@ -501,21 +616,22 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
 
         DetailsViewState(
           movieId = popularMovie.id,
+          userRating = "9",
           mediaType = MediaType.MOVIE,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.TV,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           similarMovies = similarMovies,
         ),
 
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          movieDetails = movieDetails,
+          mediaDetails = movieDetails,
           similarMovies = similarMovies,
           reviews = reviews,
         ),

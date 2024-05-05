@@ -1,5 +1,3 @@
-@file:Suppress("LongMethod")
-
 package com.andreolas.movierama.ui.components.details.reviews
 
 import android.content.res.Configuration
@@ -18,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.ui.components.Rating
+import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
@@ -44,7 +43,7 @@ fun ReviewItemCard(
   review: Review,
 ) {
   var expanded by remember { mutableStateOf(false) }
-  var maxLines by remember { mutableStateOf(MINIMUM_MAX_LINES) }
+  var maxLines by remember { mutableIntStateOf(MINIMUM_MAX_LINES) }
   var maxWidth by remember { mutableStateOf(MINIMUM_CARD_SIZE) }
 
   Card(
@@ -72,7 +71,7 @@ fun ReviewItemCard(
       Row(
         horizontalArrangement = Arrangement.Center,
       ) {
-        Rating(
+        MediaRatingItem(
           modifier = Modifier
             .padding(top = 12.dp, start = 12.dp, end = 12.dp),
           rating = review.rating.toInt().toString(),

@@ -2,6 +2,8 @@ package com.andreolas.movierama.base.data.remote.movies.service
 
 import com.andreolas.movierama.base.communication.ApiConstants
 import com.andreolas.movierama.base.communication.RestClient
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
@@ -104,6 +106,18 @@ class ProdMovieService @Inject constructor(
       "&language=en-US"
 
     val response = restClient.get<VideosResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchAccountMediaDetails(request: AccountMediaDetailsRequestApi) = flow {
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
+    val url = baseUrl +
+      "${request.id}" +
+      "/account_states?" +
+      "&session_id=${request.sessionId}"
+
+    val response = restClient.get<AccountMediaDetailsResponseApi>(url = url)
 
     emit(response)
   }

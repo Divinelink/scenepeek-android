@@ -69,13 +69,11 @@ fun MediaList(
           onMovieItemClick = { onMovieClicked(search) },
           onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
         )
-        is MediaItem.Media.TV -> {
-          MediaItem(
-            movie = search,
-            onMovieItemClick = { onMovieClicked(search) },
-            onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
-          )
-        }
+        is MediaItem.Media.TV -> MediaItem(
+          movie = search,
+          onMovieItemClick = { onMovieClicked(search) },
+          onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
+        )
         is MediaItem.Person -> {
           // FIXME Do nothing yet
         }

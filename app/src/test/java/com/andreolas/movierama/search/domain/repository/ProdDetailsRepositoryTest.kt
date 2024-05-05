@@ -8,6 +8,9 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.api.DetailsResponseApiFactory
 import com.andreolas.factories.api.ReviewsResultsApiFactory
 import com.andreolas.factories.api.SimilarMovieApiFactory
+import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApiFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsResponseApi
@@ -268,5 +271,27 @@ class ProdDetailsRepositoryTest {
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
+  }
+
+  @Test
+  fun `test fetch account media details for movie`() = runTest {
+    val request = AccountMediaDetailsRequestApi.Movie(
+      movieId = 555,
+      sessionId = "session_id"
+    )
+
+    val response = flowOf(AccountMediaDetailsResponseApiFactory.Rated())
+    val expectedResult = AccountMediaDetailsFactory.Rated()
+
+    movieRemote.mockFetchAccountMediaDetails(
+      request = request,
+      response = response
+    )
+
+    val actualResult = repository.fetchAccountMediaDetails(
+      request = request
+    ).first()
+
+    assertThat(expectedResult).isEqualTo(actualResult.data)
   }
 }

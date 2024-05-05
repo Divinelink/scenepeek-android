@@ -13,30 +13,31 @@ data class DetailsViewState(
   val isLoading: Boolean = false,
   val mediaType: MediaType,
   val movieId: Int,
-  val movieDetails: MediaDetails? = null,
+  val mediaDetails: MediaDetails? = null,
+  val userRating: String? = null,
   val reviews: List<Review>? = null,
   val similarMovies: List<MediaItem.Media>? = null,
   val trailer: Video? = null,
   val error: UIText? = null,
 ) {
-  val mediaItem = when (movieDetails) {
+  val mediaItem = when (mediaDetails) {
     is MovieDetails -> MediaItem.Media.Movie(
-      id = movieDetails.id,
-      name = movieDetails.title,
-      posterPath = movieDetails.posterPath,
-      releaseDate = movieDetails.releaseDate,
-      rating = movieDetails.rating,
-      overview = movieDetails.overview ?: "",
-      isFavorite = movieDetails.isFavorite,
+      id = mediaDetails.id,
+      name = mediaDetails.title,
+      posterPath = mediaDetails.posterPath,
+      releaseDate = mediaDetails.releaseDate,
+      rating = mediaDetails.rating,
+      overview = mediaDetails.overview ?: "",
+      isFavorite = mediaDetails.isFavorite,
     )
     is TVDetails -> MediaItem.Media.TV(
-      id = movieDetails.id,
-      name = movieDetails.title,
-      posterPath = movieDetails.posterPath,
-      releaseDate = movieDetails.releaseDate,
-      rating = movieDetails.rating,
-      overview = movieDetails.overview ?: "",
-      isFavorite = movieDetails.isFavorite,
+      id = mediaDetails.id,
+      name = mediaDetails.title,
+      posterPath = mediaDetails.posterPath,
+      releaseDate = mediaDetails.releaseDate,
+      rating = mediaDetails.rating,
+      overview = mediaDetails.overview ?: "",
+      isFavorite = mediaDetails.isFavorite,
     )
     null -> null
   }

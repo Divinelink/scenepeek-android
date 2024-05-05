@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.domain.repository
 
+import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.toDomainReviewsList
@@ -8,6 +9,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.toDom
 import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMedia
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.toDomainVideosList
+import com.andreolas.movierama.base.data.remote.movies.mapper.map
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
@@ -16,6 +18,7 @@ import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideosException
+import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import kotlinx.coroutines.flow.Flow
@@ -66,6 +69,16 @@ class ProdDetailsRepository @Inject constructor(
         Result.success(apiResponse.toDomainVideosList())
       }.catch {
         throw VideosException()
+      }
+  }
+
+  override fun fetchAccountMediaDetails(
+    request: AccountMediaDetailsRequestApi
+  ): Flow<Result<AccountMediaDetails>> {
+    return movieRemote
+      .fetchAccountMediaDetails(request)
+      .map { response ->
+        Result.success(response.map())
       }
   }
 }

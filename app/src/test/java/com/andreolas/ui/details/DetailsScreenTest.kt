@@ -11,6 +11,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.R
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
@@ -21,6 +22,7 @@ import com.andreolas.movierama.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import kotlinx.coroutines.flow.flowOf
@@ -33,6 +35,7 @@ class DetailsScreenTest : ComposeTest() {
 
     val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+    val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
@@ -42,6 +45,12 @@ class DetailsScreenTest : ComposeTest() {
           mediaType = MediaType.MOVIE.name,
           isFavorite = false,
         )
+      )
+    )
+
+    fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = flowOf(
+        Result.success(AccountMediaDetailsFactory.Rated())
       )
     )
 
@@ -66,6 +75,7 @@ class DetailsScreenTest : ComposeTest() {
         viewModel = DetailsViewModel(
           getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+          fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
