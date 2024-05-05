@@ -33,6 +33,7 @@ data class Dimensions(
   val keyline_56: Dp = 56.dp,
   val keyline_58: Dp = 58.dp,
   val keyline_64: Dp = 64.dp,
+  val keyline_68: Dp = 68.dp,
   val keyline_72: Dp = 72.dp,
   val keyline_96: Dp = 96.dp,
 )

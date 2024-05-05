@@ -1,4 +1,3 @@
-@file:Suppress("LongMethod")
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.andreolas.movierama.ui.components

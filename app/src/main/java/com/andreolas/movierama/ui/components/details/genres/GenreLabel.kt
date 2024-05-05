@@ -62,7 +62,6 @@ fun GenreLabel(
   name = "Day Mode",
   uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
-@Suppress("UnusedPrivateMember")
 @Composable
 private fun GenreLabelPreview() {
   AppTheme {

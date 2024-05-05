@@ -12,17 +12,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.andreolas.movierama.ui.getColorRating
 import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
 fun MediaRatingItem(
   modifier: Modifier = Modifier,
   rating: String,
+  enlarged: Boolean = false
 ) {
   val sanitizedRating = if (rating.endsWith(".0")) {
     rating.substring(0, rating.length - 2)
@@ -30,12 +31,7 @@ fun MediaRatingItem(
     rating
   }
 
-  val color = when (rating.toDouble()) {
-    in 0.1..3.5 -> Color(0xFFDB2360)
-    in 3.5..7.0 -> Color(0xFFD2D531)
-    in 7.0..10.0 -> Color(0xFF21D07A)
-    else -> Color.White
-  }
+  val color = rating.getColorRating()
 
   val backgroundColor = if (isSystemInDarkTheme()) {
     MaterialTheme.colorScheme.surface
@@ -43,11 +39,29 @@ fun MediaRatingItem(
     MaterialTheme.colorScheme.onSurface
   }
 
+  val size = if (enlarged) {
+    MaterialTheme.dimensions.keyline_68
+  } else {
+    MaterialTheme.dimensions.keyline_48
+  }
+
+  val ratingCanvasSize = if (enlarged) {
+    MaterialTheme.dimensions.keyline_56
+  } else {
+    MaterialTheme.dimensions.keyline_36
+  }
+
+  val textSize = if (enlarged) {
+    MaterialTheme.typography.titleMedium
+  } else {
+    MaterialTheme.typography.labelMedium
+  }
+
   Box(
     contentAlignment = Alignment.Center,
     modifier = modifier.padding(top = 4.dp, bottom = 4.dp)
   ) {
-    Canvas(modifier = Modifier.size(MaterialTheme.dimensions.keyline_48)) {
+    Canvas(modifier = Modifier.size(size)) {
       drawArc(
         color = backgroundColor,
         startAngle = 0f,
@@ -57,7 +71,7 @@ fun MediaRatingItem(
     }
 
     Canvas(
-      modifier = Modifier.size(36.dp)
+      modifier = Modifier.size(ratingCanvasSize)
     ) {
       drawArc(
         color = color.copy(alpha = 0.3f),
@@ -90,7 +104,7 @@ fun MediaRatingItem(
 
     Text(
       text = sanitizedRating,
-      style = MaterialTheme.typography.labelMedium,
+      style = textSize,
       textAlign = TextAlign.Center,
       color = textColor,
     )

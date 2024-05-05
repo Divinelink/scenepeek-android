@@ -1,5 +1,3 @@
-@file:Suppress("LongMethod")
-
 package com.andreolas.movierama.ui.components.details.reviews
 
 import android.content.res.Configuration

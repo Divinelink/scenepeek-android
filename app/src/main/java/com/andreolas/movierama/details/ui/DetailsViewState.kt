@@ -14,6 +14,7 @@ data class DetailsViewState(
   val mediaType: MediaType,
   val movieId: Int,
   val mediaDetails: MediaDetails? = null,
+  val userRating: String? = null,
   val reviews: List<Review>? = null,
   val similarMovies: List<MediaItem.Media>? = null,
   val trailer: Video? = null,

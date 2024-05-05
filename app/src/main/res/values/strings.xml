@@ -65,6 +65,10 @@
   <string name="details__more_like_this">More like this</string>
   <string name="details__reviews">Reviews</string>
 
+  <string name="details__user_score">User\nScore</string>
+  <string name="details__your_rating">Your rating</string>
+  <string name="details__add_rating">"Rate this"</string>
+
   <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
 
   <!-- Accessibility -->
