@@ -36,7 +36,6 @@ class HomeViewModel @Inject constructor(
   private var searchPage: Int = 1
 
   private var searchJob: Job? = null
-  private var bottomSheetJob: Job? = null
 
   private var allowSearchResult: Boolean = true
 
@@ -93,11 +92,7 @@ class HomeViewModel @Inject constructor(
   }
 
   fun onMovieClicked(movie: MediaItem) {
-    bottomSheetJob?.cancel()
-
-    bottomSheetJob = viewModelScope.launch {
-      delay(BOTTOM_SHEET_DEBOUNCE_TIME)
-
+    viewModelScope.launch {
       val selectedMovie = if (movie == viewState.value.selectedMedia) {
         null
       } else {
@@ -313,7 +308,6 @@ class HomeViewModel @Inject constructor(
 
   fun onSwipeDown() {
     viewModelScope.launch {
-      delay(BOTTOM_SHEET_DEBOUNCE_TIME)
       _viewState.update { viewState ->
         viewState.copy(
           selectedMedia = null,
@@ -381,10 +375,6 @@ class HomeViewModel @Inject constructor(
         },
       )
     }
-  }
-
-  companion object {
-    const val BOTTOM_SHEET_DEBOUNCE_TIME = 200L
   }
 }
 

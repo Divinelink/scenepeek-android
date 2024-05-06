@@ -20,8 +20,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -262,7 +262,7 @@ fun MediaDetailsContent(
           )
 
           OverviewDetails(
-            modifier = modifier.weight(OVERVIEW_WEIGHT),
+            modifier = Modifier.weight(OVERVIEW_WEIGHT),
             movieDetails = mediaDetails,
             genres = mediaDetails.genres,
             onGenreClicked = {},
@@ -278,7 +278,7 @@ fun MediaDetailsContent(
       }
 
       item {
-        Divider(
+        HorizontalDivider(
           modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
           thickness = MaterialTheme.dimensions.keyline_1
         )
@@ -289,7 +289,7 @@ fun MediaDetailsContent(
       }
       if (similarMoviesList?.isNotEmpty() == true) {
         item {
-          Divider(thickness = MaterialTheme.dimensions.keyline_1)
+          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
           SimilarMoviesList(
             movies = similarMoviesList,
             onSimilarMovieClicked = onSimilarMovieClicked,
@@ -299,7 +299,7 @@ fun MediaDetailsContent(
 
       if (!reviewsList.isNullOrEmpty()) {
         item {
-          Divider(thickness = MaterialTheme.dimensions.keyline_1)
+          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
           ReviewsList(
             reviews = reviewsList,
           )
