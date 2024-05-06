@@ -116,13 +116,12 @@ fun HomeContent(
       )
     },
   ) { paddingValues ->
-    Column {
+    Column(modifier = Modifier.padding(paddingValues)) {
       AnimatedVisibility(
         visible = viewState.query.isEmpty(),
       ) {
         FilterBar(
           modifier = modifier
-            .padding(paddingValues)
             .padding(horizontal = 8.dp, vertical = 4.dp),
           filters = viewState.filters,
           onFilterClick = { homeFilter ->
@@ -135,7 +134,6 @@ fun HomeContent(
       if (viewState.emptyResult) {
         EmptySectionCard(
           modifier = modifier
-            .padding(paddingValues)
             .padding(start = 8.dp, end = 8.dp),
           title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
           description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
@@ -149,7 +147,7 @@ fun HomeContent(
           when (unselectedFilters) {
             true -> {
               MoviesLazyGrid(
-                modifier = modifier,
+                modifier = Modifier, // .padding(paddingValues),
                 onMovieClicked = onMovieClicked,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.searchList,
@@ -159,7 +157,7 @@ fun HomeContent(
             }
             false -> {
               MoviesLazyGrid(
-                modifier = modifier,
+                modifier = Modifier,
                 onMovieClicked = onMovieClicked,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.filteredResults ?: emptyList(),
