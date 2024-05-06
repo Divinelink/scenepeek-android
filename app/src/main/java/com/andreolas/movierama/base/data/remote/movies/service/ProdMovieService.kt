@@ -14,6 +14,8 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.Videos
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestBodyApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
@@ -118,6 +120,20 @@ class ProdMovieService @Inject constructor(
       "&session_id=${request.sessionId}"
 
     val response = restClient.get<AccountMediaDetailsResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun submitRating(request: AddRatingRequestApi) = flow {
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
+    val url = baseUrl +
+      "${request.id}/rating?" +
+      "&session_id=${request.sessionId}"
+
+    val response = restClient.post<AddRatingRequestBodyApi, Unit>(
+      url = url,
+      body = AddRatingRequestBodyApi(request.rating)
+    )
 
     emit(response)
   }

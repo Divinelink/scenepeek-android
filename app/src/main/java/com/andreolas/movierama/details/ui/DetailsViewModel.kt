@@ -10,6 +10,8 @@ import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
 import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
+import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
+import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +33,7 @@ class DetailsViewModel @Inject constructor(
   getMovieDetailsUseCase: GetMovieDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
+  private val submitRatingUseCase: SubmitRatingUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -122,6 +126,29 @@ class DetailsViewModel @Inject constructor(
     }.onCompletion {
       fetchAccountMediaDetails()
     }.launchIn(viewModelScope)
+  }
+
+  fun onSubmitRate(rating: Int) {
+    viewModelScope.launch {
+      submitRatingUseCase.invoke(
+        SubmitRatingParameters(
+          id = viewState.value.movieId,
+          mediaType = viewState.value.mediaType,
+          rating = rating
+        )
+      ).collectLatest { result ->
+        result.onSuccess {
+          Timber.d(
+            "Rating submitted: $rating"
+          )
+          _viewState.update { viewState ->
+            viewState.copy(
+              userRating = rating.toString(),
+            )
+          }
+        }
+      }
+    }
   }
 
   private suspend fun fetchAccountMediaDetails() {

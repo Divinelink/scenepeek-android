@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,15 +16,15 @@ import com.andreolas.movierama.ui.theme.AppTheme
 @Composable
 @Suppress("MagicNumber")
 fun RateSlider(
-  value: Int,
-  onValueChange: (Int) -> Unit,
+  value: Float,
+  onValueChange: (Float) -> Unit,
 ) {
   val rating = remember {
-    mutableIntStateOf(value)
+    mutableFloatStateOf(value)
   }
 
   val color = animateColorAsState(
-    targetValue = when (rating.intValue.toFloat()) {
+    targetValue = when (rating.floatValue) {
       in 0.0f..3.5f -> Color(0xFFDB2360)
       in 3.5f..6.9f -> Color(0xFFD2D531)
       in 7.0f..10.0f -> Color(0xFF21D07A)
@@ -40,12 +40,12 @@ fun RateSlider(
       activeTrackColor = color.value,
       inactiveTrackColor = color.value.copy(alpha = 0.2f),
     ),
-    value = rating.intValue.toFloat(),
-    steps = 9,
-    valueRange = 0f..10f,
-    onValueChange = {
-      onValueChange(it.toInt())
-      rating.intValue = it.toInt()
+    value = rating.floatValue,
+    steps = 8,
+    valueRange = 1.0f..10f,
+    onValueChange = { newValue ->
+      onValueChange(newValue)
+      rating.floatValue = newValue
     }
   )
 }
@@ -62,7 +62,7 @@ fun RateSlider(
 private fun RateSliderPreview() {
   AppTheme {
     RateSlider(
-      value = 1,
+      value = 1f,
       onValueChange = {}
     )
   }

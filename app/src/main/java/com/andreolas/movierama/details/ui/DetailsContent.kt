@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -62,6 +63,7 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.TVDetails
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideoSite
+import com.andreolas.movierama.details.ui.rate.RateModalBottomSheet
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -97,8 +99,34 @@ fun DetailsContent(
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onSubmitRate: (Int) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+  val rateBottomSheetState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = true
+  )
+
+  val showRateModalBottomSheet = remember {
+    // TODO Add viewModel callback, that checks if the user is logged in prior to opening bottom sheet
+    mutableStateOf(false)
+  }
+
+  if (showRateModalBottomSheet.value) {
+    RateModalBottomSheet(
+      modifier = Modifier.navigationBarsPadding(),
+      sheetState = rateBottomSheetState,
+      value = viewState.userRating,
+      mediaTitle = viewState.mediaDetails!!.title,
+      onSubmitRate = onSubmitRate,
+      onRateChanged = {
+        // TODO implement
+      },
+      onDismissRequest = {
+        showRateModalBottomSheet.value = false
+      }
+    )
+  }
 
   Scaffold(
     modifier = modifier
@@ -151,6 +179,9 @@ fun DetailsContent(
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
+              onAddRateClicked = {
+                showRateModalBottomSheet.value = true
+              }
             )
           }
         }
@@ -211,6 +242,7 @@ fun MediaDetailsContent(
   reviewsList: List<Review>?,
   trailer: Video?,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onAddRateClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -274,6 +306,7 @@ fun MediaDetailsContent(
         UserRating(
           overallUserScore = mediaDetails.rating,
           userRating = userRating,
+          onAddRateClicked = onAddRateClicked
         )
       }
 
@@ -318,6 +351,7 @@ private fun UserRating(
   modifier: Modifier = Modifier,
   overallUserScore: String,
   userRating: String?,
+  onAddRateClicked: () -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxSize(),
@@ -352,9 +386,7 @@ private fun UserRating(
 
     TextButton(
       modifier = Modifier.align(Alignment.CenterVertically),
-      onClick = {
-        // Add Rating
-      }
+      onClick = onAddRateClicked
     ) {
       if (userRating != null) {
         SpannableRating(
@@ -510,6 +542,7 @@ private fun DetailsContentPreview(
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
+        onSubmitRate = {},
       )
     }
   }

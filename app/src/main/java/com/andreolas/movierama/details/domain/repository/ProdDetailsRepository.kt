@@ -9,6 +9,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.toDom
 import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMedia
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.toDomainVideosList
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
 import com.andreolas.movierama.base.data.remote.movies.mapper.map
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.details.domain.model.MediaDetails
@@ -79,6 +80,14 @@ class ProdDetailsRepository @Inject constructor(
       .fetchAccountMediaDetails(request)
       .map { response ->
         Result.success(response.map())
+      }
+  }
+
+  override fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>> {
+    return movieRemote
+      .submitRating(request)
+      .map {
+        Result.success(Unit)
       }
   }
 }
