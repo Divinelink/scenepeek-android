@@ -46,6 +46,6 @@ fun DetailsScreen(
     },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
-    onDismissBottomSheet = viewModel::onDismissBottomSheet,
+    onDismissBottomSheet = viewModel::onDismissRateDialog,
   )
 }

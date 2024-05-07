@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarResult
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
@@ -7,9 +8,13 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.MainDispatcherRule
+import com.andreolas.movierama.R
+import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.home.domain.model.MediaType
+import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -358,6 +363,246 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userRating = null,
+        )
+      )
+  }
+
+  @Test
+  fun `given success submit rate, when I submit rate, then I expect success message`() {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockSubmitRate(
+        response = flowOf(Result.success(Unit))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddRateClicked()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          showRateDialog = true
+        )
+      )
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            UIText.ResourceText(
+              R.string.details__rating_submitted_successfully,
+              movieDetails.title
+            )
+          ),
+          userRating = "5",
+          showRateDialog = false
+        )
+      )
+  }
+
+  @Test
+  fun `given NoSession error submit rate, when I submit, then I expect error message`() {
+    lateinit var viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockSubmitRate(
+        response = flowOf(Result.failure(SessionException.NoSession()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+            actionLabelText = UIText.ResourceText(R.string.login),
+            onSnackbarResult = viewModel::navigateToLogin
+          ),
+          showRateDialog = false
+        )
+      )
+  }
+
+  @Test
+  fun `given NoSession error, when login action clicked, then I expect navigation to login`() {
+    lateinit var viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockSubmitRate(
+        response = flowOf(Result.failure(SessionException.NoSession()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+            actionLabelText = UIText.ResourceText(R.string.login),
+            onSnackbarResult = viewModel::navigateToLogin
+          ),
+          showRateDialog = false
+        )
+      )
+      .onNavigateToLogin(SnackbarResult.ActionPerformed)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = null,
+          navigateToLogin = true
+        )
+      )
+  }
+
+  @Test
+  fun `given navigation to login, when I consume it, then I expect navigation to be null`() {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onNavigateToLogin(SnackbarResult.ActionPerformed)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          navigateToLogin = true
+        )
+      )
+      .consumeNavigation()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          navigateToLogin = null
+        )
+      )
+  }
+
+  @Test
+  fun `given snackbar message, when I consume it I expect snackbar message null`() {
+    testRobot
+      .mockSubmitRate(
+        response = flowOf(Result.success(Unit))
+      )
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddRateClicked()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          showRateDialog = true
+        )
+      )
+      .onSubmitRate(5)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          snackbarMessage = SnackbarMessage.from(
+            UIText.ResourceText(
+              R.string.details__rating_submitted_successfully,
+              movieDetails.title
+            )
+          ),
+          userRating = "5",
+          showRateDialog = false
+        )
+      )
+      .consumeSnackbar()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = "5",
+          showRateDialog = false
+        )
+      )
+  }
+
+  @Test
+  fun `test onAddRateClicked opens bottom sheet`() {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddRateClicked()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          showRateDialog = true
+        )
+      )
+  }
+
+  @Test
+  fun `test onDismissRateDialog hides dialog`() {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddRateClicked()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          showRateDialog = true
+        )
+      )
+      .onDismissRateDialog()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          showRateDialog = false
         )
       )
   }

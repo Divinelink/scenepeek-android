@@ -64,6 +64,7 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
@@ -106,9 +107,11 @@ fun DetailsContent(
     skipPartiallyExpanded = true
   )
 
-  if (viewState.showRateBottomSheet) {
+  if (viewState.showRateDialog) {
     RateModalBottomSheet(
-      modifier = Modifier.navigationBarsPadding(),
+      modifier = Modifier
+        .testTag(TestTags.Details.RATE_DIALOG)
+        .navigationBarsPadding(),
       sheetState = rateBottomSheetState,
       value = viewState.userRating,
       mediaTitle = viewState.mediaDetails!!.title,
@@ -176,10 +179,7 @@ fun DetailsContent(
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
-              onAddRateClicked = {
-                onAddRateClicked()
-//                showRateModalBottomSheet.value = true
-              }
+              onAddRateClicked = onAddRateClicked
             )
           }
         }

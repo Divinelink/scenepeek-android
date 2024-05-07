@@ -146,7 +146,7 @@ class DetailsViewModel @Inject constructor(
           Timber.d("Rating submitted: $rating")
           _viewState.update { viewState ->
             viewState.copy(
-              showRateBottomSheet = false,
+              showRateDialog = false,
               userRating = rating.toString(),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
@@ -160,7 +160,7 @@ class DetailsViewModel @Inject constructor(
           if (it is SessionException.NoSession) {
             _viewState.update { viewState ->
               viewState.copy(
-                showRateBottomSheet = false,
+                showRateDialog = false,
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
                   actionLabelText = UIText.ResourceText(R.string.login),
@@ -177,12 +177,12 @@ class DetailsViewModel @Inject constructor(
   fun onAddRateClicked() {
     _viewState.update { viewState ->
       viewState.copy(
-        showRateBottomSheet = true
+        showRateDialog = true
       )
     }
   }
 
-  private fun navigateToLogin(snackbarResult: SnackbarResult) {
+  internal fun navigateToLogin(snackbarResult: SnackbarResult) {
     if (snackbarResult == SnackbarResult.ActionPerformed) {
       _viewState.update { viewState ->
         viewState.copy(
@@ -225,9 +225,9 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onDismissBottomSheet() {
+  fun onDismissRateDialog() {
     _viewState.update { viewState ->
-      viewState.copy(showRateBottomSheet = false)
+      viewState.copy(showRateDialog = false)
     }
   }
 }

@@ -4,6 +4,8 @@ object TestTags {
 
   object Details {
     const val YOUR_RATING = "Details Your Rating"
+    const val RATE_DIALOG = "Details Rate Dialog"
+    const val RATE_SLIDER = "Details Rate Slider"
   }
 
   object Dialogs {

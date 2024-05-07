@@ -274,5 +274,68 @@ class DetailsContentTest : ComposeTest() {
       .assertIsDisplayed()
   }
 
+  @Test
+  fun `test rate dialog is visible`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          showRateDialog = true
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
+
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_DIALOG
+    ).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test rate dialog onSubmitRate`() {
+    var onSubmitRate = false
+
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          showRateDialog = true
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {
+          onSubmitRate = true
+        },
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
+
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_DIALOG
+    ).assertIsDisplayed()
+
+    val submitText = composeTestRule.activity.getString(R.string.details__submit_rating_button)
+
+    composeTestRule.onNodeWithText(
+      text = submitText,
+      useUnmergedTree = true
+    ).performClick()
+
+    assertThat(onSubmitRate).isTrue()
+  }
+
   private val reviews = ReviewFactory.ReviewList()
 }

@@ -25,12 +25,13 @@ import com.andreolas.movierama.ui.theme.dimensions
 import kotlin.math.roundToInt
 
 @Composable
-fun RateBottomSheetContent(
+fun RateDialogContent(
   modifier: Modifier = Modifier,
   value: Float,
   onRateChanged: (Float) -> Unit,
   mediaTitle: String,
-  onSubmitRate: (Int) -> Unit = {},
+  onSubmitRate: (Int) -> Unit,
+  onDeleteRate: () -> Unit,
 ) {
   val rating = remember { mutableFloatStateOf(value) }
 
@@ -66,9 +67,8 @@ fun RateBottomSheetContent(
       modifier = Modifier
         .padding(bottom = MaterialTheme.dimensions.keyline_16)
         .align(Alignment.End),
-      onClick = {
-        // Clear rating
-      }) {
+      onClick = onDeleteRate,
+    ) {
       Text(text = stringResource(id = R.string.details__clear_my_rating))
     }
 
@@ -88,10 +88,12 @@ fun RateBottomSheetContent(
 private fun BottomSheetRateContentPreview() {
   AppTheme {
     Surface {
-      RateBottomSheetContent(
+      RateDialogContent(
         value = 5f,
-        onRateChanged = {},
         mediaTitle = "The Godfather",
+        onRateChanged = {},
+        onSubmitRate = { },
+        onDeleteRate = {},
       )
     }
   }

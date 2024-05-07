@@ -13,7 +13,9 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.dimensions
 
@@ -38,7 +40,9 @@ fun RateSlider(
   )
 
   Slider(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = Modifier
+      .testTag(TestTags.Details.RATE_SLIDER)
+      .fillMaxWidth(),
     colors = SliderDefaults.colors(
       thumbColor = color.value,
       activeTrackColor = color.value,

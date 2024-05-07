@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
@@ -47,6 +48,8 @@ class DetailsViewModelRobot {
     )
   }
 
+  fun getViewModel() = viewModel
+
   fun assertViewState(
     expectedViewState: DetailsViewState,
   ) = apply {
@@ -61,8 +64,34 @@ class DetailsViewModelRobot {
     )
   }
 
+  fun onAddRateClicked() = apply {
+    viewModel.onAddRateClicked()
+  }
+
+  fun onSubmitRate(rating: Int) = apply {
+    viewModel.onSubmitRate(rating)
+  }
+
+  fun onDismissRateDialog() = apply {
+    viewModel.onDismissRateDialog()
+  }
+
+  fun onNavigateToLogin(
+    snackbarResult: SnackbarResult
+  ) = apply {
+    viewModel.navigateToLogin(snackbarResult)
+  }
+
   fun onMarkAsFavorite() = apply {
     viewModel.onMarkAsFavorite()
+  }
+
+  fun consumeSnackbar() = apply {
+    viewModel.consumeSnackbarMessage()
+  }
+
+  fun consumeNavigation() = apply {
+    viewModel.consumeNavigateToLogin()
   }
 
   fun mockMarkAsFavoriteUseCase(
@@ -79,6 +108,14 @@ class DetailsViewModelRobot {
     response: Flow<Result<AccountMediaDetails>>,
   ) = apply {
     fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = response
+    )
+  }
+
+  fun mockSubmitRate(
+    response: Flow<Result<Unit>>,
+  ) = apply {
+    fakeSubmitRatingUseCase.mockSubmitRate(
       response = response
     )
   }

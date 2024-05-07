@@ -72,4 +72,14 @@ class FakeDetailsRepository {
       flowOf(response)
     )
   }
+
+  fun mockSubmitRating(
+    response: Result<Unit>,
+  ) {
+    whenever(
+      mock.submitRating(any())
+    ).thenReturn(
+      flowOf(response)
+    )
+  }
 }

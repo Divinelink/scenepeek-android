@@ -22,12 +22,13 @@ fun RateModalBottomSheet(
     sheetState = sheetState,
     onDismissRequest = onDismissRequest
   ) {
-    RateBottomSheetContent(
+    RateDialogContent(
       modifier = modifier,
       value = value?.toFloat() ?: 0f,
       mediaTitle = mediaTitle,
       onRateChanged = onRateChanged,
       onSubmitRate = onSubmitRate,
+      onDeleteRate = { }
     )
   }
 }
