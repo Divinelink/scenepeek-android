@@ -23,8 +23,10 @@ import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
+import com.andreolas.setContentWithTheme
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Test
 
@@ -36,6 +38,7 @@ class DetailsScreenTest : ComposeTest() {
     val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
+    val submitRateUseCase = FakeSubmitRatingUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
@@ -69,13 +72,14 @@ class DetailsScreenTest : ComposeTest() {
       )
     )
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = DetailsViewModel(
           getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
           fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
+          submitRatingUseCase = submitRateUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,

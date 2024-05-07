@@ -7,6 +7,7 @@ import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
@@ -25,6 +26,7 @@ class DetailsViewModelRobot {
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val fakeGetMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
   private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
+  private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -34,6 +36,7 @@ class DetailsViewModelRobot {
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
+      submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
