@@ -19,6 +19,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.Simil
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideoResultsApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
@@ -289,6 +290,29 @@ class ProdDetailsRepositoryTest {
     )
 
     val actualResult = repository.fetchAccountMediaDetails(
+      request = request
+    ).first()
+
+    assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test add rating for movie`() = runTest {
+    val request = AddRatingRequestApi.Movie(
+      movieId = 555,
+      sessionId = "session_id",
+      rating = 5
+    )
+
+    val response = flowOf(Unit)
+    val expectedResult = Unit
+
+    movieRemote.mockSubmitRating(
+      request = request,
+      response = response
+    )
+
+    val actualResult = repository.submitRating(
       request = request
     ).first()
 

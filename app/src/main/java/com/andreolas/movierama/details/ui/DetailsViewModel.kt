@@ -1,17 +1,24 @@
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andreolas.movierama.R
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.destinations.DetailsScreenDestination
+import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
 import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
+import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
+import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
+import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +30,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +38,7 @@ class DetailsViewModel @Inject constructor(
   getMovieDetailsUseCase: GetMovieDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
+  private val submitRatingUseCase: SubmitRatingUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -124,6 +133,66 @@ class DetailsViewModel @Inject constructor(
     }.launchIn(viewModelScope)
   }
 
+  fun onSubmitRate(rating: Int) {
+    viewModelScope.launch {
+      submitRatingUseCase.invoke(
+        SubmitRatingParameters(
+          id = viewState.value.movieId,
+          mediaType = viewState.value.mediaType,
+          rating = rating
+        )
+      ).collectLatest { result ->
+        result.onSuccess {
+          Timber.d("Rating submitted: $rating")
+          _viewState.update { viewState ->
+            viewState.copy(
+              showRateDialog = false,
+              userRating = rating.toString(),
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.details__rating_submitted_successfully,
+                  viewState.mediaDetails?.title ?: ""
+                ),
+              )
+            )
+          }
+        }.onFailure {
+          if (it is SessionException.NoSession) {
+            _viewState.update { viewState ->
+              viewState.copy(
+                showRateDialog = false,
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+                  actionLabelText = UIText.ResourceText(R.string.login),
+                  onSnackbarResult = ::navigateToLogin,
+                )
+              )
+            }
+          }
+        }
+      }
+    }
+  }
+
+  fun onAddRateClicked() {
+    _viewState.update { viewState ->
+      viewState.copy(
+        showRateDialog = true
+      )
+    }
+  }
+
+  internal fun navigateToLogin(snackbarResult: SnackbarResult) {
+    if (snackbarResult == SnackbarResult.ActionPerformed) {
+      _viewState.update { viewState ->
+        viewState.copy(
+          navigateToLogin = true,
+          snackbarMessage = null
+        )
+      }
+    }
+  }
+
   private suspend fun fetchAccountMediaDetails() {
     val params = AccountMediaDetailsParams(
       id = viewState.value.movieId,
@@ -140,5 +209,25 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }
+  }
+
+  // Consumers
+
+  fun consumeNavigateToLogin() {
+    _viewState.update { viewState ->
+      viewState.copy(navigateToLogin = null)
+    }
+  }
+
+  fun consumeSnackbarMessage() {
+    _viewState.update { viewState ->
+      viewState.copy(snackbarMessage = null)
+    }
+  }
+
+  fun onDismissRateDialog() {
+    _viewState.update { viewState ->
+      viewState.copy(showRateDialog = false)
+    }
   }
 }

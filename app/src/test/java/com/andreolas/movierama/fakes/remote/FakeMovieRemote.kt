@@ -12,6 +12,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.Videos
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
@@ -95,6 +96,17 @@ class FakeMovieRemote {
   ) {
     whenever(
       mock.fetchAccountMediaDetails(request)
+    ).thenReturn(
+      response
+    )
+  }
+
+  fun mockSubmitRating(
+    request: AddRatingRequestApi,
+    response: Flow<Unit>,
+  ) {
+    whenever(
+      mock.submitRating(request)
     ).thenReturn(
       response
     )

@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
@@ -7,6 +8,7 @@ import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.google.common.truth.Truth.assertThat
@@ -25,6 +27,7 @@ class DetailsViewModelRobot {
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val fakeGetMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
   private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
+  private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -34,6 +37,7 @@ class DetailsViewModelRobot {
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
+      submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -43,6 +47,8 @@ class DetailsViewModelRobot {
       ),
     )
   }
+
+  fun getViewModel() = viewModel
 
   fun assertViewState(
     expectedViewState: DetailsViewState,
@@ -58,8 +64,34 @@ class DetailsViewModelRobot {
     )
   }
 
+  fun onAddRateClicked() = apply {
+    viewModel.onAddRateClicked()
+  }
+
+  fun onSubmitRate(rating: Int) = apply {
+    viewModel.onSubmitRate(rating)
+  }
+
+  fun onDismissRateDialog() = apply {
+    viewModel.onDismissRateDialog()
+  }
+
+  fun onNavigateToLogin(
+    snackbarResult: SnackbarResult
+  ) = apply {
+    viewModel.navigateToLogin(snackbarResult)
+  }
+
   fun onMarkAsFavorite() = apply {
     viewModel.onMarkAsFavorite()
+  }
+
+  fun consumeSnackbar() = apply {
+    viewModel.consumeSnackbarMessage()
+  }
+
+  fun consumeNavigation() = apply {
+    viewModel.consumeNavigateToLogin()
   }
 
   fun mockMarkAsFavoriteUseCase(
@@ -76,6 +108,14 @@ class DetailsViewModelRobot {
     response: Flow<Result<AccountMediaDetails>>,
   ) = apply {
     fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = response
+    )
+  }
+
+  fun mockSubmitRate(
+    response: Flow<Result<Unit>>,
+  ) = apply {
+    fakeSubmitRatingUseCase.mockSubmitRate(
       response = response
     )
   }

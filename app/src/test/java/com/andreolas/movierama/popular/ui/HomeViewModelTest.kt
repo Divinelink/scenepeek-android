@@ -6,7 +6,6 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
-import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.andreolas.movierama.ui.UIText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -625,7 +624,6 @@ class HomeViewModelTest {
       .onMovieClicked(
         movie = popularMoviesList[0],
       )
-      .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
@@ -650,7 +648,6 @@ class HomeViewModelTest {
         )
       )
       .onMovieClicked(movie = popularMoviesList[1])
-      .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
@@ -659,7 +656,6 @@ class HomeViewModelTest {
         )
       )
       .onMovieClicked(movie = popularMoviesList[1])
-      .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
@@ -690,7 +686,6 @@ class HomeViewModelTest {
       .delay(50)
       .onMovieClicked(movie = popularMoviesList[3])
       .onMovieClicked(movie = popularMoviesList[1])
-      .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
@@ -716,7 +711,6 @@ class HomeViewModelTest {
           )
         )
         .onMovieClicked(movie = popularMoviesList[0])
-        .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
@@ -725,7 +719,6 @@ class HomeViewModelTest {
           )
         )
         .onSwipeDown()
-        .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
@@ -752,7 +745,6 @@ class HomeViewModelTest {
       .onMovieClicked(
         movie = popularMoviesList[0],
       )
-      .delay(HomeViewModel.BOTTOM_SHEET_DEBOUNCE_TIME)
       .mockMarkAsFavorite(
         mediaItem = popularMoviesList[0],
         result = Result.success(Unit),

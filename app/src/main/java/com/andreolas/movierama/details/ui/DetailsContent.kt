@@ -20,8 +20,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -44,11 +45,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -62,6 +59,7 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.TVDetails
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideoSite
+import com.andreolas.movierama.details.ui.rate.RateModalBottomSheet
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
@@ -70,6 +68,7 @@ import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
@@ -79,7 +78,7 @@ import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
-import com.andreolas.movierama.ui.getColorRating
+import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -97,8 +96,37 @@ fun DetailsContent(
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onSubmitRate: (Int) -> Unit,
+  onConsumeSnackbar: () -> Unit,
+  onDismissBottomSheet: () -> Unit,
+  onAddRateClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+  val rateBottomSheetState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = true
+  )
+
+  if (viewState.showRateDialog) {
+    RateModalBottomSheet(
+      modifier = Modifier
+        .testTag(TestTags.Details.RATE_DIALOG)
+        .navigationBarsPadding(),
+      sheetState = rateBottomSheetState,
+      value = viewState.userRating,
+      mediaTitle = viewState.mediaDetails!!.title,
+      onSubmitRate = onSubmitRate,
+      onRateChanged = {
+        // TODO implement
+      },
+      onDismissRequest = onDismissBottomSheet
+    )
+  }
+
+  SnackbarMessageHandler(
+    snackbarMessage = viewState.snackbarMessage,
+    onDismissSnackbar = onConsumeSnackbar
+  )
 
   Scaffold(
     modifier = modifier
@@ -151,6 +179,7 @@ fun DetailsContent(
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
+              onAddRateClicked = onAddRateClicked
             )
           }
         }
@@ -181,9 +210,14 @@ private fun VideoPlayerSection(
   val orientation = LocalConfiguration.current.orientation
   val playerWidth = remember {
     derivedStateOf {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) MAX_WIDTH_FOR_LANDSCAPE_PLAYER else 1f
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        MAX_WIDTH_FOR_LANDSCAPE_PLAYER
+      } else {
+        1f
+      }
     }
   }
+
   when (trailer.site) {
     VideoSite.YouTube ->
       YoutubePlayer(
@@ -211,6 +245,7 @@ fun MediaDetailsContent(
   reviewsList: List<Review>?,
   trailer: Video?,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onAddRateClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -262,7 +297,7 @@ fun MediaDetailsContent(
           )
 
           OverviewDetails(
-            modifier = modifier.weight(OVERVIEW_WEIGHT),
+            modifier = Modifier.weight(OVERVIEW_WEIGHT),
             movieDetails = mediaDetails,
             genres = mediaDetails.genres,
             onGenreClicked = {},
@@ -274,11 +309,12 @@ fun MediaDetailsContent(
         UserRating(
           overallUserScore = mediaDetails.rating,
           userRating = userRating,
+          onAddRateClicked = onAddRateClicked
         )
       }
 
       item {
-        Divider(
+        HorizontalDivider(
           modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
           thickness = MaterialTheme.dimensions.keyline_1
         )
@@ -289,7 +325,7 @@ fun MediaDetailsContent(
       }
       if (similarMoviesList?.isNotEmpty() == true) {
         item {
-          Divider(thickness = MaterialTheme.dimensions.keyline_1)
+          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
           SimilarMoviesList(
             movies = similarMoviesList,
             onSimilarMovieClicked = onSimilarMovieClicked,
@@ -299,7 +335,7 @@ fun MediaDetailsContent(
 
       if (!reviewsList.isNullOrEmpty()) {
         item {
-          Divider(thickness = MaterialTheme.dimensions.keyline_1)
+          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
           ReviewsList(
             reviews = reviewsList,
           )
@@ -318,6 +354,7 @@ private fun UserRating(
   modifier: Modifier = Modifier,
   overallUserScore: String,
   userRating: String?,
+  onAddRateClicked: () -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxSize(),
@@ -352,15 +389,14 @@ private fun UserRating(
 
     TextButton(
       modifier = Modifier.align(Alignment.CenterVertically),
-      onClick = {
-        // Add Rating
-      }
+      onClick = onAddRateClicked
     ) {
       if (userRating != null) {
         SpannableRating(
           modifier = Modifier.align(Alignment.CenterVertically),
           text = stringResource(id = R.string.details__your_rating),
-          rating = userRating
+          rating = userRating,
+          newLine = true,
         )
       } else {
         Text(
@@ -456,36 +492,6 @@ private fun OverviewDetails(
   }
 }
 
-@Composable
-fun SpannableRating(
-  modifier: Modifier = Modifier,
-  text: String,
-  rating: String
-) {
-  val color = rating.getColorRating()
-
-  val annotatedString = buildAnnotatedString {
-    append(text)
-    withStyle(
-      style = SpanStyle(
-        color = color,
-        fontSize = MaterialTheme.typography.headlineMedium.fontSize
-      )
-    ) {
-      append("\n$rating")
-    }
-  }
-
-  Text(
-    modifier = modifier.testTag(TestTags.Details.YOUR_RATING),
-    text = annotatedString,
-    lineHeight = MaterialTheme.typography.headlineSmall.lineHeight,
-    color = MaterialTheme.colorScheme.onSurface,
-    style = MaterialTheme.typography.titleMedium,
-    textAlign = TextAlign.Center,
-  )
-}
-
 private const val OVERVIEW_WEIGHT = 3f
 
 @Preview(
@@ -510,6 +516,10 @@ private fun DetailsContentPreview(
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
       )
     }
   }

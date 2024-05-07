@@ -23,6 +23,7 @@ import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_SCROLLABLE_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
+import com.andreolas.setContentWithTheme
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -31,20 +32,23 @@ class DetailsContentTest : ComposeTest() {
   @Test
   fun clickMarkAsFavoriteTest() {
     var hasClickedMarkAsFavorite = false
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {
-            hasClickedMarkAsFavorite = true
-          },
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {
+          hasClickedMarkAsFavorite = true
+        },
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     val markAsFavoriteContentDescription = composeTestRule.activity
       .getString(R.string.mark_as_favorite_button_content_description)
@@ -58,19 +62,22 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun loadingTest() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            isLoading = true,
-            mediaType = MediaType.MOVIE,
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          isLoading = true,
+          mediaType = MediaType.MOVIE,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     composeTestRule
       .onNodeWithTag(LOADING_CONTENT_TAG)
@@ -79,19 +86,22 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun renderReviewsWithoutMovieDetailsTest() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            reviews = reviews,
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          reviews = reviews,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     composeTestRule
       .onNodeWithTag(REVIEWS_SCROLLABLE_LIST)
@@ -100,20 +110,23 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun renderReviewsTest() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            mediaDetails = MediaDetailsFactory.FightClub(),
-            reviews = reviews,
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          reviews = reviews,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     val reviewsTitle = composeTestRule.activity.getString(R.string.details__reviews)
 
@@ -134,19 +147,22 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun testErrorAlert() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            error = UIText.ResourceText(R.string.details__fatal_error_fetching_details)
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          error = UIText.ResourceText(R.string.details__fatal_error_fetching_details)
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     val errorText = composeTestRule.activity
       .getString(R.string.details__fatal_error_fetching_details)
@@ -172,20 +188,23 @@ class DetailsContentTest : ComposeTest() {
       site = VideoSite.YouTube,
       officialTrailer = true,
     )
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            mediaDetails = MediaDetailsFactory.FightClub(),
-            trailer = youtubeTrailer,
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          trailer = youtubeTrailer,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     composeTestRule
       .onNodeWithTag(VIDEO_PLAYER_TAG)
@@ -194,20 +213,23 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given user rating rating score is displayed`() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            userRating = "8",
-            mediaDetails = MediaDetailsFactory.FightClub(),
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          userRating = "8",
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     val userScore = composeTestRule.activity.getString(R.string.details__user_score, "7.3")
 
@@ -225,19 +247,22 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given unrated movie add your rate button is displayed`() {
-    composeTestRule
-      .setContent {
-        DetailsContent(
-          viewState = DetailsViewState(
-            movieId = 0,
-            mediaType = MediaType.MOVIE,
-            mediaDetails = MediaDetailsFactory.FightClub(),
-          ),
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-        )
-      }
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
 
     val addYourRate = composeTestRule.activity.getString(R.string.details__add_rating)
 
@@ -247,6 +272,69 @@ class DetailsContentTest : ComposeTest() {
         useUnmergedTree = true
       )
       .assertIsDisplayed()
+  }
+
+  @Test
+  fun `test rate dialog is visible`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          showRateDialog = true
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {},
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
+
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_DIALOG
+    ).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test rate dialog onSubmitRate`() {
+    var onSubmitRate = false
+
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          showRateDialog = true
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onSubmitRate = {
+          onSubmitRate = true
+        },
+        onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
+      )
+    }
+
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_DIALOG
+    ).assertIsDisplayed()
+
+    val submitText = composeTestRule.activity.getString(R.string.details__submit_rating_button)
+
+    composeTestRule.onNodeWithText(
+      text = submitText,
+      useUnmergedTree = true
+    ).performClick()
+
+    assertThat(onSubmitRate).isTrue()
   }
 
   private val reviews = ReviewFactory.ReviewList()

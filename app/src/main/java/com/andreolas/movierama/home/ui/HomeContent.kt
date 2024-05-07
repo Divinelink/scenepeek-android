@@ -3,37 +3,30 @@
 package com.andreolas.movierama.home.ui
 
 import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,27 +35,22 @@ import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.BottomSheetMovieContent
 import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
+import com.andreolas.movierama.ui.components.ModalBottomSheetMovieContent
 import com.andreolas.movierama.ui.components.MovieRamaSearchBar
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
-import com.andreolas.movierama.ui.components.bottomsheet.animateBottomSheet
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.SearchBarShape
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
-@OptIn(
-  ExperimentalMaterial3Api::class,
-)
-@Suppress("LongMethod")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
   viewState: HomeViewState,
@@ -79,50 +67,29 @@ fun HomeContent(
   onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-  val keyboardController = LocalSoftwareKeyboardController.current
   val scope = rememberCoroutineScope()
 
-  val scaffoldState = rememberBottomSheetScaffoldState(
-    bottomSheetState = rememberStandardBottomSheetState(
-      initialValue = SheetValue.Hidden,
-      skipHiddenState = false,
-      confirmValueChange = {
-        if (it == SheetValue.Hidden) {
-          onSwipeDown()
-        }
-        true
-      },
-    )
+  val sheetState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = true
   )
 
-  LaunchedEffect(viewState.bottomSheetUiState) {
-    if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
-      keyboardController?.hide()
-    }
-    animateBottomSheet(
-      uiState = viewState.bottomSheetUiState,
-      bottomSheetState = scaffoldState.bottomSheetState,
+  if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
+    ModalBottomSheetMovieContent(
+      sheetState = sheetState,
+      onContentClicked = { mediaItem ->
+        scope.launch {
+          onGoToDetails(mediaItem)
+          sheetState.hide()
+          onSwipeDown()
+        }
+      },
+      movie = viewState.bottomSheetUiState.data,
+      onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
+      onDismissRequest = onSwipeDown,
     )
   }
 
-  BackHandler(scaffoldState.bottomSheetState.isVisible) {
-    scope.launch {
-      scaffoldState.bottomSheetState.hide()
-    }
-  }
-
-  BottomSheetScaffold(
-    scaffoldState = scaffoldState,
-    sheetPeekHeight = 1.dp,
-    sheetContent = {
-      if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
-        BottomSheetMovieContent(
-          onContentClicked = onGoToDetails,
-          movie = viewState.bottomSheetUiState.data,
-          onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
-        )
-      }
-    },
+  Scaffold(
     modifier = Modifier
       .nestedScroll(scrollBehavior.nestedScrollConnection)
       .navigationBarsPadding(),
@@ -149,12 +116,13 @@ fun HomeContent(
       )
     },
   ) { paddingValues ->
-    Column {
+    Column(modifier = Modifier.padding(paddingValues)) {
       AnimatedVisibility(
         visible = viewState.query.isEmpty(),
       ) {
         FilterBar(
-          modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+          modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp),
           filters = viewState.filters,
           onFilterClick = { homeFilter ->
             onFilterClicked(homeFilter.name)
@@ -166,7 +134,6 @@ fun HomeContent(
       if (viewState.emptyResult) {
         EmptySectionCard(
           modifier = modifier
-            .padding(paddingValues)
             .padding(start = 8.dp, end = 8.dp),
           title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
           description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
@@ -180,11 +147,8 @@ fun HomeContent(
           when (unselectedFilters) {
             true -> {
               MoviesLazyGrid(
-                modifier = modifier,
-                paddingValues = paddingValues,
+                modifier = Modifier, // .padding(paddingValues),
                 onMovieClicked = onMovieClicked,
-                scope = scope,
-                bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.searchList,
                 onLoadNextPage = onLoadNextPage,
@@ -193,11 +157,8 @@ fun HomeContent(
             }
             false -> {
               MoviesLazyGrid(
-                modifier = modifier,
-                paddingValues = paddingValues,
+                modifier = Modifier,
                 onMovieClicked = onMovieClicked,
-                scope = scope,
-                bottomSheetState = scaffoldState,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.filteredResults ?: emptyList(),
                 onLoadNextPage = onLoadNextPage,
@@ -214,15 +175,11 @@ fun HomeContent(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MoviesLazyGrid(
   modifier: Modifier,
-  paddingValues: PaddingValues,
   searchList: List<MediaItem>,
   onMovieClicked: (MediaItem) -> Unit,
-  scope: CoroutineScope,
-  bottomSheetState: BottomSheetScaffoldState,
   onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   loadMore: Boolean,
@@ -230,17 +187,9 @@ private fun MoviesLazyGrid(
   MediaList(
     modifier = modifier
       .fillMaxSize()
-      .testTag(MOVIES_LIST_TAG)
-      .padding(paddingValues),
+      .testTag(MOVIES_LIST_TAG),
     searches = searchList,
-    onMovieClicked = {
-      scope.launch {
-        if (bottomSheetState.bottomSheetState.isVisible) {
-          bottomSheetState.bottomSheetState.hide()
-        }
-        onMovieClicked(it)
-      }
-    },
+    onMovieClicked = onMovieClicked,
     onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
     onLoadNextPage = onLoadNextPage,
     isLoading = loadMore,
