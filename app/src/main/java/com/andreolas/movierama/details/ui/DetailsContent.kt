@@ -45,11 +45,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -68,10 +64,10 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
-import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
 import com.andreolas.movierama.ui.components.details.reviews.ReviewsList
@@ -82,7 +78,6 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
-import com.andreolas.movierama.ui.getColorRating
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
@@ -402,7 +397,7 @@ private fun UserRating(
         SpannableRating(
           modifier = Modifier.align(Alignment.CenterVertically),
           text = stringResource(id = R.string.details__your_rating),
-          rating = userRating
+          rating = "{\n$userRating}"
         )
       } else {
         Text(
@@ -496,36 +491,6 @@ private fun OverviewDetails(
       )
     }
   }
-}
-
-@Composable
-fun SpannableRating(
-  modifier: Modifier = Modifier,
-  text: String,
-  rating: String
-) {
-  val color = rating.getColorRating()
-
-  val annotatedString = buildAnnotatedString {
-    append(text)
-    withStyle(
-      style = SpanStyle(
-        color = color,
-        fontSize = MaterialTheme.typography.headlineMedium.fontSize
-      )
-    ) {
-      append("\n$rating")
-    }
-  }
-
-  Text(
-    modifier = modifier.testTag(TestTags.Details.YOUR_RATING),
-    text = annotatedString,
-    lineHeight = MaterialTheme.typography.headlineSmall.lineHeight,
-    color = MaterialTheme.colorScheme.onSurface,
-    style = MaterialTheme.typography.titleMedium,
-    textAlign = TextAlign.Center,
-  )
 }
 
 private const val OVERVIEW_WEIGHT = 3f

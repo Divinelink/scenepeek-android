@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.R
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.destinations.DetailsScreenDestination
+import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
@@ -154,6 +155,16 @@ class DetailsViewModel @Inject constructor(
                 ),
               )
             )
+          }
+        }.onFailure {
+          if (it is SessionException.NoSession) {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.StringText("You need to be logged in to rate movies.")
+                )
+              )
+            }
           }
         }
       }
