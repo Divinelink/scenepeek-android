@@ -72,6 +72,7 @@
   <string name="details__clear_my_rating">Clear my rating</string>
   <string name="details__your_score">Your score %s</string>
   <string name="details__submit_rating_button">Submit rating</string>
+  <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
 
   <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
 

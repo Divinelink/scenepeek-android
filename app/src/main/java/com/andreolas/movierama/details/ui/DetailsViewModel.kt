@@ -3,6 +3,7 @@ package com.andreolas.movierama.details.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andreolas.movierama.R
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
@@ -14,6 +15,8 @@ import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
+import com.andreolas.movierama.ui.UIText
+import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -144,10 +147,24 @@ class DetailsViewModel @Inject constructor(
           _viewState.update { viewState ->
             viewState.copy(
               userRating = rating.toString(),
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.details__rating_submitted_successfully,
+                  viewState.mediaDetails?.title ?: ""
+                ),
+              )
             )
           }
         }
       }
+    }
+  }
+
+  fun consumeSnackbarMessage() {
+    _viewState.update { viewState ->
+      viewState.copy(
+        snackbarMessage = null
+      )
     }
   }
 

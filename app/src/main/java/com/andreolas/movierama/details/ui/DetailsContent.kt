@@ -81,6 +81,7 @@ import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
+import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
 import com.andreolas.movierama.ui.getColorRating
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
@@ -100,6 +101,7 @@ fun DetailsContent(
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onSubmitRate: (Int) -> Unit,
+  onConsumeSnackbar: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -127,6 +129,14 @@ fun DetailsContent(
       }
     )
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = viewState.snackbarMessage,
+    onShowMessage = {
+      showRateModalBottomSheet.value = false
+    },
+    onDismissSnackbar = onConsumeSnackbar
+  )
 
   Scaffold(
     modifier = modifier
@@ -543,6 +553,7 @@ private fun DetailsContentPreview(
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onSubmitRate = {},
+        onConsumeSnackbar = {},
       )
     }
   }

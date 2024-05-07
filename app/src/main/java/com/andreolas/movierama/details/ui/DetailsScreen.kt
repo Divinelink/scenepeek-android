@@ -33,6 +33,7 @@ fun DetailsScreen(
       )
 
       navigator.navigate(destination)
-    }
+    },
+    onConsumeSnackbar = viewModel::consumeSnackbarMessage,
   )
 }

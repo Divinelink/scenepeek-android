@@ -2,7 +2,10 @@ package com.andreolas.movierama.details.ui.rate
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
@@ -12,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.andreolas.movierama.ui.theme.AppTheme
+import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
 @Suppress("MagicNumber")
@@ -25,7 +29,7 @@ fun RateSlider(
 
   val color = animateColorAsState(
     targetValue = when (rating.floatValue) {
-      in 0.0f..3.5f -> Color(0xFFDB2360)
+      in 0.1f..3.5f -> Color(0xFFDB2360)
       in 3.5f..6.9f -> Color(0xFFD2D531)
       in 7.0f..10.0f -> Color(0xFF21D07A)
       else -> Color.White
@@ -61,9 +65,26 @@ fun RateSlider(
 @Composable
 private fun RateSliderPreview() {
   AppTheme {
-    RateSlider(
-      value = 1f,
-      onValueChange = {}
-    )
+    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+      RateSlider(
+        value = 0f,
+        onValueChange = {}
+      )
+
+      RateSlider(
+        value = 1f,
+        onValueChange = {}
+      )
+
+      RateSlider(
+        value = 5f,
+        onValueChange = {}
+      )
+
+      RateSlider(
+        value = 8f,
+        onValueChange = {}
+      )
+    }
   }
 }
