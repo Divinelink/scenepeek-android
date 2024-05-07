@@ -1,5 +1,6 @@
 package com.andreolas.movierama
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -7,16 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.andreolas.movierama.destinations.HomeScreenDestination
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.LoadingContent
+import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.updateForTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -29,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -48,58 +54,63 @@ class MainActivity : AppCompatActivity() {
       }
     }
     setContent {
+      val snackbarHostState = remember { SnackbarHostState() }
+      val coroutineScope = rememberCoroutineScope()
+
       AppTheme(
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
-        Surface(
-          color = MaterialTheme.colorScheme.background,
+        ProvideSnackbarController(
+          snackbarHostState = snackbarHostState,
+          coroutineScope = coroutineScope
         ) {
-          val mainState = viewModel.viewState.collectAsState()
+          Scaffold(
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) {
+            val mainState = viewModel.viewState.collectAsState()
 
-          when (mainState.value) {
-            MainViewState.Completed -> {
-              AppNavHost(
-                startRoute = HomeScreenDestination,
-              )
-            }
-            MainViewState.Loading -> {
-              LoadingContent()
-            }
-            is MainViewState.Error -> {
-              viewModel.retryFetchRemoteConfig()
+            when (mainState.value) {
+              MainViewState.Completed -> {
+                AppNavHost(
+                  startRoute = HomeScreenDestination,
+                )
+              }
+              MainViewState.Loading -> {
+                LoadingContent()
+              }
+              is MainViewState.Error -> viewModel.retryFetchRemoteConfig()
             }
           }
         }
       }
     }
   }
+}
 
-  @OptIn(ExperimentalMaterialNavigationApi::class)
-  @Composable
-  private fun AppNavHost(
-    startRoute: Route,
-  ) {
-    DestinationsNavHost(
-      startRoute = startRoute,
-      navGraph = NavGraphs.root,
-      engine = rememberAnimatedNavHostEngine(
-        rootDefaultAnimations = RootNavGraphDefaultAnimations(
-          enterTransition = {
-            slideInHorizontally()
-          },
-          exitTransition = {
-            fadeOut()
-          },
-        ),
+@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class)
+@Composable
+private fun AppNavHost(
+  startRoute: Route,
+) {
+  DestinationsNavHost(
+    startRoute = startRoute,
+    navGraph = NavGraphs.root,
+    engine = rememberAnimatedNavHostEngine(
+      rootDefaultAnimations = RootNavGraphDefaultAnimations(
+        enterTransition = {
+          slideInHorizontally()
+        },
+        exitTransition = {
+          fadeOut()
+        },
       ),
-      manualComposableCallsBuilder = {
-        composable(HomeScreenDestination) {
-          HomeScreen(
-            navigator = destinationsNavigator,
-          )
-        }
+    ),
+    manualComposableCallsBuilder = {
+      composable(HomeScreenDestination) {
+        HomeScreen(
+          navigator = destinationsNavigator,
+        )
       }
-    )
-  }
+    }
+  )
 }
