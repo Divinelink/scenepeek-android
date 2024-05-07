@@ -16,7 +16,8 @@ import com.andreolas.movierama.ui.getColorRating
 fun SpannableRating(
   modifier: Modifier = Modifier,
   text: String,
-  rating: String
+  rating: String,
+  newLine: Boolean = false
 ) {
   val color = rating.getColorRating()
 
@@ -28,6 +29,9 @@ fun SpannableRating(
         fontSize = MaterialTheme.typography.headlineMedium.fontSize,
       )
     ) {
+      if (newLine) {
+        append("\n")
+      }
       append(rating)
     }
   }

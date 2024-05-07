@@ -97,6 +97,8 @@ fun DetailsContent(
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onSubmitRate: (Int) -> Unit,
   onConsumeSnackbar: () -> Unit,
+  onDismissBottomSheet: () -> Unit,
+  onAddRateClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -104,12 +106,7 @@ fun DetailsContent(
     skipPartiallyExpanded = true
   )
 
-  val showRateModalBottomSheet = remember {
-    // TODO Add viewModel callback, that checks if the user is logged in prior to opening bottom sheet
-    mutableStateOf(false)
-  }
-
-  if (showRateModalBottomSheet.value) {
+  if (viewState.showRateBottomSheet) {
     RateModalBottomSheet(
       modifier = Modifier.navigationBarsPadding(),
       sheetState = rateBottomSheetState,
@@ -119,17 +116,12 @@ fun DetailsContent(
       onRateChanged = {
         // TODO implement
       },
-      onDismissRequest = {
-        showRateModalBottomSheet.value = false
-      }
+      onDismissRequest = onDismissBottomSheet
     )
   }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
-    onShowMessage = {
-      showRateModalBottomSheet.value = false
-    },
     onDismissSnackbar = onConsumeSnackbar
   )
 
@@ -185,7 +177,8 @@ fun DetailsContent(
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
               onAddRateClicked = {
-                showRateModalBottomSheet.value = true
+                onAddRateClicked()
+//                showRateModalBottomSheet.value = true
               }
             )
           }
@@ -217,9 +210,14 @@ private fun VideoPlayerSection(
   val orientation = LocalConfiguration.current.orientation
   val playerWidth = remember {
     derivedStateOf {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) MAX_WIDTH_FOR_LANDSCAPE_PLAYER else 1f
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        MAX_WIDTH_FOR_LANDSCAPE_PLAYER
+      } else {
+        1f
+      }
     }
   }
+
   when (trailer.site) {
     VideoSite.YouTube ->
       YoutubePlayer(
@@ -397,7 +395,8 @@ private fun UserRating(
         SpannableRating(
           modifier = Modifier.align(Alignment.CenterVertically),
           text = stringResource(id = R.string.details__your_rating),
-          rating = "{\n$userRating}"
+          rating = userRating,
+          newLine = true,
         )
       } else {
         Text(
@@ -519,6 +518,8 @@ private fun DetailsContentPreview(
         onSimilarMovieClicked = {},
         onSubmitRate = {},
         onConsumeSnackbar = {},
+        onDismissBottomSheet = {},
+        onAddRateClicked = {},
       )
     }
   }

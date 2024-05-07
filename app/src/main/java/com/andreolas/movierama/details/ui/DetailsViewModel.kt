@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -142,11 +143,10 @@ class DetailsViewModel @Inject constructor(
         )
       ).collectLatest { result ->
         result.onSuccess {
-          Timber.d(
-            "Rating submitted: $rating"
-          )
+          Timber.d("Rating submitted: $rating")
           _viewState.update { viewState ->
             viewState.copy(
+              showRateBottomSheet = false,
               userRating = rating.toString(),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
@@ -160,8 +160,11 @@ class DetailsViewModel @Inject constructor(
           if (it is SessionException.NoSession) {
             _viewState.update { viewState ->
               viewState.copy(
+                showRateBottomSheet = false,
                 snackbarMessage = SnackbarMessage.from(
-                  text = UIText.StringText("You need to be logged in to rate movies.")
+                  text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+                  actionLabelText = UIText.ResourceText(R.string.login),
+                  onSnackbarResult = ::navigateToLogin,
                 )
               )
             }
@@ -171,11 +174,22 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun consumeSnackbarMessage() {
+  fun onAddRateClicked() {
     _viewState.update { viewState ->
       viewState.copy(
-        snackbarMessage = null
+        showRateBottomSheet = true
       )
+    }
+  }
+
+  private fun navigateToLogin(snackbarResult: SnackbarResult) {
+    if (snackbarResult == SnackbarResult.ActionPerformed) {
+      _viewState.update { viewState ->
+        viewState.copy(
+          navigateToLogin = true,
+          snackbarMessage = null
+        )
+      }
     }
   }
 
@@ -195,5 +209,25 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }
+  }
+
+  // Consumers
+
+  fun consumeNavigateToLogin() {
+    _viewState.update { viewState ->
+      viewState.copy(navigateToLogin = null)
+    }
+  }
+
+  fun consumeSnackbarMessage() {
+    _viewState.update { viewState ->
+      viewState.copy(snackbarMessage = null)
+    }
+  }
+
+  fun onDismissBottomSheet() {
+    _viewState.update { viewState ->
+      viewState.copy(showRateBottomSheet = false)
+    }
   }
 }

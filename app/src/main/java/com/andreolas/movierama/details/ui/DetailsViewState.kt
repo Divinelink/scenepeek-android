@@ -21,6 +21,8 @@ data class DetailsViewState(
   val trailer: Video? = null,
   val error: UIText? = null,
   val snackbarMessage: SnackbarMessage? = null,
+  val showRateBottomSheet: Boolean = false,
+  val navigateToLogin: Boolean? = null,
 ) {
   val mediaItem = when (mediaDetails) {
     is MovieDetails -> MediaItem.Media.Movie(
