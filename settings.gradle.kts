@@ -14,6 +14,7 @@ dependencyResolutionManagement {
     mavenCentral()
   }
 }
+rootProject.name = "MovieRama"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
