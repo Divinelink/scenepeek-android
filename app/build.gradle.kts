@@ -1,6 +1,9 @@
 @file:Suppress("MagicNumber")
 
 plugins {
+  alias(libs.plugins.divinelink.android.application)
+  alias(libs.plugins.divinelink.android.application.compose)
+
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.android.application)
   alias(libs.plugins.detekt)
@@ -22,13 +25,11 @@ apply("../buildscripts/coveralls.gradle")
 android {
   namespace = "com.andreolas.movierama"
 
-  compileSdk = 34
   defaultConfig {
     applicationId = "com.andreolas.movierama"
-    minSdk = 26
-    targetSdk = 34
     versionCode = 6
     versionName = "0.2.0"
+
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
@@ -65,24 +66,6 @@ android {
     debug {
       // Nothing yet
     }
-  }
-
-  buildFeatures {
-    compose = true
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.extesion.get()
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    isCoreLibraryDesugaringEnabled = false
-  }
-
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_17.toString()
   }
 
   testOptions {

@@ -4,9 +4,9 @@ firebase-crashlytics-gradle = "2.9.9"
 google-services = "4.4.1"
 kotlin = "1.9.23"
 ksp = "1.9.23-1.0.20"
+android-tools = "31.4.0"
+# android-tools and agp should be updated together
 agp = "8.3.2"
-# AGP and DesugarTools should be updated together
-desugar = "2.0.4"
 core-ktx = "1.13.1"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
@@ -16,6 +16,7 @@ start-up = "1.1.1"
 kotlinx-datetime = "0.4.0"
 ktlint = "12.1.1"
 secrets = "2.0.1"
+desugar = "2.0.4"
 
 detekt = "1.23.6"
 
@@ -42,7 +43,7 @@ material = "1.11.0"
 
 # Compose
 compose-bom = "2024.05.00"
-compose-compiler-extesion = "1.5.13"
+compose-compiler-extension = "1.5.13"
 compose-destinations = "1.10.2"
 material3 = "1.2.1"
 
@@ -172,6 +173,11 @@ mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
+# Dependencies of the included build-logic
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -190,4 +196,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 #detekt-cli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = "detekt-cli" }
 #detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-cli" }
 
-[bundles]
+# Plugins defined by this project
+divinelink-android-application = { id = "divinelink.android.application", version = "unspecified" }
+divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
