@@ -1,7 +1,7 @@
 plugins.apply("org.jetbrains.kotlinx.kover")
 
 dependencies {
-  kover(project(":core-util"))
+  // kover(project(":core-util"))
 }
 
 koverReport {
