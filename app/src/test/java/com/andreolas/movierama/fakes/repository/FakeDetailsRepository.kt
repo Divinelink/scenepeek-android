@@ -82,4 +82,14 @@ class FakeDetailsRepository {
       flowOf(response)
     )
   }
+
+  fun mockDeleteRating(
+    response: Result<Unit>,
+  ) {
+    whenever(
+      mock.deleteRating(any())
+    ).thenReturn(
+      flowOf(response)
+    )
+  }
 }

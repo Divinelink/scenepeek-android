@@ -75,6 +75,7 @@
   <string name="details__submit_rating_button">Submit rating</string>
 
   <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
+  <string name="details__rating_deleted_successfully">Rating cleared for %s</string>
   <string name="details__must_be_logged_in_to_rate">"Please login to submit your rating."</string>
 
   <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>

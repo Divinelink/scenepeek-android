@@ -10,6 +10,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.toDomainMedia
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.toDomainVideosList
 import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.DeleteRatingRequestApi
 import com.andreolas.movierama.base.data.remote.movies.mapper.map
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.details.domain.model.MediaDetails
@@ -31,63 +32,59 @@ class ProdDetailsRepository @Inject constructor(
   private val movieRemote: MovieService,
 ) : DetailsRepository {
 
-  override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> {
-    return movieRemote
+  override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
+    movieRemote
       .fetchDetails(request)
       .map { apiResponse ->
         Result.success(apiResponse.toDomainMedia())
       }.catch {
         throw MovieDetailsException()
       }
-  }
 
-  override fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>> {
-    return movieRemote
+  override fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>> =
+    movieRemote
       .fetchReviews(request)
       .map { apiResponse ->
         Result.success(apiResponse.toDomainReviewsList())
       }.catch {
         throw ReviewsException()
       }
-  }
 
   override fun fetchSimilarMovies(
     request: SimilarRequestApi,
-  ): Flow<Result<List<MediaItem.Media>>> {
-    return movieRemote
-      .fetchSimilarMovies(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toDomainMoviesList(MediaType.from(request.endpoint)))
-      }.catch {
-        throw SimilarException()
-      }
-  }
+  ): Flow<Result<List<MediaItem.Media>>> = movieRemote
+    .fetchSimilarMovies(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.toDomainMoviesList(MediaType.from(request.endpoint)))
+    }.catch {
+      throw SimilarException()
+    }
 
-  override fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>> {
-    return movieRemote
-      .fetchVideos(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toDomainVideosList())
-      }.catch {
-        throw VideosException()
-      }
-  }
+  override fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>> = movieRemote
+    .fetchVideos(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.toDomainVideosList())
+    }.catch {
+      throw VideosException()
+    }
 
   override fun fetchAccountMediaDetails(
     request: AccountMediaDetailsRequestApi
-  ): Flow<Result<AccountMediaDetails>> {
-    return movieRemote
-      .fetchAccountMediaDetails(request)
-      .map { response ->
-        Result.success(response.map())
-      }
-  }
+  ): Flow<Result<AccountMediaDetails>> = movieRemote
+    .fetchAccountMediaDetails(request)
+    .map { response ->
+      Result.success(response.map())
+    }
 
-  override fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>> {
-    return movieRemote
-      .submitRating(request)
-      .map {
-        Result.success(Unit)
-      }
-  }
+  override fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>> = movieRemote
+    .submitRating(request)
+    .map {
+      Result.success(Unit)
+    }
+
+  override fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>> = movieRemote
+    .deleteRating(request)
+    .map {
+      Result.success(Unit)
+    }
 }

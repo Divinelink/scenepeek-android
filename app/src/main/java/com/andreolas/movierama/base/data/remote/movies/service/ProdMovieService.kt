@@ -16,6 +16,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularReques
 import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestBodyApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.DeleteRatingRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
@@ -134,6 +135,17 @@ class ProdMovieService @Inject constructor(
       url = url,
       body = AddRatingRequestBodyApi(request.rating)
     )
+
+    emit(response)
+  }
+
+  override fun deleteRating(request: DeleteRatingRequestApi): Flow<Unit> = flow {
+    val baseUrl = "${ApiConstants.TMDB_URL}/${request.endpoint}/"
+    val url = baseUrl +
+      "${request.id}/rating?" +
+      "&session_id=${request.sessionId}"
+
+    val response = restClient.delete<Unit>(url = url)
 
     emit(response)
   }

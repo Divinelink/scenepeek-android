@@ -6,6 +6,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.Revie
 import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.DeleteRatingRequestApi
 import com.andreolas.movierama.details.domain.model.MediaDetails
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.Video
@@ -40,5 +41,9 @@ interface DetailsRepository {
 
   fun submitRating(
     request: AddRatingRequestApi
+  ): Flow<Result<Unit>>
+
+  fun deleteRating(
+    request: DeleteRatingRequestApi
   ): Flow<Result<Unit>>
 }

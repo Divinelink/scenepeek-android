@@ -30,8 +30,9 @@ fun RateDialogContent(
   value: Float,
   onRateChanged: (Float) -> Unit,
   mediaTitle: String,
+  canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,
-  onDeleteRate: () -> Unit,
+  onClearRate: () -> Unit,
 ) {
   val rating = remember { mutableFloatStateOf(value) }
 
@@ -63,13 +64,15 @@ fun RateDialogContent(
       }
     )
 
-    TextButton(
-      modifier = Modifier
-        .padding(bottom = MaterialTheme.dimensions.keyline_16)
-        .align(Alignment.End),
-      onClick = onDeleteRate,
-    ) {
-      Text(text = stringResource(id = R.string.details__clear_my_rating))
+    if (canClearRate) {
+      TextButton(
+        modifier = Modifier
+          .padding(bottom = MaterialTheme.dimensions.keyline_16)
+          .align(Alignment.End),
+        onClick = onClearRate,
+      ) {
+        Text(text = stringResource(id = R.string.details__clear_my_rating))
+      }
     }
 
     Button(
@@ -92,8 +95,9 @@ private fun BottomSheetRateContentPreview() {
         value = 5f,
         mediaTitle = "The Godfather",
         onRateChanged = {},
-        onSubmitRate = { },
-        onDeleteRate = {},
+        onSubmitRate = {},
+        onClearRate = {},
+        canClearRate = true
       )
     }
   }
