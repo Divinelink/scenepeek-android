@@ -8,16 +8,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
@@ -55,7 +56,7 @@ const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
 const val DETAILS_BUTTON_TAG = "DETAILS_AND_MORE_BUTTON_TAG"
 const val BOTTOM_SHEET_MARK_AS_FAVORITE = "MARK_AS_FAVORITE_BUTTON"
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ModalBottomSheetMovieContent(
   modifier: Modifier = Modifier,
@@ -75,6 +76,7 @@ fun ModalBottomSheetMovieContent(
       onContentClicked = onContentClicked,
       onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
     )
+    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
 
@@ -87,7 +89,7 @@ private fun MovieBottomSheetContent(
 ) {
   if (movie !is MediaItem.Media) return
 
-  Column(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
+  Column {
     Row(
       modifier = modifier
         .testTag(MOVIE_BOTTOM_SHEET_TAG)

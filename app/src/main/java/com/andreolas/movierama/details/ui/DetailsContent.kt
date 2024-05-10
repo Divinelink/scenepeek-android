@@ -110,8 +110,7 @@ fun DetailsContent(
   if (viewState.showRateDialog) {
     RateModalBottomSheet(
       modifier = Modifier
-        .testTag(TestTags.Details.RATE_DIALOG)
-        .navigationBarsPadding(),
+        .testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
       value = viewState.userRating,
       mediaTitle = viewState.mediaDetails!!.title,
