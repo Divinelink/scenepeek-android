@@ -27,8 +27,9 @@ class RateDialogContentTest : ComposeTest() {
         onSubmitRate = {
           submitClicked = true
         },
-        onDeleteRate = {}
-      )
+        onClearRate = {},
+        canClearRate = true
+        )
     }
 
     val descriptionText = composeTestRule.activity.getString(
@@ -60,9 +61,10 @@ class RateDialogContentTest : ComposeTest() {
         onRateChanged = {},
         mediaTitle = movie.title,
         onSubmitRate = {},
-        onDeleteRate = {
+        onClearRate = {
           deleteClicked = true
-        }
+        },
+        canClearRate = true
       )
     }
 

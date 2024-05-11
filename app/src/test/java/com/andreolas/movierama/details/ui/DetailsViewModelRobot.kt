@@ -7,6 +7,7 @@ import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.home.domain.model.MediaItem
@@ -28,6 +29,7 @@ class DetailsViewModelRobot {
   private val fakeGetMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
   private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
+  private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -38,6 +40,7 @@ class DetailsViewModelRobot {
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
+      deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -70,6 +73,10 @@ class DetailsViewModelRobot {
 
   fun onSubmitRate(rating: Int) = apply {
     viewModel.onSubmitRate(rating)
+  }
+
+  fun onDeleteRating() = apply {
+    viewModel.onClearRating()
   }
 
   fun onDismissRateDialog() = apply {
@@ -116,6 +123,14 @@ class DetailsViewModelRobot {
     response: Flow<Result<Unit>>,
   ) = apply {
     fakeSubmitRatingUseCase.mockSubmitRate(
+      response = response
+    )
+  }
+
+  fun mockDeleteRating(
+    response: Flow<Result<Unit>>,
+  ) = apply {
+    fakeDeleteRatingUseCase.mockDeleteRating(
       response = response
     )
   }
