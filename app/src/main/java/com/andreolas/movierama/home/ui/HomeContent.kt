@@ -78,8 +78,8 @@ fun HomeContent(
       sheetState = sheetState,
       onContentClicked = { mediaItem ->
         scope.launch {
-          onGoToDetails(mediaItem)
           sheetState.hide()
+          onGoToDetails(mediaItem)
           onSwipeDown()
         }
       },
