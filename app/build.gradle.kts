@@ -59,7 +59,7 @@ android {
       firebaseAppDistribution {
         artifactType = "APK"
         artifactPath = "app/build/outputs/apk/release/app-release.apk"
-        groups = listOf("development").toString()
+        groups = "development"
       }
     }
 
