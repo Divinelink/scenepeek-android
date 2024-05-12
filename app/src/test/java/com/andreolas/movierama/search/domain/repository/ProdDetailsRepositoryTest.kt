@@ -20,6 +20,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideoR
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
+import com.andreolas.movierama.base.data.remote.movies.dto.rating.DeleteRatingRequestApi
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.ReviewsException
 import com.andreolas.movierama.details.domain.model.SimilarException
@@ -313,6 +314,50 @@ class ProdDetailsRepositoryTest {
     )
 
     val actualResult = repository.submitRating(
+      request = request
+    ).first()
+
+    assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test delete rating for movie`() = runTest {
+    val request = DeleteRatingRequestApi.Movie(
+      movieId = 555,
+      sessionId = "session_id",
+    )
+
+    val response = flowOf(Unit)
+    val expectedResult = Unit
+
+    movieRemote.mockDeleteRating(
+      request = request,
+      response = response
+    )
+
+    val actualResult = repository.deleteRating(
+      request = request
+    ).first()
+
+    assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test delete rating for tv`() = runTest {
+    val request = DeleteRatingRequestApi.TV(
+      seriesId = 555,
+      sessionId = "session_id",
+    )
+
+    val response = flowOf(Unit)
+    val expectedResult = Unit
+
+    movieRemote.mockDeleteRating(
+      request = request,
+      response = response
+    )
+
+    val actualResult = repository.deleteRating(
       request = request
     ).first()
 

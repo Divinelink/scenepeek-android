@@ -11,6 +11,8 @@ import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.model.MovieDetailsException
 import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
+import com.andreolas.movierama.details.domain.usecase.DeleteRatingParameters
+import com.andreolas.movierama.details.domain.usecase.DeleteRatingUseCase
 import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
@@ -39,6 +41,7 @@ class DetailsViewModel @Inject constructor(
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
+  private val deleteRatingUseCase: DeleteRatingUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -168,6 +171,35 @@ class DetailsViewModel @Inject constructor(
                 )
               )
             }
+          }
+        }
+      }
+    }
+  }
+
+  fun onClearRating() {
+    if (viewState.value.userRating == null) return
+
+    viewModelScope.launch {
+      deleteRatingUseCase.invoke(
+        DeleteRatingParameters(
+          id = viewState.value.movieId,
+          mediaType = viewState.value.mediaType
+        )
+      ).collectLatest { result ->
+        result.onSuccess {
+          Timber.d("Rating deleted")
+          _viewState.update { viewState ->
+            viewState.copy(
+              userRating = null,
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.details__rating_deleted_successfully,
+                  viewState.mediaDetails?.title ?: ""
+                )
+              ),
+              showRateDialog = false
+            )
           }
         }
       }

@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -59,12 +58,10 @@ import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.details.domain.model.TVDetails
 import com.andreolas.movierama.details.domain.model.Video
 import com.andreolas.movierama.details.domain.model.VideoSite
-import com.andreolas.movierama.details.ui.rate.RateModalBottomSheet
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
-import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
 import com.andreolas.movierama.ui.components.MovieImage
@@ -96,32 +93,10 @@ fun DetailsContent(
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
-  onSubmitRate: (Int) -> Unit,
   onConsumeSnackbar: () -> Unit,
-  onDismissBottomSheet: () -> Unit,
   onAddRateClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-  val rateBottomSheetState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = true
-  )
-
-  if (viewState.showRateDialog) {
-    RateModalBottomSheet(
-      modifier = Modifier
-        .testTag(TestTags.Details.RATE_DIALOG)
-        .navigationBarsPadding(),
-      sheetState = rateBottomSheetState,
-      value = viewState.userRating,
-      mediaTitle = viewState.mediaDetails!!.title,
-      onSubmitRate = onSubmitRate,
-      onRateChanged = {
-        // TODO implement
-      },
-      onDismissRequest = onDismissBottomSheet
-    )
-  }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -516,9 +491,7 @@ private fun DetailsContentPreview(
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
-        onSubmitRate = {},
         onConsumeSnackbar = {},
-        onDismissBottomSheet = {},
         onAddRateClicked = {},
       )
     }

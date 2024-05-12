@@ -606,4 +606,44 @@ class DetailsViewModelTest {
         )
       )
   }
+
+  @Test
+  fun `given rated movie when I delete rating then I expect no user rating`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
+      )
+      .mockDeleteRating(
+        response = flowOf(Result.success(Unit))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = "8",
+        )
+      )
+      .onDeleteRating()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userRating = null,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__rating_deleted_successfully,
+              movieDetails.title
+            )
+          )
+        )
+      )
+  }
 }

@@ -101,6 +101,18 @@ class RestClient @Inject constructor(
     }
   }
 
+  @OptIn(InternalSerializationApi::class)
+  internal suspend inline fun <reified T : Any> delete(url: String): T {
+    val json = client.delete(url).bodyAsText()
+
+    try {
+      return localJson.decodeFromString(T::class.serializer(), json)
+    } catch (e: Exception) {
+      Timber.e("${e.message}")
+      throw e
+    }
+  }
+
   @OptIn(InternalAPI::class)
   suspend fun put(url: String, body: String): HttpResponse {
     return client.put(url) {

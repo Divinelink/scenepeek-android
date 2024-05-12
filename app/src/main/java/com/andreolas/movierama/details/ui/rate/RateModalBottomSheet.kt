@@ -1,5 +1,10 @@
 package com.andreolas.movierama.details.ui.rate
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -7,15 +12,17 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun RateModalBottomSheet(
   modifier: Modifier = Modifier,
   sheetState: SheetState = rememberModalBottomSheetState(),
   value: String?,
   mediaTitle: String,
+  canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,
   onRateChanged: (Float) -> Unit,
+  onClearRate: () -> Unit,
   onDismissRequest: () -> Unit,
 ) {
   ModalBottomSheet(
@@ -28,7 +35,9 @@ fun RateModalBottomSheet(
       mediaTitle = mediaTitle,
       onRateChanged = onRateChanged,
       onSubmitRate = onSubmitRate,
-      onDeleteRate = { }
+      onClearRate = onClearRate,
+      canClearRate = canClearRate
     )
+    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
