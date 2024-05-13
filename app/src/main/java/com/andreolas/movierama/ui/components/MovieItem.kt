@@ -43,8 +43,8 @@ import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.PopularMovieItemShape
-import com.andreolas.movierama.ui.theme.RoundedShape
 import com.andreolas.movierama.ui.theme.dimensions
+import com.andreolas.movierama.ui.theme.shape
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 
@@ -90,17 +90,21 @@ fun MediaItem(
         modifier = Modifier
           .align(Alignment.BottomStart)
           .offset(y = offset)
-          .padding(start = 8.dp),
+          .padding(start = MaterialTheme.dimensions.keyline_8),
         rating = movie.rating,
       )
     }
 
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
 
     Text(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(start = 8.dp, bottom = 4.dp, end = 8.dp)
+        .padding(
+          start = MaterialTheme.dimensions.keyline_8,
+          bottom = MaterialTheme.dimensions.keyline_4,
+          end = MaterialTheme.dimensions.keyline_8
+        )
         .offset(y = offset)
         .height(MaterialTheme.dimensions.keyline_40),
       text = movie.name,
@@ -112,7 +116,7 @@ fun MediaItem(
     Text(
       modifier = Modifier
         .offset(y = offset)
-        .padding(start = 8.dp, bottom = 8.dp),
+        .padding(horizontal = MaterialTheme.dimensions.keyline_8),
       text = movie.releaseDate,
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
@@ -144,11 +148,11 @@ fun LikeButton(
 
   Box(
     modifier = modifier
-      .padding(4.dp)
-      .clip(RoundedShape)
+      .padding(MaterialTheme.dimensions.keyline_4)
+      .clip(MaterialTheme.shape.roundedShape)
       .background(color = backgroundColor)
       .clickable { onClick() }
-      .size(44.dp)
+      .size(MaterialTheme.dimensions.keyline_40)
   ) {
     Crossfade(
       modifier = Modifier.align(Alignment.Center),
@@ -160,7 +164,7 @@ fun LikeButton(
         false -> Icons.Default.FavoriteBorder
       }
       Icon(
-        modifier = Modifier.size(32.dp),
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_32),
         imageVector = image,
         tint = color,
         contentDescription = stringResource(R.string.mark_as_favorite_button_content_description),

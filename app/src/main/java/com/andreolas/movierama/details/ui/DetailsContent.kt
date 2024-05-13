@@ -79,8 +79,8 @@ import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
 import com.andreolas.movierama.ui.theme.AppTheme
 import com.andreolas.movierama.ui.theme.ListPaddingValues
 import com.andreolas.movierama.ui.theme.MovieImageShape
-import com.andreolas.movierama.ui.theme.RoundedShape
 import com.andreolas.movierama.ui.theme.dimensions
+import com.andreolas.movierama.ui.theme.shape
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
@@ -135,7 +135,7 @@ fun DetailsContent(
           LikeButton(
             modifier = Modifier
               .padding(end = MaterialTheme.dimensions.keyline_8)
-              .clip(RoundedShape),
+              .clip(MaterialTheme.shape.roundedShape),
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
           )
