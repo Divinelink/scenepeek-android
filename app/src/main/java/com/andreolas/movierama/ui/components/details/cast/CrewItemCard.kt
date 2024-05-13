@@ -4,17 +4,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,19 +30,17 @@ fun CrewItemCard(
 ) {
   Card(
     shape = PopularMovieItemShape,
-    modifier = Modifier
+    modifier = modifier
       .clip(PopularMovieItemShape)
       .clipToBounds()
-      .widthIn(max = 140.dp)
-      .heightIn(min = 200.dp)
+      .widthIn(max = 120.dp)
       .clickable {
         // todo
       },
+    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
   ) {
     MovieImage(
-      modifier = Modifier
-        .height(200.dp),
-      contentScale = ContentScale.Crop,
+      modifier = Modifier,
       path = actor.profilePath,
       errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder)
     )

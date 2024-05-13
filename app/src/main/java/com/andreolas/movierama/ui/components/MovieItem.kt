@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -62,7 +61,7 @@ fun MediaItem(
     shape = PopularMovieItemShape,
     modifier = modifier
       .testTag(MOVIE_CARD_ITEM_TAG)
-      .widthIn(max = 140.dp)
+      .widthIn(max = 120.dp)
       .clip(PopularMovieItemShape)
       .clipToBounds()
       .clickable {
@@ -77,8 +76,6 @@ fun MediaItem(
         .wrapContentHeight()
     ) {
       MovieImage(
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.height(180.dp),
         path = movie.posterPath,
       )
       movie.isFavorite?.let { isFavorite ->
