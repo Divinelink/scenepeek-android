@@ -1,10 +1,10 @@
 package com.andreolas.movierama.base.di
 
-import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.remote.movies.service.MovieService
 import com.andreolas.movierama.base.data.remote.movies.service.ProdMovieService
-import com.andreolas.movierama.base.data.remote.session.service.ProdSessionService
-import com.andreolas.movierama.base.data.remote.session.service.SessionService
+import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.session.service.ProdSessionService
+import com.divinelink.core.network.session.service.SessionService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

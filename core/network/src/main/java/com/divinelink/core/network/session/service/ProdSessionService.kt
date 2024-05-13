@@ -1,12 +1,12 @@
-package com.andreolas.movierama.base.data.remote.session.service
+package com.divinelink.core.network.session.service
 
-import com.andreolas.movierama.base.communication.RestClient
-import com.andreolas.movierama.base.data.remote.session.dto.AccountDetailsResponseApi
-import com.andreolas.movierama.base.data.remote.session.dto.CreateRequestTokenResponseApi
-import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionRequestApi
-import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionResponseApi
-import com.andreolas.movierama.base.data.remote.session.dto.delete.DeleteSessionRequestApi
-import com.andreolas.movierama.base.data.remote.session.dto.delete.DeleteSessionResponseApi
+import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.session.model.AccountDetailsResponseApi
+import com.divinelink.core.network.session.model.CreateRequestTokenResponseApi
+import com.divinelink.core.network.session.model.CreateSessionRequestApi
+import com.divinelink.core.network.session.model.CreateSessionResponseApi
+import com.divinelink.core.network.session.model.DeleteSessionRequestApi
+import com.divinelink.core.network.session.model.DeleteSessionResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

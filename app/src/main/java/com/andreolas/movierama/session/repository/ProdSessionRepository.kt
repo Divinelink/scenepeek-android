@@ -1,11 +1,11 @@
 package com.andreolas.movierama.session.repository
 
-import com.andreolas.movierama.base.data.remote.session.dto.CreateSessionRequestApi
 import com.andreolas.movierama.base.data.remote.session.mapper.map
-import com.andreolas.movierama.base.data.remote.session.service.SessionService
 import com.andreolas.movierama.session.model.AccountDetails
 import com.andreolas.movierama.session.model.RequestToken
 import com.andreolas.movierama.session.model.SessionId
+import com.divinelink.core.network.session.model.CreateSessionRequestApi
+import com.divinelink.core.network.session.service.SessionService
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

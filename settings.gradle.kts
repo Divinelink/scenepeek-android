@@ -21,3 +21,4 @@ include(":app")
 include(":core-util")
 
 include(":core:designsystem")
+include(":core:network")

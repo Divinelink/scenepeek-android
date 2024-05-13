@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.andreolas.movierama.base.communication
+package com.divinelink.core.network.client
 
 import io.ktor.client.plugins.logging.Logger
 import timber.log.Timber

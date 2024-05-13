@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.session.dto.delete
+package com.divinelink.core.network.session.model
 
 import kotlinx.serialization.Serializable
 

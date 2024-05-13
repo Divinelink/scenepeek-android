@@ -3,10 +3,9 @@ package com.andreolas.movierama.base.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.local.AppDatabase
 import com.andreolas.movierama.base.data.local.AppDatabase.Companion.DB_NAME
-import com.andreolas.movierama.base.storage.EncryptedStorage
+import com.divinelink.core.network.client.RestClient
 import com.google.firebase.ktx.BuildConfig
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -48,9 +47,7 @@ object AppModule {
 
   @Singleton
   @Provides
-  fun provideRestClient(
-    encryptedPreferenceStorage: EncryptedStorage,
-  ): RestClient = RestClient(encryptedPreferenceStorage)
+  fun provideRestClient(): RestClient = RestClient()
 
   @Singleton
   @Provides

@@ -78,6 +78,10 @@ android {
     checkReleaseBuilds = false
     abortOnError = false
   }
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 secrets {
@@ -88,6 +92,7 @@ dependencies {
   implementation(project(":core-util"))
 
   implementation(projects.core.designsystem)
+  implementation(projects.core.network)
 
   implementation(libs.android.tools.desugar)
 

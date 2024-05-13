@@ -1,9 +1,6 @@
-@file:Suppress("TooGenericExceptionCaught")
+package com.divinelink.core.network.client
 
-package com.andreolas.movierama.base.communication
-
-import com.andreolas.movierama.BuildConfig
-import com.andreolas.movierama.base.storage.EncryptedStorage
+import com.andreolas.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -26,15 +23,12 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import timber.log.Timber
-import javax.inject.Inject
 
-class RestClient @Inject constructor(
-  encryptedStorage: EncryptedStorage,
-) {
-  val tmdbUrl = ApiConstants.TMDB_URL
-  private val authToken = encryptedStorage.tmdbAuthToken
+class RestClient {
+  val tmdbUrl = BuildConfig.TMDB_BASE_URL
+  private val authToken = BuildConfig.TMDB_AUTH_TOKEN
 
-  private val localJson = Json {
+  val localJson = Json { // TODO Turn private
     prettyPrint = true
     isLenient = true
     coerceInputValues = true
@@ -62,7 +56,7 @@ class RestClient @Inject constructor(
   }
 
   @OptIn(InternalSerializationApi::class)
-  internal suspend inline fun <reified T : Any> get(url: String): T {
+  suspend inline fun <reified T : Any> get(url: String): T { // TODO turn to internal
     val json = client.get(url).bodyAsText()
 
     try {
@@ -74,7 +68,10 @@ class RestClient @Inject constructor(
   }
 
   @OptIn(InternalSerializationApi::class)
-  internal suspend inline fun <reified T : Any, reified V : Any> post(url: String, body: T): V {
+  suspend inline fun <reified T : Any, reified V : Any> post(
+    url: String,
+    body: T
+  ): V { // TODO turn to internal
     val json = client.post(url) {
       setBody(body)
     }.bodyAsText()
@@ -102,7 +99,7 @@ class RestClient @Inject constructor(
   }
 
   @OptIn(InternalSerializationApi::class)
-  internal suspend inline fun <reified T : Any> delete(url: String): T {
+  suspend inline fun <reified T : Any> delete(url: String): T { // TODO Turn to interla
     val json = client.delete(url).bodyAsText()
 
     try {

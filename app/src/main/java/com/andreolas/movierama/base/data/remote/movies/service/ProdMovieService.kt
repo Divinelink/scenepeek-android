@@ -1,7 +1,6 @@
 package com.andreolas.movierama.base.data.remote.movies.service
 
 import com.andreolas.movierama.base.communication.ApiConstants
-import com.andreolas.movierama.base.communication.RestClient
 import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
@@ -21,6 +20,7 @@ import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRe
 import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchResponseApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchResponseApi
+import com.divinelink.core.network.client.RestClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
