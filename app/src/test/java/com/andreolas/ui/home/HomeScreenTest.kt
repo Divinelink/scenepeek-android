@@ -28,14 +28,11 @@ import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenTest : ComposeTest() {
 
   private val getPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
@@ -43,13 +40,11 @@ class HomeScreenTest : ComposeTest() {
   private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
   private val getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
-  @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
-  @OptIn(ExperimentalCoroutinesApi::class)
   val testDispatcher = mainDispatcherRule.testDispatcher
 
-  @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
+  @OptIn(ExperimentalTestApi::class)
   @Test
   fun navigateToDetailsScreenTest() = runTest {
     val destinationsNavigator = FakeDestinationsNavigator()
@@ -73,7 +68,7 @@ class HomeScreenTest : ComposeTest() {
       .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
 
-    advanceTimeBy(210)
+//    advanceTimeBy(210)
 
     composeTestRule.waitUntilExactlyOneExists(
       matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),

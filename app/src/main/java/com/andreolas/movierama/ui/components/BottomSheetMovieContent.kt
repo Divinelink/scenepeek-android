@@ -225,6 +225,7 @@ private fun DetailsButton(
 ) {
   Surface(
     modifier = modifier
+      .testTag(DETAILS_BUTTON_TAG)
       .clickable { onContentClicked(movie) }
       .fillMaxWidth()
       .padding(
@@ -243,7 +244,6 @@ private fun DetailsButton(
 
       Text(
         modifier = Modifier
-          .testTag(DETAILS_BUTTON_TAG)
           .padding(start = MaterialTheme.dimensions.keyline_8),
         text = stringResource(id = R.string.movie_extra_details),
         style = MaterialTheme.typography.titleSmall,

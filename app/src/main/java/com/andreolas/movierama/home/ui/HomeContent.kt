@@ -77,9 +77,9 @@ fun HomeContent(
     ModalBottomSheetMovieContent(
       sheetState = sheetState,
       onContentClicked = { mediaItem ->
+        onGoToDetails(mediaItem)
         scope.launch {
           sheetState.hide()
-          onGoToDetails(mediaItem)
           onSwipeDown()
         }
       },
