@@ -14,9 +14,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.andreolas.core.designsystem.theme.ListPaddingValues
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.ui.theme.ListPaddingValues
 
 const val REVIEWS_SCROLLABLE_LIST = "REVIEWS_LAZY_ROW_TAG"
 

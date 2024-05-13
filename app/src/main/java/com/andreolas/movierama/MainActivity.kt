@@ -15,15 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import com.andreolas.core.designsystem.theme.AppTheme
+import com.andreolas.core.designsystem.theme.Theme
 import com.andreolas.movierama.destinations.HomeScreenDestination
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
-import com.andreolas.movierama.ui.theme.AppTheme
-import com.andreolas.movierama.ui.theme.updateForTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
@@ -31,7 +28,6 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.spec.Route
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -44,20 +40,12 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     // WindowCompat.setDecorFitsSystemWindows(window, false)
 
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        launch {
-          viewModel.theme.collect { theme ->
-            updateForTheme(theme)
-          }
-        }
-      }
-    }
     setContent {
       val snackbarHostState = remember { SnackbarHostState() }
       val coroutineScope = rememberCoroutineScope()
 
       AppTheme(
+        useDarkTheme = viewModel.theme.collectAsState().value == Theme.DARK,
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {

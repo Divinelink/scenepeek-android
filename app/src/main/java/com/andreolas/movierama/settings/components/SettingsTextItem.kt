@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
 fun SettingsTextItem(

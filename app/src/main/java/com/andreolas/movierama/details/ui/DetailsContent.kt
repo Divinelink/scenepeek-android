@@ -48,6 +48,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.andreolas.core.designsystem.theme.AppTheme
+import com.andreolas.core.designsystem.theme.ListPaddingValues
+import com.andreolas.core.designsystem.theme.MovieImageShape
+import com.andreolas.core.designsystem.theme.dimensions
+import com.andreolas.core.designsystem.theme.shape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Actor
@@ -76,11 +81,6 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
-import com.andreolas.movierama.ui.theme.AppTheme
-import com.andreolas.movierama.ui.theme.ListPaddingValues
-import com.andreolas.movierama.ui.theme.MovieImageShape
-import com.andreolas.movierama.ui.theme.dimensions
-import com.andreolas.movierama.ui.theme.shape
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f

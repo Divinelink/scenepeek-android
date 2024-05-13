@@ -1,8 +1,7 @@
-package com.andreolas.movierama.ui.theme
+package com.andreolas.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ColorScheme
@@ -17,7 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import timber.log.Timber
 
 @Composable
 fun AppTheme(
@@ -59,17 +57,6 @@ fun ColorScheme.textColorDisabled(): Color {
   return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 }
 
-@Composable
-fun ColorScheme.fadedBackgroundColor(): Color {
-  return MaterialTheme.colorScheme.scrim.copy(alpha = 0.62f)
-}
-
-@Composable
-fun topBarColor(): Color {
-  return MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.30f)
-}
-
-val FabSize = 56.dp
 val SearchBarSize = 48.dp
 
 val ListPaddingValues = PaddingValues(
@@ -90,19 +77,4 @@ enum class Theme(val storageKey: String) {
  */
 fun themeFromStorageKey(storageKey: String): Theme? {
   return Theme.entries.firstOrNull { it.storageKey == storageKey }
-}
-
-fun updateForTheme(theme: Theme) = when (theme) {
-  Theme.SYSTEM -> {
-    Timber.d("Setting to follow system")
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-  }
-  Theme.LIGHT -> {
-    Timber.d("Setting to always night")
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-  }
-  Theme.DARK -> {
-    Timber.d("Setting to always night")
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-  }
 }

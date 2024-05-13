@@ -1,9 +1,9 @@
 package com.andreolas.movierama.settings.app.appearance.usecase
 
+import com.andreolas.core.designsystem.theme.Theme
+import com.andreolas.core.designsystem.theme.themeFromStorageKey
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
-import com.andreolas.movierama.ui.theme.Theme
-import com.andreolas.movierama.ui.theme.themeFromStorageKey
 import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -15,6 +15,7 @@ class GetThemeUseCase @Inject constructor(
 ) : UseCase<Unit, Theme>(dispatcher) {
   override suspend fun execute(parameters: Unit): Theme {
     val selectedTheme = preferenceStorage.selectedTheme.first()
-    return themeFromStorageKey(selectedTheme) ?: Theme.SYSTEM
+    return themeFromStorageKey(selectedTheme)
+      ?: Theme.SYSTEM
   }
 }

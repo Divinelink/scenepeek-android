@@ -1,4 +1,4 @@
-package com.andreolas.movierama.ui.theme
+package com.andreolas.movierama.ui
 
 import dagger.Binds
 import dagger.Module

@@ -87,6 +87,8 @@ secrets {
 dependencies {
   implementation(project(":core-util"))
 
+  implementation(projects.core.designsystem)
+
   implementation(libs.android.tools.desugar)
 
   // Firebase

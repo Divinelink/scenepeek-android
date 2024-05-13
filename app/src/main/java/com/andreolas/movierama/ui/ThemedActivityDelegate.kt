@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.andreolas.movierama.ui.theme
+package com.andreolas.movierama.ui
 
+import com.andreolas.core.designsystem.theme.Theme
 import com.andreolas.movierama.base.di.ApplicationScope
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeUseCase
