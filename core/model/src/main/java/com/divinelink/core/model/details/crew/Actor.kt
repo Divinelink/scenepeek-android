@@ -1,4 +1,4 @@
-package com.divinelink.core.model.details
+package com.divinelink.core.model.details.crew
 
 data class Actor(
   val id: Int,

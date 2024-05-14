@@ -1,7 +1,7 @@
 package com.andreolas.factories
 
-import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.details.video.Video
 
 object VideoFactory {
 

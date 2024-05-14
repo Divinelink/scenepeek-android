@@ -7,10 +7,10 @@ import com.andreolas.movierama.details.ui.SimilarException
 import com.andreolas.movierama.details.ui.VideosException
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
-import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -37,7 +37,7 @@ class GetMoviesDetailsUseCaseTest {
   private lateinit var moviesRepository: FakeMoviesRepository
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
-  private val movieDetails = MovieDetails(
+  private val movieDetails = Movie(
     id = 0,
     title = "",
     posterPath = "",

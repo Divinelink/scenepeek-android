@@ -1,5 +1,8 @@
 package com.divinelink.core.model.media
 
+/**
+ * Represents the type of media.
+ */
 enum class MediaType(val value: String) {
   TV("tv"),
   MOVIE("movie"),

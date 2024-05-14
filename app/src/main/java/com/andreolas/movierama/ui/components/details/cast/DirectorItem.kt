@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.R
-import com.divinelink.core.model.details.Director
+import com.divinelink.core.model.details.crew.Director
 
 @Composable
 fun DirectorItem(

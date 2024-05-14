@@ -3,10 +3,10 @@ package com.andreolas.movierama.details.ui
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.TVDetails
-import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
@@ -25,7 +25,7 @@ data class DetailsViewState(
   val navigateToLogin: Boolean? = null,
 ) {
   val mediaItem = when (mediaDetails) {
-    is MovieDetails -> MediaItem.Media.Movie(
+    is Movie -> MediaItem.Media.Movie(
       id = mediaDetails.id,
       name = mediaDetails.title,
       posterPath = mediaDetails.posterPath,
@@ -34,7 +34,7 @@ data class DetailsViewState(
       overview = mediaDetails.overview ?: "",
       isFavorite = mediaDetails.isFavorite,
     )
-    is TVDetails -> MediaItem.Media.TV(
+    is TV -> MediaItem.Media.TV(
       id = mediaDetails.id,
       name = mediaDetails.title,
       posterPath = mediaDetails.posterPath,

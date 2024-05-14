@@ -1,12 +1,12 @@
 package com.andreolas.factories
 
-import com.divinelink.core.model.details.Director
-import com.divinelink.core.model.details.MovieDetails
-import com.divinelink.core.model.details.TVDetails
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.crew.Director
 
 object MediaDetailsFactory {
 
-  fun FightClub() = MovieDetails(
+  fun FightClub() = Movie(
     id = 1123,
     posterPath = "123456",
     releaseDate = "2022",
@@ -24,7 +24,7 @@ object MediaDetailsFactory {
     runtime = "2h 10m",
   )
 
-  fun TheOffice() = TVDetails(
+  fun TheOffice() = TV(
     id = 2316,
     title = "The Office",
     posterPath = "the_office.jpg",

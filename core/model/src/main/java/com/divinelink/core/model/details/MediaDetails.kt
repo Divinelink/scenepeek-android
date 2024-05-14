@@ -1,5 +1,11 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.crew.Actor
+import com.divinelink.core.model.details.crew.Director
+
+/**
+ * Represents details or a movie or TV show.
+ */
 sealed class MediaDetails {
   abstract val id: Int
   abstract val title: String
@@ -24,7 +30,7 @@ sealed class MediaDetails {
     rating: String = this.rating,
     isFavorite: Boolean = this.isFavorite,
   ): MediaDetails = when (this) {
-    is MovieDetails -> MovieDetails(
+    is Movie -> Movie(
       id = id,
       title = title,
       posterPath = posterPath,
@@ -37,7 +43,7 @@ sealed class MediaDetails {
       genres = genres,
       runtime = runtime,
     )
-    is TVDetails -> TVDetails(
+    is TV -> TV(
       id = id,
       title = title,
       posterPath = posterPath,
@@ -52,31 +58,3 @@ sealed class MediaDetails {
     )
   }
 }
-
-data class MovieDetails(
-  override val id: Int,
-  override val title: String,
-  override val posterPath: String,
-  override val overview: String?,
-  override val genres: List<String>?,
-  override val director: Director?,
-  override val cast: List<Actor>,
-  override val releaseDate: String,
-  override val rating: String,
-  val runtime: String?,
-  override val isFavorite: Boolean,
-) : MediaDetails()
-
-data class TVDetails(
-  override val id: Int,
-  override val title: String,
-  override val posterPath: String,
-  override val overview: String?,
-  override val director: Director?,
-  override val genres: List<String>?,
-  override val cast: List<Actor>,
-  override val releaseDate: String,
-  override val rating: String,
-  override val isFavorite: Boolean,
-  val seasons: List<Nothing>? = null, // TODO
-) : MediaDetails()

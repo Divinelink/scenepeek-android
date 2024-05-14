@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.divinelink.core.model.details.Actor
+import com.divinelink.core.model.details.crew.Actor
 
 object ActorFactory {
 

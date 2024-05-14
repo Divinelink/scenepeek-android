@@ -1,4 +1,4 @@
-package com.divinelink.core.model.details
+package com.divinelink.core.model.details.video
 
 data class Video(
   val id: String,
@@ -9,9 +9,4 @@ data class Video(
 ) {
   val url: String
     get() = site?.url + key
-}
-
-enum class VideoSite(val url: String) {
-  YouTube("https://www.youtube.com/watch?v="),
-  Vimeo("https://vimeo.com/"),
 }

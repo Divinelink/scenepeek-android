@@ -2,9 +2,9 @@ package com.andreolas.movierama.fakes.repository
 
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
@@ -21,7 +21,7 @@ class FakeDetailsRepository {
 
   fun mockFetchMovieDetails(
     request: DetailsRequestApi,
-    response: Result<MovieDetails>,
+    response: Result<Movie>,
   ) {
     whenever(
       mock.fetchMovieDetails(request)

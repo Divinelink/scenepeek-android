@@ -4,7 +4,7 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.UIText
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 
 /**

@@ -70,14 +70,14 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
-import com.divinelink.core.model.details.Actor
-import com.divinelink.core.model.details.Director
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.TVDetails
-import com.divinelink.core.model.details.Video
-import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.crew.Actor
+import com.divinelink.core.model.details.crew.Director
+import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
@@ -144,7 +144,7 @@ fun DetailsContent(
     content = { paddingValues ->
       viewState.mediaDetails?.let { mediaDetails ->
         when (mediaDetails) {
-          is MovieDetails, is TVDetails -> {
+          is Movie, is TV -> {
             MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
@@ -416,7 +416,7 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
     )
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_12))
 
-    if (mediaDetails is MovieDetails) {
+    if (mediaDetails is Movie) {
       mediaDetails.runtime?.let { runtime ->
         Text(
           style = MaterialTheme.typography.bodySmall,
@@ -539,7 +539,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         overview = "This movie is good.",
         isFavorite = false,
       )
-      val movieDetails = MovieDetails(
+      val movieDetails = Movie(
         id = 1123,
         posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
         releaseDate = "2022",

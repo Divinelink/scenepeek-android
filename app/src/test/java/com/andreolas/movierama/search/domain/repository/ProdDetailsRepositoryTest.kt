@@ -17,8 +17,8 @@ import com.andreolas.movierama.details.ui.ReviewsException
 import com.andreolas.movierama.details.ui.SimilarException
 import com.andreolas.movierama.details.ui.VideosException
 import com.andreolas.movierama.fakes.remote.FakeMediaService
-import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi

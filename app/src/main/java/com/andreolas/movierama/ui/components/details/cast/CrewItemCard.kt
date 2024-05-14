@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.andreolas.core.designsystem.theme.PopularMovieItemShape
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.MovieImage
-import com.divinelink.core.model.details.Actor
+import com.divinelink.core.model.details.crew.Actor
 
 @Composable
 fun CrewItemCard(

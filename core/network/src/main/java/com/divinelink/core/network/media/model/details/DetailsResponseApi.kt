@@ -1,10 +1,10 @@
 package com.divinelink.core.network.media.model.details
 
-import com.divinelink.core.model.details.Actor
-import com.divinelink.core.model.details.Director
+import com.divinelink.core.model.details.crew.Actor
+import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.MovieDetails
-import com.divinelink.core.model.details.TVDetails
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.network.media.model.details.credits.Cast
 import com.divinelink.core.network.media.model.details.credits.Crew
 import gr.divinelink.core.util.extensions.round
@@ -90,7 +90,7 @@ fun DetailsResponseApi.toDomainMedia(): MediaDetails = when (this) {
   is DetailsResponseApi.TV -> this.toDomainTVShow()
 }
 
-private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = MovieDetails(
+private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
@@ -104,7 +104,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = MovieDetail
   isFavorite = false,
 )
 
-private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TVDetails(
+private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   id = this.id,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
