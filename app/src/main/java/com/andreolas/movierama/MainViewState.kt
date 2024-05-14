@@ -11,13 +11,6 @@ sealed class MainViewState(
     isLoading = true,
   )
 
-  data class Error(
-    override val error: UIText? = null,
-  ) : MainViewState(
-    isLoading = false,
-    error = error,
-  )
-
   data object Completed : MainViewState(
     isLoading = false,
   )

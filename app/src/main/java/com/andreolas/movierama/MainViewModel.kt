@@ -1,23 +1,19 @@
 package com.andreolas.movierama
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.andreolas.movierama.base.data.remote.firebase.usecase.SetRemoteConfigUseCase
 import com.andreolas.movierama.ui.ThemedActivityDelegate
-import com.andreolas.movierama.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
   themedActivityDelegate: ThemedActivityDelegate,
-  private val setRemoteConfigUseCase: SetRemoteConfigUseCase,
 ) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
 
-  private val _viewState: MutableStateFlow<MainViewState> = MutableStateFlow(MainViewState.Loading)
+  private val _viewState: MutableStateFlow<MainViewState> =
+    MutableStateFlow(MainViewState.Completed)
   val viewState: StateFlow<MainViewState> = _viewState
 
   /**
@@ -25,6 +21,8 @@ class MainViewModel @Inject constructor(
    * This is crucial since we can fetch data from remote config and then update our UI
    * once we're ready.
    */
+
+  /**
   init {
     setRemoteConfig()
   }
@@ -47,4 +45,5 @@ class MainViewModel @Inject constructor(
       }
     }
   }
+  */
 }

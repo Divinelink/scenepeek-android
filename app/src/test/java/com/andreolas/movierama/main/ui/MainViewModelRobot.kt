@@ -22,7 +22,6 @@ class MainViewModelRobot {
   fun buildViewModel() = apply {
     viewModel = MainViewModel(
       themedActivityDelegate = fakeThemedActivityDelegate,
-      setRemoteConfigUseCase = fakeSetRemoteConfigUseCase,
     )
   }
 
@@ -32,9 +31,5 @@ class MainViewModelRobot {
 
   fun mockSetRemoteConfigResult(result: Unit) = apply {
     fakeSetRemoteConfigUseCase.mockSetRemoteConfigResult(result)
-  }
-
-  fun onRetryFetchRemoteConfig() = apply {
-    viewModel.retryFetchRemoteConfig()
   }
 }
