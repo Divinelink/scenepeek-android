@@ -5,13 +5,13 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.movies.model.details.DetailsRequestApi
-import com.divinelink.core.network.movies.model.details.reviews.ReviewsRequestApi
-import com.divinelink.core.network.movies.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.movies.model.details.videos.VideosRequestApi
-import com.divinelink.core.network.movies.model.rating.AddRatingRequestApi
-import com.divinelink.core.network.movies.model.rating.DeleteRatingRequestApi
-import com.divinelink.core.network.movies.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
+import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
+import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import kotlinx.coroutines.flow.Flow
 
 /**

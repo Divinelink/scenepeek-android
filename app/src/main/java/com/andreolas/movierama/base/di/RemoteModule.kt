@@ -1,8 +1,8 @@
 package com.andreolas.movierama.base.di
 
 import com.divinelink.core.network.client.RestClient
-import com.divinelink.core.network.movies.service.MovieService
-import com.divinelink.core.network.movies.service.ProdMovieService
+import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.core.network.media.service.ProdMediaService
 import com.divinelink.core.network.session.service.ProdSessionService
 import com.divinelink.core.network.session.service.SessionService
 import dagger.Module
@@ -21,9 +21,9 @@ object RemoteModule {
 
   @Singleton
   @Provides
-  fun provideMovieService(
+  fun provideMediaService(
     restClient: RestClient,
-  ): MovieService = ProdMovieService(restClient)
+  ): MediaService = ProdMediaService(restClient)
 
   @Singleton
   @Provides

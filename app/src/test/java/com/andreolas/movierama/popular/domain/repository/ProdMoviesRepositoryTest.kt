@@ -5,15 +5,15 @@ import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.api.PopularMovieApiFactory
 import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.fakes.dao.FakeMovieDAO
-import com.andreolas.movierama.fakes.remote.FakeMovieRemote
+import com.andreolas.movierama.fakes.dao.FakeMediaDao
+import com.andreolas.movierama.fakes.remote.FakeMediaService
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.popular.PopularRequestApi
-import com.divinelink.core.network.movies.model.popular.PopularResponseApi
-import com.divinelink.core.network.movies.model.search.movie.SearchRequestApi
-import com.divinelink.core.network.movies.model.search.movie.SearchResponseApi
+import com.divinelink.core.network.media.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.popular.PopularResponseApi
+import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
+import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
@@ -52,16 +52,16 @@ class ProdMoviesRepositoryTest {
     totalResults = 0
   )
 
-  private var movieDAO = FakeMovieDAO()
-  private var movieRemote = FakeMovieRemote()
+  private var mediaDao = FakeMediaDao()
+  private var mediaRemote = FakeMediaService()
 
   private lateinit var repository: MoviesRepository
 
   @Before
   fun setUp() {
     repository = ProdMoviesRepository(
-      movieDAO = movieDAO.mock,
-      movieRemote = movieRemote.mock,
+      mediaDao = mediaDao.mock,
+      mediaRemote = mediaRemote.mock,
     )
   }
 
@@ -73,10 +73,10 @@ class ProdMoviesRepositoryTest {
     val expectApiPopularResponse = flowOf(apiPopularResponse)
 
     expectedResult.forEach { movie ->
-      movieDAO.mockCheckIfFavorite(movie.id, 0)
+      mediaDao.mockCheckIfFavorite(movie.id, 0)
     }
 
-    movieRemote.mockFetchPopularMovies(
+    mediaRemote.mockFetchPopularMovies(
       request = request,
       result = expectApiPopularResponse
     )
@@ -94,9 +94,9 @@ class ProdMoviesRepositoryTest {
 
       val expectedApiSearchResponse = flowOf(apiSearchResponse)
       expectedResult.forEach { movie ->
-        movieDAO.mockCheckIfFavorite(movie.id, 0)
+        mediaDao.mockCheckIfFavorite(movie.id, 0)
       }
-      movieRemote.mockFetchSearchMovies(
+      mediaRemote.mockFetchSearchMovies(
         request = request,
         result = expectedApiSearchResponse
       )
@@ -113,7 +113,7 @@ class ProdMoviesRepositoryTest {
   //        val request = PopularRequestApi(apiKey = "", page = 1)
   //        val expectedResult = Result.failure(Exception("response is empty"))
   //
-  //        movieRemote.mockFetchPopularMovies(
+  //        mediaRemote.mockFetchPopularMovies(
   //            request = request,
   //            result = flowOf(),
   //        )
@@ -137,7 +137,7 @@ class ProdMoviesRepositoryTest {
       )
     )
 
-    movieDAO.mockFetchFavoritesMovies(expectedPersistableMovieResult)
+    mediaDao.mockFetchFavoritesMovies(expectedPersistableMovieResult)
 
     val actualResult = repository.fetchFavoriteMovies().first()
 
@@ -146,7 +146,7 @@ class ProdMoviesRepositoryTest {
 
   @Test
   fun `correctly check movie is favorite`() = runTest {
-    movieDAO.mockCheckIfFavorite(id = 1, result = 1)
+    mediaDao.mockCheckIfFavorite(id = 1, result = 1)
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
@@ -155,7 +155,7 @@ class ProdMoviesRepositoryTest {
 
   @Test
   fun `correctly check movie is not favorite`() = runTest {
-    movieDAO.mockCheckIfFavorite(id = 1, result = 0)
+    mediaDao.mockCheckIfFavorite(id = 1, result = 0)
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
@@ -166,13 +166,13 @@ class ProdMoviesRepositoryTest {
   fun testInsertMovie() = runTest {
     repository.insertFavoriteMedia(movie)
 
-    movieDAO.verifyInsertFavoriteMovie(persistableMovie)
+    mediaDao.verifyInsertFavoriteMovie(persistableMovie)
   }
 
   @Test
   fun testRemoveMovie() = runTest {
     repository.removeFavoriteMedia(movie.id, mediaType = MediaType.MOVIE)
 
-    movieDAO.verifyRemoveMovie(persistableMovie.id)
+    mediaDao.verifyRemoveMovie(persistableMovie.id)
   }
 }

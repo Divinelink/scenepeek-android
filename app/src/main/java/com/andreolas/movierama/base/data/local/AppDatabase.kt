@@ -2,7 +2,7 @@ package com.andreolas.movierama.base.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.andreolas.movierama.base.data.local.popular.MovieDAO
+import com.andreolas.movierama.base.data.local.popular.MediaDao
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.base.data.local.popular.PersistableTV
 
@@ -16,7 +16,7 @@ import com.andreolas.movierama.base.data.local.popular.PersistableTV
 )
 abstract class AppDatabase : RoomDatabase() {
 
-  abstract fun movieDAO(): MovieDAO
+  abstract fun mediaDao(): MediaDao
 
   companion object {
     const val DB_NAME = "App_Database"

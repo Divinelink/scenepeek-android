@@ -7,7 +7,7 @@ import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.search.movie.SearchRequestApi
+import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

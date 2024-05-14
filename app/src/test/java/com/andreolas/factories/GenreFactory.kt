@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.movies.model.details.Genre
+import com.divinelink.core.network.media.model.details.Genre
 
 object GenreFactory {
 

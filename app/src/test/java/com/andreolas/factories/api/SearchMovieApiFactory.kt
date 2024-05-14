@@ -1,6 +1,6 @@
 package com.andreolas.factories.api
 
-import com.divinelink.core.network.movies.model.search.movie.SearchMovieApi
+import com.divinelink.core.network.media.model.search.movie.SearchMovieApi
 
 object SearchMovieApiFactory {
 

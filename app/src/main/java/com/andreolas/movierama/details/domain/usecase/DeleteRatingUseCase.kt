@@ -5,7 +5,7 @@ import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
 import com.andreolas.movierama.session.SessionStorage
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher

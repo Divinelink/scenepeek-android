@@ -8,8 +8,8 @@ import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.movies.model.popular.PopularRequestApi
-import com.divinelink.core.network.movies.model.search.multi.MultiSearchRequestApi
+import com.divinelink.core.network.media.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.Job

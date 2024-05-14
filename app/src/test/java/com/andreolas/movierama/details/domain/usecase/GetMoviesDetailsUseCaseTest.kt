@@ -13,10 +13,10 @@ import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.details.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.details.DetailsRequestApi
-import com.divinelink.core.network.movies.model.details.reviews.ReviewsRequestApi
-import com.divinelink.core.network.movies.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.movies.model.details.videos.VideosRequestApi
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

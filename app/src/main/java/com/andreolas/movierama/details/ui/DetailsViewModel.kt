@@ -18,7 +18,7 @@ import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.movies.model.details.credits.Cast
+import com.divinelink.core.network.media.model.details.credits.Cast
 
 object CastFactory {
 

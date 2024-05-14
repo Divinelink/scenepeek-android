@@ -4,7 +4,7 @@ import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.movies.model.search.multi.MultiSearchRequestApi
+import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher

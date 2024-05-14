@@ -1,6 +1,6 @@
 package com.andreolas.factories.api.account.states
 
-import com.divinelink.core.network.movies.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 
 object AccountMediaDetailsResponseApiFactory {
 

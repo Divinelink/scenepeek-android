@@ -1,8 +1,8 @@
 package com.andreolas.movierama.base.data.remote.movies.mapper
 
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.network.movies.model.states.AccountMediaDetailsResponseApi
-import com.divinelink.core.network.movies.model.states.RateResponseApi
+import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.states.RateResponseApi
 
 fun AccountMediaDetailsResponseApi.map() = AccountMediaDetails(
   id = id,

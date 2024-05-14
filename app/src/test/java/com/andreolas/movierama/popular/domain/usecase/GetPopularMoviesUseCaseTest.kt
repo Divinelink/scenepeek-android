@@ -5,7 +5,7 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.movies.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.last

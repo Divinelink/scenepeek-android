@@ -16,20 +16,20 @@ import com.andreolas.movierama.details.ui.MovieDetailsException
 import com.andreolas.movierama.details.ui.ReviewsException
 import com.andreolas.movierama.details.ui.SimilarException
 import com.andreolas.movierama.details.ui.VideosException
-import com.andreolas.movierama.fakes.remote.FakeMovieRemote
+import com.andreolas.movierama.fakes.remote.FakeMediaService
 import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.details.VideoSite
-import com.divinelink.core.network.movies.model.details.DetailsRequestApi
-import com.divinelink.core.network.movies.model.details.reviews.ReviewsRequestApi
-import com.divinelink.core.network.movies.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.movies.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.movies.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.movies.model.details.videos.VideoResultsApi
-import com.divinelink.core.network.movies.model.details.videos.VideosRequestApi
-import com.divinelink.core.network.movies.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.movies.model.rating.AddRatingRequestApi
-import com.divinelink.core.network.movies.model.rating.DeleteRatingRequestApi
-import com.divinelink.core.network.movies.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
+import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
+import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
+import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
@@ -105,14 +105,14 @@ class ProdDetailsRepositoryTest {
     )
   )
 
-  private var movieRemote = FakeMovieRemote()
+  private var mediaRemote = FakeMediaService()
 
   private lateinit var repository: DetailsRepository
 
   @Before
   fun setUp() {
     repository = ProdDetailsRepository(
-      movieRemote = movieRemote.mock,
+      mediaRemote = mediaRemote.mock,
     )
   }
 
@@ -122,7 +122,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = movieDetails
 
-    movieRemote.mockFetchMovieDetails(
+    mediaRemote.mockFetchMovieDetails(
       request = request,
       response = flowOf(detailsResponseApi)
     )
@@ -140,7 +140,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = expectedReviews
 
-    movieRemote.mockFetchMovieReviews(
+    mediaRemote.mockFetchMovieReviews(
       request = request,
       response = flowOf(reviewsResponseApi)
     )
@@ -167,7 +167,7 @@ class ProdDetailsRepositoryTest {
       }
     }
 
-    movieRemote.mockFetchSimilarMovies(
+    mediaRemote.mockFetchSimilarMovies(
       request = request,
       response = flowOf(similarResponseApi)
     )
@@ -248,7 +248,7 @@ class ProdDetailsRepositoryTest {
       )
     )
 
-    movieRemote.mockFetchMovieVideos(
+    mediaRemote.mockFetchMovieVideos(
       request = request,
       response = flowOf(videoResponseApi)
     )
@@ -285,7 +285,7 @@ class ProdDetailsRepositoryTest {
     val response = flowOf(AccountMediaDetailsResponseApiFactory.Rated())
     val expectedResult = AccountMediaDetailsFactory.Rated()
 
-    movieRemote.mockFetchAccountMediaDetails(
+    mediaRemote.mockFetchAccountMediaDetails(
       request = request,
       response = response
     )
@@ -308,7 +308,7 @@ class ProdDetailsRepositoryTest {
     val response = flowOf(Unit)
     val expectedResult = Unit
 
-    movieRemote.mockSubmitRating(
+    mediaRemote.mockSubmitRating(
       request = request,
       response = response
     )
@@ -330,7 +330,7 @@ class ProdDetailsRepositoryTest {
     val response = flowOf(Unit)
     val expectedResult = Unit
 
-    movieRemote.mockDeleteRating(
+    mediaRemote.mockDeleteRating(
       request = request,
       response = response
     )
@@ -352,7 +352,7 @@ class ProdDetailsRepositoryTest {
     val response = flowOf(Unit)
     val expectedResult = Unit
 
-    movieRemote.mockDeleteRating(
+    mediaRemote.mockDeleteRating(
       request = request,
       response = response
     )

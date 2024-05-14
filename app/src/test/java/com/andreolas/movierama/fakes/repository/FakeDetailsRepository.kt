@@ -6,10 +6,10 @@ import com.divinelink.core.model.details.MovieDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.Video
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.movies.model.details.DetailsRequestApi
-import com.divinelink.core.network.movies.model.details.reviews.ReviewsRequestApi
-import com.divinelink.core.network.movies.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.movies.model.details.videos.VideosRequestApi
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

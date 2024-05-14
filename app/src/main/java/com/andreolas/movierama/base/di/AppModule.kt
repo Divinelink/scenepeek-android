@@ -39,7 +39,7 @@ object AppModule {
 
   @Singleton
   @Provides
-  fun provideMovieDAO(database: AppDatabase) = database.movieDAO()
+  fun provideMovieDAO(database: AppDatabase) = database.mediaDao()
 
   @ApplicationContext
   @Provides

@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.movies.model.details.Credits
+import com.divinelink.core.network.media.model.details.Credits
 
 object CreditsFactory {
 

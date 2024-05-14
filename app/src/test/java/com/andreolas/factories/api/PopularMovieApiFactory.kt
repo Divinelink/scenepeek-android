@@ -1,6 +1,6 @@
 package com.andreolas.factories.api
 
-import com.divinelink.core.network.movies.model.popular.PopularMovieApi
+import com.divinelink.core.network.media.model.popular.PopularMovieApi
 
 object PopularMovieApiFactory {
 
