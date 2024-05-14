@@ -1,4 +1,4 @@
-package com.andreolas.core.designsystem.theme
+package com.divinelink.core.designsystem.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme

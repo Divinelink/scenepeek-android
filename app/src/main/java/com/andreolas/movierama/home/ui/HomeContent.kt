@@ -31,8 +31,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.SearchBarShape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.UIText
@@ -44,6 +42,8 @@ import com.andreolas.movierama.ui.components.MovieRamaSearchBar
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.launch
 

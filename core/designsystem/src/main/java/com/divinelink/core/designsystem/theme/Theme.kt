@@ -1,4 +1,4 @@
-package com.andreolas.core.designsystem.theme
+package com.divinelink.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build

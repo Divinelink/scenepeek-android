@@ -48,11 +48,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.ListPaddingValues
-import com.andreolas.core.designsystem.theme.MovieImageShape
-import com.andreolas.core.designsystem.theme.dimensions
-import com.andreolas.core.designsystem.theme.shape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.ui.LoadingContent
@@ -70,6 +65,11 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.ListPaddingValues
+import com.divinelink.core.designsystem.theme.MovieImageShape
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review

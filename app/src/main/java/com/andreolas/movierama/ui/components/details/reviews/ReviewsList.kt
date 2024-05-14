@@ -14,8 +14,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.andreolas.core.designsystem.theme.ListPaddingValues
 import com.andreolas.movierama.R
+import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.model.details.Review
 
 const val REVIEWS_LIST = "REVIEWS_LIST"

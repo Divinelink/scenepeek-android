@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.andreolas.core.designsystem.theme.PopularMovieItemShape
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.MovieImage
+import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.model.details.crew.Actor
 
 @Composable

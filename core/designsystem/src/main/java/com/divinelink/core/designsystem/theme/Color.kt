@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.andreolas.core.designsystem.theme
+package com.divinelink.core.designsystem.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme

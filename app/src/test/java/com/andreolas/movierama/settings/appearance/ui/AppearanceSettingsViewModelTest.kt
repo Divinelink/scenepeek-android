@@ -1,7 +1,6 @@
 package com.andreolas.movierama.settings.appearance.ui
 
 import com.andreolas.UnitTest
-import com.andreolas.core.designsystem.theme.Theme
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.app.appearance.AppearanceSettingsViewModel
 import com.andreolas.movierama.settings.app.appearance.UpdateSettingsState
@@ -14,6 +13,7 @@ import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetM
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.andreolas.movierama.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
+import com.divinelink.core.designsystem.theme.Theme
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
