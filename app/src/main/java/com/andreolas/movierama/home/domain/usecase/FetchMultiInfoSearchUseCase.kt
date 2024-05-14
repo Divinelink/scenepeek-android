@@ -1,10 +1,10 @@
 package com.andreolas.movierama.home.domain.usecase
 
-import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.movies.model.search.multi.MultiSearchRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher

@@ -55,17 +55,6 @@ import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.core.designsystem.theme.shape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.details.domain.model.Actor
-import com.andreolas.movierama.details.domain.model.Director
-import com.andreolas.movierama.details.domain.model.MediaDetails
-import com.andreolas.movierama.details.domain.model.MovieDetails
-import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.details.domain.model.TVDetails
-import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.domain.model.VideoSite
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
-import com.andreolas.movierama.home.domain.model.PopularMovie
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.LikeButton
@@ -81,6 +70,16 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
+import com.divinelink.core.model.details.Actor
+import com.divinelink.core.model.details.Director
+import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.TVDetails
+import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
@@ -418,10 +417,10 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_12))
 
     if (mediaDetails is MovieDetails) {
-      mediaDetails.runtime?.let {
+      mediaDetails.runtime?.let { runtime ->
         Text(
           style = MaterialTheme.typography.bodySmall,
-          text = mediaDetails.runtime,
+          text = runtime,
         )
       }
     }
@@ -531,11 +530,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           isFavorite = false,
         )
       }.toList()
-      val popularMovie = PopularMovie(
+      val popularMovie = MediaItem.Media.Movie(
         id = 0,
         posterPath = "",
         releaseDate = "",
-        title = "Flight Club",
+        name = "Flight Club",
         rating = "",
         overview = "This movie is good.",
         isFavorite = false,

@@ -10,11 +10,9 @@ import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsF
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.exception.SessionException
-import com.andreolas.movierama.details.domain.model.MovieDetailsException
-import com.andreolas.movierama.details.domain.model.MovieDetailsResult
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
+import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

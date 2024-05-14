@@ -1,7 +1,7 @@
 package com.andreolas.movierama.fakes.usecase.details
 
-import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
 import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
+import com.divinelink.core.model.account.AccountMediaDetails
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

@@ -1,6 +1,6 @@
 package com.andreolas.factories.api
 
-import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarMovieApi
+import com.divinelink.core.network.movies.model.details.similar.SimilarMovieApi
 
 object SimilarMovieApiFactory {
 

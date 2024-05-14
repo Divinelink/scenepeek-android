@@ -1,10 +1,10 @@
 package com.andreolas.movierama.home.domain.repository
 
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.multi.MultiSearchRequestApi
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.movies.model.popular.PopularRequestApi
+import com.divinelink.core.network.movies.model.search.movie.SearchRequestApi
+import com.divinelink.core.network.movies.model.search.multi.MultiSearchRequestApi
 import kotlinx.coroutines.flow.Flow
 
 typealias MultiListResult = Result<List<MediaItem>>

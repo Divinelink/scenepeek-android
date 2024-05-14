@@ -1,8 +1,8 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.details.domain.model.Director
-import com.andreolas.movierama.details.domain.model.MovieDetails
-import com.andreolas.movierama.details.domain.model.TVDetails
+import com.divinelink.core.model.details.Director
+import com.divinelink.core.model.details.MovieDetails
+import com.divinelink.core.model.details.TVDetails
 
 object MediaDetailsFactory {
 
@@ -14,7 +14,11 @@ object MediaDetailsFactory {
     rating = "7.3",
     isFavorite = false,
     overview = "This movie is good.",
-    director = Director(id = 123443321, name = "Forest Gump", profilePath = "BoxOfChocolates.jpg"),
+    director = Director(
+      id = 123443321,
+      name = "Forest Gump",
+      profilePath = "BoxOfChocolates.jpg"
+    ),
     cast = ActorFactory.all(),
     genres = listOf("Thriller", "Drama", "Comedy"),
     runtime = "2h 10m",
@@ -25,7 +29,11 @@ object MediaDetailsFactory {
     title = "The Office",
     posterPath = "the_office.jpg",
     overview = "Michael Scarn is the best.",
-    director = Director(id = 123443321, name = "Forest Gump", profilePath = "BoxOfChocolates.jpg"),
+    director = Director(
+      id = 123443321,
+      name = "Forest Gump",
+      profilePath = "BoxOfChocolates.jpg"
+    ),
     cast = ActorFactory.all(),
     releaseDate = "2005-03-24",
     rating = "9.5",

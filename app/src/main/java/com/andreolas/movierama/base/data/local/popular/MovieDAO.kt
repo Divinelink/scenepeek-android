@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

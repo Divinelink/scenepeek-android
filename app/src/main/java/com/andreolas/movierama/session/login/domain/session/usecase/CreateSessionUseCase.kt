@@ -18,6 +18,6 @@ class CreateSessionUseCase @Inject constructor(
   override suspend fun execute(parameters: String) {
     val result = repository.createSession(CreateSessionRequestApi(parameters))
 
-    sessionStorage.setSession(result.data.sessionId)
+    sessionStorage.setSession(result.data.id)
   }
 }

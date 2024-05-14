@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.details.domain.model.Actor
+import com.divinelink.core.model.details.Actor
 
 object ActorFactory {
 

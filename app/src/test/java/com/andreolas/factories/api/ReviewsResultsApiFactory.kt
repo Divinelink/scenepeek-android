@@ -1,8 +1,8 @@
 package com.andreolas.factories.api
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.AuthorDetailsApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewResultsApi
+import com.divinelink.core.network.movies.model.details.reviews.AuthorDetailsApi
+import com.divinelink.core.network.movies.model.details.reviews.ReviewResultsApi
 
 object ReviewsResultsApiFactory {
 

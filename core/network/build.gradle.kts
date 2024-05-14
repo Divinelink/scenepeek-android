@@ -22,6 +22,9 @@ secrets {
 }
 
 dependencies {
+  implementation(projects.coreUtil)
+  implementation(projects.core.model)
+
   implementation(libs.dagger.hilt.android)
   ksp(libs.dagger.hilt.compiler)
 

@@ -2,7 +2,7 @@ package com.andreolas.movierama.base.data.local.popular
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.divinelink.core.model.media.MediaItem
 
 @Entity(tableName = "tv")
 data class PersistableTV(

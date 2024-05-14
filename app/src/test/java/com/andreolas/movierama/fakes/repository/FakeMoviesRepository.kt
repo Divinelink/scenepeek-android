@@ -1,11 +1,11 @@
 package com.andreolas.movierama.fakes.repository
 
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchRequestApi
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.repository.MediaListResult
 import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.movies.model.popular.PopularRequestApi
+import com.divinelink.core.network.movies.model.search.movie.SearchRequestApi
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

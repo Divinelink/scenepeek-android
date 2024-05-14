@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.divinelink.core.model.media.MediaItem
 
 object MediaItemFactory {
 

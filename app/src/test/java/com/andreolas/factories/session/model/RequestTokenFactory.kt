@@ -1,6 +1,6 @@
 package com.andreolas.factories.session.model
 
-import com.andreolas.movierama.session.model.RequestToken
+import com.divinelink.core.model.session.RequestToken
 
 object RequestTokenFactory {
 

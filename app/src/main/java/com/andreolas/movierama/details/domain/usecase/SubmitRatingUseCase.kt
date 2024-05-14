@@ -1,11 +1,11 @@
 package com.andreolas.movierama.details.domain.usecase
 
-import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.repository.DetailsRepository
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.movies.model.rating.AddRatingRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher

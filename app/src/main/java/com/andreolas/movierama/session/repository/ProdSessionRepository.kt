@@ -1,9 +1,9 @@
 package com.andreolas.movierama.session.repository
 
 import com.andreolas.movierama.base.data.remote.session.mapper.map
-import com.andreolas.movierama.session.model.AccountDetails
-import com.andreolas.movierama.session.model.RequestToken
-import com.andreolas.movierama.session.model.SessionId
+import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.session.RequestToken
+import com.divinelink.core.model.session.Session
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
 import com.divinelink.core.network.session.service.SessionService
 import gr.divinelink.core.util.domain.data
@@ -22,7 +22,7 @@ class ProdSessionRepository @Inject constructor(
     return Result.success(response.data.map())
   }
 
-  override suspend fun createSession(token: CreateSessionRequestApi): Result<SessionId> {
+  override suspend fun createSession(token: CreateSessionRequestApi): Result<Session> {
     val response = remote.createSession(token)
 
     return Result.success(response.data.map())

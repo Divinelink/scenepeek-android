@@ -22,3 +22,4 @@ include(":core-util")
 
 include(":core:designsystem")
 include(":core:network")
+include(":core:model")

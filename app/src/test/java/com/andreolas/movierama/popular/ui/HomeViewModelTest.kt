@@ -3,11 +3,11 @@ package com.andreolas.movierama.popular.ui
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.andreolas.movierama.ui.UIText
+import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

@@ -89,9 +89,10 @@ secrets {
 }
 
 dependencies {
-  implementation(project(":core-util"))
+  implementation(projects.coreUtil)
 
   implementation(projects.core.designsystem)
+  implementation(projects.core.model)
   implementation(projects.core.network)
 
   implementation(libs.android.tools.desugar)

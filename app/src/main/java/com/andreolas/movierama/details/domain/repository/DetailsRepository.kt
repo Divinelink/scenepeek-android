@@ -1,17 +1,17 @@
 package com.andreolas.movierama.details.domain.repository
 
-import com.andreolas.movierama.base.data.remote.movies.dto.account.states.AccountMediaDetailsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.rating.AddRatingRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.rating.DeleteRatingRequestApi
-import com.andreolas.movierama.details.domain.model.MediaDetails
-import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.movies.model.details.DetailsRequestApi
+import com.divinelink.core.network.movies.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.movies.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.movies.model.details.videos.VideosRequestApi
+import com.divinelink.core.network.movies.model.rating.AddRatingRequestApi
+import com.divinelink.core.network.movies.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.network.movies.model.states.AccountMediaDetailsRequestApi
 import kotlinx.coroutines.flow.Flow
 
 /**

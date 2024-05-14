@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Cast
+import com.divinelink.core.network.movies.model.details.credits.Cast
 
 object CastFactory {
 

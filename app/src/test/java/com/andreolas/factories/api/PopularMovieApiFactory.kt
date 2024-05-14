@@ -1,6 +1,6 @@
 package com.andreolas.factories.api
 
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularMovieApi
+import com.divinelink.core.network.movies.model.popular.PopularMovieApi
 
 object PopularMovieApiFactory {
 

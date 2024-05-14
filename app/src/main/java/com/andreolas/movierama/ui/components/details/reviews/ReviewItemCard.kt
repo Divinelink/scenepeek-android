@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.andreolas.core.designsystem.theme.AppTheme
 import com.andreolas.core.designsystem.theme.PopularMovieItemShape
 import com.andreolas.movierama.ExcludeFromKoverReport
-import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
+import com.divinelink.core.model.details.Review
 
 private const val MINIMUM_MAX_LINES = 6
 private val MINIMUM_CARD_SIZE = 260.dp
@@ -67,14 +67,14 @@ fun ReviewItemCard(
         maxWidth = if (!expanded) MINIMUM_CARD_SIZE else MAXIMUM_CARD_SIZE
       },
   ) {
-    review.rating?.let {
+    review.rating?.let { rating ->
       Row(
         horizontalArrangement = Arrangement.Center,
       ) {
         MediaRatingItem(
           modifier = Modifier
             .padding(top = 12.dp, start = 12.dp, end = 12.dp),
-          rating = review.rating.toInt().toString(),
+          rating = rating.toString(),
         )
       }
     }

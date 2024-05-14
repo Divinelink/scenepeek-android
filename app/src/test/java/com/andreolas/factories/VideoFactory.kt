@@ -1,7 +1,7 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.domain.model.VideoSite
+import com.divinelink.core.model.details.Video
+import com.divinelink.core.model.details.VideoSite
 
 object VideoFactory {
 

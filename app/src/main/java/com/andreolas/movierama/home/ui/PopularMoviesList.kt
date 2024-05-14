@@ -28,10 +28,10 @@ import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.core.designsystem.theme.textColorDisabled
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MediaItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
+import com.divinelink.core.model.media.MediaItem
 
 @Composable
 fun MediaList(

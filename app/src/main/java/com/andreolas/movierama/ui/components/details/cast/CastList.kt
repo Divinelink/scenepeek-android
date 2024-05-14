@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.andreolas.core.designsystem.theme.ListPaddingValues
 import com.andreolas.movierama.R
-import com.andreolas.movierama.details.domain.model.Actor
-import com.andreolas.movierama.details.domain.model.Director
+import com.divinelink.core.model.details.Actor
+import com.divinelink.core.model.details.Director
 
 @Composable
 fun CastList(
