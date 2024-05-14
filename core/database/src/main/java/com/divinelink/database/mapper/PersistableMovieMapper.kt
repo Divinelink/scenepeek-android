@@ -1,20 +1,8 @@
-package com.andreolas.movierama.base.data.local.popular
+package com.divinelink.database.mapper
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.database.model.PersistableMovie
 
-@Entity(tableName = "movie")
-data class PersistableMovie(
-  @PrimaryKey
-  val id: Int,
-  val title: String,
-  val posterPath: String,
-  val releaseDate: String,
-  val rating: String,
-  val isFavorite: Boolean,
-  val overview: String,
-)
 
 internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie {
   return PersistableMovie(
@@ -28,7 +16,7 @@ internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie {
   )
 }
 
-fun List<PersistableMovie>.toDomainMoviesList(): List<MediaItem.Media> {
+fun List<PersistableMovie>.map(): List<MediaItem.Media> {
   return this.map(PersistableMovie::toMovie)
 }
 
@@ -43,3 +31,4 @@ private fun PersistableMovie.toMovie(): MediaItem.Media.Movie {
     isFavorite = this.isFavorite,
   )
 }
+

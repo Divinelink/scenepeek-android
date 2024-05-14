@@ -4,7 +4,6 @@ import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.api.PopularMovieApiFactory
 import com.andreolas.factories.api.SearchMovieApiFactory
-import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.fakes.dao.FakeMediaDao
 import com.andreolas.movierama.fakes.remote.FakeMediaService
 import com.divinelink.core.data.media.repository.MediaRepository
@@ -14,6 +13,7 @@ import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.divinelink.core.network.media.model.popular.PopularResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
+import com.divinelink.database.model.PersistableMovie
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
@@ -28,7 +28,7 @@ class ProdMoviesRepositoryTest {
     withFavorite(true)
   }
 
-  private val persistableMovie = PersistableMovie(
+  private val persistableMovie = com.divinelink.database.model.PersistableMovie(
     id = 1123,
     posterPath = "123456",
     releaseDate = "2022",

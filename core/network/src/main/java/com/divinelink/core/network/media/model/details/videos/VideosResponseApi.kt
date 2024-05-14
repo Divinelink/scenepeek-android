@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.model.details.videos
 
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.model.details.video.VideoSite
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

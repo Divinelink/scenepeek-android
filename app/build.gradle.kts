@@ -162,7 +162,7 @@ dependencies {
   implementation(libs.datastore.preferences)
   implementation(libs.datastore.preferences.core)
   implementation(libs.encrypted.preferences)
-  implementation(libs.room.ktx)
+  implementation(libs.room.ktx) // TODO Remove room deps and add di for database
   implementation(libs.room.runtime)
   ksp(libs.room.compiler)
 

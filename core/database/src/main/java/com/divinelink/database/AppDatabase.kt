@@ -1,10 +1,10 @@
-package com.andreolas.movierama.base.data.local
+package com.divinelink.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.andreolas.movierama.base.data.local.popular.MediaDao
-import com.andreolas.movierama.base.data.local.popular.PersistableMovie
-import com.andreolas.movierama.base.data.local.popular.PersistableTV
+import com.divinelink.database.dao.MediaDao
+import com.divinelink.database.model.PersistableMovie
+import com.divinelink.database.model.PersistableTV
 
 @Database(
   entities = [

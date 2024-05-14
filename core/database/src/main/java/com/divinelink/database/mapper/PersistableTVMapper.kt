@@ -1,20 +1,7 @@
-package com.andreolas.movierama.base.data.local.popular
+package com.divinelink.database.mapper
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.divinelink.core.model.media.MediaItem
-
-@Entity(tableName = "tv")
-data class PersistableTV(
-  @PrimaryKey
-  val id: Int,
-  val title: String,
-  val posterPath: String,
-  val releaseDate: String,
-  val rating: String,
-  val isFavorite: Boolean,
-  val overview: String,
-)
+import com.divinelink.database.model.PersistableTV
 
 internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
   id = this.id,
@@ -26,7 +13,7 @@ internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
   overview = this.overview,
 )
 
-internal fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(
+fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(
   PersistableTV::toTV
 )
 
@@ -39,3 +26,4 @@ internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   overview = this.overview,
   isFavorite = this.isFavorite,
 )
+

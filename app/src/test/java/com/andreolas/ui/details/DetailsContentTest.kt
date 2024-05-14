@@ -21,8 +21,8 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.andreolas.setContentWithTheme
-import com.divinelink.core.model.details.VideoSite
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest

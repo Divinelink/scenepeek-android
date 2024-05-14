@@ -1,6 +1,5 @@
 package com.divinelink.core.data.media.repository
 
-import com.andreolas.movierama.base.data.local.popular.toDomainMoviesList
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.popular.PopularRequestApi
@@ -41,7 +40,7 @@ class ProdMediaRepository @Inject constructor(
   override fun fetchFavoriteMovies(): Flow<MediaListResult> = mediaDao
     .fetchFavoriteMovies()
     .map { moviesList ->
-      Result.success(moviesList.toDomainMoviesList())
+      Result.success(moviesList.map())
     }
     .catch { exception ->
       flowOf(Result.failure<Exception>(exception))

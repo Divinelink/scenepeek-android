@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.local.popular
+package com.divinelink.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,6 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.database.mapper.toPersistableMovie
+import com.divinelink.database.mapper.toPersistableTV
+import com.divinelink.database.model.PersistableMovie
+import com.divinelink.database.model.PersistableTV
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
