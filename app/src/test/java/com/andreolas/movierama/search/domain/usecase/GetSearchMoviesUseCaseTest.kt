@@ -66,7 +66,7 @@ class GetSearchMoviesUseCaseTest {
       )
 
       val useCase = GetSearchMoviesUseCase(
-        moviesRepository = repository.mock,
+        repository = repository.mock,
         dispatcher = testDispatcher,
       )
       val result = useCase(request).last()
@@ -83,7 +83,7 @@ class GetSearchMoviesUseCaseTest {
       response = Result.failure(Exception()),
     )
     val useCase = GetSearchMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).first()
@@ -100,7 +100,7 @@ class GetSearchMoviesUseCaseTest {
     )
 
     val useCase = GetSearchMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()

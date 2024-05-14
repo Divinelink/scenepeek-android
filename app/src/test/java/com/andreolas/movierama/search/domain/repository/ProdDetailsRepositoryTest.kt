@@ -10,15 +10,15 @@ import com.andreolas.factories.api.ReviewsResultsApiFactory
 import com.andreolas.factories.api.SimilarMovieApiFactory
 import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.details.domain.repository.DetailsRepository
-import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
-import com.andreolas.movierama.details.ui.MovieDetailsException
-import com.andreolas.movierama.details.ui.ReviewsException
-import com.andreolas.movierama.details.ui.SimilarException
-import com.andreolas.movierama.details.ui.VideosException
 import com.andreolas.movierama.fakes.remote.FakeMediaService
-import com.divinelink.core.model.details.VideoSite
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.ReviewsException
+import com.divinelink.core.data.details.model.SimilarException
+import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
@@ -209,7 +209,7 @@ class ProdDetailsRepositoryTest {
   fun testMovieDetailsError() = runTest {
     val request = DetailsRequestApi.Movie(movieId = 555)
 
-    val expectedResult = MovieDetailsException()
+    val expectedResult = MediaDetailsException()
 
     repository.fetchMovieDetails(
       request = request

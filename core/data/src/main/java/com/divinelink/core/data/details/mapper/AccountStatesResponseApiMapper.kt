@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.movies.mapper
+package com.divinelink.core.data.details.mapper
 
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi

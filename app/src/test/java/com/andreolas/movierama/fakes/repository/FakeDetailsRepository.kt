@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.repository
 
-import com.andreolas.movierama.details.domain.repository.DetailsRepository
+import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review

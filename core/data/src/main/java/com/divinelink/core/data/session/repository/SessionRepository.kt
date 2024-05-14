@@ -1,4 +1,4 @@
-package com.andreolas.movierama.session.repository
+package com.divinelink.core.data.session.repository
 
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.RequestToken

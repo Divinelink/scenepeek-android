@@ -14,7 +14,7 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.communication.ApiConstants
+import com.andreolas.movierama.base.ApiConstants
 
 @Composable
 fun MovieImage(

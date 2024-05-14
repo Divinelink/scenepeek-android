@@ -1,7 +1,7 @@
 package com.andreolas.movierama.home.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
@@ -19,14 +19,14 @@ data class SearchResult(
 )
 
 open class GetSearchMoviesUseCase @Inject constructor(
-  private val moviesRepository: MoviesRepository,
+  private val repository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher) {
   override fun execute(
     parameters: SearchRequestApi,
   ): Flow<Result<SearchResult>> {
-    val favoriteMovies = moviesRepository.fetchFavoriteIds()
-    val searchMovies = moviesRepository.fetchSearchMovies(parameters)
+    val favoriteMovies = repository.fetchFavoriteIds()
+    val searchMovies = repository.fetchSearchMovies(parameters)
 
     return favoriteMovies
       .distinctUntilChanged()

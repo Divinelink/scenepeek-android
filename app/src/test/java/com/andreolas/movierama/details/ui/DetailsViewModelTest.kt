@@ -9,9 +9,10 @@ import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
-import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -183,7 +184,7 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.failure(MovieDetailsException()),
+          Result.failure(MediaDetailsException()),
           Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
           Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
         )

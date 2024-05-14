@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.data.remote.session.mapper
+package com.divinelink.core.data.session.mapper
 
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.network.session.model.CreateSessionResponseApi

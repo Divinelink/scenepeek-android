@@ -34,8 +34,3 @@ sealed class MovieDetailsResult {
     data object Unknown : Failure()
   }
 }
-
-class MovieDetailsException : Exception()
-class ReviewsException : Exception()
-class SimilarException : Exception()
-class VideosException : Exception()

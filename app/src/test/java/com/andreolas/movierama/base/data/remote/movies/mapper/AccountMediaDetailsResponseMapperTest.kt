@@ -2,6 +2,7 @@ package com.andreolas.movierama.base.data.remote.movies.mapper
 
 import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
+import com.divinelink.core.data.details.mapper.map
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

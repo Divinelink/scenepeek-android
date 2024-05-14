@@ -1,13 +1,13 @@
 package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.details.domain.repository.DetailsRepository
-import com.andreolas.movierama.details.ui.MovieDetailsException
 import com.andreolas.movierama.details.ui.MovieDetailsResult
-import com.andreolas.movierama.details.ui.ReviewsException
-import com.andreolas.movierama.details.ui.SimilarException
-import com.andreolas.movierama.details.ui.VideosException
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.ReviewsException
+import com.divinelink.core.data.details.model.SimilarException
+import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @Suppress("LongMethod")
 open class GetMovieDetailsUseCase @Inject constructor(
   private val repository: DetailsRepository,
-  private val moviesRepository: MoviesRepository,
+  private val mediaRepository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<DetailsRequestApi, MovieDetailsResult>(dispatcher) {
   override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> {
@@ -38,7 +38,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
     val favorite = flow {
       coroutineScope {
-        val result = moviesRepository.checkIfMediaIsFavorite(
+        val result = mediaRepository.checkIfMediaIsFavorite(
           id = requestApi.id,
           mediaType = MediaType.from(requestApi.endpoint)
         )
@@ -54,7 +54,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val details = repository.fetchMovieDetails(
       request = detailsRequestApi,
     ).catch {
-      emit(Result.failure(MovieDetailsException()))
+      emit(Result.failure(MediaDetailsException()))
     }
 
     val reviewsApi = when (parameters) {
@@ -102,7 +102,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           )
         )
       }.onFailure {
-        emit(Result.failure(MovieDetailsException()))
+        emit(Result.failure(MediaDetailsException()))
       }
 
       if (reviewsFlow.isSuccess) {

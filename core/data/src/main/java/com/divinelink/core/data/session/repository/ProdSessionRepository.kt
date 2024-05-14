@@ -1,6 +1,6 @@
-package com.andreolas.movierama.session.repository
+package com.divinelink.core.data.session.repository
 
-import com.andreolas.movierama.base.data.remote.session.mapper.map
+import com.divinelink.core.data.session.mapper.map
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session

@@ -2,7 +2,7 @@ package com.andreolas.movierama.session.login.domain.session.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.session.SessionStorage
-import com.andreolas.movierama.session.repository.SessionRepository
+import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
 import gr.divinelink.core.util.domain.UseCase
 import gr.divinelink.core.util.domain.data

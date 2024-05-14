@@ -1,4 +1,4 @@
-package com.andreolas.movierama.details.domain.repository
+package com.divinelink.core.data.details.repository
 
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails

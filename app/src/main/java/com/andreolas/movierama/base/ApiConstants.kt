@@ -1,4 +1,4 @@
-package com.andreolas.movierama.base.communication
+package com.andreolas.movierama.base
 
 import com.andreolas.movierama.BuildConfig
 

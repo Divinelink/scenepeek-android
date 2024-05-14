@@ -1,4 +1,4 @@
-package com.andreolas.movierama.home.domain.repository
+package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -11,9 +11,9 @@ typealias MultiListResult = Result<List<MediaItem>>
 typealias MediaListResult = Result<List<MediaItem.Media>>
 
 /**
- * The data layer for any requests related to Popular Movies.
+ * The data layer for any requests related to movies, tv and people.
  */
-interface MoviesRepository {
+interface MediaRepository {
 
   /**
    * Request popular movies using pagination.

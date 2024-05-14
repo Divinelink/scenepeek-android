@@ -7,8 +7,8 @@ import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.base.data.local.popular.PersistableMovie
 import com.andreolas.movierama.fakes.dao.FakeMediaDao
 import com.andreolas.movierama.fakes.remote.FakeMediaService
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
-import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
+import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.divinelink.core.network.media.model.popular.PopularResponseApi
@@ -55,11 +55,11 @@ class ProdMoviesRepositoryTest {
   private var mediaDao = FakeMediaDao()
   private var mediaRemote = FakeMediaService()
 
-  private lateinit var repository: MoviesRepository
+  private lateinit var repository: MediaRepository
 
   @Before
   fun setUp() {
-    repository = ProdMoviesRepository(
+    repository = ProdMediaRepository(
       mediaDao = mediaDao.mock,
       mediaRemote = mediaRemote.mock,
     )

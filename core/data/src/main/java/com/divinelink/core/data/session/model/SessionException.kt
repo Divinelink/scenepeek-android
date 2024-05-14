@@ -1,4 +1,4 @@
-package com.andreolas.movierama.details.domain.exception
+package com.divinelink.core.data.session.model
 
 object SessionException {
 

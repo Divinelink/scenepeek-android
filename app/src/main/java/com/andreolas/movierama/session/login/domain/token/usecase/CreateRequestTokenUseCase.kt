@@ -2,7 +2,7 @@ package com.andreolas.movierama.session.login.domain.token.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
-import com.andreolas.movierama.session.repository.SessionRepository
+import com.divinelink.core.data.session.repository.SessionRepository
 import gr.divinelink.core.util.domain.UseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher

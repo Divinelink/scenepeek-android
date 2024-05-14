@@ -1,7 +1,7 @@
 package com.andreolas.movierama.fakes.repository
 
-import com.andreolas.movierama.home.domain.repository.MediaListResult
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.data.media.repository.MediaListResult
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.popular.PopularRequestApi
@@ -13,7 +13,7 @@ import org.mockito.kotlin.whenever
 
 class FakeMoviesRepository {
 
-  val mock: MoviesRepository = mock()
+  val mock: MediaRepository = mock()
 
   fun mockFetchFavoriteMovies(
     response: MediaListResult,

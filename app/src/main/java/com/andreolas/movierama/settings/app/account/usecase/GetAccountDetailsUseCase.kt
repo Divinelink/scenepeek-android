@@ -2,7 +2,7 @@ package com.andreolas.movierama.settings.app.account.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.EncryptedStorage
-import com.andreolas.movierama.session.repository.SessionRepository
+import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.model.account.AccountDetails
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data

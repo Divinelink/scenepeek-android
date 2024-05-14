@@ -68,8 +68,6 @@ class HomeScreenTest : ComposeTest() {
       .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
 
-//    advanceTimeBy(210)
-
     composeTestRule.waitUntilExactlyOneExists(
       matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),
       timeoutMillis = DELAY

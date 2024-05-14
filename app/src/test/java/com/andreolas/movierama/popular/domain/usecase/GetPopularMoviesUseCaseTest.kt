@@ -58,7 +58,7 @@ class GetPopularMoviesUseCaseTest {
       )
 
       val useCase = GetPopularMoviesUseCase(
-        moviesRepository = repository.mock,
+        repository = repository.mock,
         dispatcher = testDispatcher,
       )
       val result = useCase(request).last()
@@ -88,7 +88,7 @@ class GetPopularMoviesUseCaseTest {
     }
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -109,7 +109,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -131,7 +131,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()

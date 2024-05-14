@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.R
 import com.andreolas.movierama.destinations.DetailsScreenDestination
-import com.andreolas.movierama.details.domain.exception.SessionException
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingParameters
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingUseCase
@@ -17,6 +16,8 @@ import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -113,7 +114,7 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }.onFailure {
-        if (it is MovieDetailsException) {
+        if (it is MediaDetailsException) {
           _viewState.update { viewState ->
             viewState.copy(
               error = MovieDetailsResult.Failure.FatalError().message,

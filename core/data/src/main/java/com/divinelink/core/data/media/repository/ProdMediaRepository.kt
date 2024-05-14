@@ -1,11 +1,5 @@
-package com.andreolas.movierama.home.domain.repository
+package com.divinelink.core.data.media.repository
 
-import com.andreolas.movierama.base.data.local.popular.MediaDao
-import com.andreolas.movierama.base.data.local.popular.checkIfMediaIsFavorite
-import com.andreolas.movierama.base.data.local.popular.fetchFavoriteMediaIDs
-import com.andreolas.movierama.base.data.local.popular.insertFavoriteMedia
-import com.andreolas.movierama.base.data.local.popular.map
-import com.andreolas.movierama.base.data.local.popular.removeFavoriteMedia
 import com.andreolas.movierama.base.data.local.popular.toDomainMoviesList
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -16,16 +10,22 @@ import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.database.dao.MediaDao
+import com.divinelink.database.dao.checkIfMediaIsFavorite
+import com.divinelink.database.dao.fetchFavoriteMediaIDs
+import com.divinelink.database.dao.insertFavoriteMedia
+import com.divinelink.database.dao.removeFavoriteMedia
+import com.divinelink.database.mapper.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ProdMoviesRepository @Inject constructor(
+class ProdMediaRepository @Inject constructor(
   private val mediaDao: MediaDao,
   private val mediaRemote: MediaService,
-) : MoviesRepository {
+) : MediaRepository {
 
   override fun fetchPopularMovies(request: PopularRequestApi): Flow<MediaListResult> {
     return mediaRemote

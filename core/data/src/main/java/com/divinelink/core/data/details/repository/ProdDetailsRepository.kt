@@ -1,10 +1,10 @@
-package com.andreolas.movierama.details.domain.repository
+package com.divinelink.core.data.details.repository
 
-import com.andreolas.movierama.base.data.remote.movies.mapper.map
-import com.andreolas.movierama.details.ui.MovieDetailsException
-import com.andreolas.movierama.details.ui.ReviewsException
-import com.andreolas.movierama.details.ui.SimilarException
-import com.andreolas.movierama.details.ui.VideosException
+import com.divinelink.core.data.details.mapper.map
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.ReviewsException
+import com.divinelink.core.data.details.model.SimilarException
+import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
@@ -38,7 +38,7 @@ class ProdDetailsRepository @Inject constructor(
       .map { apiResponse ->
         Result.success(apiResponse.toDomainMedia())
       }.catch {
-        throw MovieDetailsException()
+        throw MediaDetailsException()
       }
 
   override fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>> =

@@ -51,7 +51,7 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.communication.ApiConstants
+import com.andreolas.movierama.base.ApiConstants
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
