@@ -50,5 +50,9 @@ gradlePlugin {
       id = "divinelink.android.library.compose"
       implementationClass = "AndroidLibraryComposeConventionPlugin"
     }
+    register("androidHilt") {
+      id = "divinelink.android.hilt"
+      implementationClass = "AndroidHiltConventionPlugin"
+    }
   }
 }

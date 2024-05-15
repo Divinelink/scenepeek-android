@@ -201,3 +201,4 @@ divinelink-android-application = { id = "divinelink.android.application", versio
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
 divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
 divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
+divinelink-android-hilt = { id = "divinelink.android.hilt", version = "unspecified" }

@@ -1,11 +1,8 @@
 plugins {
   alias(libs.plugins.divinelink.android.library)
+  alias(libs.plugins.divinelink.android.hilt)
+
   alias(libs.plugins.kotlin.serialization)
-
-  // Needed for hilt
-  alias(libs.plugins.hilt)
-  alias(libs.plugins.ksp)
-
   alias(libs.plugins.secrets)
 }
 
@@ -24,9 +21,6 @@ secrets {
 dependencies {
   implementation(projects.coreUtil)
   implementation(projects.core.model)
-
-  implementation(libs.dagger.hilt.android)
-  ksp(libs.dagger.hilt.compiler)
 
   implementation(libs.ktor.client.core)
   implementation(libs.ktor.client.android)
