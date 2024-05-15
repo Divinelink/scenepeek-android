@@ -33,6 +33,7 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.STORE_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
