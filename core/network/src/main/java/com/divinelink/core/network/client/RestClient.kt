@@ -1,6 +1,6 @@
 package com.divinelink.core.network.client
 
-import com.andreolas.core.network.BuildConfig
+import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -28,7 +28,7 @@ class RestClient {
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
   private val authToken = BuildConfig.TMDB_AUTH_TOKEN
 
-  val localJson = Json { // TODO Turn private
+  private val localJson = Json {
     prettyPrint = true
     isLenient = true
     coerceInputValues = true
@@ -56,7 +56,7 @@ class RestClient {
   }
 
   @OptIn(InternalSerializationApi::class)
-  suspend inline fun <reified T : Any> get(url: String): T { // TODO turn to internal
+  internal suspend inline fun <reified T : Any> get(url: String): T {
     val json = client.get(url).bodyAsText()
 
     try {
@@ -68,10 +68,10 @@ class RestClient {
   }
 
   @OptIn(InternalSerializationApi::class)
-  suspend inline fun <reified T : Any, reified V : Any> post(
+  internal suspend inline fun <reified T : Any, reified V : Any> post(
     url: String,
     body: T
-  ): V { // TODO turn to internal
+  ): V {
     val json = client.post(url) {
       setBody(body)
     }.bodyAsText()
@@ -99,7 +99,7 @@ class RestClient {
   }
 
   @OptIn(InternalSerializationApi::class)
-  suspend inline fun <reified T : Any> delete(url: String): T { // TODO Turn to interla
+  internal suspend inline fun <reified T : Any> delete(url: String): T {
     val json = client.delete(url).bodyAsText()
 
     try {

@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-  namespace = "com.andreolas.core.network"
+  namespace = "com.divinelink.core.network"
 
   buildFeatures {
     buildConfig = true
