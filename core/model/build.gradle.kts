@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-  namespace = "com.divinelink.core.network"
+  namespace = "com.divinelink.core.model"
 }

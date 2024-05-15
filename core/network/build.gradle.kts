@@ -9,6 +9,16 @@ plugins {
 android {
   namespace = "com.divinelink.core.network"
 
+  buildTypes {
+    release {
+      buildConfigField(
+        "String",
+        "TMDB_AUTH_TOKEN",
+        System.getenv("TMDB_AUTH_TOKEN") ?: ""
+      )
+    }
+  }
+
   buildFeatures {
     buildConfig = true
   }
