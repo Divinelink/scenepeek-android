@@ -50,15 +50,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.core.designsystem.theme.AppTheme
+import com.andreolas.core.designsystem.theme.SearchBarSize
+import com.andreolas.core.designsystem.theme.dimensions
+import com.andreolas.core.designsystem.theme.keyline_negative8
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.DescriptionAttrs
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.getString
-import com.andreolas.movierama.ui.theme.AppTheme
-import com.andreolas.movierama.ui.theme.SearchBarSize
-import com.andreolas.movierama.ui.theme.dimensions
-import com.andreolas.movierama.ui.theme.keyline_negative8
 
 const val SEARCH_BAR_LOADING_INDICATOR_TAG = "SEARCH_BAR_LOADING_INDICATOR"
 

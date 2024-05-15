@@ -23,15 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andreolas.core.designsystem.theme.AppTheme
+import com.andreolas.core.designsystem.theme.dimensions
+import com.andreolas.core.designsystem.theme.textColorDisabled
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MediaItem
 import com.andreolas.movierama.ui.components.extensions.OnBottomReached
-import com.andreolas.movierama.ui.theme.AppTheme
-import com.andreolas.movierama.ui.theme.dimensions
-import com.andreolas.movierama.ui.theme.textColorDisabled
 
 @Composable
 fun MediaList(

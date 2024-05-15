@@ -14,11 +14,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.andreolas.core.designsystem.theme.ListPaddingValues
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.ui.theme.ListPaddingValues
 
-const val REVIEWS_SCROLLABLE_LIST = "REVIEWS_LAZY_ROW_TAG"
+const val REVIEWS_LIST = "REVIEWS_LIST"
 
 @Composable
 fun ReviewsList(
@@ -26,6 +26,7 @@ fun ReviewsList(
 ) {
   Column(
     modifier = Modifier
+      .testTag(REVIEWS_LIST)
       .padding(top = 16.dp, bottom = 16.dp)
       .fillMaxWidth(),
   ) {
@@ -38,15 +39,15 @@ fun ReviewsList(
     )
 
     LazyRow(
-      modifier = Modifier
-        .testTag(REVIEWS_SCROLLABLE_LIST),
       horizontalArrangement = Arrangement.spacedBy(8.dp),
       contentPadding = ListPaddingValues,
     ) {
       items(
         items = reviews,
       ) { review ->
-        ReviewItemCard(review = review)
+        ReviewItemCard(
+          review = review
+        )
       }
     }
   }

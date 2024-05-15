@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.platform.app.InstrumentationRegistry
+import com.andreolas.core.designsystem.theme.Theme
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.ui.theme.Theme
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

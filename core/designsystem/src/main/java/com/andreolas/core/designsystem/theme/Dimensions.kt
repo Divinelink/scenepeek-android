@@ -1,6 +1,6 @@
 @file:Suppress("PropertyName", "ConstructorParameterNaming")
 
-package com.andreolas.movierama.ui.theme
+package com.andreolas.core.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

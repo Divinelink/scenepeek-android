@@ -199,3 +199,5 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 # Plugins defined by this project
 divinelink-android-application = { id = "divinelink.android.application", version = "unspecified" }
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
+divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
+divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }

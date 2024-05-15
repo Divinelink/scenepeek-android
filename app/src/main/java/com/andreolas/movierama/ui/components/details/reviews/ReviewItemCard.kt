@@ -27,11 +27,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andreolas.core.designsystem.theme.AppTheme
+import com.andreolas.core.designsystem.theme.PopularMovieItemShape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.details.domain.model.Review
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
-import com.andreolas.movierama.ui.theme.AppTheme
-import com.andreolas.movierama.ui.theme.PopularMovieItemShape
 
 private const val MINIMUM_MAX_LINES = 6
 private val MINIMUM_CARD_SIZE = 260.dp

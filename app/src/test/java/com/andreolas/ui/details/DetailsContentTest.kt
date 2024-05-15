@@ -21,10 +21,11 @@ import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.ui.LOADING_CONTENT_TAG
 import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_SCROLLABLE_LIST
+import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.andreolas.setContentWithTheme
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class DetailsContentTest : ComposeTest() {
@@ -98,12 +99,12 @@ class DetailsContentTest : ComposeTest() {
     }
 
     composeTestRule
-      .onNodeWithTag(REVIEWS_SCROLLABLE_LIST)
+      .onNodeWithTag(REVIEWS_LIST)
       .assertDoesNotExist()
   }
 
   @Test
-  fun renderReviewsTest() {
+  fun renderReviewsTest() = runTest {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
@@ -127,14 +128,16 @@ class DetailsContentTest : ComposeTest() {
       .performScrollToNode(
         hasText(reviewsTitle)
       )
-
-    composeTestRule
-      .onNodeWithTag(REVIEWS_SCROLLABLE_LIST)
       .assertIsDisplayed()
+
+    with(composeTestRule) {
+      onNodeWithTag(REVIEWS_LIST).assertIsDisplayed()
+    }
 
     composeTestRule
       .onAllNodesWithText(reviews[0].content)[0]
       .performClick()
+      .assertIsDisplayed()
   }
 
   @Test

@@ -1,7 +1,7 @@
 package com.andreolas.movierama.test.util.fakes
 
-import com.andreolas.movierama.ui.theme.Theme
-import com.andreolas.movierama.ui.theme.ThemedActivityDelegate
+import com.andreolas.core.designsystem.theme.Theme
+import com.andreolas.movierama.ui.ThemedActivityDelegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

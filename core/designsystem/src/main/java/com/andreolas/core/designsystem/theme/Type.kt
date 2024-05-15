@@ -1,4 +1,4 @@
-package com.andreolas.movierama.ui.theme
+package com.andreolas.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.andreolas.movierama.R
+import com.andreolas.core.designsystem.R
 
 private val appFontFamily = FontFamily(
   Font(
@@ -129,10 +129,4 @@ val AppTypography = Typography(
     lineHeight = 20.sp,
     fontSize = 14.sp
   ),
-)
-
-val MD2Typography = androidx.compose.material.Typography(
-  defaultFontFamily = appFontFamily,
-  subtitle1 = AppTypography.bodyMedium,
-  caption = AppTypography.bodySmall,
 )

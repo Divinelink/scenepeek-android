@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.theme.dimensions
 
 @Composable
 fun SettingsRadioPrefItem(
@@ -28,7 +28,7 @@ fun SettingsRadioPrefItem(
   selected: String,
   selectedIndex: Int,
   listItems: List<String>,
-  onSelected: (Int) -> Unit
+  onSelected: (Int) -> Unit,
 ) {
   var showDialog by remember { mutableStateOf(false) }
 
@@ -37,25 +37,29 @@ fun SettingsRadioPrefItem(
       title = title,
       listItems = listItems,
       selectedOption = selectedIndex,
-      onSelected = onSelected,
-      onDismissRequest = { showDialog = false }
+      onSelected = {
+        showDialog = false
+        onSelected(it)
+      },
+      onDismissRequest = { showDialog = false },
     )
   }
 
   Row(
     verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-    modifier = Modifier
-      .clickable {
-        showDialog = true
-      }
-      .padding(MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth()
+    modifier =
+      Modifier
+        .clickable {
+          showDialog = true
+        }
+        .padding(MaterialTheme.dimensions.keyline_16)
+        .fillMaxWidth(),
   ) {
     icon?.let {
       Icon(
         painter = icon,
-        contentDescription = null
+        contentDescription = null,
       )
     }
 
@@ -64,12 +68,12 @@ fun SettingsRadioPrefItem(
     ) {
       Text(
         text = title,
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
       )
       Text(
         text = selected,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.secondary
+        color = MaterialTheme.colorScheme.secondary,
       )
     }
   }
