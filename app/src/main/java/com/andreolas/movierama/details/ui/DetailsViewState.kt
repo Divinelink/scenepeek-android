@@ -2,6 +2,7 @@ package com.andreolas.movierama.details.ui
 
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
+import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
@@ -15,7 +16,7 @@ data class DetailsViewState(
   val mediaType: MediaType,
   val movieId: Int,
   val mediaDetails: MediaDetails? = null,
-  val userRating: String? = null,
+  val userDetails: AccountMediaDetails? = null,
   val reviews: List<Review>? = null,
   val similarMovies: List<MediaItem.Media>? = null,
   val trailer: Video? = null,

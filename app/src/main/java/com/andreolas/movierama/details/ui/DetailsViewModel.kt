@@ -149,7 +149,7 @@ class DetailsViewModel @Inject constructor(
           _viewState.update { viewState ->
             viewState.copy(
               showRateDialog = false,
-              userRating = rating.toString(),
+              userDetails = viewState.userDetails?.copy(rating = rating.toFloat()),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_submitted_successfully,
@@ -177,7 +177,7 @@ class DetailsViewModel @Inject constructor(
   }
 
   fun onClearRating() {
-    if (viewState.value.userRating == null) return
+    if (viewState.value.userDetails == null) return
 
     viewModelScope.launch {
       deleteRatingUseCase.invoke(
@@ -190,7 +190,9 @@ class DetailsViewModel @Inject constructor(
           Timber.d("Rating deleted")
           _viewState.update { viewState ->
             viewState.copy(
-              userRating = null,
+              userDetails = viewState.userDetails?.copy(
+                rating = null
+              ),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_deleted_successfully,
@@ -235,7 +237,7 @@ class DetailsViewModel @Inject constructor(
         result.onSuccess {
           _viewState.update { viewState ->
             viewState.copy(
-              userRating = result.data.rating?.toInt()?.toString(),
+              userDetails = result.data
             )
           }
         }

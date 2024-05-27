@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,11 +67,13 @@ import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
+import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.MovieImageShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
@@ -148,7 +152,7 @@ fun DetailsContent(
             MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
-              userRating = viewState.userRating,
+              userRating = viewState.userDetails?.beautifiedRating,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
@@ -482,17 +486,25 @@ private fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
   viewState: DetailsViewState,
 ) {
-  AppTheme {
-    Surface {
-      DetailsContent(
-        modifier = Modifier,
-        viewState = viewState,
-        onNavigateUp = {},
-        onMarkAsFavoriteClicked = {},
-        onSimilarMovieClicked = {},
-        onConsumeSnackbar = {},
-        onAddRateClicked = {},
-      )
+  val snackbarHostState = remember { SnackbarHostState() }
+  val coroutineScope = rememberCoroutineScope()
+
+  ProvideSnackbarController(
+    snackbarHostState = snackbarHostState,
+    coroutineScope = coroutineScope
+  ) {
+    AppTheme {
+      Surface {
+        DetailsContent(
+          modifier = Modifier,
+          viewState = viewState,
+          onNavigateUp = {},
+          onMarkAsFavoriteClicked = {},
+          onSimilarMovieClicked = {},
+          onConsumeSnackbar = {},
+          onAddRateClicked = {},
+        )
+      }
     }
   }
 }
@@ -598,7 +610,12 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
 
         DetailsViewState(
           movieId = popularMovie.id,
-          userRating = "9",
+          userDetails = AccountMediaDetails(
+            id = 8679,
+            favorite = false,
+            rating = 9.0f,
+            watchlist = false
+          ),
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
         ),
