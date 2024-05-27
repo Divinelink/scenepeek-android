@@ -134,7 +134,7 @@ private fun MediaDetailsContent(
 
         // FIXME null check for isFavorite
         movie.isFavorite?.let {
-          LikeButton(
+          FavoriteButton(
             modifier = Modifier
               .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
               .clip(MaterialTheme.shape.roundedShape),

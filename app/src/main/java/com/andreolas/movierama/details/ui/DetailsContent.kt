@@ -54,7 +54,7 @@ import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.LikeButton
+import com.andreolas.movierama.ui.components.FavoriteButton
 import com.andreolas.movierama.ui.components.MovieImage
 import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
@@ -135,7 +135,7 @@ fun DetailsContent(
           }
         },
         actions = {
-          LikeButton(
+          FavoriteButton(
             modifier = Modifier
               .padding(end = MaterialTheme.dimensions.keyline_8)
               .clip(MaterialTheme.shape.roundedShape),
