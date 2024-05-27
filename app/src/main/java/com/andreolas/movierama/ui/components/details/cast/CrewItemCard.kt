@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.MovieImage
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.crew.Actor
 
 @Composable
@@ -59,7 +60,8 @@ fun CrewItemCard(
 
     Text(
       modifier = Modifier
-        .padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
+        .padding(horizontal = MaterialTheme.dimensions.keyline_8)
+        .padding(bottom = MaterialTheme.dimensions.keyline_4),
       text = actor.character,
       maxLines = 1,
       style = MaterialTheme.typography.bodySmall,

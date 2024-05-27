@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -45,7 +46,15 @@ class MainActivity : AppCompatActivity() {
       val coroutineScope = rememberCoroutineScope()
 
       AppTheme(
-        useDarkTheme = viewModel.theme.collectAsState().value == Theme.DARK,
+        useDarkTheme = shouldUseDarkTheme(
+          uiState = viewModel.viewState.collectAsState().value,
+          selectedTheme = viewModel.theme.collectAsState().value
+        ),
+//        useDarkTheme = if (viewModel.theme.collectAsState().value == Theme.SYSTEM) {
+//          isSystemInDarkTheme()
+//        } else {
+//          viewModel.theme.collectAsState().value == Theme.DARK
+//        },
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
@@ -71,6 +80,19 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
+  }
+}
+
+@Composable
+private fun shouldUseDarkTheme(
+  uiState: MainViewState,
+  selectedTheme: Theme,
+): Boolean = when (uiState) {
+  is MainViewState.Loading -> isSystemInDarkTheme()
+  is MainViewState.Completed -> when (selectedTheme) {
+    Theme.SYSTEM -> isSystemInDarkTheme()
+    Theme.LIGHT -> false
+    Theme.DARK -> true
   }
 }
 

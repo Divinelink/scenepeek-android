@@ -3,7 +3,6 @@
 package com.andreolas.movierama.ui.components.media
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,11 +32,7 @@ fun MediaRatingItem(
 
   val color = rating.getColorRating()
 
-  val backgroundColor = if (isSystemInDarkTheme()) {
-    MaterialTheme.colorScheme.surface
-  } else {
-    MaterialTheme.colorScheme.onSurface
-  }
+  val backgroundColor = MaterialTheme.colorScheme.surfaceContainerLowest
 
   val size = if (enlarged) {
     MaterialTheme.dimensions.keyline_68
@@ -96,11 +91,7 @@ fun MediaRatingItem(
       )
     }
 
-    val textColor = if (isSystemInDarkTheme()) {
-      MaterialTheme.colorScheme.onSurface
-    } else {
-      MaterialTheme.colorScheme.inverseOnSurface
-    }
+    val textColor = MaterialTheme.colorScheme.onSurface
 
     Text(
       text = sanitizedRating,

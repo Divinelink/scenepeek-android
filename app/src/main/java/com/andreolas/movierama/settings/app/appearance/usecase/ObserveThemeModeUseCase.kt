@@ -16,8 +16,7 @@ open class ObserveThemeModeUseCase @Inject constructor(
 ) : FlowUseCase<Unit, Theme>(dispatcher) {
   override fun execute(parameters: Unit): Flow<Result<Theme>> {
     return preferenceStorage.selectedTheme.map {
-      val theme = themeFromStorageKey(it)
-        ?: Theme.SYSTEM
+      val theme = themeFromStorageKey(it) ?: Theme.SYSTEM
       Result.success(theme)
     }
   }

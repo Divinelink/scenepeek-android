@@ -116,7 +116,8 @@ fun MediaItem(
     Text(
       modifier = Modifier
         .offset(y = offset)
-        .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+        .padding(horizontal = MaterialTheme.dimensions.keyline_8)
+        .padding(bottom = MaterialTheme.dimensions.keyline_4),
       text = movie.releaseDate,
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
