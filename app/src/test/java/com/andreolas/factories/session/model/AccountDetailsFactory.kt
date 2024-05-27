@@ -1,6 +1,6 @@
 package com.andreolas.factories.session.model
 
-import com.andreolas.movierama.session.model.AccountDetails
+import com.divinelink.core.model.account.AccountDetails
 
 object AccountDetailsFactory {
 

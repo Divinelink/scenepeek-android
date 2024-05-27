@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +27,7 @@ fun AlertDialogSelectOption(
   onSelected: (Int) -> Unit,
   onDismissRequest: () -> Unit
 ) {
-  AlertDialog(
+  BasicAlertDialog(
     onDismissRequest = onDismissRequest,
     content = {
       Card(

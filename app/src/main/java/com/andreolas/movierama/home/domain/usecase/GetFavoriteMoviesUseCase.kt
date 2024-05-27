@@ -1,8 +1,8 @@
 package com.andreolas.movierama.home.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
+import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.media.MediaItem
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.combineTransform
 import javax.inject.Inject
 
 open class GetFavoriteMoviesUseCase @Inject constructor(
-  private val moviesRepository: MoviesRepository,
+  private val repository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, List<MediaItem.Media>>(dispatcher) {
   override fun execute(parameters: Unit): Flow<Result<List<MediaItem.Media>>> {
-    val favoriteMovies = moviesRepository.fetchFavoriteMovies()
-    val favoriteTVSeries = moviesRepository.fetchFavoriteTVSeries()
+    val favoriteMovies = repository.fetchFavoriteMovies()
+    val favoriteTVSeries = repository.fetchFavoriteTVSeries()
 
     return combineTransform(
       favoriteMovies,

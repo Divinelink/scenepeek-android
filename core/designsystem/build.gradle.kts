@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  namespace = "com.andreolas.core.designsystem"
+  namespace = "com.divinelink.core.designsystem"
 }
 
 dependencies {

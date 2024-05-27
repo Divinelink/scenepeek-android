@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.base.data.remote.movies.dto.details.Credits
+import com.divinelink.core.network.media.model.details.Credits
 
 object CreditsFactory {
 

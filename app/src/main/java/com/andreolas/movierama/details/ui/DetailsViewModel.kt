@@ -5,11 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
 import com.andreolas.movierama.destinations.DetailsScreenDestination
-import com.andreolas.movierama.details.domain.exception.SessionException
-import com.andreolas.movierama.details.domain.model.MovieDetailsException
-import com.andreolas.movierama.details.domain.model.MovieDetailsResult
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingParameters
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingUseCase
@@ -17,10 +13,13 @@ import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUs
 import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -115,7 +114,7 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }.onFailure {
-        if (it is MovieDetailsException) {
+        if (it is MediaDetailsException) {
           _viewState.update { viewState ->
             viewState.copy(
               error = MovieDetailsResult.Failure.FatalError().message,

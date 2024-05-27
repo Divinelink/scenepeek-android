@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.movierama.ui.TestTags
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
 
 @Composable
 @Suppress("MagicNumber")

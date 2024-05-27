@@ -5,7 +5,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.andreolas.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.dimensions
 
 @Composable
 fun SettingsDivider() {

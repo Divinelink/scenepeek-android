@@ -1,6 +1,7 @@
 package com.andreolas.movierama.base.data.remote.movies.dto.account.states
 
 import com.andreolas.factories.api.account.states.RateResponseApiFactory
+import com.divinelink.core.network.media.model.states.RateResponseApiSerializer
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json

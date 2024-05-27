@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.movierama.ui.getColorRating
+import com.divinelink.core.designsystem.theme.dimensions
 
 @Composable
 fun MediaRatingItem(

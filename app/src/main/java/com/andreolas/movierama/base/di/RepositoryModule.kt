@@ -1,11 +1,11 @@
 package com.andreolas.movierama.base.di
 
-import com.andreolas.movierama.details.domain.repository.DetailsRepository
-import com.andreolas.movierama.details.domain.repository.ProdDetailsRepository
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
-import com.andreolas.movierama.home.domain.repository.ProdMoviesRepository
-import com.andreolas.movierama.session.repository.ProdSessionRepository
-import com.andreolas.movierama.session.repository.SessionRepository
+import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.details.repository.ProdDetailsRepository
+import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.data.media.repository.ProdMediaRepository
+import com.divinelink.core.data.session.repository.ProdSessionRepository
+import com.divinelink.core.data.session.repository.SessionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,8 +21,8 @@ abstract class RepositoryModule {
 
   @Binds
   abstract fun bindMovieRepository(
-    moviesRepository: ProdMoviesRepository,
-  ): MoviesRepository
+    moviesRepository: ProdMediaRepository,
+  ): MediaRepository
 
   @Binds
   abstract fun bindDetailsRepository(

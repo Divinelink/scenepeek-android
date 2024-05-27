@@ -21,3 +21,7 @@ include(":app")
 include(":core-util")
 
 include(":core:designsystem")
+include(":core:network")
+include(":core:model")
+include(":core:data")
+include(":core:database")

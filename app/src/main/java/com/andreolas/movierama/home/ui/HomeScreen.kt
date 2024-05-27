@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.destinations.SettingsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.divinelink.core.model.media.MediaItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

@@ -1,7 +1,7 @@
 package com.andreolas.movierama.fakes.usecase
 
-import com.andreolas.movierama.home.domain.repository.MediaListResult
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
+import com.divinelink.core.data.media.repository.MediaListResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow

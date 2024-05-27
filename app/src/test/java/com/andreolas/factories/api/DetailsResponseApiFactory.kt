@@ -2,7 +2,7 @@ package com.andreolas.factories.api
 
 import com.andreolas.factories.CreditsFactory
 import com.andreolas.factories.GenreFactory
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsResponseApi
+import com.divinelink.core.network.media.model.details.DetailsResponseApi
 
 object DetailsResponseApiFactory {
 

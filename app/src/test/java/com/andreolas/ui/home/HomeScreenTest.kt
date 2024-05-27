@@ -20,14 +20,14 @@ import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -67,8 +67,6 @@ class HomeScreenTest : ComposeTest() {
     composeTestRule
       .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
-
-//    advanceTimeBy(210)
 
     composeTestRule.waitUntilExactlyOneExists(
       matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),

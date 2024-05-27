@@ -2,10 +2,10 @@ package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
-import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.last
@@ -58,7 +58,7 @@ class GetPopularMoviesUseCaseTest {
       )
 
       val useCase = GetPopularMoviesUseCase(
-        moviesRepository = repository.mock,
+        repository = repository.mock,
         dispatcher = testDispatcher,
       )
       val result = useCase(request).last()
@@ -88,7 +88,7 @@ class GetPopularMoviesUseCaseTest {
     }
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -109,7 +109,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -131,7 +131,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     val useCase = GetPopularMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()

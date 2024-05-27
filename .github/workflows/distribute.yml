@@ -25,6 +25,11 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
+      - name: Auth token to local.properties
+        env:
+          TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
+        run: echo "TMDB_AUTH_TOKEN=${TMDB_AUTH_TOKEN}" >> local.properties
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Build APK

@@ -1,9 +1,9 @@
 package com.andreolas.movierama.settings.appearance.usecase
 
-import com.andreolas.core.designsystem.theme.Theme
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
+import com.divinelink.core.designsystem.theme.Theme
 import com.google.common.truth.Truth.assertThat
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi

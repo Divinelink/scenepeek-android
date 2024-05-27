@@ -4,8 +4,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.andreolas.core.designsystem.theme.AppTheme
 import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
+import com.divinelink.core.designsystem.theme.AppTheme
 
 fun ComposeTest.setContentWithTheme(
   content: @Composable () -> Unit

@@ -45,7 +45,7 @@ class GetFavoriteMoviesUseCaseTest {
     )
 
     val useCase = GetFavoriteMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -62,7 +62,7 @@ class GetFavoriteMoviesUseCaseTest {
     )
 
     val useCase = GetFavoriteMoviesUseCase(
-      moviesRepository = repository.mock,
+      repository = repository.mock,
       dispatcher = testDispatcher,
     )
 

@@ -3,8 +3,8 @@ package com.andreolas.movierama.popular.domain.usecase
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
-import com.andreolas.movierama.home.domain.model.MediaType
 import com.andreolas.movierama.home.domain.usecase.RemoveFavoriteUseCase
+import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

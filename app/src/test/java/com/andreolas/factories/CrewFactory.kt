@@ -1,6 +1,6 @@
 package com.andreolas.factories
 
-import com.andreolas.movierama.base.data.remote.movies.dto.details.credits.Crew
+import com.divinelink.core.network.media.model.details.credits.Crew
 
 object CrewFactory {
 

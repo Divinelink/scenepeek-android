@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.dimensions
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.details.SpannableRating
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
 import kotlin.math.roundToInt
 
 @Composable

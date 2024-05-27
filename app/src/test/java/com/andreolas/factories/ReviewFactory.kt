@@ -1,7 +1,7 @@
 package com.andreolas.factories
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.andreolas.movierama.details.domain.model.Review
+import com.divinelink.core.model.details.Review
 
 object ReviewFactory {
 

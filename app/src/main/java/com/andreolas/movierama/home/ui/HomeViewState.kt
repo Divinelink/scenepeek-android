@@ -1,9 +1,9 @@
 package com.andreolas.movierama.home.ui
 
-import com.andreolas.movierama.home.domain.model.MediaItem
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
+import com.divinelink.core.model.media.MediaItem
 
 /**
  * @param loadMorePopular indicates whether to load more popularMovies movies when reaching the end of screen,

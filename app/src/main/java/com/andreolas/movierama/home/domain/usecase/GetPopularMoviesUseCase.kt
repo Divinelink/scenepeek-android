@@ -1,10 +1,10 @@
 package com.andreolas.movierama.home.domain.usecase
 
-import com.andreolas.movierama.base.data.remote.movies.dto.popular.PopularRequestApi
 import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.repository.MoviesRepository
-import com.andreolas.movierama.home.domain.repository.MultiListResult
+import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.data.media.repository.MultiListResult
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import gr.divinelink.core.util.domain.FlowUseCase
 import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 open class GetPopularMoviesUseCase @Inject constructor(
-  private val moviesRepository: MoviesRepository,
+  private val repository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<PopularRequestApi, List<MediaItem>>(dispatcher) {
   override fun execute(parameters: PopularRequestApi): Flow<MultiListResult> {
-    val favoriteMediaIdsFlow = moviesRepository.fetchFavoriteIds()
-    val popularMoviesFlow = moviesRepository.fetchPopularMovies(parameters)
+    val favoriteMediaIdsFlow = repository.fetchFavoriteIds()
+    val popularMoviesFlow = repository.fetchPopularMovies(parameters)
 
     return combine(favoriteMediaIdsFlow, popularMoviesFlow) { favorite, popular ->
       when {

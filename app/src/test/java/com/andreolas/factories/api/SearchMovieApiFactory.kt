@@ -1,6 +1,6 @@
 package com.andreolas.factories.api
 
-import com.andreolas.movierama.base.data.remote.movies.dto.search.movie.SearchMovieApi
+import com.divinelink.core.network.media.model.search.movie.SearchMovieApi
 
 object SearchMovieApiFactory {
 

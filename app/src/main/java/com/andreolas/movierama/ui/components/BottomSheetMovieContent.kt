@@ -49,14 +49,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.andreolas.core.designsystem.theme.AppTheme
-import com.andreolas.core.designsystem.theme.dimensions
-import com.andreolas.core.designsystem.theme.shape
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.base.communication.ApiConstants
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.andreolas.movierama.base.ApiConstants
 import com.andreolas.movierama.ui.components.media.MediaRatingItem
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.model.media.MediaItem
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
 const val DETAILS_BUTTON_TAG = "DETAILS_AND_MORE_BUTTON_TAG"

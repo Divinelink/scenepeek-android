@@ -1,15 +1,15 @@
 package com.andreolas.movierama.fakes.repository
 
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
-import com.andreolas.movierama.details.domain.model.MovieDetails
-import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.domain.model.account.AccountMediaDetails
-import com.andreolas.movierama.details.domain.repository.DetailsRepository
-import com.andreolas.movierama.home.domain.model.MediaItem
+import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -21,7 +21,7 @@ class FakeDetailsRepository {
 
   fun mockFetchMovieDetails(
     request: DetailsRequestApi,
-    response: Result<MovieDetails>,
+    response: Result<Movie>,
   ) {
     whenever(
       mock.fetchMovieDetails(request)

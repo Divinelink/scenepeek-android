@@ -1,22 +1,22 @@
 package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.base.data.remote.movies.dto.details.DetailsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.reviews.ReviewsRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.similar.SimilarRequestApi
-import com.andreolas.movierama.base.data.remote.movies.dto.details.videos.VideosRequestApi
-import com.andreolas.movierama.details.domain.model.MovieDetails
-import com.andreolas.movierama.details.domain.model.MovieDetailsException
-import com.andreolas.movierama.details.domain.model.MovieDetailsResult
-import com.andreolas.movierama.details.domain.model.Review
-import com.andreolas.movierama.details.domain.model.SimilarException
-import com.andreolas.movierama.details.domain.model.Video
-import com.andreolas.movierama.details.domain.model.VideoSite
-import com.andreolas.movierama.details.domain.model.VideosException
+import com.andreolas.movierama.details.ui.MovieDetailsResult
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
-import com.andreolas.movierama.home.domain.model.MediaItem
-import com.andreolas.movierama.home.domain.model.MediaType
+import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.SimilarException
+import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.details.video.VideoSite
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
+import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -37,7 +37,7 @@ class GetMoviesDetailsUseCaseTest {
   private lateinit var moviesRepository: FakeMoviesRepository
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
-  private val movieDetails = MovieDetails(
+  private val movieDetails = Movie(
     id = 0,
     title = "",
     posterPath = "",
@@ -86,7 +86,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -111,7 +111,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -130,7 +130,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -152,7 +152,7 @@ class GetMoviesDetailsUseCaseTest {
     )
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -172,7 +172,7 @@ class GetMoviesDetailsUseCaseTest {
 
     val useCase = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -182,7 +182,7 @@ class GetMoviesDetailsUseCaseTest {
 
   @Test
   fun `catch error case in details`() = runTest {
-    val expectedResult = Result.failure<Exception>(MovieDetailsException())
+    val expectedResult = Result.failure<Exception>(MediaDetailsException())
 
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
     repository.mockFetchSimilarMovies(
@@ -192,7 +192,7 @@ class GetMoviesDetailsUseCaseTest {
 
     val useCase = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()
@@ -211,7 +211,7 @@ class GetMoviesDetailsUseCaseTest {
     )
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -226,7 +226,7 @@ class GetMoviesDetailsUseCaseTest {
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -250,7 +250,7 @@ class GetMoviesDetailsUseCaseTest {
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -273,7 +273,7 @@ class GetMoviesDetailsUseCaseTest {
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -290,7 +290,7 @@ class GetMoviesDetailsUseCaseTest {
 
     val useCase = GetMovieDetailsUseCase(
       repository = repository.mock,
-      moviesRepository = moviesRepository.mock,
+      mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
     )
     val result = useCase(request).last()

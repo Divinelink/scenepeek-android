@@ -78,6 +78,10 @@ android {
     checkReleaseBuilds = false
     abortOnError = false
   }
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 secrets {
@@ -85,9 +89,13 @@ secrets {
 }
 
 dependencies {
-  implementation(project(":core-util"))
+  implementation(projects.coreUtil)
 
+  implementation(projects.core.data)
+  implementation(projects.core.database)
   implementation(projects.core.designsystem)
+  implementation(projects.core.model)
+  implementation(projects.core.network)
 
   implementation(libs.android.tools.desugar)
 
@@ -154,7 +162,7 @@ dependencies {
   implementation(libs.datastore.preferences)
   implementation(libs.datastore.preferences.core)
   implementation(libs.encrypted.preferences)
-  implementation(libs.room.ktx)
+  implementation(libs.room.ktx) // TODO Remove room deps and add di for database
   implementation(libs.room.runtime)
   ksp(libs.room.compiler)
 
