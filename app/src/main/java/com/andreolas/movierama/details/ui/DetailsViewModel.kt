@@ -215,6 +215,10 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
+  fun onAddToWatchlistClicked() {
+    // Todo
+  }
+
   internal fun navigateToLogin(snackbarResult: SnackbarResult) {
     if (snackbarResult == SnackbarResult.ActionPerformed) {
       _viewState.update { viewState ->

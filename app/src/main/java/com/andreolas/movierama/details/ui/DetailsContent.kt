@@ -56,6 +56,7 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.FavoriteButton
 import com.andreolas.movierama.ui.components.MovieImage
+import com.andreolas.movierama.ui.components.WatchlistButton
 import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
 import com.andreolas.movierama.ui.components.details.genres.GenreLabel
@@ -98,6 +99,7 @@ fun DetailsContent(
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onConsumeSnackbar: () -> Unit,
   onAddRateClicked: () -> Unit,
+  onAddToWatchlistClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -152,12 +154,13 @@ fun DetailsContent(
             MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
-              userRating = viewState.userDetails?.beautifiedRating,
+              userDetails = viewState.userDetails,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
-              onAddRateClicked = onAddRateClicked
+              onAddRateClicked = onAddRateClicked,
+              onAddToWatchlistClicked = onAddToWatchlistClicked
             )
           }
         }
@@ -218,12 +221,13 @@ private fun VideoPlayerSection(
 fun MediaDetailsContent(
   modifier: Modifier = Modifier,
   mediaDetails: MediaDetails,
-  userRating: String?,
+  userDetails: AccountMediaDetails?,
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
+  onAddToWatchlistClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -284,9 +288,17 @@ fun MediaDetailsContent(
       }
 
       item {
+        WatchlistButton(
+          modifier = Modifier.padding(paddingValues = ListPaddingValues),
+          onWatchlist = userDetails?.watchlist == true,
+          onClick = onAddToWatchlistClicked
+        )
+      }
+
+      item {
         UserRating(
           overallUserScore = mediaDetails.rating,
-          userRating = userRating,
+          userRating = userDetails?.beautifiedRating,
           onAddRateClicked = onAddRateClicked
         )
       }
@@ -503,6 +515,7 @@ private fun DetailsContentPreview(
           onSimilarMovieClicked = {},
           onConsumeSnackbar = {},
           onAddRateClicked = {},
+          onAddToWatchlistClicked = {},
         )
       }
     }
