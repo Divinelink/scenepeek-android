@@ -9,6 +9,9 @@ import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
 import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.divinelink.core.network.media.model.popular.PopularResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -149,5 +152,26 @@ class ProdMediaService @Inject constructor(
     val response = restClient.delete<Unit>(url = url)
 
     emit(response)
+  }
+
+  override fun addToWatchlist(
+    request: AddToWatchlistRequestApi
+  ): Flow<AddToWatchlistResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist"
+
+    val response = restClient.post<AddToWatchlistRequestBodyApi, AddToWatchlistResponseApi>(
+      url = url,
+      body = AddToWatchlistRequestBodyApi(
+        mediaType = request.mediaType,
+        mediaId = request.mediaId,
+        watchlist = request.addToWatchlist
+      )
+    )
+
+    if (response.success) {
+      emit(response)
+    } else {
+      throw Exception("Failed to add to watchlist")
+    }
   }
 }

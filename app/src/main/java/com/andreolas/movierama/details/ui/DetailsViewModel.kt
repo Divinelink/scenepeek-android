@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.R
 import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
+import com.andreolas.movierama.details.domain.usecase.AddToWatchlistParameters
+import com.andreolas.movierama.details.domain.usecase.AddToWatchlistUseCase
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingParameters
 import com.andreolas.movierama.details.domain.usecase.DeleteRatingUseCase
 import com.andreolas.movierama.details.domain.usecase.FetchAccountMediaDetailsUseCase
@@ -41,6 +43,7 @@ class DetailsViewModel @Inject constructor(
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
+  private val addToWatchlistUseCase: AddToWatchlistUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -149,7 +152,10 @@ class DetailsViewModel @Inject constructor(
           _viewState.update { viewState ->
             viewState.copy(
               showRateDialog = false,
-              userDetails = viewState.userDetails?.copy(rating = rating.toFloat()),
+              userDetails = viewState.userDetails?.copy(
+                rating = rating.toFloat(),
+                watchlist = false
+              ),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_submitted_successfully,
@@ -216,7 +222,62 @@ class DetailsViewModel @Inject constructor(
   }
 
   fun onAddToWatchlistClicked() {
-    // Todo
+    viewModelScope.launch {
+      addToWatchlistUseCase.invoke(
+        AddToWatchlistParameters(
+          id = viewState.value.movieId,
+          mediaType = viewState.value.mediaType,
+          addToWatchlist = viewState.value.userDetails?.watchlist == false,
+        )
+      ).collectLatest { result ->
+        result.onSuccess {
+          _viewState.update { viewState ->
+            // convert the following to function
+            if (viewState.userDetails?.watchlist == true) {
+              viewState.copy(
+                userDetails = viewState.userDetails.copy(watchlist = false),
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.details__removed_from_watchlist,
+                    viewState.mediaDetails?.title!!
+                  )
+                )
+              )
+            } else {
+              viewState.copy(
+                userDetails = viewState.userDetails?.copy(watchlist = true),
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.details__added_to_watchlist,
+                    viewState.mediaDetails?.title!!
+                  )
+                )
+              )
+            }
+          }
+        }.onFailure {
+          if (it is SessionException.InvalidAccountId) {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+                  actionLabelText = UIText.ResourceText(R.string.login),
+                  onSnackbarResult = ::navigateToLogin
+                )
+              )
+            }
+          } else {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(R.string.error_retry)
+                )
+              )
+            }
+          }
+        }
+      }
+    }
   }
 
   internal fun navigateToLogin(snackbarResult: SnackbarResult) {

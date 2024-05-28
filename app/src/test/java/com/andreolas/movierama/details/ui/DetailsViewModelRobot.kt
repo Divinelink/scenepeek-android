@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
@@ -29,6 +30,7 @@ class DetailsViewModelRobot {
   private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
+  private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -40,6 +42,7 @@ class DetailsViewModelRobot {
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
+      addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,

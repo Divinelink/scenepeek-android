@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_ACCOUNT_ID
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
 import com.andreolas.movierama.base.storage.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
@@ -27,6 +28,10 @@ interface PreferenceStorage {
 
   suspend fun setBlackBackgrounds(isEnabled: Boolean)
   val isBlackBackgroundsEnabled: Flow<Boolean>
+
+  suspend fun clearAccountId()
+  suspend fun setAccountId(accountId: String)
+  val accountId: Flow<String?>
 
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
@@ -53,6 +58,8 @@ class DataStorePreferenceStorage @Inject constructor(
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
     val PREF_MATERIAL_YOU = booleanPreferencesKey("settings.material.you")
     val PREF_BLACK_BACKGROUNDS = booleanPreferencesKey("settings.black.backgrounds")
+
+    val PREF_ACCOUNT_ID = stringPreferencesKey("account.id")
 
     val PREF_REQUEST_TOKEN = stringPreferencesKey("request.token")
     val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
@@ -128,5 +135,21 @@ class DataStorePreferenceStorage @Inject constructor(
 
   override val hasSession: Flow<Boolean> = dataStore.data.map {
     it[PREF_HAS_SESSION] ?: false
+  }
+
+  override suspend fun clearAccountId() {
+    dataStore.edit {
+      it.remove(PREF_ACCOUNT_ID)
+    }
+  }
+
+  override suspend fun setAccountId(accountId: String) {
+    dataStore.edit {
+      it[PREF_ACCOUNT_ID] = accountId
+    }
+  }
+
+  override val accountId: Flow<String?> = dataStore.data.map {
+    it[PREF_ACCOUNT_ID]
   }
 }

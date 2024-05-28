@@ -9,7 +9,8 @@ open class FakePreferenceStorage(
   isMaterialYouEnabled: Boolean = false,
   isBlackBackgroundsEnabled: Boolean = false,
   token: String? = null,
-  hasSession: Boolean = false
+  hasSession: Boolean = false,
+  accountId: String? = null,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -29,6 +30,9 @@ open class FakePreferenceStorage(
 
   private val _hasSession = MutableStateFlow(hasSession)
   override val hasSession = _hasSession
+
+  private val _accountId = MutableStateFlow(accountId)
+  override val accountId = _accountId
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -56,5 +60,13 @@ open class FakePreferenceStorage(
 
   override suspend fun setHasSession(hasSession: Boolean) {
     _hasSession.value = hasSession
+  }
+
+  override suspend fun clearAccountId() {
+    _accountId.value = null
+  }
+
+  override suspend fun setAccountId(accountId: String) {
+    _accountId.value = accountId
   }
 }

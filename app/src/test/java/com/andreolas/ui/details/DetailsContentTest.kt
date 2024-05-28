@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performScrollToNode
 import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.ui.DetailsContent
 import com.andreolas.movierama.details.ui.DetailsViewState
@@ -46,6 +47,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -73,6 +75,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -95,6 +98,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -118,6 +122,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -154,6 +159,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -194,6 +200,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -209,7 +216,7 @@ class DetailsContentTest : ComposeTest() {
         viewState = DetailsViewState(
           movieId = 0,
           mediaType = MediaType.MOVIE,
-          userRating = "8",
+          userDetails = AccountMediaDetailsFactory.Rated(),
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         onNavigateUp = {},
@@ -217,6 +224,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -248,6 +256,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 

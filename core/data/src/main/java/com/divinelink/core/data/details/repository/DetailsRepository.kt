@@ -10,6 +10,7 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import kotlinx.coroutines.flow.Flow
@@ -45,5 +46,9 @@ interface DetailsRepository {
 
   fun deleteRating(
     request: DeleteRatingRequestApi
+  ): Flow<Result<Unit>>
+
+  fun addToWatchlist(
+    request: AddToWatchlistRequestApi
   ): Flow<Result<Unit>>
 }
