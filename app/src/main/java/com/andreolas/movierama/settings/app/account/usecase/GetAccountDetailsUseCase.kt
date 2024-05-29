@@ -2,6 +2,7 @@ package com.andreolas.movierama.settings.app.account.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.model.account.AccountDetails
 import gr.divinelink.core.util.domain.FlowUseCase
@@ -22,7 +23,7 @@ class GetAccountDetailsUseCase @Inject constructor(
     val sessionId = sessionStorage.sessionId
 
     if (sessionId == null) {
-      emit(Result.failure(Exception("Missing token ID")))
+      emit(Result.failure(SessionException.NoSession()))
       return@flow
     }
 

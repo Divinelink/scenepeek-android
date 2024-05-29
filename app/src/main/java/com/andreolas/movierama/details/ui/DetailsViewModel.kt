@@ -221,7 +221,7 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onAddToWatchlistClicked() {
+  fun onAddToWatchlist() {
     viewModelScope.launch {
       addToWatchlistUseCase.invoke(
         AddToWatchlistParameters(
@@ -232,7 +232,6 @@ class DetailsViewModel @Inject constructor(
       ).collectLatest { result ->
         result.onSuccess {
           _viewState.update { viewState ->
-            // convert the following to function
             if (viewState.userDetails?.watchlist == true) {
               viewState.copy(
                 userDetails = viewState.userDetails.copy(watchlist = false),

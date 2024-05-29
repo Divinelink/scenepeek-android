@@ -81,6 +81,10 @@ class DetailsViewModelRobot {
     viewModel.onClearRating()
   }
 
+  fun onAddToWatchlist() = apply {
+    viewModel.onAddToWatchlist()
+  }
+
   fun onDismissRateDialog() = apply {
     viewModel.onDismissRateDialog()
   }
@@ -133,6 +137,14 @@ class DetailsViewModelRobot {
     response: Flow<Result<Unit>>,
   ) = apply {
     fakeDeleteRatingUseCase.mockDeleteRating(
+      response = response
+    )
+  }
+
+  fun mockAddToWatchlist(
+    response: Flow<Result<Unit>>,
+  ) = apply {
+    fakeAddToWatchListUseCase.mockAddToWatchlist(
       response = response
     )
   }

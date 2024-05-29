@@ -8,6 +8,8 @@ import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
 import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.divinelink.core.network.media.model.popular.PopularResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -119,6 +121,17 @@ class FakeMediaService {
   ) {
     whenever(
       mock.deleteRating(request)
+    ).thenReturn(
+      response
+    )
+  }
+
+  fun mockAddToWatchlist(
+    request: AddToWatchlistRequestApi,
+    response: Flow<AddToWatchlistResponseApi>,
+  ) {
+    whenever(
+      mock.addToWatchlist(request)
     ).thenReturn(
       response
     )

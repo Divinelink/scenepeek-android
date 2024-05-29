@@ -1,4 +1,5 @@
 @file:Suppress("LargeClass")
+
 package com.andreolas.movierama.details.ui
 
 import androidx.compose.material3.SnackbarResult
@@ -683,6 +684,142 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.details__rating_deleted_successfully,
+              movieDetails.title
+            )
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given invalid accountId when I add to watchlist I expect error`() = runTest {
+    lateinit var viewModel: DetailsViewModel
+
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockAddToWatchlist(
+        response = flowOf(Result.failure(SessionException.InvalidAccountId()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+            actionLabelText = UIText.ResourceText(R.string.login),
+            onSnackbarResult = viewModel::navigateToLogin
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given error when I add to watchlist I expect general error`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockAddToWatchlist(
+        response = flowOf(Result.failure(Exception()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.error_retry)
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given item on watchlist when I add to watchlist I expect removed message`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        flowOf(
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) })
+        )
+      )
+      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+        )
+      )
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__removed_from_watchlist,
+              movieDetails.title
+            )
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given item not on watchlist when I add to watchlist I expect added message`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        flowOf(
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) })
+        )
+      )
+      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+        )
+      )
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__added_to_watchlist,
               movieDetails.title
             )
           )

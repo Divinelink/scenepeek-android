@@ -16,8 +16,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.dimensions
 
 @Composable
@@ -41,9 +42,9 @@ fun WatchlistButton(
             contentDescription = null
           )
 
-          Spacer(modifier = Modifier.width(4.dp))
+          Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_4))
 
-          Text(text = "Added to watchlist")
+          Text(text = stringResource(id = R.string.details__added_to_watchlist_button))
         }
       }
       false -> {
@@ -56,9 +57,9 @@ fun WatchlistButton(
             contentDescription = null
           )
 
-          Spacer(modifier = Modifier.width(4.dp))
+          Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_4))
 
-          Text(text = "Add to Watchlist")
+          Text(text = stringResource(id = R.string.details__add_to_watchlist_button))
         }
       }
     }

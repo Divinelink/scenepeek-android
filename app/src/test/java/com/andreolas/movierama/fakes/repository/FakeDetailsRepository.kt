@@ -92,4 +92,14 @@ class FakeDetailsRepository {
       flowOf(response)
     )
   }
+
+  fun mockAddToWatchlist(
+    response: Result<Unit>,
+  ) {
+    whenever(
+      mock.addToWatchlist(any())
+    ).thenReturn(
+      flowOf(response)
+    )
+  }
 }

@@ -651,6 +651,20 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           movieId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          mediaDetails = movieDetails,
+          similarMovies = similarMovies,
+          userDetails = AccountMediaDetails(
+            id = 0,
+            favorite = false,
+            rating = 9.0f,
+            watchlist = true
+          ),
+          reviews = reviews,
+        ),
+
+        DetailsViewState(
+          movieId = popularMovie.id,
+          mediaType = MediaType.MOVIE,
           error = UIText.StringText("Something went wrong.")
         ),
       )
