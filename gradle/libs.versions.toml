@@ -2,8 +2,8 @@
 firebase-appdistribution-gradle = "4.2.0"
 firebase-crashlytics-gradle = "2.9.9"
 google-services = "4.4.1"
-kotlin = "1.9.23"
-ksp = "1.9.23-1.0.20"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
 android-tools = "31.4.0"
 # android-tools and agp should be updated together
 agp = "8.3.2"
@@ -43,7 +43,6 @@ material = "1.11.0"
 
 # Compose
 compose-bom = "2024.05.00"
-compose-compiler-extension = "1.5.13"
 compose-destinations = "1.10.2"
 material3 = "1.2.1"
 
@@ -177,10 +176,12 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
