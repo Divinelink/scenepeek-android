@@ -2,6 +2,7 @@ package com.andreolas.movierama.session
 
 import com.andreolas.movierama.base.storage.EncryptedStorage
 import com.andreolas.movierama.base.storage.PreferenceStorage
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,6 +15,9 @@ class SessionStorage @Inject constructor(
 
   val sessionId: String?
     get() = encryptedStorage.sessionId
+
+  val accountId: Flow<String?>
+    get() = storage.accountId
 
   suspend fun clearToken() {
     storage.clearToken()
@@ -34,5 +38,10 @@ class SessionStorage @Inject constructor(
     encryptedStorage.clearSession()
     storage.setHasSession(false)
     storage.clearToken()
+    storage.clearAccountId()
+  }
+
+  suspend fun setAccountId(accountId: String) {
+    storage.setAccountId(accountId)
   }
 }

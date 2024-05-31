@@ -24,6 +24,7 @@ import com.andreolas.movierama.details.ui.MovieDetailsResult
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
@@ -44,6 +45,7 @@ class DetailsScreenTest : ComposeTest() {
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
+    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
@@ -86,6 +88,7 @@ class DetailsScreenTest : ComposeTest() {
           fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
           submitRatingUseCase = submitRateUseCase.mock,
           deleteRatingUseCase = deleteRatingUseCase.mock,
+          addToWatchlistUseCase = addToWatchlistUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -151,6 +154,7 @@ class DetailsScreenTest : ComposeTest() {
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
+    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -173,6 +177,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -206,6 +211,7 @@ class DetailsScreenTest : ComposeTest() {
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
+    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -232,6 +238,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,

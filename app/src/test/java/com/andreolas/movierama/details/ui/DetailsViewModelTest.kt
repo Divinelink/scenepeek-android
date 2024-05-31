@@ -1,3 +1,5 @@
+@file:Suppress("LargeClass")
+
 package com.andreolas.movierama.details.ui
 
 import androidx.compose.material3.SnackbarResult
@@ -7,6 +9,7 @@ import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.UIText
@@ -32,7 +35,7 @@ class DetailsViewModelTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val mediaId = 5
+  private val mediaId = 1234
 
   private val similarMovies = MediaItemFactory.MoviesList()
 
@@ -52,6 +55,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
         )
       )
@@ -68,6 +72,7 @@ class DetailsViewModelTest {
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           mediaDetails = movieDetails,
         )
@@ -86,6 +91,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = true,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           reviews = reviewsList,
         )
       )
@@ -107,6 +113,9 @@ class DetailsViewModelTest {
           movieId = mediaId,
           isLoading = false,
           reviews = reviewsList,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           mediaDetails = movieDetails,
         )
       )
@@ -126,6 +135,7 @@ class DetailsViewModelTest {
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = true,
           reviews = reviewsList,
           similarMovies = similarMovies,
@@ -151,7 +161,8 @@ class DetailsViewModelTest {
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
-          error = MovieDetailsResult.Failure.FatalError().message
+          error = MovieDetailsResult.Failure.FatalError().message,
+          userDetails = AccountMediaDetailsFactory.NotRated()
         )
       )
   }
@@ -173,6 +184,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           isLoading = false,
           reviews = reviewsList,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           similarMovies = similarMovies,
           error = MovieDetailsResult.Failure.Unknown.message
         )
@@ -194,6 +206,7 @@ class DetailsViewModelTest {
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
@@ -220,6 +233,9 @@ class DetailsViewModelTest {
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           error = MovieDetailsResult.Failure.Unknown.message
         )
       )
@@ -252,6 +268,9 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           mediaDetails = movieDetails.copy(isFavorite = true),
         )
       )
@@ -261,6 +280,9 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           mediaDetails = movieDetails.copy(isFavorite = false),
         )
       )
@@ -286,6 +308,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = false),
           )
         )
@@ -295,6 +318,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.MOVIE,
             movieId = mediaId,
             isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = true),
           )
         )
@@ -318,6 +342,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           trailer = VideoFactory.Youtube(),
         )
@@ -340,7 +365,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = "8",
+          userDetails = AccountMediaDetailsFactory.Rated(),
         )
       )
   }
@@ -361,7 +386,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
         )
       )
   }
@@ -383,7 +408,9 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           showRateDialog = true
         )
       )
@@ -400,7 +427,10 @@ class DetailsViewModelTest {
               movieDetails.title
             )
           ),
-          userRating = "5",
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withId(mediaId)
+            withRating(5.0f)
+          },
           showRateDialog = false
         )
       )
@@ -426,6 +456,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
@@ -455,6 +486,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           mediaDetails = movieDetails,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
@@ -470,6 +502,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
           mediaDetails = movieDetails,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           snackbarMessage = null,
           navigateToLogin = true
@@ -489,6 +522,7 @@ class DetailsViewModelTest {
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           navigateToLogin = true
         )
@@ -498,6 +532,7 @@ class DetailsViewModelTest {
         DetailsViewState(
           mediaType = MediaType.MOVIE,
           movieId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           navigateToLogin = null
         )
@@ -521,7 +556,9 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withId(mediaId)
+          },
           showRateDialog = true
         )
       )
@@ -538,7 +575,10 @@ class DetailsViewModelTest {
               movieDetails.title
             )
           ),
-          userRating = "5",
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withId(mediaId)
+            withRating(5.0f)
+          },
           showRateDialog = false
         )
       )
@@ -549,7 +589,10 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = "5",
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withId(mediaId)
+            withRating(5.0f)
+          },
           showRateDialog = false
         )
       )
@@ -569,7 +612,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           showRateDialog = true
         )
       )
@@ -589,7 +632,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           showRateDialog = true
         )
       )
@@ -600,7 +643,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
           showRateDialog = false
         )
       )
@@ -625,7 +668,7 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = "8",
+          userDetails = AccountMediaDetailsFactory.Rated(),
         )
       )
       .onDeleteRating()
@@ -635,10 +678,148 @@ class DetailsViewModelTest {
           movieId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
-          userRating = null,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+            withRating(null)
+          },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.details__rating_deleted_successfully,
+              movieDetails.title
+            )
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given invalid accountId when I add to watchlist I expect error`() = runTest {
+    lateinit var viewModel: DetailsViewModel
+
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockAddToWatchlist(
+        response = flowOf(Result.failure(SessionException.InvalidAccountId()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+            actionLabelText = UIText.ResourceText(R.string.login),
+            onSnackbarResult = viewModel::navigateToLogin
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given error when I add to watchlist I expect general error`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockAddToWatchlist(
+        response = flowOf(Result.failure(Exception()))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.error_retry)
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given item on watchlist when I add to watchlist I expect removed message`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        flowOf(
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) })
+        )
+      )
+      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+        )
+      )
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__removed_from_watchlist,
+              movieDetails.title
+            )
+          )
+        )
+      )
+  }
+
+  @Test
+  fun `given item not on watchlist when I add to watchlist I expect added message`() = runTest {
+    testRobot
+      .mockFetchMovieDetails(
+        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .mockFetchAccountMediaDetails(
+        flowOf(
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) })
+        )
+      )
+      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+        )
+      )
+      .onAddToWatchlist()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          movieId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.details__added_to_watchlist,
               movieDetails.title
             )
           )

@@ -1,6 +1,5 @@
 package com.andreolas.movierama.details.domain.usecase
 
-import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.session.SessionStorage
@@ -9,14 +8,13 @@ import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import kotlin.test.Test
+import org.junit.Test
 
-class FetchAccountMediaDetailsUseCaseTest {
+class AddToWatchlistUseCaseTest {
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -32,92 +30,94 @@ class FetchAccountMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `test user with no session id cannot fetch account media details`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = null)
+  fun `test user with no account id cannot add to watchlist`() = runTest {
+    sessionStorage = createSessionStorage(accountId = null)
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      AddToWatchlistParameters(
         id = 0,
-        mediaType = MediaType.MOVIE
+        mediaType = MediaType.MOVIE,
+        addToWatchlist = true
       )
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
       result.first().exceptionOrNull()
-    ).isInstanceOf(SessionException.NoSession::class.java)
+    ).isInstanceOf(SessionException.InvalidAccountId::class.java)
   }
 
   @Test
-  fun `test user with session id can fetch account media details for movie`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+  fun `test user with account id can add to watchlist for movie`() = runTest {
+    sessionStorage = createSessionStorage(accountId = "123")
 
-    repository.mockFetchAccountMediaDetails(
-      response = Result.success(AccountMediaDetailsFactory.Rated())
+    repository.mockAddToWatchlist(
+      response = Result.success(Unit)
     )
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      AddToWatchlistParameters(
         id = 0,
-        mediaType = MediaType.MOVIE
+        mediaType = MediaType.MOVIE,
+        addToWatchlist = true
       )
     )
 
     assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(AccountMediaDetailsFactory.Rated())
   }
 
   @Test
-  fun `test user with session id can fetch account media details for tv show`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+  fun `test user with account id can add to watchlist for tv show`() = runTest {
+    sessionStorage = createSessionStorage(accountId = "123")
 
-    repository.mockFetchAccountMediaDetails(
-      response = Result.success(AccountMediaDetailsFactory.Rated())
-    )
-
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
+    repository.mockAddToWatchlist(
+      response = Result.success(Unit)
+    )
+
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      AddToWatchlistParameters(
         id = 0,
-        mediaType = MediaType.TV
+        mediaType = MediaType.TV,
+        addToWatchlist = true
       )
     )
 
     assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(AccountMediaDetailsFactory.Rated())
   }
 
   @Test
-  fun `test cannot fetch account media details for unknown media type`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+  fun `test invalid media type throws exception`() = runTest {
+    sessionStorage = createSessionStorage(accountId = "123")
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      AddToWatchlistParameters(
         id = 0,
-        mediaType = MediaType.UNKNOWN
+        mediaType = MediaType.MOVIE,
+        addToWatchlist = false
       )
     )
 
@@ -125,8 +125,8 @@ class FetchAccountMediaDetailsUseCaseTest {
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) = SessionStorage(
-    storage = FakePreferenceStorage(),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+  private fun createSessionStorage(accountId: String?) = SessionStorage(
+    storage = FakePreferenceStorage(accountId = accountId),
+    encryptedStorage = FakeEncryptedPreferenceStorage()
   )
 }

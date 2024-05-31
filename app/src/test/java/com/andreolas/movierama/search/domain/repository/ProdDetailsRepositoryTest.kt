@@ -27,6 +27,8 @@ import com.divinelink.core.network.media.model.details.similar.SimilarResponseAp
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -358,6 +360,36 @@ class ProdDetailsRepositoryTest {
     )
 
     val actualResult = repository.deleteRating(
+      request = request
+    ).first()
+
+    assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test add to watchlist for movie`() = runTest {
+    val request = AddToWatchlistRequestApi.Movie(
+      movieId = 555,
+      accountId = "123456789",
+      addToWatchlist = true,
+    )
+
+    val response = flowOf(
+      AddToWatchlistResponseApi(
+        statusMessage = "Success",
+        statusCode = 1,
+        success = true,
+      )
+    )
+
+    val expectedResult = Unit
+
+    mediaRemote.mockAddToWatchlist(
+      request = request,
+      response = response
+    )
+
+    val actualResult = repository.addToWatchlist(
       request = request
     ).first()
 

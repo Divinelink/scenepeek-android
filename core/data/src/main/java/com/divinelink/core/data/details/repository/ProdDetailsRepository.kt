@@ -19,6 +19,7 @@ import com.divinelink.core.network.media.model.details.similar.toDomainMoviesLis
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.toDomainVideosList
+import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -84,6 +85,12 @@ class ProdDetailsRepository @Inject constructor(
 
   override fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>> = mediaRemote
     .deleteRating(request)
+    .map {
+      Result.success(Unit)
+    }
+
+  override fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>> = mediaRemote
+    .addToWatchlist(request)
     .map {
       Result.success(Unit)
     }

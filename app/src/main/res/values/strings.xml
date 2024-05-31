@@ -18,6 +18,7 @@
   <string name="empty_field_error_message">%s is required.</string>
   <string name="general_error_title">An error occurred</string>
   <string name="general_error_message">Something when wrong.</string>
+  <string name="error_retry">Something when wrong. Please try again.</string>
 
   <string name="delete">Delete</string>
   <string name="cancel">Cancel</string>
@@ -76,9 +77,15 @@
 
   <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
   <string name="details__rating_deleted_successfully">Rating cleared for %s</string>
-  <string name="details__must_be_logged_in_to_rate">"Please login to submit your rating."</string>
+  <string name="details__added_to_watchlist">Added %s to watchlist</string>
+  <string name="details__removed_from_watchlist">Removed %s from watchlist</string>
+  <string name="details__must_be_logged_in_to_rate">Please login to submit your rating.</string>
+  <string name="details__must_be_logged_in_to_watchlist">Please login to add to your watchlist.</string>
 
-  <string name="details__fatal_error_fetching_details">"Couldn't load movie details. Going back to previous screen."</string>
+  <string name="details__add_to_watchlist_button">Add to Watchlist</string>
+  <string name="details__added_to_watchlist_button">Added to watchlist</string>
+
+  <string name="details__fatal_error_fetching_details">Couldn\'t load movie details. Going back to previous screen.</string>
 
   <!-- Accessibility -->
   <string name="movie_image_placeholder">Movie image</string>

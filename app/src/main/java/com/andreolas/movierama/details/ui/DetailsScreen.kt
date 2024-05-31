@@ -58,7 +58,7 @@ fun DetailsScreen(
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
-      value = viewState.value.userRating,
+      value = viewState.value.userDetails?.beautifiedRating,
       mediaTitle = viewState.value.mediaDetails?.title ?: "",
       onSubmitRate = viewModel::onSubmitRate,
       onClearRate = viewModel::onClearRating,
@@ -66,7 +66,7 @@ fun DetailsScreen(
         // TODO implement
       },
       onDismissRequest = viewModel::onDismissRateDialog,
-      canClearRate = viewState.value.userRating != null
+      canClearRate = viewState.value.userDetails?.rating != null
     )
   }
 
@@ -88,5 +88,6 @@ fun DetailsScreen(
     },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
+    onAddToWatchlistClicked = viewModel::onAddToWatchlist
   )
 }

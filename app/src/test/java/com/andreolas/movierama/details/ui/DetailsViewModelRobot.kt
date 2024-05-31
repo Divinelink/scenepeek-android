@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
+import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
@@ -29,6 +30,7 @@ class DetailsViewModelRobot {
   private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
+  private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -40,6 +42,7 @@ class DetailsViewModelRobot {
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
+      addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -76,6 +79,10 @@ class DetailsViewModelRobot {
 
   fun onDeleteRating() = apply {
     viewModel.onClearRating()
+  }
+
+  fun onAddToWatchlist() = apply {
+    viewModel.onAddToWatchlist()
   }
 
   fun onDismissRateDialog() = apply {
@@ -130,6 +137,14 @@ class DetailsViewModelRobot {
     response: Flow<Result<Unit>>,
   ) = apply {
     fakeDeleteRatingUseCase.mockDeleteRating(
+      response = response
+    )
+  }
+
+  fun mockAddToWatchlist(
+    response: Flow<Result<Unit>>,
+  ) = apply {
+    fakeAddToWatchListUseCase.mockAddToWatchlist(
       response = response
     )
   }

@@ -1,5 +1,6 @@
 package com.andreolas.ui.details
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
@@ -11,6 +12,8 @@ import androidx.compose.ui.test.performScrollToNode
 import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
+import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.R
 import com.andreolas.movierama.details.ui.DetailsContent
 import com.andreolas.movierama.details.ui.DetailsViewState
@@ -46,6 +49,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -73,6 +77,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -95,6 +100,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -118,6 +124,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -154,6 +161,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -194,6 +202,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -209,7 +218,7 @@ class DetailsContentTest : ComposeTest() {
         viewState = DetailsViewState(
           movieId = 0,
           mediaType = MediaType.MOVIE,
-          userRating = "8",
+          userDetails = AccountMediaDetailsFactory.Rated(),
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         onNavigateUp = {},
@@ -217,6 +226,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -248,6 +258,7 @@ class DetailsContentTest : ComposeTest() {
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
         onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
       )
     }
 
@@ -259,6 +270,126 @@ class DetailsContentTest : ComposeTest() {
         useUnmergedTree = true
       )
       .assertIsDisplayed()
+  }
+
+  @Test
+  fun `given movie is not on watchlist add to watchlist button is displayed`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+      )
+    }
+
+    val addToWatchlist = composeTestRule.activity.getString(
+      R.string.details__add_to_watchlist_button
+    )
+
+    composeTestRule
+      .onNodeWithText(
+        text = addToWatchlist,
+        useUnmergedTree = true
+      )
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun `given movie is on watchlist added to watchlist button is displayed`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          movieId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+            withWatchlist(true)
+          },
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+      )
+    }
+
+    val addedToWatchlist = composeTestRule.activity.getString(
+      R.string.details__added_to_watchlist_button
+    )
+
+    composeTestRule
+      .onNodeWithText(
+        text = addedToWatchlist,
+        useUnmergedTree = true
+      )
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun `test addToWatchlist button updates button state`() {
+    var hasClickedAddToWatchlist = false
+    val viewState = mutableStateOf(
+      DetailsViewState(
+        movieId = 0,
+        mediaType = MediaType.MOVIE,
+        mediaDetails = MediaDetailsFactory.FightClub(),
+        userDetails = AccountMediaDetailsFactory.NotRated(),
+      )
+    )
+
+    setContentWithTheme {
+      DetailsContent(
+        viewState = viewState.value,
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {
+          hasClickedAddToWatchlist = true
+          viewState.value = viewState.value.copy(
+            userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
+              withWatchlist(true)
+            }
+          )
+        },
+      )
+    }
+
+    val addToWatchlist = composeTestRule.activity.getString(
+      R.string.details__add_to_watchlist_button
+    )
+
+    with(composeTestRule) {
+      onNodeWithText(
+        text = addToWatchlist,
+        useUnmergedTree = true
+      ).performClick()
+
+      onNodeWithText(
+        text = addToWatchlist,
+        useUnmergedTree = true
+      ).assertDoesNotExist()
+
+      onNodeWithText(
+        text = composeTestRule.activity.getString(
+          R.string.details__added_to_watchlist_button
+        ),
+        useUnmergedTree = true
+      ).assertIsDisplayed()
+    }
+    assertThat(hasClickedAddToWatchlist).isTrue()
   }
 
   private val reviews = ReviewFactory.ReviewList()

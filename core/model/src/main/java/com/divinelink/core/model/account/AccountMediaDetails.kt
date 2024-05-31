@@ -5,4 +5,6 @@ data class AccountMediaDetails(
   val favorite: Boolean,
   val rating: Float?,
   val watchlist: Boolean,
-)
+) {
+  val beautifiedRating: String? = rating?.toInt()?.toString()
+}
