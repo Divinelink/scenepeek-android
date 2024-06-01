@@ -52,8 +52,12 @@ android {
   }
 
   buildTypes {
+    debug {
+      applicationIdSuffix = ".debug"
+      versionNameSuffix = " DEBUG"
+    }
     release {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("release")
       firebaseAppDistribution {
@@ -61,10 +65,6 @@ android {
         artifactPath = "app/build/outputs/apk/release/app-release.apk"
         groups = "development"
       }
-    }
-
-    debug {
-      // Nothing yet
     }
   }
 
