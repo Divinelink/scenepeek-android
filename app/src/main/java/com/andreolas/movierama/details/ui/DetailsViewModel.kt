@@ -279,6 +279,14 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
+  fun onShareItemClicked(openShareDialog: Boolean) {
+    _viewState.update { viewState ->
+      viewState.copy(
+        openShareDialog = openShareDialog
+      )
+    }
+  }
+
   internal fun navigateToLogin(snackbarResult: SnackbarResult) {
     if (snackbarResult == SnackbarResult.ActionPerformed) {
       _viewState.update { viewState ->
