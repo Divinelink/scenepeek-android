@@ -39,7 +39,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
         ),
         onNavigateUp = {},
@@ -50,6 +50,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -68,7 +69,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           isLoading = true,
           mediaType = MediaType.MOVIE,
         ),
@@ -78,6 +79,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -91,7 +93,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           reviews = reviews,
         ),
@@ -101,6 +103,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -114,7 +117,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           reviews = reviews,
@@ -125,6 +128,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -152,7 +156,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           error = UIText.ResourceText(R.string.details__fatal_error_fetching_details)
         ),
@@ -162,6 +166,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -192,7 +197,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           trailer = youtubeTrailer,
@@ -203,6 +208,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -216,7 +222,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           userDetails = AccountMediaDetailsFactory.Rated(),
           mediaDetails = MediaDetailsFactory.FightClub(),
@@ -227,6 +233,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -249,7 +256,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
@@ -259,6 +266,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -277,7 +285,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -288,6 +296,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -308,7 +317,7 @@ class DetailsContentTest : ComposeTest() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
-          movieId = 0,
+          mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -321,6 +330,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
       )
     }
 
@@ -341,7 +351,7 @@ class DetailsContentTest : ComposeTest() {
     var hasClickedAddToWatchlist = false
     val viewState = mutableStateOf(
       DetailsViewState(
-        movieId = 0,
+        mediaId = 0,
         mediaType = MediaType.MOVIE,
         mediaDetails = MediaDetailsFactory.FightClub(),
         userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -364,6 +374,7 @@ class DetailsContentTest : ComposeTest() {
             }
           )
         },
+        showOrHideShareDialog = {},
       )
     }
 
@@ -390,6 +401,64 @@ class DetailsContentTest : ComposeTest() {
       ).assertIsDisplayed()
     }
     assertThat(hasClickedAddToWatchlist).isTrue()
+  }
+
+  @Test
+  fun `test open and close dropdown menu`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertDoesNotExist()
+    }
+  }
+
+  @Test
+  fun `test open and close share dialog`() {
+    var hasClickedShareDialog = false
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        showOrHideShareDialog = {
+          hasClickedShareDialog = true
+        },
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(
+        TestTags.Menu.MENU_ITEM.format(composeTestRule.activity.getString(R.string.share))
+      )
+        .assertIsDisplayed()
+        .performClick()
+    }
+    assertThat(hasClickedShareDialog).isTrue()
   }
 
   private val reviews = ReviewFactory.ReviewList()

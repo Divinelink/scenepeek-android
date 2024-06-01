@@ -14,7 +14,7 @@ import com.divinelink.core.model.media.MediaType
 data class DetailsViewState(
   val isLoading: Boolean = false,
   val mediaType: MediaType,
-  val movieId: Int,
+  val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
   val userDetails: AccountMediaDetails? = null,
   val reviews: List<Review>? = null,
@@ -54,5 +54,5 @@ data class DetailsViewState(
     ?.replace(":", "")
     ?.replace(regex = "[\\s|/]".toRegex(), replacement = "-")
 
-  val shareUrl = "https://themoviedb.org/${mediaType.value}/$movieId-$urlTitle"
+  val shareUrl = "https://themoviedb.org/${mediaType.value}/$mediaId-$urlTitle"
 }

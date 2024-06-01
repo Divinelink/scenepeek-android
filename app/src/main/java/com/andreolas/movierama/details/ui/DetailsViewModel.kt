@@ -51,7 +51,7 @@ class DetailsViewModel @Inject constructor(
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
     value = DetailsViewState(
-      movieId = args.id,
+      mediaId = args.id,
       mediaType = MediaType.from(args.mediaType),
       isLoading = true,
     )
@@ -142,7 +142,7 @@ class DetailsViewModel @Inject constructor(
     viewModelScope.launch {
       submitRatingUseCase.invoke(
         SubmitRatingParameters(
-          id = viewState.value.movieId,
+          id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
           rating = rating
         )
@@ -188,7 +188,7 @@ class DetailsViewModel @Inject constructor(
     viewModelScope.launch {
       deleteRatingUseCase.invoke(
         DeleteRatingParameters(
-          id = viewState.value.movieId,
+          id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType
         )
       ).collectLatest { result ->
@@ -225,7 +225,7 @@ class DetailsViewModel @Inject constructor(
     viewModelScope.launch {
       addToWatchlistUseCase.invoke(
         AddToWatchlistParameters(
-          id = viewState.value.movieId,
+          id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
           addToWatchlist = viewState.value.userDetails?.watchlist == false,
         )
@@ -279,7 +279,7 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onShareItemClicked(openShareDialog: Boolean) {
+  fun onShareClicked(openShareDialog: Boolean) {
     _viewState.update { viewState ->
       viewState.copy(
         openShareDialog = openShareDialog
@@ -300,7 +300,7 @@ class DetailsViewModel @Inject constructor(
 
   private suspend fun fetchAccountMediaDetails() {
     val params = AccountMediaDetailsParams(
-      id = viewState.value.movieId,
+      id = viewState.value.mediaId,
       mediaType = viewState.value.mediaType
     )
 

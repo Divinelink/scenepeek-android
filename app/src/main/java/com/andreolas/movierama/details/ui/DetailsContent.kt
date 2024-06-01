@@ -165,7 +165,9 @@ fun DetailsContent(
             inactiveColor = MaterialTheme.colorScheme.onSurface,
           )
 
-          IconButton(onClick = { showOverflowMenu = !showOverflowMenu }) {
+          IconButton(
+            modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
+            onClick = { showOverflowMenu = !showOverflowMenu }) {
             Icon(Icons.Outlined.MoreVert, "More")
           }
 
@@ -174,9 +176,13 @@ fun DetailsContent(
               .widthIn(min = 180.dp)
               .testTag(TestTags.Menu.DROPDOWN_MENU),
             expanded = showOverflowMenu,
-            onDismissRequest = { showOverflowMenu = false }) {
+            onDismissRequest = { showOverflowMenu = false }
+          ) {
 
             DropdownMenuItem(
+              modifier = Modifier.testTag(
+                TestTags.Menu.MENU_ITEM.format(stringResource(id = R.string.share))
+              ),
               text = {
                 Text(text = stringResource(id = R.string.share))
               },
@@ -184,9 +190,6 @@ fun DetailsContent(
                 showOverflowMenu = false
                 showOrHideShareDialog(true)
               },
-              modifier = Modifier.testTag(
-                TestTags.Menu.MENU_ITEM.format(stringResource(id = R.string.share))
-              )
             )
           }
         }
@@ -662,13 +665,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
 
       return sequenceOf(
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           isLoading = true,
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           userDetails = AccountMediaDetails(
             id = 8679,
             favorite = false,
@@ -680,14 +683,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
@@ -695,7 +698,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
@@ -709,7 +712,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           error = UIText.StringText("Something went wrong.")
         ),
