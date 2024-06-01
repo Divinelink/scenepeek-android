@@ -1,5 +1,6 @@
 package com.andreolas.movierama.details.ui
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -15,11 +16,15 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,24 +40,29 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.ui.LoadingContent
+import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.FavoriteButton
 import com.andreolas.movierama.ui.components.MovieImage
@@ -100,8 +110,19 @@ fun DetailsContent(
   onConsumeSnackbar: () -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
+  showOrHideShareDialog: (Boolean) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  var showOverflowMenu by remember { mutableStateOf(false) }
+
+  if (viewState.openShareDialog) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+      type = "text/plain"
+      putExtra(Intent.EXTRA_TEXT, viewState.shareUrl)
+    }
+    LocalContext.current.startActivity(Intent.createChooser(shareIntent, "Share via"))
+    showOrHideShareDialog(false)
+  }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -138,12 +159,39 @@ fun DetailsContent(
         },
         actions = {
           FavoriteButton(
-            modifier = Modifier
-              .padding(end = MaterialTheme.dimensions.keyline_8)
-              .clip(MaterialTheme.shape.roundedShape),
+            modifier = Modifier.clip(MaterialTheme.shape.roundedShape),
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
+            inactiveColor = MaterialTheme.colorScheme.onSurface,
           )
+
+          IconButton(
+            modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
+            onClick = { showOverflowMenu = !showOverflowMenu }) {
+            Icon(Icons.Outlined.MoreVert, "More")
+          }
+
+          DropdownMenu(
+            modifier = Modifier
+              .widthIn(min = 180.dp)
+              .testTag(TestTags.Menu.DROPDOWN_MENU),
+            expanded = showOverflowMenu,
+            onDismissRequest = { showOverflowMenu = false }
+          ) {
+
+            DropdownMenuItem(
+              modifier = Modifier.testTag(
+                TestTags.Menu.MENU_ITEM.format(stringResource(id = R.string.share))
+              ),
+              text = {
+                Text(text = stringResource(id = R.string.share))
+              },
+              onClick = {
+                showOverflowMenu = false
+                showOrHideShareDialog(true)
+              },
+            )
+          }
         }
       )
     },
@@ -516,6 +564,7 @@ private fun DetailsContentPreview(
           onConsumeSnackbar = {},
           onAddRateClicked = {},
           onAddToWatchlistClicked = {},
+          showOrHideShareDialog = {},
         )
       }
     }
@@ -616,13 +665,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
 
       return sequenceOf(
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           isLoading = true,
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           userDetails = AccountMediaDetails(
             id = 8679,
             favorite = false,
@@ -634,14 +683,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
@@ -649,7 +698,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
@@ -663,7 +712,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         ),
 
         DetailsViewState(
-          movieId = popularMovie.id,
+          mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           error = UIText.StringText("Something went wrong.")
         ),

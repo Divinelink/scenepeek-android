@@ -29,12 +29,13 @@ fun FavoriteButton(
   modifier: Modifier = Modifier,
   isFavorite: Boolean,
   transparentBackground: Boolean = false,
+  inactiveColor: Color = colorResource(id = R.color.core_grey_55),
   onClick: () -> Unit,
 ) {
   val color by animateColorAsState(
     targetValue = when (isFavorite) {
       true -> colorResource(id = R.color.core_red_highlight)
-      false -> colorResource(id = R.color.core_grey_55)
+      false -> inactiveColor
     },
     label = "Like button color",
   )
@@ -62,7 +63,7 @@ fun FavoriteButton(
         false -> Icons.Default.FavoriteBorder
       }
       Icon(
-        modifier = Modifier.size(MaterialTheme.dimensions.keyline_32),
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_26),
         imageVector = image,
         tint = color,
         contentDescription = stringResource(R.string.mark_as_favorite_button_content_description),

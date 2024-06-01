@@ -14,7 +14,7 @@ import com.divinelink.core.model.media.MediaType
 data class DetailsViewState(
   val isLoading: Boolean = false,
   val mediaType: MediaType,
-  val movieId: Int,
+  val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
   val userDetails: AccountMediaDetails? = null,
   val reviews: List<Review>? = null,
@@ -24,6 +24,7 @@ data class DetailsViewState(
   val snackbarMessage: SnackbarMessage? = null,
   val showRateDialog: Boolean = false,
   val navigateToLogin: Boolean? = null,
+  val openShareDialog: Boolean = false,
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(
@@ -46,4 +47,12 @@ data class DetailsViewState(
     )
     null -> null
   }
+
+  private val urlTitle = mediaDetails
+    ?.title
+    ?.lowercase()
+    ?.replace(":", "")
+    ?.replace(regex = "[\\s|/]".toRegex(), replacement = "-")
+
+  val shareUrl = "https://themoviedb.org/${mediaType.value}/$mediaId-$urlTitle"
 }

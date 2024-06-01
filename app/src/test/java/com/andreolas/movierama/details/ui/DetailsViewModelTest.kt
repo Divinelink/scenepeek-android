@@ -53,7 +53,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
@@ -71,7 +71,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           mediaDetails = movieDetails,
@@ -89,7 +89,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = true,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           reviews = reviewsList,
@@ -110,7 +110,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           reviews = reviewsList,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -134,7 +134,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = true,
           reviews = reviewsList,
@@ -157,7 +157,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
@@ -181,7 +181,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           reviews = reviewsList,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -205,7 +205,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           reviews = reviewsList,
@@ -229,7 +229,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
@@ -266,7 +266,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
@@ -278,7 +278,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
@@ -306,7 +306,7 @@ class DetailsViewModelTest {
         .assertViewState(
           DetailsViewState(
             mediaType = MediaType.MOVIE,
-            movieId = mediaId,
+            mediaId = mediaId,
             isLoading = false,
             userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = false),
@@ -316,7 +316,7 @@ class DetailsViewModelTest {
         .assertViewState(
           DetailsViewState(
             mediaType = MediaType.MOVIE,
-            movieId = mediaId,
+            mediaId = mediaId,
             isLoading = false,
             userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = true),
@@ -340,7 +340,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
@@ -362,7 +362,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated(),
@@ -383,7 +383,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -405,7 +405,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -418,7 +418,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
@@ -453,7 +453,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -484,7 +484,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
@@ -500,7 +500,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
@@ -521,7 +521,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           navigateToLogin = true
@@ -531,7 +531,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           navigateToLogin = null
@@ -553,7 +553,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -566,7 +566,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
@@ -586,7 +586,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard {
@@ -609,7 +609,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -629,7 +629,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -640,7 +640,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -665,7 +665,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated(),
@@ -675,7 +675,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard {
@@ -709,7 +709,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -736,7 +736,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
@@ -763,7 +763,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
@@ -773,7 +773,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
@@ -803,7 +803,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
@@ -813,7 +813,7 @@ class DetailsViewModelTest {
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
-          movieId = mediaId,
+          mediaId = mediaId,
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
@@ -823,6 +823,37 @@ class DetailsViewModelTest {
               movieDetails.title
             )
           )
+        )
+      )
+  }
+
+  @Test
+  fun `test open share dialog`() {
+    testRobot
+      .mockFetchMovieDetails(
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onShareClicked(openShareDialog = true)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          openShareDialog = true
+        )
+      )
+      .onShareClicked(openShareDialog = false)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          mediaDetails = movieDetails,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          openShareDialog = false
         )
       )
   }

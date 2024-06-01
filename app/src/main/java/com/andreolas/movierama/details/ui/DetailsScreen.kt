@@ -88,6 +88,7 @@ fun DetailsScreen(
     },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
-    onAddToWatchlistClicked = viewModel::onAddToWatchlist
+    onAddToWatchlistClicked = viewModel::onAddToWatchlist,
+    showOrHideShareDialog = viewModel::onShareClicked
   )
 }

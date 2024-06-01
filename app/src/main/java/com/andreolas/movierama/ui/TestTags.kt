@@ -23,4 +23,10 @@ object TestTags {
       const val LOGOUT_BUTTON = "Account Logout Button"
     }
   }
+
+  object Menu {
+    const val MENU_BUTTON_VERTICAL = "Menu Button Vertical"
+    const val DROPDOWN_MENU = "Dropdown Menu"
+    const val MENU_ITEM = "Menu Item %s"
+  }
 }

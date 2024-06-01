@@ -83,7 +83,7 @@ class GetMoviesDetailsUseCaseTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.failure<Exception>())
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
@@ -108,7 +108,7 @@ class GetMoviesDetailsUseCaseTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
@@ -127,7 +127,7 @@ class GetMoviesDetailsUseCaseTest {
       ReviewsRequestApi.Movie(movieId = 555),
       Result.success(reviewsList)
     )
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(movieId = 555), Result.Loading)
+//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
     val flow = GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,

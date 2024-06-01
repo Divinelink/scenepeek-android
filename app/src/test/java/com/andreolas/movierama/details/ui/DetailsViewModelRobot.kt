@@ -85,6 +85,10 @@ class DetailsViewModelRobot {
     viewModel.onAddToWatchlist()
   }
 
+  fun onShareClicked(openShareDialog: Boolean) = apply {
+    viewModel.onShareClicked(openShareDialog)
+  }
+
   fun onDismissRateDialog() = apply {
     viewModel.onDismissRateDialog()
   }
