@@ -4,8 +4,8 @@ import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
 import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.session.login.domain.session.usecase.CreateSessionUseCase
+import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.model.session.tokenIsApproved
-import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject

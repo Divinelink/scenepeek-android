@@ -2,9 +2,9 @@ package com.andreolas.movierama.settings.app.appearance.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
+import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.designsystem.theme.themeFromStorageKey
-import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject

@@ -6,6 +6,7 @@ import com.andreolas.factories.api.PopularMovieApiFactory
 import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.fakes.dao.FakeMediaDao
 import com.andreolas.movierama.fakes.remote.FakeMediaService
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.model.media.MediaType
@@ -13,9 +14,7 @@ import com.divinelink.core.network.media.model.popular.PopularRequestApi
 import com.divinelink.core.network.media.model.popular.PopularResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
-import com.divinelink.database.model.PersistableMovie
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-  api(libs.compose.material)
+  api(libs.compose.material.icons)
   api(libs.compose.material3)
   api(libs.compose.runtime)
 

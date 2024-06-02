@@ -42,6 +42,7 @@ fun AppTheme(
       window.statusBarColor = colors.background.toArgb()
       window.navigationBarColor = colors.background.toArgb()
       WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
+      WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !useDarkTheme
     }
   }
 

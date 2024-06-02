@@ -1,9 +1,9 @@
 package com.divinelink.core.network.media.model.search.multi.mapper
 
+import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
-import gr.divinelink.core.util.extensions.round
 
 fun MultiSearchResponseApi.map(): List<MediaItem> = results.map {
   when (MediaType.from(it.mediaType)) {

@@ -2,6 +2,8 @@ package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.details.ui.MovieDetailsResult
+import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
@@ -13,8 +15,6 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
-import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow

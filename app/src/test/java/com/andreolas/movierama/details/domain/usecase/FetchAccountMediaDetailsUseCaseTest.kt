@@ -6,10 +6,10 @@ import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

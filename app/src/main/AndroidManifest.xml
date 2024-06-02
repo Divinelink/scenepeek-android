@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.andreolas.movierama">
+    xmlns:tools="http://schemas.android.com/tools">
 
   <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,13 +11,12 @@
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher"
       android:supportsRtl="true"
-      android:theme="@style/Base.Theme.Aeropress">
+      android:theme="@style/Theme.MovieRama">
 
     <activity
         android:name=".MainActivity"
         android:exported="true"
-        android:launchMode="singleTask"
-        android:theme="@style/Base.Theme.Aeropress">
+        android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 

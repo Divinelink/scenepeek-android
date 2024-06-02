@@ -1,10 +1,10 @@
 package com.andreolas.movierama.home.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
+import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaType
-import gr.divinelink.core.util.domain.UseCase
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

@@ -18,8 +18,8 @@ rootProject.name = "MovieRama"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":core-util")
 
+include(":core:commons")
 include(":core:designsystem")
 include(":core:network")
 include(":core:model")

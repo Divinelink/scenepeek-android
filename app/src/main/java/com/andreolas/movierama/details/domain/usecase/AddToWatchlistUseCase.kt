@@ -2,12 +2,12 @@ package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import gr.divinelink.core.util.domain.FlowUseCase
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

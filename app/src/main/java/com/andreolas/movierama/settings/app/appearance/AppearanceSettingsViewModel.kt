@@ -10,10 +10,10 @@ import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
+import com.divinelink.core.commons.domain.WhileViewSubscribed
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.designsystem.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.divinelink.core.util.domain.WhileViewSubscribed
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

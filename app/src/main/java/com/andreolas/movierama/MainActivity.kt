@@ -2,9 +2,9 @@ package com.andreolas.movierama
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -33,28 +33,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
   private val viewModel: MainViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    // WindowCompat.setDecorFitsSystemWindows(window, false)
 
     setContent {
       val snackbarHostState = remember { SnackbarHostState() }
       val coroutineScope = rememberCoroutineScope()
 
+      val darkTheme = shouldUseDarkTheme(
+        uiState = viewModel.viewState.collectAsState().value,
+        selectedTheme = viewModel.theme.collectAsState().value
+      )
+
       AppTheme(
-        useDarkTheme = shouldUseDarkTheme(
-          uiState = viewModel.viewState.collectAsState().value,
-          selectedTheme = viewModel.theme.collectAsState().value
-        ),
-//        useDarkTheme = if (viewModel.theme.collectAsState().value == Theme.SYSTEM) {
-//          isSystemInDarkTheme()
-//        } else {
-//          viewModel.theme.collectAsState().value == Theme.DARK
-//        },
+        useDarkTheme = darkTheme,
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {

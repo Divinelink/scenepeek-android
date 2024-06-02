@@ -11,6 +11,7 @@ import com.andreolas.factories.api.SimilarMovieApiFactory
 import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.fakes.remote.FakeMediaService
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
@@ -33,7 +34,6 @@ import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.google.common.truth.Truth.assertThat
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

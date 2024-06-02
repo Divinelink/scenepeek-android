@@ -1,8 +1,8 @@
 package com.divinelink.core.network.media.model.details.similar
 
+import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

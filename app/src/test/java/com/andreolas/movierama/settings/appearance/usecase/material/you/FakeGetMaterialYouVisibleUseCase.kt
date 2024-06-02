@@ -1,7 +1,7 @@
 package com.andreolas.movierama.settings.appearance.usecase.material.you
 
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
-import gr.divinelink.core.util.domain.data
+import com.divinelink.core.commons.domain.data
 import kotlinx.coroutines.test.TestDispatcher
 
 class FakeGetMaterialYouVisibleUseCase(

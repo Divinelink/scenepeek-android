@@ -1,12 +1,12 @@
 package com.divinelink.core.data.session.repository
 
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.mapper.map
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
 import com.divinelink.core.network.session.service.SessionService
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
