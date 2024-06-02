@@ -53,6 +53,9 @@ android {
 
   buildTypes {
     debug {
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
       applicationIdSuffix = ".debug"
       versionNameSuffix = " DEBUG"
     }
@@ -97,8 +100,6 @@ dependencies {
   implementation(projects.core.model)
   implementation(projects.core.network)
 
-  implementation(libs.android.tools.desugar)
-
   // Firebase
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.config)
@@ -109,33 +110,27 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
 
-  implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.test.junit)
   implementation(libs.kotlinx.datetime)
   implementation(libs.kotlinx.coroutines.core)
 
   implementation(platform(libs.compose.bom))
-  implementation(libs.compose.material3)
-  implementation(libs.compose.material)
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.ui.tooling.preview)
   implementation(libs.compose.hilt.navigation)
+
   implementation(libs.compose.coil)
+
   debugImplementation(libs.compose.ui.tooling.preview)
   debugImplementation(libs.compose.ui.test.manifest)
 
   // Misc
   implementation(libs.timber)
-  implementation(libs.lottie)
   implementation(libs.compose.destinations.core)
   implementation(libs.compose.destinations.animations)
   ksp(libs.compose.destinations.ksp)
 
-  // UI Tools
-  implementation(libs.material)
-
   // Video Players
-  implementation(libs.exoplayer)
   implementation(libs.youtube.player)
 
   // Network & Serialization

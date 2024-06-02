@@ -1,40 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Base.Theme.Aeropress" parent="Theme.Material3.DayNight.NoActionBar">
-    <!-- Customize your dark theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorOnPrimary">@color/colorOnPrimary</item>
-    <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
-    <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
-    <item name="colorSecondary">@color/colorSecondary</item>
-    <item name="colorOnSecondary">@color/colorOnSecondary</item>
-    <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
-    <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
-    <item name="colorTertiary">@color/colorTertiary</item>
-    <item name="colorOnTertiary">@color/colorOnTertiary</item>
-    <item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
-    <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
-    <item name="colorError">@color/colorError</item>
-    <item name="colorErrorContainer">@color/colorErrorContainer</item>
-    <item name="colorOnError">@color/colorOnError</item>
-    <item name="colorOnErrorContainer">@color/colorOnErrorContainer</item>
-    <item name="android:colorBackground">@color/colorBackground</item>
-    <item name="colorOnBackground">@color/colorOnBackground</item>
-    <item name="colorSurface">@color/colorSurface</item>
-    <item name="colorOnSurface">@color/colorOnSurface</item>
-    <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
-    <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
-    <item name="colorOutline">@color/colorOutline</item>
-    <item name="colorOnSurfaceInverse">@color/colorInverseOnSurface</item>
-    <item name="colorSurfaceInverse">@color/colorInverseSurface</item>
-    <item name="elevationOverlayColor">@color/colorInversePrimary</item>
-    <item name="colorPrimaryInverse">@color/colorShadow</item>
-
+  <style name="Theme.MovieRama" parent="android:Theme.Material.NoActionBar">
     <item name="fontFamily">@font/font_medium</item>
 
     <item name="android:navigationBarColor">@color/transparent</item>
     <item name="android:statusBarColor">@color/transparent</item>
-    <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-    <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
+    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
   </style>
 </resources>
