@@ -1,13 +1,13 @@
 package com.divinelink.core.network.media.model.details
 
-import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.core.model.details.crew.Director
+import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.crew.Actor
+import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.network.media.model.details.credits.Cast
 import com.divinelink.core.network.media.model.details.credits.Crew
-import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

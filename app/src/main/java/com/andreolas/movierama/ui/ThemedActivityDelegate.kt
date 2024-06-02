@@ -21,8 +21,8 @@ import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.ObserveThemeModeUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.ObserveBlackBackgroundsUseCase
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.ObserveMaterialYouModeUseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.designsystem.theme.Theme
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

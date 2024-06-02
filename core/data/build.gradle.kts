@@ -12,5 +12,5 @@ dependencies {
   api(projects.core.network)
   api(projects.core.database)
 
-  implementation(projects.coreUtil)
+  implementation(projects.core.commons)
 }

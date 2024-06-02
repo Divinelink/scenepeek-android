@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.model.search.movie
 
+import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
-import gr.divinelink.core.util.extensions.round
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

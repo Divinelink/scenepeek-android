@@ -53,7 +53,6 @@ android {
 
   buildTypes {
     debug {
-      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       applicationIdSuffix = ".debug"
@@ -92,8 +91,7 @@ secrets {
 }
 
 dependencies {
-  implementation(projects.coreUtil)
-
+  implementation(projects.core.commons)
   implementation(projects.core.data)
   implementation(projects.core.database)
   implementation(projects.core.designsystem)

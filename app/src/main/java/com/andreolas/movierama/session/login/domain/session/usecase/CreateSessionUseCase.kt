@@ -2,10 +2,10 @@ package com.andreolas.movierama.session.login.domain.session.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
-import gr.divinelink.core.util.domain.UseCase
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

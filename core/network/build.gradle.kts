@@ -29,7 +29,7 @@ secrets {
 }
 
 dependencies {
-  implementation(projects.coreUtil)
+  implementation(projects.core.commons)
   implementation(projects.core.model)
 
   implementation(libs.ktor.client.core)

@@ -1,4 +1,4 @@
-package gr.divinelink.core.util.domain
+package com.divinelink.core.commons.domain
 
 import kotlinx.coroutines.flow.SharingStarted
 

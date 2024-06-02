@@ -1,7 +1,7 @@
 package com.divinelink.core.network.media.model.details.reviews
 
+import com.divinelink.core.commons.extensions.formatTo
 import com.divinelink.core.model.details.Review
-import gr.divinelink.core.util.extensions.formatTo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

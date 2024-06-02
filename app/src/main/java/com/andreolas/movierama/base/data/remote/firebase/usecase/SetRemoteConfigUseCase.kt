@@ -2,8 +2,8 @@ package com.andreolas.movierama.base.data.remote.firebase.usecase
 
 import com.andreolas.movierama.base.di.IoDispatcher
 import com.andreolas.movierama.base.storage.EncryptedStorage
+import com.divinelink.core.commons.domain.UseCase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import gr.divinelink.core.util.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

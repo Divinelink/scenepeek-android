@@ -2,7 +2,7 @@ package com.andreolas.movierama.settings.app.appearance.usecase.material.you
 
 import com.andreolas.movierama.base.di.DefaultDispatcher
 import com.andreolas.movierama.base.storage.PreferenceStorage
-import gr.divinelink.core.util.domain.FlowUseCase
+import com.divinelink.core.commons.domain.FlowUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

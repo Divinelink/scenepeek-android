@@ -3,8 +3,8 @@ package com.andreolas.movierama.fakes.usecase
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.model.media.MediaItem
-import gr.divinelink.core.util.domain.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
