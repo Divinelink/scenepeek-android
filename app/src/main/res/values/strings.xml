@@ -6,6 +6,9 @@
   <string name="save">Save</string>
   <string name="update">Update</string>
 
+  <string name="home">Home</string>
+  <string name="watchlist">Watchlist</string>
+
   <string name="share">Share</string>
 
   <string name="load_more">Loading more…</string>
