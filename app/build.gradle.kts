@@ -125,7 +125,7 @@ dependencies {
   // Misc
   implementation(libs.timber)
   implementation(libs.compose.destinations.core)
-  implementation(libs.compose.destinations.animations)
+  implementation(libs.compose.destinations.bottom.sheet)
   ksp(libs.compose.destinations.ksp)
 
   // Video Players

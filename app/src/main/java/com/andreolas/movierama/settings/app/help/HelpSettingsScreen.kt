@@ -8,10 +8,11 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.andreolas.movierama.settings.components.SettingsTextItem
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination
+@Destination<RootGraph>
 fun HelpSettingsScreen(
   navigator: DestinationsNavigator
 ) {

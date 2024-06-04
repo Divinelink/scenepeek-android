@@ -20,10 +20,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.R
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination(navArgsDelegate = LoginScreenArgs::class)
+@Destination<RootGraph>(navArgs = LoginScreenArgs::class)
 @SuppressLint("SetJavaScriptEnabled")
 fun LoginWebViewScreen(
   navigator: DestinationsNavigator,

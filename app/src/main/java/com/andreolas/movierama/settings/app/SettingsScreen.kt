@@ -7,16 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.AccountSettingsScreenDestination
-import com.andreolas.movierama.destinations.AppearanceSettingsScreenDestination
-import com.andreolas.movierama.destinations.HelpSettingsScreenDestination
 import com.andreolas.movierama.settings.components.SettingsClickItem
 import com.andreolas.movierama.settings.components.SettingsDivider
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.AccountSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppearanceSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.HelpSettingsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination
+@Destination<RootGraph>
 @Composable
 fun SettingsScreen(
   navigator: DestinationsNavigator

@@ -13,10 +13,11 @@ import com.andreolas.movierama.settings.components.SettingsRadioPrefItem
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.andreolas.movierama.settings.components.SettingsSwitchItem
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination
+@Destination<RootGraph>
 fun AppearanceSettingsScreen(
   navigator: DestinationsNavigator,
   viewModel: AppearanceSettingsViewModel = hiltViewModel()

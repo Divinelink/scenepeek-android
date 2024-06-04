@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.domain.usecase.AccountMediaDetailsParams
 import com.andreolas.movierama.details.domain.usecase.AddToWatchlistParameters
 import com.andreolas.movierama.details.domain.usecase.AddToWatchlistUseCase
@@ -23,6 +22,7 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

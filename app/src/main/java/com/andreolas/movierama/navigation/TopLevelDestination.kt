@@ -7,16 +7,16 @@ import androidx.compose.material.icons.rounded.Bookmarks
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.DirectionDestination
-import com.andreolas.movierama.destinations.HomeScreenDestination
-import com.andreolas.movierama.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 enum class TopLevelDestination(
   val selectedIcon: ImageVector,
   val unselectedIcon: ImageVector,
   val iconTextId: Int,
   val titleTextId: Int,
-  val destination: DirectionDestination
+  val destination: DirectionDestinationSpec
 ) {
   HOME(
     selectedIcon = Icons.Rounded.Home,
