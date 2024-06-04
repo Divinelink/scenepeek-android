@@ -22,6 +22,7 @@ import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
 import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestination
+import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 @Composable
@@ -51,7 +52,22 @@ fun MovieApp(
 
             NavigationBarItem(
               selected = selected,
-              onClick = { navigator.navigate(destination.destination) },
+              onClick = {
+                navigator.navigate(
+                  direction = destination.destination,
+                  builder = {
+                    // Pop up to the start destination of the nav graph when navigating up.
+                    // This is to avoid building up a large stack of destinations.
+                    popUpTo(navController.navGraph.startRoute) {
+                      saveState = true
+                    }
+                    // Avoid multiple copies of the same destination when re-selecting the same item
+                    launchSingleTop = true
+                    // Restore state when re-selecting a previously selected item
+                    restoreState = true
+                  },
+                )
+              },
               label = {
                 Text(text = stringResource(id = destination.titleTextId))
               },
