@@ -13,7 +13,6 @@ import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
@@ -28,6 +27,7 @@ import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

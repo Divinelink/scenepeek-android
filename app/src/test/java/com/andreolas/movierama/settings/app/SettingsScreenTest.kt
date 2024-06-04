@@ -5,11 +5,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.andreolas.ComposeTest
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.AccountSettingsScreenDestination
-import com.andreolas.movierama.destinations.AppearanceSettingsScreenDestination
-import com.andreolas.movierama.destinations.HelpSettingsScreenDestination
-import com.andreolas.movierama.destinations.SettingsScreenDestination
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
+import com.ramcosta.composedestinations.generated.destinations.AccountSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppearanceSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.HelpSettingsScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 import org.junit.Test
 
 class SettingsScreenTest : ComposeTest() {

@@ -15,7 +15,6 @@ import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.DetailsScreenDestination
 import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.details.ui.DetailsScreen
 import com.andreolas.movierama.details.ui.DetailsViewModel
@@ -32,6 +31,7 @@ import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.andreolas.setContentWithTheme
 import com.divinelink.core.model.media.MediaType
+import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

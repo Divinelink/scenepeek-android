@@ -9,7 +9,6 @@ import com.andreolas.factories.session.model.AccountDetailsFactory
 import com.andreolas.factories.session.model.RequestTokenFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
-import com.andreolas.movierama.destinations.LoginWebViewScreenDestination
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
 import com.andreolas.movierama.fakes.usecase.session.login.FakeLogoutUseCase
@@ -17,6 +16,7 @@ import com.andreolas.movierama.fakes.usecase.session.login.FakeObserveSessionUse
 import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
 import com.andreolas.movierama.session.login.ui.LoginScreenArgs
 import com.andreolas.movierama.ui.TestTags
+import com.ramcosta.composedestinations.generated.destinations.LoginWebViewScreenDestination
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
