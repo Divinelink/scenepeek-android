@@ -48,7 +48,6 @@ class HomeViewModel @Inject constructor(
     HomeViewState(
       isLoading = true,
       popularMovies = emptyList(),
-      selectedMedia = null,
       error = null,
     )
   )
@@ -76,7 +75,6 @@ class HomeViewModel @Inject constructor(
             viewState.copy(
               isLoading = false,
               popularMovies = updatedList.filterIsInstance<MediaItem.Media.Movie>(),
-              selectedMedia = updatedSelectedMedia(updatedList, viewState.selectedMedia),
             )
           }
         }.onFailure {
@@ -87,20 +85,6 @@ class HomeViewModel @Inject constructor(
             )
           }
         }
-      }
-    }
-  }
-
-  fun onMovieClicked(movie: MediaItem) {
-    viewModelScope.launch {
-      val selectedMovie = if (movie == viewState.value.selectedMedia) {
-        null
-      } else {
-        movie
-      }
-
-      _viewState.update { viewState ->
-        viewState.copy(selectedMedia = selectedMovie)
       }
     }
   }
@@ -158,7 +142,6 @@ class HomeViewModel @Inject constructor(
               isLoading = false,
               searchResults = cachedSearchResults[query]?.result,
               emptyResult = cachedSearchResults[query]?.result?.isEmpty() == true,
-              selectedMedia = null, // updatedSelectedMovie(movies, viewState.selectedMovie)
             )
           }
           // If cache found, set search page to last cached search page
@@ -227,10 +210,6 @@ class HomeViewModel @Inject constructor(
                   searchResults = updatedSearchList,
                   // cachedSearchResults[query]?.result?.isEmpty() == true,
                   emptyResult = updatedSearchList.isEmpty(),
-                  selectedMedia = updatedSelectedMedia(
-                    updatedSearchList,
-                    viewState.selectedMedia
-                  ),
                 )
               }
             }
@@ -270,18 +249,6 @@ class HomeViewModel @Inject constructor(
   }
    */
 
-  /**
-   * Update selected movie if exists on Popular Movies or in Search Movies List.
-   */
-  private fun updatedSelectedMedia(
-    updatedList: List<MediaItem>,
-    selectedMedia: MediaItem?,
-  ): MediaItem? {
-    return updatedList
-      .find { it.id == selectedMedia?.id } ?: viewState.value.searchResults
-      ?.find { it.id == selectedMedia?.id }
-  }
-
   private fun getUpdatedMedia(
     currentMediaList: List<MediaItem>,
     updatedMediaList: List<MediaItem>,
@@ -303,16 +270,6 @@ class HomeViewModel @Inject constructor(
         filters = HomeFilter.entries.map { it.filter },
         filteredResults = null,
       )
-    }
-  }
-
-  fun onSwipeDown() {
-    viewModelScope.launch {
-      _viewState.update { viewState ->
-        viewState.copy(
-          selectedMedia = null,
-        )
-      }
     }
   }
 

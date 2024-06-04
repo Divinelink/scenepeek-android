@@ -257,36 +257,34 @@ class DetailsScreenTest : ComposeTest() {
 
     val addRatingText = composeTestRule.activity.getString(R.string.details__add_rating)
 
-    with(composeTestRule) {
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.YOUR_RATING,
+      useUnmergedTree = true
+    ).assertDoesNotExist()
 
-      onNodeWithText(
-        text = addRatingText,
-        useUnmergedTree = true
-      ).assertIsDisplayed().performClick()
+    composeTestRule.onNodeWithText(
+      text = addRatingText,
+      useUnmergedTree = true
+    ).assertIsDisplayed().performClick()
 
-      onNodeWithTag(
-        TestTags.Details.RATE_DIALOG
-      ).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_DIALOG
+    ).assertIsDisplayed()
 
-      onNodeWithTag(
-        TestTags.Details.RATE_SLIDER
-      ).assertExists().performTouchInput {
-        swipeRight()
-      }
-
-      val submitRatingText = composeTestRule
-        .activity.getString(R.string.details__submit_rating_button)
-
-      onNodeWithText(submitRatingText).performClick()
-
-      onNodeWithTag(
-        TestTags.Details.RATE_DIALOG
-      ).assertDoesNotExist()
-
-      onNodeWithTag(
-        TestTags.Details.YOUR_RATING,
-        useUnmergedTree = true
-      ).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.RATE_SLIDER
+    ).assertExists().performTouchInput {
+      swipeRight()
     }
+
+    val submitRatingText = composeTestRule
+      .activity.getString(R.string.details__submit_rating_button)
+
+    composeTestRule.onNodeWithText(submitRatingText).performClick()
+
+    composeTestRule.onNodeWithTag(
+      TestTags.Details.YOUR_RATING,
+      useUnmergedTree = true
+    ).assertIsDisplayed()
   }
 }

@@ -2,7 +2,6 @@ package com.andreolas.movierama.home.ui
 
 import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.Filter
-import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
 import com.divinelink.core.model.media.MediaItem
 
 /**
@@ -16,7 +15,6 @@ data class HomeViewState(
   val popularMovies: List<MediaItem.Media.Movie>,
   val searchResults: List<MediaItem>? = null,
   val filteredResults: List<MediaItem.Media>? = null,
-  val selectedMedia: MediaItem? = null,
   val loadMorePopular: Boolean = true,
   val query: String = "",
   val searchLoadingIndicator: Boolean = false,
@@ -34,12 +32,6 @@ data class HomeViewState(
     searchResults
   } else {
     popularMovies
-  }
-
-  val bottomSheetUiState = if (selectedMedia != null) {
-    BottomSheetUiState.Visible(selectedMedia)
-  } else {
-    BottomSheetUiState.Hidden
   }
 }
 

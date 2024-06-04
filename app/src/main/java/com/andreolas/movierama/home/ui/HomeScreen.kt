@@ -23,7 +23,6 @@ fun HomeScreen(
   HomeContent(
     modifier = Modifier,
     viewState = viewState.value,
-    onMovieClicked = viewModel::onMovieClicked,
     onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
     onLoadNextPage = viewModel::onLoadNextPage,
     onSearchMovies = viewModel::onSearchMovies,
@@ -43,7 +42,6 @@ fun HomeScreen(
     },
     onFilterClicked = viewModel::onFilterClicked,
     onClearFiltersClicked = viewModel::onClearFiltersClicked,
-    onSwipeDown = viewModel::onSwipeDown,
     onNavigateToSettings = {
       navigator.navigate(SettingsScreenDestination())
     }

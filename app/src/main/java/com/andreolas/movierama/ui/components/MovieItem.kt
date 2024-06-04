@@ -87,13 +87,9 @@ fun MediaItem(
     Text(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(
-          start = MaterialTheme.dimensions.keyline_8,
-          bottom = MaterialTheme.dimensions.keyline_4,
-          end = MaterialTheme.dimensions.keyline_8
-        )
+        .padding(horizontal = MaterialTheme.dimensions.keyline_8)
         .offset(y = offset)
-        .height(MaterialTheme.dimensions.keyline_40),
+        .height(MaterialTheme.dimensions.keyline_58),
       text = movie.name,
       overflow = TextOverflow.Ellipsis,
       style = MaterialTheme.typography.titleSmall,

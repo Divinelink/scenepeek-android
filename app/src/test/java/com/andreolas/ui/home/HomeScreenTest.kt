@@ -1,8 +1,6 @@
 package com.andreolas.ui.home
 
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -21,9 +19,7 @@ import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.HomeViewModel
-import com.andreolas.movierama.ui.components.DETAILS_BUTTON_TAG
 import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
-import com.andreolas.movierama.ui.components.MOVIE_BOTTOM_SHEET_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -44,7 +40,6 @@ class HomeScreenTest : ComposeTest() {
   val mainDispatcherRule = MainDispatcherRule()
   val testDispatcher = mainDispatcherRule.testDispatcher
 
-  @OptIn(ExperimentalTestApi::class)
   @Test
   fun navigateToDetailsScreenTest() = runTest {
     val destinationsNavigator = FakeDestinationsNavigator()
@@ -68,28 +63,17 @@ class HomeScreenTest : ComposeTest() {
       .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
       .performClick()
 
-    composeTestRule.waitUntilExactlyOneExists(
-      matcher = hasTestTag(MOVIE_BOTTOM_SHEET_TAG),
-      timeoutMillis = DELAY
-    )
-
-    composeTestRule
-      .onNodeWithTag(MOVIE_BOTTOM_SHEET_TAG)
-      .assertIsDisplayed()
-
-    composeTestRule
-      .onNodeWithTag(DETAILS_BUTTON_TAG, useUnmergedTree = true)
-      .performClick()
-
-    destinationsNavigator.verifyNavigatedToDirection(
-      expectedDirection = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 1,
-          mediaType = MediaType.MOVIE.value,
-          isFavorite = false,
+    composeTestRule.runOnIdle {
+      destinationsNavigator.verifyNavigatedToDirection(
+        expectedDirection = DetailsScreenDestination(
+          DetailsNavArguments(
+            id = 1,
+            mediaType = MediaType.MOVIE.value,
+            isFavorite = false,
+          )
         )
       )
-    )
+    }
   }
 
   @Test
@@ -141,9 +125,5 @@ class HomeScreenTest : ComposeTest() {
     composeTestRule
       .onNodeWithTag(FILTER_BAR_TEST_TAG)
       .assertDoesNotExist()
-  }
-
-  companion object {
-    private const val DELAY = 5000L
   }
 }

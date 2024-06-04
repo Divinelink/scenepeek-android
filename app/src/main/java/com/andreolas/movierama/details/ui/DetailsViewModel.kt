@@ -20,6 +20,7 @@ import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
@@ -152,10 +153,7 @@ class DetailsViewModel @Inject constructor(
           _viewState.update { viewState ->
             viewState.copy(
               showRateDialog = false,
-              userDetails = viewState.userDetails?.copy(
-                rating = rating.toFloat(),
-                watchlist = false
-              ),
+              userDetails = updateOrCreateAccountMediaDetails(rating),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_submitted_successfully,
@@ -180,6 +178,23 @@ class DetailsViewModel @Inject constructor(
         }
       }
     }
+  }
+
+  /**
+   * TODO This is not the best way to do this, but it's quick fix for now.
+   * This is needed when the user is not logged in, and tries to submit a rating.
+   * When the user logs in, we should re-fetch the account details, and update the rating along
+   * with the watchlist status.
+   */
+  private fun updateOrCreateAccountMediaDetails(rating: Int): AccountMediaDetails {
+    return viewState.value.userDetails?.copy(
+      rating = rating.toFloat()
+    ) ?: AccountMediaDetails(
+      rating = rating.toFloat(),
+      watchlist = false,
+      id = viewState.value.mediaId,
+      favorite = false,
+    )
   }
 
   fun onClearRating() {

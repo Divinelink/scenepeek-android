@@ -86,14 +86,6 @@ class HomeViewModelTestRobot {
     viewModel.onLoadNextPage()
   }
 
-  fun onMovieClicked(movie: MediaItem.Media) = apply {
-    viewModel.onMovieClicked(movie)
-  }
-
-  fun onSwipeDown() = apply {
-    viewModel.onSwipeDown()
-  }
-
   fun onMarkAsFavorite(movie: MediaItem.Media) = apply {
     viewModel.onMarkAsFavoriteClicked(movie)
   }

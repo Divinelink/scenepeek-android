@@ -19,10 +19,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,15 +35,12 @@ import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
-import com.andreolas.movierama.ui.components.ModalBottomSheetMovieContent
 import com.andreolas.movierama.ui.components.MovieRamaSearchBar
-import com.andreolas.movierama.ui.components.bottomsheet.BottomSheetUiState
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.andreolas.movierama.ui.getString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
-import kotlinx.coroutines.launch
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
@@ -55,7 +50,6 @@ const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 fun HomeContent(
   viewState: HomeViewState,
   modifier: Modifier = Modifier,
-  onMovieClicked: (MediaItem) -> Unit,
   onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onSearchMovies: (String) -> Unit,
   onClearClicked: () -> Unit,
@@ -63,31 +57,9 @@ fun HomeContent(
   onGoToDetails: (MediaItem) -> Unit,
   onFilterClicked: (String) -> Unit,
   onClearFiltersClicked: () -> Unit,
-  onSwipeDown: () -> Unit,
   onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-  val scope = rememberCoroutineScope()
-
-  val sheetState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = true
-  )
-
-  if (viewState.bottomSheetUiState is BottomSheetUiState.Visible) {
-    ModalBottomSheetMovieContent(
-      sheetState = sheetState,
-      onContentClicked = { mediaItem ->
-        onGoToDetails(mediaItem)
-        scope.launch {
-          sheetState.hide()
-          onSwipeDown()
-        }
-      },
-      movie = viewState.bottomSheetUiState.data,
-      onMarkAsFavoriteClicked = { onMarkAsFavoriteClicked.invoke(it) },
-      onDismissRequest = onSwipeDown,
-    )
-  }
 
   Scaffold(
     modifier = Modifier
@@ -147,8 +119,8 @@ fun HomeContent(
           when (unselectedFilters) {
             true -> {
               MoviesLazyGrid(
-                modifier = Modifier, // .padding(paddingValues),
-                onMovieClicked = onMovieClicked,
+                modifier = Modifier,
+                onMovieClicked = onGoToDetails,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.searchList,
                 onLoadNextPage = onLoadNextPage,
@@ -158,7 +130,7 @@ fun HomeContent(
             false -> {
               MoviesLazyGrid(
                 modifier = Modifier,
-                onMovieClicked = onMovieClicked,
+                onMovieClicked = onGoToDetails,
                 onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
                 searchList = viewState.filteredResults ?: emptyList(),
                 onLoadNextPage = onLoadNextPage,
@@ -234,7 +206,6 @@ fun HomeContentPreview() {
               rating = it.toString(),
             )
           },
-          selectedMedia = null,
           error = null,
           searchResults = (1..10).map {
             MediaItem.Media.Movie(
@@ -248,7 +219,6 @@ fun HomeContentPreview() {
             )
           },
         ),
-        onMovieClicked = {},
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onSearchMovies = {},
@@ -256,7 +226,6 @@ fun HomeContentPreview() {
         onGoToDetails = {},
         onFilterClicked = {},
         onClearFiltersClicked = {},
-        onSwipeDown = {},
         onNavigateToSettings = {},
       )
     }
