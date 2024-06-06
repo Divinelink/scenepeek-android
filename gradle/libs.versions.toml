@@ -41,6 +41,7 @@ hilt = "2.49"
 # Compose
 compose-bom = "2024.05.00"
 compose-destinations = "2.1.0-beta09"
+compose-hilt-navigation = "1.2.0"
 material3 = "1.2.1"
 
 # Timber
@@ -88,7 +89,7 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
-compose-hilt-navigation = "androidx.hilt:hilt-navigation-compose:1.2.0"
+compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "compose-hilt-navigation" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -194,4 +195,5 @@ divinelink-android-application = { id = "divinelink.android.application", versio
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
 divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
 divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
+divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
 divinelink-android-hilt = { id = "divinelink.android.hilt", version = "unspecified" }
