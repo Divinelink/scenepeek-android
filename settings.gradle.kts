@@ -26,3 +26,5 @@ include(":core:designsystem")
 include(":core:model")
 include(":core:network")
 include(":core:ui")
+
+include(":feature:watchlist")

@@ -1,15 +1,20 @@
 package com.andreolas.movierama.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -41,6 +46,7 @@ fun MovieApp(
     coroutineScope = coroutineScope
   ) {
     Scaffold(
+      containerColor = Color.Transparent,
       snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         AppNavigationBar {
@@ -89,12 +95,18 @@ fun MovieApp(
         }
       }
     ) {
-      when (uiState) {
-        is MainViewState.Completed -> AppNavHost(
-          navController = navController,
-          startRoute = HomeScreenDestination,
-        )
-        MainViewState.Loading -> LoadingContent()
+      Surface(
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(it)
+      ) {
+        when (uiState) {
+          is MainViewState.Completed -> AppNavHost(
+            navController = navController,
+            startRoute = HomeScreenDestination,
+          )
+          MainViewState.Loading -> LoadingContent()
+        }
       }
     }
   }
