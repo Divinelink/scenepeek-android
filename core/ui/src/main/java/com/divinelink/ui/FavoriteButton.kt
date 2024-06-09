@@ -1,4 +1,4 @@
-package com.andreolas.movierama.ui.components
+package com.divinelink.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.R as designsystemR
@@ -67,7 +66,9 @@ fun FavoriteButton(
         modifier = Modifier.size(MaterialTheme.dimensions.keyline_26),
         imageVector = image,
         tint = color,
-        contentDescription = stringResource(R.string.mark_as_favorite_button_content_description),
+        contentDescription = stringResource(
+          R.string.core_ui_mark_as_favorite_button_content_description
+        ),
       )
     }
   }

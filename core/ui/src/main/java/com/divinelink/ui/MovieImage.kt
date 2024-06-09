@@ -5,6 +5,7 @@ package com.divinelink.ui
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -14,6 +15,7 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.divinelink.core.commons.ApiConstants
+import com.divinelink.core.designsystem.theme.MovieImageShape
 
 @Composable
 fun MovieImage(
@@ -24,6 +26,7 @@ fun MovieImage(
 ) {
   AsyncImage(
     modifier = modifier
+      .clip(MovieImageShape)
       .aspectRatio((2f / 3f)),
     model = ImageRequest.Builder(LocalContext.current)
       .memoryCachePolicy(CachePolicy.ENABLED)

@@ -64,8 +64,6 @@ import com.andreolas.movierama.R
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.FavoriteButton
-import com.andreolas.movierama.ui.components.MovieImage
 import com.andreolas.movierama.ui.components.WatchlistButton
 import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
@@ -76,12 +74,10 @@ import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
-import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
 import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
-import com.divinelink.core.designsystem.theme.MovieImageShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -95,6 +91,10 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.ui.FavoriteButton
+import com.divinelink.ui.MediaRatingItem
+import com.divinelink.ui.MovieImage
+import com.divinelink.ui.RatingSize
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
@@ -320,9 +320,7 @@ fun MediaDetailsContent(
             .padding(paddingValues = ListPaddingValues),
         ) {
           MovieImage(
-            modifier = Modifier
-              .clip(MovieImageShape)
-              .weight(1f),
+            modifier = Modifier.weight(1f),
             path = mediaDetails.posterPath,
           )
 
@@ -411,7 +409,7 @@ private fun UserRating(
     ) {
       MediaRatingItem(
         rating = overallUserScore,
-        enlarged = true,
+        size = RatingSize.LARGE
       )
       Text(
         text = stringResource(id = R.string.details__user_score),

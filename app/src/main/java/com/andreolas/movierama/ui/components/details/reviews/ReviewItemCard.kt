@@ -28,10 +28,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
-import com.andreolas.movierama.ui.components.media.MediaRatingItem
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.model.details.Review
+import com.divinelink.ui.MediaRatingItem
 
 private const val MINIMUM_MAX_LINES = 6
 private val MINIMUM_CARD_SIZE = 260.dp
