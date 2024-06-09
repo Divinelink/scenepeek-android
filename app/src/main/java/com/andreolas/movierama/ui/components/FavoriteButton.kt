@@ -23,18 +23,19 @@ import androidx.compose.ui.res.stringResource
 import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.designsystem.R as designsystemR
 
 @Composable
 fun FavoriteButton(
   modifier: Modifier = Modifier,
   isFavorite: Boolean,
   transparentBackground: Boolean = false,
-  inactiveColor: Color = colorResource(id = R.color.core_grey_55),
+  inactiveColor: Color = colorResource(id = designsystemR.color.core_grey_55),
   onClick: () -> Unit,
 ) {
   val color by animateColorAsState(
     targetValue = when (isFavorite) {
-      true -> colorResource(id = R.color.core_red_highlight)
+      true -> colorResource(id = designsystemR.color.core_red_highlight)
       false -> inactiveColor
     },
     label = "Like button color",

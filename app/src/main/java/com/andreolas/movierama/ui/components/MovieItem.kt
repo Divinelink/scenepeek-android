@@ -32,6 +32,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.ui.MovieImage
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 

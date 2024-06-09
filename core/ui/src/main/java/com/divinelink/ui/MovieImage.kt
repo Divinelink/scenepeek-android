@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.andreolas.movierama.ui.components
+package com.divinelink.ui
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
@@ -13,14 +13,13 @@ import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.andreolas.movierama.R
-import com.andreolas.movierama.base.ApiConstants
+import com.divinelink.core.commons.ApiConstants
 
 @Composable
 fun MovieImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Crop,
-  errorPlaceHolder: Painter = painterResource(R.drawable.ic_movie_placeholder),
+  errorPlaceHolder: Painter = painterResource(R.drawable.core_ui_ic_movie_placeholder),
   path: String?,
 ) {
   AsyncImage(
@@ -33,7 +32,7 @@ fun MovieImage(
       .crossfade(true)
       .build(),
     error = errorPlaceHolder,
-    contentDescription = stringResource(id = R.string.movie_image_placeholder),
+    contentDescription = stringResource(id = R.string.core_ui_movie_image_placeholder),
     contentScale = contentScale,
   )
 }
