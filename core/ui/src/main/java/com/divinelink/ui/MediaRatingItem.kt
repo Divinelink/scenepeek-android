@@ -32,7 +32,11 @@ fun MediaRatingItem(
 
   val color = rating.getColorRating()
 
-  val backgroundColor = MaterialTheme.colorScheme.surfaceContainerLowest
+  val backgroundColor = if (LocalDarkThemeProvider.current) {
+    MaterialTheme.colorScheme.surface
+  } else {
+    MaterialTheme.colorScheme.onSurface
+  }
 
   val size = if (enlarged) {
     MaterialTheme.dimensions.keyline_68
@@ -91,7 +95,11 @@ fun MediaRatingItem(
       )
     }
 
-    val textColor = MaterialTheme.colorScheme.onSurface
+    val textColor = if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurface
+    } else {
+      MaterialTheme.colorScheme.surface
+    }
 
     Text(
       text = sanitizedRating,

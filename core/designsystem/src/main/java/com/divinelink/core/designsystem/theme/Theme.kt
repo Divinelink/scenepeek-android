@@ -9,7 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -46,12 +48,18 @@ fun AppTheme(
     }
   }
 
-  MaterialTheme(
-    colorScheme = colors,
-    typography = AppTypography,
-    content = content
-  )
+  CompositionLocalProvider(
+    LocalDarkThemeProvider provides useDarkTheme
+  ) {
+    MaterialTheme(
+      colorScheme = colors,
+      typography = AppTypography,
+      content = content
+    )
+  }
 }
+
+val LocalDarkThemeProvider = staticCompositionLocalOf { false }
 
 @Composable
 fun ColorScheme.textColorDisabled(): Color {
