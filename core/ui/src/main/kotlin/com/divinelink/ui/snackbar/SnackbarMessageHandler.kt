@@ -1,10 +1,10 @@
-package com.andreolas.movierama.ui.components.snackbar
+package com.divinelink.ui.snackbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.andreolas.movierama.ui.components.snackbar.controller.LocalSnackbarController
-import com.andreolas.movierama.ui.components.snackbar.controller.SnackbarController
-import com.andreolas.movierama.ui.getString
+import com.divinelink.ui.getString
+import com.divinelink.ui.snackbar.controller.LocalSnackbarController
+import com.divinelink.ui.snackbar.controller.SnackbarController
 
 @Composable
 fun SnackbarMessageHandler(

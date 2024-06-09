@@ -12,11 +12,11 @@ import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsF
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.ui.UIText
+import com.divinelink.ui.snackbar.SnackbarMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

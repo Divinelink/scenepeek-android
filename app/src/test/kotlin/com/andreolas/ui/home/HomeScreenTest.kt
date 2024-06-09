@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
@@ -23,6 +22,7 @@ import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
 import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.ComposeTest
 import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

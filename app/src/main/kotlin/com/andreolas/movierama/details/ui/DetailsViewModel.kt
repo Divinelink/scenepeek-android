@@ -15,14 +15,14 @@ import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingParameters
 import com.andreolas.movierama.details.domain.usecase.SubmitRatingUseCase
 import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
-import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.ui.UIText
+import com.divinelink.ui.snackbar.SnackbarMessage
 import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

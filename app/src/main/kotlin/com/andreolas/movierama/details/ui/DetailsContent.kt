@@ -63,7 +63,6 @@ import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.ui.TestTags
-import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.WatchlistButton
 import com.andreolas.movierama.ui.components.details.SpannableRating
 import com.andreolas.movierama.ui.components.details.cast.CastList
@@ -74,8 +73,6 @@ import com.andreolas.movierama.ui.components.details.videos.VideoState
 import com.andreolas.movierama.ui.components.details.videos.YoutubePlayer
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
-import com.andreolas.movierama.ui.components.snackbar.SnackbarMessageHandler
-import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
@@ -95,6 +92,9 @@ import com.divinelink.ui.FavoriteButton
 import com.divinelink.ui.MediaRatingItem
 import com.divinelink.ui.MovieImage
 import com.divinelink.ui.RatingSize
+import com.divinelink.ui.UIText
+import com.divinelink.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.ui.snackbar.controller.ProvideSnackbarController
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f

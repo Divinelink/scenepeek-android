@@ -1,6 +1,5 @@
 package com.andreolas.movierama.settings.appearance.ui
 
-import com.andreolas.UnitTest
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.app.appearance.AppearanceSettingsViewModel
 import com.andreolas.movierama.settings.app.appearance.UpdateSettingsState
@@ -22,7 +21,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class AppearanceSettingsViewModelTest : UnitTest() {
+class AppearanceSettingsViewModelTest {
 
   @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule

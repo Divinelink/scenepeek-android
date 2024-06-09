@@ -13,4 +13,6 @@ dependencies {
   api(projects.core.database)
 
   implementation(projects.core.commons)
+
+  testImplementation(projects.core.testing)
 }

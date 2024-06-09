@@ -53,12 +53,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.DescriptionAttrs
-import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.getString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarSize
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.keyline_negative8
+import com.divinelink.ui.UIText
+import com.divinelink.ui.getString
 
 const val SEARCH_BAR_LOADING_INDICATOR_TAG = "SEARCH_BAR_LOADING_INDICATOR"
 

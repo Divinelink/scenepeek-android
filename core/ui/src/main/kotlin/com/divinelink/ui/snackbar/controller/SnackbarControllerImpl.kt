@@ -1,4 +1,4 @@
-package com.andreolas.movierama.ui.components.snackbar.controller
+package com.divinelink.ui.snackbar.controller
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState

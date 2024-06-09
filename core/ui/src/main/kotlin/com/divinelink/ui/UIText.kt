@@ -1,4 +1,4 @@
-package com.andreolas.movierama.ui
+package com.divinelink.ui
 
 import android.content.Context
 import androidx.annotation.StringRes

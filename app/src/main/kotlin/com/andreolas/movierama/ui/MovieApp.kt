@@ -25,7 +25,7 @@ import com.andreolas.movierama.MainViewState
 import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
-import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
+import com.divinelink.ui.snackbar.controller.ProvideSnackbarController
 import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator

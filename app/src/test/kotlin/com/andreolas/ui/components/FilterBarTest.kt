@@ -4,10 +4,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.ComposeTest
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.components.Filter
 import com.andreolas.movierama.ui.components.FilterBar
+import com.divinelink.core.testing.ComposeTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

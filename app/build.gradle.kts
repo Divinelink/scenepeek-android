@@ -92,7 +92,6 @@ dependencies {
   implementation(projects.core.designsystem)
   implementation(projects.core.model)
   implementation(projects.core.network)
-
   implementation(projects.core.ui)
 
   // Firebase
@@ -157,6 +156,8 @@ dependencies {
   ksp(libs.room.compiler)
 
   // Testing Libs
+  testImplementation(projects.core.testing)
+
   testImplementation(libs.junit)
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.kotlin)

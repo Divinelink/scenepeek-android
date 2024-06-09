@@ -1,11 +1,11 @@
 package com.andreolas.movierama.details.ui
 
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.UIText
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.ui.UIText
 
 /**
  * A collection of possible results for an attempt to fetch movie details, similar movies and reviews.

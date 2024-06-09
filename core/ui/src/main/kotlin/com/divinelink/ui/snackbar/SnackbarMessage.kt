@@ -1,9 +1,9 @@
-package com.andreolas.movierama.ui.components.snackbar
+package com.divinelink.ui.snackbar
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SnackbarVisuals
-import com.andreolas.movierama.ui.UIText
+import com.divinelink.ui.UIText
 
 sealed interface SnackbarMessage {
 

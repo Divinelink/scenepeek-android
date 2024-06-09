@@ -1,11 +1,11 @@
-package com.andreolas
+package com.divinelink.core.testing
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.andreolas.movierama.ui.components.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.ui.snackbar.controller.ProvideSnackbarController
 
 fun ComposeTest.setContentWithTheme(
   content: @Composable () -> Unit

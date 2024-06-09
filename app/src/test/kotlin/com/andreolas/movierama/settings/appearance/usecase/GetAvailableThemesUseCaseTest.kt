@@ -1,11 +1,11 @@
 package com.andreolas.movierama.settings.appearance.usecase
 
 import android.os.Build
-import com.andreolas.UnitTest
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.app.appearance.usecase.GetAvailableThemesUseCase
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.testing.UnitTest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

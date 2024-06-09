@@ -1,12 +1,12 @@
-package com.andreolas.movierama.ui.components.snackbar.controller
+package com.divinelink.ui.snackbar.controller
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SnackbarVisuals
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import kotlinx.coroutines.CoroutineScope
-import javax.annotation.concurrent.Immutable
 
 @Immutable
 interface SnackbarController {

@@ -6,8 +6,8 @@ import com.andreolas.movierama.session.login.domain.session.usecase.LogoutUseCas
 import com.andreolas.movierama.session.login.domain.session.usecase.ObserveSessionUseCase
 import com.andreolas.movierama.session.login.domain.token.usecase.CreateRequestTokenUseCase
 import com.andreolas.movierama.settings.app.account.usecase.GetAccountDetailsUseCase
-import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
+import com.divinelink.ui.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

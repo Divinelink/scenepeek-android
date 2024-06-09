@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
-import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
@@ -20,19 +19,20 @@ import com.andreolas.movierama.details.ui.DetailsViewState
 import com.andreolas.movierama.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.andreolas.movierama.home.ui.LOADING_CONTENT_TAG
 import com.andreolas.movierama.ui.TestTags
-import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_LIST
 import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
-import com.andreolas.setContentWithTheme
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.ui.UIText
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.divinelink.ui.R as uiR
 
-class DetailsContentTest : ComposeTest() {
+class DetailsContentTest : com.divinelink.core.testing.ComposeTest() {
 
   @Test
   fun clickMarkAsFavoriteTest() {

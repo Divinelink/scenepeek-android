@@ -3,10 +3,10 @@ package com.andreolas.movierama.details.ui.rate
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.movierama.R
-import com.andreolas.setContentWithTheme
+import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.setContentWithTheme
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -29,7 +29,7 @@ class RateDialogContentTest : ComposeTest() {
         },
         onClearRate = {},
         canClearRate = true
-        )
+      )
     }
 
     val descriptionText = composeTestRule.activity.getString(

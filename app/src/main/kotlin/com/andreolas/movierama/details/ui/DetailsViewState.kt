@@ -1,7 +1,5 @@
 package com.andreolas.movierama.details.ui
 
-import com.andreolas.movierama.ui.UIText
-import com.andreolas.movierama.ui.components.snackbar.SnackbarMessage
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
@@ -10,6 +8,8 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.ui.UIText
+import com.divinelink.ui.snackbar.SnackbarMessage
 
 data class DetailsViewState(
   val isLoading: Boolean = false,

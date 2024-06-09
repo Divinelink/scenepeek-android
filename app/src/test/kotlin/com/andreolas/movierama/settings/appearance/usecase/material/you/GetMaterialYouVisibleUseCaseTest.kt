@@ -1,9 +1,9 @@
 package com.andreolas.movierama.settings.appearance.usecase.material.you
 
 import android.os.Build
-import com.andreolas.UnitTest
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
+import com.divinelink.core.testing.UnitTest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

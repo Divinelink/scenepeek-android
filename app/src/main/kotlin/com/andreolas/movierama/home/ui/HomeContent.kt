@@ -31,16 +31,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.UIText
 import com.andreolas.movierama.ui.components.EmptySectionCard
 import com.andreolas.movierama.ui.components.FilterBar
 import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
 import com.andreolas.movierama.ui.components.MovieRamaSearchBar
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
-import com.andreolas.movierama.ui.getString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.ui.UIText
+import com.divinelink.ui.getString
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"

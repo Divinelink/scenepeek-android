@@ -10,7 +10,6 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
-import com.andreolas.ComposeTest
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
@@ -29,8 +28,9 @@ import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetail
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
-import com.andreolas.setContentWithTheme
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.setContentWithTheme
 import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
