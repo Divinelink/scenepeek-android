@@ -11,7 +11,6 @@ plugins {
   alias(libs.plugins.firebase.crashlytics)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.secrets)
   alias(libs.plugins.gms)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ktlint)
@@ -86,10 +85,6 @@ android {
   }
 }
 
-secrets {
-  defaultPropertiesFileName = "secrets.defaults.properties"
-}
-
 dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.data)
@@ -97,6 +92,8 @@ dependencies {
   implementation(projects.core.designsystem)
   implementation(projects.core.model)
   implementation(projects.core.network)
+
+  implementation(projects.core.ui)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
