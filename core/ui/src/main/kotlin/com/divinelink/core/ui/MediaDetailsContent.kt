@@ -1,4 +1,4 @@
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

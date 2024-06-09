@@ -39,8 +39,8 @@ import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.ui.UIText
-import com.divinelink.ui.getString
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.getString
 
 const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
 const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"

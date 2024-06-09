@@ -22,7 +22,7 @@ import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.ui.MovieImage
+import com.divinelink.core.ui.MovieImage
 
 @Composable
 fun CrewItemCard(

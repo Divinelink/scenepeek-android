@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.ui.snackbar.controller.ProvideSnackbarController
+import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 fun ComposeTest.setContentWithTheme(
   content: @Composable () -> Unit

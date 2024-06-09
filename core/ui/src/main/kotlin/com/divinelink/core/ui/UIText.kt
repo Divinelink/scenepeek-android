@@ -1,4 +1,4 @@
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import android.content.Context
 import androidx.annotation.StringRes

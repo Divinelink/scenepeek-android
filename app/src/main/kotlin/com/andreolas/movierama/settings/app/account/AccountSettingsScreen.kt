@@ -22,7 +22,7 @@ import com.andreolas.movierama.settings.components.SettingsTextItem
 import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.ui.UIText
+import com.divinelink.core.ui.UIText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.LoginWebViewScreenDestination

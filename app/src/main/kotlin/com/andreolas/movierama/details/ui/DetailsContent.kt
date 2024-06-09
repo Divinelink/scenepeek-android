@@ -88,13 +88,13 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.ui.FavoriteButton
-import com.divinelink.ui.MediaRatingItem
-import com.divinelink.ui.MovieImage
-import com.divinelink.ui.RatingSize
-import com.divinelink.ui.UIText
-import com.divinelink.ui.snackbar.SnackbarMessageHandler
-import com.divinelink.ui.snackbar.controller.ProvideSnackbarController
+import com.divinelink.core.ui.FavoriteButton
+import com.divinelink.core.ui.MediaRatingItem
+import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.RatingSize
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f

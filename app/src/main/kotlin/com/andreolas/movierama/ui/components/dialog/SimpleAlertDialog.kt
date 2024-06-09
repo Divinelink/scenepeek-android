@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.andreolas.movierama.ui.TestTags
-import com.divinelink.ui.UIText
-import com.divinelink.ui.getString
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.getString
 
 @Composable
 fun SimpleAlertDialog(

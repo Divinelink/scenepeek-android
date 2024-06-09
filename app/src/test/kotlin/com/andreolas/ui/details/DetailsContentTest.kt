@@ -26,13 +26,13 @@ import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
-import com.divinelink.ui.UIText
+import com.divinelink.core.ui.UIText
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import com.divinelink.ui.R as uiR
+import com.divinelink.core.ui.R as uiR
 
-class DetailsContentTest : com.divinelink.core.testing.ComposeTest() {
+class DetailsContentTest : ComposeTest() {
 
   @Test
   fun clickMarkAsFavoriteTest() {

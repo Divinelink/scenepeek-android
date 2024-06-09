@@ -1,4 +1,4 @@
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
@@ -22,6 +22,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.ui.R
 import com.divinelink.core.designsystem.R as designsystemR
 
 @Composable

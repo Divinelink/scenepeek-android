@@ -1,4 +1,4 @@
-package com.divinelink.ui.snackbar.controller
+package com.divinelink.core.ui.snackbar.controller
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

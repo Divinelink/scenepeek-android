@@ -1,9 +1,9 @@
-package com.divinelink.ui.snackbar
+package com.divinelink.core.ui.snackbar
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SnackbarVisuals
-import com.divinelink.ui.UIText
+import com.divinelink.core.ui.UIText
 
 sealed interface SnackbarMessage {
 

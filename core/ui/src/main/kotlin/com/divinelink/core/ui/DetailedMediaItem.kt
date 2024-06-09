@@ -1,4 +1,4 @@
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.ui.provider.MediaItemPreviewParameterProvider
+import com.divinelink.core.ui.provider.MediaItemPreviewParameterProvider
 
 @Composable
 fun DetailedMediaItem(

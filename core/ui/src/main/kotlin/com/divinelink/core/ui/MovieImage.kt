@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable

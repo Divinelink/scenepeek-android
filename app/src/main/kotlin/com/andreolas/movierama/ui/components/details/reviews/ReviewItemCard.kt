@@ -31,7 +31,7 @@ import com.andreolas.movierama.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.model.details.Review
-import com.divinelink.ui.MediaRatingItem
+import com.divinelink.core.ui.MediaRatingItem
 
 private const val MINIMUM_MAX_LINES = 6
 private val MINIMUM_CARD_SIZE = 260.dp

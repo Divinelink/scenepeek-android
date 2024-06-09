@@ -1,9 +1,9 @@
-package com.divinelink.ui.provider
+package com.divinelink.core.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.ui.provider.MediaItemParameterData.movie
+import com.divinelink.core.ui.provider.MediaItemParameterData.movie
 
 class MediaItemPreviewParameterProvider : PreviewParameterProvider<MediaItem.Media> {
   override val values: Sequence<MediaItem.Media> = sequenceOf(

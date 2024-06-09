@@ -7,7 +7,7 @@ import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.ui.UIText
+import com.divinelink.core.ui.UIText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

@@ -42,7 +42,7 @@ import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.ui.MediaDetailsContent
+import com.divinelink.core.ui.MediaDetailsContent
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
 const val DETAILS_BUTTON_TAG = "DETAILS_AND_MORE_BUTTON_TAG"

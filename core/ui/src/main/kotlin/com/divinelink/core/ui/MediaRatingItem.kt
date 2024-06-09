@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.divinelink.ui
+package com.divinelink.core.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
-import com.divinelink.ui.extension.getColorRating
+import com.divinelink.core.ui.extension.getColorRating
 
 @Suppress("MagicNumber")
 enum class RatingSize(

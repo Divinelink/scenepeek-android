@@ -8,8 +8,8 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.ui.UIText
-import com.divinelink.ui.snackbar.SnackbarMessage
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class DetailsViewState(
   val isLoading: Boolean = false,

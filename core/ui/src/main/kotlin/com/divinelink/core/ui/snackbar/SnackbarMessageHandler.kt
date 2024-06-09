@@ -1,10 +1,10 @@
-package com.divinelink.ui.snackbar
+package com.divinelink.core.ui.snackbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.divinelink.ui.getString
-import com.divinelink.ui.snackbar.controller.LocalSnackbarController
-import com.divinelink.ui.snackbar.controller.SnackbarController
+import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
+import com.divinelink.core.ui.snackbar.controller.SnackbarController
 
 @Composable
 fun SnackbarMessageHandler(

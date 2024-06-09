@@ -1,4 +1,4 @@
-package com.divinelink.ui.extension
+package com.divinelink.core.ui.extension
 
 import androidx.compose.ui.graphics.Color
 
