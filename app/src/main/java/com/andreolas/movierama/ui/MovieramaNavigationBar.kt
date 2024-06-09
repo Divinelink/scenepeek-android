@@ -18,22 +18,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppNavigationBar(
   modifier: Modifier = Modifier,
-  containerColor: Color = MaterialTheme.colorScheme.background.copy(alpha = 0.98f),
+  containerColor: Color = MaterialTheme.colorScheme.surface,
   contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
-  tonalElevation: Dp = NavigationBarDefaults.Elevation,
   windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
   content: @Composable RowScope.() -> Unit
 ) {
   Surface(
     color = containerColor,
     contentColor = contentColor,
-    tonalElevation = tonalElevation,
     modifier = modifier
   ) {
     Row(
