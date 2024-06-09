@@ -12,8 +12,8 @@ import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
-import com.divinelink.core.network.media.model.popular.PopularResponseApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestBodyApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -31,11 +31,11 @@ class ProdMediaService @Inject constructor(
   private val restClient: RestClient,
 ) : MediaService {
 
-  override fun fetchPopularMovies(request: PopularRequestApi): Flow<PopularResponseApi> = flow {
+  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/movie/popular?"
     val url = baseUrl + "&language=en-US&page=${request.page}"
 
-    val response = restClient.get<PopularResponseApi>(url = url)
+    val response = restClient.get<MoviesResponseApi>(url = url)
 
     emit(response)
   }

@@ -1,10 +1,10 @@
 package com.andreolas.factories.api
 
-import com.divinelink.core.network.media.model.popular.PopularMovieApi
+import com.divinelink.core.network.media.model.movie.MovieApi
 
 object PopularMovieApiFactory {
 
-  fun Empty() = PopularMovieApi(
+  fun Empty() = MovieApi(
     adult = false,
     backdropPath = null,
     genreIds = listOf(),
@@ -21,7 +21,7 @@ object PopularMovieApiFactory {
     voteCount = null
   )
 
-  fun Full() = PopularMovieApi(
+  fun Full() = MovieApi(
     id = 1,
     adult = false,
     backdropPath = "",
@@ -40,8 +40,8 @@ object PopularMovieApiFactory {
 
   fun EmptyList(
     range: IntProgression = 1..10,
-  ): List<PopularMovieApi> = (range).map {
-    PopularMovieApi(
+  ): List<MovieApi> = (range).map {
+    MovieApi(
       id = it,
       adult = false,
       backdropPath = null,

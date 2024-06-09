@@ -1,4 +1,4 @@
-package com.divinelink.core.network.media.model.popular
+package com.divinelink.core.network.media.model.movie
 
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
@@ -6,9 +6,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PopularResponseApi(
+data class MoviesResponseApi(
   val page: Int,
-  val results: List<PopularMovieApi>,
+  val results: List<MovieApi>,
   @SerialName("total_pages")
   val totalPages: Int,
   @SerialName("total_results")
@@ -16,7 +16,7 @@ data class PopularResponseApi(
 )
 
 @Serializable
-data class PopularMovieApi(
+data class MovieApi(
   val adult: Boolean,
   @SerialName("backdrop_path")
   val backdropPath: String?,
@@ -41,11 +41,11 @@ data class PopularMovieApi(
   val voteCount: Int?,
 )
 
-fun PopularResponseApi.toDomainMoviesList(): List<MediaItem.Media.Movie> {
-  return this.results.map(PopularMovieApi::toPopularMovie)
+fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> {
+  return this.results.map(MovieApi::toMovie)
 }
 
-private fun PopularMovieApi.toPopularMovie() = MediaItem.Media.Movie(
+private fun MovieApi.toMovie() = MediaItem.Media.Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,

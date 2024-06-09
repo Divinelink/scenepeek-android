@@ -10,8 +10,8 @@ import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
-import com.divinelink.core.network.media.model.popular.PopularResponseApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -28,8 +28,8 @@ class FakeMediaService {
   val mock: MediaService = mock()
 
   fun mockFetchPopularMovies(
-    request: PopularRequestApi,
-    result: Flow<PopularResponseApi>,
+    request: MoviesRequestApi,
+    result: Flow<MoviesResponseApi>,
   ) {
     whenever(
       mock.fetchPopularMovies(request)

@@ -8,11 +8,11 @@ import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
-import com.divinelink.core.network.media.model.popular.PopularResponseApi
-import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesResponseApi
+import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
@@ -25,8 +25,8 @@ import kotlinx.coroutines.flow.Flow
 interface MediaService {
 
   fun fetchPopularMovies(
-    request: PopularRequestApi,
-  ): Flow<PopularResponseApi>
+    request: MoviesRequestApi,
+  ): Flow<MoviesResponseApi>
 
   fun fetchMultiInfo(
     request: MultiSearchRequestApi,

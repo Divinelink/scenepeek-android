@@ -5,7 +5,7 @@ import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.last
@@ -23,7 +23,7 @@ class GetPopularMoviesUseCaseTest {
 
   private lateinit var repository: FakeMoviesRepository
 
-  private val request = PopularRequestApi(page = 0)
+  private val request = MoviesRequestApi(page = 0)
 
   // Movies with id 1, 3, 5 are marked as favorite.
   private val localFavoriteMovies = MediaItemFactory.MoviesList(1..6 step 2)
@@ -45,7 +45,7 @@ class GetPopularMoviesUseCaseTest {
       )
 
       repository.mockFetchPopularMovies(
-        request = PopularRequestApi(page = 0),
+        request = MoviesRequestApi(page = 0),
         response = Result.success(remoteMovies)
       )
 
@@ -75,7 +75,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     repository.mockFetchPopularMovies(
-      request = PopularRequestApi(page = 0),
+      request = MoviesRequestApi(page = 0),
       response = Result.success(remoteMovies)
     )
 
@@ -104,7 +104,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     repository.mockFetchPopularMovies(
-      request = PopularRequestApi(page = 0),
+      request = MoviesRequestApi(page = 0),
       response = Result.failure(Exception())
     )
 
@@ -126,7 +126,7 @@ class GetPopularMoviesUseCaseTest {
     )
 
     repository.mockFetchPopularMovies(
-      request = PopularRequestApi(page = 0),
+      request = MoviesRequestApi(page = 0),
       response = Result.failure(Exception())
     )
 

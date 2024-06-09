@@ -30,6 +30,7 @@ import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import com.divinelink.ui.R as uiR
 
 class DetailsContentTest : ComposeTest() {
 
@@ -55,7 +56,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val markAsFavoriteContentDescription = composeTestRule.activity
-      .getString(R.string.mark_as_favorite_button_content_description)
+      .getString(uiR.string.core_ui_mark_as_favorite_button_content_description)
 
     composeTestRule
       .onNodeWithContentDescription(markAsFavoriteContentDescription)

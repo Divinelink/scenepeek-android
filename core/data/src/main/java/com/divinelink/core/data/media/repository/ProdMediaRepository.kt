@@ -2,8 +2,8 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
-import com.divinelink.core.network.media.model.popular.toDomainMoviesList
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
+import com.divinelink.core.network.media.model.movie.toMoviesList
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -26,11 +26,11 @@ class ProdMediaRepository @Inject constructor(
   private val mediaRemote: MediaService,
 ) : MediaRepository {
 
-  override fun fetchPopularMovies(request: PopularRequestApi): Flow<MediaListResult> {
+  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> {
     return mediaRemote
       .fetchPopularMovies(request)
       .map { apiResponse ->
-        Result.success(apiResponse.toDomainMoviesList())
+        Result.success(apiResponse.toMoviesList())
       }
       .catch { exception ->
         flowOf(Result.failure<Exception>(Exception(exception.message)))

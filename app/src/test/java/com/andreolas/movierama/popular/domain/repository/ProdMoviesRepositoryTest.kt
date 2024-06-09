@@ -10,8 +10,8 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
-import com.divinelink.core.network.media.model.popular.PopularResponseApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.google.common.truth.Truth.assertThat
@@ -37,7 +37,7 @@ class ProdMoviesRepositoryTest {
     isFavorite = true,
   )
 
-  private val apiPopularResponse = PopularResponseApi(
+  private val apiPopularResponse = MoviesResponseApi(
     page = 1,
     results = PopularMovieApiFactory.EmptyList(),
     totalPages = 0,
@@ -66,7 +66,7 @@ class ProdMoviesRepositoryTest {
 
   @Test
   fun testFetchPopularMovies() = runTest {
-    val request = PopularRequestApi(page = 1)
+    val request = MoviesRequestApi(page = 1)
     val expectedResult = MediaItemFactory.MoviesList()
 
     val expectApiPopularResponse = flowOf(apiPopularResponse)

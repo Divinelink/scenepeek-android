@@ -9,7 +9,7 @@ import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.andreolas.movierama.ui.UIText
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
       _viewState.setLoading()
 
       getPopularMoviesUseCase.invoke(
-        parameters = PopularRequestApi(
+        parameters = MoviesRequestApi(
           page = currentPage,
         )
       ).collectLatest { result ->

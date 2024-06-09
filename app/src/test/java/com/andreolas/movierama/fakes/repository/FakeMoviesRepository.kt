@@ -4,7 +4,7 @@ import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.popular.PopularRequestApi
+import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -46,7 +46,7 @@ class FakeMoviesRepository {
   }
 
   fun mockFetchPopularMovies(
-    request: PopularRequestApi,
+    request: MoviesRequestApi,
     response: MediaListResult,
   ) {
     whenever(
