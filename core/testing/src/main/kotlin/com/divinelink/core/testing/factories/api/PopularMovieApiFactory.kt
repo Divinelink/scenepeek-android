@@ -1,4 +1,4 @@
-package com.andreolas.factories.api
+package com.divinelink.core.testing.factories.api
 
 import com.divinelink.core.network.media.model.movie.MovieApi
 

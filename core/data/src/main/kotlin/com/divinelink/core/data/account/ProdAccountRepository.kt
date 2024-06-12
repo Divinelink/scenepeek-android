@@ -5,7 +5,6 @@ import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.media.model.movie.toMoviesList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -22,6 +21,6 @@ class ProdAccountRepository @Inject constructor(
       Result.success(apiResponse.toMoviesList())
     }
     .catch { exception ->
-      flowOf(Result.failure<Exception>(exception))
+      throw Exception(exception.message)
     }
 }

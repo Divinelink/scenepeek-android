@@ -287,6 +287,7 @@ fun FocusedSearchBarPreview() {
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @ExcludeFromKoverReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
