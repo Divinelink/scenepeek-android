@@ -14,7 +14,7 @@ class ProdAccountRepository @Inject constructor(
 
   override suspend fun fetchMoviesWatchlist(
     page: Int,
-    accountId: Int
+    accountId: String
   ): Flow<MediaListResult> = remote
     .fetchMoviesWatchlist(page, accountId)
     .map { apiResponse ->

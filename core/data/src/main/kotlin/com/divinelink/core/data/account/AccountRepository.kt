@@ -7,6 +7,6 @@ interface AccountRepository {
 
   suspend fun fetchMoviesWatchlist(
     page: Int,
-    accountId: Int,
+    accountId: String,
   ): Flow<MediaListResult>
 }

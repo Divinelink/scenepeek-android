@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.ui
 
-import androidx.annotation.VisibleForTesting
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -15,6 +14,7 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.usecase.AccountMediaDetailsParams
 import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
@@ -24,7 +24,6 @@ import com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase
 import com.divinelink.feature.details.usecase.GetMovieDetailsUseCase
 import com.divinelink.feature.details.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.usecase.SubmitRatingUseCase
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

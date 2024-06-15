@@ -10,7 +10,7 @@ class ProdAccountService @Inject constructor(
   private val restClient: RestClient,
 ) : AccountService {
 
-  override fun fetchMoviesWatchlist(page: Int, accountId: Int): Flow<MoviesResponseApi> = flow {
+  override fun fetchMoviesWatchlist(page: Int, accountId: String): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/movies?page=$page"
 
     val response = restClient.get<MoviesResponseApi>(url = url)

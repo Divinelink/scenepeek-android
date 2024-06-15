@@ -37,7 +37,7 @@ class ProdAccountRepositoryTest {
     )
 
     val result = repository.fetchMoviesWatchlist(
-      accountId = 1,
+      accountId = "1",
       page = 1,
     )
 
@@ -47,7 +47,7 @@ class ProdAccountRepositoryTest {
   @Test
   fun `test fetch movie watchlist failure`() = runTest {
     repository.fetchMoviesWatchlist(
-      accountId = 1,
+      accountId = "1",
       page = 1,
     ).test {
       assertThat(awaitError()).isInstanceOf(Exception::class.java)

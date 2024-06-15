@@ -18,8 +18,13 @@ ksp {
 }
 
 dependencies {
-  implementation(projects.core.model)
+  implementation(projects.core.commons)
   implementation(projects.core.data)
+  implementation(projects.core.datastore)
+  implementation(projects.core.domain)
+  implementation(projects.core.model)
 
   implementation(projects.feature.details)
+
+  implementation(libs.timber)
 }

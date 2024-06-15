@@ -1,8 +1,11 @@
 package com.divinelink.watchlist
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
@@ -11,16 +14,23 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.feature.details.ui.DetailsNavArguments
+import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +39,15 @@ internal fun WatchlistScreen(
   navigator: DestinationsNavigator,
   viewModel: WatchlistViewModel = hiltViewModel()
 ) {
-//  val uiState = viewModel.uiState
+  var selectedPage by rememberSaveable { mutableIntStateOf(0) }
+  val uiState = viewModel.uiState.collectAsState()
+
+  val scope = rememberCoroutineScope()
+  val pagerState = rememberPagerState(
+    initialPage = selectedPage,
+    pageCount = { uiState.value.tabs.size }
+  )
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -42,22 +60,44 @@ internal fun WatchlistScreen(
     Surface(
       modifier = Modifier.padding(padding),
     ) {
-      WatchlistTabs(WatchlistTab.entries)
+      Column {
+        WatchlistTabs(
+          tabs = uiState.value.tabs,
+          selectedIndex = selectedPage,
+          onClick = {
+            scope.launch {
+              pagerState.animateScrollToPage(it)
+            }
+          }
+        )
 
-      WatchlistContent(
-        list = emptyList(),
-        onMediaClick = { media ->
-          navigator.navigate(
-            DetailsScreenDestination(
-              DetailsNavArguments(
-                id = media.id,
-                mediaType = media.mediaType.value,
-                isFavorite = false,
-              )
-            )
-          )
+        HorizontalPager(
+          modifier = Modifier.fillMaxSize(),
+          state = pagerState,
+        ) { page ->
+          selectedPage = page
+
+          uiState.value.forms.values.elementAt(page).let {
+            when (it) {
+              is WatchlistForm.Loading -> LoadingContent()
+              is WatchlistForm.Data -> {
+                WatchlistContent(
+                  list = it.data,
+                  onMediaClick = { media ->
+                    navigator.navigate(
+                      DetailsScreenDestination(
+                        mediaType = media.mediaType.value,
+                        id = media.id,
+                        isFavorite = media.isFavorite
+                      )
+                    )
+                  }
+                )
+              }
+            }
+          }
         }
-      )
+      }
     }
   }
 }
@@ -66,15 +106,16 @@ internal fun WatchlistScreen(
 @Composable
 private fun WatchlistTabs(
   tabs: List<WatchlistTab>,
-  onClick: () -> Unit = {}
+  selectedIndex: Int,
+  onClick: (Int) -> Unit
 ) {
   Row {
-    SecondaryTabRow(selectedTabIndex = 0) {
+    SecondaryTabRow(selectedTabIndex = selectedIndex) {
       tabs.forEachIndexed { index, tab ->
         Tab(
           text = { Text(stringResource(tab.titleRes)) },
-          selected = index == 0,
-          onClick = { onClick() }
+          selected = index == selectedIndex,
+          onClick = { onClick(index) }
         )
       }
     }
@@ -85,15 +126,11 @@ private fun WatchlistTabs(
 @Composable
 private fun WatchlistScreenPreview() {
   AppTheme {
-    Surface {
+//    Surface {
 //      WatchlistScreen(
-//        uiState = WatchlistUiState(
-//          tabs = WatchlistTab.entries,
-//          movies = Tab.Loading,
-//          tvShows = Tab.Loading
-//        ),
-//        onMediaClick = {}
+//        navigator = TODO(),
+//        viewModel = hiltViewModel()
 //      )
-    }
+//    }
   }
 }
