@@ -34,12 +34,12 @@ import com.divinelink.core.ui.provider.MediaItemPreviewParameterProvider
 fun DetailedMediaItem(
   modifier: Modifier = Modifier,
   mediaItem: MediaItem.Media,
-  onClick: () -> Unit,
+  onClick: (MediaItem.Media) -> Unit,
 ) {
   val offset = MaterialTheme.dimensions.keyline_28
   Card(
     modifier = modifier,
-    onClick = onClick,
+    onClick = { onClick(mediaItem) },
     colors = CardDefaults.cardColors(containerColor = Color.Transparent)
   ) {
     Row(

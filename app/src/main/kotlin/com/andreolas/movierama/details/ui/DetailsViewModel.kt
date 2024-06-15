@@ -23,7 +23,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
+import com.divinelink.ui.screens.destinations.DetailsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

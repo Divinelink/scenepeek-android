@@ -5,14 +5,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.details.ui.DetailsNavArguments
+import com.andreolas.movierama.navigation.MainGraph
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.ui.screens.destinations.DetailsScreenDestination
+import com.divinelink.ui.screens.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<RootGraph>(start = true)
+@Destination<MainGraph>(start = true)
 @Composable
 fun HomeScreen(
   navigator: DestinationsNavigator,

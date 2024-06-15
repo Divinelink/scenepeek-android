@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
@@ -15,12 +14,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.watchlist.navigation.WatchlistGraph
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.NavGraph
+import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistScreen(
-  uiState: WatchlistUiState
+@Destination<WatchlistGraph>(start = true)
+internal fun WatchlistScreen(
+  navigator: DestinationsNavigator,
+  viewModel: WatchlistViewModel = hiltViewModel()
 ) {
+//  val uiState = viewModel.uiState
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -33,7 +42,14 @@ fun WatchlistScreen(
     Surface(
       modifier = Modifier.padding(padding),
     ) {
-      WatchlistTabs(uiState.tabs)
+      WatchlistTabs(WatchlistTab.entries)
+
+      WatchlistContent(
+        list = emptyList(),
+        onMediaClick = {
+//          navigator.navigate(DetailsScreenDestination)
+        }
+      )
     }
   }
 }
@@ -59,15 +75,16 @@ fun WatchlistTabs(
 @Preview
 @Composable
 private fun WatchlistScreenPreview() {
-  MaterialTheme {
+  AppTheme {
     Surface {
-      WatchlistScreen(
-        uiState = WatchlistUiState(
-          tabs = WatchlistTab.entries,
-          movies = Tab.Loading,
-          tvShows = Tab.Loading
-        )
-      )
+//      WatchlistScreen(
+//        uiState = WatchlistUiState(
+//          tabs = WatchlistTab.entries,
+//          movies = Tab.Loading,
+//          tvShows = Tab.Loading
+//        ),
+//        onMediaClick = {}
+//      )
     }
   }
 }

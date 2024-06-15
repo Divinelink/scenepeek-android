@@ -26,7 +26,7 @@ import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
-import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestination
+import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
@@ -60,7 +60,7 @@ fun MovieApp(
               selected = selected,
               onClick = {
                 navigator.navigate(
-                  direction = destination.destination,
+                  direction = destination.direction,
                   builder = {
                     // Pop up to the start destination of the nav graph when navigating up.
                     // This is to avoid building up a large stack of destinations.
@@ -115,5 +115,5 @@ fun MovieApp(
 fun NavDestination?.isTopLevelDestinationInHierarchy(
   destination: TopLevelDestination
 ) = this?.hierarchy?.any {
-  it.route?.contains(destination.destination.route, true) ?: false
+  it.route?.contains(destination.direction.route, true) ?: false
 } ?: false

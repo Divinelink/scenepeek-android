@@ -5,14 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.andreolas.movierama.BuildConfig
 import com.andreolas.movierama.R
+import com.andreolas.movierama.navigation.SettingsGraph
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.andreolas.movierama.settings.components.SettingsTextItem
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination<RootGraph>
+@Destination<SettingsGraph>
 fun HelpSettingsScreen(
   navigator: DestinationsNavigator
 ) {

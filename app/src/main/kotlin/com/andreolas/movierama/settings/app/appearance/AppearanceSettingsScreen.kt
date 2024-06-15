@@ -8,16 +8,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.R
+import com.andreolas.movierama.navigation.SettingsGraph
 import com.andreolas.movierama.settings.components.SettingsDivider
 import com.andreolas.movierama.settings.components.SettingsRadioPrefItem
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.andreolas.movierama.settings.components.SettingsSwitchItem
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination<RootGraph>
+@Destination<SettingsGraph>
 fun AppearanceSettingsScreen(
   navigator: DestinationsNavigator,
   viewModel: AppearanceSettingsViewModel = hiltViewModel()

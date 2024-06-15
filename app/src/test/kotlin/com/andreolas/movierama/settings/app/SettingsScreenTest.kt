@@ -6,10 +6,10 @@ import androidx.compose.ui.test.performClick
 import com.andreolas.movierama.R
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.divinelink.core.testing.ComposeTest
-import com.ramcosta.composedestinations.generated.destinations.AccountSettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.AppearanceSettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.HelpSettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
+import com.divinelink.ui.screens.destinations.AccountSettingsScreenDestination
+import com.divinelink.ui.screens.destinations.AppearanceSettingsScreenDestination
+import com.divinelink.ui.screens.destinations.HelpSettingsScreenDestination
+import com.divinelink.ui.screens.destinations.SettingsScreenDestination
 import org.junit.Test
 
 class SettingsScreenTest : ComposeTest() {

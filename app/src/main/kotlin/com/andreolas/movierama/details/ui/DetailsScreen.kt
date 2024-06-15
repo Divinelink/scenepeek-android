@@ -13,18 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.details.ui.rate.RateModalBottomSheet
+import com.andreolas.movierama.navigation.MainGraph
 import com.andreolas.movierama.ui.TestTags
+import com.divinelink.ui.screens.destinations.AccountSettingsScreenDestination
+import com.divinelink.ui.screens.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.AccountSettingsScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
 private const val BOTTOM_SHEET_DELAY = 200L
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination<RootGraph>(navArgs = DetailsNavArguments::class)
+@Destination<MainGraph>(navArgs = DetailsNavArguments::class)
 @Composable
 fun DetailsScreen(
   navigator: DestinationsNavigator,

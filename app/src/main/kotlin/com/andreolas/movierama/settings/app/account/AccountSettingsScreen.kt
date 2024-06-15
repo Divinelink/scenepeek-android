@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.R
+import com.andreolas.movierama.navigation.SettingsGraph
 import com.andreolas.movierama.session.login.ui.LoginScreenArgs
 import com.andreolas.movierama.settings.components.SettingsClickItem
 import com.andreolas.movierama.settings.components.SettingsScaffold
@@ -23,13 +24,12 @@ import com.andreolas.movierama.ui.TestTags
 import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UIText
+import com.divinelink.ui.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination<RootGraph>
+@Destination<SettingsGraph>
 fun AccountSettingsScreen(
   navigator: DestinationsNavigator,
   viewModel: AccountSettingsViewModel = hiltViewModel()

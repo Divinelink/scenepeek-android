@@ -31,7 +31,7 @@ import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCRO
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
-import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
+import com.divinelink.ui.screens.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

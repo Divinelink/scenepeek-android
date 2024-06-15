@@ -23,7 +23,7 @@ import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
-import com.ramcosta.composedestinations.generated.destinations.DetailsScreenDestination
+import com.divinelink.ui.screens.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

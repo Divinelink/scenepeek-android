@@ -83,6 +83,14 @@ android {
   buildFeatures {
     buildConfig = true
   }
+
+  ksp {
+    arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
+    arg("compose-destinations.mermaidGraph", "$rootDir/docs")
+
+    // To change the package name where the generated files will be placed
+    arg("compose-destinations.codeGenPackageName", "com.divinelink.ui.screens")
+  }
 }
 
 dependencies {
@@ -93,6 +101,8 @@ dependencies {
   implementation(projects.core.model)
   implementation(projects.core.network)
   implementation(projects.core.ui)
+
+  implementation(projects.feature.watchlist)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
