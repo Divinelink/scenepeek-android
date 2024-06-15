@@ -22,9 +22,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andreolas.movierama.MainViewState
-import com.andreolas.movierama.home.ui.LoadingContent
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
+import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph

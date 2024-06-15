@@ -11,6 +11,7 @@ import com.divinelink.ui.screens.destinations.AppearanceSettingsScreenDestinatio
 import com.divinelink.ui.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.ui.screens.destinations.SettingsScreenDestination
 import org.junit.Test
+import com.divinelink.core.ui.R as uiR
 
 class SettingsScreenTest : ComposeTest() {
 
@@ -39,7 +40,7 @@ class SettingsScreenTest : ComposeTest() {
     )
 
     val navigateUpContentDescription = composeTestRule.activity
-      .getString(R.string.navigate_up_button_content_description)
+      .getString(uiR.string.core_ui_navigate_up_button_content_description)
 
     with(composeTestRule) {
       onNodeWithContentDescription(navigateUpContentDescription).performClick()

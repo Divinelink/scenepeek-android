@@ -1,8 +1,8 @@
 package com.andreolas.movierama.session.login.domain.session.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.base.storage.PreferenceStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

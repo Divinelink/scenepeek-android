@@ -20,10 +20,10 @@ import com.andreolas.movierama.session.login.ui.LoginScreenArgs
 import com.andreolas.movierama.settings.components.SettingsClickItem
 import com.andreolas.movierama.settings.components.SettingsScaffold
 import com.andreolas.movierama.settings.components.SettingsTextItem
-import com.andreolas.movierama.ui.TestTags
-import com.andreolas.movierama.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.ui.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

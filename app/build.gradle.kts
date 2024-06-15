@@ -97,12 +97,15 @@ dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.data)
   implementation(projects.core.database)
+  implementation(projects.core.datastore)
   implementation(projects.core.designsystem)
+  implementation(projects.core.domain)
   implementation(projects.core.model)
   implementation(projects.core.network)
   implementation(projects.core.ui)
 
   implementation(projects.feature.watchlist)
+  implementation(projects.feature.details)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
@@ -134,9 +137,6 @@ dependencies {
   implementation(libs.compose.destinations.bottom.sheet)
   ksp(libs.compose.destinations.ksp)
 
-  // Video Players
-  implementation(libs.youtube.player)
-
   // Network & Serialization
   implementation(libs.ktor.client.core)
   implementation(libs.ktor.client.android)
@@ -156,11 +156,6 @@ dependencies {
   kspAndroidTest(libs.dagger.hilt.android.compiler)
 
   // Database
-  implementation(libs.datastore)
-  implementation(libs.datastore.core)
-  implementation(libs.datastore.preferences)
-  implementation(libs.datastore.preferences.core)
-  implementation(libs.encrypted.preferences)
   implementation(libs.room.ktx) // TODO Remove room deps and add di for database
   implementation(libs.room.runtime)
   ksp(libs.room.compiler)
@@ -182,6 +177,12 @@ dependencies {
   testImplementation(libs.espresso)
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
+
+  testImplementation(libs.datastore)
+  testImplementation(libs.datastore.core)
+  testImplementation(libs.datastore.preferences)
+  testImplementation(libs.datastore.preferences.core)
+  testImplementation(libs.encrypted.preferences)
 
   testImplementation(libs.kotlin.test.junit)
 

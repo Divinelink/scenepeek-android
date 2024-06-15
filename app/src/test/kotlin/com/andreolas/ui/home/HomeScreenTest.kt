@@ -10,7 +10,6 @@ import androidx.compose.ui.test.performTextInput
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.R
-import com.andreolas.movierama.details.ui.DetailsNavArguments
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
@@ -18,16 +17,18 @@ import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.HomeViewModel
-import com.andreolas.movierama.ui.components.FILTER_BAR_TEST_TAG
-import com.andreolas.movierama.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.ui.screens.destinations.DetailsScreenDestination
+import com.divinelink.core.ui.components.FILTER_BAR_TEST_TAG
+import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.ui.DetailsNavArguments
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import com.divinelink.core.ui.R as uiR
 
 class HomeScreenTest : ComposeTest() {
 
@@ -108,7 +109,7 @@ class HomeScreenTest : ComposeTest() {
       .getString(R.string.toolbar_search)
 
     val searchContentDescription = composeTestRule.activity
-      .getString(R.string.toolbar_search_placeholder)
+      .getString(uiR.string.toolbar_search_placeholder)
 
     composeTestRule
       .onNodeWithTag(FILTER_BAR_TEST_TAG)

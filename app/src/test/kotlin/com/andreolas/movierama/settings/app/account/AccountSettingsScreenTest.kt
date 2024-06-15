@@ -14,8 +14,8 @@ import com.andreolas.movierama.fakes.usecase.session.login.FakeLogoutUseCase
 import com.andreolas.movierama.fakes.usecase.session.login.FakeObserveSessionUseCase
 import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
 import com.andreolas.movierama.session.login.ui.LoginScreenArgs
-import com.andreolas.movierama.ui.TestTags
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.ui.TestTags
 import com.divinelink.ui.screens.destinations.LoginWebViewScreenDestination
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

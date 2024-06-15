@@ -16,10 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.feature.details.ui.DetailsNavArguments
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.NavGraph
-import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,8 +46,16 @@ internal fun WatchlistScreen(
 
       WatchlistContent(
         list = emptyList(),
-        onMediaClick = {
-//          navigator.navigate(DetailsScreenDestination)
+        onMediaClick = { media ->
+          navigator.navigate(
+            DetailsScreenDestination(
+              DetailsNavArguments(
+                id = media.id,
+                mediaType = media.mediaType.value,
+                isFavorite = false,
+              )
+            )
+          )
         }
       )
     }
@@ -56,8 +64,9 @@ internal fun WatchlistScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistTabs(
-  tabs: List<WatchlistTab>
+private fun WatchlistTabs(
+  tabs: List<WatchlistTab>,
+  onClick: () -> Unit = {}
 ) {
   Row {
     SecondaryTabRow(selectedTabIndex = 0) {
@@ -65,7 +74,7 @@ fun WatchlistTabs(
         Tab(
           text = { Text(stringResource(tab.titleRes)) },
           selected = index == 0,
-          onClick = { /* TODO: Handle tab selection */ }
+          onClick = { onClick() }
         )
       }
     }

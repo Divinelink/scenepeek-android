@@ -14,23 +14,23 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.R
-import com.andreolas.movierama.details.ui.DetailsContent
-import com.andreolas.movierama.details.ui.DetailsViewState
-import com.andreolas.movierama.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
-import com.andreolas.movierama.home.ui.LOADING_CONTENT_TAG
-import com.andreolas.movierama.ui.TestTags
-import com.andreolas.movierama.ui.components.details.reviews.REVIEWS_LIST
-import com.andreolas.movierama.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.TestTags.LOADING_CONTENT_TAG
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
+import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
+import com.divinelink.feature.details.ui.DetailsContent
+import com.divinelink.feature.details.ui.DetailsViewState
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.divinelink.core.ui.R as uiR
+import com.divinelink.feature.details.R as detailsR
 
 class DetailsContentTest : ComposeTest() {
 
@@ -133,10 +133,10 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val reviewsTitle = composeTestRule.activity.getString(R.string.details__reviews)
+    val reviewsTitle = composeTestRule.activity.getString(uiR.string.details__reviews)
 
     composeTestRule
-      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
         hasText(reviewsTitle)
       )
@@ -159,7 +159,7 @@ class DetailsContentTest : ComposeTest() {
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
-          error = UIText.ResourceText(R.string.details__fatal_error_fetching_details)
+          error = UIText.ResourceText(detailsR.string.details__fatal_error_fetching_details)
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -172,7 +172,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val errorText = composeTestRule.activity
-      .getString(R.string.details__fatal_error_fetching_details)
+      .getString(detailsR.string.details__fatal_error_fetching_details)
 
     val okText = composeTestRule.activity
       .getString(R.string.ok)
@@ -238,7 +238,7 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val userScore = composeTestRule.activity.getString(R.string.details__user_score, "7.3")
+    val userScore = composeTestRule.activity.getString(detailsR.string.details__user_score, "7.3")
 
     composeTestRule
       .onNodeWithTag(
@@ -271,7 +271,7 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val addYourRate = composeTestRule.activity.getString(R.string.details__add_rating)
+    val addYourRate = composeTestRule.activity.getString(detailsR.string.details__add_rating)
 
     composeTestRule
       .onNodeWithText(
@@ -302,7 +302,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addToWatchlist = composeTestRule.activity.getString(
-      R.string.details__add_to_watchlist_button
+      uiR.string.details__add_to_watchlist_button
     )
 
     composeTestRule
@@ -336,7 +336,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addedToWatchlist = composeTestRule.activity.getString(
-      R.string.details__added_to_watchlist_button
+      uiR.string.details__added_to_watchlist_button
     )
 
     composeTestRule
@@ -380,7 +380,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addToWatchlist = composeTestRule.activity.getString(
-      R.string.details__add_to_watchlist_button
+      uiR.string.details__add_to_watchlist_button
     )
 
     with(composeTestRule) {
@@ -396,7 +396,7 @@ class DetailsContentTest : ComposeTest() {
 
       onNodeWithText(
         text = composeTestRule.activity.getString(
-          R.string.details__added_to_watchlist_button
+          uiR.string.details__added_to_watchlist_button
         ),
         useUnmergedTree = true
       ).assertIsDisplayed()
@@ -454,7 +454,7 @@ class DetailsContentTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(composeTestRule.activity.getString(R.string.share))
+        TestTags.Menu.MENU_ITEM.format(composeTestRule.activity.getString(uiR.string.core_ui_share))
       )
         .assertIsDisplayed()
         .performClick()

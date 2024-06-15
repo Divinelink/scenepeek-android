@@ -1,10 +1,10 @@
 package com.andreolas.movierama.session.login.domain.token.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.base.storage.PreferenceStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
+import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import timber.log.Timber

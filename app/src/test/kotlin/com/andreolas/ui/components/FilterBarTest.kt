@@ -4,12 +4,12 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.components.Filter
-import com.andreolas.movierama.ui.components.FilterBar
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.ui.components.Filter
+import com.divinelink.core.ui.components.FilterBar
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import com.divinelink.core.ui.R as uiR
 
 class FilterBarTest : ComposeTest() {
 
@@ -37,7 +37,7 @@ class FilterBarTest : ComposeTest() {
 
     val clearFilterButtonContentDescription =
       composeTestRule.activity.getString(
-        R.string.clear_filters_button_content_description
+        uiR.string.clear_filters_button_content_description
       )
 
     composeTestRule
@@ -86,7 +86,7 @@ class FilterBarTest : ComposeTest() {
 
     val clearFilterButtonContentDescription =
       composeTestRule.activity.getString(
-        R.string.clear_filters_button_content_description
+        uiR.string.clear_filters_button_content_description
       )
 
     composeTestRule

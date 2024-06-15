@@ -1,7 +1,6 @@
 package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.details.ui.MovieDetailsResult
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
@@ -17,6 +16,7 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
+import com.divinelink.feature.details.ui.MovieDetailsResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -84,7 +84,7 @@ class GetMoviesDetailsUseCaseTest {
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.failure<Exception>())
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -109,7 +109,7 @@ class GetMoviesDetailsUseCaseTest {
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -128,7 +128,7 @@ class GetMoviesDetailsUseCaseTest {
       Result.success(reviewsList)
     )
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -150,7 +150,7 @@ class GetMoviesDetailsUseCaseTest {
       SimilarRequestApi.Movie(movieId = 555),
       Result.success(similarList)
     )
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -170,7 +170,7 @@ class GetMoviesDetailsUseCaseTest {
       response = Result.failure(Exception("Oops."))
     )
 
-    val useCase = GetMovieDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -190,7 +190,7 @@ class GetMoviesDetailsUseCaseTest {
       Result.failure(SimilarException())
     )
 
-    val useCase = GetMovieDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -209,7 +209,7 @@ class GetMoviesDetailsUseCaseTest {
       SimilarRequestApi.Movie(movieId = 555),
       Result.failure(SimilarException())
     )
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -224,7 +224,7 @@ class GetMoviesDetailsUseCaseTest {
   fun `successfully get movie details even when reviews and similar calls fail`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -248,7 +248,7 @@ class GetMoviesDetailsUseCaseTest {
       )
     )
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -271,7 +271,7 @@ class GetMoviesDetailsUseCaseTest {
       )
     )
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
-    val flow = GetMovieDetailsUseCase(
+    val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,
@@ -288,7 +288,7 @@ class GetMoviesDetailsUseCaseTest {
 
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.failure(VideosException()))
 
-    val useCase = GetMovieDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
       mediaRepository = moviesRepository.mock,
       dispatcher = testDispatcher,

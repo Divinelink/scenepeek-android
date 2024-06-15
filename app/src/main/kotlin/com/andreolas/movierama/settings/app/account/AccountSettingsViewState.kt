@@ -1,7 +1,7 @@
 package com.andreolas.movierama.settings.app.account
 
-import com.andreolas.movierama.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 
 data class AccountSettingsViewState(
   val requestToken: String?,

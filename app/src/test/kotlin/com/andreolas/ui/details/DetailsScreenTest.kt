@@ -13,12 +13,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.R
-import com.andreolas.movierama.details.ui.DetailsNavArguments
-import com.andreolas.movierama.details.ui.DetailsScreen
-import com.andreolas.movierama.details.ui.DetailsViewModel
-import com.andreolas.movierama.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
-import com.andreolas.movierama.details.ui.MovieDetailsResult
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
@@ -26,15 +20,19 @@ import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
-import com.andreolas.movierama.ui.TestTags
-import com.andreolas.movierama.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
-import com.divinelink.ui.screens.destinations.DetailsScreenDestination
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.ui.DetailsNavArguments
+import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import com.divinelink.core.ui.R as uiR
+import com.divinelink.feature.details.R as detailsR
 
 class DetailsScreenTest : ComposeTest() {
 
@@ -80,9 +78,9 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      DetailsScreen(
+      com.divinelink.feature.details.ui.DetailsScreen(
         navigator = destinationsNavigator,
-        viewModel = DetailsViewModel(
+        viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
           getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
           fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
@@ -101,7 +99,7 @@ class DetailsScreenTest : ComposeTest() {
     }
 
     composeTestRule
-      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
         matcher = hasText(
           MediaItemFactory.MoviesList()[0].name
@@ -130,7 +128,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     val navigateUpContentDescription = composeTestRule.activity
-      .getString(R.string.navigate_up_button_content_description)
+      .getString(uiR.string.core_ui_navigate_up_button_content_description)
 
     composeTestRule
       .onNodeWithContentDescription(navigateUpContentDescription)
@@ -171,7 +169,7 @@ class DetailsScreenTest : ComposeTest() {
       )
     )
 
-    val viewModel = DetailsViewModel(
+    val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
       getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
       fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
@@ -188,7 +186,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      DetailsScreen(
+      com.divinelink.feature.details.ui.DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel
       )
@@ -232,7 +230,7 @@ class DetailsScreenTest : ComposeTest() {
       )
     )
 
-    val viewModel = DetailsViewModel(
+    val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
       getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
       fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
@@ -249,13 +247,13 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      DetailsScreen(
+      com.divinelink.feature.details.ui.DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel
       )
     }
 
-    val addRatingText = composeTestRule.activity.getString(R.string.details__add_rating)
+    val addRatingText = composeTestRule.activity.getString(detailsR.string.details__add_rating)
 
     composeTestRule.onNodeWithTag(
       TestTags.Details.YOUR_RATING,
@@ -278,7 +276,7 @@ class DetailsScreenTest : ComposeTest() {
     }
 
     val submitRatingText = composeTestRule
-      .activity.getString(R.string.details__submit_rating_button)
+      .activity.getString(detailsR.string.details__submit_rating_button)
 
     composeTestRule.onNodeWithText(submitRatingText).performClick()
 

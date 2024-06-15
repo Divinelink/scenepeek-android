@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.divinelink.android.library)
+  alias(libs.plugins.divinelink.android.hilt)
   alias(libs.plugins.secrets)
 }
 

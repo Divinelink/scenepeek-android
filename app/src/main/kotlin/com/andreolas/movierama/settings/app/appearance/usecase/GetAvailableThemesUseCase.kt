@@ -1,7 +1,7 @@
 package com.andreolas.movierama.settings.app.appearance.usecase
 
 import android.os.Build
-import com.andreolas.movierama.base.di.MainDispatcher
+import com.divinelink.core.commons.di.MainDispatcher
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.designsystem.theme.Theme
 import kotlinx.coroutines.CoroutineDispatcher

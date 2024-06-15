@@ -13,9 +13,13 @@ ksp {
 
   arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
   arg("compose-destinations.mermaidGraph", "$rootDir/docs")
+
+  arg("compose-destinations.codeGenPackageName", "com.divinelink.ui.screens")
 }
 
 dependencies {
   implementation(projects.core.model)
   implementation(projects.core.data)
+
+  implementation(projects.feature.details)
 }

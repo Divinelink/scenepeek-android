@@ -5,12 +5,10 @@ package com.andreolas.movierama.home.ui
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,7 +19,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -31,19 +28,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.components.EmptySectionCard
-import com.andreolas.movierama.ui.components.FilterBar
-import com.andreolas.movierama.ui.components.Material3CircularProgressIndicator
-import com.andreolas.movierama.ui.components.MovieRamaSearchBar
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.TestTags.MOVIES_LIST_TAG
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.EmptySectionCard
+import com.divinelink.core.ui.components.FilterBar
+import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.MovieRamaSearchBar
 import com.divinelink.core.ui.getString
-
-const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
-const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -169,27 +164,10 @@ private fun MoviesLazyGrid(
 }
 
 @Composable
-fun LoadingContent(
-  modifier: Modifier = Modifier,
-) {
-  Box(
-    modifier = modifier
-      .testTag(LOADING_CONTENT_TAG)
-      .fillMaxSize(),
-  ) {
-    Material3CircularProgressIndicator(
-      modifier = Modifier
-        .wrapContentSize()
-        .align(Alignment.Center),
-    )
-  }
-}
-
-@Composable
 @ExcludeFromKoverReport
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun HomeContentPreview() {
+private fun HomeContentPreview() {
   AppTheme {
     Surface {
       HomeContent(

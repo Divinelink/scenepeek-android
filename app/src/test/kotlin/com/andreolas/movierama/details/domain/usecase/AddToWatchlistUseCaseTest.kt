@@ -2,10 +2,10 @@ package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
-import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -33,14 +33,14 @@ class AddToWatchlistUseCaseTest {
   fun `test user with no account id cannot add to watchlist`() = runTest {
     sessionStorage = createSessionStorage(accountId = null)
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = com.divinelink.feature.details.usecase.AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AddToWatchlistParameters(
+      com.divinelink.feature.details.usecase.AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
         addToWatchlist = true
@@ -61,14 +61,14 @@ class AddToWatchlistUseCaseTest {
       response = Result.success(Unit)
     )
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = com.divinelink.feature.details.usecase.AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AddToWatchlistParameters(
+      com.divinelink.feature.details.usecase.AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
         addToWatchlist = true
@@ -82,7 +82,7 @@ class AddToWatchlistUseCaseTest {
   fun `test user with account id can add to watchlist for tv show`() = runTest {
     sessionStorage = createSessionStorage(accountId = "123")
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = com.divinelink.feature.details.usecase.AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
@@ -93,7 +93,7 @@ class AddToWatchlistUseCaseTest {
     )
 
     val result = useCase.invoke(
-      AddToWatchlistParameters(
+      com.divinelink.feature.details.usecase.AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.TV,
         addToWatchlist = true
@@ -107,14 +107,14 @@ class AddToWatchlistUseCaseTest {
   fun `test invalid media type throws exception`() = runTest {
     sessionStorage = createSessionStorage(accountId = "123")
 
-    val useCase = AddToWatchlistUseCase(
+    val useCase = com.divinelink.feature.details.usecase.AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AddToWatchlistParameters(
+      com.divinelink.feature.details.usecase.AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
         addToWatchlist = false
@@ -125,8 +125,9 @@ class AddToWatchlistUseCaseTest {
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(accountId: String?) = SessionStorage(
-    storage = FakePreferenceStorage(accountId = accountId),
-    encryptedStorage = FakeEncryptedPreferenceStorage()
-  )
+  private fun createSessionStorage(accountId: String?) =
+    SessionStorage(
+      storage = FakePreferenceStorage(accountId = accountId),
+      encryptedStorage = FakeEncryptedPreferenceStorage()
+    )
 }

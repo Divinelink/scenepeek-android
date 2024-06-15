@@ -1,11 +1,11 @@
 package com.andreolas.movierama.settings.app.account.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

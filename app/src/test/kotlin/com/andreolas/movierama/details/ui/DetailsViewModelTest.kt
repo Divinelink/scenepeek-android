@@ -17,11 +17,14 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.details.ui.DetailsViewState
+import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import com.divinelink.feature.details.R as detailsR
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelTest {
@@ -47,7 +50,13 @@ class DetailsViewModelTest {
   fun `successful initialise viewModel`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -65,7 +74,13 @@ class DetailsViewModelTest {
   fun `given success details response then I expect MovieDetails`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -83,7 +98,13 @@ class DetailsViewModelTest {
   fun `given success reviews response then I expect ReviewsList`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -102,8 +123,16 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
-          Result.success(MovieDetailsResult.DetailsSuccess(movieDetails))
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -126,8 +155,16 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
-          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.SimilarSuccess(
+              similarMovies
+            )
+          ),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -149,8 +186,16 @@ class DetailsViewModelTest {
       .mockFetchMovieDetails(
         response = flowOf(
           Result.success(MovieDetailsResult.Failure.FatalError()),
-          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(
+            MovieDetailsResult.SimilarSuccess(
+              similarMovies
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -173,8 +218,16 @@ class DetailsViewModelTest {
       .mockFetchMovieDetails(
         response = flowOf(
           Result.success(MovieDetailsResult.Failure.Unknown),
-          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(
+            MovieDetailsResult.SimilarSuccess(
+              similarMovies
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -197,8 +250,16 @@ class DetailsViewModelTest {
       .mockFetchMovieDetails(
         response = flowOf(
           Result.failure(MediaDetailsException()),
-          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(
+            MovieDetailsResult.SimilarSuccess(
+              similarMovies
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -221,8 +282,16 @@ class DetailsViewModelTest {
       .mockFetchMovieDetails(
         response = flowOf(
           Result.failure(Exception()),
-          Result.success(MovieDetailsResult.SimilarSuccess(similarMovies)),
-          Result.success(MovieDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(
+            MovieDetailsResult.SimilarSuccess(
+              similarMovies
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.ReviewsSuccess(
+              reviewsList
+            )
+          ),
         )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -293,7 +362,13 @@ class DetailsViewModelTest {
     runTest {
       testRobot
         .mockFetchMovieDetails(
-          response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+          response = flowOf(
+            Result.success(
+              MovieDetailsResult.DetailsSuccess(
+                movieDetails
+              )
+            )
+          )
         )
         .mockMarkAsFavoriteUseCase(
           media = MediaItemFactory.FightClub(),
@@ -329,8 +404,16 @@ class DetailsViewModelTest {
     testRobot
       .mockFetchMovieDetails(
         response = flowOf(
-          Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)),
-          Result.success(MovieDetailsResult.VideosSuccess(VideoFactory.Youtube())),
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          ),
+          Result.success(
+            MovieDetailsResult.VideosSuccess(
+              VideoFactory.Youtube()
+            )
+          ),
         )
       )
       .buildViewModel(
@@ -353,7 +436,13 @@ class DetailsViewModelTest {
   fun `given account media details with rated I expect user rating`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockFetchAccountMediaDetails(
         response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
@@ -374,7 +463,13 @@ class DetailsViewModelTest {
   fun `given non rated media I expect no user rating`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockFetchAccountMediaDetails(
         response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
@@ -395,7 +490,13 @@ class DetailsViewModelTest {
   fun `given success submit rate, when I submit rate, then I expect success message`() {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockSubmitRate(
         response = flowOf(Result.success(Unit))
@@ -423,7 +524,7 @@ class DetailsViewModelTest {
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              R.string.details__rating_submitted_successfully,
+              detailsR.string.details__rating_submitted_successfully,
               movieDetails.title
             )
           ),
@@ -438,10 +539,16 @@ class DetailsViewModelTest {
 
   @Test
   fun `given NoSession error submit rate, when I submit, then I expect error message`() {
-    lateinit var viewModel: DetailsViewModel
+    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockSubmitRate(
         response = flowOf(Result.failure(SessionException.NoSession()))
@@ -458,7 +565,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           ),
@@ -469,10 +576,16 @@ class DetailsViewModelTest {
 
   @Test
   fun `given NoSession error, when login action clicked, then I expect navigation to login`() {
-    lateinit var viewModel: DetailsViewModel
+    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockSubmitRate(
         response = flowOf(Result.failure(SessionException.NoSession()))
@@ -489,7 +602,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           ),
@@ -514,7 +627,13 @@ class DetailsViewModelTest {
   fun `given navigation to login, when I consume it, then I expect navigation to be null`() {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
@@ -546,7 +665,13 @@ class DetailsViewModelTest {
         response = flowOf(Result.success(Unit))
       )
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -571,7 +696,7 @@ class DetailsViewModelTest {
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              R.string.details__rating_submitted_successfully,
+              detailsR.string.details__rating_submitted_successfully,
               movieDetails.title
             )
           ),
@@ -602,7 +727,13 @@ class DetailsViewModelTest {
   fun `test onAddRateClicked opens bottom sheet`() {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -622,7 +753,13 @@ class DetailsViewModelTest {
   fun `test onDismissRateDialog hides dialog`() {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -653,7 +790,13 @@ class DetailsViewModelTest {
   fun `given rated movie when I delete rating then I expect no user rating`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockFetchAccountMediaDetails(
         response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
@@ -683,7 +826,7 @@ class DetailsViewModelTest {
           },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              R.string.details__rating_deleted_successfully,
+              detailsR.string.details__rating_deleted_successfully,
               movieDetails.title
             )
           )
@@ -693,11 +836,17 @@ class DetailsViewModelTest {
 
   @Test
   fun `given invalid accountId when I add to watchlist I expect error`() = runTest {
-    lateinit var viewModel: DetailsViewModel
+    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
 
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockAddToWatchlist(
         response = flowOf(Result.failure(SessionException.InvalidAccountId()))
@@ -714,7 +863,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_watchlist),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           )
@@ -751,7 +900,13 @@ class DetailsViewModelTest {
   fun `given item on watchlist when I add to watchlist I expect removed message`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockFetchAccountMediaDetails(
         flowOf(
@@ -779,7 +934,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              R.string.details__removed_from_watchlist,
+              detailsR.string.details__removed_from_watchlist,
               movieDetails.title
             )
           )
@@ -791,7 +946,13 @@ class DetailsViewModelTest {
   fun `given item not on watchlist when I add to watchlist I expect added message`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .mockFetchAccountMediaDetails(
         flowOf(
@@ -819,7 +980,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              R.string.details__added_to_watchlist,
+              detailsR.string.details__added_to_watchlist,
               movieDetails.title
             )
           )
@@ -831,7 +992,13 @@ class DetailsViewModelTest {
   fun `test open share dialog`() {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(
+          Result.success(
+            MovieDetailsResult.DetailsSuccess(
+              movieDetails
+            )
+          )
+        )
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onShareClicked(openShareDialog = true)

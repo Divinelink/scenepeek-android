@@ -2,6 +2,7 @@ package com.andreolas.movierama.details.ui
 
 import com.andreolas.factories.MediaDetailsFactory
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.feature.details.ui.DetailsViewState
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

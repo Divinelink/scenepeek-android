@@ -2,9 +2,9 @@ package com.andreolas.movierama.settings.app.account.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeSessionRepository
-import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.AccountDetails
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -67,8 +67,9 @@ class GetAccountDetailsUseCaseTest {
     assertThat(sessionStorage.accountId.first()).isEqualTo("1234")
   }
 
-  private fun createSessionStorage(sessionId: String? = null) = SessionStorage(
-    storage = FakePreferenceStorage(),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-  )
+  private fun createSessionStorage(sessionId: String? = null) =
+    SessionStorage(
+      storage = FakePreferenceStorage(),
+      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+    )
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.andreolas.movierama.home.domain.usecase.FetchMultiInfoSearchUseCase
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
-import com.andreolas.movierama.home.domain.usecase.MarkAsFavoriteUseCase
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi

@@ -1,9 +1,9 @@
 package com.andreolas.movierama.session.login.domain.session.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.session.SessionStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.session.repository.SessionRepository
+import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

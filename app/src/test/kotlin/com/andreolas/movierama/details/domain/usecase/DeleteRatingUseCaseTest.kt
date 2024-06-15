@@ -2,12 +2,14 @@ package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
-import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.feature.details.usecase.DeleteRatingParameters
+import com.divinelink.feature.details.usecase.DeleteRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -126,8 +128,9 @@ class DeleteRatingUseCaseTest {
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) = SessionStorage(
-    storage = FakePreferenceStorage(),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-  )
+  private fun createSessionStorage(sessionId: String?) =
+    SessionStorage(
+      storage = FakePreferenceStorage(),
+      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+    )
 }

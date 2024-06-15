@@ -3,11 +3,11 @@ package com.andreolas.movierama.details.domain.usecase
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
-import com.andreolas.movierama.session.SessionStorage
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -35,14 +35,14 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test user with no session id cannot fetch account media details`() = runTest {
     sessionStorage = createSessionStorage(sessionId = null)
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
         mediaType = MediaType.MOVIE
       )
@@ -62,14 +62,14 @@ class FetchAccountMediaDetailsUseCaseTest {
       response = Result.success(AccountMediaDetailsFactory.Rated())
     )
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
         mediaType = MediaType.MOVIE
       )
@@ -87,14 +87,14 @@ class FetchAccountMediaDetailsUseCaseTest {
       response = Result.success(AccountMediaDetailsFactory.Rated())
     )
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
         mediaType = MediaType.TV
       )
@@ -108,14 +108,14 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test cannot fetch account media details for unknown media type`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
-    val useCase = FetchAccountMediaDetailsUseCase(
+    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher
     )
 
     val result = useCase.invoke(
-      AccountMediaDetailsParams(
+      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
         mediaType = MediaType.UNKNOWN
       )
@@ -125,8 +125,9 @@ class FetchAccountMediaDetailsUseCaseTest {
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) = SessionStorage(
-    storage = FakePreferenceStorage(),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-  )
+  private fun createSessionStorage(sessionId: String?) =
+    SessionStorage(
+      storage = FakePreferenceStorage(),
+      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+    )
 }

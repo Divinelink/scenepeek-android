@@ -12,6 +12,8 @@ import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.feature.details.ui.DetailsViewState
+import com.divinelink.feature.details.ui.MovieDetailsResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +22,7 @@ import org.junit.Rule
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelRobot {
 
-  private lateinit var viewModel: DetailsViewModel
+  private lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -36,7 +38,7 @@ class DetailsViewModelRobot {
     id: Int,
     mediaType: MediaType,
   ) = apply {
-    viewModel = DetailsViewModel(
+    viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,

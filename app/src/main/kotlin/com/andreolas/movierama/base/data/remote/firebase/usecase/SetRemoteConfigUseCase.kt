@@ -1,8 +1,8 @@
 package com.andreolas.movierama.base.data.remote.firebase.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.base.storage.EncryptedStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.datastore.EncryptedStorage
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.tasks.await
@@ -11,7 +11,7 @@ import javax.inject.Inject
 @Suppress("TooGenericExceptionThrown")
 open class SetRemoteConfigUseCase @Inject constructor(
   private val firebaseRemoteConfig: FirebaseRemoteConfig,
-  private val encryptedPreferenceStorage: EncryptedStorage,
+  private val encryptedPreferenceStorage: com.divinelink.core.datastore.EncryptedStorage,
   @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, Unit>(dispatcher) {
   override suspend fun execute(parameters: Unit) {

@@ -8,7 +8,7 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.andreolas.movierama.R
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
-import com.ramcosta.composedestinations.generated.watchlist.destinations.WatchlistScreenDestination
+import com.divinelink.ui.screens.destinations.WatchlistScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 enum class TopLevelDestination(

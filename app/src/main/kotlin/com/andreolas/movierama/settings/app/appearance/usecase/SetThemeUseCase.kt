@@ -1,8 +1,8 @@
 package com.andreolas.movierama.settings.app.appearance.usecase
 
-import com.andreolas.movierama.base.di.IoDispatcher
-import com.andreolas.movierama.base.storage.PreferenceStorage
+import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject

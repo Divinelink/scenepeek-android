@@ -2,6 +2,7 @@ package com.andreolas.movierama.session
 
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
+import com.divinelink.core.datastore.SessionStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.After

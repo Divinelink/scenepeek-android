@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.andreolas.movierama.R
-import com.andreolas.movierama.ui.TestTags
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +29,8 @@ fun SettingsScaffold(
   title: String,
   onNavigationClick: () -> Unit,
   navigationIconPainter: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-  @StringRes navigationContentDescription: Int = R.string.navigate_up_button_content_description,
+  @StringRes navigationContentDescription: Int =
+    uiR.string.core_ui_navigate_up_button_content_description,
   content: @Composable (PaddingValues) -> Unit
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -47,7 +48,8 @@ fun SettingsScaffold(
         navigationIcon = {
           IconButton(
             modifier = Modifier.testTag(TestTags.Settings.NAVIGATION_ICON),
-            onClick = onNavigationClick) {
+            onClick = onNavigationClick
+          ) {
             Icon(
               imageVector = navigationIconPainter,
               contentDescription = stringResource(id = navigationContentDescription)

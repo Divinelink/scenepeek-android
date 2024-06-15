@@ -1,7 +1,7 @@
 package com.andreolas.movierama.fakes.usecase
 
-import com.andreolas.movierama.details.domain.usecase.GetMovieDetailsUseCase
-import com.andreolas.movierama.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.usecase.GetMovieDetailsUseCase
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
