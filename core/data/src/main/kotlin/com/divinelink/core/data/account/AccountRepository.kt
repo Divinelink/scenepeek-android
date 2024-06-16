@@ -10,4 +10,10 @@ interface AccountRepository {
     sortBy: String,
     accountId: String,
   ): Flow<MediaListResult>
+
+  suspend fun fetchTvShowsWatchlist(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+  ): Flow<MediaListResult>
 }

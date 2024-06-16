@@ -18,7 +18,7 @@ import javax.inject.Inject
 data class WatchlistParameters(
   val page: Int,
   val sortBy: WatchlistSorting = WatchlistSorting.DESCENDING,
-  val mediaType: MediaType = MediaType.MOVIE
+  val mediaType: MediaType = MediaType.TV
 )
 
 data class WatchlistResponse(
@@ -40,16 +40,32 @@ class FetchWatchlistUseCase @Inject constructor(
       return@flow
     }
 
-    val response = accountRepository.fetchMoviesWatchlist(
-      page = parameters.page,
-      sortBy = parameters.sortBy.value,
-      accountId = accountId,
-    )
-
-    response.last().getOrNull()?.let {
-      emit(Result.success(WatchlistResponse(it, MediaType.MOVIE)))
-    } ?: run {
-      emit(Result.failure(SessionException.InvalidAccountId()))
+    if (parameters.mediaType == MediaType.TV) {
+      accountRepository.fetchTvShowsWatchlist(
+        page = parameters.page,
+        sortBy = parameters.sortBy.value,
+        accountId = accountId,
+      ).last().fold(
+        onSuccess = {
+          emit(Result.success(WatchlistResponse(it, MediaType.TV)))
+        },
+        onFailure = {
+          emit(Result.failure(it))
+        }
+      )
+    } else {
+      accountRepository.fetchMoviesWatchlist(
+        page = parameters.page,
+        sortBy = parameters.sortBy.value,
+        accountId = accountId,
+      ).last().fold(
+        onSuccess = {
+          emit(Result.success(WatchlistResponse(it, MediaType.MOVIE)))
+        },
+        onFailure = {
+          emit(Result.failure(it))
+        }
+      )
     }
   }
 }
