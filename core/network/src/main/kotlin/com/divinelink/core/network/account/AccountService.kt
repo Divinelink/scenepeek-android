@@ -5,5 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountService {
 
-  fun fetchMoviesWatchlist(page: Int, accountId: String): Flow<MoviesResponseApi>
+  fun fetchMoviesWatchlist(
+    page: Int,
+    sortBy: String,
+    accountId: String
+  ): Flow<MoviesResponseApi>
 }

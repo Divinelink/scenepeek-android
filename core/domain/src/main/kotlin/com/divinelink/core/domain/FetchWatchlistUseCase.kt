@@ -5,6 +5,7 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.WatchlistSorting
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 data class WatchlistParameters(
   val page: Int,
+  val sortBy: WatchlistSorting = WatchlistSorting.DESCENDING,
   val mediaType: MediaType = MediaType.MOVIE
 )
 
@@ -38,7 +40,11 @@ class FetchWatchlistUseCase @Inject constructor(
       return@flow
     }
 
-    val response = accountRepository.fetchMoviesWatchlist(parameters.page, accountId)
+    val response = accountRepository.fetchMoviesWatchlist(
+      page = parameters.page,
+      sortBy = parameters.sortBy.value,
+      accountId = accountId,
+    )
 
     response.last().getOrNull()?.let {
       emit(Result.success(WatchlistResponse(it, MediaType.MOVIE)))

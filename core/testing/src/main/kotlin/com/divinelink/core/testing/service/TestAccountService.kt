@@ -17,6 +17,7 @@ class TestAccountService {
     whenever(
       mock.fetchMoviesWatchlist(
         page = any(),
+        sortBy = any(),
         accountId = any()
       )
     ).thenReturn(response)
