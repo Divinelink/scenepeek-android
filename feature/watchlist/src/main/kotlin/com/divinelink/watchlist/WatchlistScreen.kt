@@ -14,12 +14,14 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +50,12 @@ internal fun WatchlistScreen(
     pageCount = { uiState.value.tabs.size }
   )
 
+  LaunchedEffect(pagerState) {
+    snapshotFlow { pagerState.currentPage }.collect { page ->
+      viewModel.onTabSelected(page)
+    }
+  }
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -65,9 +73,9 @@ internal fun WatchlistScreen(
           tabs = uiState.value.tabs,
           selectedIndex = selectedPage,
           onClick = {
+            viewModel.onTabSelected(it)
             scope.launch {
               pagerState.animateScrollToPage(it)
-              viewModel.onTabSelected(it)
             }
           }
         )
@@ -92,7 +100,8 @@ internal fun WatchlistScreen(
                         isFavorite = media.isFavorite
                       )
                     )
-                  }
+                  },
+                  onLoadMore = viewModel::onLoadMore
                 )
               }
             }

@@ -1,6 +1,7 @@
 package com.divinelink.core.data.account
 
-import com.divinelink.core.data.media.repository.MediaListResult
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.PaginationData
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
@@ -9,11 +10,11 @@ interface AccountRepository {
     page: Int,
     sortBy: String,
     accountId: String,
-  ): Flow<MediaListResult>
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
 
   suspend fun fetchTvShowsWatchlist(
     page: Int,
     sortBy: String,
     accountId: String,
-  ): Flow<MediaListResult>
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
 }

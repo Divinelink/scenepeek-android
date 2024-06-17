@@ -7,6 +7,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 /**
  * Taken from
@@ -39,28 +41,38 @@ fun LazyGridState.OnBottomReached(
   }
 }
 
+/**
+ * Handler to make any lazy column (or lazy row) infinite. Will notify the [onLoadMore]
+ * callback once needed
+ * @param lazyListState state of the list that needs to also be passed to the LazyColumn composable.
+ * Get it by calling rememberLazyListState()
+ * @param buffer the number of items before the end of the list to call the onLoadMore callback
+ * @param onLoadMore will notify when we need to load more
+ */
 @Composable
-fun LazyListState.OnBottomReached(
-  loadMore: () -> Unit,
-) {
-  var initialLoad = remember { true }
-
-  val shouldLoadMore = remember {
+fun LazyListState.EndlessScrollHandler(buffer: Int = 6, onLoadMore: () -> Unit) {
+  val loadMore = remember {
     derivedStateOf {
-      val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-        ?: return@derivedStateOf true
+      val layoutInfo = this.layoutInfo
+      val visibleItemsInfo = layoutInfo.visibleItemsInfo
+      val totalItems = layoutInfo.totalItemsCount
+      val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
 
-      lastVisibleItem.index == layoutInfo.totalItemsCount - 1 && !initialLoad
+      if (totalItemsFitInScreen) {
+        false
+      } else {
+        val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+        lastVisibleItemIndex > (totalItems - buffer)
+      }
     }
   }
 
-  // Convert the state into a cold flow and collect
-  LaunchedEffect(shouldLoadMore) {
-    snapshotFlow { shouldLoadMore.value }
+  LaunchedEffect(loadMore) {
+    snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
+      .distinctUntilChanged()
+      .filter { it.first }
       .collect {
-        // if should load more, then invoke loadMore
-        if (it) loadMore()
-        initialLoad = false
+        onLoadMore()
       }
   }
 }

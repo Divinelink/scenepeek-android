@@ -4,14 +4,14 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
 data class WatchlistUiState(
-  val selectedTab: Int,
+  val selectedTabIndex: Int,
   val tabs: List<WatchlistTab>,
   val pages: Map<MediaType, Int>,
-  val forms: Map<MediaType, WatchlistForm<MediaItem.Media>>
+  val forms: Map<MediaType, WatchlistForm<MediaItem.Media>>,
+  val canFetchMore: Map<MediaType, Boolean>,
 ) {
   private val tvForm = forms[MediaType.TV]
   val tvFormIsLoading = tvForm is WatchlistForm.Loading
 
-  val tvPage = pages[MediaType.TV] ?: 1
-  val moviesPage = pages[MediaType.MOVIE] ?: 1
+  val mediaType = MediaType.from(WatchlistTab.entries[selectedTabIndex].value)
 }

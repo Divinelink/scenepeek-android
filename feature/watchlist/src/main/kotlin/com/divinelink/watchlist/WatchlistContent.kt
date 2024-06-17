@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -14,13 +15,23 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
+import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 
 @Composable
 fun WatchlistContent(
   list: List<MediaItem.Media>,
-  onMediaClick: (MediaItem.Media) -> Unit
+  onMediaClick: (MediaItem.Media) -> Unit,
+  onLoadMore: () -> Unit
 ) {
+  val scrollState = rememberLazyListState()
+
+  scrollState.EndlessScrollHandler(
+    buffer = 3,
+    onLoadMore = onLoadMore
+  )
+
   LazyColumn(
+    state = scrollState,
     contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
   ) {
@@ -57,7 +68,8 @@ private fun WatchlistContentPreview() {
     Surface {
       WatchlistContent(
         list = list,
-        onMediaClick = {}
+        onMediaClick = {},
+        onLoadMore = {},
       )
     }
   }

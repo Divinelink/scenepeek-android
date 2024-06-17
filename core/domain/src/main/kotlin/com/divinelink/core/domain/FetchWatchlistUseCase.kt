@@ -23,7 +23,8 @@ data class WatchlistParameters(
 
 data class WatchlistResponse(
   val data: List<MediaItem.Media>,
-  val type: MediaType
+  val type: MediaType,
+  val canFetchMore: Boolean
 )
 
 class FetchWatchlistUseCase @Inject constructor(
@@ -47,7 +48,17 @@ class FetchWatchlistUseCase @Inject constructor(
         accountId = accountId,
       ).last().fold(
         onSuccess = {
-          emit(Result.success(WatchlistResponse(it, MediaType.TV)))
+          val canFetchMore = parameters.page < it.totalPages
+
+          emit(
+            Result.success(
+              WatchlistResponse(
+                data = it.list,
+                type = MediaType.TV,
+                canFetchMore = canFetchMore
+              )
+            )
+          )
         },
         onFailure = {
           emit(Result.failure(it))
@@ -60,7 +71,17 @@ class FetchWatchlistUseCase @Inject constructor(
         accountId = accountId,
       ).last().fold(
         onSuccess = {
-          emit(Result.success(WatchlistResponse(it, MediaType.MOVIE)))
+          val canFetchMore = parameters.page < it.totalPages
+
+          emit(
+            Result.success(
+              WatchlistResponse(
+                data = it.list,
+                type = MediaType.MOVIE,
+                canFetchMore = canFetchMore
+              )
+            )
+          )
         },
         onFailure = {
           emit(Result.failure(it))

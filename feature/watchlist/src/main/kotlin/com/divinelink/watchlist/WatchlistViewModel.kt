@@ -22,7 +22,7 @@ class WatchlistViewModel @Inject constructor(
 
   private val _uiState: MutableStateFlow<WatchlistUiState> = MutableStateFlow(
     WatchlistUiState(
-      selectedTab = WatchlistTab.MOVIE.ordinal,
+      selectedTabIndex = WatchlistTab.MOVIE.ordinal,
       tabs = WatchlistTab.entries,
       pages = mapOf(
         MediaType.MOVIE to 1,
@@ -31,17 +31,52 @@ class WatchlistViewModel @Inject constructor(
       forms = mapOf(
         MediaType.MOVIE to WatchlistForm.Loading,
         MediaType.TV to WatchlistForm.Loading
+      ),
+      canFetchMore = mapOf(
+        MediaType.MOVIE to true,
+        MediaType.TV to true
       )
     )
   )
   val uiState: StateFlow<WatchlistUiState> = _uiState
 
   init {
+    fetchWatchlist(mediaType = MediaType.MOVIE)
+  }
+
+  fun onLoadMore() {
+    val uiState = _uiState.value
+    val mediaType = uiState.mediaType
+    val currentPage = uiState.pages[mediaType] ?: 1
+    val canFetchMore = uiState.canFetchMore[mediaType] ?: false
+
+    if (canFetchMore) {
+      fetchWatchlist(
+        mediaType = mediaType,
+        page = currentPage
+      )
+    }
+  }
+
+  fun onTabSelected(tab: Int) {
+    _uiState.update { uiState ->
+      uiState.copy(selectedTabIndex = tab)
+    }
+
+    if (_uiState.value.tvFormIsLoading) {
+      fetchWatchlist(mediaType = MediaType.TV)
+    }
+  }
+
+  private fun fetchWatchlist(
+    mediaType: MediaType,
+    page: Int = 1
+  ) {
     viewModelScope.launch {
       fetchWatchlistUseCase.invoke(
         parameters = WatchlistParameters(
-          page = _uiState.value.moviesPage,
-          mediaType = MediaType.MOVIE,
+          page = page,
+          mediaType = mediaType
         )
       ).collectLatest { result ->
         result.onSuccess { response ->
@@ -53,43 +88,21 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun onTabSelected(tab: Int) {
-    _uiState.update { uiState ->
-      uiState.copy(selectedTab = tab)
-    }
-
-    if (_uiState.value.tvFormIsLoading) {
-      viewModelScope.launch {
-        fetchWatchlistUseCase.invoke(
-          parameters = WatchlistParameters(
-            page = uiState.value.tvPage,
-            mediaType = MediaType.TV,
-          )
-        ).collectLatest { result ->
-          result.onSuccess { response ->
-            updateUiState(response)
-          }.onFailure {
-
-          }
-        }
-      }
-    }
-  }
-
   private fun updateUiState(
     response: WatchlistResponse
   ) {
     _uiState.update { uiState ->
-      val currentData = uiState.forms[response.type] as? WatchlistForm.Data
+      val currentData = (uiState.forms[response.type] as? WatchlistForm.Data)?.data.orEmpty()
       val currentPage = uiState.pages[response.type] ?: 1
 
       uiState.copy(
-        forms = uiState.forms +
-          (response.type to WatchlistForm.Data(currentData?.data.orEmpty() + response.data)),
-        pages = uiState.pages + (response.type to currentPage + 1)
+        forms = uiState.forms + (response.type to WatchlistForm.Data(currentData + response.data)),
+        pages = uiState.pages + (response.type to currentPage + 1),
+        canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore)
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
         Timber.d("Update page for ${response.type} to ${currentPage + 1}")
+        Timber.d("Can fetch more for ${response.type} is ${response.canFetchMore}")
         this
       }
     }

@@ -1,6 +1,7 @@
 package com.divinelink.core.data.account
 
-import com.divinelink.core.data.media.repository.MediaListResult
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.media.model.movie.toMoviesList
 import com.divinelink.core.network.media.model.tv.toTvList
@@ -17,10 +18,15 @@ class ProdAccountRepository @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
-  ): Flow<MediaListResult> = remote
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
     .fetchMoviesWatchlist(page, sortBy, accountId)
     .map { apiResponse ->
-      Result.success(apiResponse.toMoviesList())
+      Result.success(
+        PaginationData<MediaItem.Media>(
+          totalPages = apiResponse.totalPages,
+          list = apiResponse.toMoviesList()
+        )
+      )
     }
     .catch { exception ->
       throw Exception(exception.message)
@@ -30,10 +36,15 @@ class ProdAccountRepository @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
-  ): Flow<MediaListResult> = remote
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
     .fetchTvShowsWatchlist(page, sortBy, accountId)
     .map { apiResponse ->
-      Result.success(apiResponse.toTvList())
+      Result.success(
+        PaginationData<MediaItem.Media>(
+          totalPages = apiResponse.totalPages,
+          list = apiResponse.toTvList()
+        )
+      )
     }
     .catch { exception ->
       throw Exception(exception.message)
