@@ -67,6 +67,7 @@ internal fun WatchlistScreen(
           onClick = {
             scope.launch {
               pagerState.animateScrollToPage(it)
+              viewModel.onTabSelected(it)
             }
           }
         )

@@ -18,7 +18,7 @@ import javax.inject.Inject
 data class WatchlistParameters(
   val page: Int,
   val sortBy: WatchlistSorting = WatchlistSorting.DESCENDING,
-  val mediaType: MediaType = MediaType.TV
+  val mediaType: MediaType,
 )
 
 data class WatchlistResponse(

@@ -24,8 +24,10 @@ class WatchlistViewModel @Inject constructor(
     WatchlistUiState(
       selectedTab = WatchlistTab.MOVIE.ordinal,
       tabs = WatchlistTab.entries,
-      moviesPage = 1,
-      tvPage = 1,
+      pages = mapOf(
+        MediaType.MOVIE to 1,
+        MediaType.TV to 1
+      ),
       forms = mapOf(
         MediaType.MOVIE to WatchlistForm.Loading,
         MediaType.TV to WatchlistForm.Loading
@@ -38,7 +40,8 @@ class WatchlistViewModel @Inject constructor(
     viewModelScope.launch {
       fetchWatchlistUseCase.invoke(
         parameters = WatchlistParameters(
-          page = uiState.value.moviesPage,
+          page = _uiState.value.moviesPage,
+          mediaType = MediaType.MOVIE,
         )
       ).collectLatest { result ->
         result.onSuccess { response ->
@@ -50,18 +53,43 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
+  fun onTabSelected(tab: Int) {
+    _uiState.update { uiState ->
+      uiState.copy(selectedTab = tab)
+    }
+
+    if (_uiState.value.tvFormIsLoading) {
+      viewModelScope.launch {
+        fetchWatchlistUseCase.invoke(
+          parameters = WatchlistParameters(
+            page = uiState.value.tvPage,
+            mediaType = MediaType.TV,
+          )
+        ).collectLatest { result ->
+          result.onSuccess { response ->
+            updateUiState(response)
+          }.onFailure {
+
+          }
+        }
+      }
+    }
+  }
+
   private fun updateUiState(
     response: WatchlistResponse
   ) {
     _uiState.update { uiState ->
       val currentData = uiState.forms[response.type] as? WatchlistForm.Data
+      val currentPage = uiState.pages[response.type] ?: 1
 
       uiState.copy(
-        moviesPage = uiState.moviesPage + 1,
         forms = uiState.forms +
-          (response.type to WatchlistForm.Data(currentData?.data.orEmpty() + response.data))
+          (response.type to WatchlistForm.Data(currentData?.data.orEmpty() + response.data)),
+        pages = uiState.pages + (response.type to currentPage + 1)
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
+        Timber.d("Update page for ${response.type} to ${currentPage + 1}")
         this
       }
     }
