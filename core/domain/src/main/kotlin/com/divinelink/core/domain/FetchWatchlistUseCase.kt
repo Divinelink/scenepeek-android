@@ -23,6 +23,7 @@ data class WatchlistParameters(
 
 data class WatchlistResponse(
   val data: List<MediaItem.Media>,
+  val totalResults: Int,
   val type: MediaType,
   val canFetchMore: Boolean
 )
@@ -54,6 +55,7 @@ class FetchWatchlistUseCase @Inject constructor(
             Result.success(
               WatchlistResponse(
                 data = it.list,
+                totalResults = it.totalResults,
                 type = MediaType.TV,
                 canFetchMore = canFetchMore
               )
@@ -77,6 +79,7 @@ class FetchWatchlistUseCase @Inject constructor(
             Result.success(
               WatchlistResponse(
                 data = it.list,
+                totalResults = it.totalResults,
                 type = MediaType.MOVIE,
                 canFetchMore = canFetchMore
               )

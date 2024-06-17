@@ -101,6 +101,7 @@ internal fun WatchlistScreen(
                       )
                     )
                   },
+                  totalResults = it.totalResultsUiText,
                   onLoadMore = viewModel::onLoadMore
                 )
               }

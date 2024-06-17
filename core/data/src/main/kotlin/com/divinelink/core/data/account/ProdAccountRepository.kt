@@ -24,6 +24,7 @@ class ProdAccountRepository @Inject constructor(
       Result.success(
         PaginationData<MediaItem.Media>(
           totalPages = apiResponse.totalPages,
+          totalResults = apiResponse.totalResults,
           list = apiResponse.toMoviesList()
         )
       )
@@ -42,6 +43,7 @@ class ProdAccountRepository @Inject constructor(
       Result.success(
         PaginationData<MediaItem.Media>(
           totalPages = apiResponse.totalPages,
+          totalResults = apiResponse.totalResults,
           list = apiResponse.toTvList()
         )
       )

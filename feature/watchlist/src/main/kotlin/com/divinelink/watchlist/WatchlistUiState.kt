@@ -11,6 +11,7 @@ data class WatchlistUiState(
   val canFetchMore: Map<MediaType, Boolean>,
 ) {
   private val tvForm = forms[MediaType.TV]
+
   val tvFormIsLoading = tvForm is WatchlistForm.Loading
 
   val mediaType = MediaType.from(WatchlistTab.entries[selectedTabIndex].value)

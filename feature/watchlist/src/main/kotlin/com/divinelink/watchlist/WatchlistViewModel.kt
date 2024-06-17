@@ -96,7 +96,10 @@ class WatchlistViewModel @Inject constructor(
       val currentPage = uiState.pages[response.type] ?: 1
 
       uiState.copy(
-        forms = uiState.forms + (response.type to WatchlistForm.Data(currentData + response.data)),
+        forms = uiState.forms + (response.type to WatchlistForm.Data(
+          data = currentData + response.data,
+          totalResults = response.totalResults
+        )),
         pages = uiState.pages + (response.type to currentPage + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore)
       ).run {
