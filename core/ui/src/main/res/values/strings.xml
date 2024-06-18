@@ -28,10 +28,10 @@
   <string name="details__added_to_watchlist_button">Added to watchlist</string>
 
   <!-- Accessibility -->
-  <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>
   <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
+  <string name="core_ui_scroll_to_top_button">Scroll to top</string>
 </resources>
