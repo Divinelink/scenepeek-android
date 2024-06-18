@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="watchlist_title">Your watchlist</string>
+  <string name="feature_watchlist_title">Your watchlist</string>
 
-  <string name="movie_tab">Movies</string>
-  <string name="tv_show_tab">TV Shows</string>
+  <string name="feature_watchlist_movie_tab">Movies</string>
+  <string name="feature_watchlist_tv_show_tab">TV Shows</string>
 
-  <string name="total_movies_in_watchlist">You have %1$d movies in your watchlist</string>
-  <string name="total_tv_shows_in_watchlist">You have %1$d shows in your watchlist</string>
+  <string name="feature_watchlist_total_movies_in_watchlist">You have %1$d movies in your watchlist</string>
+  <string name="feature_watchlist_total_tv_shows_in_watchlist">You have %1$d shows in your watchlist</string>
+
+  <string name="feature_watchlist_login_to_see_watchlist">Please login to see your watchlist</string>
 </resources>

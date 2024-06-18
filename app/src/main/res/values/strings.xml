@@ -9,7 +9,6 @@
   <string name="home">Home</string>
   <string name="watchlist">Watchlist</string>
 
-
   <string name="load_more">Loading more…</string>
 
   <string name="toolbar_search">Search MovieRama</string>
@@ -21,7 +20,6 @@
   <string name="empty_field_error_message">%s is required.</string>
   <string name="general_error_title">An error occurred</string>
   <string name="general_error_message">Something when wrong.</string>
-  <string name="error_retry">Something when wrong. Please try again.</string>
 
   <string name="delete">Delete</string>
   <string name="cancel">Cancel</string>

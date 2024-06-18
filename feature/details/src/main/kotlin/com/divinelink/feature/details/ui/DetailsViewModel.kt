@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import com.divinelink.core.ui.R as uiR
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
@@ -284,7 +285,7 @@ class DetailsViewModel @Inject constructor(
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(R.string.error_retry)
+                  text = UIText.ResourceText(uiR.string.core_ui_error_retry)
                 )
               )
             }

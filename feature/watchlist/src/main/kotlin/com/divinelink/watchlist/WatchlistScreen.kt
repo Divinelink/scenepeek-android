@@ -61,7 +61,7 @@ internal fun WatchlistScreen(
     topBar = {
       TopAppBar(
         title = {
-          Text(stringResource(R.string.watchlist_title))
+          Text(stringResource(R.string.feature_watchlist_title))
         }
       )
     }) { padding ->
@@ -89,6 +89,11 @@ internal fun WatchlistScreen(
           uiState.value.forms.values.elementAt(page).let {
             when (it) {
               is WatchlistForm.Loading -> LoadingContent()
+              is WatchlistForm.Error -> WatchlistErrorContent(
+                error = it,
+                onLogin = { /*TODO*/ },
+                onRetry = {}
+              )
               is WatchlistForm.Data -> {
                 WatchlistContent(
                   list = it.data,

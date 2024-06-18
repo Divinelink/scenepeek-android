@@ -2,6 +2,7 @@ package com.divinelink.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.WatchlistParameters
 import com.divinelink.core.domain.WatchlistResponse
@@ -79,16 +80,36 @@ class WatchlistViewModel @Inject constructor(
           mediaType = mediaType
         )
       ).collectLatest { result ->
-        result.onSuccess { response ->
-          updateUiState(response)
-        }.onFailure {
-
-        }
+        result
+          .onSuccess { response ->
+            updateUiOnSuccess(response)
+          }
+          .onFailure { throwable ->
+            updateUiOnFailure(throwable)
+          }
       }
     }
   }
 
-  private fun updateUiState(
+  private fun updateUiOnFailure(
+    throwable: Throwable
+  ) {
+    if (throwable is SessionException.InvalidAccountId) {
+      _uiState.update {
+        it.copy(
+          forms = it.forms + (it.mediaType to WatchlistForm.Error.InvalidSession)
+        )
+      }
+    } else {
+      _uiState.update {
+        it.copy(
+          forms = it.forms + (it.mediaType to WatchlistForm.Error.Unknown)
+        )
+      }
+    }
+  }
+
+  private fun updateUiOnSuccess(
     response: WatchlistResponse
   ) {
     _uiState.update { uiState ->

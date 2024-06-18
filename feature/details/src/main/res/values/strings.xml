@@ -17,7 +17,6 @@
 
   <string name="details__fatal_error_fetching_details">Couldn\'t load movie details. Going back to previous screen.</string>
 
-  <string name="error_retry">Something when wrong. Please try again.</string>
   <string name="general_error_message">Something when wrong.</string>
 
   <string name="login">Login</string>
