@@ -31,3 +31,4 @@
 -dontwarn org.slf4j.impl.StaticLoggerBinder
 -dontwarn org.slf4j.impl.StaticMDCBinder
 -dontwarn sun.nio.fs.DefaultFileSystemProvider
+-dontwarn com.google.auto.service.AutoService
