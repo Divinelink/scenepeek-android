@@ -4,10 +4,6 @@ plugins {
   alias(libs.plugins.ksp)
 }
 
-android {
-  namespace = "com.divinelink.feature.details"
-}
-
 ksp {
   arg("compose-destinations.moduleName", "details")
 

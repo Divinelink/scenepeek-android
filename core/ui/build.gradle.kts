@@ -4,7 +4,6 @@ plugins {
 }
 
 android {
-  namespace = "com.divinelink.core.ui"
   defaultConfig {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

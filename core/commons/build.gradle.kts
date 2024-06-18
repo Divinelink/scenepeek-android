@@ -5,8 +5,6 @@ plugins {
 }
 
 android {
-  namespace = "com.divinelink.commons"
-
   buildFeatures {
     buildConfig = true
   }

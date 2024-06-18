@@ -3,9 +3,6 @@ plugins {
   alias(libs.plugins.divinelink.android.library.compose)
 }
 
-android {
-  namespace = "com.divinelink.core.testing"
-}
 
 dependencies {
   api(projects.core.data)

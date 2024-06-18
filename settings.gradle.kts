@@ -32,4 +32,5 @@ include(":core:ui")
 include(":core:testing")
 
 include(":feature:details")
+include(":feature:settings")
 include(":feature:watchlist")

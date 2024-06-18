@@ -4,10 +4,6 @@ plugins {
   alias(libs.plugins.ksp)
 }
 
-android {
-  namespace = "com.divinelink.watchlist"
-}
-
 ksp {
   arg("compose-destinations.moduleName", "watchlist")
 

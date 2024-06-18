@@ -3,10 +3,6 @@ plugins {
   alias(libs.plugins.divinelink.android.hilt)
 }
 
-android {
-  namespace = "com.divinelink.core.datastore"
-}
-
 dependencies {
   implementation(libs.datastore)
   implementation(libs.datastore.core)
