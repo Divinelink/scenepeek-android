@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.usecase.session.login
 
-import com.andreolas.movierama.session.login.domain.session.usecase.ObserveSessionUseCase
+import com.divinelink.core.domain.session.ObserveSessionUseCase
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

@@ -26,8 +26,8 @@ android {
 
   defaultConfig {
     applicationId = "com.andreolas.movierama"
-    versionCode = 6
-    versionName = "0.2.0"
+    versionCode = libs.versions.version.code.get().toInt()
+    versionName = libs.versions.version.name.get()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -106,6 +106,7 @@ dependencies {
 
   implementation(projects.feature.watchlist)
   implementation(projects.feature.details)
+  implementation(projects.feature.settings)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
@@ -174,7 +175,6 @@ dependencies {
 
   testImplementation(libs.androidx.compose.ui.test)
   testImplementation(libs.robolectric)
-  testImplementation(libs.espresso)
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
 
@@ -188,7 +188,6 @@ dependencies {
 
   androidTestImplementation(libs.androidx.compose.ui.test)
   androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.espresso)
   androidTestImplementation(libs.truth)
   androidTestImplementation(libs.ui.automator)
 }

@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.usecase.settings.app.account
 
-import com.andreolas.movierama.settings.app.account.usecase.GetAccountDetailsUseCase
+import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any

@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.usecase.session.login
 
-import com.andreolas.movierama.session.login.domain.token.usecase.CreateRequestTokenUseCase
+import com.divinelink.core.domain.CreateRequestTokenUseCase
 import kotlinx.coroutines.test.runTest
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

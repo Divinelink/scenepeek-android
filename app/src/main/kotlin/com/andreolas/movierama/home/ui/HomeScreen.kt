@@ -8,7 +8,7 @@ import com.andreolas.movierama.navigation.MainGraph
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.DetailsNavArguments
-import com.divinelink.ui.screens.destinations.SettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 

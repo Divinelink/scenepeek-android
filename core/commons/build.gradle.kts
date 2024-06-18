@@ -8,6 +8,9 @@ android {
   buildFeatures {
     buildConfig = true
   }
+  defaultConfig {
+    resValue("string", "version_name", libs.versions.version.name.get())
+  }
 }
 
 secrets {

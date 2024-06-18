@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.watchlist.R
 import com.divinelink.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

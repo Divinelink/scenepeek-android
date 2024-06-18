@@ -1,18 +1,18 @@
 package com.andreolas.movierama.settings.appearance.ui
 
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.settings.app.appearance.AppearanceSettingsViewModel
-import com.andreolas.movierama.settings.app.appearance.UpdateSettingsState
-import com.andreolas.movierama.settings.app.appearance.usecase.GetAvailableThemesUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.GetThemeUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.SetThemeUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.GetBlackBackgroundsUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.black.backgrounds.SetBlackBackgroundsUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
-import com.andreolas.movierama.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.andreolas.movierama.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
+import com.divinelink.feature.settings.app.appearance.UpdateSettingsState
+import com.divinelink.feature.settings.app.appearance.usecase.GetAvailableThemesUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.GetThemeUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.SetThemeUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.black.backgrounds.GetBlackBackgroundsUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.black.backgrounds.SetBlackBackgroundsUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
+import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

@@ -39,6 +39,7 @@ class ProdAccountRepositoryTest {
     val result = repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
+      sortBy = "desc"
     )
 
     assertThat(result.first()).isEqualTo(Result.success(response.toMoviesList()))
@@ -49,6 +50,7 @@ class ProdAccountRepositoryTest {
     repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
+      sortBy = "desc"
     ).test {
       assertThat(awaitError()).isInstanceOf(Exception::class.java)
     }

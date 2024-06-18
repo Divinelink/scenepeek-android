@@ -11,12 +11,12 @@ import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.R
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.details.R
 import com.divinelink.feature.details.ui.DetailsViewState
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import com.divinelink.feature.details.R as detailsR
+import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelTest {
@@ -524,7 +524,7 @@ class DetailsViewModelTest {
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              detailsR.string.details__rating_submitted_successfully,
+              R.string.details__rating_submitted_successfully,
               movieDetails.title
             )
           ),
@@ -565,7 +565,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_rate),
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           ),
@@ -602,7 +602,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_rate),
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           ),
@@ -696,7 +696,7 @@ class DetailsViewModelTest {
           isLoading = false,
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
-              detailsR.string.details__rating_submitted_successfully,
+              R.string.details__rating_submitted_successfully,
               movieDetails.title
             )
           ),
@@ -826,7 +826,7 @@ class DetailsViewModelTest {
           },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              detailsR.string.details__rating_deleted_successfully,
+              R.string.details__rating_deleted_successfully,
               movieDetails.title
             )
           )
@@ -863,7 +863,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(detailsR.string.details__must_be_logged_in_to_watchlist),
+            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin
           )
@@ -890,7 +890,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.error_retry)
+            text = UIText.ResourceText(uiR.string.core_ui_error_retry)
           )
         )
       )
@@ -934,7 +934,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              detailsR.string.details__removed_from_watchlist,
+              R.string.details__removed_from_watchlist,
               movieDetails.title
             )
           )
@@ -980,7 +980,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
-              detailsR.string.details__added_to_watchlist,
+              R.string.details__added_to_watchlist,
               movieDetails.title
             )
           )

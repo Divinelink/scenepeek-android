@@ -3,13 +3,14 @@ package com.andreolas.movierama.settings.app
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.movierama.R
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.ui.screens.destinations.AccountSettingsScreenDestination
-import com.divinelink.ui.screens.destinations.AppearanceSettingsScreenDestination
-import com.divinelink.ui.screens.destinations.HelpSettingsScreenDestination
-import com.divinelink.ui.screens.destinations.SettingsScreenDestination
+import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.app.SettingsScreen
+import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import org.junit.Test
 import com.divinelink.core.ui.R as uiR
 

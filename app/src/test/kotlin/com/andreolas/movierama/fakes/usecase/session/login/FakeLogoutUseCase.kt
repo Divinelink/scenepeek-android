@@ -1,6 +1,6 @@
 package com.andreolas.movierama.fakes.usecase.session.login
 
-import com.andreolas.movierama.session.login.domain.session.usecase.LogoutUseCase
+import com.divinelink.core.domain.session.LogoutUseCase
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

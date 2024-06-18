@@ -5,6 +5,7 @@ import com.andreolas.movierama.fakes.repository.FakeSessionRepository
 import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
 import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.model.account.AccountDetails
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
