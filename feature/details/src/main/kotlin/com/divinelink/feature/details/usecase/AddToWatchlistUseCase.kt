@@ -28,8 +28,9 @@ open class AddToWatchlistUseCase @Inject constructor(
 ) : FlowUseCase<AddToWatchlistParameters, Unit>(dispatcher) {
   override fun execute(parameters: AddToWatchlistParameters): Flow<Result<Unit>> = flow {
     val accountId = sessionStorage.accountId.first()
+    val sessionId = sessionStorage.sessionId
 
-    if (accountId == null) {
+    if (accountId == null || sessionId == null) {
       emit(Result.failure(SessionException.InvalidAccountId()))
       return@flow
     } else {
@@ -39,12 +40,13 @@ open class AddToWatchlistUseCase @Inject constructor(
           movieId = parameters.id,
           accountId = accountId,
           addToWatchlist = parameters.addToWatchlist,
-
-          )
+          sessionId = sessionId,
+        )
         MediaType.TV -> AddToWatchlistRequestApi.TV(
           seriesId = parameters.id,
           accountId = accountId,
           addToWatchlist = parameters.addToWatchlist,
+          sessionId = sessionId,
         )
 
         else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")

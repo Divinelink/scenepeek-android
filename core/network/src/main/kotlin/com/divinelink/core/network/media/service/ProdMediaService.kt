@@ -157,7 +157,8 @@ class ProdMediaService @Inject constructor(
   override fun addToWatchlist(
     request: AddToWatchlistRequestApi
   ): Flow<AddToWatchlistResponseApi> = flow {
-    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist"
+    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
+      "?session_id=${request.sessionId}"
 
     val response = restClient.post<AddToWatchlistRequestBodyApi, AddToWatchlistResponseApi>(
       url = url,
