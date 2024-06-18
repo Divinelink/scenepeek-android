@@ -16,6 +16,14 @@ class AutoRedirectWebView(
     val url = request?.url.toString()
     if (url.contains(redirectUrl)) {
       onCloseWebView(url)
+      CookieManager.getInstance().apply {
+        removeAllCookies {
+          // Do nothing
+        }
+        removeSessionCookies {
+          // Do nothing
+        }
+      }
       return true
     }
     return super.shouldOverrideUrlLoading(view, request)
