@@ -38,7 +38,7 @@ class WatchlistViewModel @Inject constructor(
       canFetchMore = mapOf(
         MediaType.MOVIE to true,
         MediaType.TV to true
-      )
+      ),
     )
   )
   val uiState: StateFlow<WatchlistUiState> = _uiState
@@ -47,17 +47,11 @@ class WatchlistViewModel @Inject constructor(
     viewModelScope.launch {
       observeSessionUseCase.invoke(Unit).collectLatest { result ->
         result.onSuccess {
-          _uiState.update {
-            it.copy(
-              forms = it.forms.entries.associate { (mediaType, _) ->
-                mediaType to WatchlistForm.Loading
-              }
-            )
-          }
-          val mediaType = _uiState.value.mediaType
-          fetchWatchlist(mediaType)
+          fetchWatchlist(MediaType.TV)
+          fetchWatchlist(MediaType.MOVIE)
         }.onFailure {
           updateUiOnFailure(it)
+          resetPages()
         }
       }
     }
@@ -66,14 +60,10 @@ class WatchlistViewModel @Inject constructor(
   fun onLoadMore() {
     val uiState = _uiState.value
     val mediaType = uiState.mediaType
-    val currentPage = uiState.pages[mediaType] ?: 1
     val canFetchMore = uiState.canFetchMore[mediaType] ?: false
 
     if (canFetchMore) {
-      fetchWatchlist(
-        mediaType = mediaType,
-        page = currentPage
-      )
+      fetchWatchlist(mediaType = mediaType)
     }
   }
 
@@ -81,20 +71,15 @@ class WatchlistViewModel @Inject constructor(
     _uiState.update { uiState ->
       uiState.copy(selectedTabIndex = tab)
     }
-
-    if (_uiState.value.currentForm is WatchlistForm.Loading) {
-      fetchWatchlist(_uiState.value.mediaType)
-    }
   }
 
   private fun fetchWatchlist(
     mediaType: MediaType,
-    page: Int = 1
   ) {
     viewModelScope.launch {
       fetchWatchlistUseCase.invoke(
-        parameters = WatchlistParameters(
-          page = page,
+        WatchlistParameters(
+          page = uiState.value.pages[mediaType] ?: 1,
           mediaType = mediaType
         )
       ).collectLatest { result ->
@@ -106,6 +91,17 @@ class WatchlistViewModel @Inject constructor(
             updateUiOnFailure(throwable)
           }
       }
+    }
+  }
+
+  /**
+   * Reset pages to 1 when the user logs out or when swipe to refresh is triggered.
+   */
+  private fun resetPages() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        pages = uiState.pages.mapValues { (_, _) -> 1 }
+      )
     }
   }
 
@@ -138,11 +134,12 @@ class WatchlistViewModel @Inject constructor(
 
       uiState.copy(
         forms = uiState.forms + (response.type to WatchlistForm.Data(
+          mediaType = response.type,
           data = currentData + response.data,
           totalResults = response.totalResults
         )),
         pages = uiState.pages + (response.type to currentPage + 1),
-        canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore)
+        canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
         Timber.d("Update page for ${response.type} to ${currentPage + 1}")

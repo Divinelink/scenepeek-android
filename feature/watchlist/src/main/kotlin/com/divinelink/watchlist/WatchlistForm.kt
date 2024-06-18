@@ -14,11 +14,18 @@ sealed interface WatchlistForm<out T : MediaItem.Media> {
   }
 
   data class Data<T : MediaItem.Media>(
+    val mediaType: MediaType,
     val data: List<T>,
     val totalResults: Int
   ) : WatchlistForm<T> {
-    private val isMovie = data.firstOrNull()?.mediaType == MediaType.MOVIE
-    private val isTvShow = data.firstOrNull()?.mediaType == MediaType.TV
+    private val isMovie = mediaType == MediaType.MOVIE
+    private val isTvShow = mediaType == MediaType.TV
+
+    val emptyResultsUiText: UIText = if (isMovie) {
+      UIText.ResourceText(R.string.feature_watchlist_empty_movies_watchlist)
+    } else {
+      UIText.ResourceText(R.string.feature_watchlist_empty_tv_shows_watchlist)
+    }
 
     val totalResultsUiText: UIText? = if (isMovie) {
       UIText.ResourceText(R.string.feature_watchlist_total_movies_in_watchlist, totalResults)
@@ -27,5 +34,7 @@ sealed interface WatchlistForm<out T : MediaItem.Media> {
     } else {
       null
     }
+
+    val isEmpty: Boolean = data.isEmpty()
   }
 }

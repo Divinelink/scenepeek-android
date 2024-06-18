@@ -11,5 +11,4 @@ data class WatchlistUiState(
   val canFetchMore: Map<MediaType, Boolean>,
 ) {
   val mediaType = MediaType.from(WatchlistTab.entries[selectedTabIndex].value)
-  val currentForm = forms[mediaType]
 }

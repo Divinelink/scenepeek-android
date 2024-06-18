@@ -113,20 +113,24 @@ internal fun WatchlistScreen(
                 }
               )
               is WatchlistForm.Data -> {
-                WatchlistContent(
-                  list = it.data,
-                  onMediaClick = { media ->
-                    navigator.navigate(
-                      DetailsScreenDestination(
-                        mediaType = media.mediaType.value,
-                        id = media.id,
-                        isFavorite = media.isFavorite
+                if (it.isEmpty) {
+                  WatchlistEmptyContent(it.emptyResultsUiText)
+                } else {
+                  WatchlistContent(
+                    list = it.data,
+                    onMediaClick = { media ->
+                      navigator.navigate(
+                        DetailsScreenDestination(
+                          mediaType = media.mediaType.value,
+                          id = media.id,
+                          isFavorite = media.isFavorite
+                        )
                       )
-                    )
-                  },
-                  totalResults = it.totalResultsUiText,
-                  onLoadMore = viewModel::onLoadMore
-                )
+                    },
+                    totalResults = it.totalResultsUiText,
+                    onLoadMore = viewModel::onLoadMore
+                  )
+                }
               }
             }
           }
