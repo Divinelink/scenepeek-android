@@ -20,7 +20,8 @@ class TestAccountService {
       mock.fetchMoviesWatchlist(
         page = any(),
         sortBy = any(),
-        accountId = any()
+        accountId = any(),
+        sessionId = any(),
       )
     ).thenReturn(response)
   }
@@ -32,7 +33,8 @@ class TestAccountService {
       mock.fetchTvShowsWatchlist(
         page = any(),
         sortBy = any(),
-        accountId = any()
+        accountId = any(),
+        sessionId = any(),
       )
     ).thenReturn(response)
   }

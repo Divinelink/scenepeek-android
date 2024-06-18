@@ -2,7 +2,6 @@ package com.divinelink.core.network.account
 
 import com.divinelink.core.network.client.RestClient
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
-import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,9 +15,11 @@ class ProdAccountService @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/movies" +
       "?page=$page" +
+      "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 
     val response = restClient.get<MoviesResponseApi>(url = url)
@@ -30,9 +31,11 @@ class ProdAccountService @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/tv" +
       "?page=$page" +
+      "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 
     val response = restClient.get<TvResponseApi>(url = url)

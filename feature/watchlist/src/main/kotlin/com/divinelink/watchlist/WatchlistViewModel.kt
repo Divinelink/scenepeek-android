@@ -47,6 +47,13 @@ class WatchlistViewModel @Inject constructor(
     viewModelScope.launch {
       observeSessionUseCase.invoke(Unit).collectLatest { result ->
         result.onSuccess {
+          _uiState.update {
+            it.copy(
+              forms = it.forms.entries.associate { (mediaType, _) ->
+                mediaType to WatchlistForm.Loading
+              }
+            )
+          }
           val mediaType = _uiState.value.mediaType
           fetchWatchlist(mediaType)
         }.onFailure {
@@ -75,8 +82,8 @@ class WatchlistViewModel @Inject constructor(
       uiState.copy(selectedTabIndex = tab)
     }
 
-    if (_uiState.value.tvFormIsLoading) {
-      fetchWatchlist(mediaType = MediaType.TV)
+    if (_uiState.value.currentForm is WatchlistForm.Loading) {
+      fetchWatchlist(_uiState.value.mediaType)
     }
   }
 

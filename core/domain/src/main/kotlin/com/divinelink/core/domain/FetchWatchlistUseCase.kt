@@ -36,8 +36,9 @@ class FetchWatchlistUseCase @Inject constructor(
 
   override fun execute(parameters: WatchlistParameters): Flow<Result<WatchlistResponse>> = flow {
     val accountId = sessionStorage.accountId.first()
+    val sessionId = sessionStorage.sessionId
 
-    if (accountId == null) {
+    if (accountId == null || sessionId == null) {
       emit(Result.failure(SessionException.Unauthenticated()))
       return@flow
     }
@@ -47,6 +48,7 @@ class FetchWatchlistUseCase @Inject constructor(
         page = parameters.page,
         sortBy = parameters.sortBy.value,
         accountId = accountId,
+        sessionId = sessionId,
       ).last().fold(
         onSuccess = {
           val canFetchMore = parameters.page < it.totalPages
@@ -71,6 +73,7 @@ class FetchWatchlistUseCase @Inject constructor(
         page = parameters.page,
         sortBy = parameters.sortBy.value,
         accountId = accountId,
+        sessionId = sessionId,
       ).last().fold(
         onSuccess = {
           val canFetchMore = parameters.page < it.totalPages

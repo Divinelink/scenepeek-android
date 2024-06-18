@@ -9,12 +9,14 @@ interface AccountService {
   fun fetchMoviesWatchlist(
     page: Int,
     sortBy: String,
-    accountId: String
+    accountId: String,
+    sessionId: String,
   ): Flow<MoviesResponseApi>
 
   fun fetchTvShowsWatchlist(
     page: Int,
     sortBy: String,
-    accountId: String
+    accountId: String,
+    sessionId: String,
   ): Flow<TvResponseApi>
 }

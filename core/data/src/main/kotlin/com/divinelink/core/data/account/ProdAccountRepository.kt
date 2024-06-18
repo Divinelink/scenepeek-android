@@ -18,8 +18,9 @@ class ProdAccountRepository @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
-    .fetchMoviesWatchlist(page, sortBy, accountId)
+    .fetchMoviesWatchlist(page, sortBy, accountId, sessionId)
     .map { apiResponse ->
       Result.success(
         PaginationData<MediaItem.Media>(
@@ -37,8 +38,9 @@ class ProdAccountRepository @Inject constructor(
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
-    .fetchTvShowsWatchlist(page, sortBy, accountId)
+    .fetchTvShowsWatchlist(page, sortBy, accountId, sessionId)
     .map { apiResponse ->
       Result.success(
         PaginationData<MediaItem.Media>(

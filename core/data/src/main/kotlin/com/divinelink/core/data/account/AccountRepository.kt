@@ -10,11 +10,13 @@ interface AccountRepository {
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
 
   suspend fun fetchTvShowsWatchlist(
     page: Int,
     sortBy: String,
     accountId: String,
+    sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
 }
