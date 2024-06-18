@@ -20,7 +20,6 @@ dependencies {
   implementation(libs.mockito)
   implementation(libs.mockito.kotlin)
 
-
   implementation(libs.androidx.compose.ui.test)
   implementation(libs.robolectric)
 }

@@ -19,7 +19,6 @@ dependencies {
   implementation(projects.core.datastore)
   implementation(projects.core.domain)
   implementation(projects.core.model)
-  implementation(projects.core.testing)
 
   implementation(projects.feature.settings)
 
