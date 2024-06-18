@@ -551,7 +551,7 @@ class DetailsViewModelTest {
         )
       )
       .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.NoSession()))
+        response = flowOf(Result.failure(SessionException.Unauthenticated()))
       )
       .buildViewModel(mediaId, MediaType.MOVIE).also {
         viewModel = it.getViewModel()
@@ -588,7 +588,7 @@ class DetailsViewModelTest {
         )
       )
       .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.NoSession()))
+        response = flowOf(Result.failure(SessionException.Unauthenticated()))
       )
       .buildViewModel(mediaId, MediaType.MOVIE).also {
         viewModel = it.getViewModel()

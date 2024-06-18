@@ -37,10 +37,10 @@ fun WatchlistErrorContent(
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     when (error) {
-      WatchlistForm.Error.InvalidSession -> {
+      WatchlistForm.Error.Unauthenticated -> {
         Text(
           textAlign = TextAlign.Center,
-          style = MaterialTheme.typography.titleLarge,
+          style = MaterialTheme.typography.titleMedium,
           text = stringResource(id = R.string.feature_watchlist_login_to_see_watchlist)
         )
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
@@ -71,7 +71,7 @@ private fun WatchlistInvalidSessionErrorContentPreview() {
     Surface {
       Column {
         WatchlistErrorContent(
-          error = WatchlistForm.Error.InvalidSession,
+          error = WatchlistForm.Error.Unauthenticated,
           onLogin = {},
           onRetry = {},
         )

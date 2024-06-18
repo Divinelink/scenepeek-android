@@ -1,4 +1,4 @@
-package com.divinelink.feature.settings.login.login
+package com.divinelink.feature.settings.login
 
 data class LoginViewState(
   val token: String,

@@ -38,7 +38,7 @@ class FetchWatchlistUseCase @Inject constructor(
     val accountId = sessionStorage.accountId.first()
 
     if (accountId == null) {
-      emit(Result.failure(SessionException.InvalidAccountId()))
+      emit(Result.failure(SessionException.Unauthenticated()))
       return@flow
     }
 

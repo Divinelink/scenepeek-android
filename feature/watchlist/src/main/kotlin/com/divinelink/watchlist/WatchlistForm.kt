@@ -9,7 +9,7 @@ sealed interface WatchlistForm<out T : MediaItem.Media> {
   data object Loading : WatchlistForm<Nothing>
 
   sealed interface Error : WatchlistForm<Nothing> {
-    data object InvalidSession : Error
+    data object Unauthenticated : Error
     data object Unknown : Error
   }
 

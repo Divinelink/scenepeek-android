@@ -6,6 +6,7 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.WatchlistParameters
 import com.divinelink.core.domain.WatchlistResponse
+import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.model.media.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
+  private val observeSessionUseCase: ObserveSessionUseCase,
   private val fetchWatchlistUseCase: FetchWatchlistUseCase,
 ) : ViewModel() {
 
@@ -42,7 +44,16 @@ class WatchlistViewModel @Inject constructor(
   val uiState: StateFlow<WatchlistUiState> = _uiState
 
   init {
-    fetchWatchlist(mediaType = MediaType.MOVIE)
+    viewModelScope.launch {
+      observeSessionUseCase.invoke(Unit).collectLatest { result ->
+        result.onSuccess {
+          val mediaType = _uiState.value.mediaType
+          fetchWatchlist(mediaType)
+        }.onFailure {
+          updateUiOnFailure(it)
+        }
+      }
+    }
   }
 
   fun onLoadMore() {
@@ -94,10 +105,12 @@ class WatchlistViewModel @Inject constructor(
   private fun updateUiOnFailure(
     throwable: Throwable
   ) {
-    if (throwable is SessionException.InvalidAccountId) {
+    if (throwable is SessionException.Unauthenticated) {
       _uiState.update {
         it.copy(
-          forms = it.forms + (it.mediaType to WatchlistForm.Error.InvalidSession)
+          forms = it.forms.entries.associate { (mediaType, _) ->
+            mediaType to WatchlistForm.Error.Unauthenticated
+          }
         )
       }
     } else {

@@ -17,7 +17,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
-import com.divinelink.feature.settings.login.login.LoginScreenArgs
+import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

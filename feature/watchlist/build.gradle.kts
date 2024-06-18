@@ -21,6 +21,7 @@ dependencies {
   implementation(projects.core.model)
 
   implementation(projects.feature.details)
+  implementation(projects.feature.settings)
 
   implementation(libs.timber)
 }

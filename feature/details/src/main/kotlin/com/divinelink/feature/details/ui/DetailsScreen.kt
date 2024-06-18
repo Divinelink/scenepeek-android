@@ -16,6 +16,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.navigation.DetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.rate.RateModalBottomSheet
+import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
@@ -37,7 +38,7 @@ fun DetailsScreen(
 
   LaunchedEffect(viewState.value.navigateToLogin) {
     viewState.value.navigateToLogin?.let {
-      //navigator.navigate(AccountSettingsScreenDestination) TODO("Implement navigate to AccountSettingsScreenDestination")
+      navigator.navigate(AccountSettingsScreenDestination)
 
       viewModel.consumeNavigateToLogin()
     }

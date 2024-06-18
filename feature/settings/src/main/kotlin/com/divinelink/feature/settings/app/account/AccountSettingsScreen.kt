@@ -22,7 +22,7 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsTextItem
-import com.divinelink.feature.settings.login.login.LoginScreenArgs
+import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination

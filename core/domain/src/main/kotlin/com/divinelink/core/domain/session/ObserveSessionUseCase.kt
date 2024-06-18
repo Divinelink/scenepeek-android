@@ -2,6 +2,7 @@ package com.divinelink.core.domain.session
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ class ObserveSessionUseCase @Inject constructor(
       if (hasSession) {
         emit(Result.success(true))
       } else {
-        emit(Result.failure(IllegalStateException("User does not have session")))
+        emit(Result.failure(SessionException.Unauthenticated()))
       }
     }
   }

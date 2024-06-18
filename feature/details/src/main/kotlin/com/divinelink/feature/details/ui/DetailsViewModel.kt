@@ -164,7 +164,7 @@ class DetailsViewModel @Inject constructor(
             )
           }
         }.onFailure {
-          if (it is SessionException.NoSession) {
+          if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
                 showRateDialog = false,

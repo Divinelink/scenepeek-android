@@ -1,4 +1,4 @@
-package com.divinelink.feature.settings.login.login
+package com.divinelink.feature.settings.login
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

@@ -1,3 +1,6 @@
+package com.divinelink.feature.settings.login
+
+import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient

@@ -29,7 +29,7 @@ open class SubmitRatingUseCase @Inject constructor(
     val sessionId = sessionStorage.sessionId
 
     if (sessionId == null) {
-      emit(Result.failure(SessionException.NoSession()))
+      emit(Result.failure(SessionException.Unauthenticated()))
       return@flow
     } else {
 

@@ -1,6 +1,5 @@
-package com.divinelink.feature.settings.login.login
+package com.divinelink.feature.settings.login
 
-import AutoRedirectWebView
 import android.annotation.SuppressLint
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler

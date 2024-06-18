@@ -51,7 +51,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     assertThat(result.first().isFailure).isTrue()
     assertThat(
       result.first().exceptionOrNull()
-    ).isInstanceOf(SessionException.NoSession::class.java)
+    ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
