@@ -77,6 +77,7 @@ fun RateDialogContent(
 
     Button(
       modifier = Modifier.fillMaxWidth(),
+      enabled = rating.floatValue > 0,
       onClick = { onSubmitRate(rating.floatValue.roundToInt()) }) {
       Text(
         text = stringResource(id = R.string.details__submit_rating_button),

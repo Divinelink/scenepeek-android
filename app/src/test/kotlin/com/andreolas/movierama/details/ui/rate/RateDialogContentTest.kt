@@ -1,11 +1,13 @@
 package com.andreolas.movierama.details.ui.rate
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.andreolas.factories.MediaDetailsFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.feature.details.ui.rate.RateDialogContent
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import com.divinelink.feature.details.R as detailsR
@@ -20,7 +22,7 @@ class RateDialogContentTest : ComposeTest() {
     var submitClicked = false
 
     setContentWithTheme {
-      com.divinelink.feature.details.ui.rate.RateDialogContent(
+      RateDialogContent(
         value = ratingValue.value,
         onRateChanged = {},
         mediaTitle = movie.title,
@@ -49,6 +51,43 @@ class RateDialogContentTest : ComposeTest() {
   }
 
   @Test
+  fun `test submit button is disabled on initial state with value 0`() {
+    val ratingValue = mutableStateOf(0f)
+    val movie = MediaDetailsFactory.FightClub()
+
+    var submitClicked = false
+
+    setContentWithTheme {
+      RateDialogContent(
+        value = ratingValue.value,
+        onRateChanged = {},
+        mediaTitle = movie.title,
+        onSubmitRate = {
+          submitClicked = true
+        },
+        onClearRate = {},
+        canClearRate = true
+      )
+    }
+
+    val descriptionText = composeTestRule.activity.getString(
+      detailsR.string.details__add_rating_description,
+      movie.title
+    )
+
+    val submitButtonText =
+      composeTestRule.activity.getString(detailsR.string.details__submit_rating_button)
+
+    with(composeTestRule) {
+      onNodeWithText(descriptionText).assertExists()
+      onNodeWithText(submitButtonText).assertIsNotEnabled()
+      onNodeWithText(submitButtonText).performClick()
+
+      assertThat(submitClicked).isFalse()
+    }
+  }
+
+  @Test
   fun `test onDeleteRate`() {
     val ratingValue = mutableStateOf(5f)
     val movie = MediaDetailsFactory.FightClub()
@@ -56,7 +95,7 @@ class RateDialogContentTest : ComposeTest() {
     var deleteClicked = false
 
     setContentWithTheme {
-      com.divinelink.feature.details.ui.rate.RateDialogContent(
+      RateDialogContent(
         value = ratingValue.value,
         onRateChanged = {},
         mediaTitle = movie.title,
