@@ -61,6 +61,7 @@ internal fun WatchlistScreen(
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
       viewModel.onTabSelected(page)
+      selectedPage = page
     }
   }
 
@@ -98,8 +99,6 @@ internal fun WatchlistScreen(
           modifier = Modifier.fillMaxSize(),
           state = pagerState,
         ) { page ->
-          selectedPage = page
-
           uiState.value.forms.values.elementAt(page).let {
             when (it) {
               is WatchlistForm.Loading -> LoadingContent()
