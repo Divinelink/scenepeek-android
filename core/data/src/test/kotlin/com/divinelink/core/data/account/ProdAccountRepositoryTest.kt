@@ -1,9 +1,10 @@
 package com.divinelink.core.data.account
 
 import app.cash.turbine.test
-import com.divinelink.core.network.media.model.movie.MoviesResponseApi
-import com.divinelink.core.network.media.model.movie.toMoviesList
-import com.divinelink.core.testing.factories.api.PopularMovieApiFactory
+import com.divinelink.core.network.media.model.movie.map
+import com.divinelink.core.network.media.model.tv.map
+import com.divinelink.core.testing.factories.api.movie.MoviesResponseApiFactory
+import com.divinelink.core.testing.factories.api.tv.TvResponseApiFactory
 import com.divinelink.core.testing.service.TestAccountService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -14,12 +15,7 @@ import org.junit.Test
 
 class ProdAccountRepositoryTest {
 
-  private val response = MoviesResponseApi( // TODO Add factory on testing module
-    page = 1,
-    results = PopularMovieApiFactory.EmptyList(),
-    totalPages = 0,
-    totalResults = 0
-  )
+  private val response = MoviesResponseApiFactory.full()
 
   private var remote = TestAccountService()
 
@@ -39,10 +35,32 @@ class ProdAccountRepositoryTest {
     val result = repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
-      sortBy = "desc"
+      sortBy = "desc",
+      sessionId = "sha33dfd2xEemCssDs",
     )
 
-    assertThat(result.first()).isEqualTo(Result.success(response.toMoviesList()))
+    assertThat(result.first()).isEqualTo(
+      Result.success(response.map())
+    )
+  }
+
+  @Test
+  fun `test fetch tv watchlist successfully`() = runTest {
+    val tvResponse = TvResponseApiFactory.full()
+    remote.mockFetchTvShowsWatchlist(
+      response = flowOf(tvResponse)
+    )
+
+    val result = repository.fetchTvShowsWatchlist(
+      accountId = "1",
+      page = 1,
+      sortBy = "desc",
+      sessionId = "sha33dfd2xEemCssDs",
+    )
+
+    assertThat(result.first()).isEqualTo(
+      Result.success(tvResponse.map())
+    )
   }
 
   @Test
@@ -50,7 +68,8 @@ class ProdAccountRepositoryTest {
     repository.fetchMoviesWatchlist(
       accountId = "1",
       page = 1,
-      sortBy = "desc"
+      sortBy = "desc",
+      sessionId = "sha33dfd2xEemCssDs",
     ).test {
       assertThat(awaitError()).isInstanceOf(Exception::class.java)
     }

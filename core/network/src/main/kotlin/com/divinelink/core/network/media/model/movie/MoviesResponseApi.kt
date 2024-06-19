@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.model.movie
 
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.PaginationData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,6 +30,12 @@ data class MovieApi(
   val video: Boolean,
   @SerialName("vote_average") val voteAverage: Double,
   @SerialName("vote_count") val voteCount: Int?,
+)
+
+fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
+  totalPages = totalPages,
+  totalResults = totalResults,
+  list = this.results.map(MovieApi::toMovie)
 )
 
 fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> {

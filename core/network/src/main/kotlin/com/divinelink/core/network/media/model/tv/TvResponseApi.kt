@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.model.tv
 
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.PaginationData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,9 +32,11 @@ data class TvItemApi(
   @SerialName("vote_count") val voteCount: Int?,
 )
 
-fun TvResponseApi.toTvList(): List<MediaItem.Media.TV> {
-  return this.results.map(TvItemApi::toTv)
-}
+fun TvResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
+  totalPages = totalPages,
+  totalResults = totalResults,
+  list = this.results.map(TvItemApi::toTv)
+)
 
 private fun TvItemApi.toTv() = MediaItem.Media.TV(
   id = this.id,

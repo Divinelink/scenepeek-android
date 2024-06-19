@@ -372,6 +372,7 @@ class ProdDetailsRepositoryTest {
       movieId = 555,
       accountId = "123456789",
       addToWatchlist = true,
+      sessionId = "session_id"
     )
 
     val response = flowOf(

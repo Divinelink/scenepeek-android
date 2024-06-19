@@ -1,8 +1,8 @@
-package com.divinelink.core.testing.factories.api
+package com.divinelink.core.testing.factories.api.movie
 
 import com.divinelink.core.network.media.model.movie.MovieApi
 
-object PopularMovieApiFactory {
+object MovieApiFactory {
 
   fun Empty() = MovieApi(
     adult = false,

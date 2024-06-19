@@ -3,8 +3,8 @@ package com.divinelink.core.data.account
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.account.AccountService
-import com.divinelink.core.network.media.model.movie.toMoviesList
-import com.divinelink.core.network.media.model.tv.toTvList
+import com.divinelink.core.network.media.model.movie.map
+import com.divinelink.core.network.media.model.tv.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -22,13 +22,7 @@ class ProdAccountRepository @Inject constructor(
   ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
     .fetchMoviesWatchlist(page, sortBy, accountId, sessionId)
     .map { apiResponse ->
-      Result.success(
-        PaginationData<MediaItem.Media>(
-          totalPages = apiResponse.totalPages,
-          totalResults = apiResponse.totalResults,
-          list = apiResponse.toMoviesList()
-        )
-      )
+      Result.success(apiResponse.map())
     }
     .catch { exception ->
       throw Exception(exception.message)
@@ -42,13 +36,7 @@ class ProdAccountRepository @Inject constructor(
   ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
     .fetchTvShowsWatchlist(page, sortBy, accountId, sessionId)
     .map { apiResponse ->
-      Result.success(
-        PaginationData<MediaItem.Media>(
-          totalPages = apiResponse.totalPages,
-          totalResults = apiResponse.totalResults,
-          list = apiResponse.toTvList()
-        )
-      )
+      Result.success(apiResponse.map())
     }
     .catch { exception ->
       throw Exception(exception.message)

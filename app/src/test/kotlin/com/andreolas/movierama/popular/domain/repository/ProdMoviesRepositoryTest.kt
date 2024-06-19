@@ -13,7 +13,7 @@ import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
-import com.divinelink.core.testing.factories.api.PopularMovieApiFactory
+import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -39,7 +39,7 @@ class ProdMoviesRepositoryTest {
 
   private val apiPopularResponse = MoviesResponseApi(
     page = 1,
-    results = PopularMovieApiFactory.EmptyList(),
+    results = MovieApiFactory.EmptyList(),
     totalPages = 0,
     totalResults = 0
   )
