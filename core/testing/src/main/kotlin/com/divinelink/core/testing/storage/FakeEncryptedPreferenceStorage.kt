@@ -1,11 +1,11 @@
-package com.andreolas.movierama.test.util.fakes
+package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.EncryptedStorage
 
 open class FakeEncryptedPreferenceStorage(
   override var tmdbAuthToken: String = "",
   override var sessionId: String? = null
-) : com.divinelink.core.datastore.EncryptedStorage {
+) : EncryptedStorage {
 
   override suspend fun setTmdbAuthToken(key: String) {
     tmdbAuthToken = key

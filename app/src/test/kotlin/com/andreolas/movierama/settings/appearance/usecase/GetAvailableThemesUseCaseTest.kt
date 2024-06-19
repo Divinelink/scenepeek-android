@@ -1,13 +1,12 @@
 package com.andreolas.movierama.settings.appearance.usecase
 
 import android.os.Build
-import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.usecase.GetAvailableThemesUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -19,11 +18,8 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 class GetAvailableThemesUseCaseTest : UnitTest() {
 
-  @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
-
-  @OptIn(ExperimentalCoroutinesApi::class)
   val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var fakePreferenceStorage: FakePreferenceStorage

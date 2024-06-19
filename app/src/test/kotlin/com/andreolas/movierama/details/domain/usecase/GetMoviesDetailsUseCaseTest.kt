@@ -1,6 +1,5 @@
 package com.andreolas.movierama.details.domain.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
@@ -16,9 +15,9 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
@@ -26,7 +25,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetMoviesDetailsUseCaseTest {
 
   @get:Rule

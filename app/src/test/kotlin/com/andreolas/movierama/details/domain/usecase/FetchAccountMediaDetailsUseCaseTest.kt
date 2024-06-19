@@ -1,14 +1,14 @@
 package com.andreolas.movierama.details.domain.usecase
 
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
-import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
-import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

@@ -1,15 +1,13 @@
 package com.andreolas.movierama.main.ui
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.MainViewModel
 import com.andreolas.movierama.MainViewState
 import com.andreolas.movierama.fakes.usecase.FakeSetRemoteConfigUseCase
 import com.andreolas.movierama.test.util.fakes.FakeThemedActivityDelegate
+import com.divinelink.core.testing.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelRobot {
   private lateinit var viewModel: MainViewModel
 

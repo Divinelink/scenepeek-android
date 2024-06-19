@@ -10,4 +10,6 @@ dependencies {
   implementation(projects.core.datastore)
 
   implementation(libs.timber)
+
+  testImplementation(projects.core.testing)
 }

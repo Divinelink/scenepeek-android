@@ -2,14 +2,13 @@ package com.andreolas.movierama.search.domain.usecase
 
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
+import com.divinelink.core.testing.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
@@ -17,7 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetSearchMoviesUseCaseTest {
 
   @get:Rule

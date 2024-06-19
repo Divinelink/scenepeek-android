@@ -1,12 +1,10 @@
 package com.andreolas.movierama.main.ui
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.MainViewState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.divinelink.core.testing.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelTest {
 
   private val robot = MainViewModelRobot()

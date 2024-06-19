@@ -1,19 +1,19 @@
-package com.divinelink.core.testing.service
+package com.divinelink.core.testing.repository
 
-import com.divinelink.core.network.account.AccountService
-import com.divinelink.core.network.media.model.movie.MoviesResponseApi
-import com.divinelink.core.network.media.model.tv.TvResponseApi
+import com.divinelink.core.data.account.AccountRepository
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.network.PaginationData
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class TestAccountService {
+class TestAccountRepository {
 
-  val mock: AccountService = mock()
+  val mock: AccountRepository = mock()
 
-  fun mockFetchMoviesWatchlist(
-    response: Flow<MoviesResponseApi>
+  suspend fun mockFetchMoviesWatchlist(
+    response: Flow<Result<PaginationData<MediaItem.Media>>>
   ) {
     whenever(
       mock.fetchMoviesWatchlist(
@@ -25,8 +25,8 @@ class TestAccountService {
     ).thenReturn(response)
   }
 
-  fun mockFetchTvShowsWatchlist(
-    response: Flow<TvResponseApi>
+  suspend fun mockFetchTvShowsWatchlist(
+    response: Flow<Result<PaginationData<MediaItem.Media>>>
   ) {
     whenever(
       mock.fetchTvShowsWatchlist(

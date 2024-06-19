@@ -10,23 +10,21 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
-import com.andreolas.movierama.MainDispatcherRule
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.ui.DetailsViewState
 import com.divinelink.feature.details.ui.MovieDetailsResult
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import com.divinelink.core.ui.R as uiR
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelTest {
 
   private val testRobot = DetailsViewModelRobot().apply {

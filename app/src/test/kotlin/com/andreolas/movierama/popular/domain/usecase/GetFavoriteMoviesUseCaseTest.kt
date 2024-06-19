@@ -2,18 +2,16 @@ package com.andreolas.movierama.popular.domain.usecase
 
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
+import com.divinelink.core.testing.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetFavoriteMoviesUseCaseTest {
 
   @get:Rule

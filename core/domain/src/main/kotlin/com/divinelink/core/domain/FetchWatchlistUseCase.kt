@@ -5,9 +5,9 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.model.WatchlistSorting
-import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.watchlist.WatchlistSorting
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.watchlist.WatchlistResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -19,13 +19,6 @@ data class WatchlistParameters(
   val page: Int,
   val sortBy: WatchlistSorting = WatchlistSorting.DESCENDING,
   val mediaType: MediaType,
-)
-
-data class WatchlistResponse(
-  val data: List<MediaItem.Media>,
-  val totalResults: Int,
-  val type: MediaType,
-  val canFetchMore: Boolean
 )
 
 class FetchWatchlistUseCase @Inject constructor(

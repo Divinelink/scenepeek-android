@@ -1,6 +1,5 @@
 package com.andreolas.movierama.popular.ui
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
@@ -10,11 +9,10 @@ import com.andreolas.movierama.home.ui.HomeViewModel
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.testing.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTestRobot {
 
   private lateinit var viewModel: HomeViewModel

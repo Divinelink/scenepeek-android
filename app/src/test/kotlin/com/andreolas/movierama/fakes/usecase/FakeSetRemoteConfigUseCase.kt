@@ -1,12 +1,10 @@
 package com.andreolas.movierama.fakes.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.firebase.usecase.SetRemoteConfigUseCase
 import com.andreolas.movierama.fakes.remote.FakeRemoteConfig
-import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class FakeSetRemoteConfigUseCase : SetRemoteConfigUseCase(
   firebaseRemoteConfig = FakeRemoteConfig().mock,
   encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),

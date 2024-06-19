@@ -14,7 +14,6 @@ import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMa
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +25,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-@OptIn(ExperimentalCoroutinesApi::class)
 class AppearanceSettingsViewModel @Inject constructor(
   val setThemeUseCase: SetThemeUseCase,
   getThemeUseCase: GetThemeUseCase,

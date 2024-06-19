@@ -1,16 +1,14 @@
 package com.andreolas.movierama.base.data.remote.domain.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.base.data.remote.firebase.usecase.SetRemoteConfigUseCase
 import com.andreolas.movierama.fakes.remote.FakeRemoteConfig
-import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class SetRemoteConfigUseCaseTest {
 
   @get:Rule

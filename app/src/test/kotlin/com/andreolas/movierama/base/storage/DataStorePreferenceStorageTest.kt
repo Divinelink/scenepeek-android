@@ -6,11 +6,10 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.platform.app.InstrumentationRegistry
-import com.andreolas.movierama.MainDispatcherRule
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.testing.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -21,7 +20,6 @@ import org.robolectric.RobolectricTestRunner
 
 private const val TEST_DATASTORE_NAME: String = "test_datastore"
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 class DataStorePreferenceStorageTest {
 

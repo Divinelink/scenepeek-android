@@ -1,11 +1,10 @@
 package com.andreolas.movierama.settings.appearance.usecase.material.you
 
 import android.os.Build
-import com.andreolas.movierama.MainDispatcherRule
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.UnitTest
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -16,11 +15,8 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 class GetMaterialYouVisibleUseCaseTest : UnitTest() {
 
-  @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
-
-  @OptIn(ExperimentalCoroutinesApi::class)
   val testDispatcher = mainDispatcherRule.testDispatcher
 
   @Test

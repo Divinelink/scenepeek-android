@@ -1,4 +1,4 @@
-package com.andreolas.movierama.test.util.fakes
+package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.flow.MutableStateFlow

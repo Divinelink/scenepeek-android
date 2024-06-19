@@ -1,12 +1,12 @@
 package com.andreolas.movierama.details.domain.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
-import com.andreolas.movierama.test.util.fakes.FakeEncryptedPreferenceStorage
-import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
 import com.google.common.truth.Truth.assertThat
@@ -154,11 +154,10 @@ class AddToWatchlistUseCaseTest {
   private fun createSessionStorage(
     accountId: String?,
     sessionId: String?,
-  ) =
-    SessionStorage(
-      storage = FakePreferenceStorage(
-        accountId = accountId
-      ),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-    )
+  ) = SessionStorage(
+    storage = FakePreferenceStorage(
+      accountId = accountId
+    ),
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+  )
 }

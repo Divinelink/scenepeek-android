@@ -1,13 +1,11 @@
 package com.andreolas.movierama.fakes.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.model.media.MediaItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.divinelink.core.testing.MainDispatcherRule
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class FakeMarkAsFavoriteUseCase : MarkAsFavoriteUseCase(
   repository = FakeMoviesRepository().mock,
   dispatcher = MainDispatcherRule().testDispatcher,

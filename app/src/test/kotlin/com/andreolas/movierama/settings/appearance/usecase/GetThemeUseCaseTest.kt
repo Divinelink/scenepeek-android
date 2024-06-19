@@ -1,18 +1,16 @@
 package com.andreolas.movierama.settings.appearance.usecase
 
-import com.andreolas.movierama.MainDispatcherRule
-import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.usecase.GetThemeUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetThemeUseCaseTest {
 
   @get:Rule

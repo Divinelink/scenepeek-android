@@ -16,6 +16,8 @@ dependencies {
   implementation(projects.core.ui)
   implementation(projects.core.designsystem)
 
+  implementation(projects.core.datastore)
+
   implementation(libs.junit)
   implementation(libs.mockito)
   implementation(libs.mockito.kotlin)

@@ -2,7 +2,6 @@ package com.andreolas.movierama.details.ui
 
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
@@ -12,17 +11,17 @@ import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.feature.details.ui.DetailsViewModel
 import com.divinelink.feature.details.ui.DetailsViewState
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class DetailsViewModelRobot {
 
-  private lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
+  private lateinit var viewModel: DetailsViewModel
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()

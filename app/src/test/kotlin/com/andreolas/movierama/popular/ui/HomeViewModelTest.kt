@@ -2,18 +2,16 @@ package com.andreolas.movierama.popular.ui
 
 import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.MediaItemFactory.toWizard
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.UIText
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("LargeClass")
 class HomeViewModelTest {
 

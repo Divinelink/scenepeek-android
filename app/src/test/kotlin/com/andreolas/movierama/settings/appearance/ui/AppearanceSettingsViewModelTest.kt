@@ -1,9 +1,9 @@
 package com.andreolas.movierama.settings.appearance.ui
 
-import com.andreolas.movierama.MainDispatcherRule
 import com.andreolas.movierama.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
-import com.andreolas.movierama.test.util.fakes.FakePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.UpdateSettingsState
 import com.divinelink.feature.settings.app.appearance.usecase.GetAvailableThemesUseCase
@@ -14,7 +14,6 @@ import com.divinelink.feature.settings.app.appearance.usecase.black.backgrounds.
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -23,10 +22,9 @@ import org.junit.Test
 
 class AppearanceSettingsViewModelTest {
 
-  @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
-  @OptIn(ExperimentalCoroutinesApi::class)
+
   val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var viewModel: AppearanceSettingsViewModel
