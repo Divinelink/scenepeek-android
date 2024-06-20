@@ -40,7 +40,7 @@ fun DetailedMediaItem(
   Card(
     modifier = modifier,
     onClick = { onClick(mediaItem) },
-    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     Row(
       modifier = Modifier
@@ -55,7 +55,7 @@ fun DetailedMediaItem(
           contentAlignment = Alignment.Center,
         ) {
           MovieImage(
-            path = mediaItem.posterPath
+            path = mediaItem.posterPath,
           )
           MediaRatingItem(
             modifier = Modifier
@@ -63,7 +63,7 @@ fun DetailedMediaItem(
               .offset(y = offset)
               .padding(start = MaterialTheme.dimensions.keyline_8),
             rating = mediaItem.rating,
-            size = RatingSize.MEDIUM
+            size = RatingSize.MEDIUM,
           )
         }
         Spacer(modifier = Modifier.height(offset))
@@ -92,7 +92,7 @@ fun DetailedMediaItem(
           text = mediaItem.overview,
           style = MaterialTheme.typography.bodyMedium,
           maxLines = 5,
-          overflow = TextOverflow.Ellipsis
+          overflow = TextOverflow.Ellipsis,
         )
       }
     }
@@ -104,13 +104,13 @@ fun DetailedMediaItem(
 @Composable
 private fun DetailedMediaItemPreview(
   @PreviewParameter(MediaItemPreviewParameterProvider::class)
-  mediaItem: MediaItem.Media
+  mediaItem: MediaItem.Media,
 ) {
   AppTheme {
     Surface {
       DetailedMediaItem(
         mediaItem = mediaItem,
-        onClick = {}
+        onClick = {},
       )
     }
   }

@@ -8,9 +8,7 @@ class FakeRemoteConfig {
 
   val mock: FirebaseRemoteConfig = mockk()
 
-  fun mockFetchAndActivate(
-    response: Boolean,
-  ) {
+  fun mockFetchAndActivate(response: Boolean) {
     coEvery {
       mock.fetchAndActivate().isSuccessful
     } returns response
@@ -32,9 +30,7 @@ class FakeRemoteConfig {
     } returns null
   }
 
-  fun mockException(
-    exception: Exception,
-  ) {
+  fun mockException(exception: Exception) {
     coEvery {
       mock.fetchAndActivate().isSuccessful
     } returns true

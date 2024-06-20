@@ -29,6 +29,6 @@ fun Material3Card(
     contentColor = contentColor,
     tonalElevation = elevation,
     border = border,
-    content = content
+    content = content,
   )
 }

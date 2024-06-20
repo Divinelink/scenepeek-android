@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 open class SetThemeUseCase @Inject constructor(
   private val preferenceStorage: PreferenceStorage,
-  @IoDispatcher dispatcher: CoroutineDispatcher
+  @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Theme, Unit>(dispatcher) {
   override suspend fun execute(parameters: Theme) {
     preferenceStorage.selectTheme(parameters.storageKey)

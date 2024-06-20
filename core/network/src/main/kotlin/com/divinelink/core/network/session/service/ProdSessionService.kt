@@ -11,9 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProdSessionService @Inject constructor(
-  private val restClient: RestClient,
-) : SessionService {
+class ProdSessionService @Inject constructor(private val restClient: RestClient) : SessionService {
 
   override suspend fun createRequestToken(): Result<CreateRequestTokenResponseApi> {
     val url = "${restClient.tmdbUrl}/authentication/token/new"
@@ -23,13 +21,13 @@ class ProdSessionService @Inject constructor(
   }
 
   override suspend fun createSession(
-    requestToken: CreateSessionRequestApi
+    requestToken: CreateSessionRequestApi,
   ): Result<CreateSessionResponseApi> {
     val url = "${restClient.tmdbUrl}/authentication/session/new"
 
     val response = restClient.post<CreateSessionRequestApi, CreateSessionResponseApi>(
       url = url,
-      body = requestToken
+      body = requestToken,
     )
 
     return Result.success(response)
@@ -40,7 +38,7 @@ class ProdSessionService @Inject constructor(
 
     val response = restClient.delete<DeleteSessionRequestApi, DeleteSessionResponseApi>(
       url = url,
-      body = DeleteSessionRequestApi(sessionId)
+      body = DeleteSessionRequestApi(sessionId),
     )
 
     return Result.success(response)

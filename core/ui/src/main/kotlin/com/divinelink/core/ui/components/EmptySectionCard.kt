@@ -28,7 +28,7 @@ fun EmptySectionCard(
         modifier = Modifier
           .padding(
             top = 24.dp,
-            start = 24.dp
+            start = 24.dp,
           ),
       )
       Text(
@@ -37,7 +37,7 @@ fun EmptySectionCard(
         modifier = Modifier
           .padding(
             bottom = 24.dp,
-            start = 24.dp
+            start = 24.dp,
           ),
       )
     }

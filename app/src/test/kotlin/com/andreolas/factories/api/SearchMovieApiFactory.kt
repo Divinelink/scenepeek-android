@@ -18,12 +18,10 @@ object SearchMovieApiFactory {
     title = "",
     video = false,
     voteAverage = 0.0,
-    voteCount = null
+    voteCount = null,
   )
 
-  fun EmptyList(
-    range: IntProgression = 1..10,
-  ): List<SearchMovieApi> = (range).map {
+  fun EmptyList(range: IntProgression = 1..10): List<SearchMovieApi> = (range).map {
     SearchMovieApi(
       id = it,
       adult = false,
@@ -38,7 +36,7 @@ object SearchMovieApiFactory {
       title = "movie $it - name",
       video = false,
       voteAverage = it + 0.713,
-      voteCount = null
+      voteCount = null,
     )
   }
 }

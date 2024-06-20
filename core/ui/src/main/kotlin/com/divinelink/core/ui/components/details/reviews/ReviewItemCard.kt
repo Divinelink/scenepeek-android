@@ -53,13 +53,13 @@ fun ReviewItemCard(
         animationSpec = spring(
           dampingRatio = Spring.DampingRatioLowBouncy,
           stiffness = Spring.StiffnessLow,
-        )
+        ),
       )
       .widthIn(max = maxWidth)
       .clipToBounds()
       .clickable(
         indication = null,
-        interactionSource = remember { MutableInteractionSource() }
+        interactionSource = remember { MutableInteractionSource() },
       ) {
         expanded = !expanded
         maxLines = if (!expanded) MINIMUM_MAX_LINES else Int.MAX_VALUE
@@ -85,7 +85,7 @@ fun ReviewItemCard(
           animationSpec = spring(
             dampingRatio = Spring.DampingRatioLowBouncy,
             stiffness = Spring.StiffnessLow,
-          )
+          ),
         ),
       text = review.content,
       style = MaterialTheme.typography.bodyLarge,
@@ -130,7 +130,7 @@ fun ReviewItemCardPreview() {
         "Praesent sodales scelerisque eros at rhoncus. Duis posuere sapien vel ipsum" +
         "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
         "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
-      date = "2022-10-22"
+      date = "2022-10-22",
     )
     Surface {
       ReviewItemCard(

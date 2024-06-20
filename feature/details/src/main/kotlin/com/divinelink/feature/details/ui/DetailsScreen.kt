@@ -26,7 +26,7 @@ private const val BOTTOM_SHEET_DELAY = 200L
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<DetailsGraph>(
   start = true,
-  navArgs = DetailsNavArguments::class
+  navArgs = DetailsNavArguments::class,
 )
 @Composable
 fun DetailsScreen(
@@ -44,7 +44,7 @@ fun DetailsScreen(
     }
   }
   val rateBottomSheetState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = true
+    skipPartiallyExpanded = true,
   )
 
   LaunchedEffect(viewState.value.showRateDialog) {
@@ -70,7 +70,7 @@ fun DetailsScreen(
         // TODO implement
       },
       onDismissRequest = viewModel::onDismissRateDialog,
-      canClearRate = viewState.value.userDetails?.rating != null
+      canClearRate = viewState.value.userDetails?.rating != null,
     )
   }
 
@@ -93,6 +93,6 @@ fun DetailsScreen(
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
-    showOrHideShareDialog = viewModel::onShareClicked
+    showOrHideShareDialog = viewModel::onShareClicked,
   )
 }

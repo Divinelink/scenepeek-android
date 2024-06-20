@@ -21,13 +21,9 @@ object RemoteModule {
 
   @Singleton
   @Provides
-  fun provideMediaService(
-    restClient: RestClient,
-  ): MediaService = ProdMediaService(restClient)
+  fun provideMediaService(restClient: RestClient): MediaService = ProdMediaService(restClient)
 
   @Singleton
   @Provides
-  fun provideSessionService(
-    restClient: RestClient,
-  ): SessionService = ProdSessionService(restClient)
+  fun provideSessionService(restClient: RestClient): SessionService = ProdSessionService(restClient)
 }

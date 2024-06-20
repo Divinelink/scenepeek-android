@@ -49,12 +49,12 @@ fun AppTheme(
   }
 
   CompositionLocalProvider(
-    LocalDarkThemeProvider provides useDarkTheme
+    LocalDarkThemeProvider provides useDarkTheme,
   ) {
     MaterialTheme(
       colorScheme = colors,
       typography = AppTypography,
-      content = content
+      content = content,
     )
   }
 }
@@ -62,9 +62,7 @@ fun AppTheme(
 val LocalDarkThemeProvider = staticCompositionLocalOf { false }
 
 @Composable
-fun ColorScheme.textColorDisabled(): Color {
-  return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-}
+fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 
 val SearchBarSize = 48.dp
 
@@ -78,12 +76,11 @@ val ListPaddingValues = PaddingValues(
 enum class Theme(val storageKey: String) {
   SYSTEM("system"),
   LIGHT("light"),
-  DARK("dark")
+  DARK("dark"),
 }
 
 /**
  * Returns the matching [Theme] for the given [storageKey] value.
  */
-fun themeFromStorageKey(storageKey: String): Theme? {
-  return Theme.entries.firstOrNull { it.storageKey == storageKey }
-}
+fun themeFromStorageKey(storageKey: String): Theme? =
+  Theme.entries.firstOrNull { it.storageKey == storageKey }

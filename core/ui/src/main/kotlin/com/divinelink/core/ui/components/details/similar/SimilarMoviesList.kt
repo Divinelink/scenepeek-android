@@ -48,7 +48,7 @@ fun SimilarMoviesList(
         items = movies,
         key = {
           it.id
-        }
+        },
       ) { similarMovie ->
 
         MediaItem(

@@ -16,7 +16,7 @@ import javax.inject.Inject
 class GetAccountDetailsUseCase @Inject constructor(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, AccountDetails>(dispatcher) {
 
   override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = flow {

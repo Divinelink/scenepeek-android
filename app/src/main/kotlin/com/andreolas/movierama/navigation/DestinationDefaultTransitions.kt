@@ -16,5 +16,5 @@ class DestinationDefaultTransitions(
   override val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() ->
   ExitTransition = {
     fadeOut()
-  }
+  },
 ) : NavHostAnimatedDestinationStyle()

@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 @Destination<WatchlistGraph>(start = true)
 internal fun WatchlistScreen(
   navigator: DestinationsNavigator,
-  viewModel: WatchlistViewModel = hiltViewModel()
+  viewModel: WatchlistViewModel = hiltViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -55,7 +55,7 @@ internal fun WatchlistScreen(
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
-    pageCount = { uiState.value.tabs.size }
+    pageCount = { uiState.value.tabs.size },
   )
 
   LaunchedEffect(pagerState) {
@@ -77,9 +77,10 @@ internal fun WatchlistScreen(
         scrollBehavior = scrollBehavior,
         title = {
           Text(stringResource(R.string.feature_watchlist_title))
-        }
+        },
       )
-    }) { padding ->
+    },
+  ) { padding ->
     Surface(
       modifier = Modifier.padding(padding),
     ) {
@@ -92,7 +93,7 @@ internal fun WatchlistScreen(
             scope.launch {
               pagerState.animateScrollToPage(it)
             }
-          }
+          },
         )
 
         HorizontalPager(
@@ -108,8 +109,7 @@ internal fun WatchlistScreen(
                   navigator.navigate(AccountSettingsScreenDestination)
                 },
                 onRetry = {
-
-                }
+                },
               )
               is WatchlistForm.Data -> {
                 if (it.isEmpty) {
@@ -122,12 +122,12 @@ internal fun WatchlistScreen(
                         DetailsScreenDestination(
                           mediaType = media.mediaType.value,
                           id = media.id,
-                          isFavorite = media.isFavorite
-                        )
+                          isFavorite = media.isFavorite,
+                        ),
                       )
                     },
                     totalResults = it.totalResultsUiText,
-                    onLoadMore = viewModel::onLoadMore
+                    onLoadMore = viewModel::onLoadMore,
                   )
                 }
               }
@@ -144,7 +144,7 @@ internal fun WatchlistScreen(
 private fun WatchlistTabs(
   tabs: List<WatchlistTab>,
   selectedIndex: Int,
-  onClick: (Int) -> Unit
+  onClick: (Int) -> Unit,
 ) {
   Row {
     SecondaryTabRow(selectedTabIndex = selectedIndex) {
@@ -152,7 +152,7 @@ private fun WatchlistTabs(
         Tab(
           text = { Text(stringResource(tab.titleRes)) },
           selected = index == selectedIndex,
-          onClick = { onClick(index) }
+          onClick = { onClick(index) },
         )
       }
     }

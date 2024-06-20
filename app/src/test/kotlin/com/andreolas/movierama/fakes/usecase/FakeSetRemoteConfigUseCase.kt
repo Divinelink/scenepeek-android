@@ -5,20 +5,17 @@ import com.andreolas.movierama.fakes.remote.FakeRemoteConfig
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 
-class FakeSetRemoteConfigUseCase : SetRemoteConfigUseCase(
-  firebaseRemoteConfig = FakeRemoteConfig().mock,
-  encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),
-  dispatcher = MainDispatcherRule().testDispatcher,
-) {
+class FakeSetRemoteConfigUseCase :
+  SetRemoteConfigUseCase(
+    firebaseRemoteConfig = FakeRemoteConfig().mock,
+    encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),
+    dispatcher = MainDispatcherRule().testDispatcher,
+  ) {
   private var resultSetRemoteConfig: MutableMap<Unit, Unit> = mutableMapOf()
 
-  fun mockSetRemoteConfigResult(
-    result: Unit,
-  ) {
+  fun mockSetRemoteConfigResult(result: Unit) {
     resultSetRemoteConfig[Unit] = result
   }
 
-  override suspend fun execute(parameters: Unit) {
-    return resultSetRemoteConfig[parameters]!!
-  }
+  override suspend fun execute(parameters: Unit) = resultSetRemoteConfig[parameters]!!
 }

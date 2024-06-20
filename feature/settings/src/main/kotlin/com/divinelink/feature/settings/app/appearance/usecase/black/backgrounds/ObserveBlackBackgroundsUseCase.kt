@@ -10,11 +10,10 @@ import javax.inject.Inject
 
 open class ObserveBlackBackgroundsUseCase @Inject constructor(
   private val preferenceStorage: PreferenceStorage,
-  @DefaultDispatcher dispatcher: CoroutineDispatcher
+  @DefaultDispatcher dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, Boolean>(dispatcher) {
-  override fun execute(parameters: Unit): Flow<Result<Boolean>> {
-    return preferenceStorage.isBlackBackgroundsEnabled.map {
+  override fun execute(parameters: Unit): Flow<Result<Boolean>> =
+    preferenceStorage.isBlackBackgroundsEnabled.map {
       Result.success(it)
     }
-  }
 }

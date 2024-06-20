@@ -38,19 +38,19 @@ class FetchAccountMediaDetailsUseCaseTest {
     val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
-        mediaType = MediaType.MOVIE
-      )
+        mediaType = MediaType.MOVIE,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull()
+      result.first().exceptionOrNull(),
     ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
@@ -59,20 +59,20 @@ class FetchAccountMediaDetailsUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockFetchAccountMediaDetails(
-      response = Result.success(AccountMediaDetailsFactory.Rated())
+      response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
 
     val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
-        mediaType = MediaType.MOVIE
-      )
+        mediaType = MediaType.MOVIE,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -84,20 +84,20 @@ class FetchAccountMediaDetailsUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockFetchAccountMediaDetails(
-      response = Result.success(AccountMediaDetailsFactory.Rated())
+      response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
 
     val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
-        mediaType = MediaType.TV
-      )
+        mediaType = MediaType.TV,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -111,23 +111,22 @@ class FetchAccountMediaDetailsUseCaseTest {
     val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
         id = 0,
-        mediaType = MediaType.UNKNOWN
-      )
+        mediaType = MediaType.UNKNOWN,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) =
-    SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-    )
+  private fun createSessionStorage(sessionId: String?) = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+  )
 }

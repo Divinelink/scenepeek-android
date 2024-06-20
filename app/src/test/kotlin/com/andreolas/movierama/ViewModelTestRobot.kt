@@ -8,15 +8,11 @@ abstract class ViewModelTestRobot<T> {
 
   abstract fun buildViewModel(): ViewModelTestRobot<T>
 
-  fun assertViewState(
-    expectedViewState: T,
-  ) = apply {
+  fun assertViewState(expectedViewState: T) = apply {
     assertThat(actualViewState).isEqualTo(expectedViewState)
   }
 
-  fun assertFalseViewState(
-    expectedViewState: T,
-  ) = apply {
+  fun assertFalseViewState(expectedViewState: T) = apply {
     assertThat(actualViewState).isNotEqualTo(expectedViewState)
   }
 }

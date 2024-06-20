@@ -12,7 +12,7 @@ import kotlinx.serialization.json.jsonObject
 
 object DetailsResponseApiSerializer : KSerializer<DetailsResponseApi> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor(
-    serialName = DetailsResponseApi::class.java.name
+    serialName = DetailsResponseApi::class.java.name,
   )
 
   override fun deserialize(decoder: Decoder): DetailsResponseApi {
@@ -30,17 +30,20 @@ object DetailsResponseApiSerializer : KSerializer<DetailsResponseApi> {
     return when {
       json.containsKey("original_title") -> format.decodeFromJsonElement(
         deserializer = DetailsResponseApi.Movie.serializer(),
-        element = json
+        element = json,
       )
       json.containsKey("first_air_date") -> format.decodeFromJsonElement(
         deserializer = DetailsResponseApi.TV.serializer(),
-        element = json
+        element = json,
       )
       else -> throw SerializationException("Unknown type: $json")
     }
   }
 
-  override fun serialize(encoder: Encoder, value: DetailsResponseApi) {
+  override fun serialize(
+    encoder: Encoder,
+    value: DetailsResponseApi,
+  ) {
     error("Serialization is not supported")
   }
 }

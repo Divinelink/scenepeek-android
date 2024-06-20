@@ -128,9 +128,7 @@ private fun List<Crew>.toDirector(): Director? {
   }
 }
 
-private fun List<Cast>.toActors(): List<Actor> {
-  return this.map(Cast::toActor)
-}
+private fun List<Cast>.toActors(): List<Actor> = this.map(Cast::toActor)
 
 private fun Cast.toActor(): Actor = Actor(
   id = this.id,

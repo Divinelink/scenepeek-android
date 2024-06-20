@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-  themedActivityDelegate: ThemedActivityDelegate,
-) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
+class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDelegate) :
+  ViewModel(),
+  ThemedActivityDelegate by themedActivityDelegate {
 
   private val _viewState: MutableStateFlow<MainViewState> =
     MutableStateFlow(MainViewState.Completed)
@@ -23,27 +23,27 @@ class MainViewModel @Inject constructor(
    */
 
   /**
-  init {
-    setRemoteConfig()
-  }
+   init {
+   setRemoteConfig()
+   }
 
-  fun retryFetchRemoteConfig() {
-    setRemoteConfig()
-  }
+   fun retryFetchRemoteConfig() {
+   setRemoteConfig()
+   }
 
-  private fun setRemoteConfig() {
-    _viewState.value = MainViewState.Loading
-    viewModelScope.launch {
-      val result = setRemoteConfigUseCase.invoke(Unit)
+   private fun setRemoteConfig() {
+   _viewState.value = MainViewState.Loading
+   viewModelScope.launch {
+   val result = setRemoteConfigUseCase.invoke(Unit)
 
-      if (result.isSuccess) {
-        _viewState.value = MainViewState.Completed
-      } else {
-        _viewState.value = MainViewState.Error(
-          UIText.StringText("Something went wrong. Trying again...")
-        )
-      }
-    }
-  }
-  */
+   if (result.isSuccess) {
+   _viewState.value = MainViewState.Completed
+   } else {
+   _viewState.value = MainViewState.Error(
+   UIText.StringText("Something went wrong. Trying again...")
+   )
+   }
+   }
+   }
+   */
 }

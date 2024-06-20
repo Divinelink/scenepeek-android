@@ -9,8 +9,8 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
-import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import kotlinx.coroutines.flow.Flow
@@ -20,35 +20,21 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DetailsRepository {
 
-  fun fetchMovieDetails(
-    request: DetailsRequestApi,
-  ): Flow<Result<MediaDetails>>
+  fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>>
 
-  fun fetchMovieReviews(
-    request: ReviewsRequestApi,
-  ): Flow<Result<List<Review>>>
+  fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>>
 
-  fun fetchSimilarMovies(
-    request: SimilarRequestApi,
-  ): Flow<Result<List<MediaItem.Media>>>
+  fun fetchSimilarMovies(request: SimilarRequestApi): Flow<Result<List<MediaItem.Media>>>
 
-  fun fetchVideos(
-    request: VideosRequestApi,
-  ): Flow<Result<List<Video>>>
+  fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>>
 
   fun fetchAccountMediaDetails(
-    request: AccountMediaDetailsRequestApi
+    request: AccountMediaDetailsRequestApi,
   ): Flow<Result<AccountMediaDetails>>
 
-  fun submitRating(
-    request: AddRatingRequestApi
-  ): Flow<Result<Unit>>
+  fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>>
 
-  fun deleteRating(
-    request: DeleteRatingRequestApi
-  ): Flow<Result<Unit>>
+  fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>>
 
-  fun addToWatchlist(
-    request: AddToWatchlistRequestApi
-  ): Flow<Result<Unit>>
+  fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>>
 }

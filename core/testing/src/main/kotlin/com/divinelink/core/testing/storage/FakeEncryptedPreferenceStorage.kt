@@ -4,7 +4,7 @@ import com.divinelink.core.datastore.EncryptedStorage
 
 open class FakeEncryptedPreferenceStorage(
   override var tmdbAuthToken: String = "",
-  override var sessionId: String? = null
+  override var sessionId: String? = null,
 ) : EncryptedStorage {
 
   override suspend fun setTmdbAuthToken(key: String) {

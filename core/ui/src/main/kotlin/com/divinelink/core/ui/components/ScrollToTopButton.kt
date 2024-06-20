@@ -30,7 +30,7 @@ fun ScrollToTopButton(onClick: () -> Unit) {
   ) {
     Icon(
       imageVector = Icons.Filled.KeyboardArrowUp,
-      contentDescription = stringResource(R.string.core_ui_scroll_to_top_button)
+      contentDescription = stringResource(R.string.core_ui_scroll_to_top_button),
     )
   }
 }

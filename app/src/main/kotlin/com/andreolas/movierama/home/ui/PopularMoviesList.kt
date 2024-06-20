@@ -53,7 +53,7 @@ fun MediaList(
     contentPadding = PaddingValues(
       start = MaterialTheme.dimensions.keyline_8,
       end = MaterialTheme.dimensions.keyline_8,
-      top = MaterialTheme.dimensions.keyline_8
+      top = MaterialTheme.dimensions.keyline_8,
     ),
     columns = GridCells.Adaptive(120.dp),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -61,18 +61,18 @@ fun MediaList(
   ) {
     items(
       key = { it.id },
-      items = searches
+      items = searches,
     ) { search ->
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
           movie = search,
           onMovieItemClick = { onMovieClicked(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
+          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Media.TV -> MediaItem(
           movie = search,
           onMovieItemClick = { onMovieClicked(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) }
+          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Person -> {
           // FIXME Do nothing yet
@@ -86,7 +86,7 @@ fun MediaList(
     item(
       span = {
         GridItemSpan(maxLineSpan)
-      }
+      },
     ) {
       AnimatedVisibility(
         visible = isLoading,
@@ -98,9 +98,7 @@ fun MediaList(
 }
 
 @Composable
-private fun LoadMoreContent(
-  modifier: Modifier = Modifier,
-) {
+private fun LoadMoreContent(modifier: Modifier = Modifier) {
   Column(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,7 +112,7 @@ private fun LoadMoreContent(
 
     Text(
       color = MaterialTheme.colorScheme.textColorDisabled(),
-      text = stringResource(id = R.string.load_more)
+      text = stringResource(id = R.string.load_more),
     )
   }
 }
@@ -124,7 +122,7 @@ private fun LoadMoreContent(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(
   uiMode = Configuration.UI_MODE_NIGHT_YES,
-  device = "spec:width=1080px,height=2340px,dpi=640"
+  device = "spec:width=1080px,height=2340px,dpi=640",
 )
 fun MoviesListScreenPreview() {
   @Suppress("MagicNumber")

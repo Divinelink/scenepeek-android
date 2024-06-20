@@ -10,11 +10,10 @@ import javax.inject.Inject
 
 open class ObserveMaterialYouModeUseCase @Inject constructor(
   private val preferenceStorage: PreferenceStorage,
-  @DefaultDispatcher dispatcher: CoroutineDispatcher
+  @DefaultDispatcher dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, Boolean>(dispatcher) {
-  override fun execute(parameters: Unit): Flow<Result<Boolean>> {
-    return preferenceStorage.isMaterialYouEnabled.map {
+  override fun execute(parameters: Unit): Flow<Result<Boolean>> =
+    preferenceStorage.isMaterialYouEnabled.map {
       Result.success(it)
     }
-  }
 }

@@ -26,16 +26,14 @@ class ProdMediaRepository @Inject constructor(
   private val mediaRemote: MediaService,
 ) : MediaRepository {
 
-  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> {
-    return mediaRemote
-      .fetchPopularMovies(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toMoviesList())
-      }
-      .catch { exception ->
-        flowOf(Result.failure<Exception>(Exception(exception.message)))
-      }
-  }
+  override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> = mediaRemote
+    .fetchPopularMovies(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.toMoviesList())
+    }
+    .catch { exception ->
+      flowOf(Result.failure<Exception>(Exception(exception.message)))
+    }
 
   override fun fetchFavoriteMovies(): Flow<MediaListResult> = mediaDao
     .fetchFavoriteMovies()
@@ -65,19 +63,17 @@ class ProdMediaRepository @Inject constructor(
     }
 
   @Deprecated("Use fetchMultiInfo instead")
-  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> {
-    return mediaRemote
-      .fetchSearchMovies(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toDomainMoviesList())
-      }
-      .catch { exception ->
-        flowOf(Result.failure<Exception>(exception))
-      }
-  }
+  override fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult> = mediaRemote
+    .fetchSearchMovies(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.toDomainMoviesList())
+    }
+    .catch { exception ->
+      flowOf(Result.failure<Exception>(exception))
+    }
 
-  override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult> {
-    return mediaRemote
+  override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult> =
+    mediaRemote
       .fetchMultiInfo(requestApi)
       .map { apiResponse ->
         Result.success(apiResponse.map())
@@ -85,7 +81,6 @@ class ProdMediaRepository @Inject constructor(
       .catch { exception ->
         flowOf(Result.failure<Exception>(exception))
       }
-  }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit> {
     mediaDao
@@ -110,7 +105,8 @@ class ProdMediaRepository @Inject constructor(
     mediaType: MediaType,
   ): Result<Boolean> {
     mediaDao.checkIfMediaIsFavorite(
-      id = id, mediaType = mediaType
+      id = id,
+      mediaType = mediaType,
     ).also {
       return Result.success(it)
     }

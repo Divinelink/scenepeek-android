@@ -10,9 +10,7 @@ import androidx.compose.ui.platform.testTag
 import com.divinelink.core.ui.TestTags
 
 @Composable
-fun LoadingContent(
-  modifier: Modifier = Modifier,
-) {
+fun LoadingContent(modifier: Modifier = Modifier) {
   Box(
     modifier = modifier
       .testTag(TestTags.LOADING_CONTENT_TAG)

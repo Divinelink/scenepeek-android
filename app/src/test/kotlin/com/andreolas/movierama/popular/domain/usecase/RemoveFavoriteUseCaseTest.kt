@@ -33,7 +33,7 @@ class RemoveFavoriteUseCaseTest {
     repository.mockRemoveFavorite(
       id = remoteMovies[2].id,
       mediaType = MediaType.MOVIE,
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = RemoveFavoriteUseCase(
@@ -52,7 +52,7 @@ class RemoveFavoriteUseCaseTest {
     repository.mockRemoveFavorite(
       id = remoteMovies[2].id,
       mediaType = MediaType.MOVIE,
-      response = Result.failure(Exception())
+      response = Result.failure(Exception()),
     )
 
     val useCase = RemoveFavoriteUseCase(

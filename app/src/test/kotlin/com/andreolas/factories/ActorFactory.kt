@@ -9,7 +9,7 @@ object ActorFactory {
     name = "Jack Nicholson",
     profilePath = "jack_nicholson.jpg",
     character = "Here's Johnny!",
-    order = 0
+    order = 0,
   )
 
   fun AaronPaul() = Actor(
@@ -17,11 +17,11 @@ object ActorFactory {
     name = "Aaron Paul",
     profilePath = "Aaron_paul.jpg",
     character = "Jessee Pinkman",
-    order = 1
+    order = 1,
   )
 
   fun all() = listOf(
     JackNicholson(),
-    AaronPaul()
+    AaronPaul(),
   )
 }

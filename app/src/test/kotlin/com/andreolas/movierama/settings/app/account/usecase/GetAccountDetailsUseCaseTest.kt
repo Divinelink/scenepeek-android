@@ -34,7 +34,7 @@ class GetAccountDetailsUseCaseTest {
     val useCase = GetAccountDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(Unit)
@@ -52,14 +52,14 @@ class GetAccountDetailsUseCaseTest {
           id = 1234,
           username = "username",
           name = "name",
-        )
-      )
+        ),
+      ),
     )
 
     val useCase = GetAccountDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(Unit)
@@ -68,9 +68,8 @@ class GetAccountDetailsUseCaseTest {
     assertThat(sessionStorage.accountId.first()).isEqualTo("1234")
   }
 
-  private fun createSessionStorage(sessionId: String? = null) =
-    SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-    )
+  private fun createSessionStorage(sessionId: String? = null) = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+  )
 }

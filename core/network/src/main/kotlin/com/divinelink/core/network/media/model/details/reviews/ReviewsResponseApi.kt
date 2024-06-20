@@ -16,21 +16,18 @@ data class ReviewsResponseApi(
   val totalResults: Int,
 )
 
-fun ReviewsResponseApi.toDomainReviewsList(): List<Review> {
-  return this.results.map(ReviewResultsApi::toReview)
-}
+fun ReviewsResponseApi.toDomainReviewsList(): List<Review> =
+  this.results.map(ReviewResultsApi::toReview)
 
-private fun ReviewResultsApi.toReview(): Review {
-  return Review(
-    authorName = this.author,
-    rating = this.authorDetails.rating?.toInt(),
-    content = this.content,
-    date = this.createdAt.formatTo(
-      inputFormat = TMDB_DATE_FORMAT,
-      outputFormat = "dd-MM-yyyy"
-    )
-  )
-}
+private fun ReviewResultsApi.toReview(): Review = Review(
+  authorName = this.author,
+  rating = this.authorDetails.rating?.toInt(),
+  content = this.content,
+  date = this.createdAt.formatTo(
+    inputFormat = TMDB_DATE_FORMAT,
+    outputFormat = "dd-MM-yyyy",
+  ),
+)
 
 @Serializable
 data class ReviewResultsApi(

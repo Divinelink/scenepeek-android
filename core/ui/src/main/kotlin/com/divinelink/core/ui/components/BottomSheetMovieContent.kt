@@ -57,7 +57,7 @@ fun ModalBottomSheetMovieContent(
 ) {
   ModalBottomSheet(
     sheetState = sheetState,
-    onDismissRequest = onDismissRequest
+    onDismissRequest = onDismissRequest,
   ) {
     MovieBottomSheetContent(
       media = movie,
@@ -82,14 +82,13 @@ private fun MovieBottomSheetContent(
     LazyColumn(
       modifier = Modifier
         .padding(bottom = detailsButtonSize)
-        .navigationBarsPadding()
+        .navigationBarsPadding(),
     ) {
-
       item {
         MediaDetailsContent(
           modifier = Modifier.wrapContentHeight(),
           media = media,
-          onMarkAsFavoriteClicked = onMarkAsFavoriteClicked
+          onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
         )
       }
 
@@ -104,7 +103,7 @@ private fun MovieBottomSheetContent(
       DetailsButton(
         modifier = Modifier.height(detailsButtonSize),
         movie = media,
-        onContentClicked = onContentClicked
+        onContentClicked = onContentClicked,
       )
 
       Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -116,7 +115,7 @@ private fun MovieBottomSheetContent(
 private fun DetailsButton(
   modifier: Modifier = Modifier,
   movie: MediaItem.Media,
-  onContentClicked: (MediaItem.Media) -> Unit
+  onContentClicked: (MediaItem.Media) -> Unit,
 ) {
   Surface(
     modifier = modifier
@@ -125,7 +124,7 @@ private fun DetailsButton(
       .fillMaxWidth()
       .padding(
         horizontal = MaterialTheme.dimensions.keyline_16,
-      )
+      ),
   ) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
@@ -173,7 +172,7 @@ private fun HomeContentPreview() {
           overview = "Puss in Boots discovers that his passion for adventure has taken its toll: " +
             "He has burned through eight of his nine lives, leaving him with only one life left." +
             " Puss sets out on an epic journey to find the mythical Last Wish and restore " +
-            "his nine lives."
+            "his nine lives.",
         ),
         onContentClicked = {},
         onMarkAsFavoriteClicked = {},

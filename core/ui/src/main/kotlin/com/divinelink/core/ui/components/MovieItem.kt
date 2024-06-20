@@ -55,13 +55,13 @@ fun MediaItem(
       .clickable {
         onMovieItemClick(movie)
       },
-    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     Box(
       contentAlignment = Alignment.Center,
       modifier = Modifier
         .fillMaxWidth()
-        .wrapContentHeight()
+        .wrapContentHeight(),
     ) {
       MovieImage(
         path = movie.posterPath,
@@ -119,7 +119,7 @@ fun PopularMovieItemPreview() {
     Surface(
       modifier = Modifier
         .width(160.dp)
-        .height(340.dp)
+        .height(340.dp),
     ) {
       MediaItem(
         modifier = Modifier,
@@ -145,7 +145,7 @@ fun PopularMovieItemPreview() {
 fun MovieItemPreview() {
   AppTheme {
     Surface(
-      modifier = Modifier
+      modifier = Modifier,
     ) {
       MediaItem(
         modifier = Modifier,

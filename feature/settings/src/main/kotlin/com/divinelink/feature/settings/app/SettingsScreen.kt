@@ -19,13 +19,11 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<SettingsGraph>(start = true)
 @Composable
-fun SettingsScreen(
-  navigator: DestinationsNavigator
-) {
+fun SettingsScreen(navigator: DestinationsNavigator) {
   SettingsScaffold(
     title = stringResource(R.string.settings),
     onNavigationClick = navigator::navigateUp,
-    navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack
+    navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
   ) { paddingValues ->
 
     LazyColumn(
@@ -35,7 +33,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = painterResource(id = R.drawable.ic_account_24),
           text = stringResource(R.string.preferences__account),
-          onClick = { navigator.navigate(AccountSettingsScreenDestination) }
+          onClick = { navigator.navigate(AccountSettingsScreenDestination) },
         )
       }
 
@@ -47,7 +45,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = painterResource(id = R.drawable.ic_appearance_24),
           text = stringResource(R.string.preferences__appearance),
-          onClick = { navigator.navigate(AppearanceSettingsScreenDestination) }
+          onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
         )
       }
 
@@ -59,7 +57,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = painterResource(id = R.drawable.ic_help_24),
           text = stringResource(R.string.preferences__help),
-          onClick = { navigator.navigate(HelpSettingsScreenDestination) }
+          onClick = { navigator.navigate(HelpSettingsScreenDestination) },
         )
       }
     }

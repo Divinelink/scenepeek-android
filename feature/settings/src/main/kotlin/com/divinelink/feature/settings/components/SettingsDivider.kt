@@ -11,6 +11,6 @@ import com.divinelink.core.designsystem.theme.dimensions
 fun SettingsDivider() {
   HorizontalDivider(
     modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_16),
-    color = MaterialTheme.colorScheme.surfaceVariant
+    color = MaterialTheme.colorScheme.surfaceVariant,
   )
 }

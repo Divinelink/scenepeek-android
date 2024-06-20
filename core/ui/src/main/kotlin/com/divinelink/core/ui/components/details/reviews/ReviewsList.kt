@@ -21,9 +21,7 @@ import com.divinelink.core.ui.R
 const val REVIEWS_LIST = "REVIEWS_LIST"
 
 @Composable
-fun ReviewsList(
-  reviews: List<Review>,
-) {
+fun ReviewsList(reviews: List<Review>) {
   Column(
     modifier = Modifier
       .testTag(REVIEWS_LIST)
@@ -46,7 +44,7 @@ fun ReviewsList(
         items = reviews,
       ) { review ->
         ReviewItemCard(
-          review = review
+          review = review,
         )
       }
     }

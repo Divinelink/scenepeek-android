@@ -4,5 +4,5 @@ object SessionException {
 
   class Unauthenticated : Exception()
 
-  class InvalidAccountId: Exception()
+  class InvalidAccountId : Exception()
 }

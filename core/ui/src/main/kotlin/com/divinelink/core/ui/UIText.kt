@@ -13,7 +13,7 @@ sealed class UIText {
 
   class ResourceText(
     @StringRes val value: Int,
-    vararg val formatArgs: Any
+    vararg val formatArgs: Any,
   ) : UIText() {
 
     override fun equals(other: Any?): Boolean {
@@ -42,17 +42,13 @@ sealed class UIText {
  * @param[context] If necessary, use this to evaluate a string resource.
  */
 @Suppress("SpreadOperator")
-fun UIText.getString(context: Context): String {
-  return when (this) {
-    is UIText.StringText -> this.value
-    is UIText.ResourceText -> context.getString(this.value, *this.formatArgs)
-  }
+fun UIText.getString(context: Context): String = when (this) {
+  is UIText.StringText -> this.value
+  is UIText.ResourceText -> context.getString(this.value, *this.formatArgs)
 }
 
 /**
  * A helper function that allows to get strings from a [Composable] context.
  */
 @Composable
-fun UIText.getString(): String {
-  return this.getString(LocalContext.current)
-}
+fun UIText.getString(): String = this.getString(LocalContext.current)

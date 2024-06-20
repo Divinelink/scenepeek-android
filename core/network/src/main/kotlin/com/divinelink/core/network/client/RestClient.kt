@@ -70,7 +70,7 @@ class RestClient {
   @OptIn(InternalSerializationApi::class)
   internal suspend inline fun <reified T : Any, reified V : Any> post(
     url: String,
-    body: T
+    body: T,
   ): V {
     val json = client.post(url) {
       setBody(body)
@@ -85,7 +85,10 @@ class RestClient {
   }
 
   @OptIn(InternalSerializationApi::class)
-  internal suspend inline fun <reified T : Any, reified V : Any> delete(url: String, body: T): V {
+  internal suspend inline fun <reified T : Any, reified V : Any> delete(
+    url: String,
+    body: T,
+  ): V {
     val json = client.delete(url) {
       setBody(body)
     }.bodyAsText()
@@ -111,10 +114,11 @@ class RestClient {
   }
 
   @OptIn(InternalAPI::class)
-  suspend fun put(url: String, body: String): HttpResponse {
-    return client.put(url) {
-      this.body = body
-    }
+  suspend fun put(
+    url: String,
+    body: String,
+  ): HttpResponse = client.put(url) {
+    this.body = body
   }
 
   fun close() {

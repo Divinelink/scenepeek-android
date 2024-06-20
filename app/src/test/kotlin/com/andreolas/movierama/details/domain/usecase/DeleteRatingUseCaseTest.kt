@@ -39,19 +39,19 @@ class DeleteRatingUseCaseTest {
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       DeleteRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-      )
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull()
+      result.first().exceptionOrNull(),
     ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
@@ -60,20 +60,20 @@ class DeleteRatingUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockDeleteRating(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       DeleteRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-      )
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -85,20 +85,20 @@ class DeleteRatingUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockDeleteRating(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       DeleteRatingParameters(
         id = 0,
         mediaType = MediaType.TV,
-      )
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -112,23 +112,22 @@ class DeleteRatingUseCaseTest {
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       DeleteRatingParameters(
         id = 0,
         mediaType = MediaType.UNKNOWN,
-      )
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) =
-    SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-    )
+  private fun createSessionStorage(sessionId: String?) = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+  )
 }

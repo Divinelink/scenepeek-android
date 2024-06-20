@@ -11,7 +11,7 @@ data class TvResponseApi(
   val page: Int,
   val results: List<TvItemApi>,
   @SerialName("total_pages") val totalPages: Int,
-  @SerialName("total_results") val totalResults: Int
+  @SerialName("total_results") val totalResults: Int,
 )
 
 @Serializable
@@ -35,7 +35,7 @@ data class TvItemApi(
 fun TvResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
   totalPages = totalPages,
   totalResults = totalResults,
-  list = this.results.map(TvItemApi::toTv)
+  list = this.results.map(TvItemApi::toTv),
 )
 
 private fun TvItemApi.toTv() = MediaItem.Media.TV(

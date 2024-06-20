@@ -16,7 +16,7 @@ sealed interface WatchlistForm<out T : MediaItem.Media> {
   data class Data<T : MediaItem.Media>(
     val mediaType: MediaType,
     val data: List<T>,
-    val totalResults: Int
+    val totalResults: Int,
   ) : WatchlistForm<T> {
     private val isMovie = mediaType == MediaType.MOVIE
     private val isTvShow = mediaType == MediaType.TV

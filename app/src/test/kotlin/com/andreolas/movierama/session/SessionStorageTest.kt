@@ -16,7 +16,7 @@ class SessionStorageTest {
   fun tearDown() {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage()
+      encryptedStorage = FakeEncryptedPreferenceStorage(),
     )
   }
 
@@ -27,7 +27,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = encryptedPreferenceStorage
+      encryptedStorage = encryptedPreferenceStorage,
     )
 
     assertThat(sessionStorage.sessionId).isEqualTo("session")
@@ -40,7 +40,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = encryptedPreferenceStorage
+      encryptedStorage = encryptedPreferenceStorage,
     )
 
     assertThat(sessionStorage.sessionId).isNull()
@@ -52,7 +52,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = FakeEncryptedPreferenceStorage()
+      encryptedStorage = FakeEncryptedPreferenceStorage(),
     )
 
     sessionStorage.clearToken()
@@ -66,7 +66,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = FakeEncryptedPreferenceStorage()
+      encryptedStorage = FakeEncryptedPreferenceStorage(),
     )
 
     sessionStorage.setToken("token")
@@ -81,7 +81,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = encryptedPreferenceStorage
+      encryptedStorage = encryptedPreferenceStorage,
     )
 
     sessionStorage.setSession("session")
@@ -95,13 +95,13 @@ class SessionStorageTest {
   fun `test clearSession clears session and accountId`() = runTest {
     val preferenceStorage = FakePreferenceStorage(
       hasSession = true,
-      accountId = "account_id"
+      accountId = "account_id",
     )
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(sessionId = "session")
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = encryptedPreferenceStorage
+      encryptedStorage = encryptedPreferenceStorage,
     )
 
     sessionStorage.clearSession()
@@ -118,7 +118,7 @@ class SessionStorageTest {
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
-      encryptedStorage = FakeEncryptedPreferenceStorage()
+      encryptedStorage = FakeEncryptedPreferenceStorage(),
     )
 
     sessionStorage.setAccountId("account_id")

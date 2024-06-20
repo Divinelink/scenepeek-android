@@ -15,20 +15,20 @@ interface SnackbarController {
     actionLabel: String? = null,
     withDismissAction: Boolean = false,
     duration: SnackbarDuration = SnackbarDuration.Short,
-    onSnackbarResult: (SnackbarResult) -> Unit = {}
+    onSnackbarResult: (SnackbarResult) -> Unit = {},
   )
 
   fun showMessage(
     snackbarVisuals: SnackbarVisuals,
-    onSnackbarResult: (SnackbarResult) -> Unit = {}
+    onSnackbarResult: (SnackbarResult) -> Unit = {},
   )
 }
 
 @Stable
 fun SnackbarController(
   snackbarHostState: SnackbarHostState,
-  coroutineScope: CoroutineScope
+  coroutineScope: CoroutineScope,
 ): SnackbarController = SnackbarControllerImpl(
   snackbarHostState = snackbarHostState,
-  coroutineScope = coroutineScope
+  coroutineScope = coroutineScope,
 )

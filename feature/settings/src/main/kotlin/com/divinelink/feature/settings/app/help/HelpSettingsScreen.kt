@@ -16,12 +16,10 @@ import com.divinelink.core.commons.R as commonR
 
 @Composable
 @Destination<SettingsGraph>
-fun HelpSettingsScreen(
-  navigator: DestinationsNavigator
-) {
+fun HelpSettingsScreen(navigator: DestinationsNavigator) {
   SettingsScaffold(
     title = stringResource(id = R.string.HelpSettingsFragment__help),
-    onNavigationClick = navigator::navigateUp
+    onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
 
     val version = UIText.ResourceText(commonR.string.version_name)
@@ -36,7 +34,7 @@ fun HelpSettingsScreen(
       item {
         SettingsTextItem(
           title = stringResource(id = R.string.HelpSettingsFragment__version),
-          summary = buildVersion.getString()
+          summary = buildVersion.getString(),
         )
       }
     }

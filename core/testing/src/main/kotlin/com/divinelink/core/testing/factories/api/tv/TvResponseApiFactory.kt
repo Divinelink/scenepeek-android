@@ -8,6 +8,6 @@ object TvResponseApiFactory {
     page = 1,
     results = emptyList(), // TODO Add data
     totalPages = 3,
-    totalResults = 60
+    totalResults = 60,
   )
 }

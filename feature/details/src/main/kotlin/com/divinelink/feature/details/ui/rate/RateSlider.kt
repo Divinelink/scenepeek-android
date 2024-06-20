@@ -36,7 +36,7 @@ fun RateSlider(
       in 7.0f..10.0f -> Color(0xFF21D07A)
       else -> Color.White
     },
-    label = "Color Rating Slider"
+    label = "Color Rating Slider",
   )
 
   Slider(
@@ -54,17 +54,17 @@ fun RateSlider(
     onValueChange = { newValue ->
       onValueChange(newValue)
       rating.floatValue = newValue
-    }
+    },
   )
 }
 
 @Preview(
   showBackground = true,
-  uiMode = Configuration.UI_MODE_NIGHT_YES
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
   showBackground = true,
-  uiMode = Configuration.UI_MODE_NIGHT_NO
+  uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Composable
 private fun RateSliderPreview() {
@@ -72,22 +72,22 @@ private fun RateSliderPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
       RateSlider(
         value = 0f,
-        onValueChange = {}
+        onValueChange = {},
       )
 
       RateSlider(
         value = 1f,
-        onValueChange = {}
+        onValueChange = {},
       )
 
       RateSlider(
         value = 5f,
-        onValueChange = {}
+        onValueChange = {},
       )
 
       RateSlider(
         value = 8f,
-        onValueChange = {}
+        onValueChange = {},
       )
     }
   }

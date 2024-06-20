@@ -24,9 +24,7 @@ object MediaItemFactory {
     isFavorite = false,
   )
 
-  fun MoviesList(
-    range: IntProgression = 1..10,
-  ): List<MediaItem.Media.Movie> = range.map {
+  fun MoviesList(range: IntProgression = 1..10): List<MediaItem.Media.Movie> = range.map {
     MediaItem.Media.Movie(
       id = it,
       posterPath = "movie $it - posterPath",
@@ -38,9 +36,7 @@ object MediaItemFactory {
     )
   }
 
-  fun TVList(
-    range: IntProgression = 1..10,
-  ): List<MediaItem.Media.TV> = range.map {
+  fun TVList(range: IntProgression = 1..10): List<MediaItem.Media.TV> = range.map {
     MediaItem.Media.TV(
       id = it,
       posterPath = "tv $it - posterPath",

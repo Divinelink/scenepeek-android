@@ -35,11 +35,11 @@ fun WatchlistButton(
       true -> {
         OutlinedButton(
           modifier = modifier.fillMaxWidth(),
-          onClick = onClick
+          onClick = onClick,
         ) {
           Icon(
             imageVector = Icons.Filled.Done,
-            contentDescription = null
+            contentDescription = null,
           )
 
           Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_4))
@@ -50,11 +50,11 @@ fun WatchlistButton(
       false -> {
         Button(
           modifier = modifier.fillMaxWidth(),
-          onClick = onClick
+          onClick = onClick,
         ) {
           Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = null
+            contentDescription = null,
           )
 
           Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_4))

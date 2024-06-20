@@ -22,7 +22,7 @@ fun SettingsClickItem(
   modifier: Modifier = Modifier,
   icon: Painter? = null,
   text: String,
-  onClick: () -> Unit
+  onClick: () -> Unit,
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
@@ -30,18 +30,18 @@ fun SettingsClickItem(
     modifier = modifier
       .clickable { onClick() }
       .padding(MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth()
+      .fillMaxWidth(),
   ) {
     icon?.let {
       Icon(
         painter = icon,
-        contentDescription = null
+        contentDescription = null,
       )
     }
 
     Text(
       text = text,
-      style = MaterialTheme.typography.bodyLarge
+      style = MaterialTheme.typography.bodyLarge,
     )
   }
 }
@@ -53,7 +53,7 @@ private fun SettingsScreenPreview() {
     SettingsClickItem(
       icon = painterResource(id = R.drawable.ic_appearance_24),
       text = "Appearance",
-      onClick = {}
+      onClick = {},
     )
   }
 }

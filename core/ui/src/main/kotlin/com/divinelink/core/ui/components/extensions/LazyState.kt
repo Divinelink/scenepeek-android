@@ -16,9 +16,7 @@ import kotlinx.coroutines.flow.filter
  */
 
 @Composable
-fun LazyGridState.OnBottomReached(
-  loadMore: () -> Unit,
-) {
+fun LazyGridState.OnBottomReached(loadMore: () -> Unit) {
   var initialLoad = remember { true }
 
   val shouldLoadMore = remember {
@@ -50,7 +48,10 @@ fun LazyGridState.OnBottomReached(
  * @param onLoadMore will notify when we need to load more
  */
 @Composable
-fun LazyListState.EndlessScrollHandler(buffer: Int = 6, onLoadMore: () -> Unit) {
+fun LazyListState.EndlessScrollHandler(
+  buffer: Int = 6,
+  onLoadMore: () -> Unit,
+) {
   val loadMore = remember {
     derivedStateOf {
       val layoutInfo = this.layoutInfo

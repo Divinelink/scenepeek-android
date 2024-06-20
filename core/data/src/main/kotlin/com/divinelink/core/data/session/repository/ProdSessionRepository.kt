@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ProdSessionRepository @Inject constructor(
-  private val remote: SessionService,
-) : SessionRepository {
+class ProdSessionRepository @Inject constructor(private val remote: SessionService) :
+  SessionRepository {
 
   override suspend fun createRequestToken(): Result<RequestToken> {
     val response = remote.createRequestToken()

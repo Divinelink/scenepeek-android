@@ -17,15 +17,13 @@ class FakeGetAccountDetailsUseCase {
 
   private fun mockFailure() {
     whenever(
-      mock.invoke(any())
+      mock.invoke(any()),
     ).thenReturn(
-      flowOf(Result.failure(Exception()))
+      flowOf(Result.failure(Exception())),
     )
   }
 
-  fun mockSuccess(
-    response: Result<AccountDetails>,
-  ) {
+  fun mockSuccess(response: Result<AccountDetails>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }

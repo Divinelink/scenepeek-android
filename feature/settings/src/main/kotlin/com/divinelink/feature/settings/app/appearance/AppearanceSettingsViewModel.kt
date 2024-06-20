@@ -33,7 +33,7 @@ class AppearanceSettingsViewModel @Inject constructor(
   getMaterialYouUseCase: GetMaterialYouUseCase,
   val setBlackBackgroundsUseCase: SetBlackBackgroundsUseCase,
   getBlackBackgroundsUseCase: GetBlackBackgroundsUseCase,
-  getMaterialYouVisibleUseCase: GetMaterialYouVisibleUseCase
+  getMaterialYouVisibleUseCase: GetMaterialYouVisibleUseCase,
 ) : ViewModel() {
 
   private val refreshSignal = MutableSharedFlow<Unit>()
@@ -52,17 +52,18 @@ class AppearanceSettingsViewModel @Inject constructor(
       availableThemes = getAvailableThemesUseCase(Unit).data,
       materialYouEnabled = getMaterialYouUseCase(Unit).data,
       materialYouVisible = getMaterialYouVisibleUseCase(Unit).data,
-      blackBackgroundsEnabled = getBlackBackgroundsUseCase(Unit).data
+      blackBackgroundsEnabled = getBlackBackgroundsUseCase(Unit).data,
     )
   }.stateIn(
-    viewModelScope, WhileViewSubscribed,
+    viewModelScope,
+    WhileViewSubscribed,
     initialValue = UpdateSettingsState(
       theme = Theme.SYSTEM,
       availableThemes = listOf(),
       materialYouEnabled = false,
       materialYouVisible = false,
-      blackBackgroundsEnabled = false
-    )
+      blackBackgroundsEnabled = false,
+    ),
   )
   val uiState: StateFlow<UpdateSettingsState> = _uiState
 

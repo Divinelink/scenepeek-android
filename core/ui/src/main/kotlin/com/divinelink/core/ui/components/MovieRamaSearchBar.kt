@@ -97,9 +97,8 @@ fun MovieRamaSearchBar(
           modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.tertiaryContainer),
-          verticalAlignment = Alignment.CenterVertically
+          verticalAlignment = Alignment.CenterVertically,
         ) {
-
           Crossfade(
             targetState = toolbarState.value,
             label = "SearchBar Crossfade",
@@ -120,7 +119,7 @@ fun MovieRamaSearchBar(
                 FocusedSearchField(
                   value = query,
                   onSearchFieldChanged = onSearchFieldChanged,
-                  modifier = Modifier.focusRequester(focusRequester)
+                  modifier = Modifier.focusRequester(focusRequester),
                 )
               }
             } else {
@@ -132,13 +131,13 @@ fun MovieRamaSearchBar(
                   .fillMaxWidth(TEXT_MAX_WIDTH)
                   .clickable(
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
+                    interactionSource = remember { MutableInteractionSource() },
                   ) {
                     toolbarState.value = when (toolbarState.value) {
                       ToolbarState.Focused -> ToolbarState.Unfocused
                       ToolbarState.Unfocused -> ToolbarState.Focused
                     }
-                  }
+                  },
               ) {
                 IconButton(
                   onClick = {
@@ -162,7 +161,7 @@ fun MovieRamaSearchBar(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
-            content = actions
+            content = actions,
           )
         }
       }
@@ -183,9 +182,9 @@ private fun SearchIconWithLoading(
           .testTag(SEARCH_BAR_LOADING_INDICATOR_TAG)
           .padding(
             horizontal = MaterialTheme.dimensions.keyline_12,
-            vertical = MaterialTheme.dimensions.keyline_8
+            vertical = MaterialTheme.dimensions.keyline_8,
           )
-          .size(MaterialTheme.dimensions.keyline_24)
+          .size(MaterialTheme.dimensions.keyline_24),
       )
     }
     false -> {
@@ -197,7 +196,9 @@ private fun SearchIconWithLoading(
       ) {
         Icon(
           imageVector = Icons.Default.Clear,
-          contentDescription = stringResource(id = R.string.clear_search_button_content_description),
+          contentDescription = stringResource(
+            id = R.string.clear_search_button_content_description,
+          ),
         )
       }
     }
@@ -235,11 +236,11 @@ private fun FocusedSearchField(
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.onSurface,
           overflow = TextOverflow.Ellipsis,
-          text = UIText.ResourceText(R.string.toolbar_search_placeholder).getString()
+          text = UIText.ResourceText(R.string.toolbar_search_placeholder).getString(),
         )
       }
       innerTextField()
-    }
+    },
   )
 }
 

@@ -18,7 +18,7 @@ object SimilarMovieApiFactory {
     title = "",
     video = false,
     voteAverage = 0.0,
-    voteCount = null
+    voteCount = null,
   )
 
   fun Full() = SimilarMovieApi(
@@ -35,12 +35,10 @@ object SimilarMovieApiFactory {
     title = "Similar movie title",
     video = false,
     voteAverage = 9.85444334,
-    voteCount = null
+    voteCount = null,
   )
 
-  fun SimilarMovieApiList(
-    range: IntProgression = 1..10,
-  ) = range.map {
+  fun SimilarMovieApiList(range: IntProgression = 1..10) = range.map {
     SimilarMovieApi(
       id = it,
       adult = false,
@@ -55,7 +53,7 @@ object SimilarMovieApiFactory {
       title = "Lorem Ipsum title",
       video = false,
       voteAverage = 9.85444334,
-      voteCount = null
+      voteCount = null,
     )
   }
 }

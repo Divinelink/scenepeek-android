@@ -16,7 +16,7 @@ sealed class SimilarRequestApi(
     val movieId: Int,
   ) : SimilarRequestApi(
     id = movieId,
-    endpoint = "movie"
+    endpoint = "movie",
   )
 
   @Serializable
@@ -25,6 +25,6 @@ sealed class SimilarRequestApi(
     val seriesId: Int,
   ) : SimilarRequestApi(
     id = seriesId,
-    endpoint = "tv"
+    endpoint = "tv",
   )
 }

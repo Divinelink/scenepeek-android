@@ -46,21 +46,21 @@ class GetSearchMoviesUseCaseTest {
           query = "test query",
           searchList = searchResult.mapIndexed { index, movie ->
             movie.copy(isFavorite = index % 2 == 0)
-          }
-        )
+          },
+        ),
       )
 
       repository.mockFetchSearchMovies(
         request = request,
-        response = Result.success(searchResult)
+        response = Result.success(searchResult),
       )
 
       repository.mockFetchFavoriteMoviesIds(
         response = Result.success(
           localFavoriteMovies.map {
             Pair(it.id, MediaType.MOVIE)
-          }
-        )
+          },
+        ),
       )
 
       val useCase = GetSearchMoviesUseCase(

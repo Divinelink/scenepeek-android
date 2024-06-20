@@ -17,14 +17,17 @@ class FakeDestinationsNavigator : DestinationsNavigator {
     return true
   }
 
-  override fun navigate(direction: Direction, builder: DestinationsNavOptionsBuilder.() -> Unit) {
+  override fun navigate(
+    direction: Direction,
+    builder: DestinationsNavOptionsBuilder.() -> Unit,
+  ) {
     navigatedRoutes.add(direction.route)
   }
 
   override fun navigate(
     direction: Direction,
     navOptions: NavOptions?,
-    navigatorExtras: Navigator.Extras?
+    navigatorExtras: Navigator.Extras?,
   ) {
     navigatedRoutes.add(direction.route)
   }
@@ -42,7 +45,7 @@ class FakeDestinationsNavigator : DestinationsNavigator {
   override fun popBackStack(
     route: RouteOrDirection,
     inclusive: Boolean,
-    saveState: Boolean
+    saveState: Boolean,
   ): Boolean {
     TODO("Not yet implemented")
   }

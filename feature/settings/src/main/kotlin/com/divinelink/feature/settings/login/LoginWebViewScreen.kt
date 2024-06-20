@@ -28,7 +28,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @SuppressLint("SetJavaScriptEnabled")
 fun LoginWebViewScreen(
   navigator: DestinationsNavigator,
-  viewModel: LoginWebViewViewModel = hiltViewModel()
+  viewModel: LoginWebViewViewModel = hiltViewModel(),
 ) {
   val context = LocalContext.current
 
@@ -46,14 +46,14 @@ fun LoginWebViewScreen(
       settings.domStorageEnabled = true
       webViewClient = AutoRedirectWebView(
         redirectUrl = viewState.value.redirectUrl,
-        onCloseWebView = viewModel::handleSession
+        onCloseWebView = viewModel::handleSession,
       )
     }
   }
 
   SettingsScaffold(
     title = stringResource(R.string.login__title),
-    onNavigationClick = navigator::navigateUp
+    onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
     AndroidView(
       modifier = Modifier
@@ -61,7 +61,7 @@ fun LoginWebViewScreen(
         .padding(paddingValues)
         .fillMaxSize(),
       factory = { webView },
-      update = { it.loadUrl(viewState.value.url) }
+      update = { it.loadUrl(viewState.value.url) },
     )
   }
 

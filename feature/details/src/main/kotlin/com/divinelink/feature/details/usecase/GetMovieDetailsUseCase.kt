@@ -40,7 +40,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
       coroutineScope {
         val result = mediaRepository.checkIfMediaIsFavorite(
           id = requestApi.id,
-          mediaType = MediaType.from(requestApi.endpoint)
+          mediaType = MediaType.from(requestApi.endpoint),
         )
         emit(result)
       }
@@ -81,7 +81,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val videos = repository.fetchVideos(
       request = VideosRequestApi(
         movieId = parameters.id,
-      )
+      ),
     ).catch {
       emit(Result.failure(VideosException()))
     }
@@ -97,9 +97,9 @@ open class GetMovieDetailsUseCase @Inject constructor(
         emit(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              detailsFlow.data.copy(isFavorite = favoriteFlow.data)
-            )
-          )
+              detailsFlow.data.copy(isFavorite = favoriteFlow.data),
+            ),
+          ),
         )
       }.onFailure {
         emit(Result.failure(MediaDetailsException()))
@@ -117,9 +117,9 @@ open class GetMovieDetailsUseCase @Inject constructor(
         emit(
           Result.success(
             MovieDetailsResult.VideosSuccess(
-              trailer = videosFlow.data.firstOrNull { it.officialTrailer }
-            )
-          )
+              trailer = videosFlow.data.firstOrNull { it.officialTrailer },
+            ),
+          ),
         )
       }
     }

@@ -10,9 +10,7 @@ class FakeFetchMultiInfoSearchUseCase {
 
   val mock: FetchMultiInfoSearchUseCase = mockk()
 
-  fun mockFetchMultiInfoSearch(
-    response: Result<MultiSearchResult>,
-  ) {
+  fun mockFetchMultiInfoSearch(response: Result<MultiSearchResult>) {
     coEvery {
       mock.invoke(any())
     } returns flowOf(response)

@@ -20,9 +20,7 @@ class FakeCreateRequestTokenUseCase {
     whenever(mock.invoke(any())).thenReturn(Result.failure(Exception()))
   }
 
-  suspend fun mockSuccess(
-    response: Result<String>,
-  ) {
+  suspend fun mockSuccess(response: Result<String>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

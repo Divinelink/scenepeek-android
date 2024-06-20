@@ -16,7 +16,7 @@ sealed class DetailsRequestApi(
     val movieId: Int,
   ) : DetailsRequestApi(
     id = movieId,
-    endpoint = MediaType.MOVIE.value
+    endpoint = MediaType.MOVIE.value,
   )
 
   @Serializable
@@ -25,6 +25,6 @@ sealed class DetailsRequestApi(
     val seriesId: Int,
   ) : DetailsRequestApi(
     id = seriesId,
-    endpoint = MediaType.TV.value
+    endpoint = MediaType.TV.value,
   )
 }

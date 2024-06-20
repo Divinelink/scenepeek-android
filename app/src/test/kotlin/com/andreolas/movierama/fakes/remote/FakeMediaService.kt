@@ -32,9 +32,9 @@ class FakeMediaService {
     result: Flow<MoviesResponseApi>,
   ) {
     whenever(
-      mock.fetchPopularMovies(request)
+      mock.fetchPopularMovies(request),
     ).thenReturn(
-      result
+      result,
     )
   }
 
@@ -43,9 +43,9 @@ class FakeMediaService {
     result: Flow<SearchResponseApi>,
   ) {
     whenever(
-      mock.fetchSearchMovies(request)
+      mock.fetchSearchMovies(request),
     ).thenReturn(
-      result
+      result,
     )
   }
 
@@ -54,9 +54,9 @@ class FakeMediaService {
     response: Flow<DetailsResponseApi>,
   ) {
     whenever(
-      mock.fetchDetails(request)
+      mock.fetchDetails(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -65,9 +65,9 @@ class FakeMediaService {
     response: Flow<ReviewsResponseApi>,
   ) {
     whenever(
-      mock.fetchReviews(request)
+      mock.fetchReviews(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -76,9 +76,9 @@ class FakeMediaService {
     response: Flow<SimilarResponseApi>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request)
+      mock.fetchSimilarMovies(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -87,9 +87,9 @@ class FakeMediaService {
     response: Flow<VideosResponseApi>,
   ) {
     whenever(
-      mock.fetchVideos(request)
+      mock.fetchVideos(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -98,9 +98,9 @@ class FakeMediaService {
     response: Flow<AccountMediaDetailsResponseApi>,
   ) {
     whenever(
-      mock.fetchAccountMediaDetails(request)
+      mock.fetchAccountMediaDetails(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -109,9 +109,9 @@ class FakeMediaService {
     response: Flow<Unit>,
   ) {
     whenever(
-      mock.submitRating(request)
+      mock.submitRating(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -120,9 +120,9 @@ class FakeMediaService {
     response: Flow<Unit>,
   ) {
     whenever(
-      mock.deleteRating(request)
+      mock.deleteRating(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -131,9 +131,9 @@ class FakeMediaService {
     response: Flow<AddToWatchlistResponseApi>,
   ) {
     whenever(
-      mock.addToWatchlist(request)
+      mock.addToWatchlist(request),
     ).thenReturn(
-      response
+      response,
     )
   }
 }

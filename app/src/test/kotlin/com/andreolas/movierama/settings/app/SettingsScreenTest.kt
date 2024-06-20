@@ -21,12 +21,12 @@ class SettingsScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
-      direction = SettingsScreenDestination()
+      direction = SettingsScreenDestination(),
     )
 
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator
+        navigator = destinationsNavigator,
       )
     }
 
@@ -37,7 +37,7 @@ class SettingsScreenTest : ComposeTest() {
     }
 
     destinationsNavigator.verifyNavigatedToDirection(
-      AccountSettingsScreenDestination
+      AccountSettingsScreenDestination,
     )
 
     val navigateUpContentDescription = composeTestRule.activity
@@ -48,7 +48,7 @@ class SettingsScreenTest : ComposeTest() {
     }
 
     destinationsNavigator.verifyNavigatedToDirection(
-      SettingsScreenDestination
+      SettingsScreenDestination,
     )
   }
 
@@ -57,12 +57,12 @@ class SettingsScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
-      direction = SettingsScreenDestination()
+      direction = SettingsScreenDestination(),
     )
 
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator
+        navigator = destinationsNavigator,
       )
     }
 
@@ -75,7 +75,7 @@ class SettingsScreenTest : ComposeTest() {
     }
 
     destinationsNavigator.verifyNavigatedToDirection(
-      AppearanceSettingsScreenDestination
+      AppearanceSettingsScreenDestination,
     )
   }
 
@@ -84,12 +84,12 @@ class SettingsScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
-      direction = SettingsScreenDestination()
+      direction = SettingsScreenDestination(),
     )
 
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator
+        navigator = destinationsNavigator,
       )
     }
 
@@ -102,7 +102,7 @@ class SettingsScreenTest : ComposeTest() {
     }
 
     destinationsNavigator.verifyNavigatedToDirection(
-      HelpSettingsScreenDestination
+      HelpSettingsScreenDestination,
     )
   }
 }

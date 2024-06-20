@@ -32,7 +32,7 @@ class MarkAsFavoriteUseCaseTest {
 
     repository.mockMarkAsFavorite(
       media = remoteMovies[2],
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     repository.mockCheckFavorite(
@@ -56,7 +56,7 @@ class MarkAsFavoriteUseCaseTest {
 
     repository.mockMarkAsFavorite(
       media = remoteMovies[2],
-      response = Result.failure(Exception())
+      response = Result.failure(Exception()),
     )
 
     val useCase = MarkAsFavoriteUseCase(

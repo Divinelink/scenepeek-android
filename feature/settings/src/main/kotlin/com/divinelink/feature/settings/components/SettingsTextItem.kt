@@ -20,19 +20,19 @@ import com.divinelink.feature.settings.R
 fun SettingsTextItem(
   icon: Painter? = null,
   title: String,
-  summary: String?
+  summary: String?,
 ) {
   Row(
     verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     modifier = Modifier
       .padding(MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth()
+      .fillMaxWidth(),
   ) {
     icon?.let {
       Icon(
         painter = icon,
-        contentDescription = null
+        contentDescription = null,
       )
     }
 
@@ -41,13 +41,13 @@ fun SettingsTextItem(
     ) {
       Text(
         text = title,
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
       )
       summary?.let {
         Text(
           text = summary,
           style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.secondary
+          color = MaterialTheme.colorScheme.secondary,
         )
       }
     }
@@ -68,7 +68,7 @@ private fun SettingsScreenPreview() {
       SettingsTextItem(
         icon = painterResource(id = R.drawable.ic_appearance_24),
         title = "Version",
-        summary = null
+        summary = null,
       )
     }
   }

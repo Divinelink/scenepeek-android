@@ -15,7 +15,7 @@ import org.robolectric.annotation.Config
 @Config(
   application = Application::class,
   sdk = [Build.VERSION_CODES.Q],
-  instrumentedPackages = ["androidx.loader.content"]
+  instrumentedPackages = ["androidx.loader.content"],
 )
 open class ComposeTest : UnitTest() {
 

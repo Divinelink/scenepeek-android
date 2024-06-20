@@ -28,7 +28,6 @@ fun WatchlistErrorContent(
   onLogin: () -> Unit,
   onRetry: () -> Unit,
 ) {
-
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -41,7 +40,7 @@ fun WatchlistErrorContent(
         Text(
           textAlign = TextAlign.Center,
           style = MaterialTheme.typography.titleMedium,
-          text = stringResource(id = R.string.feature_watchlist_login_to_see_watchlist)
+          text = stringResource(id = R.string.feature_watchlist_login_to_see_watchlist),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
         Button(onClick = onLogin) {
@@ -52,7 +51,7 @@ fun WatchlistErrorContent(
         Text(
           textAlign = TextAlign.Center,
           style = MaterialTheme.typography.titleLarge,
-          text = stringResource(id = uiR.string.core_ui_error_retry)
+          text = stringResource(id = uiR.string.core_ui_error_retry),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
         Button(onClick = onRetry) {

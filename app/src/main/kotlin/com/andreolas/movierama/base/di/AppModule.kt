@@ -36,7 +36,7 @@ object AppModule {
   ) = Room.databaseBuilder(
     context = app,
     klass = AppDatabase::class.java,
-    name = DB_NAME
+    name = DB_NAME,
   ).fallbackToDestructiveMigration().build() // The reason we can construct a database for the repo
 
   @Singleton
@@ -55,20 +55,16 @@ object AppModule {
   @Provides
   fun provideFirebaseRemoteConfig(
     configSettings: FirebaseRemoteConfigSettings,
-  ): FirebaseRemoteConfig {
-    return Firebase.remoteConfig.apply {
-      setConfigSettingsAsync(configSettings)
-    }
+  ): FirebaseRemoteConfig = Firebase.remoteConfig.apply {
+    setConfigSettingsAsync(configSettings)
   }
 
   @Singleton
   @Provides
-  fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
-    return if (BuildConfig.DEBUG) {
-      remoteConfigSettings { minimumFetchIntervalInSeconds = 0 }
-    } else {
-      remoteConfigSettings { }
-    }
+  fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings = if (BuildConfig.DEBUG) {
+    remoteConfigSettings { minimumFetchIntervalInSeconds = 0 }
+  } else {
+    remoteConfigSettings { }
   }
 
   @ApplicationScope

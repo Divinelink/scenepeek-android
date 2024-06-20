@@ -5,5 +5,5 @@ import com.divinelink.core.network.session.model.CreateRequestTokenResponseApi
 
 fun CreateRequestTokenResponseApi.map() = RequestToken(
   token = requestToken,
-  expiresAt = expiresAt
+  expiresAt = expiresAt,
 )

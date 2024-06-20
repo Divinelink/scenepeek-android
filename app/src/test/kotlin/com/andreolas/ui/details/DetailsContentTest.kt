@@ -138,7 +138,7 @@ class DetailsContentTest : ComposeTest() {
     composeTestRule
       .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
-        hasText(reviewsTitle)
+        hasText(reviewsTitle),
       )
       .assertIsDisplayed()
 
@@ -159,7 +159,7 @@ class DetailsContentTest : ComposeTest() {
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
-          error = UIText.ResourceText(detailsR.string.details__fatal_error_fetching_details)
+          error = UIText.ResourceText(detailsR.string.details__fatal_error_fetching_details),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -243,7 +243,7 @@ class DetailsContentTest : ComposeTest() {
     composeTestRule
       .onNodeWithTag(
         testTag = TestTags.Details.YOUR_RATING,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       )
       .assertIsDisplayed()
 
@@ -276,7 +276,7 @@ class DetailsContentTest : ComposeTest() {
     composeTestRule
       .onNodeWithText(
         text = addYourRate,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       )
       .assertIsDisplayed()
   }
@@ -302,13 +302,13 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__add_to_watchlist_button
+      uiR.string.details__add_to_watchlist_button,
     )
 
     composeTestRule
       .onNodeWithText(
         text = addToWatchlist,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       )
       .assertIsDisplayed()
   }
@@ -336,13 +336,13 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addedToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__added_to_watchlist_button
+      uiR.string.details__added_to_watchlist_button,
     )
 
     composeTestRule
       .onNodeWithText(
         text = addedToWatchlist,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       )
       .assertIsDisplayed()
   }
@@ -356,7 +356,7 @@ class DetailsContentTest : ComposeTest() {
         mediaType = MediaType.MOVIE,
         mediaDetails = MediaDetailsFactory.FightClub(),
         userDetails = AccountMediaDetailsFactory.NotRated(),
-      )
+      ),
     )
 
     setContentWithTheme {
@@ -372,7 +372,7 @@ class DetailsContentTest : ComposeTest() {
           viewState.value = viewState.value.copy(
             userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
               withWatchlist(true)
-            }
+            },
           )
         },
         showOrHideShareDialog = {},
@@ -380,25 +380,25 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val addToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__add_to_watchlist_button
+      uiR.string.details__add_to_watchlist_button,
     )
 
     with(composeTestRule) {
       onNodeWithText(
         text = addToWatchlist,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       ).performClick()
 
       onNodeWithText(
         text = addToWatchlist,
-        useUnmergedTree = true
+        useUnmergedTree = true,
       ).assertDoesNotExist()
 
       onNodeWithText(
         text = composeTestRule.activity.getString(
-          uiR.string.details__added_to_watchlist_button
+          uiR.string.details__added_to_watchlist_button,
         ),
-        useUnmergedTree = true
+        useUnmergedTree = true,
       ).assertIsDisplayed()
     }
     assertThat(hasClickedAddToWatchlist).isTrue()
@@ -454,7 +454,9 @@ class DetailsContentTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(composeTestRule.activity.getString(uiR.string.core_ui_share))
+        TestTags.Menu.MENU_ITEM.format(
+          composeTestRule.activity.getString(uiR.string.core_ui_share),
+        ),
       )
         .assertIsDisplayed()
         .performClick()

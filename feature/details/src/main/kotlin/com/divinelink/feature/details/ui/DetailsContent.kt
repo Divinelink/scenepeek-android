@@ -126,7 +126,7 @@ fun DetailsContent(
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
-    onDismissSnackbar = onConsumeSnackbar
+    onDismissSnackbar = onConsumeSnackbar,
   )
 
   Scaffold(
@@ -153,7 +153,7 @@ fun DetailsContent(
           ) {
             Icon(
               Icons.AutoMirrored.Rounded.ArrowBack,
-              stringResource(uiR.string.core_ui_navigate_up_button_content_description)
+              stringResource(uiR.string.core_ui_navigate_up_button_content_description),
             )
           }
         },
@@ -167,7 +167,8 @@ fun DetailsContent(
 
           IconButton(
             modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
-            onClick = { showOverflowMenu = !showOverflowMenu }) {
+            onClick = { showOverflowMenu = !showOverflowMenu },
+          ) {
             Icon(Icons.Outlined.MoreVert, "More")
           }
 
@@ -176,12 +177,11 @@ fun DetailsContent(
               .widthIn(min = 180.dp)
               .testTag(TestTags.Menu.DROPDOWN_MENU),
             expanded = showOverflowMenu,
-            onDismissRequest = { showOverflowMenu = false }
+            onDismissRequest = { showOverflowMenu = false },
           ) {
-
             DropdownMenuItem(
               modifier = Modifier.testTag(
-                TestTags.Menu.MENU_ITEM.format(stringResource(id = uiR.string.core_ui_share))
+                TestTags.Menu.MENU_ITEM.format(stringResource(id = uiR.string.core_ui_share)),
               ),
               text = {
                 Text(text = stringResource(id = uiR.string.core_ui_share))
@@ -192,7 +192,7 @@ fun DetailsContent(
               },
             )
           }
-        }
+        },
       )
     },
     content = { paddingValues ->
@@ -208,7 +208,7 @@ fun DetailsContent(
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
               onAddRateClicked = onAddRateClicked,
-              onAddToWatchlistClicked = onAddToWatchlistClicked
+              onAddToWatchlistClicked = onAddToWatchlistClicked,
             )
           }
         }
@@ -219,14 +219,14 @@ fun DetailsContent(
             onNavigateUp()
           },
           confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
-          uiState = AlertDialogUiState(text = viewState.error)
+          uiState = AlertDialogUiState(text = viewState.error),
         )
       }
 
       if (viewState.isLoading) {
         LoadingContent()
       }
-    }
+    },
   )
 }
 
@@ -283,7 +283,7 @@ fun MediaDetailsContent(
     LazyColumn(
       modifier = modifier
         .testTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
-        .fillMaxWidth()
+        .fillMaxWidth(),
     ) {
       item {
         TitleDetails(mediaDetails)
@@ -337,7 +337,7 @@ fun MediaDetailsContent(
         WatchlistButton(
           modifier = Modifier.padding(paddingValues = ListPaddingValues),
           onWatchlist = userDetails?.watchlist == true,
-          onClick = onAddToWatchlistClicked
+          onClick = onAddToWatchlistClicked,
         )
       }
 
@@ -345,14 +345,14 @@ fun MediaDetailsContent(
         UserRating(
           overallUserScore = mediaDetails.rating,
           userRating = userDetails?.beautifiedRating,
-          onAddRateClicked = onAddRateClicked
+          onAddRateClicked = onAddRateClicked,
         )
       }
 
       item {
         HorizontalDivider(
           modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-          thickness = MaterialTheme.dimensions.keyline_1
+          thickness = MaterialTheme.dimensions.keyline_1,
         )
         CastList(
           cast = mediaDetails.cast,
@@ -396,11 +396,10 @@ private fun UserRating(
     modifier = modifier.fillMaxSize(),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24)
+        .size(MaterialTheme.dimensions.keyline_24),
     )
 
     Row(
@@ -409,7 +408,7 @@ private fun UserRating(
     ) {
       MediaRatingItem(
         rating = overallUserScore,
-        size = RatingSize.LARGE
+        size = RatingSize.LARGE,
       )
       Text(
         text = stringResource(id = R.string.details__user_score),
@@ -420,12 +419,12 @@ private fun UserRating(
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24)
+        .size(MaterialTheme.dimensions.keyline_24),
     )
 
     TextButton(
       modifier = Modifier.align(Alignment.CenterVertically),
-      onClick = onAddRateClicked
+      onClick = onAddRateClicked,
     ) {
       if (userRating != null) {
         SpannableRating(
@@ -437,7 +436,7 @@ private fun UserRating(
       } else {
         Text(
           text = stringResource(id = R.string.details__add_rating),
-          style = MaterialTheme.typography.titleMedium
+          style = MaterialTheme.typography.titleMedium,
         )
       }
     }
@@ -445,7 +444,7 @@ private fun UserRating(
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24)
+        .size(MaterialTheme.dimensions.keyline_24),
     )
   }
 }
@@ -455,7 +454,7 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = MaterialTheme.dimensions.keyline_12)
+      .padding(horizontal = MaterialTheme.dimensions.keyline_12),
   ) {
     Text(
       modifier = Modifier.weight(1f),
@@ -469,7 +468,7 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
       .padding(
         start = MaterialTheme.dimensions.keyline_16,
         end = MaterialTheme.dimensions.keyline_12,
-        bottom = MaterialTheme.dimensions.keyline_16
+        bottom = MaterialTheme.dimensions.keyline_16,
       ),
   ) {
     Text(
@@ -509,7 +508,7 @@ private fun OverviewDetails(
           items(genres) { genre ->
             GenreLabel(
               genre = genre,
-              onGenreClicked = { onGenreClicked(genre) }
+              onGenreClicked = { onGenreClicked(genre) },
             )
           }
         }
@@ -548,7 +547,7 @@ private fun DetailsContentPreview(
 
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
-    coroutineScope = coroutineScope
+    coroutineScope = coroutineScope,
   ) {
     AppTheme {
       Surface {
@@ -586,7 +585,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             "Praesent sodales scelerisque eros at rhoncus. Duis posuere sapien vel ipsum" +
             "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
             "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
-          date = "2022-10-22"
+          date = "2022-10-22",
         )
       }
       val similarMovies = (1..10).map {
@@ -623,7 +622,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         director = Director(
           id = 123443321,
           name = "Forest Gump",
-          profilePath = "BoxOfChocolates.jpg"
+          profilePath = "BoxOfChocolates.jpg",
         ),
         cast = listOf(
           Actor(
@@ -631,28 +630,28 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
             character = "HelloJohnny",
-            order = 0
+            order = 0,
           ),
           Actor(
             id = 2,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
             character = "McMurphy",
-            order = 1
+            order = 1,
           ),
           Actor(
             id = 3,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
             character = "HelloJohnny",
-            order = 0
+            order = 0,
           ),
           Actor(
             id = 4,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
             character = "McMurphy",
-            order = 1
+            order = 1,
           ),
         ),
         genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
@@ -672,7 +671,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 8679,
             favorite = false,
             rating = 9.0f,
-            watchlist = false
+            watchlist = false,
           ),
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
@@ -702,7 +701,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 0,
             favorite = false,
             rating = 9.0f,
-            watchlist = true
+            watchlist = true,
           ),
           reviews = reviews,
         ),
@@ -710,7 +709,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          error = UIText.StringText("Something went wrong.")
+          error = UIText.StringText("Something went wrong."),
         ),
       )
     }

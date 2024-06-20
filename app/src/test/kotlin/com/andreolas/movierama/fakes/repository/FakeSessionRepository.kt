@@ -11,11 +11,9 @@ class FakeSessionRepository {
 
   val mock: SessionRepository = mock()
 
-  fun mockGetAccountDetails(
-    response: Result<AccountDetails>
-  ) {
+  fun mockGetAccountDetails(response: Result<AccountDetails>) {
     whenever(
-      mock.getAccountDetails(any())
+      mock.getAccountDetails(any()),
     ).thenReturn(flowOf(response))
   }
 }

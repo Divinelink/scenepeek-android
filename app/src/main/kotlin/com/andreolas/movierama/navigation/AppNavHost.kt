@@ -26,8 +26,8 @@ fun AppNavHost(
           HomeScreen(
             navigator = destinationsNavigator,
           )
-        }
+        },
       )
-    }
+    },
   )
 }

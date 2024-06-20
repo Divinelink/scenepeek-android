@@ -18,7 +18,7 @@ class MainViewModelTest {
       .mockSetRemoteConfigResult(Unit)
       .buildViewModel()
       .assertViewState(
-        MainViewState.Completed
+        MainViewState.Completed,
       )
   }
 

@@ -25,21 +25,21 @@ fun AlertDialogSelectOption(
   listItems: List<String>,
   selectedOption: Int,
   onSelected: (Int) -> Unit,
-  onDismissRequest: () -> Unit
+  onDismissRequest: () -> Unit,
 ) {
   BasicAlertDialog(
     onDismissRequest = onDismissRequest,
     content = {
       Card(
-        shape = MaterialTheme.shapes.extraLarge
+        shape = MaterialTheme.shapes.extraLarge,
       ) {
         Column(
-          modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_24)
+          modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_24),
         ) {
           Text(
             modifier = Modifier.padding(
               start = MaterialTheme.dimensions.keyline_24,
-              bottom = MaterialTheme.dimensions.keyline_16
+              bottom = MaterialTheme.dimensions.keyline_16,
             ),
             text = title,
             style = MaterialTheme.typography.headlineSmall,
@@ -52,22 +52,22 @@ fun AlertDialogSelectOption(
                 .fillMaxWidth()
                 .clickable {
                   onSelected(index)
-                }
+                },
             ) {
               RadioButton(
                 modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_16),
                 selected = selectedOption == index,
-                onClick = { onSelected(index) }
+                onClick = { onSelected(index) },
               )
               Text(
                 text = option,
-                modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8)
+                modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8),
               )
             }
           }
         }
       }
-    }
+    },
   )
 }
 
@@ -80,7 +80,7 @@ private fun RadioSelectAlertDialog() {
       listItems = listOf("Option 1", "Option 2", "Option 3"),
       selectedOption = 0,
       onSelected = {},
-      onDismissRequest = {}
+      onDismissRequest = {},
     )
   }
 }

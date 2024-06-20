@@ -17,7 +17,7 @@ fun SpannableRating(
   modifier: Modifier = Modifier,
   text: String,
   rating: String,
-  newLine: Boolean = false
+  newLine: Boolean = false,
 ) {
   val color = rating.getColorRating()
 
@@ -27,7 +27,7 @@ fun SpannableRating(
       style = SpanStyle(
         color = color,
         fontSize = MaterialTheme.typography.headlineMedium.fontSize,
-      )
+      ),
     ) {
       if (newLine) {
         append("\n")

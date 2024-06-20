@@ -70,7 +70,7 @@ fun MediaDetailsContent(
         .padding(MaterialTheme.dimensions.keyline_12),
     ) {
       Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
       ) {
         Text(
           modifier = Modifier
@@ -110,7 +110,7 @@ fun MediaDetailsContent(
 
         Text(
           modifier = Modifier.padding(
-            horizontal = MaterialTheme.dimensions.keyline_8
+            horizontal = MaterialTheme.dimensions.keyline_8,
           ),
           text = media.overview,
           style = MaterialTheme.typography.bodyMedium,

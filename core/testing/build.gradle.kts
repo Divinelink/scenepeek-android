@@ -3,7 +3,6 @@ plugins {
   alias(libs.plugins.divinelink.android.library.compose)
 }
 
-
 dependencies {
   api(projects.core.data)
   api(projects.core.model)

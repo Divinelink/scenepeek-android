@@ -35,12 +35,11 @@ data class MovieApi(
 fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
   totalPages = totalPages,
   totalResults = totalResults,
-  list = this.results.map(MovieApi::toMovie)
+  list = this.results.map(MovieApi::toMovie),
 )
 
-fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> {
-  return this.results.map(MovieApi::toMovie)
-}
+fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> =
+  this.results.map(MovieApi::toMovie)
 
 private fun MovieApi.toMovie() = MediaItem.Media.Movie(
   id = this.id,

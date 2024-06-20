@@ -13,9 +13,7 @@ class FakeLogoutUseCase {
     whenever(mock.invoke(any())).thenReturn(Result.failure(Exception()))
   }
 
-  suspend fun mockSuccess(
-    response: Result<Unit>,
-  ) {
+  suspend fun mockSuccess(response: Result<Unit>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

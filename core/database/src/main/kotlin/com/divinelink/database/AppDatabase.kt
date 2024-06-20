@@ -9,10 +9,10 @@ import com.divinelink.database.model.PersistableTV
 @Database(
   entities = [
     PersistableMovie::class,
-    PersistableTV::class
+    PersistableTV::class,
   ],
   version = AppDatabase.LATEST_VERSION,
-  exportSchema = true
+  exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
 

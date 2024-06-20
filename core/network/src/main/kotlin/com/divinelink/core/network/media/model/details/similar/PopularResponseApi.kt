@@ -42,9 +42,10 @@ data class SimilarMovieApi(
   val voteCount: Int?,
 )
 
-fun SimilarResponseApi.toDomainMoviesList(mediaType: MediaType): List<MediaItem.Media> {
-  return this.results.map { it.toMediaItem(mediaType) }
-}
+fun SimilarResponseApi.toDomainMoviesList(mediaType: MediaType): List<MediaItem.Media> =
+  this.results.map {
+    it.toMediaItem(mediaType)
+  }
 
 private fun SimilarMovieApi.toMediaItem(mediaType: MediaType): MediaItem.Media = when (mediaType) {
   MediaType.MOVIE -> MediaItem.Media.Movie(

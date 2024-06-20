@@ -27,9 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProdMediaService @Inject constructor(
-  private val restClient: RestClient,
-) : MediaService {
+class ProdMediaService @Inject constructor(private val restClient: RestClient) : MediaService {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/movie/popular?"
@@ -123,7 +121,7 @@ class ProdMediaService @Inject constructor(
       "&session_id=${request.sessionId}"
 
     val response = restClient.get<AccountMediaDetailsResponseApi>(
-      url = url
+      url = url,
     )
 
     emit(response)
@@ -137,7 +135,7 @@ class ProdMediaService @Inject constructor(
 
     val response = restClient.post<AddRatingRequestBodyApi, Unit>(
       url = url,
-      body = AddRatingRequestBodyApi(request.rating)
+      body = AddRatingRequestBodyApi(request.rating),
     )
 
     emit(response)
@@ -154,25 +152,24 @@ class ProdMediaService @Inject constructor(
     emit(response)
   }
 
-  override fun addToWatchlist(
-    request: AddToWatchlistRequestApi
-  ): Flow<AddToWatchlistResponseApi> = flow {
-    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
-      "?session_id=${request.sessionId}"
+  override fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<AddToWatchlistResponseApi> =
+    flow {
+      val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
+        "?session_id=${request.sessionId}"
 
-    val response = restClient.post<AddToWatchlistRequestBodyApi, AddToWatchlistResponseApi>(
-      url = url,
-      body = AddToWatchlistRequestBodyApi(
-        mediaType = request.mediaType,
-        mediaId = request.mediaId,
-        watchlist = request.addToWatchlist
+      val response = restClient.post<AddToWatchlistRequestBodyApi, AddToWatchlistResponseApi>(
+        url = url,
+        body = AddToWatchlistRequestBodyApi(
+          mediaType = request.mediaType,
+          mediaId = request.mediaId,
+          watchlist = request.addToWatchlist,
+        ),
       )
-    )
 
-    if (response.success) {
-      emit(response)
-    } else {
-      throw Exception("Failed to add to watchlist")
+      if (response.success) {
+        emit(response)
+      } else {
+        throw Exception("Failed to add to watchlist")
+      }
     }
-  }
 }

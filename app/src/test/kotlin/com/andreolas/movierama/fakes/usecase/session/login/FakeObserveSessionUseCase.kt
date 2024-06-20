@@ -16,17 +16,15 @@ class FakeObserveSessionUseCase {
 
   fun mockFailure() {
     whenever(
-      mock.invoke(any())
+      mock.invoke(any()),
     ).thenReturn(
-      flowOf(Result.failure(Exception()))
+      flowOf(Result.failure(Exception())),
     )
   }
 
-  fun mockSuccess(
-    response: Result<Boolean>,
-  ) {
+  fun mockSuccess(response: Result<Boolean>) {
     whenever(mock.invoke(any())).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 }

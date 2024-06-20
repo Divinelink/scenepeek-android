@@ -11,7 +11,6 @@ class GetMaterialYouUseCase @Inject constructor(
   private val preferenceStorage: PreferenceStorage,
   @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, Boolean>(dispatcher) {
-  override suspend fun execute(parameters: Unit): Boolean {
-    return preferenceStorage.isMaterialYouEnabled.first()
-  }
+  override suspend fun execute(parameters: Unit): Boolean =
+    preferenceStorage.isMaterialYouEnabled.first()
 }

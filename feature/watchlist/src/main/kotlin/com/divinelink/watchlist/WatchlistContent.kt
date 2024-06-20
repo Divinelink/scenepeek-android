@@ -46,7 +46,7 @@ fun WatchlistContent(
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
-    onLoadMore = onLoadMore
+    onLoadMore = onLoadMore,
   )
   Box(Modifier.fillMaxSize()) {
     LazyColumn(
@@ -69,11 +69,11 @@ fun WatchlistContent(
 
       items(
         items = list,
-        key = { it.id }
+        key = { it.id },
       ) { media ->
         DetailedMediaItem(
           mediaItem = media,
-          onClick = onMediaClick
+          onClick = onMediaClick,
         )
       }
     }
@@ -82,7 +82,7 @@ fun WatchlistContent(
         .padding(MaterialTheme.dimensions.keyline_16)
         .align(Alignment.BottomEnd),
       targetState = showScrollToTop.value,
-      label = "Show scroll to top button animation"
+      label = "Show scroll to top button animation",
     ) { isVisible ->
       if (isVisible) {
         ScrollToTopButton {

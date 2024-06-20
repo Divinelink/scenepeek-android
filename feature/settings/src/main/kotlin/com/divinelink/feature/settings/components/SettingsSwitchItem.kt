@@ -23,7 +23,7 @@ fun SettingsSwitchItem(
   title: String,
   summary: String,
   isChecked: Boolean,
-  onCheckedChange: (Boolean) -> Unit
+  onCheckedChange: (Boolean) -> Unit,
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
@@ -31,29 +31,29 @@ fun SettingsSwitchItem(
     modifier = Modifier
       .clickable { onCheckedChange(!isChecked) }
       .padding(MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth()
+      .fillMaxWidth(),
   ) {
     Column(
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       modifier = Modifier
         .fillMaxWidth()
-        .weight(5f)
+        .weight(5f),
     ) {
       Text(
         text = title,
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
       )
       Text(
         text = summary,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.secondary
+        color = MaterialTheme.colorScheme.secondary,
       )
     }
 
     Switch(
       modifier = Modifier.weight(1f),
       checked = isChecked,
-      onCheckedChange = onCheckedChange
+      onCheckedChange = onCheckedChange,
     )
   }
 }
@@ -66,7 +66,7 @@ private fun SettingsSwitchItemPreview() {
       title = "Material You",
       summary = "Change the theme based on your wallpaper",
       isChecked = true,
-      onCheckedChange = {}
+      onCheckedChange = {},
     )
   }
 }

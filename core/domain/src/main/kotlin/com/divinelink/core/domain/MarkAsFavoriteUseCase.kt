@@ -16,13 +16,13 @@ open class MarkAsFavoriteUseCase @Inject constructor(
   override suspend fun execute(parameters: MediaItem.Media) {
     val isFavorite = repository.checkIfMediaIsFavorite(
       id = parameters.id,
-      mediaType = parameters.mediaType
+      mediaType = parameters.mediaType,
     ).data
 
     val result = if (isFavorite) {
       repository.removeFavoriteMedia(
         id = parameters.id,
-        mediaType = parameters.mediaType
+        mediaType = parameters.mediaType,
       )
     } else {
       repository.insertFavoriteMedia(parameters)

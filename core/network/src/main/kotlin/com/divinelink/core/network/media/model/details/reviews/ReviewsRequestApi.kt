@@ -15,7 +15,7 @@ sealed class ReviewsRequestApi(
     val movieId: Int,
   ) : ReviewsRequestApi(
     id = movieId,
-    endpoint = "movie"
+    endpoint = "movie",
   )
 
   @Serializable
@@ -24,6 +24,6 @@ sealed class ReviewsRequestApi(
     val seriesId: Int,
   ) : ReviewsRequestApi(
     id = seriesId,
-    endpoint = "tv"
+    endpoint = "tv",
   )
 }

@@ -1,7 +1,5 @@
 package com.andreolas.movierama.fakes.dao
 
-import com.divinelink.database.dao.MediaDao
-import com.divinelink.database.model.PersistableMovie
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -15,21 +13,17 @@ class FakeMediaDao {
     result: Flow<List<com.divinelink.database.model.PersistableMovie>>,
   ) {
     whenever(
-      mock.fetchFavoriteMovies()
+      mock.fetchFavoriteMovies(),
     ).thenReturn(
-      result
+      result,
     )
   }
 
-  suspend fun verifyInsertFavoriteMovie(
-    movie: com.divinelink.database.model.PersistableMovie,
-  ) {
+  suspend fun verifyInsertFavoriteMovie(movie: com.divinelink.database.model.PersistableMovie) {
     verify(mock).insertFavoriteMovie(movie)
   }
 
-  suspend fun verifyRemoveMovie(
-    id: Int,
-  ) {
+  suspend fun verifyRemoveMovie(id: Int) {
     verify(mock).removeFavoriteMovie(id)
   }
 

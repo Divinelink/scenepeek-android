@@ -8,6 +8,6 @@ object MoviesResponseApiFactory {
     page = 1,
     results = MovieApiFactory.EmptyList(),
     totalPages = 3,
-    totalResults = 60
+    totalResults = 60,
   )
 }

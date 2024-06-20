@@ -29,7 +29,7 @@ class ProdAccountRepositoryTest {
   @Test
   fun `test fetch movie watchlist successfully`() = runTest {
     remote.mockFetchMoviesWatchlist(
-      response = flowOf(response)
+      response = flowOf(response),
     )
 
     val result = repository.fetchMoviesWatchlist(
@@ -40,7 +40,7 @@ class ProdAccountRepositoryTest {
     )
 
     assertThat(result.first()).isEqualTo(
-      Result.success(response.map())
+      Result.success(response.map()),
     )
   }
 
@@ -48,7 +48,7 @@ class ProdAccountRepositoryTest {
   fun `test fetch tv watchlist successfully`() = runTest {
     val tvResponse = TvResponseApiFactory.full()
     remote.mockFetchTvShowsWatchlist(
-      response = flowOf(tvResponse)
+      response = flowOf(tvResponse),
     )
 
     val result = repository.fetchTvShowsWatchlist(
@@ -59,7 +59,7 @@ class ProdAccountRepositoryTest {
     )
 
     assertThat(result.first()).isEqualTo(
-      Result.success(tvResponse.map())
+      Result.success(tvResponse.map()),
     )
   }
 

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class CreateSessionUseCase @Inject constructor(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : UseCase<String, Unit>(dispatcher) {
 
   override suspend fun execute(parameters: String) {

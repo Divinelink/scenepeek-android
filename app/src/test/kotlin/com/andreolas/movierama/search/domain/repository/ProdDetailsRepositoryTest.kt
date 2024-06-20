@@ -103,8 +103,8 @@ class ProdDetailsRepositoryTest {
         type = "Trailer",
         official = true,
         publishedAt = "",
-      )
-    )
+      ),
+    ),
   )
 
   private var mediaRemote = FakeMediaService()
@@ -126,11 +126,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockFetchMovieDetails(
       request = request,
-      response = flowOf(detailsResponseApi)
+      response = flowOf(detailsResponseApi),
     )
 
     val actualResult = repository.fetchMovieDetails(
-      request = DetailsRequestApi.Movie(movieId = 555)
+      request = DetailsRequestApi.Movie(movieId = 555),
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -144,11 +144,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockFetchMovieReviews(
       request = request,
-      response = flowOf(reviewsResponseApi)
+      response = flowOf(reviewsResponseApi),
     )
 
     val actualResult = repository.fetchMovieReviews(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -171,11 +171,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockFetchSimilarMovies(
       request = request,
-      response = flowOf(similarResponseApi)
+      response = flowOf(similarResponseApi),
     )
 
     val actualResult = repository.fetchSimilarMovies(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -188,7 +188,7 @@ class ProdDetailsRepositoryTest {
     val expectedResult = SimilarException()
 
     repository.fetchSimilarMovies(
-      request = request
+      request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
@@ -201,7 +201,7 @@ class ProdDetailsRepositoryTest {
     val expectedResult = ReviewsException()
 
     repository.fetchMovieReviews(
-      request = request
+      request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
@@ -214,7 +214,7 @@ class ProdDetailsRepositoryTest {
     val expectedResult = MediaDetailsException()
 
     repository.fetchMovieDetails(
-      request = request
+      request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
@@ -247,16 +247,16 @@ class ProdDetailsRepositoryTest {
         name = "Lorem Ipsum",
         site = null,
         officialTrailer = true,
-      )
+      ),
     )
 
     mediaRemote.mockFetchMovieVideos(
       request = request,
-      response = flowOf(videoResponseApi)
+      response = flowOf(videoResponseApi),
     )
 
     val actualResult = repository.fetchVideos(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -271,7 +271,7 @@ class ProdDetailsRepositoryTest {
     val expectedResult = VideosException()
 
     repository.fetchVideos(
-      request = request
+      request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
@@ -281,7 +281,7 @@ class ProdDetailsRepositoryTest {
   fun `test fetch account media details for movie`() = runTest {
     val request = AccountMediaDetailsRequestApi.Movie(
       movieId = 555,
-      sessionId = "session_id"
+      sessionId = "session_id",
     )
 
     val response = flowOf(AccountMediaDetailsResponseApiFactory.Rated())
@@ -289,11 +289,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockFetchAccountMediaDetails(
       request = request,
-      response = response
+      response = response,
     )
 
     val actualResult = repository.fetchAccountMediaDetails(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -304,7 +304,7 @@ class ProdDetailsRepositoryTest {
     val request = AddRatingRequestApi.Movie(
       movieId = 555,
       sessionId = "session_id",
-      rating = 5
+      rating = 5,
     )
 
     val response = flowOf(Unit)
@@ -312,11 +312,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockSubmitRating(
       request = request,
-      response = response
+      response = response,
     )
 
     val actualResult = repository.submitRating(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -334,11 +334,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockDeleteRating(
       request = request,
-      response = response
+      response = response,
     )
 
     val actualResult = repository.deleteRating(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -356,11 +356,11 @@ class ProdDetailsRepositoryTest {
 
     mediaRemote.mockDeleteRating(
       request = request,
-      response = response
+      response = response,
     )
 
     val actualResult = repository.deleteRating(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -372,7 +372,7 @@ class ProdDetailsRepositoryTest {
       movieId = 555,
       accountId = "123456789",
       addToWatchlist = true,
-      sessionId = "session_id"
+      sessionId = "session_id",
     )
 
     val response = flowOf(
@@ -380,18 +380,18 @@ class ProdDetailsRepositoryTest {
         statusMessage = "Success",
         statusCode = 1,
         success = true,
-      )
+      ),
     )
 
     val expectedResult = Unit
 
     mediaRemote.mockAddToWatchlist(
       request = request,
-      response = response
+      response = response,
     )
 
     val actualResult = repository.addToWatchlist(
-      request = request
+      request = request,
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)

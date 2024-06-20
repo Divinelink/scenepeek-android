@@ -20,9 +20,7 @@ import com.divinelink.core.ui.getString
 import com.divinelink.feature.watchlist.R
 
 @Composable
-fun WatchlistEmptyContent(
-  text: UIText
-) {
+fun WatchlistEmptyContent(text: UIText) {
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -33,7 +31,7 @@ fun WatchlistEmptyContent(
     Text(
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleMedium,
-      text = text.getString()
+      text = text.getString(),
     )
   }
 }
@@ -45,7 +43,7 @@ private fun WatchlistContentPreview() {
   AppTheme {
     Surface {
       WatchlistEmptyContent(
-        UIText.ResourceText(R.string.feature_watchlist_empty_movies_watchlist)
+        UIText.ResourceText(R.string.feature_watchlist_empty_movies_watchlist),
       )
     }
   }

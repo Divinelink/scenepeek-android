@@ -25,16 +25,12 @@ data class VideoResultsApi(
   val type: String,
 )
 
-fun VideosResponseApi.toDomainVideosList(): List<Video> {
-  return this.results.map(VideoResultsApi::toVideo)
-}
+fun VideosResponseApi.toDomainVideosList(): List<Video> = this.results.map(VideoResultsApi::toVideo)
 
-private fun VideoResultsApi.toVideo(): Video {
-  return Video(
-    id = this.id,
-    name = this.name,
-    site = VideoSite.entries.find { it.name == this.site },
-    key = this.key,
-    officialTrailer = this.type == "Trailer" && this.official,
-  )
-}
+private fun VideoResultsApi.toVideo(): Video = Video(
+  id = this.id,
+  name = this.name,
+  site = VideoSite.entries.find { it.name == this.site },
+  key = this.key,
+  officialTrailer = this.type == "Trailer" && this.official,
+)

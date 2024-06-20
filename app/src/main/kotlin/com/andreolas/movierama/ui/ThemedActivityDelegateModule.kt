@@ -14,6 +14,6 @@ abstract class ThemedActivityDelegateModule {
   @Singleton
   @Binds
   abstract fun provideThemedActivityDelegate(
-    impl: ThemedActivityDelegateImpl
+    impl: ThemedActivityDelegateImpl,
   ): ThemedActivityDelegate
 }

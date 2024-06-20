@@ -22,17 +22,20 @@ object CastSerializer : KSerializer<Cast> {
     return when {
       json.containsKey("cast_id") -> format.decodeFromJsonElement(
         deserializer = Cast.Movie.serializer(),
-        element = json
+        element = json,
       )
       json.containsKey("known_for_department") -> format.decodeFromJsonElement(
         deserializer = Cast.TV.serializer(),
-        element = json
+        element = json,
       )
       else -> throw SerializationException("Unknown type: $json")
     }
   }
 
-  override fun serialize(encoder: Encoder, value: Cast) {
+  override fun serialize(
+    encoder: Encoder,
+    value: Cast,
+  ) {
     error("Serialization is not supported")
   }
 }

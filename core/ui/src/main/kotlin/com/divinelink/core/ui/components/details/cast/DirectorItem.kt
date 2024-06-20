@@ -20,10 +20,10 @@ fun DirectorItem(
   Column(
     verticalArrangement = Arrangement.spacedBy(4.dp),
     modifier = Modifier.padding(
-      start = 8.dp, top = 16.dp,
-    )
+      start = 8.dp,
+      top = 16.dp,
+    ),
   ) {
-
     Text(
       text = stringResource(id = R.string.details__director_title),
       style = MaterialTheme.typography.bodyLarge,

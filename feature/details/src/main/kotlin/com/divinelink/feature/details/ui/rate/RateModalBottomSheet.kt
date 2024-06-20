@@ -26,7 +26,7 @@ fun RateModalBottomSheet(
 ) {
   ModalBottomSheet(
     sheetState = sheetState,
-    onDismissRequest = onDismissRequest
+    onDismissRequest = onDismissRequest,
   ) {
     RateDialogContent(
       modifier = modifier,
@@ -35,7 +35,7 @@ fun RateModalBottomSheet(
       onRateChanged = onRateChanged,
       onSubmitRate = onSubmitRate,
       onClearRate = onClearRate,
-      canClearRate = canClearRate
+      canClearRate = canClearRate,
     )
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }

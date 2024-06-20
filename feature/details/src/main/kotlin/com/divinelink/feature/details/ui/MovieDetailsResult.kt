@@ -25,7 +25,7 @@ sealed class MovieDetailsResult {
 
     data class FatalError(
       override val message: UIText = UIText.ResourceText(
-        R.string.details__fatal_error_fetching_details
+        R.string.details__fatal_error_fetching_details,
       ),
     ) : Failure(
       message = message,

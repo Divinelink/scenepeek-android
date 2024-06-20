@@ -7,5 +7,5 @@ data class WatchlistResponse(
   val data: List<MediaItem.Media>,
   val totalResults: Int,
   val type: MediaType,
-  val canFetchMore: Boolean
+  val canFetchMore: Boolean,
 )

@@ -13,7 +13,7 @@ import javax.inject.Inject
 open class CreateRequestTokenUseCase @Inject constructor(
   private val storage: PreferenceStorage,
   private val repository: SessionRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, String>(dispatcher) {
 
   override suspend fun execute(parameters: Unit): String {

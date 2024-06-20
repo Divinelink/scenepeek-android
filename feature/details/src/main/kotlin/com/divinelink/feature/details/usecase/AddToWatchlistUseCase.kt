@@ -34,7 +34,6 @@ open class AddToWatchlistUseCase @Inject constructor(
       emit(Result.failure(SessionException.InvalidAccountId()))
       return@flow
     } else {
-
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> AddToWatchlistRequestApi.Movie(
           movieId = parameters.id,

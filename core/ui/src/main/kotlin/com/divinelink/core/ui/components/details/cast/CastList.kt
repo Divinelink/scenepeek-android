@@ -45,7 +45,7 @@ fun CastList(
           items = cast,
           key = {
             it.id
-          }
+          },
         ) {
           CrewItemCard(
             actor = it,

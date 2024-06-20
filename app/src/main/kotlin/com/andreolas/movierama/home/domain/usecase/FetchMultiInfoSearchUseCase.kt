@@ -23,9 +23,7 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
   private val repository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<MultiSearchRequestApi, MultiSearchResult>(dispatcher) {
-  override fun execute(
-    parameters: MultiSearchRequestApi,
-  ): Flow<Result<MultiSearchResult>> {
+  override fun execute(parameters: MultiSearchRequestApi): Flow<Result<MultiSearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()
     val searchResult = repository.fetchMultiInfo(parameters)
 
@@ -36,15 +34,15 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
             favoriteIds = Result.success(favorite.data).data,
             // Filter out persons for now
-            mediaResult = Result.success(search.data.filterNot { it is MediaItem.Person }).data
+            mediaResult = Result.success(search.data.filterNot { it is MediaItem.Person }).data,
           )
           emit(
             Result.success(
               MultiSearchResult(
                 query = parameters.query,
                 searchList = searchWithFavorites,
-              )
-            )
+              ),
+            ),
           )
         } else if (search.isFailure) {
           emit(Result.failure(Exception("Something went wrong.")))

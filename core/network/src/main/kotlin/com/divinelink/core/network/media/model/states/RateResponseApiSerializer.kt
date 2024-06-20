@@ -13,7 +13,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 object RateResponseApiSerializer : KSerializer<RateResponseApi> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor(
-    serialName = RateResponseApi::class.java.name
+    serialName = RateResponseApi::class.java.name,
   )
 
   override fun deserialize(decoder: Decoder): RateResponseApi {
@@ -42,7 +42,10 @@ object RateResponseApiSerializer : KSerializer<RateResponseApi> {
     }
   }
 
-  override fun serialize(encoder: Encoder, value: RateResponseApi) {
+  override fun serialize(
+    encoder: Encoder,
+    value: RateResponseApi,
+  ) {
     error("Serialization is not supported")
   }
 }

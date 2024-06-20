@@ -38,7 +38,10 @@ fun YoutubePlayer(
     YouTubePlayerView(context).apply {
       enableAutomaticInitialization = false
       val listener = object : AbstractYouTubePlayerListener() {
-        override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+        override fun onCurrentSecond(
+          youTubePlayer: YouTubePlayer,
+          second: Float,
+        ) {
           startSeconds.value = second
         }
 
@@ -108,8 +111,8 @@ fun YoutubePlayer(
         .testTag(VIDEO_PLAYER_TAG),
       factory = {
         youtubePlayerView
-      }
-    )
+      },
+    ),
   ) {
     onDispose {
       youtubePlayerView.release()

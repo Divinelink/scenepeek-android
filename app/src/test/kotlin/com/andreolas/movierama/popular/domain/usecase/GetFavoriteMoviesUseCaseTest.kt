@@ -36,10 +36,10 @@ class GetFavoriteMoviesUseCaseTest {
     val expectedResult = Result.success(favorites)
 
     repository.mockFetchFavoriteMovies(
-      response = Result.success(favorites)
+      response = Result.success(favorites),
     )
     repository.mockFetchFavoriteTVSeries(
-      response = Result.success(emptyList())
+      response = Result.success(emptyList()),
     )
 
     val useCase = GetFavoriteMoviesUseCase(
@@ -56,7 +56,7 @@ class GetFavoriteMoviesUseCaseTest {
     val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      response = Result.failure(Exception("Oops"))
+      response = Result.failure(Exception("Oops")),
     )
 
     val useCase = GetFavoriteMoviesUseCase(

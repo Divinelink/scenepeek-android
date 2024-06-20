@@ -46,7 +46,7 @@ class HomeScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.success(MediaItemFactory.MoviesList()))
+      response = flowOf(Result.success(MediaItemFactory.MoviesList())),
     )
 
     composeTestRule.setContent {
@@ -56,8 +56,8 @@ class HomeScreenTest : ComposeTest() {
           getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
           getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
-          fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock
-        )
+          fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
+        ),
       )
     }
     composeTestRule
@@ -71,8 +71,8 @@ class HomeScreenTest : ComposeTest() {
             id = 1,
             mediaType = MediaType.MOVIE.value,
             isFavorite = false,
-          )
-        )
+          ),
+        ),
       )
     }
   }
@@ -84,13 +84,13 @@ class HomeScreenTest : ComposeTest() {
     val moviesList = MediaItemFactory.MoviesList()
 
     getPopularMoviesUseCase.mockFetchPopularMovies(
-      response = flowOf(Result.success(moviesList))
+      response = flowOf(Result.success(moviesList)),
     )
 
     getFavoriteMoviesUseCase.mockGetFavoriteMovies(
       response = Result.success(
-        moviesList.filter { it.isFavorite == true } as List<MediaItem.Media>
-      )
+        moviesList.filter { it.isFavorite == true } as List<MediaItem.Media>,
+      ),
     )
 
     composeTestRule.setContent {
@@ -101,7 +101,7 @@ class HomeScreenTest : ComposeTest() {
           fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
           getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
-        )
+        ),
       )
     }
 

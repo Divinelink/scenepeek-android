@@ -58,7 +58,7 @@ fun FilterBar(
   onClearClick: () -> Unit,
 ) {
   CompositionLocalProvider(
-    LocalOverscrollConfiguration provides null
+    LocalOverscrollConfiguration provides null,
   ) {
     LazyRow(
       modifier = modifier
@@ -73,7 +73,7 @@ fun FilterBar(
         AnimatedVisibility(
           enter = slideInHorizontally() + expandHorizontally(),
           exit = slideOutHorizontally() + shrinkHorizontally(),
-          visible = sortedFilters.any { it.isSelected }
+          visible = sortedFilters.any { it.isSelected },
         ) {
           ClearButton(
             onClearClick = onClearClick,
@@ -122,7 +122,7 @@ private fun ClearButton(
     colors = ButtonDefaults.outlinedButtonColors(
       containerColor = containerColor,
       contentColor = contentColorFor(containerColor),
-    )
+    ),
   ) {
     Icon(
       imageVector = Icons.Default.Clear,

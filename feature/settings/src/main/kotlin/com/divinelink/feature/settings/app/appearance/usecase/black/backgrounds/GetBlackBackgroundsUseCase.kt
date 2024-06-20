@@ -11,7 +11,6 @@ class GetBlackBackgroundsUseCase @Inject constructor(
   private val preferenceStorage: PreferenceStorage,
   @IoDispatcher dispatcher: CoroutineDispatcher,
 ) : UseCase<Unit, Boolean>(dispatcher) {
-  override suspend fun execute(parameters: Unit): Boolean {
-    return preferenceStorage.isBlackBackgroundsEnabled.first()
-  }
+  override suspend fun execute(parameters: Unit): Boolean =
+    preferenceStorage.isBlackBackgroundsEnabled.first()
 }

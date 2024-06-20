@@ -31,6 +31,6 @@ sealed class AddToWatchlistRequestApi(
     override val addToWatchlist: Boolean,
   ) : AddToWatchlistRequestApi(
     mediaId = seriesId,
-    mediaType = "tv"
+    mediaType = "tv",
   )
 }

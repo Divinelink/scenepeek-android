@@ -7,7 +7,7 @@ import com.divinelink.core.ui.provider.MediaItemParameterData.movie
 
 class MediaItemPreviewParameterProvider : PreviewParameterProvider<MediaItem.Media> {
   override val values: Sequence<MediaItem.Media> = sequenceOf(
-    movie
+    movie,
   )
 }
 

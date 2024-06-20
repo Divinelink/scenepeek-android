@@ -12,7 +12,7 @@ object ReviewsResultsApiFactory {
       avatarPath = "eledriel_s.jpg",
       name = "Eledriel S.",
       rating = 10.0,
-      username = "eledriel_s"
+      username = "eledriel_s",
     ),
     content = LoremIpsum(100).values.joinToString(),
     createdAt = "2017-02-13T23:16:19.538Z",
@@ -27,7 +27,7 @@ object ReviewsResultsApiFactory {
       avatarPath = "andreas_o.jpg",
       name = "Andreas O.",
       rating = 6.7,
-      username = "andreas_o"
+      username = "andreas_o",
     ),
     content = LoremIpsum(80).values.joinToString(),
     createdAt = "2018-02-13T23:16:19.538Z",
@@ -42,7 +42,7 @@ object ReviewsResultsApiFactory {
       avatarPath = "john_doe.jpg",
       name = "John Doe",
       rating = 9.3,
-      username = "john_doe"
+      username = "john_doe",
     ),
     content = LoremIpsum(60).values.joinToString(),
     createdAt = "2019-02-13T23:16:19.538Z",

@@ -26,12 +26,12 @@ fun AppNavigationBar(
   containerColor: Color = MaterialTheme.colorScheme.surface,
   contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
   windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
-  content: @Composable RowScope.() -> Unit
+  content: @Composable RowScope.() -> Unit,
 ) {
   Surface(
     color = containerColor,
     contentColor = contentColor,
-    modifier = modifier
+    modifier = modifier,
   ) {
     Row(
       modifier = Modifier
@@ -43,7 +43,7 @@ fun AppNavigationBar(
         .selectableGroup(),
       horizontalArrangement = Arrangement.spacedBy(8.dp),
       verticalAlignment = Alignment.CenterVertically,
-      content = content
+      content = content,
     )
   }
 }

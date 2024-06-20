@@ -18,7 +18,7 @@ object MovieApiFactory {
     title = "",
     video = false,
     voteAverage = 0.0,
-    voteCount = null
+    voteCount = null,
   )
 
   fun Full() = MovieApi(
@@ -35,12 +35,10 @@ object MovieApiFactory {
     title = "",
     video = false,
     voteAverage = 0.0,
-    voteCount = 0
+    voteCount = 0,
   )
 
-  fun EmptyList(
-    range: IntProgression = 1..10,
-  ): List<MovieApi> = (range).map {
+  fun EmptyList(range: IntProgression = 1..10): List<MovieApi> = (range).map {
     MovieApi(
       id = it,
       adult = false,
@@ -55,7 +53,7 @@ object MovieApiFactory {
       title = "movie $it - name",
       video = false,
       voteAverage = it + 0.713,
-      voteCount = null
+      voteCount = null,
     )
   }
 }

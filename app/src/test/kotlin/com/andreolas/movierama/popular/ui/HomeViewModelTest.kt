@@ -34,7 +34,7 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = listOf(),
           error = null,
-        )
+        ),
       )
   }
 
@@ -50,7 +50,7 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = popularMoviesList,
           error = null,
-        )
+        ),
       )
   }
 
@@ -66,10 +66,10 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = popularMoviesList,
           error = null,
-        )
+        ),
       )
       .mockFetchPopularMovies(
-        response = Result.success(loadData(12, 20))
+        response = Result.success(loadData(12, 20)),
       )
       .onLoadNextPage()
       .assertViewState(
@@ -77,7 +77,7 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = popularMoviesList + loadData(12, 20),
           error = null,
-        )
+        ),
       )
   }
 
@@ -91,7 +91,7 @@ class HomeViewModelTest {
      */
     testRobot
       .mockFetchPopularMovies(
-        response = Result.success(loadData(1, 5))
+        response = Result.success(loadData(1, 5)),
       )
       .buildViewModel()
       .assertViewState(
@@ -99,10 +99,10 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = loadData(1, 5),
           error = null,
-        )
+        ),
       )
       .mockFetchPopularMovies(
-        response = Result.success(loadData(1, 10))
+        response = Result.success(loadData(1, 10)),
       )
       .onLoadNextPage()
       .assertViewState(
@@ -110,7 +110,7 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = loadData(1, 10),
           error = null,
-        )
+        ),
       )
   }
 
@@ -118,15 +118,15 @@ class HomeViewModelTest {
   fun `given error result when i init then i expect Error`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.failure(Exception("oops"))
+        response = Result.failure(Exception("oops")),
       )
       .buildViewModel()
       .assertViewState(
         HomeViewState(
           isLoading = false,
           popularMovies = listOf(),
-          error = UIText.StringText("oops")
-        )
+          error = UIText.StringText("oops"),
+        ),
       )
   }
 
@@ -220,8 +220,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .onSearchMovies("test query")
@@ -233,7 +233,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = true,
           emptyResult = false,
-        )
+        ),
       )
       .delay(300)
       .assertViewState(
@@ -245,7 +245,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
   }
 
@@ -258,8 +258,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .assertViewState(
@@ -269,7 +269,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("tes")
       .onSearchMovies("test ")
@@ -281,7 +281,7 @@ class HomeViewModelTest {
           query = "test ",
           searchLoadingIndicator = true,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .delay(300)
@@ -294,7 +294,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
   }
 
@@ -307,8 +307,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .assertViewState(
@@ -318,7 +318,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test ")
       .assertViewState(
@@ -329,7 +329,7 @@ class HomeViewModelTest {
           query = "test ",
           searchLoadingIndicator = true,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .delay(200)
@@ -342,7 +342,7 @@ class HomeViewModelTest {
           query = "",
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
   }
 
@@ -355,8 +355,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .assertViewState(
@@ -366,7 +366,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .assertViewState(
@@ -377,7 +377,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = true,
           emptyResult = false,
-        )
+        ),
       )
       .delay(400)
       .assertViewState(
@@ -389,7 +389,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onClearClicked()
       .assertViewState(
@@ -401,7 +401,7 @@ class HomeViewModelTest {
           searchLoadingIndicator = false,
           emptyResult = false,
           searchResults = null,
-        )
+        ),
       )
   }
 
@@ -418,7 +418,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .assertViewState(
@@ -428,7 +428,7 @@ class HomeViewModelTest {
           isLoading = false,
           query = "test query",
           searchLoadingIndicator = true,
-        )
+        ),
       )
       .delay(300)
       .assertViewState(
@@ -440,7 +440,7 @@ class HomeViewModelTest {
           searchLoadingIndicator = false,
           emptyResult = true,
           searchResults = emptyList(),
-        )
+        ),
       )
   }
 
@@ -457,7 +457,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .delay(300)
@@ -469,8 +469,8 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = false,
           emptyResult = false,
-          error = UIText.StringText("Oops.")
-        )
+          error = UIText.StringText("Oops."),
+        ),
       )
   }
 
@@ -483,8 +483,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = emptyList(),
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .assertViewState(
@@ -494,7 +494,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("test query")
       .delay(300)
@@ -507,7 +507,7 @@ class HomeViewModelTest {
           query = "test query",
           searchLoadingIndicator = false,
           emptyResult = true,
-        )
+        ),
       )
   }
 
@@ -521,8 +521,8 @@ class HomeViewModelTest {
             MultiSearchResult(
               query = "test query",
               searchList = searchMovies,
-            )
-          )
+            ),
+          ),
         )
         .buildViewModel()
         .assertViewState(
@@ -532,7 +532,7 @@ class HomeViewModelTest {
             loadMorePopular = true,
             searchLoadingIndicator = false,
             emptyResult = false,
-          )
+          ),
         )
         .onSearchMovies("test query")
         .delay(300)
@@ -545,7 +545,7 @@ class HomeViewModelTest {
             query = "test query",
             searchLoadingIndicator = false,
             emptyResult = false,
-          )
+          ),
         )
         .mockFetchPopularMovies(Result.success(searchMovies.plus(searchMovies)))
         .onLoadNextPage()
@@ -559,7 +559,7 @@ class HomeViewModelTest {
             query = "test query",
             searchLoadingIndicator = false,
             emptyResult = false,
-          )
+          ),
         )
     }
 
@@ -572,8 +572,8 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
-          )
-        )
+          ),
+        ),
       )
       .buildViewModel()
       .assertViewState(
@@ -583,7 +583,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .onSearchMovies("")
       .assertViewState(
@@ -594,7 +594,7 @@ class HomeViewModelTest {
           query = "",
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
   }
 
@@ -610,13 +610,13 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-        )
+        ),
       )
   }
 
@@ -632,19 +632,19 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-        )
+        ),
       )
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-        )
+        ),
       )
   }
 
@@ -660,7 +660,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .delay(50)
       .delay(50)
@@ -668,7 +668,7 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-        )
+        ),
       )
   }
 
@@ -685,19 +685,19 @@ class HomeViewModelTest {
             loadMorePopular = true,
             searchLoadingIndicator = false,
             emptyResult = false,
-          )
+          ),
         )
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
             isLoading = false,
-          )
+          ),
         )
         .assertViewState(
           expectedViewState = HomeViewState(
             popularMovies = popularMoviesList,
             isLoading = false,
-          )
+          ),
         )
     }
 
@@ -713,7 +713,7 @@ class HomeViewModelTest {
           loadMorePopular = true,
           searchLoadingIndicator = false,
           emptyResult = false,
-        )
+        ),
       )
       .mockMarkAsFavorite(
         mediaItem = popularMoviesList[0],
@@ -726,7 +726,7 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState(
           popularMovies = popularMoviesList,
           isLoading = false,
-        )
+        ),
       )
   }
 
@@ -736,17 +736,17 @@ class HomeViewModelTest {
       testRobot
         .mockFetchPopularMovies(
           response = Result.success(
-            searchMovies
-          )
+            searchMovies,
+          ),
         )
         .mockFetchFavoriteMovies(
           response = Result.success(
-            searchMovies.filter { it.isFavorite == true }
-          )
+            searchMovies.filter { it.isFavorite == true },
+          ),
         )
         .buildViewModel()
         .onFilterClicked(
-          filter = HomeFilter.Liked.filter.name
+          filter = HomeFilter.Liked.filter.name,
         )
         .assertViewState(
           expectedViewState = HomeViewState(
@@ -754,10 +754,10 @@ class HomeViewModelTest {
             filteredResults = searchMovies.filter { it.isFavorite == true },
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
-          )
+          ),
         )
         .onFilterClicked(
-          filter = HomeFilter.Liked.filter.name
+          filter = HomeFilter.Liked.filter.name,
         )
         .assertViewState(
           expectedViewState = HomeViewState(
@@ -765,7 +765,7 @@ class HomeViewModelTest {
             filteredResults = emptyList(),
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
-          )
+          ),
         )
     }
 
@@ -774,17 +774,17 @@ class HomeViewModelTest {
     testRobot
       .mockFetchPopularMovies(
         response = Result.success(
-          searchMovies
-        )
+          searchMovies,
+        ),
       )
       .mockFetchFavoriteMovies(
         response = Result.success(
-          searchMovies.filter { it.isFavorite == true }
-        )
+          searchMovies.filter { it.isFavorite == true },
+        ),
       )
       .buildViewModel()
       .onFilterClicked(
-        filter = HomeFilter.Liked.filter.name
+        filter = HomeFilter.Liked.filter.name,
       )
       .assertViewState(
         expectedViewState = HomeViewState(
@@ -792,7 +792,7 @@ class HomeViewModelTest {
           filteredResults = searchMovies.filter { it.isFavorite == true },
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
-        )
+        ),
       )
       .onClearFiltersClicked()
       .assertViewState(
@@ -801,7 +801,7 @@ class HomeViewModelTest {
           filteredResults = null,
           isLoading = false,
           filters = HomeFilter.entries.map { it.filter },
-        )
+        ),
       )
   }
 
@@ -810,27 +810,28 @@ class HomeViewModelTest {
     testRobot
       .mockFetchPopularMovies(
         response = Result.success(
-          searchMovies
-        )
+          searchMovies,
+        ),
       )
       .buildViewModel()
       .onFilterClicked(
-        filter = "Some filter"
+        filter = "Some filter",
       )
       .assertViewState(
         expectedViewState = HomeViewState(
           popularMovies = searchMovies,
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter),
-        )
+        ),
       )
   }
 
-  private fun loadData(starting: Int, ending: Int): List<MediaItem.Media.Movie> {
-    return (starting..ending).map {
-      MediaItemFactory.FightClub().toWizard {
-        withId(it)
-      }
-    }.toList()
-  }
+  private fun loadData(
+    starting: Int,
+    ending: Int,
+  ): List<MediaItem.Media.Movie> = (starting..ending).map {
+    MediaItemFactory.FightClub().toWizard {
+      withId(it)
+    }
+  }.toList()
 }

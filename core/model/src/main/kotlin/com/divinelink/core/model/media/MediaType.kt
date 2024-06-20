@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:trailing-comma-on-declaration-site")
+
 package com.divinelink.core.model.media
 
 /**

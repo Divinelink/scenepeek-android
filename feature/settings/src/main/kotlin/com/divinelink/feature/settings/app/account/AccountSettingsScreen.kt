@@ -33,7 +33,7 @@ import com.divinelink.core.ui.R as uiR
 @Destination<SettingsGraph>
 fun AccountSettingsScreen(
   navigator: DestinationsNavigator,
-  viewModel: AccountSettingsViewModel = hiltViewModel()
+  viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
 
@@ -64,15 +64,16 @@ fun AccountSettingsScreen(
             Column {
               SettingsTextItem(
                 title = stringResource(
-                  id = R.string.AccountSettingsScreen__logged_in_as, accountDetails.username
+                  id = R.string.AccountSettingsScreen__logged_in_as,
+                  accountDetails.username,
                 ),
-                summary = null
+                summary = null,
               )
               Button(
                 onClick = viewModel::logoutDialog,
                 modifier = Modifier
                   .testTag(TestTags.Settings.Account.LOGOUT_BUTTON)
-                  .padding(start = MaterialTheme.dimensions.keyline_16)
+                  .padding(start = MaterialTheme.dimensions.keyline_16),
               ) {
                 Text(text = stringResource(id = R.string.AccountSettingsScreen__logout))
               }
@@ -81,7 +82,7 @@ fun AccountSettingsScreen(
             SettingsClickItem(
               modifier = Modifier.testTag(TestTags.Settings.Account.LOGIN_BUTTON),
               text = stringResource(id = R.string.AccountSettingsScreen__login),
-              onClick = viewModel::login
+              onClick = viewModel::login,
             )
           }
         }
@@ -94,7 +95,7 @@ fun AccountSettingsScreen(
         dismissClick = viewModel::dismissLogoutDialog,
         confirmText = UIText.ResourceText(R.string.AccountSettingsScreen__logout),
         dismissText = UIText.ResourceText(uiR.string.core_ui_cancel),
-        uiState = uiState
+        uiState = uiState,
       )
     }
   }

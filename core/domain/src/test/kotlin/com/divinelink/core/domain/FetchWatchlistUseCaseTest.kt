@@ -3,6 +3,7 @@ package com.divinelink.core.domain
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.watchlist.WatchlistParameters
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAccountRepository
@@ -28,14 +29,14 @@ class FetchWatchlistUseCaseTest {
     val useCase = FetchWatchlistUseCase(
       dispatcher = testDispatcher,
       sessionStorage = sessionStorage,
-      accountRepository = accountRepository.mock
+      accountRepository = accountRepository.mock,
     )
 
     val result = useCase.invoke(
       parameters = WatchlistParameters(
         page = 1,
-        mediaType = MediaType.MOVIE
-      )
+        mediaType = MediaType.MOVIE,
+      ),
     ).last()
 
     assertThat(result.isFailure).isTrue()
@@ -49,14 +50,14 @@ class FetchWatchlistUseCaseTest {
     val useCase = FetchWatchlistUseCase(
       dispatcher = testDispatcher,
       sessionStorage = sessionStorage,
-      accountRepository = accountRepository.mock
+      accountRepository = accountRepository.mock,
     )
 
     val result = useCase.invoke(
       parameters = WatchlistParameters(
         page = 1,
-        mediaType = MediaType.MOVIE
-      )
+        mediaType = MediaType.MOVIE,
+      ),
     ).last()
 
     assertThat(result.isFailure).isTrue()

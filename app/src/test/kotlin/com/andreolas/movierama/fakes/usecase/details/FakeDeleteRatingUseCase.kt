@@ -10,9 +10,7 @@ class FakeDeleteRatingUseCase {
 
   val mock: DeleteRatingUseCase = mock()
 
-  fun mockDeleteRating(
-    response: Flow<Result<Unit>>,
-  ) {
+  fun mockDeleteRating(response: Flow<Result<Unit>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

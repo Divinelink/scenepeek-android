@@ -79,7 +79,8 @@ class ThemedActivityDelegateImpl @Inject constructor(
   }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
 
   override val currentTheme: Theme
-    get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+    get() = runBlocking {
+      // Using runBlocking to execute this coroutine synchronously
       getThemeUseCase(Unit).let {
         if (it.isSuccess) it.data else Theme.SYSTEM
       }

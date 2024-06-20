@@ -44,6 +44,6 @@ fun HomeScreen(
     onClearFiltersClicked = viewModel::onClearFiltersClicked,
     onNavigateToSettings = {
       navigator.navigate(SettingsScreenDestination())
-    }
+    },
   )
 }

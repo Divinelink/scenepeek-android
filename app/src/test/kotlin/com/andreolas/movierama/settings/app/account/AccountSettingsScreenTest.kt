@@ -62,7 +62,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
@@ -81,7 +81,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
@@ -91,8 +91,8 @@ class AccountSettingsScreenTest : ComposeTest() {
       runOnIdle {
         destinationsNavigator.verifyNavigatedToDirection(
           LoginWebViewScreenDestination(
-            LoginScreenArgs(requestTokenResult.getOrThrow())
-          )
+            LoginScreenArgs(requestTokenResult.getOrThrow()),
+          ),
         )
       }
     }
@@ -108,13 +108,13 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
     val loggedInText = composeTestRule.activity.getString(
       R.string.AccountSettingsScreen__logged_in_as,
-      accountDetailsResult.getOrThrow().username
+      accountDetailsResult.getOrThrow().username,
     )
 
     with(composeTestRule) {
@@ -133,7 +133,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
@@ -155,13 +155,13 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
     val loggedInText = composeTestRule.activity.getString(
       R.string.AccountSettingsScreen__logged_in_as,
-      accountDetailsResult.getOrThrow().username
+      accountDetailsResult.getOrThrow().username,
     )
 
     with(composeTestRule) {
@@ -185,7 +185,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     composeTestRule.setContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
@@ -202,6 +202,6 @@ class AccountSettingsScreenTest : ComposeTest() {
     createRequestTokenUseCase = createRequestTokenUseCase.mock,
     observeSessionUseCase = observeSessionUseCase.mock,
     getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-    logoutUseCase = logoutUseCase.mock
+    logoutUseCase = logoutUseCase.mock,
   )
 }

@@ -22,7 +22,7 @@ class AccountSettingsViewModel @Inject constructor(
   private val createRequestTokenUseCase: CreateRequestTokenUseCase,
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
-  private val logoutUseCase: LogoutUseCase
+  private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
 
   private val _viewState = MutableStateFlow(AccountSettingsViewState.initial())
@@ -62,7 +62,7 @@ class AccountSettingsViewModel @Inject constructor(
           _viewState.update {
             it.copy(
               requestToken = response,
-              navigateToWebView = true
+              navigateToWebView = true,
             )
           }
         }
@@ -76,8 +76,8 @@ class AccountSettingsViewModel @Inject constructor(
           title = UIText.StringText("Logout"),
           text = UIText.StringText(
             "You're currently logged in as" +
-              " ${it.accountDetails?.username}. Are you sure you want to logout?"
-          )
+              " ${it.accountDetails?.username}. Are you sure you want to logout?",
+          ),
         ),
       )
     }
@@ -89,7 +89,7 @@ class AccountSettingsViewModel @Inject constructor(
         _viewState.update {
           it.copy(
             accountDetails = null,
-            alertDialogUiState = null
+            alertDialogUiState = null,
           )
         }
       }

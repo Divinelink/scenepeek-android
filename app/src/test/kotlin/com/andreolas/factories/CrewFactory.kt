@@ -15,7 +15,7 @@ object CrewFactory {
     name = "Forest Gump",
     originalName = "",
     popularity = 0.0,
-    profilePath = "BoxOfChocolates.jpg"
+    profilePath = "BoxOfChocolates.jpg",
   )
 
   fun Boomer() = Crew(
@@ -29,7 +29,7 @@ object CrewFactory {
     name = "The one for the sound",
     originalName = "Boomer",
     popularity = 0.0,
-    profilePath = "BoxOfChocolates.jpg"
+    profilePath = "BoxOfChocolates.jpg",
   )
 
   fun all() = listOf(

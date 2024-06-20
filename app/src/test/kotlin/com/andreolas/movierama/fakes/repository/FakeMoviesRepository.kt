@@ -15,33 +15,27 @@ class FakeMoviesRepository {
 
   val mock: MediaRepository = mock()
 
-  fun mockFetchFavoriteMovies(
-    response: MediaListResult,
-  ) {
+  fun mockFetchFavoriteMovies(response: MediaListResult) {
     whenever(
-      mock.fetchFavoriteMovies()
+      mock.fetchFavoriteMovies(),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockFetchFavoriteTVSeries(
-    response: MediaListResult,
-  ) {
+  fun mockFetchFavoriteTVSeries(response: MediaListResult) {
     whenever(
-      mock.fetchFavoriteTVSeries()
+      mock.fetchFavoriteTVSeries(),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockFetchFavoriteMoviesIds(
-    response: Result<List<Pair<Int, MediaType>>>,
-  ) {
+  fun mockFetchFavoriteMoviesIds(response: Result<List<Pair<Int, MediaType>>>) {
     whenever(
-      mock.fetchFavoriteIds()
+      mock.fetchFavoriteIds(),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -50,9 +44,9 @@ class FakeMoviesRepository {
     response: MediaListResult,
   ) {
     whenever(
-      mock.fetchPopularMovies(request)
+      mock.fetchPopularMovies(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -61,9 +55,9 @@ class FakeMoviesRepository {
     response: MediaListResult,
   ) {
     whenever(
-      mock.fetchSearchMovies(request)
+      mock.fetchSearchMovies(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -72,9 +66,9 @@ class FakeMoviesRepository {
     response: Result<Unit>,
   ) {
     whenever(
-      mock.insertFavoriteMedia(media)
+      mock.insertFavoriteMedia(media),
     ).thenReturn(
-      response
+      response,
     )
   }
 
@@ -84,15 +78,13 @@ class FakeMoviesRepository {
     response: Result<Boolean>,
   ) {
     whenever(
-      mock.checkIfMediaIsFavorite(id, mediaType)
+      mock.checkIfMediaIsFavorite(id, mediaType),
     ).thenReturn(response)
   }
 
-  suspend fun verifyCheckIsFavorite(
-    response: Result<Boolean>,
-  ) {
+  suspend fun verifyCheckIsFavorite(response: Result<Boolean>) {
     whenever(
-      mock.checkIfMediaIsFavorite(any(), any())
+      mock.checkIfMediaIsFavorite(any(), any()),
     ).thenReturn(response)
   }
 
@@ -102,9 +94,9 @@ class FakeMoviesRepository {
     response: Result<Unit>,
   ) {
     whenever(
-      mock.removeFavoriteMedia(id, mediaType)
+      mock.removeFavoriteMedia(id, mediaType),
     ).thenReturn(
-      response
+      response,
     )
   }
 }

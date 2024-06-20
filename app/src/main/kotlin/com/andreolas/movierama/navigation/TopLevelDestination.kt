@@ -16,20 +16,21 @@ enum class TopLevelDestination(
   val unselectedIcon: ImageVector,
   val iconTextId: Int,
   val titleTextId: Int,
-  val direction: DirectionDestinationSpec
+  val direction: DirectionDestinationSpec,
 ) {
   HOME(
     selectedIcon = Icons.Rounded.Home,
     unselectedIcon = Icons.Outlined.Home,
     iconTextId = R.string.home,
     titleTextId = R.string.home,
-    direction = HomeScreenDestination
+    direction = HomeScreenDestination,
   ),
   WATCHLIST(
     selectedIcon = Icons.Rounded.Bookmarks,
     unselectedIcon = Icons.Outlined.Bookmarks,
-    iconTextId = R.string.watchlist, // TODO Add resources from the feature module
+    // TODO Add resources from the feature module
+    iconTextId = R.string.watchlist,
     titleTextId = R.string.watchlist,
-    direction = WatchlistScreenDestination
-  )
+    direction = WatchlistScreenDestination,
+  ),
 }

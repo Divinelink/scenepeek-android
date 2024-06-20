@@ -29,9 +29,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ProdDetailsRepository @Inject constructor(
-  private val mediaRemote: MediaService,
-) : DetailsRepository {
+class ProdDetailsRepository @Inject constructor(private val mediaRemote: MediaService) :
+  DetailsRepository {
 
   override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
     mediaRemote
@@ -70,7 +69,7 @@ class ProdDetailsRepository @Inject constructor(
     }
 
   override fun fetchAccountMediaDetails(
-    request: AccountMediaDetailsRequestApi
+    request: AccountMediaDetailsRequestApi,
   ): Flow<Result<AccountMediaDetails>> = mediaRemote
     .fetchAccountMediaDetails(request)
     .map { response ->

@@ -15,7 +15,5 @@ object RemoteModule {
 
   @Singleton
   @Provides
-  fun provideAccountService(
-    restClient: RestClient,
-  ): AccountService = ProdAccountService(restClient)
+  fun provideAccountService(restClient: RestClient): AccountService = ProdAccountService(restClient)
 }

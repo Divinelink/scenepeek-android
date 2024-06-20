@@ -11,9 +11,7 @@ class FakeGetSearchMoviesUseCase {
 
   val mock: GetSearchMoviesUseCase = mockk()
 
-  fun mockFetchSearchMovies(
-    response: Result<SearchResult>,
-  ) {
+  fun mockFetchSearchMovies(response: Result<SearchResult>) {
     coEvery {
       mock.invoke(any())
     } returns flowOf(response)

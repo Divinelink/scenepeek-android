@@ -45,13 +45,13 @@ class AppearanceSettingsViewModelTest {
       getMaterialYouUseCase = GetMaterialYouUseCase(fakePreferenceStorage, testDispatcher),
       setBlackBackgroundsUseCase = SetBlackBackgroundsUseCase(
         preferenceStorage = fakePreferenceStorage,
-        dispatcher = testDispatcher
+        dispatcher = testDispatcher,
       ),
       getBlackBackgroundsUseCase = GetBlackBackgroundsUseCase(
         preferenceStorage = fakePreferenceStorage,
-        dispatcher = testDispatcher
+        dispatcher = testDispatcher,
       ),
-      getMaterialYouVisibleUseCase = fakeGetMaterialYouVisibleUseCase
+      getMaterialYouVisibleUseCase = fakeGetMaterialYouVisibleUseCase,
     )
   }
 
@@ -152,7 +152,7 @@ class AppearanceSettingsViewModelTest {
     availableThemes: List<Theme> = listOf(Theme.LIGHT, Theme.DARK),
     materialYouEnabled: Boolean = false,
     materialYouVisible: Boolean = false,
-    blackBackgroundsEnabled: Boolean = false
+    blackBackgroundsEnabled: Boolean = false,
   ) {
     assertThat(this.theme).isEqualTo(theme)
     assertThat(this.availableThemes).isEqualTo(availableThemes)

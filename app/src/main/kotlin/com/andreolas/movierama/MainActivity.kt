@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     setContent {
       val darkTheme = shouldUseDarkTheme(
         uiState = viewModel.viewState.collectAsState().value,
-        selectedTheme = viewModel.theme.collectAsState().value
+        selectedTheme = viewModel.theme.collectAsState().value,
       )
 
       AppTheme(
@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
-
         MovieApp(
           uiState = viewModel.viewState.collectAsState().value,
         )

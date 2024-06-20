@@ -20,7 +20,7 @@ sealed class MediaItem(
     id = id,
     posterPath = posterPath,
     name = name,
-    mediaType = mediaType
+    mediaType = mediaType,
   ) {
 
     data class TV(
@@ -39,7 +39,7 @@ sealed class MediaItem(
       rating = rating,
       overview = overview,
       isFavorite = isFavorite,
-      mediaType = MediaType.TV
+      mediaType = MediaType.TV,
     )
 
     data class Movie(
@@ -58,7 +58,7 @@ sealed class MediaItem(
       rating = rating,
       overview = overview,
       isFavorite = isFavorite == true,
-      mediaType = MediaType.MOVIE
+      mediaType = MediaType.MOVIE,
     )
   }
 
@@ -70,13 +70,13 @@ sealed class MediaItem(
     id = id,
     posterPath = name,
     name = posterPath,
-    mediaType = MediaType.PERSON
+    mediaType = MediaType.PERSON,
   )
 
   data object Unknown : MediaItem(
     id = -1,
     posterPath = null,
     name = "",
-    mediaType = MediaType.UNKNOWN
+    mediaType = MediaType.UNKNOWN,
   )
 }

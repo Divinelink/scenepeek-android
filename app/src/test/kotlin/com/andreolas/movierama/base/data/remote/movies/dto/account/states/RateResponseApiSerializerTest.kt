@@ -20,7 +20,7 @@ class RateResponseApiSerializerTest {
       }
     """.trimIndent()
 
-    val expected = RateResponseApiFactory.Rated()
+    val expected = RateResponseApiFactory.rated()
 
     val json = Json.decodeFromString(serializer, jsonAsString)
 
@@ -31,7 +31,7 @@ class RateResponseApiSerializerTest {
   fun `deserialize - false as primitive`() {
     val jsonAsString = """false"""
 
-    val expected = RateResponseApiFactory.False()
+    val expected = RateResponseApiFactory.`false`()
     val json = Json.decodeFromString(serializer, jsonAsString)
 
     assertThat(json).isEqualTo(expected)
@@ -58,7 +58,7 @@ class RateResponseApiSerializerTest {
     }
 
     assertThat(exception.message).isEqualTo(
-      "Invalid value: {\"value\":\"invalid\"}"
+      "Invalid value: {\"value\":\"invalid\"}",
     )
   }
 
@@ -71,7 +71,7 @@ class RateResponseApiSerializerTest {
     }
 
     assertThat(exception.message).isEqualTo(
-      "Invalid JSON: invalid-json"
+      "Invalid JSON: invalid-json",
     )
   }
 }

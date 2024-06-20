@@ -16,7 +16,7 @@ object CastFactory {
     order = 0,
     originalName = "",
     popularity = 0.0,
-    profilePath = "jack_nicholson.jpg"
+    profilePath = "jack_nicholson.jpg",
   )
 
   fun AaronPaul() = Cast.Movie(
@@ -31,11 +31,11 @@ object CastFactory {
     order = 1,
     originalName = "",
     popularity = 0.0,
-    profilePath = "Aaron_paul.jpg"
+    profilePath = "Aaron_paul.jpg",
   )
 
   fun all() = listOf(
     JackNicholson(),
-    AaronPaul()
+    AaronPaul(),
   )
 }

@@ -31,7 +31,6 @@ open class DeleteRatingUseCase @Inject constructor(
       emit(Result.failure(SessionException.Unauthenticated()))
       return@flow
     } else {
-
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> DeleteRatingRequestApi.Movie(
           movieId = parameters.id,

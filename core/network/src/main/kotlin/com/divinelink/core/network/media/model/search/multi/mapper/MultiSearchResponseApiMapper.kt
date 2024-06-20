@@ -7,7 +7,6 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseA
 
 fun MultiSearchResponseApi.map(): List<MediaItem> = results.map {
   when (MediaType.from(it.mediaType)) {
-
     MediaType.TV -> MediaItem.Media.TV(
       id = it.id,
       posterPath = it.posterPath,

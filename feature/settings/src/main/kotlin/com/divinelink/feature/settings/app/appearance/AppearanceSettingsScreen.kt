@@ -20,7 +20,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination<SettingsGraph>
 fun AppearanceSettingsScreen(
   navigator: DestinationsNavigator,
-  viewModel: AppearanceSettingsViewModel = hiltViewModel()
+  viewModel: AppearanceSettingsViewModel = hiltViewModel(),
 ) {
   val viewState by viewModel.uiState.collectAsState()
 
@@ -30,9 +30,8 @@ fun AppearanceSettingsScreen(
 
   SettingsScaffold(
     title = stringResource(id = R.string.preferences__appearance),
-    onNavigationClick = navigator::navigateUp
+    onNavigationClick = navigator::navigateUp,
   ) {
-
     LazyColumn(contentPadding = it) {
       item {
         SettingsRadioPrefItem(
@@ -42,7 +41,7 @@ fun AppearanceSettingsScreen(
           listItems = themeLabels.toList(),
           onSelected = { index ->
             viewModel.setTheme(viewState.availableThemes[index])
-          }
+          },
         )
       }
 
@@ -52,7 +51,7 @@ fun AppearanceSettingsScreen(
           title = stringResource(R.string.AppearanceSettingsScreen__black_backgrounds),
           summary = stringResource(R.string.AppearanceSettingsScreen__black_backgrounds_summary),
           isChecked = viewState.blackBackgroundsEnabled,
-          onCheckedChange = viewModel::setBlackBackgrounds
+          onCheckedChange = viewModel::setBlackBackgrounds,
         )
       }
 
@@ -63,7 +62,7 @@ fun AppearanceSettingsScreen(
             title = stringResource(id = R.string.AppearanceSettingsScreen__material_you),
             summary = stringResource(id = R.string.AppearanceSettingsScreen__material_you_summary),
             isChecked = viewState.materialYouEnabled,
-            onCheckedChange = viewModel::setMaterialYou
+            onCheckedChange = viewModel::setMaterialYou,
           )
         }
       }

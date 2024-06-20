@@ -34,37 +34,27 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun assertViewState(
-    expectedViewState: HomeViewState,
-  ) = apply {
+  fun assertViewState(expectedViewState: HomeViewState) = apply {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
-  fun assertFalseViewState(
-    expectedViewState: HomeViewState,
-  ) = apply {
+  fun assertFalseViewState(expectedViewState: HomeViewState) = apply {
     assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
   }
 
-  fun mockFetchPopularMovies(
-    response: MediaListResult,
-  ) = apply {
+  fun mockFetchPopularMovies(response: MediaListResult) = apply {
     fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
       response = response,
     )
   }
 
-  fun mockFetchFavoriteMovies(
-    response: MediaListResult,
-  ) = apply {
+  fun mockFetchFavoriteMovies(response: MediaListResult) = apply {
     fakeGetFavoriteMoviesUseCase.mockGetFavoriteMovies(
       response = response,
     )
   }
 
-  fun mockFetchSearchMedia(
-    response: Result<MultiSearchResult>,
-  ) = apply {
+  fun mockFetchSearchMedia(response: Result<MultiSearchResult>) = apply {
     fakeFetchMultiInfoSearchUseCase.mockFetchMultiInfoSearch(
       response = response,
     )
@@ -104,9 +94,7 @@ class HomeViewModelTestRobot {
     viewModel.onFilterClicked(filter)
   }
 
-  suspend fun delay(
-    timeInMillis: Long,
-  ) = apply {
+  suspend fun delay(timeInMillis: Long) = apply {
     kotlinx.coroutines.delay(timeInMillis)
   }
 }

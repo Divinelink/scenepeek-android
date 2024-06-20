@@ -11,7 +11,7 @@ fun SnackbarMessageHandler(
   snackbarMessage: SnackbarMessage?,
   onDismissSnackbar: () -> Unit,
   onShowMessage: () -> Unit = {},
-  snackbarController: SnackbarController = LocalSnackbarController.current
+  snackbarController: SnackbarController = LocalSnackbarController.current,
 ) {
   if (snackbarMessage == null) return
 
@@ -28,7 +28,7 @@ fun SnackbarMessageHandler(
           actionLabel = actionLabel,
           withDismissAction = snackbarMessage.withDismissAction,
           duration = snackbarMessage.duration,
-          onSnackbarResult = snackbarMessage.onSnackbarResult
+          onSnackbarResult = snackbarMessage.onSnackbarResult,
         )
 
         onDismissSnackbar()
@@ -39,7 +39,7 @@ fun SnackbarMessageHandler(
       LaunchedEffect(snackbarMessage, onDismissSnackbar) {
         snackbarController.showMessage(
           snackbarVisuals = snackbarMessage.snackbarVisuals,
-          onSnackbarResult = snackbarMessage.onSnackbarResult
+          onSnackbarResult = snackbarMessage.onSnackbarResult,
         )
 
         onDismissSnackbar()

@@ -14,6 +14,7 @@ import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
+import com.divinelink.database.model.PersistableMovie
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -27,7 +28,7 @@ class ProdMoviesRepositoryTest {
     withFavorite(true)
   }
 
-  private val persistableMovie = com.divinelink.database.model.PersistableMovie(
+  private val persistableMovie = PersistableMovie(
     id = 1123,
     posterPath = "123456",
     releaseDate = "2022",
@@ -41,14 +42,14 @@ class ProdMoviesRepositoryTest {
     page = 1,
     results = MovieApiFactory.EmptyList(),
     totalPages = 0,
-    totalResults = 0
+    totalResults = 0,
   )
 
   private val apiSearchResponse = SearchResponseApi(
     page = 1,
     results = SearchMovieApiFactory.EmptyList(),
     totalPages = 0,
-    totalResults = 0
+    totalResults = 0,
   )
 
   private var mediaDao = FakeMediaDao()
@@ -77,7 +78,7 @@ class ProdMoviesRepositoryTest {
 
     mediaRemote.mockFetchPopularMovies(
       request = request,
-      result = expectApiPopularResponse
+      result = expectApiPopularResponse,
     )
 
     val actualResult = repository.fetchPopularMovies(request).first()
@@ -86,7 +87,7 @@ class ProdMoviesRepositoryTest {
   }
 
   @Test
-  fun `given all movies are not favorite, when fetching movies from search api, then I expect non favorite movies`() =
+  fun `given no movies are favorite, when searching movies, then I expect non favorite movies`() =
     runTest {
       val request = SearchRequestApi(query = "test123", 3)
       val expectedResult = MediaItemFactory.MoviesList()
@@ -97,7 +98,7 @@ class ProdMoviesRepositoryTest {
       }
       mediaRemote.mockFetchSearchMovies(
         request = request,
-        result = expectedApiSearchResponse
+        result = expectedApiSearchResponse,
       )
 
       val actualResult = repository.fetchSearchMovies(
@@ -133,7 +134,7 @@ class ProdMoviesRepositoryTest {
       listOf(
         persistableMovie,
         persistableMovie.copy(id = 1234, title = "Movie Title 2"),
-      )
+      ),
     )
 
     mediaDao.mockFetchFavoritesMovies(expectedPersistableMovieResult)

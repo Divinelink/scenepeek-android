@@ -24,48 +24,28 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaService {
 
-  fun fetchPopularMovies(
-    request: MoviesRequestApi,
-  ): Flow<MoviesResponseApi>
+  fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi>
 
-  fun fetchMultiInfo(
-    request: MultiSearchRequestApi,
-  ): Flow<MultiSearchResponseApi>
+  fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi>
 
   @Deprecated("Use fetchMultiInfo instead")
-  fun fetchSearchMovies(
-    request: SearchRequestApi,
-  ): Flow<SearchResponseApi>
+  fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi>
 
-  fun fetchDetails(
-    request: DetailsRequestApi,
-  ): Flow<DetailsResponseApi>
+  fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi>
 
-  fun fetchReviews(
-    request: ReviewsRequestApi,
-  ): Flow<ReviewsResponseApi>
+  fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi>
 
-  fun fetchSimilarMovies(
-    request: SimilarRequestApi,
-  ): Flow<SimilarResponseApi>
+  fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi>
 
-  fun fetchVideos(
-    request: VideosRequestApi,
-  ): Flow<VideosResponseApi>
+  fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi>
 
   fun fetchAccountMediaDetails(
-    request: AccountMediaDetailsRequestApi
+    request: AccountMediaDetailsRequestApi,
   ): Flow<AccountMediaDetailsResponseApi>
 
-  fun submitRating(
-    request: AddRatingRequestApi
-  ): Flow<Unit>
+  fun submitRating(request: AddRatingRequestApi): Flow<Unit>
 
-  fun deleteRating(
-    request: DeleteRatingRequestApi
-  ): Flow<Unit>
+  fun deleteRating(request: DeleteRatingRequestApi): Flow<Unit>
 
-  fun addToWatchlist(
-    request: AddToWatchlistRequestApi
-  ): Flow<AddToWatchlistResponseApi>
+  fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<AddToWatchlistResponseApi>
 }

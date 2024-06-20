@@ -52,29 +52,29 @@ class DetailsScreenTest : ComposeTest() {
           id = 0,
           mediaType = MediaType.MOVIE.name,
           isFavorite = false,
-        )
-      )
+        ),
+      ),
     )
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(
-        Result.success(AccountMediaDetailsFactory.Rated())
-      )
+        Result.success(AccountMediaDetailsFactory.Rated()),
+      ),
     )
 
     getMovieDetailsUseCase.mockFetchMovieDetails(
       response = flowOf(
         Result.success(
           MovieDetailsResult.DetailsSuccess(
-            mediaDetails = MediaDetailsFactory.FightClub()
-          )
+            mediaDetails = MediaDetailsFactory.FightClub(),
+          ),
         ),
         Result.success(
           MovieDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
-          )
-        )
-      )
+          ),
+        ),
+      ),
     )
 
     setContentWithTheme {
@@ -92,9 +92,9 @@ class DetailsScreenTest : ComposeTest() {
               "id" to 0,
               "isFavorite" to false,
               "mediaType" to MediaType.MOVIE.value,
-            )
-          )
-        )
+            ),
+          ),
+        ),
       )
     }
 
@@ -102,14 +102,14 @@ class DetailsScreenTest : ComposeTest() {
       .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
         matcher = hasText(
-          MediaItemFactory.MoviesList()[0].name
-        )
+          MediaItemFactory.MoviesList()[0].name,
+        ),
       )
 
     composeTestRule
       .onNodeWithTag(SIMILAR_MOVIES_SCROLLABLE_LIST)
       .performScrollToNode(
-        matcher = hasText(MediaItemFactory.MoviesList()[0].name)
+        matcher = hasText(MediaItemFactory.MoviesList()[0].name),
       )
 
     composeTestRule
@@ -123,8 +123,8 @@ class DetailsScreenTest : ComposeTest() {
           id = 0,
           isFavorite = false,
           mediaType = MediaType.MOVIE.name,
-        )
-      )
+        ),
+      ),
     )
 
     val navigateUpContentDescription = composeTestRule.activity
@@ -140,8 +140,8 @@ class DetailsScreenTest : ComposeTest() {
           id = 0,
           isFavorite = false,
           mediaType = MediaType.MOVIE.name,
-        )
-      )
+        ),
+      ),
     )
   }
 
@@ -156,17 +156,17 @@ class DetailsScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
+      response = flowOf(Result.success(AccountMediaDetailsFactory.Rated())),
     )
 
     getMovieDetailsUseCase.mockFetchMovieDetails(
       response = flowOf(
         Result.success(
           MovieDetailsResult.DetailsSuccess(
-            mediaDetails = MediaDetailsFactory.FightClub()
-          )
+            mediaDetails = MediaDetailsFactory.FightClub(),
+          ),
         ),
-      )
+      ),
     )
 
     val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
@@ -181,24 +181,24 @@ class DetailsScreenTest : ComposeTest() {
           "id" to 0,
           "isFavorite" to false,
           "mediaType" to MediaType.MOVIE.value,
-        )
-      )
+        ),
+      ),
     )
 
     setContentWithTheme {
       com.divinelink.feature.details.ui.DetailsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
     composeTestRule.onNodeWithTag(
       testTag = TestTags.Details.YOUR_RATING,
-      useUnmergedTree = true
+      useUnmergedTree = true,
     ).performClick()
 
     composeTestRule.onNodeWithTag(
-      TestTags.Details.RATE_DIALOG
+      TestTags.Details.RATE_DIALOG,
     ).assertIsDisplayed()
   }
 
@@ -213,21 +213,21 @@ class DetailsScreenTest : ComposeTest() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
+      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
 
     submitRateUseCase.mockSubmitRate(
-      response = flowOf(Result.success(Unit))
+      response = flowOf(Result.success(Unit)),
     )
 
     getMovieDetailsUseCase.mockFetchMovieDetails(
       response = flowOf(
         Result.success(
           MovieDetailsResult.DetailsSuccess(
-            mediaDetails = MediaDetailsFactory.FightClub()
-          )
+            mediaDetails = MediaDetailsFactory.FightClub(),
+          ),
         ),
-      )
+      ),
     )
 
     val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
@@ -242,14 +242,14 @@ class DetailsScreenTest : ComposeTest() {
           "id" to 0,
           "isFavorite" to false,
           "mediaType" to MediaType.MOVIE.value,
-        )
-      )
+        ),
+      ),
     )
 
     setContentWithTheme {
       com.divinelink.feature.details.ui.DetailsScreen(
         navigator = destinationsNavigator,
-        viewModel = viewModel
+        viewModel = viewModel,
       )
     }
 
@@ -257,20 +257,20 @@ class DetailsScreenTest : ComposeTest() {
 
     composeTestRule.onNodeWithTag(
       TestTags.Details.YOUR_RATING,
-      useUnmergedTree = true
+      useUnmergedTree = true,
     ).assertDoesNotExist()
 
     composeTestRule.onNodeWithText(
       text = addRatingText,
-      useUnmergedTree = true
+      useUnmergedTree = true,
     ).assertIsDisplayed().performClick()
 
     composeTestRule.onNodeWithTag(
-      TestTags.Details.RATE_DIALOG
+      TestTags.Details.RATE_DIALOG,
     ).assertIsDisplayed()
 
     composeTestRule.onNodeWithTag(
-      TestTags.Details.RATE_SLIDER
+      TestTags.Details.RATE_SLIDER,
     ).assertExists().performTouchInput {
       swipeRight()
     }
@@ -282,7 +282,7 @@ class DetailsScreenTest : ComposeTest() {
 
     composeTestRule.onNodeWithTag(
       TestTags.Details.YOUR_RATING,
-      useUnmergedTree = true
+      useUnmergedTree = true,
     ).assertIsDisplayed()
   }
 }

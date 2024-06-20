@@ -34,47 +34,46 @@ class GetPopularMoviesUseCaseTest {
   }
 
   @Test
-  fun `successfully fetch popular movies`() =
-    runTest {
-      val expectedResult = Result.success(
-        remoteMovies.mapIndexed { index, movie ->
-          movie.copy(isFavorite = index % 2 == 0)
-        }
-      )
+  fun `successfully fetch popular movies`() = runTest {
+    val expectedResult = Result.success(
+      remoteMovies.mapIndexed { index, movie ->
+        movie.copy(isFavorite = index % 2 == 0)
+      },
+    )
 
-      repository.mockFetchPopularMovies(
-        request = MoviesRequestApi(page = 0),
-        response = Result.success(remoteMovies)
-      )
+    repository.mockFetchPopularMovies(
+      request = MoviesRequestApi(page = 0),
+      response = Result.success(remoteMovies),
+    )
 
-      repository.mockFetchFavoriteMoviesIds(
-        response = Result.success(
-          localFavoriteMovies.map {
-            Pair(it.id, it.mediaType)
-          }
-        )
-      )
+    repository.mockFetchFavoriteMoviesIds(
+      response = Result.success(
+        localFavoriteMovies.map {
+          Pair(it.id, it.mediaType)
+        },
+      ),
+    )
 
-      val useCase = GetPopularMoviesUseCase(
-        repository = repository.mock,
-        dispatcher = testDispatcher,
-      )
-      val result = useCase(request).last()
+    val useCase = GetPopularMoviesUseCase(
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+    val result = useCase(request).last()
 
-      assertThat(result).isEqualTo(expectedResult)
-    }
+    assertThat(result).isEqualTo(expectedResult)
+  }
 
   @Test
   fun `given local data failed then I expect remote data`() = runTest {
     val expectedResult = Result.success<List<MediaItem>>(remoteMovies)
 
     repository.mockFetchFavoriteMoviesIds(
-      Result.failure(Exception())
+      Result.failure(Exception()),
     )
 
     repository.mockFetchPopularMovies(
       request = MoviesRequestApi(page = 0),
-      response = Result.success(remoteMovies)
+      response = Result.success(remoteMovies),
     )
 
     remoteMovies.forEach {
@@ -98,12 +97,12 @@ class GetPopularMoviesUseCaseTest {
     val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      Result.success(localFavoriteMovies)
+      Result.success(localFavoriteMovies),
     )
 
     repository.mockFetchPopularMovies(
       request = MoviesRequestApi(page = 0),
-      response = Result.failure(Exception())
+      response = Result.failure(Exception()),
     )
 
     val useCase = GetPopularMoviesUseCase(
@@ -120,12 +119,12 @@ class GetPopularMoviesUseCaseTest {
     val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
     repository.mockFetchFavoriteMovies(
-      Result.failure(Exception())
+      Result.failure(Exception()),
     )
 
     repository.mockFetchPopularMovies(
       request = MoviesRequestApi(page = 0),
-      response = Result.failure(Exception())
+      response = Result.failure(Exception()),
     )
 
     val useCase = GetPopularMoviesUseCase(

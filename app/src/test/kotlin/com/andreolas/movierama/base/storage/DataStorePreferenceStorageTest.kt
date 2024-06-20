@@ -36,7 +36,7 @@ class DataStorePreferenceStorageTest {
   private val fakeDataStore: DataStore<Preferences> =
     PreferenceDataStoreFactory.create(
       scope = testCoroutineScope,
-      produceFile = { testContext.preferencesDataStoreFile(TEST_DATASTORE_NAME) }
+      produceFile = { testContext.preferencesDataStoreFile(TEST_DATASTORE_NAME) },
     )
 
   @Test

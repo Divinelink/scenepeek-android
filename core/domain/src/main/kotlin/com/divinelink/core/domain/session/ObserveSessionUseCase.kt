@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ObserveSessionUseCase @Inject constructor(
   private val storage: PreferenceStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, Boolean>(dispatcher) {
 
   override fun execute(parameters: Unit): Flow<Result<Boolean>> = flow {

@@ -22,9 +22,7 @@ open class GetSearchMoviesUseCase @Inject constructor(
   private val repository: MediaRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher) {
-  override fun execute(
-    parameters: SearchRequestApi,
-  ): Flow<Result<SearchResult>> {
+  override fun execute(parameters: SearchRequestApi): Flow<Result<SearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()
     val searchMovies = repository.fetchSearchMovies(parameters)
 
@@ -37,15 +35,15 @@ open class GetSearchMoviesUseCase @Inject constructor(
         if (favorite.isSuccess && search.isSuccess) {
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
             Result.success(favorite.data).data,
-            Result.success(search.data).data
+            Result.success(search.data).data,
           )
           emit(
             Result.success(
               SearchResult(
                 query = parameters.query,
                 searchList = searchWithFavorites.filterIsInstance<MediaItem.Media>(),
-              )
-            )
+              ),
+            ),
           )
         } else if (search.isFailure) {
           emit(Result.failure(Exception("Something went wrong.")))

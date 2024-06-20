@@ -12,12 +12,12 @@ sealed interface SnackbarMessage {
     val actionLabelText: UIText? = null,
     val withDismissAction: Boolean = false,
     val duration: SnackbarDuration = SnackbarDuration.Short,
-    val onSnackbarResult: (SnackbarResult) -> Unit = {}
+    val onSnackbarResult: (SnackbarResult) -> Unit = {},
   ) : SnackbarMessage
 
   data class Visuals(
     val snackbarVisuals: SnackbarVisuals,
-    val onSnackbarResult: (SnackbarResult) -> Unit = {}
+    val onSnackbarResult: (SnackbarResult) -> Unit = {},
   ) : SnackbarMessage
 
   companion object {
@@ -26,18 +26,18 @@ sealed interface SnackbarMessage {
       actionLabelText: UIText? = null,
       withDismissAction: Boolean = false,
       duration: SnackbarDuration = SnackbarDuration.Short,
-      onSnackbarResult: (SnackbarResult) -> Unit = {}
+      onSnackbarResult: (SnackbarResult) -> Unit = {},
     ) = Text(
       text = text,
       actionLabelText = actionLabelText,
       withDismissAction = withDismissAction,
       duration = duration,
-      onSnackbarResult = onSnackbarResult
+      onSnackbarResult = onSnackbarResult,
     )
 
     fun from(
       snackbarVisuals: SnackbarVisuals,
-      onSnackbarResult: (SnackbarResult) -> Unit
+      onSnackbarResult: (SnackbarResult) -> Unit,
     ) = Visuals(snackbarVisuals = snackbarVisuals, onSnackbarResult = onSnackbarResult)
   }
 }

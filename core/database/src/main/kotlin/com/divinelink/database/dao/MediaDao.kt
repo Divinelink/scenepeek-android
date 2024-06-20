@@ -29,42 +29,28 @@ interface MediaDao {
   fun fetchFavoriteTVIds(): Flow<List<Int>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insertFavoriteMovie(
-    movie: PersistableMovie,
-  )
+  suspend fun insertFavoriteMovie(movie: PersistableMovie)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insertFavoriteTV(
-    tv: PersistableTV,
-  )
+  suspend fun insertFavoriteTV(tv: PersistableTV)
 
   @Query("DELETE FROM movie WHERE id=:id")
-  suspend fun removeFavoriteMovie(
-    id: Int,
-  )
+  suspend fun removeFavoriteMovie(id: Int)
 
   @Query("DELETE FROM tv WHERE id=:id")
-  suspend fun removeFavoriteTV(
-    id: Int,
-  )
+  suspend fun removeFavoriteTV(id: Int)
 
   @Query("SELECT COUNT(*) FROM movie WHERE id = :id")
-  suspend fun checkIfFavorite(
-    id: Int,
-  ): Int
+  suspend fun checkIfFavorite(id: Int): Int
 
   @Query("SELECT COUNT(*) FROM tv WHERE id = :id")
-  suspend fun checkIfFavoriteTV(
-    id: Int,
-  ): Int
+  suspend fun checkIfFavoriteTV(id: Int): Int
 }
 
-suspend fun MediaDao.insertFavoriteMedia(
-  media: MediaItem,
-) {
+suspend fun MediaDao.insertFavoriteMedia(media: MediaItem) {
   when (media) {
     is MediaItem.Media.Movie -> insertFavoriteMovie(
-      media.copy(isFavorite = true).toPersistableMovie()
+      media.copy(isFavorite = true).toPersistableMovie(),
     )
     is MediaItem.Media.TV -> insertFavoriteTV(media.copy(isFavorite = true).toPersistableTV())
     is MediaItem.Person -> TODO()

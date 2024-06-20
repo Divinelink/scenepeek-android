@@ -37,14 +37,14 @@ fun RateDialogContent(
   val rating = remember { mutableFloatStateOf(value) }
 
   Column(
-    modifier = modifier.padding(MaterialTheme.dimensions.keyline_16)
+    modifier = modifier.padding(MaterialTheme.dimensions.keyline_16),
   ) {
     Text(
       text = stringResource(id = R.string.details__add_rating_description, mediaTitle),
     )
 
     Spacer(
-      modifier = Modifier.height(MaterialTheme.dimensions.keyline_32)
+      modifier = Modifier.height(MaterialTheme.dimensions.keyline_32),
     )
 
     SpannableRating(
@@ -53,7 +53,7 @@ fun RateDialogContent(
         .align(Alignment.CenterHorizontally)
         .padding(bottom = MaterialTheme.dimensions.keyline_8),
       text = stringResource(id = R.string.details__your_rating),
-      rating = " ${rating.floatValue.roundToInt()}"
+      rating = " ${rating.floatValue.roundToInt()}",
     )
 
     RateSlider(
@@ -61,7 +61,7 @@ fun RateDialogContent(
       onValueChange = {
         onRateChanged(it)
         rating.floatValue = it
-      }
+      },
     )
 
     if (canClearRate) {
@@ -78,7 +78,8 @@ fun RateDialogContent(
     Button(
       modifier = Modifier.fillMaxWidth(),
       enabled = rating.floatValue > 0,
-      onClick = { onSubmitRate(rating.floatValue.roundToInt()) }) {
+      onClick = { onSubmitRate(rating.floatValue.roundToInt()) },
+    ) {
       Text(
         text = stringResource(id = R.string.details__submit_rating_button),
       )
@@ -98,7 +99,7 @@ private fun BottomSheetRateContentPreview() {
         onRateChanged = {},
         onSubmitRate = {},
         onClearRate = {},
-        canClearRate = true
+        canClearRate = true,
       )
     }
   }

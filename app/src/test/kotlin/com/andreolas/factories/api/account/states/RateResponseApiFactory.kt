@@ -4,9 +4,9 @@ import com.divinelink.core.network.media.model.states.RateResponseApi
 
 object RateResponseApiFactory {
 
-  fun Rated(): RateResponseApi = RateResponseApi.Value(
-    value = 8.0f
+  fun rated(): RateResponseApi = RateResponseApi.Value(
+    value = 8.0f,
   )
 
-  fun False(): RateResponseApi = RateResponseApi.False
+  fun `false`(): RateResponseApi = RateResponseApi.False
 }

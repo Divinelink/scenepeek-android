@@ -11,9 +11,7 @@ class FakeGetMoviesDetailsUseCase {
 
   val mock: GetMovieDetailsUseCase = mock()
 
-  fun mockFetchMovieDetails(
-    response: Flow<Result<MovieDetailsResult>>,
-  ) {
+  fun mockFetchMovieDetails(response: Flow<Result<MovieDetailsResult>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

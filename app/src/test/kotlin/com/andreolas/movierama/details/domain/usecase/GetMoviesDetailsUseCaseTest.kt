@@ -54,7 +54,7 @@ class GetMoviesDetailsUseCaseTest {
       authorName = "Lorem Ipsum name $it",
       rating = it,
       content = "Lorame Ipsum content $it",
-      date = "2022-10-10"
+      date = "2022-10-10",
     )
   }.toList()
 
@@ -94,10 +94,10 @@ class GetMoviesDetailsUseCaseTest {
       Result.success(
         MovieDetailsResult.DetailsSuccess(
           movieDetails.copy(
-            isFavorite = true
-          )
-        )
-      )
+            isFavorite = true,
+          ),
+        ),
+      ),
     )
   }
 
@@ -123,7 +123,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchMovieDetails(request, Result.Loading)
     repository.mockFetchMovieReviews(
       ReviewsRequestApi.Movie(movieId = 555),
-      Result.success(reviewsList)
+      Result.success(reviewsList),
     )
 //    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
     val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
@@ -142,11 +142,11 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchMovieDetails(request, Result.Loading)
     repository.mockFetchMovieReviews(
       ReviewsRequestApi.Movie(movieId = 555),
-      Result.success(reviewsList)
+      Result.success(reviewsList),
     )
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.success(similarList)
+      Result.success(similarList),
     )
     val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
@@ -165,7 +165,7 @@ class GetMoviesDetailsUseCaseTest {
 
     repository.mockFetchMovieDetails(
       request = request,
-      response = Result.failure(Exception("Oops."))
+      response = Result.failure(Exception("Oops.")),
     )
 
     val useCase = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
@@ -185,7 +185,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.failure(SimilarException())
+      Result.failure(SimilarException()),
     )
 
     val useCase = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
@@ -205,7 +205,7 @@ class GetMoviesDetailsUseCaseTest {
 //    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
-      Result.failure(SimilarException())
+      Result.failure(SimilarException()),
     )
     val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
       repository = repository.mock,
@@ -243,7 +243,7 @@ class GetMoviesDetailsUseCaseTest {
         officialTrailer = true,
         site = VideoSite.YouTube,
         key = "type",
-      )
+      ),
     )
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(
@@ -254,7 +254,9 @@ class GetMoviesDetailsUseCaseTest {
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.success(MovieDetailsResult.VideosSuccess(videoList.first())))
+    assertThat(
+      result,
+    ).isEqualTo(Result.success(MovieDetailsResult.VideosSuccess(videoList.first())))
   }
 
   @Test
@@ -266,7 +268,7 @@ class GetMoviesDetailsUseCaseTest {
         officialTrailer = false,
         site = VideoSite.Vimeo,
         key = "type",
-      )
+      ),
     )
     repository.mockFetchMovieVideos(VideosRequestApi(555), Result.success(videoList))
     val flow = com.divinelink.feature.details.usecase.GetMovieDetailsUseCase(

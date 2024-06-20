@@ -1,10 +1,10 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.session.tokenIsApproved
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -22,7 +22,7 @@ class HandleAuthenticationRequestUseCase @Inject constructor(
   private val storage: PreferenceStorage,
   private val sessionStorage: SessionStorage,
   private val createSessionUseCase: CreateSessionUseCase,
-  @IoDispatcher val dispatcher: CoroutineDispatcher
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : UseCase<String, Unit>(dispatcher) {
 
   override suspend fun execute(parameters: String) {

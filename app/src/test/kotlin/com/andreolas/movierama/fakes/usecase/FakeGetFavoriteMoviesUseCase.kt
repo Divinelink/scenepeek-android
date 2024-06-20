@@ -10,9 +10,7 @@ class FakeGetFavoriteMoviesUseCase {
 
   val mock: GetFavoriteMoviesUseCase = mockk()
 
-  fun mockGetFavoriteMovies(
-    response: MediaListResult,
-  ) {
+  fun mockGetFavoriteMovies(response: MediaListResult) {
     coEvery {
       mock.invoke(Unit)
     } returns flowOf(response)

@@ -32,6 +32,6 @@ object DetailsResponseApiFactory {
     video = false,
     voteAverage = 7.316,
     voteCount = 0,
-    credits = CreditsFactory.all()
+    credits = CreditsFactory.all(),
   )
 }

@@ -7,16 +7,14 @@ data class AccountSettingsViewState(
   val requestToken: String?,
   val navigateToWebView: Boolean?,
   val alertDialogUiState: AlertDialogUiState?,
-  val accountDetails: AccountDetails?
+  val accountDetails: AccountDetails?,
 ) {
   companion object {
-    fun initial(): AccountSettingsViewState {
-      return AccountSettingsViewState(
-        requestToken = null,
-        navigateToWebView = null,
-        alertDialogUiState = null,
-        accountDetails = null
-      )
-    }
+    fun initial(): AccountSettingsViewState = AccountSettingsViewState(
+      requestToken = null,
+      navigateToWebView = null,
+      alertDialogUiState = null,
+      accountDetails = null,
+    )
   }
 }

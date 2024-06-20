@@ -22,7 +22,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
-import com.divinelink.core.ui.R
 import com.divinelink.core.designsystem.R as designsystemR
 
 @Composable
@@ -52,7 +51,7 @@ fun FavoriteButton(
       .clip(MaterialTheme.shape.roundedShape)
       .background(color = backgroundColor)
       .clickable { onClick() }
-      .size(MaterialTheme.dimensions.keyline_40)
+      .size(MaterialTheme.dimensions.keyline_40),
   ) {
     Crossfade(
       modifier = Modifier.align(Alignment.Center),
@@ -68,7 +67,7 @@ fun FavoriteButton(
         imageVector = image,
         tint = color,
         contentDescription = stringResource(
-          R.string.core_ui_mark_as_favorite_button_content_description
+          R.string.core_ui_mark_as_favorite_button_content_description,
         ),
       )
     }

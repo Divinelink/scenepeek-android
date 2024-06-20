@@ -13,7 +13,7 @@ class DetailsViewStateTest {
     val mediaType = MediaType.MOVIE
     val movieId = 1
     val mediaDetails = MediaDetailsFactory.FightClub().copy(
-      title = "Godzilla x Kong: The New Empire"
+      title = "Godzilla x Kong: The New Empire",
     )
 
     val viewState = DetailsViewState(
@@ -32,7 +32,7 @@ class DetailsViewStateTest {
     val mediaType = MediaType.TV
     val movieId = 1
     val mediaDetails = MediaDetailsFactory.TheOffice().copy(
-      title = "The Office: The New Empire"
+      title = "The Office: The New Empire",
     )
 
     val viewState = DetailsViewState(

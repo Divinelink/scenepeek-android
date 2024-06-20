@@ -8,14 +8,14 @@ object AccountMediaDetailsFactory {
     id = 1234,
     favorite = false,
     rating = 8.0f,
-    watchlist = false
+    watchlist = false,
   )
 
   fun NotRated(): AccountMediaDetails = AccountMediaDetails(
     id = 1234,
     favorite = false,
     rating = null,
-    watchlist = false
+    watchlist = false,
   )
 
   class AccountMediaDetailsFactoryWizard(private var accountMediaDetails: AccountMediaDetails) {
@@ -35,7 +35,6 @@ object AccountMediaDetailsFactory {
     fun build(): AccountMediaDetails = accountMediaDetails
   }
 
-  fun AccountMediaDetails.toWizard(
-    block: AccountMediaDetailsFactoryWizard.() -> Unit
-  ) = AccountMediaDetailsFactoryWizard(this).apply(block).build()
+  fun AccountMediaDetails.toWizard(block: AccountMediaDetailsFactoryWizard.() -> Unit) =
+    AccountMediaDetailsFactoryWizard(this).apply(block).build()
 }

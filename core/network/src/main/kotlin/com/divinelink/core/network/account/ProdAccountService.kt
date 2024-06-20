@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProdAccountService @Inject constructor(
-  private val restClient: RestClient,
-) : AccountService {
+class ProdAccountService @Inject constructor(private val restClient: RestClient) : AccountService {
 
   override fun fetchMoviesWatchlist(
     page: Int,

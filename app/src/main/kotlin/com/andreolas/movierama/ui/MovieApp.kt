@@ -32,9 +32,7 @@ import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-fun MovieApp(
-  uiState: MainViewState
-) {
+fun MovieApp(uiState: MainViewState) {
   val navController: NavHostController = rememberNavController()
   val navigator = navController.rememberDestinationsNavigator()
 
@@ -43,7 +41,7 @@ fun MovieApp(
 
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
-    coroutineScope = coroutineScope
+    coroutineScope = coroutineScope,
   ) {
     Scaffold(
       containerColor = Color.Transparent,
@@ -81,24 +79,24 @@ fun MovieApp(
                 if (selected) {
                   Icon(
                     imageVector = destination.selectedIcon,
-                    contentDescription = null
+                    contentDescription = null,
                   )
                 } else {
                   Icon(
                     imageVector = destination.unselectedIcon,
-                    contentDescription = null
+                    contentDescription = null,
                   )
                 }
-              }
+              },
             )
           }
         }
-      }
+      },
     ) {
       Surface(
         modifier = Modifier
           .fillMaxSize()
-          .padding(it)
+          .padding(it),
       ) {
         when (uiState) {
           is MainViewState.Completed -> AppNavHost(
@@ -112,8 +110,7 @@ fun MovieApp(
   }
 }
 
-fun NavDestination?.isTopLevelDestinationInHierarchy(
-  destination: TopLevelDestination
-) = this?.hierarchy?.any {
-  it.route?.contains(destination.direction.route, true) ?: false
-} ?: false
+fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
+  this?.hierarchy?.any {
+    it.route?.contains(destination.direction.route, true) ?: false
+  } ?: false

@@ -14,7 +14,7 @@ internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
 )
 
 fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(
-  PersistableTV::toTV
+  PersistableTV::toTV,
 )
 
 internal fun PersistableTV.toTV() = MediaItem.Media.TV(
@@ -26,4 +26,3 @@ internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   overview = this.overview,
   isFavorite = this.isFavorite,
 )
-

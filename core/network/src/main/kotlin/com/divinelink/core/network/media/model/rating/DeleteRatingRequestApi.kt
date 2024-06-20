@@ -13,7 +13,7 @@ sealed class DeleteRatingRequestApi(
   @Serializable
   data class Movie(
     @SerialName("movie_id") val movieId: Int,
-    override val sessionId: String
+    override val sessionId: String,
   ) : DeleteRatingRequestApi(
     id = movieId,
     endpoint = "movie",
@@ -22,9 +22,9 @@ sealed class DeleteRatingRequestApi(
   @Serializable
   data class TV(
     @SerialName("series_id") val seriesId: Int,
-    override val sessionId: String
+    override val sessionId: String,
   ) : DeleteRatingRequestApi(
     id = seriesId,
-    endpoint = "tv"
+    endpoint = "tv",
   )
 }

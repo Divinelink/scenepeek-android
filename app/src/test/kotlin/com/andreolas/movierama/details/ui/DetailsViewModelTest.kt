@@ -29,7 +29,7 @@ class DetailsViewModelTest {
 
   private val testRobot = DetailsViewModelRobot().apply {
     mockFetchAccountMediaDetails(
-      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
+      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
   }
 
@@ -51,10 +51,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -64,7 +64,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
-        )
+        ),
       )
   }
 
@@ -75,10 +75,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -88,7 +88,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           mediaDetails = movieDetails,
-        )
+        ),
       )
   }
 
@@ -99,10 +99,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
-          )
-        )
+              reviewsList,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -112,7 +112,7 @@ class DetailsViewModelTest {
           isLoading = true,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           reviews = reviewsList,
-        )
+        ),
       )
   }
 
@@ -123,15 +123,15 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -144,7 +144,7 @@ class DetailsViewModelTest {
             withId(mediaId)
           },
           mediaDetails = movieDetails,
-        )
+        ),
       )
   }
 
@@ -155,15 +155,15 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
           Result.success(
             MovieDetailsResult.SimilarSuccess(
-              similarMovies
-            )
+              similarMovies,
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -174,7 +174,7 @@ class DetailsViewModelTest {
           isLoading = true,
           reviews = reviewsList,
           similarMovies = similarMovies,
-        )
+        ),
       )
   }
 
@@ -186,15 +186,15 @@ class DetailsViewModelTest {
           Result.success(MovieDetailsResult.Failure.FatalError()),
           Result.success(
             MovieDetailsResult.SimilarSuccess(
-              similarMovies
-            )
+              similarMovies,
+            ),
           ),
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -205,8 +205,8 @@ class DetailsViewModelTest {
           reviews = reviewsList,
           similarMovies = similarMovies,
           error = MovieDetailsResult.Failure.FatalError().message,
-          userDetails = AccountMediaDetailsFactory.NotRated()
-        )
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+        ),
       )
   }
 
@@ -218,15 +218,15 @@ class DetailsViewModelTest {
           Result.success(MovieDetailsResult.Failure.Unknown),
           Result.success(
             MovieDetailsResult.SimilarSuccess(
-              similarMovies
-            )
+              similarMovies,
+            ),
           ),
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -237,8 +237,8 @@ class DetailsViewModelTest {
           reviews = reviewsList,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           similarMovies = similarMovies,
-          error = MovieDetailsResult.Failure.Unknown.message
-        )
+          error = MovieDetailsResult.Failure.Unknown.message,
+        ),
       )
   }
 
@@ -250,15 +250,15 @@ class DetailsViewModelTest {
           Result.failure(MediaDetailsException()),
           Result.success(
             MovieDetailsResult.SimilarSuccess(
-              similarMovies
-            )
+              similarMovies,
+            ),
           ),
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -269,8 +269,8 @@ class DetailsViewModelTest {
           isLoading = false,
           reviews = reviewsList,
           similarMovies = similarMovies,
-          error = MovieDetailsResult.Failure.FatalError().message
-        )
+          error = MovieDetailsResult.Failure.FatalError().message,
+        ),
       )
   }
 
@@ -282,15 +282,15 @@ class DetailsViewModelTest {
           Result.failure(Exception()),
           Result.success(
             MovieDetailsResult.SimilarSuccess(
-              similarMovies
-            )
+              similarMovies,
+            ),
           ),
           Result.success(
             MovieDetailsResult.ReviewsSuccess(
-              reviewsList
-            )
+              reviewsList,
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -303,8 +303,8 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
           },
-          error = MovieDetailsResult.Failure.Unknown.message
-        )
+          error = MovieDetailsResult.Failure.Unknown.message,
+        ),
       )
   }
 
@@ -316,19 +316,19 @@ class DetailsViewModelTest {
           Result.success(
             MovieDetailsResult.DetailsSuccess(
               movieDetails.copy(
-                isFavorite = true
-              )
-            )
-          )
-        )
+                isFavorite = true,
+              ),
+            ),
+          ),
+        ),
       )
       .mockMarkAsFavoriteUseCase(
         media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
-        response = Result.success(Unit)
+        response = Result.success(Unit),
       )
       .buildViewModel(
         id = mediaId,
-        mediaType = MediaType.MOVIE
+        mediaType = MediaType.MOVIE,
       )
       .assertViewState(
         DetailsViewState(
@@ -339,7 +339,7 @@ class DetailsViewModelTest {
             withId(mediaId)
           },
           mediaDetails = movieDetails.copy(isFavorite = true),
-        )
+        ),
       )
       .onMarkAsFavorite()
       .assertViewState(
@@ -351,7 +351,7 @@ class DetailsViewModelTest {
             withId(mediaId)
           },
           mediaDetails = movieDetails.copy(isFavorite = false),
-        )
+        ),
       )
   }
 
@@ -363,10 +363,10 @@ class DetailsViewModelTest {
           response = flowOf(
             Result.success(
               MovieDetailsResult.DetailsSuccess(
-                movieDetails
-              )
-            )
-          )
+                movieDetails,
+              ),
+            ),
+          ),
         )
         .mockMarkAsFavoriteUseCase(
           media = MediaItemFactory.FightClub(),
@@ -374,7 +374,7 @@ class DetailsViewModelTest {
         )
         .buildViewModel(
           id = mediaId,
-          mediaType = MediaType.MOVIE
+          mediaType = MediaType.MOVIE,
         )
         .assertViewState(
           DetailsViewState(
@@ -383,7 +383,7 @@ class DetailsViewModelTest {
             isLoading = false,
             userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = false),
-          )
+          ),
         )
         .onMarkAsFavorite()
         .assertViewState(
@@ -393,7 +393,7 @@ class DetailsViewModelTest {
             isLoading = false,
             userDetails = AccountMediaDetailsFactory.NotRated(),
             mediaDetails = movieDetails.copy(isFavorite = true),
-          )
+          ),
         )
     }
 
@@ -404,19 +404,19 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
+              movieDetails,
+            ),
           ),
           Result.success(
             MovieDetailsResult.VideosSuccess(
-              VideoFactory.Youtube()
-            )
+              VideoFactory.Youtube(),
+            ),
           ),
-        )
+        ),
       )
       .buildViewModel(
         id = mediaId,
-        mediaType = MediaType.MOVIE
+        mediaType = MediaType.MOVIE,
       )
       .assertViewState(
         DetailsViewState(
@@ -426,7 +426,7 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
           trailer = VideoFactory.Youtube(),
-        )
+        ),
       )
   }
 
@@ -437,13 +437,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockFetchAccountMediaDetails(
-        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
+        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -453,7 +453,7 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated(),
-        )
+        ),
       )
   }
 
@@ -464,13 +464,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockFetchAccountMediaDetails(
-        response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated()))
+        response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -480,7 +480,7 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-        )
+        ),
       )
   }
 
@@ -491,13 +491,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockSubmitRate(
-        response = flowOf(Result.success(Unit))
+        response = flowOf(Result.success(Unit)),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -510,8 +510,8 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
           },
-          showRateDialog = true
-        )
+          showRateDialog = true,
+        ),
       )
       .onSubmitRate(5)
       .assertViewState(
@@ -523,15 +523,15 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
               R.string.details__rating_submitted_successfully,
-              movieDetails.title
-            )
+              movieDetails.title,
+            ),
           ),
           userDetails = AccountMediaDetailsFactory.Rated().toWizard {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
   }
 
@@ -543,13 +543,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.Unauthenticated()))
+        response = flowOf(Result.failure(SessionException.Unauthenticated())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE).also {
         viewModel = it.getViewModel()
@@ -565,10 +565,10 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
-            onSnackbarResult = viewModel::navigateToLogin
+            onSnackbarResult = viewModel::navigateToLogin,
           ),
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
   }
 
@@ -580,13 +580,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.Unauthenticated()))
+        response = flowOf(Result.failure(SessionException.Unauthenticated())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE).also {
         viewModel = it.getViewModel()
@@ -602,10 +602,10 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
             actionLabelText = UIText.ResourceText(R.string.login),
-            onSnackbarResult = viewModel::navigateToLogin
+            onSnackbarResult = viewModel::navigateToLogin,
           ),
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
       .assertViewState(
@@ -616,8 +616,8 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           snackbarMessage = null,
-          navigateToLogin = true
-        )
+          navigateToLogin = true,
+        ),
       )
   }
 
@@ -628,10 +628,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
@@ -641,8 +641,8 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
-          navigateToLogin = true
-        )
+          navigateToLogin = true,
+        ),
       )
       .consumeNavigation()
       .assertViewState(
@@ -651,8 +651,8 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
-          navigateToLogin = null
-        )
+          navigateToLogin = null,
+        ),
       )
   }
 
@@ -660,16 +660,16 @@ class DetailsViewModelTest {
   fun `given snackbar message, when I consume it I expect snackbar message null`() {
     testRobot
       .mockSubmitRate(
-        response = flowOf(Result.success(Unit))
+        response = flowOf(Result.success(Unit)),
       )
       .mockFetchMovieDetails(
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -682,8 +682,8 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
           },
-          showRateDialog = true
-        )
+          showRateDialog = true,
+        ),
       )
       .onSubmitRate(5)
       .assertViewState(
@@ -695,15 +695,15 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(
               R.string.details__rating_submitted_successfully,
-              movieDetails.title
-            )
+              movieDetails.title,
+            ),
           ),
           userDetails = AccountMediaDetailsFactory.Rated().toWizard {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
       .consumeSnackbar()
       .assertViewState(
@@ -716,8 +716,8 @@ class DetailsViewModelTest {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
   }
 
@@ -728,10 +728,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -742,8 +742,8 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = true
-        )
+          showRateDialog = true,
+        ),
       )
   }
 
@@ -754,10 +754,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddRateClicked()
@@ -768,8 +768,8 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = true
-        )
+          showRateDialog = true,
+        ),
       )
       .onDismissRateDialog()
       .assertViewState(
@@ -779,8 +779,8 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = false
-        )
+          showRateDialog = false,
+        ),
       )
   }
 
@@ -791,16 +791,16 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockFetchAccountMediaDetails(
-        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated()))
+        response = flowOf(Result.success(AccountMediaDetailsFactory.Rated())),
       )
       .mockDeleteRating(
-        response = flowOf(Result.success(Unit))
+        response = flowOf(Result.success(Unit)),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .assertViewState(
@@ -810,7 +810,7 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated(),
-        )
+        ),
       )
       .onDeleteRating()
       .assertViewState(
@@ -825,10 +825,10 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.details__rating_deleted_successfully,
-              movieDetails.title
-            )
-          )
-        )
+              movieDetails.title,
+            ),
+          ),
+        ),
       )
   }
 
@@ -841,13 +841,13 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockAddToWatchlist(
-        response = flowOf(Result.failure(SessionException.InvalidAccountId()))
+        response = flowOf(Result.failure(SessionException.InvalidAccountId())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE).also {
         viewModel = it.getViewModel()
@@ -863,9 +863,9 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
             actionLabelText = UIText.ResourceText(R.string.login),
-            onSnackbarResult = viewModel::navigateToLogin
-          )
-        )
+            onSnackbarResult = viewModel::navigateToLogin,
+          ),
+        ),
       )
   }
 
@@ -873,10 +873,10 @@ class DetailsViewModelTest {
   fun `given error when I add to watchlist I expect general error`() = runTest {
     testRobot
       .mockFetchMovieDetails(
-        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails)))
+        response = flowOf(Result.success(MovieDetailsResult.DetailsSuccess(movieDetails))),
       )
       .mockAddToWatchlist(
-        response = flowOf(Result.failure(Exception()))
+        response = flowOf(Result.failure(Exception())),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onAddToWatchlist()
@@ -888,9 +888,9 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(uiR.string.core_ui_error_retry)
-          )
-        )
+            text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+          ),
+        ),
       )
   }
 
@@ -901,15 +901,15 @@ class DetailsViewModelTest {
         flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockFetchAccountMediaDetails(
         flowOf(
-          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) })
-        )
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) }),
+        ),
       )
       .mockAddToWatchlist(flowOf(Result.success(Unit)))
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -920,7 +920,7 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
-        )
+        ),
       )
       .onAddToWatchlist()
       .assertViewState(
@@ -933,10 +933,10 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.details__removed_from_watchlist,
-              movieDetails.title
-            )
-          )
-        )
+              movieDetails.title,
+            ),
+          ),
+        ),
       )
   }
 
@@ -947,15 +947,15 @@ class DetailsViewModelTest {
         flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .mockFetchAccountMediaDetails(
         flowOf(
-          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) })
-        )
+          Result.success(AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) }),
+        ),
       )
       .mockAddToWatchlist(flowOf(Result.success(Unit)))
       .buildViewModel(mediaId, MediaType.MOVIE)
@@ -966,7 +966,7 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
-        )
+        ),
       )
       .onAddToWatchlist()
       .assertViewState(
@@ -979,10 +979,10 @@ class DetailsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.details__added_to_watchlist,
-              movieDetails.title
-            )
-          )
-        )
+              movieDetails.title,
+            ),
+          ),
+        ),
       )
   }
 
@@ -993,10 +993,10 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MovieDetailsResult.DetailsSuccess(
-              movieDetails
-            )
-          )
-        )
+              movieDetails,
+            ),
+          ),
+        ),
       )
       .buildViewModel(mediaId, MediaType.MOVIE)
       .onShareClicked(openShareDialog = true)
@@ -1007,8 +1007,8 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          openShareDialog = true
-        )
+          openShareDialog = true,
+        ),
       )
       .onShareClicked(openShareDialog = false)
       .assertViewState(
@@ -1018,8 +1018,8 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          openShareDialog = false
-        )
+          openShareDialog = false,
+        ),
       )
   }
 }

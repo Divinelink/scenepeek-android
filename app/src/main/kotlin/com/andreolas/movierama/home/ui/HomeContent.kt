@@ -70,7 +70,7 @@ fun HomeContent(
           IconButton(onClick = onNavigateToSettings) {
             Icon(
               Icons.Filled.Settings,
-              stringResource(R.string.settings_button_content_description)
+              stringResource(R.string.settings_button_content_description),
             )
           }
         },

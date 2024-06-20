@@ -24,9 +24,9 @@ class FakeDetailsRepository {
     response: Result<Movie>,
   ) {
     whenever(
-      mock.fetchMovieDetails(request)
+      mock.fetchMovieDetails(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -35,9 +35,9 @@ class FakeDetailsRepository {
     response: Result<List<Review>>,
   ) {
     whenever(
-      mock.fetchMovieReviews(request)
+      mock.fetchMovieReviews(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -46,9 +46,9 @@ class FakeDetailsRepository {
     response: Result<List<MediaItem.Media>>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request)
+      mock.fetchSimilarMovies(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
@@ -57,49 +57,41 @@ class FakeDetailsRepository {
     response: Result<List<Video>>,
   ) {
     whenever(
-      mock.fetchVideos(request)
+      mock.fetchVideos(request),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockFetchAccountMediaDetails(
-    response: Result<AccountMediaDetails>,
-  ) {
+  fun mockFetchAccountMediaDetails(response: Result<AccountMediaDetails>) {
     whenever(
-      mock.fetchAccountMediaDetails(any())
+      mock.fetchAccountMediaDetails(any()),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockSubmitRating(
-    response: Result<Unit>,
-  ) {
+  fun mockSubmitRating(response: Result<Unit>) {
     whenever(
-      mock.submitRating(any())
+      mock.submitRating(any()),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockDeleteRating(
-    response: Result<Unit>,
-  ) {
+  fun mockDeleteRating(response: Result<Unit>) {
     whenever(
-      mock.deleteRating(any())
+      mock.deleteRating(any()),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 
-  fun mockAddToWatchlist(
-    response: Result<Unit>,
-  ) {
+  fun mockAddToWatchlist(response: Result<Unit>) {
     whenever(
-      mock.addToWatchlist(any())
+      mock.addToWatchlist(any()),
     ).thenReturn(
-      flowOf(response)
+      flowOf(response),
     )
   }
 }

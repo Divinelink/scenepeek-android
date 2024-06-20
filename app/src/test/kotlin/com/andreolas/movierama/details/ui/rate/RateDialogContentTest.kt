@@ -30,13 +30,13 @@ class RateDialogContentTest : ComposeTest() {
           submitClicked = true
         },
         onClearRate = {},
-        canClearRate = true
+        canClearRate = true,
       )
     }
 
     val descriptionText = composeTestRule.activity.getString(
       detailsR.string.details__add_rating_description,
-      movie.title
+      movie.title,
     )
 
     val submitButtonText =
@@ -66,13 +66,13 @@ class RateDialogContentTest : ComposeTest() {
           submitClicked = true
         },
         onClearRate = {},
-        canClearRate = true
+        canClearRate = true,
       )
     }
 
     val descriptionText = composeTestRule.activity.getString(
       detailsR.string.details__add_rating_description,
-      movie.title
+      movie.title,
     )
 
     val submitButtonText =
@@ -103,13 +103,13 @@ class RateDialogContentTest : ComposeTest() {
         onClearRate = {
           deleteClicked = true
         },
-        canClearRate = true
+        canClearRate = true,
       )
     }
 
     val descriptionText = composeTestRule.activity.getString(
       detailsR.string.details__add_rating_description,
-      movie.title
+      movie.title,
     )
 
     val deleteButtonText =

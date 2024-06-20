@@ -8,11 +8,9 @@ import org.mockito.kotlin.whenever
 
 class FakeAddToWatchlistUseCase {
 
-  val mock: com.divinelink.feature.details.usecase.AddToWatchlistUseCase = mock()
+  val mock: AddToWatchlistUseCase = mock()
 
-  fun mockAddToWatchlist(
-    response: Flow<Result<Unit>>,
-  ) {
+  fun mockAddToWatchlist(response: Flow<Result<Unit>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

@@ -37,20 +37,20 @@ class SubmitRatingUseCaseTest {
     val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        rating = 5
-      )
+        rating = 5,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull()
+      result.first().exceptionOrNull(),
     ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
@@ -59,21 +59,21 @@ class SubmitRatingUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockSubmitRating(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        rating = 5
-      )
+        rating = 5,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -85,21 +85,21 @@ class SubmitRatingUseCaseTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockSubmitRating(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.TV,
-        rating = 5
-      )
+        rating = 5,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -113,24 +113,23 @@ class SubmitRatingUseCaseTest {
     val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       com.divinelink.feature.details.usecase.SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.UNKNOWN,
-        rating = 5
-      )
+        rating = 5,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) =
-    SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
-    )
+  private fun createSessionStorage(sessionId: String?) = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+  )
 }

@@ -9,21 +9,21 @@ object ReviewFactory {
     authorName = "Eledriel S.",
     rating = 10,
     content = LoremIpsum(100).values.joinToString(),
-    date = "13-02-2017"
+    date = "13-02-2017",
   )
 
   fun Review_2() = Review(
     authorName = "Andreas O.",
     rating = 6,
     content = LoremIpsum(80).values.joinToString(),
-    date = "13-02-2018"
+    date = "13-02-2018",
   )
 
   fun Review_3() = Review(
     authorName = "John Doe",
     rating = 9,
     content = LoremIpsum(60).values.joinToString(),
-    date = "13-02-2019"
+    date = "13-02-2019",
   )
 
   fun all() = listOf(
@@ -32,9 +32,7 @@ object ReviewFactory {
     Review_3(),
   )
 
-  fun ReviewList(
-    range: IntProgression = 1..10,
-  ): List<Review> = (range).map {
+  fun ReviewList(range: IntProgression = 1..10): List<Review> = (range).map {
     Review(
       authorName = "authorName $it",
       rating = it,

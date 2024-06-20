@@ -10,7 +10,7 @@ dependencies {
   implementation(libs.datastore.preferences.core)
   implementation(libs.encrypted.preferences)
   api(projects.core.model)
-  
+
   implementation(projects.core.designsystem)
 
   implementation(projects.core.commons)

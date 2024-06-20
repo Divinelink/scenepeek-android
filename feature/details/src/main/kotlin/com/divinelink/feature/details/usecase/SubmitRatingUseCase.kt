@@ -17,7 +17,7 @@ import javax.inject.Inject
 data class SubmitRatingParameters(
   val id: Int,
   val mediaType: MediaType,
-  val rating: Int
+  val rating: Int,
 )
 
 open class SubmitRatingUseCase @Inject constructor(
@@ -32,7 +32,6 @@ open class SubmitRatingUseCase @Inject constructor(
       emit(Result.failure(SessionException.Unauthenticated()))
       return@flow
     } else {
-
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> AddRatingRequestApi.Movie(
           movieId = parameters.id,
@@ -42,7 +41,7 @@ open class SubmitRatingUseCase @Inject constructor(
         MediaType.TV -> AddRatingRequestApi.TV(
           seriesId = parameters.id,
           sessionId = sessionId,
-          rating = parameters.rating
+          rating = parameters.rating,
         )
 
         else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")

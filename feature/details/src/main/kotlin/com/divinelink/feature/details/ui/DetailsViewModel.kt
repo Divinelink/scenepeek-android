@@ -56,7 +56,7 @@ class DetailsViewModel @Inject constructor(
       mediaId = args.id,
       mediaType = MediaType.from(args.mediaType),
       isLoading = true,
-    )
+    ),
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
 
@@ -67,7 +67,7 @@ class DetailsViewModel @Inject constructor(
           _viewState.update { viewState ->
             viewState.copy(
               mediaDetails = viewState.mediaDetails?.copy(
-                isFavorite = !viewState.mediaDetails.isFavorite
+                isFavorite = !viewState.mediaDetails.isFavorite,
               ),
             )
           }
@@ -91,7 +91,7 @@ class DetailsViewModel @Inject constructor(
             is MovieDetailsResult.DetailsSuccess -> {
               viewState.copy(
                 isLoading = false,
-                mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails
+                mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails,
               )
             }
 
@@ -146,8 +146,8 @@ class DetailsViewModel @Inject constructor(
         SubmitRatingParameters(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
-          rating = rating
-        )
+          rating = rating,
+        ),
       ).collectLatest { result ->
         result.onSuccess {
           Timber.d("Rating submitted: $rating")
@@ -158,9 +158,9 @@ class DetailsViewModel @Inject constructor(
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_submitted_successfully,
-                  viewState.mediaDetails?.title ?: ""
+                  viewState.mediaDetails?.title ?: "",
                 ),
-              )
+              ),
             )
           }
         }.onFailure {
@@ -172,7 +172,7 @@ class DetailsViewModel @Inject constructor(
                   text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
                   actionLabelText = UIText.ResourceText(R.string.login),
                   onSnackbarResult = ::navigateToLogin,
-                )
+                ),
               )
             }
           }
@@ -187,16 +187,15 @@ class DetailsViewModel @Inject constructor(
    * When the user logs in, we should re-fetch the account details, and update the rating along
    * with the watchlist status.
    */
-  private fun updateOrCreateAccountMediaDetails(rating: Int): AccountMediaDetails {
-    return viewState.value.userDetails?.copy(
-      rating = rating.toFloat()
+  private fun updateOrCreateAccountMediaDetails(rating: Int): AccountMediaDetails =
+    viewState.value.userDetails?.copy(
+      rating = rating.toFloat(),
     ) ?: AccountMediaDetails(
       rating = rating.toFloat(),
       watchlist = false,
       id = viewState.value.mediaId,
       favorite = false,
     )
-  }
 
   fun onClearRating() {
     if (viewState.value.userDetails == null) return
@@ -205,23 +204,23 @@ class DetailsViewModel @Inject constructor(
       deleteRatingUseCase.invoke(
         DeleteRatingParameters(
           id = viewState.value.mediaId,
-          mediaType = viewState.value.mediaType
-        )
+          mediaType = viewState.value.mediaType,
+        ),
       ).collectLatest { result ->
         result.onSuccess {
           Timber.d("Rating deleted")
           _viewState.update { viewState ->
             viewState.copy(
               userDetails = viewState.userDetails?.copy(
-                rating = null
+                rating = null,
               ),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_deleted_successfully,
-                  viewState.mediaDetails?.title ?: ""
-                )
+                  viewState.mediaDetails?.title ?: "",
+                ),
               ),
-              showRateDialog = false
+              showRateDialog = false,
             )
           }
         }
@@ -232,7 +231,7 @@ class DetailsViewModel @Inject constructor(
   fun onAddRateClicked() {
     _viewState.update { viewState ->
       viewState.copy(
-        showRateDialog = true
+        showRateDialog = true,
       )
     }
   }
@@ -244,7 +243,7 @@ class DetailsViewModel @Inject constructor(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
           addToWatchlist = viewState.value.userDetails?.watchlist == false,
-        )
+        ),
       ).collectLatest { result ->
         result.onSuccess {
           _viewState.update { viewState ->
@@ -254,9 +253,9 @@ class DetailsViewModel @Inject constructor(
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(
                     R.string.details__removed_from_watchlist,
-                    viewState.mediaDetails?.title!!
-                  )
-                )
+                    viewState.mediaDetails?.title!!,
+                  ),
+                ),
               )
             } else {
               viewState.copy(
@@ -264,9 +263,9 @@ class DetailsViewModel @Inject constructor(
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(
                     R.string.details__added_to_watchlist,
-                    viewState.mediaDetails?.title!!
-                  )
-                )
+                    viewState.mediaDetails?.title!!,
+                  ),
+                ),
               )
             }
           }
@@ -277,16 +276,16 @@ class DetailsViewModel @Inject constructor(
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
                   actionLabelText = UIText.ResourceText(R.string.login),
-                  onSnackbarResult = ::navigateToLogin
-                )
+                  onSnackbarResult = ::navigateToLogin,
+                ),
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(uiR.string.core_ui_error_retry)
-                )
+                  text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+                ),
               )
             }
           }
@@ -298,7 +297,7 @@ class DetailsViewModel @Inject constructor(
   fun onShareClicked(openShareDialog: Boolean) {
     _viewState.update { viewState ->
       viewState.copy(
-        openShareDialog = openShareDialog
+        openShareDialog = openShareDialog,
       )
     }
   }
@@ -308,7 +307,7 @@ class DetailsViewModel @Inject constructor(
       _viewState.update { viewState ->
         viewState.copy(
           navigateToLogin = true,
-          snackbarMessage = null
+          snackbarMessage = null,
         )
       }
     }
@@ -317,7 +316,7 @@ class DetailsViewModel @Inject constructor(
   private suspend fun fetchAccountMediaDetails() {
     val params = AccountMediaDetailsParams(
       id = viewState.value.mediaId,
-      mediaType = viewState.value.mediaType
+      mediaType = viewState.value.mediaType,
     )
 
     fetchAccountMediaDetailsUseCase.invoke(params)
@@ -325,7 +324,7 @@ class DetailsViewModel @Inject constructor(
         result.onSuccess {
           _viewState.update { viewState ->
             viewState.copy(
-              userDetails = result.data
+              userDetails = result.data,
             )
           }
         }

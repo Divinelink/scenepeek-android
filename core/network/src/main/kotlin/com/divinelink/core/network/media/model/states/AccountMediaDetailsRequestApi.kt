@@ -13,7 +13,7 @@ sealed class AccountMediaDetailsRequestApi(
   @Serializable
   data class Movie(
     @SerialName("movie_id") val movieId: Int,
-    override val sessionId: String
+    override val sessionId: String,
   ) : AccountMediaDetailsRequestApi(
     id = movieId,
     endpoint = "movie",
@@ -22,9 +22,9 @@ sealed class AccountMediaDetailsRequestApi(
   @Serializable
   data class TV(
     @SerialName("series_id") val seriesId: Int,
-    override val sessionId: String
+    override val sessionId: String,
   ) : AccountMediaDetailsRequestApi(
     id = seriesId,
-    endpoint = "tv"
+    endpoint = "tv",
   )
 }

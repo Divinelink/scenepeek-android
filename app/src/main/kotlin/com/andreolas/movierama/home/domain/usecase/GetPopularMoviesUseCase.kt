@@ -27,7 +27,7 @@ open class GetPopularMoviesUseCase @Inject constructor(
             getMediaWithUpdatedFavoriteStatus(
               favoriteIds = favorite.data,
               mediaResult = popular.data,
-            )
+            ),
           )
         }
         popular.isSuccess -> Result.success(popular.data)

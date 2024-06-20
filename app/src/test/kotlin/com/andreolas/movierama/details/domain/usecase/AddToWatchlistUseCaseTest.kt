@@ -38,20 +38,20 @@ class AddToWatchlistUseCaseTest {
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true
-      )
+        addToWatchlist = true,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull()
+      result.first().exceptionOrNull(),
     ).isInstanceOf(SessionException.InvalidAccountId::class.java)
   }
 
@@ -62,20 +62,20 @@ class AddToWatchlistUseCaseTest {
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true
-      )
+        addToWatchlist = true,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull()
+      result.first().exceptionOrNull(),
     ).isInstanceOf(SessionException.InvalidAccountId::class.java)
   }
 
@@ -84,21 +84,21 @@ class AddToWatchlistUseCaseTest {
     sessionStorage = createSessionStorage(accountId = "123", sessionId = "123")
 
     repository.mockAddToWatchlist(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = true
-      )
+        addToWatchlist = true,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -111,19 +111,19 @@ class AddToWatchlistUseCaseTest {
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     repository.mockAddToWatchlist(
-      response = Result.success(Unit)
+      response = Result.success(Unit),
     )
 
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.TV,
-        addToWatchlist = true
-      )
+        addToWatchlist = true,
+      ),
     )
 
     assertThat(result.first().isSuccess).isTrue()
@@ -136,15 +136,15 @@ class AddToWatchlistUseCaseTest {
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
-      dispatcher = testDispatcher
+      dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
-        addToWatchlist = false
-      )
+        addToWatchlist = false,
+      ),
     )
 
     assertThat(result.first().isFailure).isTrue()
@@ -156,8 +156,8 @@ class AddToWatchlistUseCaseTest {
     sessionId: String?,
   ) = SessionStorage(
     storage = FakePreferenceStorage(
-      accountId = accountId
+      accountId = accountId,
     ),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId)
+    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
   )
 }

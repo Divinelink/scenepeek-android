@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 data class AccountMediaDetailsParams(
   val id: Int,
-  val mediaType: MediaType
+  val mediaType: MediaType,
 )
 
 open class FetchAccountMediaDetailsUseCase @Inject constructor(
@@ -25,33 +25,31 @@ open class FetchAccountMediaDetailsUseCase @Inject constructor(
   private val repository: DetailsRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<AccountMediaDetailsParams, AccountMediaDetails>(dispatcher) {
-  override fun execute(
-    parameters: AccountMediaDetailsParams
-  ): Flow<Result<AccountMediaDetails>> = flow {
-    val sessionId = sessionStorage.sessionId
+  override fun execute(parameters: AccountMediaDetailsParams): Flow<Result<AccountMediaDetails>> =
+    flow {
+      val sessionId = sessionStorage.sessionId
 
-    if (sessionId == null) {
-      emit(Result.failure(SessionException.Unauthenticated()))
-      return@flow
-    } else {
+      if (sessionId == null) {
+        emit(Result.failure(SessionException.Unauthenticated()))
+        return@flow
+      } else {
+        val request = when (parameters.mediaType) {
+          MediaType.MOVIE -> AccountMediaDetailsRequestApi.Movie(
+            movieId = parameters.id,
+            sessionId = sessionId,
+          )
+          MediaType.TV -> AccountMediaDetailsRequestApi.TV(
+            seriesId = parameters.id,
+            sessionId = sessionId,
+          )
+          else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")
+        }
 
-      val request = when (parameters.mediaType) {
-        MediaType.MOVIE -> AccountMediaDetailsRequestApi.Movie(
-          movieId = parameters.id,
-          sessionId = sessionId
-        )
-        MediaType.TV -> AccountMediaDetailsRequestApi.TV(
-          seriesId = parameters.id,
-          sessionId = sessionId
-        )
-        else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")
+        val response = repository.fetchAccountMediaDetails(
+          request = request,
+        ).last()
+
+        emit(Result.success(response.data))
       }
-
-      val response = repository.fetchAccountMediaDetails(
-        request = request
-      ).last()
-
-      emit(Result.success(response.data))
     }
-  }
 }

@@ -49,22 +49,18 @@ class DetailsViewModelRobot {
           "id" to id,
           "mediaType" to mediaType.value,
           "isFavorite" to false,
-        )
+        ),
       ),
     )
   }
 
   fun getViewModel() = viewModel
 
-  fun assertViewState(
-    expectedViewState: DetailsViewState,
-  ) = apply {
+  fun assertViewState(expectedViewState: DetailsViewState) = apply {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
-  fun mockFetchMovieDetails(
-    response: Flow<Result<MovieDetailsResult>>,
-  ) = apply {
+  fun mockFetchMovieDetails(response: Flow<Result<MovieDetailsResult>>) = apply {
     fakeGetMovieDetailsUseCase.mockFetchMovieDetails(
       response = response,
     )
@@ -94,9 +90,7 @@ class DetailsViewModelRobot {
     viewModel.onDismissRateDialog()
   }
 
-  fun onNavigateToLogin(
-    snackbarResult: SnackbarResult
-  ) = apply {
+  fun onNavigateToLogin(snackbarResult: SnackbarResult) = apply {
     viewModel.navigateToLogin(snackbarResult)
   }
 
@@ -118,39 +112,31 @@ class DetailsViewModelRobot {
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = media,
-      result = response
+      result = response,
     )
   }
 
-  fun mockFetchAccountMediaDetails(
-    response: Flow<Result<AccountMediaDetails>>,
-  ) = apply {
+  fun mockFetchAccountMediaDetails(response: Flow<Result<AccountMediaDetails>>) = apply {
     fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = response
+      response = response,
     )
   }
 
-  fun mockSubmitRate(
-    response: Flow<Result<Unit>>,
-  ) = apply {
+  fun mockSubmitRate(response: Flow<Result<Unit>>) = apply {
     fakeSubmitRatingUseCase.mockSubmitRate(
-      response = response
+      response = response,
     )
   }
 
-  fun mockDeleteRating(
-    response: Flow<Result<Unit>>,
-  ) = apply {
+  fun mockDeleteRating(response: Flow<Result<Unit>>) = apply {
     fakeDeleteRatingUseCase.mockDeleteRating(
-      response = response
+      response = response,
     )
   }
 
-  fun mockAddToWatchlist(
-    response: Flow<Result<Unit>>,
-  ) = apply {
+  fun mockAddToWatchlist(response: Flow<Result<Unit>>) = apply {
     fakeAddToWatchListUseCase.mockAddToWatchlist(
-      response = response
+      response = response,
     )
   }
 }

@@ -14,14 +14,14 @@ import kotlinx.coroutines.CoroutineScope
 fun ProvideSnackbarController(
   snackbarHostState: SnackbarHostState,
   coroutineScope: CoroutineScope,
-  content: @Composable () -> Unit
+  content: @Composable () -> Unit,
 ) {
   CompositionLocalProvider(
     LocalSnackbarController provides SnackbarController(
       snackbarHostState = snackbarHostState,
-      coroutineScope = coroutineScope
+      coroutineScope = coroutineScope,
     ),
-    content = content
+    content = content,
   )
 }
 

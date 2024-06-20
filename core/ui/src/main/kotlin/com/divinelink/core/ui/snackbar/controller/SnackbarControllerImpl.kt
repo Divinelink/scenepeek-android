@@ -11,28 +11,28 @@ import kotlinx.coroutines.launch
 @Immutable
 class SnackbarControllerImpl(
   private val snackbarHostState: SnackbarHostState,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : SnackbarController {
   override fun showMessage(
     message: String,
     actionLabel: String?,
     withDismissAction: Boolean,
     duration: SnackbarDuration,
-    onSnackbarResult: (SnackbarResult) -> Unit
+    onSnackbarResult: (SnackbarResult) -> Unit,
   ) {
     coroutineScope.launch {
       snackbarHostState.showSnackbar(
         message = message,
         actionLabel = actionLabel,
         withDismissAction = withDismissAction,
-        duration = duration
+        duration = duration,
       ).let(onSnackbarResult)
     }
   }
 
   override fun showMessage(
     snackbarVisuals: SnackbarVisuals,
-    onSnackbarResult: (SnackbarResult) -> Unit
+    onSnackbarResult: (SnackbarResult) -> Unit,
   ) {
     coroutineScope.launch {
       snackbarHostState.showSnackbar(visuals = snackbarVisuals).let(onSnackbarResult)

@@ -17,7 +17,7 @@ object MediaDetailsFactory {
     director = Director(
       id = 123443321,
       name = "Forest Gump",
-      profilePath = "BoxOfChocolates.jpg"
+      profilePath = "BoxOfChocolates.jpg",
     ),
     cast = ActorFactory.all(),
     genres = listOf("Thriller", "Drama", "Comedy"),
@@ -32,13 +32,13 @@ object MediaDetailsFactory {
     director = Director(
       id = 123443321,
       name = "Forest Gump",
-      profilePath = "BoxOfChocolates.jpg"
+      profilePath = "BoxOfChocolates.jpg",
     ),
     cast = ActorFactory.all(),
     releaseDate = "2005-03-24",
     rating = "9.5",
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
-    seasons = listOf()
+    seasons = listOf(),
   )
 }

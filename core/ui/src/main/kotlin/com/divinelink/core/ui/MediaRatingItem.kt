@@ -31,23 +31,23 @@ enum class RatingSize(
 ) {
   SMALL(
     size = 40.dp,
-    coloredArcSize = 28.dp
+    coloredArcSize = 28.dp,
   ),
   MEDIUM(
     size = 48.dp,
-    coloredArcSize = 36.dp
+    coloredArcSize = 36.dp,
   ),
   LARGE(
     size = 68.dp,
-    coloredArcSize = 56.dp
-  )
+    coloredArcSize = 56.dp,
+  ),
 }
 
 @Composable
 fun MediaRatingItem(
   modifier: Modifier = Modifier,
   rating: String,
-  size: RatingSize = RatingSize.MEDIUM
+  size: RatingSize = RatingSize.MEDIUM,
 ) {
   val sanitizedRating = if (rating.endsWith(".0")) {
     rating.substring(0, rating.length - 2)
@@ -71,7 +71,7 @@ fun MediaRatingItem(
 
   Box(
     contentAlignment = Alignment.Center,
-    modifier = modifier.padding(top = 4.dp, bottom = 4.dp)
+    modifier = modifier.padding(top = 4.dp, bottom = 4.dp),
   ) {
     Canvas(modifier = Modifier.size(size.size)) {
       drawArc(
@@ -83,7 +83,7 @@ fun MediaRatingItem(
     }
 
     Canvas(
-      modifier = Modifier.size(size.coloredArcSize)
+      modifier = Modifier.size(size.coloredArcSize),
     ) {
       drawArc(
         color = color.copy(alpha = 0.3f),
@@ -93,7 +93,7 @@ fun MediaRatingItem(
         style = Stroke(
           width = 4.dp.toPx(),
           miter = 4f,
-        )
+        ),
       )
       drawArc(
         color = color,
@@ -104,7 +104,7 @@ fun MediaRatingItem(
           width = 4.dp.toPx(),
           miter = 2f,
           cap = StrokeCap.Round,
-        )
+        ),
       )
     }
 

@@ -15,7 +15,7 @@ sealed class AddRatingRequestApi(
   data class Movie(
     @SerialName("movie_id") val movieId: Int,
     override val sessionId: String,
-    override val rating: Int
+    override val rating: Int,
   ) : AddRatingRequestApi(
     id = movieId,
     endpoint = "movie",
@@ -25,9 +25,9 @@ sealed class AddRatingRequestApi(
   data class TV(
     @SerialName("series_id") val seriesId: Int,
     override val sessionId: String,
-    override val rating: Int
+    override val rating: Int,
   ) : AddRatingRequestApi(
     id = seriesId,
-    endpoint = "tv"
+    endpoint = "tv",
   )
 }

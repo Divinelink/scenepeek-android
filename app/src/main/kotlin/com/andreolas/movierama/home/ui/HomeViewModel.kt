@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
       isLoading = true,
       popularMovies = emptyList(),
       error = null,
-    )
+    ),
   )
   val viewState: StateFlow<HomeViewState> = _viewState
 
@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
       getPopularMoviesUseCase.invoke(
         parameters = MoviesRequestApi(
           page = currentPage,
-        )
+        ),
       ).collectLatest { result ->
         result.onSuccess {
           val updatedList = getUpdatedMedia(
@@ -189,7 +189,7 @@ class HomeViewModel @Inject constructor(
         parameters = MultiSearchRequestApi(
           query = query,
           page = page,
-        )
+        ),
       )
         .distinctUntilChanged()
         .collectLatest { result ->
@@ -199,7 +199,8 @@ class HomeViewModel @Inject constructor(
                 val updatedSearchList = getUpdatedMedia(
                   currentMediaList = currentMoviesList,
                   updatedMediaList = result.data.searchList,
-                )/*.also { updatedSearchList -> TODO: Implement caching
+                )
+                /*.also { updatedSearchList -> TODO: Implement caching
                     updateSearchCaches(query, page, updatedSearchList)
                   }*/
 

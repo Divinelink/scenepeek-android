@@ -38,12 +38,12 @@ fun CrewItemCard(
       .clickable {
         // todo
       },
-    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     MovieImage(
       modifier = Modifier,
       path = actor.profilePath,
-      errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder)
+      errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder),
     )
 
     Spacer(modifier = Modifier.height(4.dp))

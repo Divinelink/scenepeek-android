@@ -36,13 +36,13 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isEqualTo(
-      Result.success(Unit)
+      Result.success(Unit),
     )
 
     assertThat(
-      encryptedPreferenceStorage.tmdbAuthToken
+      encryptedPreferenceStorage.tmdbAuthToken,
     ).isEqualTo(
-      apiKey
+      apiKey,
     )
   }
 
@@ -61,7 +61,7 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isInstanceOf(
-      Result.failure<Exception>(Exception("Couldn't fetch api key."))::class.java
+      Result.failure<Exception>(Exception("Couldn't fetch api key."))::class.java,
     )
   }
 
@@ -79,7 +79,7 @@ class SetRemoteConfigUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result).isInstanceOf(
-      Result.failure<Exception>(Exception("General Εrror."))::class.java
+      Result.failure<Exception>(Exception("General Εrror."))::class.java,
     )
   }
 }

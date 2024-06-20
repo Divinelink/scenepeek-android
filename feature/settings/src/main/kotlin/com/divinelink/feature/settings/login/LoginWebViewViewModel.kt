@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginWebViewViewModel @Inject constructor(
   private val handleAuthenticationRequestUseCase: HandleAuthenticationRequestUseCase,
-  savedStateHandle: SavedStateHandle
+  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
   private val args: LoginScreenArgs = LoginWebViewScreenDestination.argsFrom(savedStateHandle)

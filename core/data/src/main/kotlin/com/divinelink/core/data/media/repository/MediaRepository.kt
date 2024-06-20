@@ -19,9 +19,7 @@ interface MediaRepository {
    * Request popular movies using pagination.
    * Uses [Flow] in order to observe changes to our popular movies list.
    */
-  fun fetchPopularMovies(
-    request: MoviesRequestApi,
-  ): Flow<MediaListResult>
+  fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult>
 
   /**
    * Fetch all popular movies that the user has marked as favorite.
@@ -43,23 +41,17 @@ interface MediaRepository {
    * Request movies through a search query. Uses pagination.
    * Uses [Flow] in order to observe changes to our movies list.
    */
-  fun fetchSearchMovies(
-    request: SearchRequestApi,
-  ): Flow<MediaListResult>
+  fun fetchSearchMovies(request: SearchRequestApi): Flow<MediaListResult>
 
   /**
    * Request movies, tv series and persons through a search query.
    */
-  fun fetchMultiInfo(
-    requestApi: MultiSearchRequestApi,
-  ): Flow<MultiListResult>
+  fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult>
 
   /**
    * Add favorite [media] to local storage.
    */
-  suspend fun insertFavoriteMedia(
-    media: MediaItem.Media,
-  ): Result<Unit>
+  suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit>
 
   /**
    * Remove favorite movie using its [id] from local storage.

@@ -31,7 +31,7 @@ fun SettingsScaffold(
   navigationIconPainter: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
   @StringRes navigationContentDescription: Int =
     uiR.string.core_ui_navigate_up_button_content_description,
-  content: @Composable (PaddingValues) -> Unit
+  content: @Composable (PaddingValues) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -42,25 +42,25 @@ fun SettingsScaffold(
         title = {
           Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
           )
         },
         navigationIcon = {
           IconButton(
             modifier = Modifier.testTag(TestTags.Settings.NAVIGATION_ICON),
-            onClick = onNavigationClick
+            onClick = onNavigationClick,
           ) {
             Icon(
               imageVector = navigationIconPainter,
-              contentDescription = stringResource(id = navigationContentDescription)
+              contentDescription = stringResource(id = navigationContentDescription),
             )
           }
         },
         scrollBehavior = scrollBehavior,
-        colors = topAppBarColors()
+        colors = topAppBarColors(),
       )
     },
     modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    content = content
+    content = content,
   )
 }

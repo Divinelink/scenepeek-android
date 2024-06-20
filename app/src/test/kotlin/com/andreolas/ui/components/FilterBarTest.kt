@@ -37,7 +37,7 @@ class FilterBarTest : ComposeTest() {
 
     val clearFilterButtonContentDescription =
       composeTestRule.activity.getString(
-        uiR.string.clear_filters_button_content_description
+        uiR.string.clear_filters_button_content_description,
       )
 
     composeTestRule
@@ -57,7 +57,7 @@ class FilterBarTest : ComposeTest() {
         onFilterClick = { filter ->
           actionIsClicked = filter.name == "Action"
         },
-        onClearClick = {}
+        onClearClick = {},
       )
     }
 
@@ -86,7 +86,7 @@ class FilterBarTest : ComposeTest() {
 
     val clearFilterButtonContentDescription =
       composeTestRule.activity.getString(
-        uiR.string.clear_filters_button_content_description
+        uiR.string.clear_filters_button_content_description,
       )
 
     composeTestRule

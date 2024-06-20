@@ -17,17 +17,13 @@ class FakeGetPopularMoviesUseCase {
    */
   val mock: GetPopularMoviesUseCase = mockk()
 
-  fun mockFetchPopularMovies(
-    response: Flow<MediaListResult>,
-  ) {
+  fun mockFetchPopularMovies(response: Flow<MediaListResult>) {
     coEvery {
       mock.invoke(any())
     } returns response
   }
 
-  fun mockFetchPopularMovies(
-    response: MediaListResult,
-  ) {
+  fun mockFetchPopularMovies(response: MediaListResult) {
     coEvery {
       mock.invoke(any())
     } returns flowOf(response)

@@ -7,9 +7,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
-fun ComposeTest.setContentWithTheme(
-  content: @Composable () -> Unit
-) {
+fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
   composeTestRule.setContent {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()

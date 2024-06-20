@@ -17,9 +17,7 @@ val PopularMovieItemShape = RoundedCornerShape(8.dp)
 val MovieImageShape = RoundedCornerShape(8.dp)
 
 @Immutable
-data class Shapes(
-  val roundedShape: RoundedCornerShape = RoundedCornerShape(50.dp)
-)
+data class Shapes(val roundedShape: RoundedCornerShape = RoundedCornerShape(50.dp))
 
 val MaterialTheme.shape: Shapes
   @Composable
