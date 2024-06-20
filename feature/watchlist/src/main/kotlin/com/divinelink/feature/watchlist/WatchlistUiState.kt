@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType

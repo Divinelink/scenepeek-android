@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.watchlist.R
 
 @Composable
 fun WatchlistEmptyContent(text: UIText) {

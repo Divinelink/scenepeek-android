@@ -24,4 +24,6 @@ dependencies {
   implementation(projects.feature.settings)
 
   implementation(libs.timber)
+
+  testImplementation(projects.core.testing)
 }

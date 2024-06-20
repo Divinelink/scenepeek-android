@@ -1,13 +1,13 @@
 package com.andreolas.movierama.search.domain.usecase
 
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.SearchResult
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last

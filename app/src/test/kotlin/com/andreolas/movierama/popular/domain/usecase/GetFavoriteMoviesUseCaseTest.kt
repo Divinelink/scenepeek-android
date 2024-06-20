@@ -1,10 +1,10 @@
 package com.andreolas.movierama.popular.domain.usecase
 
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

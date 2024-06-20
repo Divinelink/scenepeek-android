@@ -1,10 +1,10 @@
 package com.andreolas.movierama.popular.domain.usecase
 
-import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

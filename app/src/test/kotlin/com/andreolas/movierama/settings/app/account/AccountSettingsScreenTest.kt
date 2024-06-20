@@ -9,10 +9,10 @@ import com.andreolas.factories.session.model.RequestTokenFactory
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
 import com.andreolas.movierama.fakes.usecase.session.login.FakeLogoutUseCase
-import com.andreolas.movierama.fakes.usecase.session.login.FakeObserveSessionUseCase
 import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen

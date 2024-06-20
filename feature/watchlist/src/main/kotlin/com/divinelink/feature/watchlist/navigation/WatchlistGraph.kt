@@ -1,4 +1,4 @@
-package com.divinelink.watchlist.navigation
+package com.divinelink.feature.watchlist.navigation
 
 import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootGraph

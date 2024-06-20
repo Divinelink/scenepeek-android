@@ -1,4 +1,4 @@
-package com.andreolas.factories
+package com.divinelink.core.testing.factories.model.media
 
 import com.divinelink.core.model.media.MediaItem
 

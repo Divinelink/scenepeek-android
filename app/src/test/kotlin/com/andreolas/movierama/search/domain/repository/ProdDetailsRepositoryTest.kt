@@ -2,8 +2,6 @@ package com.andreolas.movierama.search.domain.repository
 
 import app.cash.turbine.test
 import com.andreolas.factories.MediaDetailsFactory
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.api.DetailsResponseApiFactory
 import com.andreolas.factories.api.ReviewsResultsApiFactory
@@ -33,6 +31,8 @@ import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistR
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

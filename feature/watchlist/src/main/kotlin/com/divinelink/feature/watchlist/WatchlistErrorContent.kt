@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.feature.watchlist.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable

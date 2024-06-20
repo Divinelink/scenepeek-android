@@ -1,8 +1,7 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import androidx.annotation.StringRes
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.feature.watchlist.R
 
 enum class WatchlistTab(
   @StringRes val titleRes: Int,

@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,8 +34,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
-import com.divinelink.feature.watchlist.R
-import com.divinelink.watchlist.navigation.WatchlistGraph
+import com.divinelink.feature.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch

@@ -11,7 +11,6 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.factories.MediaDetailsFactory
-import com.andreolas.factories.MediaItemFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
@@ -22,6 +21,7 @@ import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetail
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST

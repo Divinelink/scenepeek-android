@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.andreolas.factories.MediaItemFactory
 import com.andreolas.movierama.R
 import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
@@ -20,6 +19,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.ui.components.FILTER_BAR_TEST_TAG
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination

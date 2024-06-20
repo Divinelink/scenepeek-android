@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent

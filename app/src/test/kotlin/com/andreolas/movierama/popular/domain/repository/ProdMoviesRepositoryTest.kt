@@ -1,7 +1,5 @@
 package com.andreolas.movierama.popular.domain.repository
 
-import com.andreolas.factories.MediaItemFactory
-import com.andreolas.factories.MediaItemFactory.toWizard
 import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.fakes.dao.FakeMediaDao
 import com.andreolas.movierama.fakes.remote.FakeMediaService
@@ -14,6 +12,8 @@ import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.database.model.PersistableMovie
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first

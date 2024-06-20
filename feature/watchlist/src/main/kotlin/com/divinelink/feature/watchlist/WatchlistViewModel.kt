@@ -1,4 +1,4 @@
-package com.divinelink.watchlist
+package com.divinelink.feature.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,8 +49,9 @@ class WatchlistViewModel @Inject constructor(
         result.onSuccess {
           fetchWatchlist(MediaType.TV)
           fetchWatchlist(MediaType.MOVIE)
-        }.onFailure {
-          updateUiOnFailure(it)
+        }.onFailure { throwable ->
+          updateUiOnFailure(MediaType.TV, throwable)
+          updateUiOnFailure(MediaType.MOVIE, throwable)
           resetPages()
         }
       }
@@ -86,7 +87,10 @@ class WatchlistViewModel @Inject constructor(
             updateUiOnSuccess(response)
           }
           .onFailure { throwable ->
-            updateUiOnFailure(throwable)
+            updateUiOnFailure(
+              mediaType = mediaType,
+              throwable = throwable,
+            )
           }
       }
     }
@@ -103,7 +107,10 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun updateUiOnFailure(throwable: Throwable) {
+  private fun updateUiOnFailure(
+    mediaType: MediaType,
+    throwable: Throwable,
+  ) {
     if (throwable is SessionException.Unauthenticated) {
       _uiState.update {
         it.copy(
@@ -115,7 +122,7 @@ class WatchlistViewModel @Inject constructor(
     } else {
       _uiState.update {
         it.copy(
-          forms = it.forms + (it.mediaType to WatchlistForm.Error.Unknown),
+          forms = it.forms + (mediaType to WatchlistForm.Error.Unknown),
         )
       }
     }
