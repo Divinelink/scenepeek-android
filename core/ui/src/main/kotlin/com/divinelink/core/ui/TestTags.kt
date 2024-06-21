@@ -4,6 +4,7 @@ object TestTags {
 
   const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
   const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
+  const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
 
   object Details {
     const val YOUR_RATING = "Details Your Rating"
@@ -31,5 +32,12 @@ object TestTags {
     const val MENU_BUTTON_VERTICAL = "Menu Button Vertical"
     const val DROPDOWN_MENU = "Dropdown Menu"
     const val MENU_ITEM = "Menu Item %s"
+  }
+
+  object Watchlist {
+    const val TAB_BAR = "Watchlist Tab Bar $%s"
+    const val WATCHLIST_CONTENT = "Watchlist Content with data"
+    const val WATCHLIST_SCREEN = "Watchlist Screen"
+    const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }
 }

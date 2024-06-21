@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -27,6 +28,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
@@ -50,6 +52,7 @@ fun WatchlistContent(
   )
   Box(Modifier.fillMaxSize()) {
     LazyColumn(
+      modifier = Modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
       state = scrollState,
       contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),

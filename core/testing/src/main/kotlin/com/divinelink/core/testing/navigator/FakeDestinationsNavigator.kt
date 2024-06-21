@@ -1,4 +1,4 @@
-package com.andreolas.movierama.fakes
+package com.divinelink.core.testing.navigator
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavOptions

@@ -27,10 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
@@ -149,24 +149,12 @@ private fun WatchlistTabs(
     SecondaryTabRow(selectedTabIndex = selectedIndex) {
       tabs.forEachIndexed { index, tab ->
         Tab(
+          modifier = Modifier.testTag(TestTags.Watchlist.TAB_BAR.format(tab.value)),
           text = { Text(stringResource(tab.titleRes)) },
           selected = index == selectedIndex,
           onClick = { onClick(index) },
         )
       }
     }
-  }
-}
-
-@Preview
-@Composable
-private fun WatchlistScreenPreview() {
-  AppTheme {
-//    Surface {
-//      WatchlistScreen(
-//        navigator = TODO(),
-//        viewModel = hiltViewModel()
-//      )
-//    }
   }
 }

@@ -3,8 +3,8 @@ package com.andreolas.movierama.settings.app
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination

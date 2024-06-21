@@ -26,6 +26,7 @@ import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.divinelink.feature.details.ui.DetailsContent
 import com.divinelink.feature.details.ui.DetailsViewState
+import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -136,7 +137,7 @@ class DetailsContentTest : ComposeTest() {
     val reviewsTitle = composeTestRule.activity.getString(uiR.string.details__reviews)
 
     composeTestRule
-      .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
         hasText(reviewsTitle),
       )

@@ -6,12 +6,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.andreolas.factories.session.model.AccountDetailsFactory
 import com.andreolas.factories.session.model.RequestTokenFactory
-import com.andreolas.movierama.fakes.FakeDestinationsNavigator
 import com.andreolas.movierama.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
 import com.andreolas.movierama.fakes.usecase.session.login.FakeLogoutUseCase
 import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R

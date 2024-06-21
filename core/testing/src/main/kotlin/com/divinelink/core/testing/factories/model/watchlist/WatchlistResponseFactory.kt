@@ -26,5 +26,19 @@ object WatchlistResponseFactory {
     canFetchMore = canFetchMore,
   )
 
+  fun emptyMovies() = WatchlistResponse(
+    data = emptyList(),
+    totalResults = 0,
+    type = MediaType.MOVIE,
+    canFetchMore = false,
+  )
+
+  fun emptyTV() = WatchlistResponse(
+    data = emptyList(),
+    totalResults = 0,
+    type = MediaType.TV,
+    canFetchMore = false,
+  )
+
   fun all() = listOf(movies(), tv())
 }

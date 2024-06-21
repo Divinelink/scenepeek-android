@@ -11,18 +11,20 @@ import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginE
 /**
  * Configure Compose-specific options
  */
-internal fun Project.configureAndroidCompose(
-  commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
+internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
   commonExtension.apply {
     buildFeatures {
       compose = true
     }
 
+    defaultConfig {
+      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
     dependencies {
       val bom = libs.findLibrary("compose-bom").get()
       add("implementation", platform(bom))
-      add("androidTestImplementation", platform(bom))
+      add("testImplementation", platform(bom))
       add("implementation", libs.findLibrary("compose-ui-tooling-preview").get())
       add("debugImplementation", libs.findLibrary("compose-ui-tooling").get())
     }
