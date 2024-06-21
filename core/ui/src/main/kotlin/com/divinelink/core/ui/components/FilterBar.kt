@@ -2,7 +2,6 @@
 
 package com.divinelink.core.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
@@ -33,9 +32,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 /**
@@ -154,10 +153,9 @@ private fun FilterItem(
   }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Previews
 @Composable
-fun FilterBarPreview() {
+private fun FilterBarPreview() {
   AppTheme {
     FilterBar(
       filters = listOf(
@@ -182,10 +180,9 @@ data class Filter(
   val isSelected: Boolean,
 )
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Previews
 @Composable
-fun FilterBarUnselectedPreview() {
+private fun FilterBarUnselectedPreview() {
   AppTheme {
     val filters = mutableListOf(
       Filter("All", false),

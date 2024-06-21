@@ -1,6 +1,5 @@
 package com.divinelink.feature.watchlist
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,12 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -98,8 +97,7 @@ fun WatchlistContent(
   }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 @Composable
 private fun WatchlistContentPreview() {
   val movie = MediaItem.Media.Movie(

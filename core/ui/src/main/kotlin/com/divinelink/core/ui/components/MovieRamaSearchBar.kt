@@ -54,6 +54,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarSize
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.keyline_negative8
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
@@ -253,9 +254,8 @@ private const val TEXT_MAX_WIDTH = 0.84F
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun SearchBarPreview() {
+@Previews
+private fun SearchBarPreview() {
   AppTheme {
     Surface {
       MovieRamaSearchBar(
@@ -268,9 +268,8 @@ fun SearchBarPreview() {
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun FocusedSearchBarPreview() {
+@Previews
+private fun FocusedSearchBarPreview() {
   AppTheme {
     Surface {
       MovieRamaSearchBar(
@@ -285,9 +284,8 @@ fun FocusedSearchBarPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun FilledSearchBarPreview() {
+@Previews
+private fun FilledSearchBarPreview() {
   AppTheme {
     Surface {
       MovieRamaSearchBar(

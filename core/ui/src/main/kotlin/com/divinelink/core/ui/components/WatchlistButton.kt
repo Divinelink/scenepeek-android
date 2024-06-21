@@ -17,8 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 @Composable
@@ -66,7 +66,7 @@ fun WatchlistButton(
   }
 }
 
-@Preview
+@Previews
 @Composable
 private fun WatchlistButtonPreview() {
   MaterialTheme {

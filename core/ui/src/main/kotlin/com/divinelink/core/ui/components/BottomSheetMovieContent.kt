@@ -41,6 +41,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.MediaDetailsContent
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 const val MOVIE_BOTTOM_SHEET_TAG = "MOVIE_DETAILS_BOTTOM_SHEET_TAG"
@@ -156,8 +157,7 @@ private fun DetailsButton(
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 private fun HomeContentPreview() {
   AppTheme {
     Surface {

@@ -22,7 +22,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Run tests & Generate Coverage
-        run: ./gradlew app:koverXmlReport
+        run: ./gradlew koverXmlReportDebug
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

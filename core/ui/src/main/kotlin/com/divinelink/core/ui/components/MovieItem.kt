@@ -33,6 +33,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MediaRatingItem
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.Previews
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 
@@ -112,8 +113,7 @@ fun MediaItem(
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 fun PopularMovieItemPreview() {
   AppTheme {
     Surface(
@@ -140,8 +140,7 @@ fun PopularMovieItemPreview() {
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 fun MovieItemPreview() {
   AppTheme {
     Surface(

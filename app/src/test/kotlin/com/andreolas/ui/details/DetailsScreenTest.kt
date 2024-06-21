@@ -27,6 +27,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.DetailsNavArguments
+import com.divinelink.feature.details.ui.DetailsScreen
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -78,7 +79,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      com.divinelink.feature.details.ui.DetailsScreen(
+      DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
           getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -186,7 +187,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      com.divinelink.feature.details.ui.DetailsScreen(
+      DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
       )
@@ -247,7 +248,7 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      com.divinelink.feature.details.ui.DetailsScreen(
+      DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
       )

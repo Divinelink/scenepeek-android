@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 
@@ -39,7 +40,7 @@ fun ScrollToTopButton(onClick: () -> Unit) {
 }
 
 @Composable
-@Preview
+@Previews
 private fun ScrollToTopButtonPreview() {
   AppTheme {
     ScrollToTopButton {}

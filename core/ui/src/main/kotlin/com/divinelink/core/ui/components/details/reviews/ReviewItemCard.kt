@@ -31,6 +31,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.ui.MediaRatingItem
+import com.divinelink.core.ui.Previews
 
 private const val MINIMUM_MAX_LINES = 6
 private val MINIMUM_CARD_SIZE = 260.dp
@@ -104,18 +105,10 @@ fun ReviewItemCard(
   }
 }
 
-@Preview
 @Composable
-@Preview(
-  name = "Night Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-  name = "Day Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Previews
 @Suppress("Magic Number")
-fun ReviewItemCardPreview() {
+private fun ReviewItemCardPreview() {
   AppTheme {
     val review = Review(
       authorName = "Author Lorem",

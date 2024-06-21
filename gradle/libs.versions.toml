@@ -51,7 +51,7 @@ material3 = "1.2.1"
 timber = "5.0.1"
 
 # Testing
-kover = "0.7.6"
+kover = "0.8.1"
 
 androidx-test = "1.5.0"
 truth = "1.4.2"

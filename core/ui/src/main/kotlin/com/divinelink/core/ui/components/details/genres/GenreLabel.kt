@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.ui.Previews
 
 @Composable
 fun GenreLabel(
@@ -52,14 +53,7 @@ fun GenreLabel(
   }
 }
 
-@Preview(
-  name = "Night Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-  name = "Day Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Previews
 @Composable
 private fun GenreLabelPreview() {
   AppTheme {
