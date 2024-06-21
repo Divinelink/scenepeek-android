@@ -16,10 +16,16 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
 /**
  * Configure base Kotlin with Android options
  */
-internal fun Project.configureKotlinAndroid(
-  commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
+internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
   commonExtension.apply {
+    val moduleName = path.split(":").drop(1).joinToString(".")
+    namespace = if (moduleName.isNotEmpty()) {
+      "com.divinelink.$moduleName"
+    } else {
+      "com.divinelink"
+    }
+    println("namespace: $namespace")
+
     compileSdk = 34
 
     defaultConfig {
@@ -37,7 +43,7 @@ internal fun Project.configureKotlinAndroid(
   configureKotlin<KotlinAndroidProjectExtension>()
 
   dependencies {
-     add("coreLibraryDesugaring", libs.findLibrary("android.tools.desugar").get())
+    add("coreLibraryDesugaring", libs.findLibrary("android.tools.desugar").get())
   }
 }
 

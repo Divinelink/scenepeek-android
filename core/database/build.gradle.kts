@@ -3,10 +3,6 @@ plugins {
   alias(libs.plugins.ksp)
 }
 
-android {
-  namespace = "com.divinelink.database"
-}
-
 dependencies {
   api(projects.core.model)
 

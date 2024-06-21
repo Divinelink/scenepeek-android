@@ -1,4 +1,7 @@
 [versions]
+version-name = "0.3.0"
+version-code = "7"
+
 firebase-appdistribution-gradle = "4.2.0"
 firebase-crashlytics-gradle = "2.9.9"
 google-services = "4.4.1"
@@ -40,24 +43,24 @@ hilt = "2.49"
 
 # Compose
 compose-bom = "2024.05.00"
-compose-destinations = "1.10.2"
+compose-destinations = "2.1.0-beta09"
+compose-hilt-navigation = "1.2.0"
 material3 = "1.2.1"
 
 # Timber
 timber = "5.0.1"
 
 # Testing
-kover = "0.7.6"
+kover = "0.8.1"
 
 androidx-test = "1.5.0"
 truth = "1.4.2"
 turbine = "1.1.0"
 
 # UI
-espresso = "3.5.1"
 robolectric = "4.11.1"
 androidx-compose-ui-test = "1.6.7"
-ui-automator = "2.2.0"
+ui-automator = "2.3.0"
 
 # Mockers
 mockito = "5.11.0"
@@ -88,7 +91,7 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
-compose-hilt-navigation = "androidx.hilt:hilt-navigation-compose:1.2.0"
+compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "compose-hilt-navigation" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -101,7 +104,7 @@ compose-coil = "io.coil-kt:coil-compose:2.6.0"
 
 # Compose Navigation
 compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "compose-destinations" }
-compose-destinations-animations = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destinations" }
+compose-destinations-bottom-sheet = { module = "io.github.raamcosta.compose-destinations:bottom-sheet", version.ref = "compose-destinations" }
 compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destinations" }
 
 # Network & Serialization
@@ -155,7 +158,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # UI
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-compose-ui-test" }
 ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "ui-automator" }
 
@@ -194,4 +196,5 @@ divinelink-android-application = { id = "divinelink.android.application", versio
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
 divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
 divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
+divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
 divinelink-android-hilt = { id = "divinelink.android.hilt", version = "unspecified" }

@@ -1,9 +1,20 @@
 plugins {
   alias(libs.plugins.divinelink.android.library)
+  alias(libs.plugins.divinelink.android.hilt)
+  alias(libs.plugins.secrets)
 }
 
 android {
-  namespace = "com.divinelink.commons"
+  buildFeatures {
+    buildConfig = true
+  }
+  defaultConfig {
+    resValue("string", "version_name", libs.versions.version.name.get())
+  }
+}
+
+secrets {
+  defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
 dependencies {

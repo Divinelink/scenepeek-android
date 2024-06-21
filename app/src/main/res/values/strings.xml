@@ -6,12 +6,12 @@
   <string name="save">Save</string>
   <string name="update">Update</string>
 
-  <string name="share">Share</string>
+  <string name="home">Home</string>
+  <string name="watchlist">Watchlist</string>
 
   <string name="load_more">Loading more…</string>
 
   <string name="toolbar_search">Search MovieRama</string>
-  <string name="toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
   <string name="search__empty_result_title">Oops. We couldn\'t find that.</string>
   <string name="search__empty_result_description">Try searching for something else.</string>
@@ -20,81 +20,11 @@
   <string name="empty_field_error_message">%s is required.</string>
   <string name="general_error_title">An error occurred</string>
   <string name="general_error_message">Something when wrong.</string>
-  <string name="error_retry">Something when wrong. Please try again.</string>
 
   <string name="delete">Delete</string>
   <string name="cancel">Cancel</string>
 
-  <string name="settings">Settings</string>
-
-  <!-- preferences.xml -->
-  <string name="preferences__none">None</string>
-  <string name="preferences__account">Account</string>
-  <string name="preferences__appearance">Appearance</string>
-  <string name="preferences__help">Help</string>
-  <string name="preferences__theme">Theme</string>
-  <string name="preferences__light_theme">Light</string>
-  <string name="preferences__dark_theme">Dark</string>
-  <string name="preferences__system_default">System default</string>
-
-  <!-- Login -->
-  <string name="login__title">Login to TMDB</string>
-  <string name="login">Login</string>
-
-  <!-- AppearanceSettingsScreen -->
-  <string name="AppearanceSettingsScreen__black_backgrounds">Black background</string>
-  <string name="AppearanceSettingsScreen__black_backgrounds_summary">Use black backgrounds when using dark mode. This will save battery on OLED screens.</string>
-  <string name="AppearanceSettingsScreen__material_you">Material You</string>
-  <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
-
-  <!-- AccountSettingsFragment -->
-  <string name="AccountSettingsScreen__account">Account</string>
-  <string name="AccountSettingsScreen__login">Login to TMDB</string>
-  <string name="AccountSettingsScreen__logout">Logout</string>
-  <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
-
-  <!-- HelpSettingsFragment -->
-  <string name="HelpSettingsFragment__help">Help</string>
-  <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
-  <string name="HelpSettingsFragment__version">Version</string>
-
-  <!-- Popular Movie -->
-  <string name="popular_movie__rating">Rating</string>
-  <string name="movie_extra_details">Details &amp; More</string>
-
-  <!-- Movie Details -->
-  <string name="details__director_title">Director</string>
-  <string name="details__cast_title">Cast</string>
-
-  <string name="details__more_like_this">More like this</string>
-  <string name="details__reviews">Reviews</string>
-
-  <string name="details__user_score">User\nScore</string>
-  <string name="details__your_rating">Your rating</string>
-  <string name="details__add_rating">Rate this</string>
-  <string name="details__add_rating_description">What do you think of %s?</string>
-  <string name="details__clear_my_rating">Clear my rating</string>
-  <string name="details__your_score">Your rating %s</string>
-  <string name="details__submit_rating_button">Submit rating</string>
-
-  <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
-  <string name="details__rating_deleted_successfully">Rating cleared for %s</string>
-  <string name="details__added_to_watchlist">Added %s to watchlist</string>
-  <string name="details__removed_from_watchlist">Removed %s from watchlist</string>
-  <string name="details__must_be_logged_in_to_rate">Please login to submit your rating.</string>
-  <string name="details__must_be_logged_in_to_watchlist">Please login to add to your watchlist.</string>
-
-  <string name="details__add_to_watchlist_button">Add to Watchlist</string>
-  <string name="details__added_to_watchlist_button">Added to watchlist</string>
-
-  <string name="details__fatal_error_fetching_details">Couldn\'t load movie details. Going back to previous screen.</string>
-
   <!-- Accessibility -->
   <string name="movie_image_placeholder">Movie image</string>
-  <string name="mark_as_favorite_button_content_description">Mark As Favorite Button</string>
-  <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="settings_button_content_description">Settings Button</string>
-  <string name="navigate_up_button_content_description">Navigate Up Button</string>
-  <string name="clear_filters_button_content_description">Clear Filters Button</string>
-
 </resources>

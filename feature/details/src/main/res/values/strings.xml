@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="details__user_score">User\nScore</string>
+  <string name="details__your_rating">Your rating</string>
+  <string name="details__add_rating">Rate this</string>
+  <string name="details__add_rating_description">What do you think of %s?</string>
+  <string name="details__clear_my_rating">Clear my rating</string>
+  <string name="details__your_score">Your rating %s</string>
+  <string name="details__submit_rating_button">Submit rating</string>
+
+  <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
+  <string name="details__rating_deleted_successfully">Rating cleared for %s</string>
+  <string name="details__added_to_watchlist">Added %s to watchlist</string>
+  <string name="details__removed_from_watchlist">Removed %s from watchlist</string>
+  <string name="details__must_be_logged_in_to_rate">Please login to submit your rating.</string>
+  <string name="details__must_be_logged_in_to_watchlist">Please login to add to your watchlist.</string>
+
+  <string name="details__fatal_error_fetching_details">Couldn\'t load movie details. Going back to previous screen.</string>
+
+  <string name="general_error_message">Something when wrong.</string>
+
+  <string name="login">Login</string>
+</resources>

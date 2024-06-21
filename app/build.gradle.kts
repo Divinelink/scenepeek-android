@@ -11,7 +11,6 @@ plugins {
   alias(libs.plugins.firebase.crashlytics)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.secrets)
   alias(libs.plugins.gms)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ktlint)
@@ -27,8 +26,8 @@ android {
 
   defaultConfig {
     applicationId = "com.andreolas.movierama"
-    versionCode = 6
-    versionName = "0.2.0"
+    versionCode = libs.versions.version.code.get().toInt()
+    versionName = libs.versions.version.name.get()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -84,19 +83,30 @@ android {
   buildFeatures {
     buildConfig = true
   }
-}
 
-secrets {
-  defaultPropertiesFileName = "secrets.defaults.properties"
+  ksp {
+    arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
+    arg("compose-destinations.mermaidGraph", "$rootDir/docs")
+
+    // To change the package name where the generated files will be placed
+    arg("compose-destinations.codeGenPackageName", "com.divinelink.ui.screens")
+  }
 }
 
 dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.data)
   implementation(projects.core.database)
+  implementation(projects.core.datastore)
   implementation(projects.core.designsystem)
+  implementation(projects.core.domain)
   implementation(projects.core.model)
   implementation(projects.core.network)
+  implementation(projects.core.ui)
+
+  implementation(projects.feature.watchlist)
+  implementation(projects.feature.details)
+  implementation(projects.feature.settings)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
@@ -125,11 +135,8 @@ dependencies {
   // Misc
   implementation(libs.timber)
   implementation(libs.compose.destinations.core)
-  implementation(libs.compose.destinations.animations)
+  implementation(libs.compose.destinations.bottom.sheet)
   ksp(libs.compose.destinations.ksp)
-
-  // Video Players
-  implementation(libs.youtube.player)
 
   // Network & Serialization
   implementation(libs.ktor.client.core)
@@ -150,16 +157,13 @@ dependencies {
   kspAndroidTest(libs.dagger.hilt.android.compiler)
 
   // Database
-  implementation(libs.datastore)
-  implementation(libs.datastore.core)
-  implementation(libs.datastore.preferences)
-  implementation(libs.datastore.preferences.core)
-  implementation(libs.encrypted.preferences)
   implementation(libs.room.ktx) // TODO Remove room deps and add di for database
   implementation(libs.room.runtime)
   ksp(libs.room.compiler)
 
   // Testing Libs
+  testImplementation(projects.core.testing)
+
   testImplementation(libs.junit)
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.kotlin)
@@ -171,15 +175,19 @@ dependencies {
 
   testImplementation(libs.androidx.compose.ui.test)
   testImplementation(libs.robolectric)
-  testImplementation(libs.espresso)
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
+
+  testImplementation(libs.datastore)
+  testImplementation(libs.datastore.core)
+  testImplementation(libs.datastore.preferences)
+  testImplementation(libs.datastore.preferences.core)
+  testImplementation(libs.encrypted.preferences)
 
   testImplementation(libs.kotlin.test.junit)
 
   androidTestImplementation(libs.androidx.compose.ui.test)
   androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.espresso)
   androidTestImplementation(libs.truth)
   androidTestImplementation(libs.ui.automator)
 }
