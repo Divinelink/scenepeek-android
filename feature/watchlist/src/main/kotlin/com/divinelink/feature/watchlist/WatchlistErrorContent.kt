@@ -1,6 +1,5 @@
 package com.divinelink.feature.watchlist
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.R as uiR
 
@@ -64,8 +63,7 @@ fun WatchlistErrorContent(
   }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 @Composable
 private fun WatchlistInvalidSessionErrorContentPreview() {
   AppTheme {
@@ -81,8 +79,7 @@ private fun WatchlistInvalidSessionErrorContentPreview() {
   }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Previews
 @Composable
 private fun WatchlistUnknownErrorContentPreview() {
   AppTheme {

@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 
 @Composable
@@ -47,7 +47,7 @@ fun SettingsClickItem(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Previews
 private fun SettingsScreenPreview() {
   MaterialTheme {
     SettingsClickItem(

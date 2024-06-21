@@ -2,23 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Watchlist/root Navigation Graph</title>
+    <title>Settings/root Navigation Graph</title>
 </head>
 <body>
 <pre id='scene' class="mermaid">
 ---
-title: Watchlist/root Navigation Graph
+title: Settings/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-watchlist/root(["RootGraph"]) -- "start" --- watchlist/watchlist(["WatchlistGraph"])
-watchlist/watchlist(["WatchlistGraph"]) -- "start" --- watchlist/watchlist_screen("WatchlistScreen")
+settings/root(["RootGraph"]) -- "start" --- settings/settings(["SettingsGraph"])
+settings/settings(["SettingsGraph"]) -- "start" --- settings/settings_screen("SettingsScreen")
+settings/settings(["SettingsGraph"]) --- settings/account_settings_screen("AccountSettingsScreen")
+settings/settings(["SettingsGraph"]) --- settings/appearance_settings_screen("AppearanceSettingsScreen")
+settings/settings(["SettingsGraph"]) --- settings/help_settings_screen("HelpSettingsScreen")
+settings/settings(["SettingsGraph"]) --- settings/login_web_view_screen("LoginWebViewScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class watchlist/watchlist_screen destination;
+class settings/settings_screen,settings/account_settings_screen,settings/appearance_settings_screen,settings/help_settings_screen,settings/login_web_view_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class watchlist/watchlist,watchlist/root,watchlist/watchlist navgraph;
+class settings/settings,settings/root,settings/settings navgraph;
 
 </pre>
 <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>

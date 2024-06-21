@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.ui.rate
 
-import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 
 @Composable
@@ -58,14 +57,7 @@ fun RateSlider(
   )
 }
 
-@Preview(
-  showBackground = true,
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-  showBackground = true,
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Previews
 @Composable
 private fun RateSliderPreview() {
   AppTheme {

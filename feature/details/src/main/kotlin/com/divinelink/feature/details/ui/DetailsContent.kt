@@ -55,7 +55,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -77,6 +76,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MediaRatingItem
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.RatingSize
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
@@ -529,14 +529,7 @@ private fun OverviewDetails(
 
 private const val OVERVIEW_WEIGHT = 3f
 
-@Preview(
-  name = "Night Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-  name = "Day Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Previews
 @Composable
 private fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
