@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
@@ -21,6 +22,7 @@ import com.divinelink.feature.settings.R
 fun SettingsClickItem(
   modifier: Modifier = Modifier,
   icon: Painter? = null,
+  iconVector: ImageVector? = null,
   text: String,
   onClick: () -> Unit,
 ) {
@@ -35,6 +37,13 @@ fun SettingsClickItem(
     icon?.let {
       Icon(
         painter = icon,
+        contentDescription = null,
+      )
+    }
+
+    iconVector?.let {
+      Icon(
+        imageVector = iconVector,
         contentDescription = null,
       )
     }
