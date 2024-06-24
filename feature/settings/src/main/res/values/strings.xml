@@ -17,6 +17,10 @@
   <string name="AccountSettingsScreen__logout">Logout</string>
   <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
 
+  <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and API key to enable the Jellyseerr feature.</string>
+  <string name="feature_settings_address">Address</string>
+  <string name="feature_settings_api_key">API Key</string>
+
   <!-- HelpSettingsFragment -->
   <string name="HelpSettingsFragment__help">Help</string>
   <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
