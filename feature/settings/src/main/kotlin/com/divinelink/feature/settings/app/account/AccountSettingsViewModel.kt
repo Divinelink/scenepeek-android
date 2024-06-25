@@ -2,16 +2,24 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
+import com.divinelink.core.model.Password
+import com.divinelink.core.model.Username
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -24,6 +32,8 @@ class AccountSettingsViewModel @Inject constructor(
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
   private val logoutUseCase: LogoutUseCase,
+  getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
+  private val loginJellyseerrUseCase: LoginJellyseerrUseCase,
 ) : ViewModel() {
 
   private val _viewState = MutableStateFlow(AccountSettingsViewState.initial())
@@ -31,18 +41,29 @@ class AccountSettingsViewModel @Inject constructor(
 
   init {
     observeSession()
+
+    getJellyseerrDetailsUseCase.invoke(Unit).onEach { result ->
+      println("Jellyseerr details fetched : $result")
+      result.onSuccess {
+        _viewState.update { uiState ->
+          uiState.copy(jellyseerrState = result.data)
+        }
+      }
+    }.launchIn(viewModelScope)
   }
 
   private fun observeSession() {
-    observeSessionUseCase.invoke(Unit).onEach { result ->
-      result
-        .onSuccess {
-          println("User has session, fetching account details")
-          fetchAccountDetails()
-        }.onFailure {
-          println("User does not have session")
-        }
-    }.launchIn(viewModelScope)
+    observeSessionUseCase.invoke(Unit)
+      .distinctUntilChanged()
+      .onEach { result ->
+        result
+          .onSuccess {
+            println("User has session, fetching account details")
+            fetchAccountDetails()
+          }.onFailure {
+            println("User does not have session")
+          }
+      }.launchIn(viewModelScope)
   }
 
   private fun fetchAccountDetails() {
@@ -111,17 +132,85 @@ class AccountSettingsViewModel @Inject constructor(
 
   fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
     when (interaction) {
-      is JellyseerrInteraction.OnAddressChange -> _viewState.update {
-        it.copy(jellyseerrDetails = it.jellyseerrDetails?.copy(address = interaction.address))
+      JellyseerrInteraction.OnLoginClick -> {
+        viewModelScope.launch {
+          loginJellyseerrUseCase.invoke(viewState.value.jellyseerrState)
+        }
       }
-      is JellyseerrInteraction.OnApiKeyChange -> _viewState.update {
-        it.copy(jellyseerrDetails = it.jellyseerrDetails?.copy(apiKey = interaction.key))
+      is JellyseerrInteraction.OnAddressChange -> {
+        _viewState.update {
+          it.copy(
+            jellyseerrState = when (val state = it.jellyseerrState) {
+              is JellyseerrState.Initial -> state.copy(address = interaction.address)
+              is JellyseerrState.LoggedIn -> state.copy(address = interaction.address)
+            },
+          )
+        }
       }
-      JellyseerrInteraction.OnSaveClick -> {
 
+      is JellyseerrInteraction.OnSelectLoginMethod -> {
+        _viewState.update {
+          it.copy(
+            jellyseerrState = when (val state = it.jellyseerrState) {
+              is JellyseerrState.Initial -> {
+                if (state.preferredOption == interaction.signInMethod) {
+                  state.copy(preferredOption = null)
+                } else {
+                  state.copy(preferredOption = interaction.signInMethod)
+                }
+              }
+              else -> state
+            },
+          )
+        }
       }
-      JellyseerrInteraction.OnTestClick -> {
-
+      is JellyseerrInteraction.OnPasswordChange -> {
+        _viewState.update {
+          it.copy(
+            jellyseerrState = when (val state = it.jellyseerrState) {
+              is JellyseerrState.Initial -> {
+                if (state.preferredOption == JellyseerrLoginMethod.JELLYFIN) {
+                  state.copy(
+                    jellyfinLogin = state.jellyfinLogin.copy(
+                      password = Password(interaction.password),
+                    ),
+                  )
+                } else {
+                  state.copy(
+                    jellyseerrLogin = state.jellyseerrLogin.copy(
+                      password = Password(interaction.password),
+                    ),
+                  )
+                }
+              }
+              else -> state
+            },
+          )
+        }
+      }
+      is JellyseerrInteraction.OnUsernameChange -> {
+        _viewState.update {
+          it.copy(
+            jellyseerrState = when (val state = it.jellyseerrState) {
+              is JellyseerrState.Initial -> {
+                if (state.preferredOption == JellyseerrLoginMethod.JELLYFIN) {
+                  state.copy(
+                    jellyfinLogin = state.jellyfinLogin.copy(
+                      username = Username(interaction.username),
+                    ),
+                  )
+                } else {
+                  state.copy(
+                    jellyseerrLogin = state.jellyseerrLogin.copy(
+                      username = Username(interaction.username),
+                    ),
+                  )
+                }
+              }
+              else -> state
+            },
+          )
+        }
       }
     }
   }

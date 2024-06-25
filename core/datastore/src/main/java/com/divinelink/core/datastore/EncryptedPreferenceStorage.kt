@@ -20,9 +20,8 @@ interface EncryptedStorage {
   suspend fun setSessionId(sessionId: String)
   val sessionId: String?
 
-  suspend fun clearJellyseerrApiKey()
-  suspend fun setJellyseerrApiKey(apiKey: String)
-  val jellyseerrApiKey: String?
+  suspend fun setJellyseerrSessionId(sessionId: String)
+  val jellyseerrSessionId: String?
 }
 
 @Singleton
@@ -48,7 +47,7 @@ class EncryptedPreferenceStorage @Inject constructor(
   object PreferencesKeys {
     const val SECRET_TMDB_AUTH_TOKEN = "secret.tmdb.auth.token"
     const val SECRET_TMDB_SESSION_ID = "secret.tmdb.token.id"
-    const val SECRET_JELLYSEERR_API_KEY = "secret.jellyseerr.api.key"
+    const val SECRET_JELLYSEERR_SESSION_ID = "secret.jellyseerr.session.id"
   }
 
   override suspend fun setTmdbAuthToken(key: String) {
@@ -79,22 +78,15 @@ class EncryptedPreferenceStorage @Inject constructor(
   override val sessionId: String?
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_SESSION_ID, null)
 
-  override suspend fun clearJellyseerrApiKey() {
+  override suspend fun setJellyseerrSessionId(sessionId: String) {
     with(encryptedPreferences.edit()) {
-      remove(PreferencesKeys.SECRET_JELLYSEERR_API_KEY)
+      putString(PreferencesKeys.SECRET_JELLYSEERR_SESSION_ID, sessionId)
       apply()
     }
   }
 
-  override suspend fun setJellyseerrApiKey(apiKey: String) {
-    with(encryptedPreferences.edit()) {
-      putString(PreferencesKeys.SECRET_JELLYSEERR_API_KEY, apiKey)
-      apply()
-    }
-  }
-
-  override val jellyseerrApiKey: String?
-    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_API_KEY, null)
+  override val jellyseerrSessionId: String?
+    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_SESSION_ID, null)
 
   /**
    * Known issue: https://issuetracker.google.com/issues/158234058

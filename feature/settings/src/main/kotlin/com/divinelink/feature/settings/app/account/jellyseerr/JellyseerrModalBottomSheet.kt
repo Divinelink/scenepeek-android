@@ -13,13 +13,13 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.model.jellyseerr.JellyseerrDetails
+import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun JellyseerrModalBottomSheet(
-  jellyseerrDetails: JellyseerrDetails?,
+  jellyseerrState: JellyseerrState,
   onDismissRequest: () -> Unit,
   interaction: (JellyseerrInteraction) -> Unit,
 ) {
@@ -32,10 +32,14 @@ fun JellyseerrModalBottomSheet(
     windowInsets = WindowInsets.ime,
     onDismissRequest = onDismissRequest,
   ) {
-    JellyseerrBottomSheetContent(
-      jellyseerrDetails = jellyseerrDetails,
-      interaction = interaction,
-    )
+    if (jellyseerrState is JellyseerrState.Initial) {
+      JellyseerrBottomSheetContent(
+        jellyseerrState = jellyseerrState,
+        interaction = interaction,
+      )
+    } else {
+      // TODO: Add other states
+    }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
@@ -46,10 +50,7 @@ private fun JellyseerrModalBottomSheetPreview() {
   AppTheme {
     Surface {
       JellyseerrModalBottomSheet(
-        jellyseerrDetails = JellyseerrDetails(
-          address = "address",
-          apiKey = "apiKey",
-        ),
+        jellyseerrState = JellyseerrState.Initial(null),
         onDismissRequest = {},
         interaction = {},
       )

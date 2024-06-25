@@ -1,7 +1,7 @@
 package com.divinelink.feature.settings.app.account
 
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrDetails
+import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 
 data class AccountSettingsViewState(
@@ -9,7 +9,7 @@ data class AccountSettingsViewState(
   val navigateToWebView: Boolean?,
   val alertDialogUiState: AlertDialogUiState?,
   val accountDetails: AccountDetails?,
-  val jellyseerrDetails: JellyseerrDetails?,
+  val jellyseerrState: JellyseerrState,
 ) {
   companion object {
     fun initial(): AccountSettingsViewState = AccountSettingsViewState(
@@ -17,7 +17,7 @@ data class AccountSettingsViewState(
       navigateToWebView = null,
       alertDialogUiState = null,
       accountDetails = null,
-      jellyseerrDetails = JellyseerrDetails.initial(),
+      jellyseerrState = JellyseerrState.Initial(preferredOption = null),
     )
   }
 }

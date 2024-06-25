@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrDetails
+import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
@@ -32,7 +32,7 @@ import com.divinelink.core.ui.R as uiR
 fun AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
   accountDetails: AccountDetails?,
-  jellyseerrDetails: JellyseerrDetails?,
+  jellyseerrState: JellyseerrState,
   jellyseerrInteraction: (JellyseerrInteraction) -> Unit,
   onLogoutClick: () -> Unit,
   onLoginClick: () -> Unit,
@@ -41,7 +41,7 @@ fun AccountSettingsContent(
 
   if (openJellyseerrBottomSheet) {
     JellyseerrModalBottomSheet(
-      jellyseerrDetails = jellyseerrDetails,
+      jellyseerrState = jellyseerrState,
       interaction = jellyseerrInteraction,
       onDismissRequest = { openJellyseerrBottomSheet = false },
     )
@@ -95,9 +95,8 @@ private fun AccountSettingsContentPreview() {
           username = "Jessee Pinkman",
           name = "name",
         ),
-        jellyseerrDetails = JellyseerrDetails(
-          address = "address",
-          apiKey = "apiKey",
+        jellyseerrState = JellyseerrState.Initial(
+          preferredOption = null,
         ),
         onLogoutClick = {},
         onLoginClick = {},
