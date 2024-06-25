@@ -4,8 +4,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.ui.IconWrapper
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
@@ -31,7 +31,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
     ) {
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.feature_settings_ic_account_24),
+          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_account_24),
           text = stringResource(R.string.preferences__account),
           onClick = { navigator.navigate(AccountSettingsScreenDestination) },
         )
@@ -43,7 +43,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
+          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_appearance_24),
           text = stringResource(R.string.preferences__appearance),
           onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
         )
@@ -55,7 +55,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.feature_settings_ic_help_24),
+          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_help_24),
           text = stringResource(R.string.preferences__help),
           onClick = { navigator.navigate(HelpSettingsScreenDestination) },
         )
