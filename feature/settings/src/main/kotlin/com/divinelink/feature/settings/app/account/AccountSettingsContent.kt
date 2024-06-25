@@ -18,9 +18,10 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrIntegration
+import com.divinelink.core.model.jellyseerr.JellyseerrDetails
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
+import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrModalBottomSheet
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
@@ -31,6 +32,8 @@ import com.divinelink.core.ui.R as uiR
 fun AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
   accountDetails: AccountDetails?,
+  jellyseerrDetails: JellyseerrDetails?,
+  jellyseerrInteraction: (JellyseerrInteraction) -> Unit,
   onLogoutClick: () -> Unit,
   onLoginClick: () -> Unit,
 ) {
@@ -38,14 +41,8 @@ fun AccountSettingsContent(
 
   if (openJellyseerrBottomSheet) {
     JellyseerrModalBottomSheet(
-      jellyseerrIntegration = JellyseerrIntegration(
-        address = "",
-        apiKey = "",
-      ),
-      onApiKeyChange = { },
-      onAddressChange = { },
-      onTestClick = { },
-      onSaveClick = { },
+      jellyseerrDetails = jellyseerrDetails,
+      interaction = jellyseerrInteraction,
       onDismissRequest = { openJellyseerrBottomSheet = false },
     )
   }
@@ -98,8 +95,13 @@ private fun AccountSettingsContentPreview() {
           username = "Jessee Pinkman",
           name = "name",
         ),
+        jellyseerrDetails = JellyseerrDetails(
+          address = "address",
+          apiKey = "apiKey",
+        ),
         onLogoutClick = {},
         onLoginClick = {},
+        jellyseerrInteraction = {},
       )
     }
   }

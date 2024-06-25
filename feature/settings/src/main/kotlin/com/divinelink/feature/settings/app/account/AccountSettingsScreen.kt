@@ -43,9 +43,11 @@ fun AccountSettingsScreen(
   ) { paddingValues ->
     AccountSettingsContent(
       paddingValues = paddingValues,
+      onLoginClick = viewModel::login,
+      jellyseerrDetails = viewState.value.jellyseerrDetails,
       accountDetails = viewState.value.accountDetails,
       onLogoutClick = viewModel::logoutDialog,
-      onLoginClick = viewModel::login,
+      jellyseerrInteraction = viewModel::onJellyseerrInteraction,
     )
   }
 

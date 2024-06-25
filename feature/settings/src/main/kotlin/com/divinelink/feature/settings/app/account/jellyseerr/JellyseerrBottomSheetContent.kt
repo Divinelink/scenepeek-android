@@ -18,18 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.JellyseerrIntegration
+import com.divinelink.core.model.jellyseerr.JellyseerrDetails
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun JellyseerrBottomSheetContent(
-  jellyseerrIntegration: JellyseerrIntegration,
-  onApiKeyChange: (String) -> Unit,
-  onAddressChange: (String) -> Unit,
-  onTestClick: () -> Unit,
-  onSaveClick: () -> Unit,
+  jellyseerrDetails: JellyseerrDetails?,
+  interaction: (JellyseerrInteraction) -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -44,15 +41,15 @@ fun JellyseerrBottomSheetContent(
 
     OutlinedTextField(
       modifier = Modifier.fillMaxWidth(),
-      value = jellyseerrIntegration.address,
-      onValueChange = { onAddressChange(it) },
+      value = jellyseerrDetails?.address ?: "",
+      onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
       label = { Text(text = stringResource(R.string.feature_settings_address)) },
     )
 
     OutlinedTextField(
       modifier = Modifier.fillMaxWidth(),
-      value = jellyseerrIntegration.apiKey,
-      onValueChange = { onApiKeyChange(it) },
+      value = jellyseerrDetails?.apiKey ?: "",
+      onValueChange = { interaction(JellyseerrInteraction.OnApiKeyChange(it)) },
       label = { Text(text = stringResource(R.string.feature_settings_api_key)) },
     )
 
@@ -60,14 +57,14 @@ fun JellyseerrBottomSheetContent(
 
     OutlinedButton(
       modifier = Modifier.fillMaxWidth(),
-      onClick = onTestClick,
+      onClick = { interaction(JellyseerrInteraction.OnTestClick) },
     ) {
       Text(stringResource(id = uiR.string.core_ui_test))
     }
 
     Button(
       modifier = Modifier.fillMaxWidth(),
-      onClick = onSaveClick,
+      onClick = { interaction(JellyseerrInteraction.OnSaveClick) },
     ) {
       Text(stringResource(id = uiR.string.core_ui_save))
     }
@@ -80,14 +77,11 @@ private fun JellyseerrBottomSheetContentPreview() {
   AppTheme {
     Surface {
       JellyseerrBottomSheetContent(
-        jellyseerrIntegration = JellyseerrIntegration(
+        jellyseerrDetails = JellyseerrDetails(
           address = "http://localhost:8080",
           apiKey = "apiKey",
         ),
-        onTestClick = {},
-        onSaveClick = {},
-        onAddressChange = {},
-        onApiKeyChange = {},
+        interaction = {},
       )
     }
   }

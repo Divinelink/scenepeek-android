@@ -13,18 +13,15 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.model.jellyseerr.JellyseerrIntegration
+import com.divinelink.core.model.jellyseerr.JellyseerrDetails
 import com.divinelink.core.ui.Previews
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun JellyseerrModalBottomSheet(
-  jellyseerrIntegration: JellyseerrIntegration,
+  jellyseerrDetails: JellyseerrDetails?,
   onDismissRequest: () -> Unit,
-  onApiKeyChange: (String) -> Unit,
-  onAddressChange: (String) -> Unit,
-  onTestClick: () -> Unit,
-  onSaveClick: () -> Unit,
+  interaction: (JellyseerrInteraction) -> Unit,
 ) {
   val sheetState = rememberModalBottomSheetState(
     skipPartiallyExpanded = true,
@@ -36,11 +33,8 @@ fun JellyseerrModalBottomSheet(
     onDismissRequest = onDismissRequest,
   ) {
     JellyseerrBottomSheetContent(
-      jellyseerrIntegration = jellyseerrIntegration,
-      onTestClick = onTestClick,
-      onSaveClick = onSaveClick,
-      onApiKeyChange = onApiKeyChange,
-      onAddressChange = onAddressChange,
+      jellyseerrDetails = jellyseerrDetails,
+      interaction = interaction,
     )
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
@@ -52,15 +46,12 @@ private fun JellyseerrModalBottomSheetPreview() {
   AppTheme {
     Surface {
       JellyseerrModalBottomSheet(
-        jellyseerrIntegration = JellyseerrIntegration(
+        jellyseerrDetails = JellyseerrDetails(
           address = "address",
           apiKey = "apiKey",
         ),
-        onDismissRequest = { },
-        onTestClick = {},
-        onSaveClick = {},
-        onApiKeyChange = {},
-        onAddressChange = {},
+        onDismissRequest = {},
+        interaction = {},
       )
     }
   }

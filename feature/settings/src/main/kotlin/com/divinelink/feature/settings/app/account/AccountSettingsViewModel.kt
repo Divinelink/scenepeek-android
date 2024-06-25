@@ -8,6 +8,7 @@ import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
+import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -105,6 +106,23 @@ class AccountSettingsViewModel @Inject constructor(
   fun onWebViewScreenNavigated() {
     _viewState.update {
       it.copy(navigateToWebView = null)
+    }
+  }
+
+  fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
+    when (interaction) {
+      is JellyseerrInteraction.OnAddressChange -> _viewState.update {
+        it.copy(jellyseerrDetails = it.jellyseerrDetails?.copy(address = interaction.address))
+      }
+      is JellyseerrInteraction.OnApiKeyChange -> _viewState.update {
+        it.copy(jellyseerrDetails = it.jellyseerrDetails?.copy(apiKey = interaction.key))
+      }
+      JellyseerrInteraction.OnSaveClick -> {
+
+      }
+      JellyseerrInteraction.OnTestClick -> {
+
+      }
     }
   }
 }
