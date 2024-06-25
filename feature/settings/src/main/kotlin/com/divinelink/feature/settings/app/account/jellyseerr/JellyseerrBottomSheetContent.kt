@@ -36,6 +36,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
@@ -87,11 +88,10 @@ fun JellyseerrBottomSheetContent(
           label = { Text(text = stringResource(R.string.feature_settings_username)) },
         )
 
-        OutlinedTextField(
+        PasswordOutlinedTextField(
           modifier = Modifier.fillMaxWidth(),
           value = jellyseerrState.jellyfinLogin.password.value,
           onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-          label = { Text(text = stringResource(R.string.feature_settings_password)) },
         )
       },
     )
@@ -115,11 +115,10 @@ fun JellyseerrBottomSheetContent(
           label = { Text(text = stringResource(R.string.feature_settings_username_or_email)) },
         )
 
-        OutlinedTextField(
+        PasswordOutlinedTextField(
           modifier = Modifier.fillMaxWidth(),
           value = jellyseerrState.jellyseerrLogin.password.value,
           onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-          label = { Text(text = stringResource(R.string.feature_settings_password)) },
         )
       },
     )

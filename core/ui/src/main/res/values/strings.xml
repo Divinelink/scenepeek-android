@@ -10,6 +10,7 @@
   <string name="core_ui_retry">Retry</string>
   <string name="core_ui_login">Login</string>
   <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
+  <string name="core_ui_password">Password</string>
 
   <string name="general_error_title">An error occurred</string>
 
@@ -36,4 +37,5 @@
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
+  <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
 </resources>

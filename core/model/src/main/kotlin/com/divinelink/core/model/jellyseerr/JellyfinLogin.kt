@@ -6,4 +6,8 @@ import com.divinelink.core.model.Username
 data class JellyfinLogin(
   val username: Username,
   val password: Password,
-)
+) {
+  companion object {
+    fun empty() = JellyfinLogin(Username.empty(), Password.empty())
+  }
+}
