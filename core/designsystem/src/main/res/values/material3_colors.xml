@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+  <color name="colorPrimary">@color/light_colorPrimary</color>
+  <color name="colorOnPrimary">@color/light_colorOnPrimary</color>
+  <color name="colorPrimaryContainer">@color/light_colorPrimaryContainer</color>
+  <color name="colorOnPrimaryContainer">@color/light_colorOnPrimaryContainer</color>
+  <color name="colorSecondary">@color/light_colorSecondary</color>
+  <color name="colorOnSecondary">@color/light_colorOnSecondary</color>
+  <color name="colorSecondaryContainer">@color/light_colorSecondaryContainer</color>
+  <color name="colorOnSecondaryContainer">@color/light_colorOnSecondaryContainer</color>
+  <color name="colorTertiary">@color/light_colorTertiary</color>
+  <color name="colorOnTertiary">@color/light_colorOnTertiary</color>
+  <color name="colorTertiaryContainer">@color/light_colorTertiaryContainer</color>
+  <color name="colorOnTertiaryContainer">@color/light_colorOnTertiaryContainer</color>
+  <color name="colorError">@color/light_colorError</color>
+  <color name="colorErrorContainer">@color/light_colorErrorContainer</color>
+  <color name="colorOnError">@color/light_colorOnError</color>
+  <color name="colorOnErrorContainer">@color/light_colorOnErrorContainer</color>
+  <color name="colorBackground">@color/light_colorBackground</color>
+  <color name="colorOnBackground">@color/light_colorOnBackground</color>
+  <color name="colorSurface">@color/light_colorSurface</color>
+  <color name="colorOnSurface">@color/light_colorOnSurface</color>
+  <color name="colorSurfaceVariant">@color/light_colorSurfaceVariant</color>
+  <color name="colorOnSurfaceVariant">@color/light_colorOnSurfaceVariant</color>
+  <color name="colorOutline">@color/light_colorOutline</color>
+  <color name="colorInverseOnSurface">@color/light_colorInverseOnSurface</color>
+  <color name="colorInverseSurface">@color/light_colorInverseSurface</color>
+  <color name="colorInversePrimary">@color/light_colorInversePrimary</color>
+  <color name="colorShadow">@color/light_colorShadow</color>
+  <color name="colorSurfaceTint">@color/light_colorSurfaceTint</color>
+  <color name="colorSurfaceTintColor">@color/light_colorSurfaceTintColor</color>
+
+  <color name="colorSurface2">@color/light_colorSurface2</color>
+
+  <color name="colorSurface_60">@color/light_colorSurface_60</color>
+</resources>

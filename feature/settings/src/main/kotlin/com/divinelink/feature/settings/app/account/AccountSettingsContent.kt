@@ -5,16 +5,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AmpStories
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import com.divinelink.core.ui.R as uiR
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
@@ -74,7 +74,7 @@ fun AccountSettingsContent(
       )
 
       SettingsClickItem(
-        iconVector = Icons.Default.AmpStories,
+        icon = painterResource(id = uiR.drawable.core_ui_ic_jellyseerr),
         text = "Jellyseerr Integration (Beta)",
         onClick = {
           openJellyseerrBottomSheet = true

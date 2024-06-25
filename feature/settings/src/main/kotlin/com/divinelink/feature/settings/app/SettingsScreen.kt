@@ -31,7 +31,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
     ) {
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.ic_account_24),
+          icon = painterResource(id = R.drawable.feature_settings_ic_account_24),
           text = stringResource(R.string.preferences__account),
           onClick = { navigator.navigate(AccountSettingsScreenDestination) },
         )
@@ -43,7 +43,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.ic_appearance_24),
+          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
           text = stringResource(R.string.preferences__appearance),
           onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
         )
@@ -55,7 +55,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = painterResource(id = R.drawable.ic_help_24),
+          icon = painterResource(id = R.drawable.feature_settings_ic_help_24),
           text = stringResource(R.string.preferences__help),
           onClick = { navigator.navigate(HelpSettingsScreenDestination) },
         )

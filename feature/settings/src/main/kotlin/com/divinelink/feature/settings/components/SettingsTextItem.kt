@@ -63,13 +63,13 @@ private fun SettingsScreenPreview() {
     Surface {
       Column {
         SettingsTextItem(
-          icon = painterResource(id = R.drawable.ic_appearance_24),
+          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
           title = "Version",
           summary = "1.0.0 Debug",
         )
 
         SettingsTextItem(
-          icon = painterResource(id = R.drawable.ic_appearance_24),
+          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
           title = "Version",
           summary = null,
         )

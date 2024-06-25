@@ -87,7 +87,7 @@ private fun SettingsScreenPreview() {
   AppTheme {
     Surface {
       SettingsRadioPrefItem(
-        icon = painterResource(id = R.drawable.ic_appearance_24),
+        icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
         title = "Theme",
         selected = "System default",
         selectedIndex = 0,

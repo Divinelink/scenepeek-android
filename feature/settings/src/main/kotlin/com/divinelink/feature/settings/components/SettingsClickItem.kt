@@ -60,7 +60,7 @@ fun SettingsClickItem(
 private fun SettingsScreenPreview() {
   MaterialTheme {
     SettingsClickItem(
-      icon = painterResource(id = R.drawable.ic_appearance_24),
+      icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
       text = "Appearance",
       onClick = {},
     )
