@@ -27,6 +27,9 @@
   <string name="feature_settings_username_or_email">Email address / Username</string>
   <string name="feature_settings_password">Password</string>
 
+  <string name="feature_settings_jellyfin_already_logged_in">You are logged in using your Jellyfin %s account.</string>
+  <string name="feature_settings_jellyseerr_already_logged_in">You are logged in using your Jellyseerr %s account.</string>
+
   <!-- HelpSettingsFragment -->
   <string name="HelpSettingsFragment__help">Help</string>
   <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>

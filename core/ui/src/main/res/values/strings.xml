@@ -9,6 +9,7 @@
 
   <string name="core_ui_retry">Retry</string>
   <string name="core_ui_login">Login</string>
+  <string name="core_ui_logout">Logout</string>
   <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
   <string name="core_ui_password">Password</string>
 

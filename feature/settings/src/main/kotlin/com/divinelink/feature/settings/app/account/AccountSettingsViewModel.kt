@@ -45,8 +45,14 @@ class AccountSettingsViewModel @Inject constructor(
     getJellyseerrDetailsUseCase.invoke(Unit).onEach { result ->
       println("Jellyseerr details fetched : $result")
       result.onSuccess {
-        _viewState.update { uiState ->
-          uiState.copy(jellyseerrState = result.data)
+        _viewState.update {
+          it.copy(
+            jellyseerrState = JellyseerrState.LoggedIn(
+              address = result.data.address,
+              username = result.data.username,
+              loginMethod = result.data.signInMethod,
+            ),
+          )
         }
       }
     }.launchIn(viewModelScope)
@@ -133,9 +139,14 @@ class AccountSettingsViewModel @Inject constructor(
   fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
     when (interaction) {
       JellyseerrInteraction.OnLoginClick -> {
-        viewModelScope.launch {
-          loginJellyseerrUseCase.invoke(viewState.value.jellyseerrState)
-        }
+        loginJellyseerrUseCase.invoke(
+          viewState.value.jellyseerrState.jellyfinLogin.copy(
+            address = viewState.value.jellyseerrState.address,
+          ),
+        ).launchIn(viewModelScope)
+      }
+      JellyseerrInteraction.OnLogoutClick -> {
+        // TODO: Implement logout
       }
       is JellyseerrInteraction.OnAddressChange -> {
         _viewState.update {

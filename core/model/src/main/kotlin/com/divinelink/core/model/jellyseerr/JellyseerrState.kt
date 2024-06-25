@@ -20,6 +20,7 @@ sealed class JellyseerrState(
 
   data class LoggedIn(
     override var address: String,
+    val username: String,
     val loginMethod: JellyseerrLoginMethod,
   ) : JellyseerrState(address)
 }

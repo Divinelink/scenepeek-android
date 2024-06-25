@@ -32,13 +32,15 @@ fun JellyseerrModalBottomSheet(
     windowInsets = WindowInsets.ime,
     onDismissRequest = onDismissRequest,
   ) {
-    if (jellyseerrState is JellyseerrState.Initial) {
-      JellyseerrBottomSheetContent(
+    when (jellyseerrState) {
+      is JellyseerrState.Initial -> JellyseerrBottomSheetContent(
         jellyseerrState = jellyseerrState,
         interaction = interaction,
       )
-    } else {
-      // TODO: Add other states
+      is JellyseerrState.LoggedIn -> JellyseerrLoggedInBottomSheetContent(
+        jellyseerrState = jellyseerrState,
+        onLogoutClock = { interaction(it) },
+      )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }

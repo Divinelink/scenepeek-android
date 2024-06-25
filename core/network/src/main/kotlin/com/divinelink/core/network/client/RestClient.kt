@@ -4,6 +4,8 @@ import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
@@ -43,6 +45,11 @@ class RestClient {
       } else {
         LogLevel.NONE
       }
+    }
+
+    install(HttpCookies) {
+      // TODO Investigate if this is the best way to handle cookies
+      storage = AcceptAllCookiesStorage()
     }
 
     install(ContentNegotiation) {

@@ -8,4 +8,5 @@ sealed interface JellyseerrInteraction {
   data class OnPasswordChange(val password: String) : JellyseerrInteraction
   data class OnSelectLoginMethod(val signInMethod: JellyseerrLoginMethod) : JellyseerrInteraction
   data object OnLoginClick : JellyseerrInteraction
+  data object OnLogoutClick : JellyseerrInteraction
 }
