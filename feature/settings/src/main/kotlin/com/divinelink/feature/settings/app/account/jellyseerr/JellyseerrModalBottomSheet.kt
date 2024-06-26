@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -32,15 +33,29 @@ fun JellyseerrModalBottomSheet(
     windowInsets = WindowInsets.ime,
     onDismissRequest = onDismissRequest,
   ) {
-    when (jellyseerrState) {
-      is JellyseerrState.Initial -> JellyseerrBottomSheetContent(
-        jellyseerrState = jellyseerrState,
-        interaction = interaction,
-      )
-      is JellyseerrState.LoggedIn -> JellyseerrLoggedInBottomSheetContent(
-        jellyseerrState = jellyseerrState,
-        onLogoutClock = { interaction(it) },
-      )
+    AnimatedContent(
+      targetState = jellyseerrState,
+      label = "Jellyseerr State Animated Content",
+      contentKey = { state ->
+        when (state) {
+          is JellyseerrState.Initial -> "Initial"
+          is JellyseerrState.LoggedIn -> "LoggedIn"
+        }
+      },
+    ) { stateClass ->
+      when (stateClass) {
+        is JellyseerrState.Initial -> {
+          JellyseerrBottomSheetContent(
+            jellyseerrState = stateClass,
+            interaction = interaction,
+          )
+        }
+        is JellyseerrState.LoggedIn ->
+          JellyseerrLoggedInBottomSheetContent(
+            jellyseerrState = stateClass,
+            onLogoutClock = { interaction(it) },
+          )
+      }
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }

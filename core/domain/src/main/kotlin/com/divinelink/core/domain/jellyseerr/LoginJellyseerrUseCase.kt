@@ -5,6 +5,7 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyfinLogin
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +17,9 @@ open class LoginJellyseerrUseCase @Inject constructor(
   private val repository: JellyseerrRepository,
   private val storage: PreferenceStorage,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<JellyfinLogin, Unit>(dispatcher) {
+) : FlowUseCase<JellyfinLogin, JellyseerrAccountStatus>(dispatcher) {
 
-  override fun execute(parameters: JellyfinLogin): Flow<Result<Unit>> = flow {
+  override fun execute(parameters: JellyfinLogin): Flow<Result<JellyseerrAccountStatus>> = flow {
     repository.signInWithJellyfin(parameters)
       .last()
       .fold(
@@ -26,7 +27,15 @@ open class LoginJellyseerrUseCase @Inject constructor(
           storage.setJellyseerrAccount(parameters.username.value)
           storage.setJellyseerrAddress(parameters.address)
           storage.setJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYFIN.name)
-          emit(Result.success(Unit))
+          emit(
+            Result.success(
+              JellyseerrAccountStatus(
+                address = parameters.address,
+                username = parameters.username.value,
+                signInMethod = JellyseerrLoginMethod.JELLYFIN,
+              ),
+            ),
+          )
         },
         onFailure = {
           emit(Result.failure(it))

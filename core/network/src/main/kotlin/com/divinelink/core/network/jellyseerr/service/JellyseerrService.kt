@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface JellyseerrService {
 
   suspend fun signInWithJellyfin(jellyfinLogin: JellyfinLogin): Flow<JellyfinLoginResponseApi>
+
+  suspend fun logout(address: String): Flow<Unit>
 }

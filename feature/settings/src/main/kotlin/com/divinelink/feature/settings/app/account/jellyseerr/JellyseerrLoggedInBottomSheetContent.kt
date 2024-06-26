@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
@@ -27,11 +28,12 @@ fun JellyseerrLoggedInBottomSheetContent(
   jellyseerrState: JellyseerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
 ) {
-  val loggedInResource = if (jellyseerrState.loginMethod == JellyseerrLoginMethod.JELLYFIN) {
-    R.string.feature_settings_jellyfin_already_logged_in
-  } else {
-    R.string.feature_settings_jellyseerr_already_logged_in
-  }
+  val loggedInResource =
+    if (jellyseerrState.loginData.signInMethod == JellyseerrLoginMethod.JELLYFIN) {
+      R.string.feature_settings_jellyfin_already_logged_in
+    } else {
+      R.string.feature_settings_jellyseerr_already_logged_in
+    }
 
   Column(
     modifier = Modifier
@@ -42,7 +44,7 @@ fun JellyseerrLoggedInBottomSheetContent(
     Text(
       text = stringResource(
         loggedInResource,
-        jellyseerrState.username,
+        jellyseerrState.loginData.username,
       ),
     )
 
@@ -64,9 +66,11 @@ private fun JellyseerrBottomSheetContentPreview() {
     Surface {
       JellyseerrLoggedInBottomSheetContent(
         jellyseerrState = JellyseerrState.LoggedIn(
-          address = "http://localhost:8080",
-          username = "Username",
-          loginMethod = JellyseerrLoginMethod.JELLYFIN,
+          loginData = JellyseerrAccountStatus(
+            address = "http://localhost:8080",
+            username = "Username",
+            signInMethod = JellyseerrLoginMethod.JELLYFIN,
+          ),
         ),
         onLogoutClock = {},
       )

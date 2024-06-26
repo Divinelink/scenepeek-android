@@ -7,6 +7,7 @@ import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
+import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.model.Password
@@ -32,6 +33,7 @@ class AccountSettingsViewModel @Inject constructor(
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
   private val logoutUseCase: LogoutUseCase,
+  private val logoutJellyseerrUseCase: LogoutJellyseerrUseCase,
   getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
   private val loginJellyseerrUseCase: LoginJellyseerrUseCase,
 ) : ViewModel() {
@@ -42,20 +44,18 @@ class AccountSettingsViewModel @Inject constructor(
   init {
     observeSession()
 
-    getJellyseerrDetailsUseCase.invoke(Unit).onEach { result ->
-      println("Jellyseerr details fetched : $result")
-      result.onSuccess {
-        _viewState.update {
-          it.copy(
-            jellyseerrState = JellyseerrState.LoggedIn(
-              address = result.data.address,
-              username = result.data.username,
-              loginMethod = result.data.signInMethod,
-            ),
-          )
+    getJellyseerrDetailsUseCase.invoke(Unit)
+      .distinctUntilChanged()
+      .onEach { result ->
+        println("Jellyseerr details fetched : $result")
+        result.onSuccess {
+          _viewState.update {
+            it.copy(
+              jellyseerrState = JellyseerrState.LoggedIn(result.data),
+            )
+          }
         }
-      }
-    }.launchIn(viewModelScope)
+      }.launchIn(viewModelScope)
   }
 
   private fun observeSession() {
@@ -143,17 +143,33 @@ class AccountSettingsViewModel @Inject constructor(
           viewState.value.jellyseerrState.jellyfinLogin.copy(
             address = viewState.value.jellyseerrState.address,
           ),
-        ).launchIn(viewModelScope)
+        ).onEach { result ->
+          result.onSuccess {
+            _viewState.update {
+              it.copy(jellyseerrState = JellyseerrState.LoggedIn(result.data))
+            }
+          }
+        }.launchIn(viewModelScope)
       }
       JellyseerrInteraction.OnLogoutClick -> {
-        // TODO: Implement logout
+        logoutJellyseerrUseCase.invoke(Unit)
+          .onEach { result ->
+            result.onSuccess {
+              _viewState.update {
+                it.copy(jellyseerrState = JellyseerrState.Initial())
+              }
+            }
+          }
+          .launchIn(viewModelScope)
       }
       is JellyseerrInteraction.OnAddressChange -> {
         _viewState.update {
           it.copy(
             jellyseerrState = when (val state = it.jellyseerrState) {
               is JellyseerrState.Initial -> state.copy(address = interaction.address)
-              is JellyseerrState.LoggedIn -> state.copy(address = interaction.address)
+              is JellyseerrState.LoggedIn -> state.copy(
+                loginData = state.loginData.copy(address = interaction.address),
+              )
             },
           )
         }

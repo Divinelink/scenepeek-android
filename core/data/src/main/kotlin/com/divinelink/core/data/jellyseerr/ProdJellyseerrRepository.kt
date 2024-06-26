@@ -7,12 +7,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ProdJellyseerrRepository @Inject constructor(
-  private val jellyseerrService: JellyseerrService,
-) : JellyseerrRepository {
+class ProdJellyseerrRepository @Inject constructor(private val service: JellyseerrService) :
+  JellyseerrRepository {
 
   override suspend fun signInWithJellyfin(jellyfinLogin: JellyfinLogin): Flow<Result<String>> =
-    jellyseerrService
+    service
       .signInWithJellyfin(jellyfinLogin)
       .map {
         Result.success(it.jellyfinUsername)
@@ -20,4 +19,12 @@ class ProdJellyseerrRepository @Inject constructor(
       .catch { error ->
         throw error
       }
+
+  override suspend fun logout(address: String): Flow<Result<Unit>> = service.logout(address)
+    .map {
+      Result.success(Unit)
+    }
+    .catch { error ->
+      throw error
+    }
 }
