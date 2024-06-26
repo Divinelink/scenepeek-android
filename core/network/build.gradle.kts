@@ -28,6 +28,7 @@ secrets {
 
 dependencies {
   implementation(projects.core.commons)
+  implementation(projects.core.datastore)
   implementation(projects.core.model)
 
   implementation(libs.ktor.client.core)

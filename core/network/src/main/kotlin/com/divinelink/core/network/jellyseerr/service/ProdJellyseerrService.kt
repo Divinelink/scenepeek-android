@@ -1,14 +1,14 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.jellyseerr.JellyfinLogin
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProdJellyseerrService @Inject constructor(private val restClient: RestClient) :
+class ProdJellyseerrService @Inject constructor(private val restClient: JellyseerrRestClient) :
   JellyseerrService {
 
   override suspend fun signInWithJellyfin(
@@ -25,5 +25,13 @@ class ProdJellyseerrService @Inject constructor(private val restClient: RestClie
     )
 
     emit(response)
+  }
+
+  override suspend fun logout(address: String): Flow<Unit> = flow {
+    val url = "$address/api/v1/auth/logout"
+
+    restClient.post<Unit, Unit>(url = url, body = Unit)
+
+    emit(Unit)
   }
 }
