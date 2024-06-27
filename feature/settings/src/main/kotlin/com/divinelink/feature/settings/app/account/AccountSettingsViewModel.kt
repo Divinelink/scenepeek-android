@@ -178,7 +178,12 @@ class AccountSettingsViewModel @Inject constructor(
                     UIText.ResourceText(R.string.feature_settings_invalid_credentials),
                   )
                 }
-                .on(UnknownHostException(), ConnectException()) {
+                .on<UnknownHostException> {
+                  _viewState.setSnackbarMessage(
+                    UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                  )
+                }
+                .on<ConnectException> {
                   _viewState.setSnackbarMessage(
                     UIText.ResourceText(R.string.feature_settings_could_not_connect),
                   )
