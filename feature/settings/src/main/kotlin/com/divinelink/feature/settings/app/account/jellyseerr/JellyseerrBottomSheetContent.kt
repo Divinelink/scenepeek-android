@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +40,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
@@ -125,12 +128,26 @@ fun JellyseerrBottomSheetContent(
 
     Spacer(Modifier.height(MaterialTheme.dimensions.keyline_32))
 
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      enabled = jellyseerrState.isLoginEnabled,
-      onClick = { interaction(JellyseerrInteraction.OnLoginClick) },
-    ) {
-      Text(stringResource(id = uiR.string.core_ui_login))
+    AnimatedContent(
+      targetState = jellyseerrState.isLoading,
+      contentAlignment = Alignment.Center,
+      label = "Login Button Animated Content",
+    ) { loading ->
+      when (loading) {
+        true -> Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.Center,
+        ) {
+          CircularProgressIndicator()
+        }
+        false -> Button(
+          modifier = Modifier.fillMaxWidth(),
+          enabled = jellyseerrState.isLoginEnabled,
+          onClick = { interaction(JellyseerrInteraction.OnLoginClick) },
+        ) {
+          Text(stringResource(id = uiR.string.core_ui_login))
+        }
+      }
     }
   }
 }
@@ -192,7 +209,20 @@ private fun JellyseerrBottomSheetContentPreview() {
   AppTheme {
     Surface {
       JellyseerrBottomSheetContent(
-        jellyseerrState = JellyseerrState.Initial(null),
+        jellyseerrState = JellyseerrState.Initial(false, null),
+        interaction = {},
+      )
+    }
+  }
+}
+
+@Previews
+@Composable
+private fun JellyseerrBottomSheetContentLoadingPreview() {
+  AppTheme {
+    Surface {
+      JellyseerrBottomSheetContent(
+        jellyseerrState = JellyseerrState.Initial(true, null),
         interaction = {},
       )
     }

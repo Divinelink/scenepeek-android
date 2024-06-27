@@ -67,7 +67,7 @@ private fun JellyseerrModalBottomSheetPreview() {
   AppTheme {
     Surface {
       JellyseerrModalBottomSheet(
-        jellyseerrState = JellyseerrState.Initial(null),
+        jellyseerrState = JellyseerrState.Initial(false, null),
         onDismissRequest = {},
         interaction = {},
       )

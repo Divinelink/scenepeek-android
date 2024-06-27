@@ -16,7 +16,7 @@ private fun JellyseerrStatusItemPreview() {
   AppTheme {
     Surface {
       JellyseerrStatusItem(
-        jellyseerrState = JellyseerrState.Initial(null),
+        jellyseerrState = JellyseerrState.Initial(false, null),
       )
     }
   }

@@ -6,6 +6,7 @@ sealed class JellyseerrState(
   open var jellyseerrLogin: JellyseerrLogin = JellyseerrLogin.empty(),
 ) {
   data class Initial(
+    val isLoading: Boolean,
     val preferredOption: JellyseerrLoginMethod? = null,
     override var address: String = "",
     override var jellyfinLogin: JellyfinLogin = JellyfinLogin.empty(),
@@ -18,5 +19,8 @@ sealed class JellyseerrState(
     val isLoginEnabled = preferredOption != null
   }
 
-  data class LoggedIn(val loginData: JellyseerrAccountStatus) : JellyseerrState(loginData.address)
+  data class LoggedIn(
+    val isLoading: Boolean,
+    val loginData: JellyseerrAccountStatus,
+  ) : JellyseerrState(address = loginData.address)
 }

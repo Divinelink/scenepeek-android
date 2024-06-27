@@ -1,13 +1,16 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,11 +53,24 @@ fun JellyseerrLoggedInBottomSheetContent(
 
     Spacer(Modifier.height(MaterialTheme.dimensions.keyline_32))
 
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      onClick = { onLogoutClock(JellyseerrInteraction.OnLogoutClick) },
-    ) {
-      Text(stringResource(id = uiR.string.core_ui_logout))
+    AnimatedContent(
+      targetState = jellyseerrState.isLoading,
+      label = "Logout Button Animated Content",
+    ) { loading ->
+      when (loading) {
+        true -> Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.Center,
+        ) {
+          CircularProgressIndicator()
+        }
+        false -> Button(
+          modifier = Modifier.fillMaxWidth(),
+          onClick = { onLogoutClock(JellyseerrInteraction.OnLogoutClick) },
+        ) {
+          Text(stringResource(id = uiR.string.core_ui_logout))
+        }
+      }
     }
   }
 }
@@ -66,6 +82,27 @@ private fun JellyseerrBottomSheetContentPreview() {
     Surface {
       JellyseerrLoggedInBottomSheetContent(
         jellyseerrState = JellyseerrState.LoggedIn(
+          isLoading = false,
+          loginData = JellyseerrAccountStatus(
+            address = "http://localhost:8080",
+            username = "Username",
+            signInMethod = JellyseerrLoginMethod.JELLYFIN,
+          ),
+        ),
+        onLogoutClock = {},
+      )
+    }
+  }
+}
+
+@Previews
+@Composable
+private fun JellyseerrBottomSheetContentLoadingPreview() {
+  AppTheme {
+    Surface {
+      JellyseerrLoggedInBottomSheetContent(
+        jellyseerrState = JellyseerrState.LoggedIn(
+          isLoading = true,
           loginData = JellyseerrAccountStatus(
             address = "http://localhost:8080",
             username = "Username",

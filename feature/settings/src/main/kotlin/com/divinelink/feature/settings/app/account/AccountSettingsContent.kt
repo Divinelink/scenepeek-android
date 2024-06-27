@@ -96,6 +96,7 @@ private fun AccountSettingsContentPreview() {
           name = "name",
         ),
         jellyseerrState = JellyseerrState.Initial(
+          isLoading = false,
           preferredOption = null,
         ),
         onLogoutClick = {},

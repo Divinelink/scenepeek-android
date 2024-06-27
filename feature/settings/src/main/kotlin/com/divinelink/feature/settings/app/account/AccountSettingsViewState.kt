@@ -17,7 +17,7 @@ data class AccountSettingsViewState(
       navigateToWebView = null,
       alertDialogUiState = null,
       accountDetails = null,
-      jellyseerrState = JellyseerrState.Initial(preferredOption = null),
+      jellyseerrState = JellyseerrState.Initial(isLoading = false, preferredOption = null),
     )
   }
 }

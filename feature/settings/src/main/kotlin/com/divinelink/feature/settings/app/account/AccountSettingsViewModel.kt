@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,7 +52,10 @@ class AccountSettingsViewModel @Inject constructor(
         result.onSuccess {
           _viewState.update {
             it.copy(
-              jellyseerrState = JellyseerrState.LoggedIn(result.data),
+              jellyseerrState = JellyseerrState.LoggedIn(
+                loginData = result.data,
+                isLoading = false,
+              ),
             )
           }
         }
@@ -143,20 +147,32 @@ class AccountSettingsViewModel @Inject constructor(
           viewState.value.jellyseerrState.jellyfinLogin.copy(
             address = viewState.value.jellyseerrState.address,
           ),
-        ).onEach { result ->
-          result.onSuccess {
-            _viewState.update {
-              it.copy(jellyseerrState = JellyseerrState.LoggedIn(result.data))
-            }
+        )
+          .onStart {
+            _viewState.setJellyseerrLoading()
           }
-        }.launchIn(viewModelScope)
-      }
-      JellyseerrInteraction.OnLogoutClick -> {
-        logoutJellyseerrUseCase.invoke(Unit)
           .onEach { result ->
             result.onSuccess {
               _viewState.update {
-                it.copy(jellyseerrState = JellyseerrState.Initial())
+                it.copy(
+                  jellyseerrState = JellyseerrState.LoggedIn(
+                    loginData = result.data,
+                    isLoading = false,
+                  ),
+                )
+              }
+            }
+          }.launchIn(viewModelScope)
+      }
+      JellyseerrInteraction.OnLogoutClick -> {
+        logoutJellyseerrUseCase.invoke(Unit)
+          .onStart {
+            _viewState.setJellyseerrLoading()
+          }
+          .onEach { result ->
+            result.onSuccess {
+              _viewState.update {
+                it.copy(jellyseerrState = JellyseerrState.Initial(isLoading = false))
               }
             }
           }
@@ -239,6 +255,23 @@ class AccountSettingsViewModel @Inject constructor(
           )
         }
       }
+    }
+  }
+}
+
+private fun MutableStateFlow<AccountSettingsViewState>.setJellyseerrLoading() {
+  update { uiState ->
+    when (uiState.jellyseerrState) {
+      is JellyseerrState.LoggedIn -> uiState.copy(
+        jellyseerrState = uiState.jellyseerrState.copy(
+          isLoading = true,
+        ),
+      )
+      is JellyseerrState.Initial -> uiState.copy(
+        jellyseerrState = uiState.jellyseerrState.copy(
+          isLoading = true,
+        ),
+      )
     }
   }
 }
