@@ -1,6 +1,6 @@
 package com.divinelink.core.data.jellyseerr
 
-import com.divinelink.core.model.jellyseerr.JellyfinLogin
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -10,11 +10,21 @@ import javax.inject.Inject
 class ProdJellyseerrRepository @Inject constructor(private val service: JellyseerrService) :
   JellyseerrRepository {
 
-  override suspend fun signInWithJellyfin(jellyfinLogin: JellyfinLogin): Flow<Result<String>> =
+  override suspend fun signInWithJellyfin(loginData: JellyseerrLoginData): Flow<Result<String>> =
     service
-      .signInWithJellyfin(jellyfinLogin)
+      .signInWithJellyfin(loginData)
       .map {
         Result.success(it.jellyfinUsername)
+      }
+      .catch { error ->
+        throw error
+      }
+
+  override suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<String>> =
+    service
+      .signInWithJellyseerr(loginData)
+      .map {
+        Result.success(it.toString())
       }
       .catch { error ->
         throw error

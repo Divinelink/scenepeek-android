@@ -15,6 +15,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.model.jellyseerr.loginParams
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -150,11 +151,7 @@ class AccountSettingsViewModel @Inject constructor(
   fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
     when (interaction) {
       JellyseerrInteraction.OnLoginClick -> {
-        loginJellyseerrUseCase.invoke(
-          viewState.value.jellyseerrState.jellyfinLogin.copy(
-            address = viewState.value.jellyseerrState.address,
-          ),
-        )
+        loginJellyseerrUseCase.invoke(viewState.value.jellyseerrState.loginParams)
           .onStart {
             _viewState.setJellyseerrLoading(true)
           }
