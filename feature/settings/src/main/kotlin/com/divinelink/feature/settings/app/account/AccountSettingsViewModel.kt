@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
@@ -16,17 +17,23 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
+import com.divinelink.core.ui.R as uiR
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
@@ -149,7 +156,10 @@ class AccountSettingsViewModel @Inject constructor(
           ),
         )
           .onStart {
-            _viewState.setJellyseerrLoading()
+            _viewState.setJellyseerrLoading(true)
+          }
+          .onCompletion {
+            _viewState.setJellyseerrLoading(false)
           }
           .onEach { result ->
             result.onSuccess {
@@ -161,13 +171,32 @@ class AccountSettingsViewModel @Inject constructor(
                   ),
                 )
               }
+            }.onFailure { error ->
+              ErrorHandler.create(error)
+                .on(401) {
+                  _viewState.setSnackbarMessage(
+                    UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+                  )
+                }
+                .on(UnknownHostException(), ConnectException()) {
+                  _viewState.setSnackbarMessage(
+                    UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                  )
+                }
+                .otherwise {
+                  _viewState.setSnackbarMessage(UIText.ResourceText(uiR.string.core_ui_error_retry))
+                }
+                .handle()
             }
           }.launchIn(viewModelScope)
       }
       JellyseerrInteraction.OnLogoutClick -> {
         logoutJellyseerrUseCase.invoke(Unit)
           .onStart {
-            _viewState.setJellyseerrLoading()
+            _viewState.setJellyseerrLoading(true)
+          }
+          .onCompletion {
+            _viewState.setJellyseerrLoading(false)
           }
           .onEach { result ->
             result.onSuccess {
@@ -257,21 +286,35 @@ class AccountSettingsViewModel @Inject constructor(
       }
     }
   }
+
+  fun dismissSnackbar() {
+    _viewState.update {
+      it.copy(snackbarMessage = null)
+    }
+  }
 }
 
-private fun MutableStateFlow<AccountSettingsViewState>.setJellyseerrLoading() {
+private fun MutableStateFlow<AccountSettingsViewState>.setJellyseerrLoading(loading: Boolean) {
   update { uiState ->
     when (uiState.jellyseerrState) {
       is JellyseerrState.LoggedIn -> uiState.copy(
         jellyseerrState = uiState.jellyseerrState.copy(
-          isLoading = true,
+          isLoading = loading,
         ),
       )
       is JellyseerrState.Initial -> uiState.copy(
         jellyseerrState = uiState.jellyseerrState.copy(
-          isLoading = true,
+          isLoading = loading,
         ),
       )
     }
+  }
+}
+
+private fun MutableStateFlow<AccountSettingsViewState>.setSnackbarMessage(text: UIText) {
+  update { uiState ->
+    uiState.copy(
+      snackbarMessage = SnackbarMessage.from(text = text),
+    )
   }
 }

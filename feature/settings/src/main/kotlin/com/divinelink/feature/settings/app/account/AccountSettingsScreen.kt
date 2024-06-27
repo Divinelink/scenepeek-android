@@ -7,6 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.login.LoginScreenArgs
@@ -36,6 +37,11 @@ fun AccountSettingsScreen(
       }
     }
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = viewState.value.snackbarMessage,
+    onDismissSnackbar = viewModel::dismissSnackbar,
+  )
 
   SettingsScaffold(
     title = stringResource(id = R.string.preferences__account),

@@ -5,17 +5,20 @@ import com.divinelink.core.commons.ApiConstants.HTTP_ERROR_CODE
 class ErrorHandler(private val throwable: Throwable) {
 
   private var actionMap = mutableMapOf<Int, (ErrorHandler) -> Unit>()
-  private var exceptionActionMap = mutableMapOf<Exception, (ErrorHandler) -> Unit>()
+  private val exceptionActionMap: MutableMap<Class<out Exception>, (ErrorHandler) -> Unit> =
+    mutableMapOf()
 
   companion object {
     fun create(throwable: Throwable): ErrorHandler = ErrorHandler(throwable)
   }
 
   fun on(
-    exception: Exception,
+    vararg exception: Exception,
     action: (ErrorHandler) -> Unit,
   ) = apply {
-    exceptionActionMap[exception] = action
+    exception.forEach {
+      exceptionActionMap[it::class.java] = action
+    }
     return this
   }
 
@@ -30,13 +33,19 @@ class ErrorHandler(private val throwable: Throwable) {
   fun handle() {
     val errorCode = getErrorCode(throwable)
     val action = actionMap[errorCode]
-    val exceptionAction = exceptionActionMap[throwable]
+    // TODO This is a temporary fix to handle exceptions. We need to find a better way
+    // to check instance of exception.
+    val exceptionAction = exceptionActionMap.entries.firstOrNull {
+      it.key.canonicalName == throwable.cause?.javaClass?.canonicalName
+    }?.value
+
     action?.invoke(this)
     exceptionAction?.invoke(this)
   }
 
   fun otherwise(action: (ErrorHandler) -> Unit) = apply {
-    actionMap[0] = action
+    action.invoke(this)
+    return this
   }
 
   /**

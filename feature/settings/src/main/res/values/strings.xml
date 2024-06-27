@@ -17,6 +17,9 @@
   <string name="AccountSettingsScreen__logout">Logout</string>
   <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
 
+  <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
+  <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
+
   <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr features.</string>
   <string name="feature_settings_address">Address</string>
 

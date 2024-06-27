@@ -42,17 +42,17 @@ fun JellyseerrModalBottomSheet(
           is JellyseerrState.LoggedIn -> "LoggedIn"
         }
       },
-    ) { stateClass ->
-      when (stateClass) {
+    ) { state ->
+      when (state) {
         is JellyseerrState.Initial -> {
           JellyseerrBottomSheetContent(
-            jellyseerrState = stateClass,
+            jellyseerrState = state,
             interaction = interaction,
           )
         }
         is JellyseerrState.LoggedIn ->
           JellyseerrLoggedInBottomSheetContent(
-            jellyseerrState = stateClass,
+            jellyseerrState = state,
             onLogoutClock = { interaction(it) },
           )
       }
@@ -67,7 +67,10 @@ private fun JellyseerrModalBottomSheetPreview() {
   AppTheme {
     Surface {
       JellyseerrModalBottomSheet(
-        jellyseerrState = JellyseerrState.Initial(false, null),
+        jellyseerrState = JellyseerrState.Initial(
+          isLoading = false,
+          preferredOption = null,
+        ),
         onDismissRequest = {},
         interaction = {},
       )
