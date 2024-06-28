@@ -3,6 +3,7 @@ package com.divinelink.core.network.client
 import com.divinelink.core.datastore.EncryptedStorage
 import io.ktor.client.plugins.cookies.CookiesStorage
 import io.ktor.http.Cookie
+import io.ktor.http.CookieEncoding
 import io.ktor.http.Url
 import io.ktor.util.date.GMTDate
 import javax.inject.Inject
@@ -52,7 +53,10 @@ class PersistentCookieStorage @Inject constructor(val storage: EncryptedStorage)
 
     val expires = parts[4].toLongOrNull()?.let { GMTDate(it) }
 
+    // There's a bug with the cookie URI encoding in Ktor, so we need to use DQUOTES/RAW encoding
+    // TODO Come back and fix this when Ktor fixes the bug
     return Cookie(
+      encoding = CookieEncoding.DQUOTES,
       name = parts[0],
       value = parts[1],
       domain = parts[2],
