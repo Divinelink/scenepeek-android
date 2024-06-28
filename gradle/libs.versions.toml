@@ -35,7 +35,7 @@ encrypted-prefs = '1.1.0-alpha04'
 kotlinx-coroutines = '1.7.3'
 
 # Network & Serialization
-ktor = "2.3.3"
+ktor = "2.3.8"
 kotlinx-serialization = "1.5.1"
 
 # Depedency Injection

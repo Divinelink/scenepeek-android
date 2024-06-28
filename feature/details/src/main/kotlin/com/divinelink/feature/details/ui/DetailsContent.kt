@@ -111,6 +111,7 @@ fun DetailsContent(
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   showOrHideShareDialog: (Boolean) -> Unit,
+  requestMedia: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showOverflowMenu by remember { mutableStateOf(false) }
@@ -190,6 +191,13 @@ fun DetailsContent(
                 showOverflowMenu = false
                 showOrHideShareDialog(true)
               },
+            )
+
+            DropdownMenuItem(
+              text = {
+                Text(text = "Request Media")
+              },
+              onClick = requestMedia,
             )
           }
         },
@@ -554,6 +562,7 @@ private fun DetailsContentPreview(
           onAddRateClicked = {},
           onAddToWatchlistClicked = {},
           showOrHideShareDialog = {},
+          requestMedia = {},
         )
       }
     }

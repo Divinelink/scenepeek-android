@@ -3,6 +3,7 @@ package com.andreolas.movierama.details.domain.usecase
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
@@ -42,7 +43,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
+      MediaDetailsParams(
         id = 0,
         mediaType = MediaType.MOVIE,
       ),
@@ -69,7 +70,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
+      MediaDetailsParams(
         id = 0,
         mediaType = MediaType.MOVIE,
       ),
@@ -94,7 +95,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
+      MediaDetailsParams(
         id = 0,
         mediaType = MediaType.TV,
       ),
@@ -115,7 +116,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.AccountMediaDetailsParams(
+      MediaDetailsParams(
         id = 0,
         mediaType = MediaType.UNKNOWN,
       ),

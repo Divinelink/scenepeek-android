@@ -4,18 +4,20 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
+import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.usecase.AccountMediaDetailsParams
 import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.usecase.DeleteRatingParameters
@@ -46,6 +48,7 @@ class DetailsViewModel @Inject constructor(
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
+  private val requestMediaUseCase: RequestMediaUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -302,6 +305,28 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
+  fun onRequestMedia() {
+    requestMediaUseCase(MediaDetailsParams(viewState.value.mediaId, viewState.value.mediaType))
+      .onEach { result ->
+        result.onSuccess {
+          setSnackbarMessage(
+            UIText.StringText("Media requested successfully"),
+          )
+        }.onFailure {
+          ErrorHandler.create(it).on(409) {
+            setSnackbarMessage(
+              UIText.StringText("Request for this media already exists"),
+            )
+          }.otherwise {
+            setSnackbarMessage(
+              UIText.StringText("Failed to request media"),
+            )
+          }.handle()
+        }
+      }
+      .launchIn(viewModelScope)
+  }
+
   fun navigateToLogin(snackbarResult: SnackbarResult) {
     if (snackbarResult == SnackbarResult.ActionPerformed) {
       _viewState.update { viewState ->
@@ -314,7 +339,7 @@ class DetailsViewModel @Inject constructor(
   }
 
   private suspend fun fetchAccountMediaDetails() {
-    val params = AccountMediaDetailsParams(
+    val params = MediaDetailsParams(
       id = viewState.value.mediaId,
       mediaType = viewState.value.mediaType,
     )
@@ -329,6 +354,12 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }
+  }
+
+  private fun setSnackbarMessage(text: UIText) {
+    _viewState.update { viewState ->
+      viewState.copy(snackbarMessage = SnackbarMessage.from(text))
+    }
   }
 
   // Consumers

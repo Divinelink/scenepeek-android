@@ -1,6 +1,7 @@
 package com.divinelink.core.data.jellyseerr
 
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -20,11 +21,11 @@ class ProdJellyseerrRepository @Inject constructor(private val service: Jellysee
         throw error
       }
 
-  override suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<String>> =
+  override suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<Unit>> =
     service
       .signInWithJellyseerr(loginData)
       .map {
-        Result.success(it.toString())
+        Result.success(it)
       }
       .catch { error ->
         throw error
@@ -37,4 +38,14 @@ class ProdJellyseerrRepository @Inject constructor(private val service: Jellysee
     .catch { error ->
       throw error
     }
+
+  override suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<Result<Unit>> =
+    service
+      .requestMedia(body)
+      .map {
+        Result.success(Unit)
+      }
+      .catch { error ->
+        throw error
+      }
 }

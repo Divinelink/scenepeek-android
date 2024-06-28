@@ -94,5 +94,6 @@ fun DetailsScreen(
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
     showOrHideShareDialog = viewModel::onShareClicked,
+    requestMedia = viewModel::onRequestMedia,
   )
 }

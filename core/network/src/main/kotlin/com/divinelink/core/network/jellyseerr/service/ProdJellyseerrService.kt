@@ -5,6 +5,7 @@ import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -48,6 +49,13 @@ class ProdJellyseerrService @Inject constructor(private val restClient: Jellysee
 
     restClient.post<Unit, Unit>(url = url, body = Unit)
 
+    emit(Unit)
+  }
+
+  override suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<Unit> = flow {
+    val url = "${body.address}/api/v1/request"
+
+    restClient.post<JellyseerrRequestMediaBodyApi, Unit>(url = url, body = body)
     emit(Unit)
   }
 }
