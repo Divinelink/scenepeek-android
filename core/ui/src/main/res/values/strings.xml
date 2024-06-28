@@ -6,6 +6,7 @@
   <string name="core_ui_save">Save</string>
 
   <string name="core_ui_share">Share</string>
+  <string name="core_ui_dropdown_menu_request">Request</string>
 
   <string name="core_ui_retry">Retry</string>
   <string name="core_ui_login">Login</string>

@@ -2,6 +2,7 @@ package com.divinelink.core.model.details
 
 import com.divinelink.core.model.details.crew.Actor
 import com.divinelink.core.model.details.crew.Director
+import com.divinelink.core.model.media.MediaType
 
 /**
  * Represents details or a movie or TV show.
@@ -58,4 +59,15 @@ sealed class MediaDetails {
       numberOfSeasons = numberOfSeasons,
     )
   }
+}
+
+fun MediaDetails.shareUrl(): String {
+  val urlTitle = title
+    .lowercase()
+    .replace(":", "")
+    .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
+
+  val mediaType = if (this is Movie) MediaType.MOVIE else MediaType.TV
+
+  return "https://themoviedb.org/${mediaType.value}/$id-$urlTitle"
 }

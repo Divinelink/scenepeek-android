@@ -298,14 +298,6 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onShareClicked(openShareDialog: Boolean) {
-    _viewState.update { viewState ->
-      viewState.copy(
-        openShareDialog = openShareDialog,
-      )
-    }
-  }
-
   fun onRequestMedia(seasons: List<Int>) {
     requestMediaUseCase(
       JellyseerrRequestParams(

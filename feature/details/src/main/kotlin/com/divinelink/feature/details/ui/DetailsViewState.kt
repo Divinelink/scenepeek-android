@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.ui
 
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
@@ -24,7 +25,7 @@ data class DetailsViewState(
   val snackbarMessage: SnackbarMessage? = null,
   val showRateDialog: Boolean = false,
   val navigateToLogin: Boolean? = null,
-  val openShareDialog: Boolean = false,
+  val menuOptions: List<DetailsMenuOptions> = emptyList(),
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(
@@ -47,12 +48,4 @@ data class DetailsViewState(
     )
     null -> null
   }
-
-  private val urlTitle = mediaDetails
-    ?.title
-    ?.lowercase()
-    ?.replace(":", "")
-    ?.replace(regex = "[\\s|/]".toRegex(), replacement = "-")
-
-  val shareUrl = "https://themoviedb.org/${mediaType.value}/$mediaId-$urlTitle"
 }
