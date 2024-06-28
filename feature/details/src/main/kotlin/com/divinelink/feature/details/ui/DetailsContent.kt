@@ -165,7 +165,7 @@ fun DetailsContent(
               menuOptions = DetailsMenuOptions.entries,
               expanded = showDropdownMenu,
               requestMedia = requestMedia,
-              onDismissRequest = { showDropdownMenu = false },
+              onDismissDropdown = { showDropdownMenu = false },
             )
           }
         },

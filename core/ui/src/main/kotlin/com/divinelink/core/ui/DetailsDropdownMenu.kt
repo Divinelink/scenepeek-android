@@ -22,8 +22,11 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.model.details.shareUrl
+import com.divinelink.core.ui.components.dialog.RequestMovieDialog
+import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 
 @Composable
 fun DetailsDropdownMenu(
@@ -31,9 +34,10 @@ fun DetailsDropdownMenu(
   menuOptions: List<DetailsMenuOptions>,
   expanded: Boolean,
   requestMedia: (List<Int>) -> Unit,
-  onDismissRequest: () -> Unit,
+  onDismissDropdown: () -> Unit,
 ) {
   var showShareDialog by remember { mutableStateOf(false) }
+  var showRequestDialog by remember { mutableStateOf(false) }
 
   if (showShareDialog) {
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -44,12 +48,33 @@ fun DetailsDropdownMenu(
     showShareDialog = false
   }
 
+  if (showRequestDialog) {
+    when (mediaDetails) {
+      is TV -> SelectSeasonsDialog(
+        numberOfSeasons = mediaDetails.numberOfSeasons,
+        onRequestClick = {
+          requestMedia(it)
+          showRequestDialog = false
+        },
+        onDismissRequest = { showRequestDialog = false },
+      )
+      is Movie -> RequestMovieDialog(
+        onDismissRequest = { showRequestDialog = false },
+        onConfirm = {
+          requestMedia(emptyList())
+          showRequestDialog = false
+        },
+        title = mediaDetails.title,
+      )
+    }
+  }
+
   DropdownMenu(
     modifier = Modifier
       .widthIn(min = 180.dp)
       .testTag(TestTags.Menu.DROPDOWN_MENU),
     expanded = expanded,
-    onDismissRequest = onDismissRequest,
+    onDismissRequest = onDismissDropdown,
   ) {
     DropdownMenuItem(
       modifier = Modifier.testTag(
@@ -57,7 +82,7 @@ fun DetailsDropdownMenu(
       ),
       text = { Text(text = stringResource(id = R.string.core_ui_share)) },
       onClick = {
-        onDismissRequest()
+        onDismissDropdown()
         showShareDialog = true
       },
     )
@@ -72,10 +97,8 @@ fun DetailsDropdownMenu(
         },
         text = { Text(text = stringResource(id = R.string.core_ui_dropdown_menu_request)) },
         onClick = {
-          onDismissRequest()
-          requestMedia(
-            listOf(1), // TODO Add dialog
-          )
+          onDismissDropdown()
+          showRequestDialog = true
         },
       )
     }
@@ -108,7 +131,7 @@ private fun DetailsDropdownMenuPreview() {
         menuOptions = listOf(DetailsMenuOptions.SHARE, DetailsMenuOptions.REQUEST),
         requestMedia = {},
         expanded = true,
-        onDismissRequest = {},
+        onDismissDropdown = {},
       )
     }
   }
