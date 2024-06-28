@@ -2,7 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.data.jellyseerr.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.CoroutineDispatcher

@@ -18,4 +18,5 @@ data class TV(
   override val rating: String,
   override val isFavorite: Boolean,
   val seasons: List<Nothing>? = null, // TODO
+  val numberOfSeasons: Int,
 ) : MediaDetails()

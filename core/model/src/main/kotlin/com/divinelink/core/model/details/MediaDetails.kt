@@ -55,6 +55,7 @@ sealed class MediaDetails {
       isFavorite = isFavorite,
       genres = genres,
       seasons = seasons,
+      numberOfSeasons = numberOfSeasons,
     )
   }
 }

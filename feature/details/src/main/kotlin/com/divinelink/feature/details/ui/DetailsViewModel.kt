@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.MediaDetailsParams
+import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
@@ -305,21 +306,39 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onRequestMedia() {
-    requestMediaUseCase(MediaDetailsParams(viewState.value.mediaId, viewState.value.mediaType))
+  fun onRequestMedia(seasons: List<Int>) {
+    requestMediaUseCase(
+      JellyseerrRequestParams(
+        mediaId = viewState.value.mediaId,
+        mediaType = viewState.value.mediaType.value,
+        seasons = seasons,
+      ),
+    )
       .onEach { result ->
-        result.onSuccess {
-          setSnackbarMessage(
-            UIText.StringText("Media requested successfully"),
-          )
+        result.onSuccess { response ->
+          response.message?.let { message ->
+            setSnackbarMessage(
+              UIText.StringText(message),
+            )
+          } ?: run {
+            setSnackbarMessage(
+              UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_media_request,
+                viewState.value.mediaDetails?.title ?: "",
+              ),
+            )
+          }
         }.onFailure {
           ErrorHandler.create(it).on(409) {
             setSnackbarMessage(
-              UIText.StringText("Request for this media already exists"),
+              UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
             )
           }.otherwise {
             setSnackbarMessage(
-              UIText.StringText("Failed to request media"),
+              UIText.ResourceText(
+                R.string.feature_details_jellyseerr_request_failed,
+                viewState.value.mediaDetails?.title ?: "",
+              ),
             )
           }.handle()
         }

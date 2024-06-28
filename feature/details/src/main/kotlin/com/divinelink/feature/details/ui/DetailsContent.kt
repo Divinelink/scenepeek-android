@@ -111,7 +111,7 @@ fun DetailsContent(
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   showOrHideShareDialog: (Boolean) -> Unit,
-  requestMedia: () -> Unit,
+  requestMedia: (List<Int>) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showOverflowMenu by remember { mutableStateOf(false) }
@@ -197,7 +197,9 @@ fun DetailsContent(
               text = {
                 Text(text = "Request Media")
               },
-              onClick = requestMedia,
+              onClick = {
+                requestMedia(listOf())
+              },
             )
           }
         },

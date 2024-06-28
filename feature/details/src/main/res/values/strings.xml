@@ -19,5 +19,12 @@
 
   <string name="general_error_message">Something when wrong.</string>
 
+  <string name="feature_details_jellyseerr_success_media_request">%s requested successfully</string>
+  <string name="feature_details_jellyseerr_request_exists">Request for this media already exists.</string>
+  <string name="feature_details_jellyseerr_request_failed">Failed to request %s</string>
+  <string name="feature_details_jellyseerr_select_seasons">Select seasons to request</string>
+  <string name="feature_details_request">Request</string>
+  <string name="feature_details_season">Season %s</string>
+
   <string name="login">Login</string>
 </resources>

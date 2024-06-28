@@ -13,4 +13,5 @@ data class JellyseerrRequestMediaBodyApi(
   val mediaType: String,
   val mediaId: Int,
   val is4k: Boolean,
+  val seasons: List<Int>,
 )
