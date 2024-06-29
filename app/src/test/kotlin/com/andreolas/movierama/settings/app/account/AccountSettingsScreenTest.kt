@@ -12,6 +12,10 @@ import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccount
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
+import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
+import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
+import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -31,6 +35,9 @@ class AccountSettingsScreenTest : ComposeTest() {
   private lateinit var observeSessionUseCase: FakeObserveSessionUseCase
   private lateinit var getAccountDetailsUseCase: FakeGetAccountDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
+  private lateinit var logoutJellyseerrUseCase: FakeLogoutJellyseerrUseCase
+  private lateinit var loginJellyseerrUseCase: FakeLoginJellyseerrUseCase
+  private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
 
   private val requestTokenResult = Result.success(RequestTokenFactory.full().token)
   private val sessionResult = Result.success(true)
@@ -46,6 +53,9 @@ class AccountSettingsScreenTest : ComposeTest() {
     observeSessionUseCase = FakeObserveSessionUseCase()
     getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
     logoutUseCase = FakeLogoutUseCase()
+    logoutJellyseerrUseCase = FakeLogoutJellyseerrUseCase()
+    loginJellyseerrUseCase = FakeLoginJellyseerrUseCase()
+    getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
   }
 
   @get:Rule
@@ -59,7 +69,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -78,7 +88,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -105,7 +115,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -130,7 +140,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -152,7 +162,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -182,7 +192,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    composeTestRule.setContent {
+    setContentWithTheme {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
         viewModel = viewModel,
@@ -203,5 +213,8 @@ class AccountSettingsScreenTest : ComposeTest() {
     observeSessionUseCase = observeSessionUseCase.mock,
     getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
     logoutUseCase = logoutUseCase.mock,
+    logoutJellyseerrUseCase = logoutJellyseerrUseCase.mock,
+    getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
+    loginJellyseerrUseCase = loginJellyseerrUseCase.mock,
   )
 }

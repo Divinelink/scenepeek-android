@@ -3,7 +3,6 @@
 package com.andreolas.movierama.details.ui
 
 import androidx.compose.material3.SnackbarResult
-import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
@@ -12,6 +11,7 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.ui.UIText
@@ -986,40 +986,40 @@ class DetailsViewModelTest {
       )
   }
 
-  @Test
-  fun `test open share dialog`() {
-    testRobot
-      .mockFetchMovieDetails(
-        response = flowOf(
-          Result.success(
-            MovieDetailsResult.DetailsSuccess(
-              movieDetails,
-            ),
-          ),
-        ),
-      )
-      .buildViewModel(mediaId, MediaType.MOVIE)
-      .onShareClicked(openShareDialog = true)
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          openShareDialog = true,
-        ),
-      )
-      .onShareClicked(openShareDialog = false)
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          openShareDialog = false,
-        ),
-      )
-  }
+//  @Test
+//  fun `test open share dialog`() {
+//    testRobot
+//      .mockFetchMovieDetails(
+//        response = flowOf(
+//          Result.success(
+//            MovieDetailsResult.DetailsSuccess(
+//              movieDetails,
+//            ),
+//          ),
+//        ),
+//      )
+//      .buildViewModel(mediaId, MediaType.MOVIE)
+//      .onShareClicked(openShareDialog = true)
+//      .assertViewState(
+//        DetailsViewState(
+//          mediaType = MediaType.MOVIE,
+//          mediaId = mediaId,
+//          mediaDetails = movieDetails,
+//          isLoading = false,
+//          userDetails = AccountMediaDetailsFactory.NotRated(),
+//          openShareDialog = true,
+//        ),
+//      )
+//      .onShareClicked(openShareDialog = false)
+//      .assertViewState(
+//        DetailsViewState(
+//          mediaType = MediaType.MOVIE,
+//          mediaId = mediaId,
+//          mediaDetails = movieDetails,
+//          isLoading = false,
+//          userDetails = AccountMediaDetailsFactory.NotRated(),
+//          openShareDialog = false,
+//        ),
+//      )
+//  }
 }

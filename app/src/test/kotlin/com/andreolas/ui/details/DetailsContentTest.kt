@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
-import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
@@ -18,6 +17,7 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT_TAG
@@ -52,7 +52,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -81,7 +81,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -105,7 +105,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -130,7 +130,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -168,7 +168,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -210,7 +210,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -235,7 +235,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -268,7 +268,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -298,7 +298,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -332,7 +332,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -376,7 +376,7 @@ class DetailsContentTest : ComposeTest() {
             },
           )
         },
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -412,6 +412,7 @@ class DetailsContentTest : ComposeTest() {
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -419,7 +420,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {},
+        requestMedia = {},
       )
     }
 
@@ -433,12 +434,12 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open and close share dialog`() {
-    var hasClickedShareDialog = false
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -446,9 +447,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClicked = {},
         onAddToWatchlistClicked = {},
-        showOrHideShareDialog = {
-          hasClickedShareDialog = true
-        },
+        requestMedia = {},
       )
     }
 
@@ -462,7 +461,31 @@ class DetailsContentTest : ComposeTest() {
         .assertIsDisplayed()
         .performClick()
     }
-    assertThat(hasClickedShareDialog).isTrue()
+  }
+
+  @Test
+  fun `test dropdown menu is not available without media details`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = null,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertDoesNotExist()
+    }
   }
 
   private val reviews = ReviewFactory.ReviewList()

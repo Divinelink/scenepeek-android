@@ -1,4 +1,4 @@
-package com.andreolas.factories
+package com.divinelink.core.testing.factories.model.details
 
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
@@ -40,5 +40,6 @@ object MediaDetailsFactory {
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
     seasons = listOf(),
+    numberOfSeasons = 9,
   )
 }

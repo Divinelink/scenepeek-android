@@ -12,6 +12,8 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
+import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.feature.details.ui.DetailsViewModel
 import com.divinelink.feature.details.ui.DetailsViewState
 import com.divinelink.feature.details.ui.MovieDetailsResult
@@ -32,18 +34,22 @@ class DetailsViewModelRobot {
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
+  private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
+  private val fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
 
   fun buildViewModel(
     id: Int,
     mediaType: MediaType,
   ) = apply {
-    viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
+    viewModel = DetailsViewModel(
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
+      requestMediaUseCase = fakeRequestMediaUseCase.mock,
+      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -80,10 +86,6 @@ class DetailsViewModelRobot {
 
   fun onAddToWatchlist() = apply {
     viewModel.onAddToWatchlist()
-  }
-
-  fun onShareClicked(openShareDialog: Boolean) = apply {
-    viewModel.onShareClicked(openShareDialog)
   }
 
   fun onDismissRateDialog() = apply {

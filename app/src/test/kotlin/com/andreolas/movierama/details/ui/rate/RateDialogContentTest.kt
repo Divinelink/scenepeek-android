@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.andreolas.factories.MediaDetailsFactory
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.feature.details.ui.rate.RateDialogContent
 import com.google.common.truth.Truth.assertThat

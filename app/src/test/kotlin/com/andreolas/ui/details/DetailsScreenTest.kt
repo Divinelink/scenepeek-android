@@ -10,7 +10,6 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
-import com.andreolas.factories.MediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
@@ -20,9 +19,12 @@ import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetail
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
+import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
@@ -45,6 +47,8 @@ class DetailsScreenTest : ComposeTest() {
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+    val requestMediaUseCase = FakeRequestMediaUseCase()
+    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
@@ -88,6 +92,8 @@ class DetailsScreenTest : ComposeTest() {
           submitRatingUseCase = submitRateUseCase.mock,
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
+          requestMediaUseCase = requestMediaUseCase.mock,
+          getMenuItemsUseCase = getMenuItemsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -95,6 +101,7 @@ class DetailsScreenTest : ComposeTest() {
               "mediaType" to MediaType.MOVIE.value,
             ),
           ),
+
         ),
       )
     }
@@ -154,6 +161,8 @@ class DetailsScreenTest : ComposeTest() {
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+    val requestMediaUseCase = FakeRequestMediaUseCase()
+    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -177,6 +186,8 @@ class DetailsScreenTest : ComposeTest() {
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -211,6 +222,8 @@ class DetailsScreenTest : ComposeTest() {
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+    val requestMediaUseCase = FakeRequestMediaUseCase()
+    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -238,6 +251,8 @@ class DetailsScreenTest : ComposeTest() {
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
