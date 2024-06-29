@@ -57,7 +57,6 @@ import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
@@ -162,7 +161,7 @@ fun DetailsContent(
           viewState.mediaDetails?.let {
             DetailsDropdownMenu(
               mediaDetails = viewState.mediaDetails,
-              menuOptions = DetailsMenuOptions.entries,
+              menuOptions = viewState.menuOptions,
               expanded = showDropdownMenu,
               requestMedia = requestMedia,
               onDismissDropdown = { showDropdownMenu = false },

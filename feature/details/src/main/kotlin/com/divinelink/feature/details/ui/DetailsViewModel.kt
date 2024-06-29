@@ -10,6 +10,7 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -50,6 +51,7 @@ class DetailsViewModel @Inject constructor(
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -141,6 +143,7 @@ class DetailsViewModel @Inject constructor(
       }
     }.onCompletion {
       fetchAccountMediaDetails()
+      getMenuItems()
     }.launchIn(viewModelScope)
   }
 
@@ -347,6 +350,19 @@ class DetailsViewModel @Inject constructor(
         )
       }
     }
+  }
+
+  private suspend fun getMenuItems() {
+    getMenuItemsUseCase(Unit)
+      .collectLatest { result ->
+        result.onSuccess {
+          _viewState.update { viewState ->
+            viewState.copy(
+              menuOptions = result.data,
+            )
+          }
+        }
+      }
   }
 
   private suspend fun fetchAccountMediaDetails() {

@@ -42,7 +42,7 @@ kotlinx-serialization = "1.5.1"
 hilt = "2.49"
 
 # Compose
-compose-bom = "2024.05.00"
+compose-bom = "2024.06.00"
 compose-destinations = "2.1.0-beta09"
 compose-hilt-navigation = "1.2.0"
 material3 = "1.2.1"
