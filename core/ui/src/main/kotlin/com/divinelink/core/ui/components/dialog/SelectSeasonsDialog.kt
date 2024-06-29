@@ -1,10 +1,13 @@
 package com.divinelink.core.ui.components.dialog
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
@@ -49,79 +52,89 @@ fun SelectSeasonsDialog(
         ),
         shape = MaterialTheme.shapes.extraLarge,
       ) {
-        Column(
-          modifier = Modifier.padding(vertical = MaterialTheme.dimensions.keyline_24),
-        ) {
-          Text(
-            modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-            text = "Request series",
-            style = MaterialTheme.typography.headlineSmall,
-          )
-
-          (1..numberOfSeasons).forEach { index ->
-            Row(
-              verticalAlignment = Alignment.CenterVertically,
-              modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                  if (selectedSeasons.contains(index)) {
-                    selectedSeasons.remove(index)
-                  } else {
-                    selectedSeasons.add(index)
-                  }
-                },
-            ) {
-              RadioButton(
-                modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_16),
-                selected = selectedSeasons.contains(index),
-                onClick = {
-                  if (selectedSeasons.contains(index)) {
-                    selectedSeasons.remove(index)
-                  } else {
-                    selectedSeasons.add(index)
-                  }
-                },
-              )
+        Box {
+          LazyColumn(
+            modifier = Modifier
+              .padding(vertical = MaterialTheme.dimensions.keyline_24)
+              .padding(bottom = MaterialTheme.dimensions.keyline_84),
+          ) {
+            item {
               Text(
-                text = stringResource(id = R.string.core_ui_season_number, index),
-                modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8),
+                modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+                text = "Request series",
+                style = MaterialTheme.typography.headlineSmall,
               )
             }
+            itemsIndexed(
+              items = (1..numberOfSeasons).toList(),
+              key = { index, _ -> "$index" },
+            ) { _, index ->
+              Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .clickable {
+                    if (selectedSeasons.contains(index)) {
+                      selectedSeasons.remove(index)
+                    } else {
+                      selectedSeasons.add(index)
+                    }
+                  },
+              ) {
+                RadioButton(
+                  modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_16),
+                  selected = selectedSeasons.contains(index),
+                  onClick = {
+                    if (selectedSeasons.contains(index)) {
+                      selectedSeasons.remove(index)
+                    } else {
+                      selectedSeasons.add(index)
+                    }
+                  },
+                )
+                Text(
+                  text = stringResource(id = R.string.core_ui_season_number, index),
+                  modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8),
+                )
+              }
+            }
           }
-        }
 
-        ElevatedButton(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-          onClick = { onDismissRequest() },
-        ) {
-          Text(text = stringResource(id = R.string.core_ui_cancel))
-        }
+          Column(
+            modifier = Modifier.align(Alignment.BottomCenter),
+          ) {
+            ElevatedButton(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+              onClick = { onDismissRequest() },
+            ) {
+              Text(text = stringResource(id = R.string.core_ui_cancel))
+            }
+            Button(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = MaterialTheme.dimensions.keyline_8)
+                .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+              enabled = selectedSeasons.isNotEmpty(),
+              onClick = {
+                onRequestClick(selectedSeasons)
+                onDismissRequest()
+              },
+            ) {
+              val text = if (selectedSeasons.isEmpty()) {
+                stringResource(id = R.string.core_ui_select_seasons_button)
+              } else {
+                pluralStringResource(
+                  id = R.plurals.core_ui_request_series_button,
+                  count = selectedSeasons.size,
+                  selectedSeasons.size,
+                )
+              }
 
-        Button(
-          modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)
-            .padding(bottom = MaterialTheme.dimensions.keyline_8)
-            .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-          enabled = selectedSeasons.isNotEmpty(),
-          onClick = {
-            onRequestClick(selectedSeasons)
-            onDismissRequest()
-          },
-        ) {
-          val text = if (selectedSeasons.isEmpty()) {
-            stringResource(id = R.string.core_ui_select_seasons_button)
-          } else {
-            pluralStringResource(
-              id = R.plurals.core_ui_request_series_button,
-              count = selectedSeasons.size,
-              selectedSeasons.size,
-            )
+              Text(text = text)
+            }
           }
-
-          Text(text = text)
         }
       }
     },
@@ -134,7 +147,7 @@ private fun SelectSeasonsDialogPreview() {
   AppTheme {
     Surface {
       SelectSeasonsDialog(
-        numberOfSeasons = 10,
+        numberOfSeasons = 20,
         onRequestClick = {},
         onDismissRequest = {},
       )
