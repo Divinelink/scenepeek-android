@@ -13,14 +13,14 @@ class FakeLoginJellyseerrUseCase {
   val mock: LoginJellyseerrUseCase = mock()
 
   init {
-    mockFailure()
+    mockFailure(Exception())
   }
 
-  private fun mockFailure() {
+  fun mockFailure(throwable: Throwable) {
     whenever(
       mock.invoke(any()),
     ).thenReturn(
-      flowOf(Result.failure(Exception())),
+      flowOf(Result.failure(throwable)),
     )
   }
 

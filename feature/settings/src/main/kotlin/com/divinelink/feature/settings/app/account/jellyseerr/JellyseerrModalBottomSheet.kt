@@ -13,9 +13,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -46,12 +49,14 @@ fun JellyseerrModalBottomSheet(
       when (state) {
         is JellyseerrState.Initial -> {
           JellyseerrBottomSheetContent(
+            modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET),
             jellyseerrState = state,
             interaction = interaction,
           )
         }
         is JellyseerrState.LoggedIn ->
           JellyseerrLoggedInBottomSheetContent(
+            modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
             jellyseerrState = state,
             onLogoutClock = { interaction(it) },
           )

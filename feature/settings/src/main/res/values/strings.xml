@@ -30,6 +30,11 @@
   <string name="feature_settings_username_or_email">Email address / Username</string>
   <string name="feature_settings_password">Password</string>
 
+  <string name="feature_settings_additional_features">Additional features</string>
+  <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
+
+  <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
+
   <string name="feature_settings_jellyfin_already_logged_in">You are logged in using your Jellyfin %s account.</string>
   <string name="feature_settings_jellyseerr_already_logged_in">You are logged in using your Jellyseerr %s account.</string>
 

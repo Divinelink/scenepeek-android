@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -23,11 +24,13 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun JellyseerrLoggedInBottomSheetContent(
+  modifier: Modifier = Modifier,
   jellyseerrState: JellyseerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
 ) {
@@ -39,7 +42,7 @@ fun JellyseerrLoggedInBottomSheetContent(
     }
 
   Column(
-    modifier = Modifier
+    modifier = modifier
       .wrapContentSize()
       .padding(MaterialTheme.dimensions.keyline_16),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
@@ -59,13 +62,17 @@ fun JellyseerrLoggedInBottomSheetContent(
     ) { loading ->
       when (loading) {
         true -> Row(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier
+            .testTag(TestTags.LOADING_PROGRESS)
+            .fillMaxWidth(),
           horizontalArrangement = Arrangement.Center,
         ) {
           CircularProgressIndicator()
         }
         false -> Button(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier
+            .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON)
+            .fillMaxWidth(),
           onClick = { onLogoutClock(JellyseerrInteraction.OnLogoutClick) },
         ) {
           Text(stringResource(id = uiR.string.core_ui_logout))
