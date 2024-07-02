@@ -35,11 +35,9 @@ data class Dimensions(
   val keyline_64: Dp = 64.dp,
   val keyline_68: Dp = 68.dp,
   val keyline_72: Dp = 72.dp,
+  val keyline_84: Dp = 84.dp,
   val keyline_96: Dp = 96.dp,
 )
-
-val Dimensions.keyline_negative8: Dp
-  get() = -keyline_8
 
 val MaterialTheme.dimensions: Dimensions
   @Composable

@@ -29,6 +29,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.textColorDisabled
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.extensions.OnBottomReached
@@ -119,11 +120,11 @@ private fun LoadMoreContent(modifier: Modifier = Modifier) {
 
 @Composable
 @ExcludeFromKoverReport
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(
   uiMode = Configuration.UI_MODE_NIGHT_YES,
   device = "spec:width=1080px,height=2340px,dpi=640",
 )
+@Previews
 fun MoviesListScreenPreview() {
   @Suppress("MagicNumber")
   val movies = (1..8).map { index ->

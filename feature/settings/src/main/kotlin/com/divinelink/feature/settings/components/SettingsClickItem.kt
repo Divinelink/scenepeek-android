@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,16 +12,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 
 @Composable
 fun SettingsClickItem(
   modifier: Modifier = Modifier,
-  icon: Painter? = null,
+  icon: IconWrapper? = null,
   text: String,
   onClick: () -> Unit,
 ) {
@@ -33,10 +34,20 @@ fun SettingsClickItem(
       .fillMaxWidth(),
   ) {
     icon?.let {
-      Icon(
-        painter = icon,
-        contentDescription = null,
-      )
+      when (icon) {
+        is IconWrapper.Image -> Image(
+          painter = painterResource(id = icon.resourceId),
+          contentDescription = null,
+        )
+        is IconWrapper.Icon -> Icon(
+          painter = painterResource(id = icon.resourceId),
+          contentDescription = null,
+        )
+        is IconWrapper.Vector -> Icon(
+          imageVector = icon.vector,
+          contentDescription = null,
+        )
+      }
     }
 
     Text(
@@ -47,11 +58,11 @@ fun SettingsClickItem(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Previews
 private fun SettingsScreenPreview() {
   MaterialTheme {
     SettingsClickItem(
-      icon = painterResource(id = R.drawable.ic_appearance_24),
+      icon = IconWrapper.Icon(resourceId = R.drawable.feature_settings_ic_settings),
       text = "Appearance",
       onClick = {},
     )

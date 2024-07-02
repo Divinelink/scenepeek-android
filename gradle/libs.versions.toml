@@ -1,6 +1,6 @@
 [versions]
-version-name = "0.3.0"
-version-code = "7"
+version-name = "0.4.0"
+version-code = "8"
 
 firebase-appdistribution-gradle = "4.2.0"
 firebase-crashlytics-gradle = "2.9.9"
@@ -35,14 +35,14 @@ encrypted-prefs = '1.1.0-alpha04'
 kotlinx-coroutines = '1.7.3'
 
 # Network & Serialization
-ktor = "2.3.3"
+ktor = "2.3.8"
 kotlinx-serialization = "1.5.1"
 
 # Depedency Injection
 hilt = "2.49"
 
 # Compose
-compose-bom = "2024.05.00"
+compose-bom = "2024.06.00"
 compose-destinations = "2.1.0-beta09"
 compose-hilt-navigation = "1.2.0"
 material3 = "1.2.1"

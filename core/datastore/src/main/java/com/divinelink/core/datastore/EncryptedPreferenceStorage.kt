@@ -19,6 +19,10 @@ interface EncryptedStorage {
   suspend fun clearSession()
   suspend fun setSessionId(sessionId: String)
   val sessionId: String?
+
+  suspend fun clearJellyseerrAuthCookie()
+  suspend fun setJellyseerrAuthCookie(cookie: String)
+  val jellyseerrAuthCookie: String?
 }
 
 @Singleton
@@ -44,6 +48,7 @@ class EncryptedPreferenceStorage @Inject constructor(
   object PreferencesKeys {
     const val SECRET_TMDB_AUTH_TOKEN = "secret.tmdb.auth.token"
     const val SECRET_TMDB_SESSION_ID = "secret.tmdb.token.id"
+    const val SECRET_JELLYSEERR_AUTH_COOKIE = "secret.jellyseerr.auth.cookie"
   }
 
   override suspend fun setTmdbAuthToken(key: String) {
@@ -73,6 +78,23 @@ class EncryptedPreferenceStorage @Inject constructor(
 
   override val sessionId: String?
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_SESSION_ID, null)
+
+  override suspend fun clearJellyseerrAuthCookie() {
+    with(encryptedPreferences.edit()) {
+      remove(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE)
+      apply()
+    }
+  }
+
+  override suspend fun setJellyseerrAuthCookie(cookie: String) {
+    with(encryptedPreferences.edit()) {
+      putString(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE, cookie)
+      apply()
+    }
+  }
+
+  override val jellyseerrAuthCookie: String?
+    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE, null)
 
   /**
    * Known issue: https://issuetracker.google.com/issues/158234058

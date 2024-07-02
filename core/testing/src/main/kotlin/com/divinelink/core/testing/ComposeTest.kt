@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(
   application = Application::class,
-  sdk = [Build.VERSION_CODES.Q],
+  sdk = [Build.VERSION_CODES.P],
   instrumentedPackages = ["androidx.loader.content"],
 )
 open class ComposeTest : UnitTest() {
@@ -22,3 +22,5 @@ open class ComposeTest : UnitTest() {
   @get:Rule
   val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 }
+
+fun ComposeTest.getString(resId: Int): String = composeTestRule.activity.getString(resId)

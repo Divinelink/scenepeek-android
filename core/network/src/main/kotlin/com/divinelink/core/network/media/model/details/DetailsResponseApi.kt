@@ -81,6 +81,7 @@ sealed class DetailsResponseApi {
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<JsonObject>,
+    @SerialName("number_of_seasons") val numberOfSeasons: Int,
     val credits: Credits,
   ) : DetailsResponseApi()
 }
@@ -115,6 +116,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   director = this.credits.crew.toDirector(),
   cast = this.credits.cast.toActors(),
   isFavorite = false,
+  numberOfSeasons = this.numberOfSeasons,
 )
 
 private fun List<Crew>.toDirector(): Director? {

@@ -9,6 +9,9 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_SIGN_IN_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
@@ -42,6 +45,18 @@ interface PreferenceStorage {
 
   suspend fun setHasSession(hasSession: Boolean)
   val hasSession: Flow<Boolean>
+
+  suspend fun clearJellyseerrAddress()
+  suspend fun setJellyseerrAddress(address: String)
+  val jellyseerrAddress: Flow<String?>
+
+  suspend fun clearJellyseerrAccount()
+  suspend fun setJellyseerrAccount(account: String)
+  val jellyseerrAccount: Flow<String?>
+
+  suspend fun clearJellyseerrSignInMethod()
+  suspend fun setJellyseerrSignInMethod(signInMethod: String)
+  val jellyseerrSignInMethod: Flow<String?>
 }
 
 @Singleton
@@ -63,6 +78,10 @@ class DataStorePreferenceStorage @Inject constructor(
 
     val PREF_REQUEST_TOKEN = stringPreferencesKey("request.token")
     val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
+
+    val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
+    val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
+    val PREF_JELLYSEERR_SIGN_IN_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -151,5 +170,53 @@ class DataStorePreferenceStorage @Inject constructor(
 
   override val accountId: Flow<String?> = dataStore.data.map {
     it[PREF_ACCOUNT_ID]
+  }
+
+  override suspend fun clearJellyseerrAddress() {
+    dataStore.edit {
+      it.remove(PREF_JELLYSEERR_ADDRESS)
+    }
+  }
+
+  override suspend fun setJellyseerrAddress(address: String) {
+    dataStore.edit {
+      it[PREF_JELLYSEERR_ADDRESS] = address
+    }
+  }
+
+  override val jellyseerrAddress: Flow<String?> = dataStore.data.map {
+    it[PREF_JELLYSEERR_ADDRESS]
+  }
+
+  override suspend fun clearJellyseerrAccount() {
+    dataStore.edit {
+      it.remove(PREF_JELLYSEERR_ACCOUNT)
+    }
+  }
+
+  override suspend fun setJellyseerrAccount(account: String) {
+    dataStore.edit {
+      it[PREF_JELLYSEERR_ACCOUNT] = account
+    }
+  }
+
+  override val jellyseerrAccount: Flow<String?> = dataStore.data.map {
+    it[PREF_JELLYSEERR_ACCOUNT]
+  }
+
+  override suspend fun clearJellyseerrSignInMethod() {
+    dataStore.edit {
+      it.remove(PREF_JELLYSEERR_SIGN_IN_METHOD)
+    }
+  }
+
+  override suspend fun setJellyseerrSignInMethod(signInMethod: String) {
+    dataStore.edit {
+      it[PREF_JELLYSEERR_SIGN_IN_METHOD] = signInMethod
+    }
+  }
+
+  override val jellyseerrSignInMethod: Flow<String?> = dataStore.data.map {
+    it[PREF_JELLYSEERR_SIGN_IN_METHOD]
   }
 }

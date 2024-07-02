@@ -4,10 +4,15 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.MediaDetailsParams
+import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
+import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -15,7 +20,6 @@ import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.usecase.AccountMediaDetailsParams
 import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.usecase.DeleteRatingParameters
@@ -32,6 +36,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -46,6 +51,8 @@ class DetailsViewModel @Inject constructor(
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
+  private val requestMediaUseCase: RequestMediaUseCase,
+  private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -137,6 +144,7 @@ class DetailsViewModel @Inject constructor(
       }
     }.onCompletion {
       fetchAccountMediaDetails()
+      getMenuItems()
     }.launchIn(viewModelScope)
   }
 
@@ -294,12 +302,54 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
-  fun onShareClicked(openShareDialog: Boolean) {
-    _viewState.update { viewState ->
-      viewState.copy(
-        openShareDialog = openShareDialog,
-      )
-    }
+  fun onRequestMedia(seasons: List<Int>) {
+    requestMediaUseCase(
+      JellyseerrRequestParams(
+        mediaId = viewState.value.mediaId,
+        mediaType = viewState.value.mediaType.value,
+        seasons = seasons,
+      ),
+    )
+      .onStart {
+        _viewState.update { viewState ->
+          viewState.copy(isLoading = true)
+        }
+      }
+      .onCompletion {
+        _viewState.update { viewState ->
+          viewState.copy(isLoading = false)
+        }
+      }
+      .onEach { result ->
+        result.onSuccess { response ->
+          response.message?.let { message ->
+            setSnackbarMessage(
+              UIText.StringText(message),
+            )
+          } ?: run {
+            setSnackbarMessage(
+              UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_media_request,
+                viewState.value.mediaDetails?.title ?: "",
+              ),
+            )
+          }
+        }.onFailure {
+          ErrorHandler.create(it).on(409) {
+            setSnackbarMessage(
+              UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+            )
+          }.otherwise {
+            setSnackbarMessage(
+              UIText.ResourceText(
+                R.string.feature_details_jellyseerr_request_failed,
+                viewState.value.mediaDetails?.title ?: "",
+              ),
+            )
+          }.handle()
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun navigateToLogin(snackbarResult: SnackbarResult) {
@@ -313,8 +363,21 @@ class DetailsViewModel @Inject constructor(
     }
   }
 
+  private suspend fun getMenuItems() {
+    getMenuItemsUseCase(Unit)
+      .collectLatest { result ->
+        result.onSuccess {
+          _viewState.update { viewState ->
+            viewState.copy(
+              menuOptions = result.data,
+            )
+          }
+        }
+      }
+  }
+
   private suspend fun fetchAccountMediaDetails() {
-    val params = AccountMediaDetailsParams(
+    val params = MediaDetailsParams(
       id = viewState.value.mediaId,
       mediaType = viewState.value.mediaType,
     )
@@ -329,6 +392,12 @@ class DetailsViewModel @Inject constructor(
           }
         }
       }
+  }
+
+  private fun setSnackbarMessage(text: UIText) {
+    _viewState.update { viewState ->
+      viewState.copy(snackbarMessage = SnackbarMessage.from(text))
+    }
   }
 
   // Consumers

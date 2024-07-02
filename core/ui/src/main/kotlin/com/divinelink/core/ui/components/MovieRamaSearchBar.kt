@@ -2,7 +2,6 @@
 
 package com.divinelink.core.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,11 +48,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarSize
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.designsystem.theme.keyline_negative8
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.UIText
@@ -93,7 +90,7 @@ fun MovieRamaSearchBar(
     },
     title = {
       // Add offset to center the title in the app bar
-      Box(Modifier.offset(x = MaterialTheme.dimensions.keyline_negative8)) {
+      Box(Modifier.offset(x = -MaterialTheme.dimensions.keyline_8)) {
         Row(
           modifier = modifier
             .fillMaxWidth()

@@ -2,6 +2,8 @@ package com.divinelink.core.data.di
 
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.account.ProdAccountRepository
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ abstract class DataModule {
   internal abstract fun bindsAccountRepository(
     accountRepository: ProdAccountRepository,
   ): AccountRepository
+
+  @Binds
+  internal abstract fun bindsJellyseerrRepository(
+    jellyseerrRepository: ProdJellyseerrRepository,
+  ): JellyseerrRepository
 }

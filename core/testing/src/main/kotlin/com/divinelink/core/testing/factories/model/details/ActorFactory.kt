@@ -1,4 +1,4 @@
-package com.andreolas.factories
+package com.divinelink.core.testing.factories.model.details
 
 import com.divinelink.core.model.details.crew.Actor
 

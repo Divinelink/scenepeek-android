@@ -19,4 +19,6 @@ dependencies {
 
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.youtube.player)
+
+  testImplementation(projects.core.testing)
 }

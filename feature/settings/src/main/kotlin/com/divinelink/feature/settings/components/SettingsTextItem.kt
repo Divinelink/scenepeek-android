@@ -7,13 +7,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 
 @Composable
@@ -55,21 +57,23 @@ fun SettingsTextItem(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Previews
 private fun SettingsScreenPreview() {
-  MaterialTheme {
-    Column {
-      SettingsTextItem(
-        icon = painterResource(id = R.drawable.ic_appearance_24),
-        title = "Version",
-        summary = "1.0.0 Debug",
-      )
+  AppTheme {
+    Surface {
+      Column {
+        SettingsTextItem(
+          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
+          title = "Version",
+          summary = "1.0.0 Debug",
+        )
 
-      SettingsTextItem(
-        icon = painterResource(id = R.drawable.ic_appearance_24),
-        title = "Version",
-        summary = null,
-      )
+        SettingsTextItem(
+          icon = painterResource(id = R.drawable.feature_settings_ic_appearance_24),
+          title = "Version",
+          summary = null,
+        )
+      }
     }
   }
 }

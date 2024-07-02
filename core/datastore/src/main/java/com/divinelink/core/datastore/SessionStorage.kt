@@ -41,4 +41,11 @@ class SessionStorage @Inject constructor(
   suspend fun setAccountId(accountId: String) {
     storage.setAccountId(accountId)
   }
+
+  suspend fun clearJellyseerrSession() {
+    encryptedStorage.clearJellyseerrAuthCookie()
+    storage.clearJellyseerrAccount()
+    storage.clearJellyseerrSignInMethod()
+    storage.clearJellyseerrAddress()
+  }
 }

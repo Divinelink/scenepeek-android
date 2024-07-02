@@ -17,6 +17,29 @@
   <string name="AccountSettingsScreen__logout">Logout</string>
   <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
 
+  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in using your %s account. Do you want to logout?</string>
+
+  <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
+  <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
+
+  <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr features.</string>
+  <string name="feature_settings_address">Address</string>
+
+  <string name="feature_settings_login_using_jellyfin">Use your Jellyfin account</string>
+  <string name="feature_settings_login_using_jellyseerr">Use your Jellyseerr account</string>
+
+  <string name="feature_settings_username">Username</string>
+  <string name="feature_settings_username_or_email">Email address / Username</string>
+  <string name="feature_settings_password">Password</string>
+
+  <string name="feature_settings_additional_features">Additional features</string>
+  <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
+
+  <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
+
+  <string name="feature_settings_jellyfin_already_logged_in">You are logged in using your Jellyfin %s account.</string>
+  <string name="feature_settings_jellyseerr_already_logged_in">You are logged in using your Jellyseerr %s account.</string>
+
   <!-- HelpSettingsFragment -->
   <string name="HelpSettingsFragment__help">Help</string>
   <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>

@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.ui
 
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,15 +15,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,14 +47,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
@@ -74,9 +67,11 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MediaRatingItem
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.RatingSize
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
@@ -110,19 +105,10 @@ fun DetailsContent(
   onConsumeSnackbar: () -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
-  showOrHideShareDialog: (Boolean) -> Unit,
+  requestMedia: (List<Int>) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-  var showOverflowMenu by remember { mutableStateOf(false) }
-
-  if (viewState.openShareDialog) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-      type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, viewState.shareUrl)
-    }
-    LocalContext.current.startActivity(Intent.createChooser(shareIntent, "Share via"))
-    showOrHideShareDialog(false)
-  }
+  var showDropdownMenu by remember { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -167,29 +153,18 @@ fun DetailsContent(
 
           IconButton(
             modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
-            onClick = { showOverflowMenu = !showOverflowMenu },
+            onClick = { showDropdownMenu = !showDropdownMenu },
           ) {
             Icon(Icons.Outlined.MoreVert, "More")
           }
 
-          DropdownMenu(
-            modifier = Modifier
-              .widthIn(min = 180.dp)
-              .testTag(TestTags.Menu.DROPDOWN_MENU),
-            expanded = showOverflowMenu,
-            onDismissRequest = { showOverflowMenu = false },
-          ) {
-            DropdownMenuItem(
-              modifier = Modifier.testTag(
-                TestTags.Menu.MENU_ITEM.format(stringResource(id = uiR.string.core_ui_share)),
-              ),
-              text = {
-                Text(text = stringResource(id = uiR.string.core_ui_share))
-              },
-              onClick = {
-                showOverflowMenu = false
-                showOrHideShareDialog(true)
-              },
+          viewState.mediaDetails?.let {
+            DetailsDropdownMenu(
+              mediaDetails = viewState.mediaDetails,
+              menuOptions = viewState.menuOptions,
+              expanded = showDropdownMenu,
+              requestMedia = requestMedia,
+              onDismissDropdown = { showDropdownMenu = false },
             )
           }
         },
@@ -222,12 +197,11 @@ fun DetailsContent(
           uiState = AlertDialogUiState(text = viewState.error),
         )
       }
-
-      if (viewState.isLoading) {
-        LoadingContent()
-      }
     },
   )
+  if (viewState.isLoading) {
+    LoadingContent()
+  }
 }
 
 @Composable
@@ -529,14 +503,7 @@ private fun OverviewDetails(
 
 private const val OVERVIEW_WEIGHT = 3f
 
-@Preview(
-  name = "Night Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-  name = "Day Mode",
-  uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
+@Previews
 @Composable
 private fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
@@ -560,7 +527,7 @@ private fun DetailsContentPreview(
           onConsumeSnackbar = {},
           onAddRateClicked = {},
           onAddToWatchlistClicked = {},
-          showOrHideShareDialog = {},
+          requestMedia = {},
         )
       }
     }

@@ -20,4 +20,6 @@ secrets {
 dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.timber)
+
+  testImplementation(projects.core.testing)
 }
