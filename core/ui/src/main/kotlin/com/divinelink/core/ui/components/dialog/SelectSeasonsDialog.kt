@@ -24,12 +24,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +43,7 @@ fun SelectSeasonsDialog(
   val selectedSeasons = remember { mutableStateListOf<Int>() }
 
   BasicAlertDialog(
+    modifier = Modifier.testTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG),
     onDismissRequest = onDismissRequest,
     content = {
       Card(
@@ -61,7 +64,7 @@ fun SelectSeasonsDialog(
             item {
               Text(
                 modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-                text = "Request series",
+                text = stringResource(id = R.string.core_ui_request_series),
                 style = MaterialTheme.typography.headlineSmall,
               )
             }
@@ -82,7 +85,9 @@ fun SelectSeasonsDialog(
                   },
               ) {
                 RadioButton(
-                  modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_16),
+                  modifier = Modifier
+                    .testTag(TestTags.RadioButton.SELECT_SEASON_RADIO_BUTTON.format(index))
+                    .padding(start = MaterialTheme.dimensions.keyline_16),
                   selected = selectedSeasons.contains(index),
                   onClick = {
                     if (selectedSeasons.contains(index)) {

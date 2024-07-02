@@ -985,41 +985,4 @@ class DetailsViewModelTest {
         ),
       )
   }
-
-//  @Test
-//  fun `test open share dialog`() {
-//    testRobot
-//      .mockFetchMovieDetails(
-//        response = flowOf(
-//          Result.success(
-//            MovieDetailsResult.DetailsSuccess(
-//              movieDetails,
-//            ),
-//          ),
-//        ),
-//      )
-//      .buildViewModel(mediaId, MediaType.MOVIE)
-//      .onShareClicked(openShareDialog = true)
-//      .assertViewState(
-//        DetailsViewState(
-//          mediaType = MediaType.MOVIE,
-//          mediaId = mediaId,
-//          mediaDetails = movieDetails,
-//          isLoading = false,
-//          userDetails = AccountMediaDetailsFactory.NotRated(),
-//          openShareDialog = true,
-//        ),
-//      )
-//      .onShareClicked(openShareDialog = false)
-//      .assertViewState(
-//        DetailsViewState(
-//          mediaType = MediaType.MOVIE,
-//          mediaId = mediaId,
-//          mediaDetails = movieDetails,
-//          isLoading = false,
-//          userDetails = AccountMediaDetailsFactory.NotRated(),
-//          openShareDialog = false,
-//        ),
-//      )
-//  }
 }

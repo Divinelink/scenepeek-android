@@ -17,6 +17,13 @@ object TestTags {
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
+
+    const val SELECT_SEASONS_DIALOG = "Select Seasons Dialog"
+    const val REQUEST_MOVIE_DIALOG = "Request Movie Dialog"
+  }
+
+  object RadioButton {
+    const val SELECT_SEASON_RADIO_BUTTON = "Select Season %s Radio Button"
   }
 
   object Settings {

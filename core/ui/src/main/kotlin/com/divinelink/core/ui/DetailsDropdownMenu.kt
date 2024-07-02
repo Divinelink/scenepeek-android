@@ -2,6 +2,7 @@ package com.divinelink.core.ui
 
 import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -89,6 +90,9 @@ fun DetailsDropdownMenu(
 
     if (menuOptions.contains(DetailsMenuOptions.REQUEST)) {
       DropdownMenuItem(
+        modifier = Modifier.testTag(
+          TestTags.Menu.MENU_ITEM.format(stringResource(R.string.core_ui_dropdown_menu_request)),
+        ),
         leadingIcon = {
           Image(
             painter = painterResource(id = R.drawable.core_ui_ic_jellyseerr),
