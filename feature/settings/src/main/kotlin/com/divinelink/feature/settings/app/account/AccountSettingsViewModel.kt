@@ -113,10 +113,10 @@ class AccountSettingsViewModel @Inject constructor(
     _viewState.update {
       it.copy(
         alertDialogUiState = AlertDialogUiState(
-          title = UIText.StringText("Logout"),
-          text = UIText.StringText(
-            "You're currently logged in as" +
-              " ${it.accountDetails?.username}. Are you sure you want to logout?",
+          title = UIText.ResourceText(R.string.AccountSettingsScreen__logout),
+          text = UIText.ResourceText(
+            R.string.feature_settings_currently_login_dialog_summary,
+            it.accountDetails?.username ?: "",
           ),
         ),
       )
@@ -214,9 +214,7 @@ class AccountSettingsViewModel @Inject constructor(
           it.copy(
             jellyseerrState = when (val state = it.jellyseerrState) {
               is JellyseerrState.Initial -> state.copy(address = interaction.address)
-              is JellyseerrState.LoggedIn -> state.copy(
-                loginData = state.loginData.copy(address = interaction.address),
-              )
+              else -> state
             },
           )
         }
