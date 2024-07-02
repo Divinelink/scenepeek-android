@@ -197,12 +197,11 @@ fun DetailsContent(
           uiState = AlertDialogUiState(text = viewState.error),
         )
       }
-
-      if (viewState.isLoading) {
-        LoadingContent()
-      }
     },
   )
+  if (viewState.isLoading) {
+    LoadingContent()
+  }
 }
 
 @Composable
