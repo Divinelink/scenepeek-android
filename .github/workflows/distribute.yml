@@ -25,6 +25,25 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/wrapper
+          key: gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-wrapper-
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/caches/modules-2/files-2.1
+          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-caches-${{ runner.os }}-     
+
       - name: Auth token to local.properties
         env:
           TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
