@@ -1,7 +1,7 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.commons.ApiConstants.HTTP_ERROR_CODE
 import com.divinelink.core.network.BuildConfig
+import com.divinelink.core.commons.exception.InvalidStatusException
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.HttpResponseValidator
@@ -19,6 +19,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.InternalSerializationApi
@@ -49,10 +50,7 @@ fun androidClient(): HttpClient = HttpClient(Android) {
 
   HttpResponseValidator {
     validateResponse { response ->
-      val statusCode = response.status.value
-      if (statusCode !in 200..299) {
-        throw ResponseException(response, HTTP_ERROR_CODE + statusCode)
-      }
+      if (!response.status.isSuccess()) throw InvalidStatusException(response.status.value)
     }
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")

@@ -1,6 +1,6 @@
 package com.divinelink.core.commons
 
-import com.divinelink.core.commons.ApiConstants.HTTP_ERROR_CODE
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import java.net.ConnectException
@@ -14,7 +14,7 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(Exception(HTTP_ERROR_CODE + "500"))
+    ErrorHandler.create(InvalidStatusException(500))
       .on(500) {
         actionFor500Invoked = true
       }
@@ -37,7 +37,7 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(Exception(HTTP_ERROR_CODE + "404"))
+    ErrorHandler.create(InvalidStatusException(404))
       .on(500) {
         actionFor500Invoked = true
       }
@@ -60,7 +60,7 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(Exception(HTTP_ERROR_CODE + "400"))
+    ErrorHandler.create(InvalidStatusException(400))
       .on(500) {
         actionFor500Invoked = true
       }

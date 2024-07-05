@@ -1,6 +1,6 @@
 package com.andreolas.movierama.settings.app.account
 
-import com.divinelink.core.commons.ApiConstants.HTTP_ERROR_CODE
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.account.AccountDetails
@@ -31,11 +31,11 @@ class AccountSettingsViewModelTest {
   @Test
   fun `test on 401 when jellyseerr expect invalid credentials error`() = runTest {
     testRobot.mockLoginJellyseerrResponse(
-      Result.failure(Exception(HTTP_ERROR_CODE + "401")),
+      Result.failure(InvalidStatusException(401)),
     )
 
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(Exception(HTTP_ERROR_CODE + "401")))
+      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(401)))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
@@ -125,7 +125,7 @@ class AccountSettingsViewModelTest {
   @Test
   fun `test on 500 when jellyseerr expect unknown error`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(Exception(HTTP_ERROR_CODE + "500")))
+      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(500)))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
@@ -155,7 +155,7 @@ class AccountSettingsViewModelTest {
   @Test
   fun `test dismissSnackbar removes snackbar`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(Exception(HTTP_ERROR_CODE + "500")))
+      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(500)))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
