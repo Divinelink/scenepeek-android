@@ -7,11 +7,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
-import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.navigation.SettingsGraph
+import com.divinelink.feature.settings.screens.destinations.JellyseerrLoginScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -38,11 +38,6 @@ fun AccountSettingsScreen(
     }
   }
 
-  SnackbarMessageHandler(
-    snackbarMessage = viewState.value.snackbarMessage,
-    onDismissSnackbar = viewModel::dismissSnackbar,
-  )
-
   SettingsScaffold(
     title = stringResource(id = R.string.preferences__account),
     onNavigationClick = navigator::navigateUp,
@@ -50,10 +45,9 @@ fun AccountSettingsScreen(
     AccountSettingsContent(
       paddingValues = paddingValues,
       onLoginClick = viewModel::login,
-      jellyseerrState = viewState.value.jellyseerrState,
       accountDetails = viewState.value.accountDetails,
       onLogoutClick = viewModel::logoutDialog,
-      jellyseerrInteraction = viewModel::onJellyseerrInteraction,
+      onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrLoginScreenDestination()) },
     )
   }
 

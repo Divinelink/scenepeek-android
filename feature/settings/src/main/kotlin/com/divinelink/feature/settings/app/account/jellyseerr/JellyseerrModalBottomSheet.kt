@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -47,19 +46,16 @@ fun JellyseerrModalBottomSheet(
       },
     ) { state ->
       when (state) {
-        is JellyseerrState.Initial -> {
-          JellyseerrBottomSheetContent(
-            modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET),
-            jellyseerrState = state,
-            interaction = interaction,
-          )
-        }
-        is JellyseerrState.LoggedIn ->
-          JellyseerrLoggedInBottomSheetContent(
-            modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
-            jellyseerrState = state,
-            onLogoutClock = { interaction(it) },
-          )
+        is JellyseerrState.Initial -> JellyseerrInitialContent(
+          modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET),
+          jellyseerrState = state,
+          interaction = interaction,
+        )
+        is JellyseerrState.LoggedIn -> JellyseerrLoggedInContent(
+          modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
+          jellyseerrState = state,
+          onLogoutClock = { interaction(it) },
+        )
       }
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))

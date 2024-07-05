@@ -8,22 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrInteraction
-import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrModalBottomSheet
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsTextItem
@@ -33,21 +25,10 @@ import com.divinelink.core.ui.R as uiR
 fun AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
   accountDetails: AccountDetails?,
-  jellyseerrState: JellyseerrState,
-  jellyseerrInteraction: (JellyseerrInteraction) -> Unit,
   onLogoutClick: () -> Unit,
   onLoginClick: () -> Unit,
+  onNavigateToJellyseerrLogin: () -> Unit,
 ) {
-  var openJellyseerrBottomSheet by rememberSaveable { mutableStateOf(false) }
-
-  if (openJellyseerrBottomSheet) {
-    JellyseerrModalBottomSheet(
-      jellyseerrState = jellyseerrState,
-      interaction = jellyseerrInteraction,
-      onDismissRequest = { openJellyseerrBottomSheet = false },
-    )
-  }
-
   LazyColumn(
     modifier = Modifier.fillMaxSize(),
     contentPadding = paddingValues,
@@ -75,9 +56,7 @@ fun AccountSettingsContent(
       SettingsClickItem(
         icon = IconWrapper.Image(uiR.drawable.core_ui_ic_jellyseerr),
         text = stringResource(R.string.feature_settings_jellyseerr_integration),
-        onClick = {
-          openJellyseerrBottomSheet = true
-        },
+        onClick = { onNavigateToJellyseerrLogin() },
       )
     }
   }
@@ -94,13 +73,9 @@ private fun AccountSettingsContentPreview() {
           username = "Jessee Pinkman",
           name = "name",
         ),
-        jellyseerrState = JellyseerrState.Initial(
-          isLoading = false,
-          preferredOption = null,
-        ),
         onLogoutClick = {},
         onLoginClick = {},
-        jellyseerrInteraction = {},
+        onNavigateToJellyseerrLogin = {},
       )
     }
   }

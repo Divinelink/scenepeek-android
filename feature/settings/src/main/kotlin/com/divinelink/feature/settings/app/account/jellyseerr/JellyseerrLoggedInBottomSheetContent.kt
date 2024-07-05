@@ -29,7 +29,7 @@ import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-fun JellyseerrLoggedInBottomSheetContent(
+fun JellyseerrLoggedInContent(
   modifier: Modifier = Modifier,
   jellyseerrState: JellyseerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
@@ -87,7 +87,7 @@ fun JellyseerrLoggedInBottomSheetContent(
 private fun JellyseerrBottomSheetContentPreview() {
   AppTheme {
     Surface {
-      JellyseerrLoggedInBottomSheetContent(
+      JellyseerrLoggedInContent(
         jellyseerrState = JellyseerrState.LoggedIn(
           isLoading = false,
           loginData = JellyseerrAccountStatus(
@@ -107,7 +107,7 @@ private fun JellyseerrBottomSheetContentPreview() {
 private fun JellyseerrBottomSheetContentLoadingPreview() {
   AppTheme {
     Surface {
-      JellyseerrLoggedInBottomSheetContent(
+      JellyseerrLoggedInContent(
         jellyseerrState = JellyseerrState.LoggedIn(
           isLoading = true,
           loginData = JellyseerrAccountStatus(

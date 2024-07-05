@@ -46,10 +46,13 @@ import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.navigation.SettingsGraph
+import com.ramcosta.composedestinations.annotation.Destination
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-fun JellyseerrBottomSheetContent(
+@Destination<SettingsGraph>
+fun JellyseerrInitialContent(
   modifier: Modifier = Modifier,
   jellyseerrState: JellyseerrState.Initial,
   interaction: (JellyseerrInteraction) -> Unit,
@@ -233,7 +236,7 @@ fun ExpandableCard(
 private fun JellyseerrBottomSheetContentPreview() {
   AppTheme {
     Surface {
-      JellyseerrBottomSheetContent(
+      JellyseerrInitialContent(
         jellyseerrState = JellyseerrState.Initial(false, null),
         interaction = {},
       )
@@ -246,7 +249,7 @@ private fun JellyseerrBottomSheetContentPreview() {
 private fun JellyseerrBottomSheetContentLoadingPreview() {
   AppTheme {
     Surface {
-      JellyseerrBottomSheetContent(
+      JellyseerrInitialContent(
         jellyseerrState = JellyseerrState.Initial(true, null),
         interaction = {},
       )
