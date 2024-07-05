@@ -12,11 +12,11 @@ android-tools = "31.4.0"
 agp = "8.4.0"
 core-ktx = "1.13.1"
 junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
+androidx-test-ext-junit = "1.2.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.9.0"
 start-up = "1.1.1"
-kotlinx-datetime = "0.4.0"
+kotlinx-datetime = "0.6.0"
 ktlint = "12.1.1"
 secrets = "2.0.1"
 desugar = "2.0.4"
@@ -27,19 +27,19 @@ detekt = "1.23.6"
 #androidx-fragment = "1.7.0"
 
 # Internal Database
-room = "2.6.0"
-datastore = '1.0.0'
+room = "2.6.1"
+datastore = '1.1.1'
 encrypted-prefs = '1.1.0-alpha04'
 
 # Multithreading
-kotlinx-coroutines = '1.7.3'
+kotlinx-coroutines = '1.8.1'
 
 # Network & Serialization
 ktor = "2.3.8"
 kotlinx-serialization = "1.5.1"
 
 # Depedency Injection
-hilt = "2.49"
+hilt = "2.51.1"
 
 # Compose
 compose-bom = "2024.06.00"
@@ -53,13 +53,13 @@ timber = "5.0.1"
 # Testing
 kover = "0.8.1"
 
-androidx-test = "1.5.0"
+androidx-test = "1.6.1"
 truth = "1.4.2"
 turbine = "1.1.0"
 
 # UI
-robolectric = "4.11.1"
-androidx-compose-ui-test = "1.6.7"
+robolectric = "4.12.2"
+androidx-compose-ui-test = "1.6.8"
 ui-automator = "2.3.0"
 
 # Mockers
