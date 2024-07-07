@@ -1,19 +1,16 @@
-package com.andreolas.movierama.settings.app.account
+package com.divinelink.feature.settings.app.account.jellyseerr
 
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.ui.UIText
-import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.app.account.AccountSettingsViewState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -21,9 +18,9 @@ import java.net.ConnectException
 import java.net.UnknownHostException
 import com.divinelink.core.ui.R as uiR
 
-class AccountSettingsViewModelTest {
+class JellyseerrSettingsViewModelTest {
 
-  private val testRobot = AccountSettingsViewModelTestRobot()
+  private val testRobot = JellyseerrSettingsViewModelTestRobot()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -200,20 +197,12 @@ class AccountSettingsViewModelTest {
   }
 
   private fun createUiState(
-    requestToken: String? = null,
-    navigateToWebView: Boolean? = null,
-    alertDialogUiState: AlertDialogUiState? = null,
-    accountDetails: AccountDetails? = null,
     snackbarMessage: SnackbarMessage? = null,
     jellyseerrState: JellyseerrState = JellyseerrState.Initial(
       isLoading = false,
       preferredOption = null,
     ),
-  ) = AccountSettingsViewState(
-    requestToken = requestToken,
-    navigateToWebView = navigateToWebView,
-    alertDialogUiState = alertDialogUiState,
-    accountDetails = accountDetails,
+  ) = JellyseerrSettingsUiState(
     snackbarMessage = snackbarMessage,
     jellyseerrState = jellyseerrState,
   )

@@ -16,4 +16,6 @@ dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.domain)
   implementation(projects.core.datastore)
+
+  testImplementation(projects.core.testing)
 }

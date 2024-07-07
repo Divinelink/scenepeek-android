@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,7 +25,6 @@ import com.andreolas.movierama.MainViewState
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.popup.AnimatedPopup
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
@@ -47,12 +45,7 @@ fun MovieApp(uiState: MainViewState) {
   ) {
     Scaffold(
       containerColor = Color.Transparent,
-      snackbarHost = {
-        // Popup is needed to show the snackbar above bottom sheets, dialogs, etc.
-        AnimatedPopup(alignment = Alignment.BottomCenter) {
-          SnackbarHost(hostState = snackbarHostState)
-        }
-      },
+      snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         AppNavigationBar {
           val currentDestination: NavDestination? =

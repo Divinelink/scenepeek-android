@@ -11,7 +11,7 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.divinelink.feature.settings.screens.destinations.JellyseerrLoginScreenDestination
+import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -47,7 +47,7 @@ fun AccountSettingsScreen(
       onLoginClick = viewModel::login,
       accountDetails = viewState.value.accountDetails,
       onLogoutClick = viewModel::logoutDialog,
-      onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrLoginScreenDestination()) },
+      onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrSettingsScreenDestination()) },
     )
   }
 
