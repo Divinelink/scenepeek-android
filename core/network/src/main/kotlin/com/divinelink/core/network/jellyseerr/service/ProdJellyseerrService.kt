@@ -30,20 +30,21 @@ class ProdJellyseerrService @Inject constructor(private val restClient: Jellysee
     emit(response)
   }
 
-  override suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit> =
-    flow {
-      val url = "${jellyseerrLogin.address}/api/v1/auth/local"
+  override suspend fun signInWithJellyseerr(
+    jellyseerrLogin: JellyseerrLoginData,
+  ): Flow<JellyfinLoginResponseApi> = flow {
+    val url = "${jellyseerrLogin.address}/api/v1/auth/local"
 
-      val response = restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
-        url = url,
-        body = JellyseerrLoginRequestBodyApi(
-          email = jellyseerrLogin.username.value,
-          password = jellyseerrLogin.password.value,
-        ),
-      )
+    val response = restClient.post<JellyseerrLoginRequestBodyApi, JellyfinLoginResponseApi>(
+      url = url,
+      body = JellyseerrLoginRequestBodyApi(
+        email = jellyseerrLogin.username.value,
+        password = jellyseerrLogin.password.value,
+      ),
+    )
 
-      emit(response)
-    }
+    emit(response)
+  }
 
   override suspend fun logout(address: String): Flow<Unit> = flow {
     val url = "$address/api/v1/auth/logout"

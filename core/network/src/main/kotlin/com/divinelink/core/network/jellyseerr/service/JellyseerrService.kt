@@ -10,7 +10,9 @@ interface JellyseerrService {
 
   suspend fun signInWithJellyfin(jellyfinLogin: JellyseerrLoginData): Flow<JellyfinLoginResponseApi>
 
-  suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit>
+  suspend fun signInWithJellyseerr(
+    jellyseerrLogin: JellyseerrLoginData,
+  ): Flow<JellyfinLoginResponseApi>
 
   suspend fun logout(address: String): Flow<Unit>
 

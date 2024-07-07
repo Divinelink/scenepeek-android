@@ -21,8 +21,8 @@ sealed class JellyseerrState(
 
   data class LoggedIn(
     val isLoading: Boolean,
-    val loginData: JellyseerrAccountStatus,
-  ) : JellyseerrState(address = loginData.address)
+    val accountDetails: JellyseerrAccountDetails,
+  ) : JellyseerrState(address = "")
 }
 
 val JellyseerrState.loginParams: JellyseerrLoginParams?

@@ -37,8 +37,7 @@
 
   <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
 
-  <string name="feature_settings_jellyfin_already_logged_in">You are logged in using your Jellyfin %s account.</string>
-  <string name="feature_settings_jellyseerr_already_logged_in">You are logged in using your Jellyseerr %s account.</string>
+  <string name="feature_settings_jellyseerr_total_requests">Total requests</string>
 
   <!-- HelpSettingsFragment -->
   <string name="HelpSettingsFragment__help">Help</string>

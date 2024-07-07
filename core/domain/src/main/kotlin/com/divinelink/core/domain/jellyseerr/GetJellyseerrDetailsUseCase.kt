@@ -3,8 +3,7 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.datastore.PreferenceStorage
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -13,9 +12,9 @@ import javax.inject.Inject
 open class GetJellyseerrDetailsUseCase @Inject constructor(
   private val storage: PreferenceStorage,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, JellyseerrAccountStatus>(dispatcher) {
+) : FlowUseCase<Unit, JellyseerrAccountDetails>(dispatcher) {
 
-  override fun execute(parameters: Unit): Flow<Result<JellyseerrAccountStatus>> = combine(
+  override fun execute(parameters: Unit): Flow<Result<JellyseerrAccountDetails>> = combine(
     storage.jellyseerrAccount,
     storage.jellyseerrAddress,
     storage.jellyseerrSignInMethod,
@@ -32,10 +31,10 @@ open class GetJellyseerrDetailsUseCase @Inject constructor(
       }
       else -> {
         Result.success(
-          JellyseerrAccountStatus(
-            username = account,
-            address = address,
-            signInMethod = JellyseerrLoginMethod.valueOf(signInMethod),
+          JellyseerrAccountDetails(
+            displayName = account,
+            avatar = "",
+            requestCount = 0,
           ),
         )
       }

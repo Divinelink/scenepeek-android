@@ -47,7 +47,7 @@ class JellyseerrSettingsViewModel @Inject constructor(
           _uiState.update {
             it.copy(
               jellyseerrState = JellyseerrState.LoggedIn(
-                loginData = result.data,
+                accountDetails = result.data,
                 isLoading = false,
               ),
             )
@@ -77,7 +77,7 @@ class JellyseerrSettingsViewModel @Inject constructor(
               _uiState.update {
                 it.copy(
                   jellyseerrState = JellyseerrState.LoggedIn(
-                    loginData = result.data,
+                    accountDetails = result.data,
                     isLoading = false,
                   ),
                 )
