@@ -30,6 +30,7 @@ fun PasswordOutlinedTextField(
     modifier = modifier,
     label = { Text(text = stringResource(R.string.core_ui_password)) },
     value = value,
+    singleLine = true,
     visualTransformation = if (isMasked) {
       PasswordVisualTransformation()
     } else {

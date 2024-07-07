@@ -10,10 +10,11 @@ import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.navigation.SettingsGraph
+import com.divinelink.feature.settings.navigation.SlideTransition
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
-@Destination<SettingsGraph>
+@Destination<SettingsGraph>(style = SlideTransition::class)
 fun JellyseerrSettingsScreen(viewModel: JellyseerrSettingsViewModel = hiltViewModel()) {
   val uiState = viewModel.uiState.collectAsState().value
 

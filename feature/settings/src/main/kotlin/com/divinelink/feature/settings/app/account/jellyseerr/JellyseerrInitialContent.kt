@@ -79,6 +79,7 @@ fun JellyseerrInitialContent(
         .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
         .fillMaxWidth(),
       value = jellyseerrState.address,
+      singleLine = true,
       onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
       label = { Text(text = stringResource(R.string.feature_settings_address)) },
     )
@@ -101,6 +102,7 @@ fun JellyseerrInitialContent(
             .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyfinLogin.username.value,
+          singleLine = true,
           onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
           label = { Text(text = stringResource(R.string.feature_settings_username)) },
         )
@@ -133,6 +135,7 @@ fun JellyseerrInitialContent(
             .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyseerrLogin.username.value,
+          singleLine = true,
           onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
           label = { Text(text = stringResource(R.string.feature_settings_username_or_email)) },
         )
