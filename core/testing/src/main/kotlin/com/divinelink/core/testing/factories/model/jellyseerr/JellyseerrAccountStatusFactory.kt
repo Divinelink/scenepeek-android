@@ -1,6 +1,5 @@
 package com.divinelink.core.testing.factories.model.jellyseerr
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 
 object JellyseerrAccountStatusFactory {

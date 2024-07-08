@@ -1,6 +1,5 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase

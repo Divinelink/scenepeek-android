@@ -1,7 +1,6 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountStatus
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
