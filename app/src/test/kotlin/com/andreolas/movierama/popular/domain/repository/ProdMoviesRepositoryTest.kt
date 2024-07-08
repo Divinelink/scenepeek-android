@@ -14,7 +14,7 @@ import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
-import com.divinelink.database.model.PersistableMovie
+import com.divinelink.database.media.model.PersistableMovie
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

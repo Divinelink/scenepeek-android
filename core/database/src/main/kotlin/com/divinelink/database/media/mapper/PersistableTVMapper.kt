@@ -1,9 +1,9 @@
-package com.divinelink.database.mapper
+package com.divinelink.database.media.mapper
 
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.database.model.PersistableMovie
+import com.divinelink.database.media.model.PersistableTV
 
-internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie = PersistableMovie(
+internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
   id = this.id,
   title = this.name,
   posterPath = this.posterPath ?: "",
@@ -13,13 +13,15 @@ internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie = Persistabl
   overview = this.overview,
 )
 
-fun List<PersistableMovie>.map(): List<MediaItem.Media> = this.map(PersistableMovie::toMovie)
+fun List<PersistableTV>.map(): List<MediaItem.Media> = this.map(
+  PersistableTV::toTV,
+)
 
-private fun PersistableMovie.toMovie(): MediaItem.Media.Movie = MediaItem.Media.Movie(
+internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   id = this.id,
+  name = this.title,
   posterPath = this.posterPath,
   releaseDate = this.releaseDate,
-  name = this.title,
   rating = this.rating,
   overview = this.overview,
   isFavorite = this.isFavorite,

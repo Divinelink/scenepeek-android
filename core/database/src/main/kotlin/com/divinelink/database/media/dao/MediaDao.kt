@@ -1,4 +1,4 @@
-package com.divinelink.database.dao
+package com.divinelink.database.media.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,10 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.database.mapper.toPersistableMovie
-import com.divinelink.database.mapper.toPersistableTV
-import com.divinelink.database.model.PersistableMovie
-import com.divinelink.database.model.PersistableTV
+import com.divinelink.database.media.mapper.toPersistableMovie
+import com.divinelink.database.media.mapper.toPersistableTV
+import com.divinelink.database.media.model.PersistableMovie
+import com.divinelink.database.media.model.PersistableTV
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
