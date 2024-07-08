@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.update
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
+import com.divinelink.core.ui.R as uiR
 
 @HiltViewModel
 class JellyseerrSettingsViewModel @Inject constructor(
@@ -101,7 +102,7 @@ class JellyseerrSettingsViewModel @Inject constructor(
                 }
                 .otherwise {
                   _uiState.setSnackbarMessage(
-                    UIText.ResourceText(com.divinelink.core.ui.R.string.core_ui_error_retry),
+                    UIText.ResourceText(uiR.string.core_ui_error_retry),
                   )
                 }
                 .handle()
@@ -119,8 +120,15 @@ class JellyseerrSettingsViewModel @Inject constructor(
           .onEach { result ->
             result.onSuccess {
               _uiState.update {
-                it.copy(jellyseerrState = JellyseerrState.Initial(isLoading = false))
+                it.copy(
+                  jellyseerrState = JellyseerrState.Initial(
+                    address = result.data,
+                    isLoading = false,
+                  ),
+                )
               }
+            }.onFailure {
+              _uiState.setSnackbarMessage(UIText.ResourceText(uiR.string.core_ui_error_retry))
             }
           }
           .launchIn(viewModelScope)
@@ -217,6 +225,7 @@ private fun MutableStateFlow<JellyseerrSettingsUiState>.setJellyseerrLoading(loa
           isLoading = loading,
         ),
       )
+      JellyseerrState.Loading -> uiState
     }
   }
 }

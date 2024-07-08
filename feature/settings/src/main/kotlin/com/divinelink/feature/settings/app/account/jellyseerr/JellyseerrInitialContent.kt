@@ -240,7 +240,11 @@ private fun JellyseerrBottomSheetContentPreview() {
   AppTheme {
     Surface {
       JellyseerrInitialContent(
-        jellyseerrState = JellyseerrState.Initial(false, null),
+        jellyseerrState = JellyseerrState.Initial(
+          address = "http://localhost:8096",
+          isLoading = false,
+          preferredOption = null,
+        ),
         interaction = {},
       )
     }
@@ -253,7 +257,11 @@ private fun JellyseerrBottomSheetContentLoadingPreview() {
   AppTheme {
     Surface {
       JellyseerrInitialContent(
-        jellyseerrState = JellyseerrState.Initial(true, null),
+        jellyseerrState = JellyseerrState.Initial(
+          address = "http://localhost:8096",
+          isLoading = true,
+          preferredOption = null,
+        ),
         interaction = {},
       )
     }

@@ -10,7 +10,7 @@ data class JellyseerrSettingsUiState(
   companion object {
     fun initial(): JellyseerrSettingsUiState = JellyseerrSettingsUiState(
       snackbarMessage = null,
-      jellyseerrState = JellyseerrState.Initial(isLoading = false, preferredOption = null),
+      jellyseerrState = JellyseerrState.Loading,
     )
   }
 }

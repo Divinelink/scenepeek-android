@@ -17,9 +17,9 @@ open class LogoutJellyseerrUseCase @Inject constructor(
   private val storage: PreferenceStorage,
   private val sessionStorage: SessionStorage,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, Unit>(dispatcher) {
+) : FlowUseCase<Unit, String>(dispatcher) {
 
-  override fun execute(parameters: Unit): Flow<Result<Unit>> = flow {
+  override fun execute(parameters: Unit): Flow<Result<String>> = flow {
     val address = storage.jellyseerrAddress.first()
     if (address == null) {
       emit(Result.failure(Exception("No address found.")))
@@ -30,7 +30,7 @@ open class LogoutJellyseerrUseCase @Inject constructor(
       repository.logout(address).last().fold(
         onSuccess = {
           sessionStorage.clearJellyseerrSession()
-          Result.success(Unit)
+          Result.success(address)
         },
         onFailure = {
           Result.failure(it)
