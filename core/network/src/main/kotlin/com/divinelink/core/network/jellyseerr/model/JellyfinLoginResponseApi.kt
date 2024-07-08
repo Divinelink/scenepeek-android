@@ -5,12 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JellyfinLoginResponseApi(
+  val id: Long,
   val displayName: String,
   val avatar: String?,
-  val requestCount: Int,
+  val requestCount: Long,
 )
 
 fun JellyfinLoginResponseApi.map() = JellyseerrAccountDetails(
+  id = id,
   displayName = displayName,
   avatar = avatar ?: "",
   requestCount = requestCount,

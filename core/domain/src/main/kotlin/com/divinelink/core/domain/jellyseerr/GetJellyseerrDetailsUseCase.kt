@@ -2,6 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import kotlinx.coroutines.CoroutineDispatcher
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 open class GetJellyseerrDetailsUseCase @Inject constructor(
   private val storage: PreferenceStorage,
+  private val repository: JellyseerrRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<Unit, JellyseerrAccountDetails>(dispatcher) {
 
@@ -18,7 +20,8 @@ open class GetJellyseerrDetailsUseCase @Inject constructor(
     storage.jellyseerrAccount,
     storage.jellyseerrAddress,
     storage.jellyseerrSignInMethod,
-  ) { account, address, signInMethod ->
+    repository.getJellyseerrAccountDetails(),
+  ) { account, address, signInMethod, jellyseerrDetails ->
     when {
       account == null -> {
         Result.failure(Exception("No account found."))
@@ -30,13 +33,7 @@ open class GetJellyseerrDetailsUseCase @Inject constructor(
         Result.failure(Exception("No sign in method found."))
       }
       else -> {
-        Result.success(
-          JellyseerrAccountDetails(
-            displayName = account,
-            avatar = "",
-            requestCount = 0,
-          ),
-        )
+        Result.success(jellyseerrDetails)
       }
     }
   }

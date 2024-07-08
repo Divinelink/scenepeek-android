@@ -40,6 +40,8 @@ open class LoginJellyseerrUseCase @Inject constructor(
           storage.setJellyseerrAccount(parameters.username.value)
           storage.setJellyseerrAddress(parameters.address)
           storage.setJellyseerrSignInMethod(parameters.signInMethod.name)
+          repository.insertJellyseerrAccountDetails(accountDetails)
+
           emit(Result.success(accountDetails))
         },
         onFailure = {

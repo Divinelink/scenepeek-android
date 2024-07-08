@@ -16,6 +16,10 @@ interface JellyseerrRepository {
     loginData: JellyseerrLoginData,
   ): Flow<Result<JellyseerrAccountDetails>>
 
+  fun getJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails>
+
+  suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails)
+
   suspend fun logout(address: String): Flow<Result<Unit>>
 
   suspend fun requestMedia(

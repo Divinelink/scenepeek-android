@@ -117,6 +117,7 @@ private fun JellyseerrBottomSheetContentPreview() {
         jellyseerrState = JellyseerrState.LoggedIn(
           isLoading = false,
           accountDetails = JellyseerrAccountDetails(
+            id = 1,
             avatar = "https://www.example.com/avatar.jpg",
             displayName = "Display Name",
             requestCount = 100,
@@ -137,6 +138,7 @@ private fun JellyseerrBottomSheetContentLoadingPreview() {
         jellyseerrState = JellyseerrState.LoggedIn(
           isLoading = true,
           accountDetails = JellyseerrAccountDetails(
+            id = 1,
             avatar = "https://www.example.com/avatar.jpg",
             displayName = "Display Name",
             requestCount = 100,

@@ -1,4 +1,4 @@
-package com.divinelink.database.media.model
+package com.divinelink.core.database.media.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

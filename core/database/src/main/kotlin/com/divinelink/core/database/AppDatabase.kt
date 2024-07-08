@@ -1,10 +1,10 @@
-package com.divinelink.database
+package com.divinelink.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.divinelink.database.media.dao.MediaDao
-import com.divinelink.database.media.model.PersistableMovie
-import com.divinelink.database.media.model.PersistableTV
+import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.database.media.model.PersistableMovie
+import com.divinelink.core.database.media.model.PersistableTV
 
 @Database(
   entities = [

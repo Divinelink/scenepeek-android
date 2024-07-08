@@ -53,6 +53,15 @@ class JellyseerrSettingsViewModel @Inject constructor(
               ),
             )
           }
+        }.onFailure {
+          _uiState.update {
+            it.copy(
+              jellyseerrState = JellyseerrState.Initial(
+                address = "",
+                isLoading = false,
+              ),
+            )
+          }
         }
       }.launchIn(viewModelScope)
   }

@@ -28,6 +28,7 @@ detekt = "1.23.6"
 
 # Internal Database
 room = "2.6.1"
+sqldelight = "2.0.2"
 datastore = '1.1.1'
 encrypted-prefs = '1.1.0-alpha04'
 
@@ -145,6 +146,8 @@ encrypted-preferences = { module = "androidx.security:security-crypto-ktx", vers
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+sqldelight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 
 # Testing
 
@@ -185,6 +188,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution-gradle" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 

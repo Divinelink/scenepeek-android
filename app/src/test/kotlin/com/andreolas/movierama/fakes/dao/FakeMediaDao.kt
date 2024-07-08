@@ -1,7 +1,7 @@
 package com.andreolas.movierama.fakes.dao
 
-import com.divinelink.database.media.dao.MediaDao
-import com.divinelink.database.media.model.PersistableMovie
+import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.database.media.model.PersistableMovie
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
