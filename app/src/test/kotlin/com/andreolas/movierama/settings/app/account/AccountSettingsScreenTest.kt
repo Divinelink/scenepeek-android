@@ -1,5 +1,6 @@
 package com.andreolas.movierama.settings.app.account
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -13,7 +14,8 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setSharedLayoutContent
+import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -27,12 +29,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 class AccountSettingsScreenTest : ComposeTest() {
 
   private lateinit var destinationsNavigator: FakeDestinationsNavigator
   private lateinit var createRequestTokenUseCase: FakeCreateRequestTokenUseCase
   private lateinit var observeSessionUseCase: FakeObserveSessionUseCase
   private lateinit var getAccountDetailsUseCase: FakeGetAccountDetailsUseCase
+  private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
 
   private val requestTokenResult = Result.success(RequestTokenFactory.full().token)
@@ -47,6 +51,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     createRequestTokenUseCase = FakeCreateRequestTokenUseCase()
     observeSessionUseCase = FakeObserveSessionUseCase()
+    getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
     getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
     logoutUseCase = FakeLogoutUseCase()
   }
@@ -62,9 +67,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -81,9 +87,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -108,9 +115,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -133,9 +141,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -155,9 +164,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -185,9 +195,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -205,9 +216,10 @@ class AccountSettingsScreenTest : ComposeTest() {
   fun `test navigate to JellyseerrSettingsScreen`() = runTest {
     val viewModel = setupViewModel()
 
-    setContentWithTheme {
+    setSharedLayoutContent {
       AccountSettingsScreen(
         navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
         viewModel = viewModel,
       )
     }
@@ -225,6 +237,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     createRequestTokenUseCase = createRequestTokenUseCase.mock,
     observeSessionUseCase = observeSessionUseCase.mock,
     getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+    getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
     logoutUseCase = logoutUseCase.mock,
   )
 }

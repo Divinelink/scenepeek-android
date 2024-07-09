@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -24,7 +25,7 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     )
   }
 
-  fun mockLoginJellyseerrResponse(response: Result<JellyseerrAccountStatus>) = apply {
+  fun mockLoginJellyseerrResponse(response: Result<JellyseerrAccountDetails>) = apply {
     loginJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 

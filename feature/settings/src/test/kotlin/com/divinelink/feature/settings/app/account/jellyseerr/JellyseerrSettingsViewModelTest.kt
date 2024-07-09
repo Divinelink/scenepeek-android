@@ -199,6 +199,7 @@ class JellyseerrSettingsViewModelTest {
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
     jellyseerrState: JellyseerrState = JellyseerrState.Initial(
+      address = "",
       isLoading = false,
       preferredOption = null,
     ),

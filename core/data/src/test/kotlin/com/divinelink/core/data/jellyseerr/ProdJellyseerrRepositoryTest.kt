@@ -6,33 +6,44 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
-import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.database.TestJellyseerrAccountDetailsQueries
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.JellyfinLoginResponseApiFactory
+import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class ProdJellyseerrRepositoryTest {
 
   private lateinit var repository: JellyseerrRepository
 
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
+
   private val remote = TestJellyseerrService()
+  private val queries = TestJellyseerrAccountDetailsQueries()
 
   @Before
   fun setUp() {
-    repository = ProdJellyseerrRepository(remote.mock)
+    repository = ProdJellyseerrRepository(
+      service = remote.mock,
+      queries = queries.mock,
+      dispatcher = testDispatcher,
+    )
   }
 
   @Test
   fun `test sign in with jellyfin successfully`() = runTest {
     remote.mockSignInWithJellyfin(
-      response = JellyfinLoginResponseApi(
-        jellyfinUsername = "jellyfinUsername",
-      ),
+      response = JellyfinLoginResponseApiFactory.jellyfin(),
     )
 
     val result = repository.signInWithJellyfin(
@@ -43,13 +54,15 @@ class ProdJellyseerrRepositoryTest {
       ),
     )
 
-    assertThat(result.first()).isEqualTo(Result.success("jellyfinUsername"))
+    assertThat(result.first()).isEqualTo(
+      Result.success(JellyseerrAccountDetailsFactory.jellyfin()),
+    )
   }
 
   @Test
   fun `test sign in with jellyseerr successfully`() = runTest {
     remote.mockSignInWithJellyseerr(
-      response = Unit,
+      response = JellyfinLoginResponseApiFactory.jellyseerr(),
     )
 
     val result = repository.signInWithJellyseerr(
@@ -60,7 +73,9 @@ class ProdJellyseerrRepositoryTest {
       ),
     )
 
-    assertThat(result.first()).isEqualTo(Result.success(Unit))
+    assertThat(result.first()).isEqualTo(
+      Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+    )
   }
 
   @Test

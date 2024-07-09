@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -22,7 +23,7 @@ class FakeGetJellyseerrDetailsUseCase {
     )
   }
 
-  fun mockSuccess(response: Result<JellyseerrAccountStatus>) {
+  fun mockSuccess(response: Result<JellyseerrAccountDetails>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }

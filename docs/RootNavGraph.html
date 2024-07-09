@@ -2,29 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Settings/root Navigation Graph</title>
+    <title>Watchlist/root Navigation Graph</title>
 </head>
 <body>
 <pre id='scene' class="mermaid">
 ---
-title: Settings/root Navigation Graph
+title: Watchlist/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-settings/root(["RootGraph"]) -- "start" --- settings/settings(["SettingsGraph"])
-settings/settings(["SettingsGraph"]) -- "start" --- settings/settings_screen("SettingsScreen")
-settings/settings(["SettingsGraph"]) --- settings/account_settings_screen("AccountSettingsScreen")
-settings/settings(["SettingsGraph"]) --- settings/jellyseerr_initial_content("JellyseerrInitialContent")
-settings/settings(["SettingsGraph"]) --- settings/jellyseerr_settings_screen("JellyseerrSettingsScreen")
-settings/settings(["SettingsGraph"]) --- settings/appearance_settings_screen("AppearanceSettingsScreen")
-settings/settings(["SettingsGraph"]) --- settings/help_settings_screen("HelpSettingsScreen")
-settings/settings(["SettingsGraph"]) --- settings/login_web_view_screen("LoginWebViewScreen")
+watchlist/root(["RootGraph"]) -- "start" --- watchlist/watchlist(["WatchlistGraph"])
+watchlist/watchlist(["WatchlistGraph"]) -- "start" --- watchlist/watchlist_screen("WatchlistScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class settings/settings_screen,settings/account_settings_screen,settings/jellyseerr_initial_content,settings/jellyseerr_settings_screen,settings/appearance_settings_screen,settings/help_settings_screen,settings/login_web_view_screen destination;
+class watchlist/watchlist_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class settings/settings,settings/root,settings/settings navgraph;
+class watchlist/watchlist,watchlist/root,watchlist/watchlist navgraph;
 
 </pre>
 <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>

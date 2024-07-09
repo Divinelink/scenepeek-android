@@ -12,7 +12,7 @@ import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.map
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
-import comdivinelinkcoredatabase.JellyseerrAccountDetailsQueries
+import com.divinelink.core.database.JellyseerrAccountDetailsQueries
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

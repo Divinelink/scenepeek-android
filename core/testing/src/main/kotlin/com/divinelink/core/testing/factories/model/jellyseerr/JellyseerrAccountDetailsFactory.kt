@@ -8,13 +8,13 @@ object JellyseerrAccountDetailsFactory {
     id = 1,
     displayName = "Cup10",
     avatar = "http://localhost:5000/avatar",
-    requestCount = 100,
+    requestCount = 10,
   )
 
   fun jellyseerr() = JellyseerrAccountDetails(
     id = 2,
     displayName = "Zabaob",
-    avatar = "http://localhost:5000/avatar",
-    requestCount = 120,
+    avatar = "",
+    requestCount = 20,
   )
 }

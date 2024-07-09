@@ -19,7 +19,7 @@ class TestJellyseerrService {
     )
   }
 
-  suspend fun mockSignInWithJellyseerr(response: Unit) {
+  suspend fun mockSignInWithJellyseerr(response: JellyfinLoginResponseApi) {
     whenever(
       mock.signInWithJellyseerr(jellyseerrLogin = any()),
     ).thenReturn(

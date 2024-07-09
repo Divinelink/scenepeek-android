@@ -23,7 +23,7 @@ class FakeLogoutJellyseerrUseCase {
     )
   }
 
-  fun mockSuccess(response: Flow<Result<Unit>>) {
+  fun mockSuccess(response: Flow<Result<String>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

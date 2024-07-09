@@ -50,6 +50,7 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
     Row {
       CoilImage(
         modifier = Modifier
+          .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_AVATAR)
           .sharedElement(
             state = rememberSharedContentState(key = SharedElementKeys.JELLYSEERR_AVATAR),
             animatedVisibilityScope = animatedVisibilityScope,
