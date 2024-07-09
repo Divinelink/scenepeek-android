@@ -21,6 +21,8 @@ dependencies {
 
   api(libs.sqldelight.android)
   api(libs.sqldelight.coroutines)
+
+  testImplementation(projects.core.testing)
 }
 
 /**

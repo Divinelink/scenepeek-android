@@ -2,13 +2,14 @@ package com.divinelink.core.data.jellyseerr
 
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
+import com.divinelink.core.database.Database
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.database.TestJellyseerrAccountDetailsQueries
+import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.JellyfinLoginResponseApiFactory
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
@@ -29,13 +30,16 @@ class ProdJellyseerrRepositoryTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private val remote = TestJellyseerrService()
-  private val queries = TestJellyseerrAccountDetailsQueries()
+
+  private lateinit var database: Database
 
   @Before
   fun setUp() {
+    database = TestDatabaseFactory.createInMemoryDatabase()
+
     repository = ProdJellyseerrRepository(
       service = remote.mock,
-      queries = queries.mock,
+      queries = database.jellyseerrAccountDetailsQueries,
       dispatcher = testDispatcher,
     )
   }
@@ -129,5 +133,36 @@ class ProdJellyseerrRepositoryTest {
     )
 
     assertThat(result.first()).isEqualTo(Result.success(mappedResponse))
+  }
+
+  @Test
+  fun `test getJellyseerrAccountDetails after insertion`() = runTest {
+    val resultNull = repository.getJellyseerrAccountDetails()
+
+    assertThat(resultNull.first()).isNull()
+
+    repository.insertJellyseerrAccountDetails(
+      JellyseerrAccountDetailsFactory.jellyfin(),
+    )
+
+    val result = repository.getJellyseerrAccountDetails()
+
+    assertThat(result.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
+  }
+
+  @Test
+  fun `test clearJellyseerrAccountDetails`() = runTest {
+    repository.insertJellyseerrAccountDetails(
+      JellyseerrAccountDetailsFactory.jellyfin(),
+    )
+
+    val resultNotNull = repository.getJellyseerrAccountDetails()
+    assertThat(resultNotNull.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
+
+    repository.clearJellyseerrAccountDetails()
+
+    val result = repository.getJellyseerrAccountDetails()
+
+    assertThat(result.first()).isNull()
   }
 }

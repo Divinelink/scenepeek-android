@@ -30,4 +30,6 @@ dependencies {
 
   implementation(libs.androidx.compose.ui.test)
   implementation(libs.robolectric)
+
+  implementation(libs.sqldelight.driver)
 }
