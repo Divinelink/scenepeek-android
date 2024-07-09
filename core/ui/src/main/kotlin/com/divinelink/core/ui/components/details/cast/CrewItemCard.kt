@@ -43,7 +43,7 @@ fun CrewItemCard(
     MovieImage(
       modifier = Modifier,
       path = actor.profilePath,
-      errorPlaceHolder = painterResource(id = R.drawable.ic_cast_placeholder),
+      errorPlaceHolder = painterResource(id = R.drawable.core_ui_ic_person_placeholder),
     )
 
     Spacer(modifier = Modifier.height(4.dp))

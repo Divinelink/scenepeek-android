@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -27,6 +28,8 @@ fun CoilImage(
       .data(url)
       .crossfade(true)
       .build(),
+    error = painterResource(R.drawable.core_ui_ic_person_placeholder),
+    fallback = painterResource(R.drawable.core_ui_ic_person_placeholder),
     contentDescription = stringResource(id = R.string.core_ui_avatar_image_placeholder),
     contentScale = contentScale,
   )

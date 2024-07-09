@@ -16,7 +16,5 @@ interface JellyseerrService {
 
   suspend fun logout(address: String): Flow<Unit>
 
-  // http://192.168.1.100:5055/api/v1/auth/me
-
   suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<JellyseerrResponseBodyApi>
 }

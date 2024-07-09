@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class JellyfinLoginResponseApi(
   val id: Long,
   val displayName: String,
-  val avatar: String?,
+  val avatar: String? = null,
   val requestCount: Long,
 )
 
