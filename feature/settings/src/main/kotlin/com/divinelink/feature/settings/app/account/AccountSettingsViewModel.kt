@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.ui.UIText
@@ -24,6 +25,7 @@ class AccountSettingsViewModel @Inject constructor(
   private val createRequestTokenUseCase: CreateRequestTokenUseCase,
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
+  getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
   private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
 
@@ -32,6 +34,22 @@ class AccountSettingsViewModel @Inject constructor(
 
   init {
     observeSession()
+
+    getJellyseerrDetailsUseCase.invoke(Unit)
+      .distinctUntilChanged()
+      .onEach { result ->
+        result
+          .onSuccess { jellyseerrDetails ->
+            _viewState.update {
+              it.copy(jellyseerrAccountDetails = jellyseerrDetails)
+            }
+          }
+          .onFailure {
+            _viewState.update {
+              it.copy(jellyseerrAccountDetails = null)
+            }
+          }
+      }.launchIn(viewModelScope)
   }
 
   private fun observeSession() {

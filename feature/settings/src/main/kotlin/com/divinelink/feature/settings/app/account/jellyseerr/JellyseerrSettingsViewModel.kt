@@ -18,7 +18,6 @@ import com.divinelink.feature.settings.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -41,14 +40,21 @@ class JellyseerrSettingsViewModel @Inject constructor(
 
   init {
     getJellyseerrDetailsUseCase.invoke(Unit)
-      .distinctUntilChanged()
       .onEach { result ->
-        println("Jellyseerr details fetched : $result")
         result.onSuccess {
-          _uiState.update {
+          result.data?.let { accountDetails ->
+            _uiState.update {
+              it.copy(
+                jellyseerrState = JellyseerrState.LoggedIn(
+                  accountDetails = accountDetails,
+                  isLoading = false,
+                ),
+              )
+            }
+          } ?: _uiState.update {
             it.copy(
-              jellyseerrState = JellyseerrState.LoggedIn(
-                accountDetails = result.data,
+              jellyseerrState = JellyseerrState.Initial(
+                address = "",
                 isLoading = false,
               ),
             )

@@ -30,6 +30,7 @@ open class LogoutJellyseerrUseCase @Inject constructor(
       repository.logout(address).last().fold(
         onSuccess = {
           sessionStorage.clearJellyseerrSession()
+          repository.clearJellyseerrAccountDetails()
           Result.success(address)
         },
         onFailure = {

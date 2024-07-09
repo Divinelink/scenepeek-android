@@ -1,5 +1,8 @@
 package com.divinelink.feature.settings.app.account
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,10 +20,12 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.divinelink.core.ui.R as uiR
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Destination<SettingsGraph>
-fun AccountSettingsScreen(
+fun SharedTransitionScope.AccountSettingsScreen(
   navigator: DestinationsNavigator,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
@@ -46,6 +51,8 @@ fun AccountSettingsScreen(
       paddingValues = paddingValues,
       onLoginClick = viewModel::login,
       accountDetails = viewState.value.accountDetails,
+      jellyseerrAccountDetails = viewState.value.jellyseerrAccountDetails,
+      animatedVisibilityScope = animatedVisibilityScope,
       onLogoutClick = viewModel::logoutDialog,
       onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrSettingsScreenDestination()) },
     )

@@ -14,23 +14,17 @@ open class GetJellyseerrDetailsUseCase @Inject constructor(
   private val storage: PreferenceStorage,
   private val repository: JellyseerrRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, JellyseerrAccountDetails>(dispatcher) {
+) : FlowUseCase<Unit, JellyseerrAccountDetails?>(dispatcher) {
 
-  override fun execute(parameters: Unit): Flow<Result<JellyseerrAccountDetails>> = combine(
+  override fun execute(parameters: Unit): Flow<Result<JellyseerrAccountDetails?>> = combine(
     storage.jellyseerrAccount,
     storage.jellyseerrAddress,
     storage.jellyseerrSignInMethod,
     repository.getJellyseerrAccountDetails(),
   ) { account, address, signInMethod, jellyseerrDetails ->
     when {
-      account == null -> {
+      account == null && address == null && signInMethod == null -> {
         Result.failure(Exception("No account found."))
-      }
-      address == null -> {
-        Result.failure(Exception("No address found."))
-      }
-      signInMethod == null -> {
-        Result.failure(Exception("No sign in method found."))
       }
       else -> {
         Result.success(jellyseerrDetails)

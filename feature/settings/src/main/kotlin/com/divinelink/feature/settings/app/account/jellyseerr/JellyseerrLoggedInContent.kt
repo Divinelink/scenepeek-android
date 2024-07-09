@@ -1,6 +1,9 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,25 +17,27 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrState
-import com.divinelink.core.ui.AvatarImage
+import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
+import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun JellyseerrLoggedInContent(
+fun SharedTransitionScope.JellyseerrLoggedInContent(
   modifier: Modifier = Modifier,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   jellyseerrState: JellyseerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
 ) {
@@ -43,16 +48,28 @@ fun JellyseerrLoggedInContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     Row {
-      AvatarImage(
-        modifier = Modifier.size(MaterialTheme.dimensions.keyline_96),
+      CoilImage(
+        modifier = Modifier
+          .sharedElement(
+            state = rememberSharedContentState(key = SharedElementKeys.JELLYSEERR_AVATAR),
+            animatedVisibilityScope = animatedVisibilityScope,
+          )
+          .size(MaterialTheme.dimensions.keyline_96),
         url = jellyseerrState.accountDetails.avatar,
       )
 
       Text(
-        modifier = Modifier.padding(
-          start = MaterialTheme.dimensions.keyline_16,
-          top = MaterialTheme.dimensions.keyline_24,
-        ),
+        modifier = Modifier
+          .sharedBounds(
+            sharedContentState = rememberSharedContentState(
+              key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+            ),
+            animatedVisibilityScope = animatedVisibilityScope,
+          )
+          .padding(
+            start = MaterialTheme.dimensions.keyline_16,
+            top = MaterialTheme.dimensions.keyline_24,
+          ),
         text = jellyseerrState.accountDetails.displayName,
         style = MaterialTheme.typography.titleMedium,
       )
@@ -108,44 +125,44 @@ fun JellyseerrLoggedInContent(
   }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun JellyseerrBottomSheetContentPreview() {
-  AppTheme {
-    Surface {
-      JellyseerrLoggedInContent(
-        jellyseerrState = JellyseerrState.LoggedIn(
-          isLoading = false,
-          accountDetails = JellyseerrAccountDetails(
-            id = 1,
-            avatar = "https://www.example.com/avatar.jpg",
-            displayName = "Display Name",
-            requestCount = 100,
-          ),
+  AnimatedVisibilityScopeProvider {
+    JellyseerrLoggedInContent(
+      animatedVisibilityScope = it,
+      jellyseerrState = JellyseerrState.LoggedIn(
+        isLoading = false,
+        accountDetails = JellyseerrAccountDetails(
+          id = 1,
+          avatar = "https://www.example.com/avatar.jpg",
+          displayName = "Display Name",
+          requestCount = 100,
         ),
-        onLogoutClock = {},
-      )
-    }
+      ),
+      onLogoutClock = {},
+    )
   }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun JellyseerrBottomSheetContentLoadingPreview() {
-  AppTheme {
-    Surface {
-      JellyseerrLoggedInContent(
-        jellyseerrState = JellyseerrState.LoggedIn(
-          isLoading = true,
-          accountDetails = JellyseerrAccountDetails(
-            id = 1,
-            avatar = "https://www.example.com/avatar.jpg",
-            displayName = "Display Name",
-            requestCount = 100,
-          ),
+  AnimatedVisibilityScopeProvider {
+    JellyseerrLoggedInContent(
+      animatedVisibilityScope = it,
+      jellyseerrState = JellyseerrState.LoggedIn(
+        isLoading = true,
+        accountDetails = JellyseerrAccountDetails(
+          id = 1,
+          avatar = "https://www.example.com/avatar.jpg",
+          displayName = "Display Name",
+          requestCount = 100,
         ),
-        onLogoutClock = {},
-      )
-    }
+      ),
+      onLogoutClock = {},
+    )
   }
 }

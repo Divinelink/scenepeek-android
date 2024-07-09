@@ -1,7 +1,7 @@
 package com.divinelink.core.data.jellyseerr.repository
 
 import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.coroutines.mapToOne
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.database.jellyseerr.mapper.map
@@ -47,14 +47,20 @@ class ProdJellyseerrRepository @Inject constructor(
       throw error
     }
 
-  override fun getJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails> = queries
+  override fun getJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?> = queries
     .selectAll()
     .asFlow()
-    .mapToOne(dispatcher)
-    .map { it.map() }
+    .mapToOneOrNull(context = dispatcher)
+    .map { entity ->
+      entity?.map()
+    }
 
   override suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails) {
     queries.insertAccountDetails(accountDetails.mapToEntity())
+  }
+
+  override suspend fun clearJellyseerrAccountDetails() {
+    queries.removeAccountDetails()
   }
 
   override suspend fun logout(address: String): Flow<Result<Unit>> = service.logout(address)

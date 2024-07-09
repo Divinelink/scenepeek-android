@@ -16,7 +16,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountStatusFactory
+import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -37,8 +37,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   private lateinit var loginJellyseerrUseCase: FakeLoginJellyseerrUseCase
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
 
-  private val loggedInJellyseerr = Result.success(JellyseerrAccountStatusFactory.jellyseerr())
-  private val loggedInJellyfin = Result.success(JellyseerrAccountStatusFactory.jellyfin())
+  private val loggedInJellyseerr = Result.success(JellyseerrAccountDetailsFactory.jellyseerr())
+  private val loggedInJellyfin = Result.success(JellyseerrAccountDetailsFactory.jellyfin())
 
   @Before
   fun setUp() {
@@ -157,7 +157,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsDisplayed()
 
       val loggedInText = "You are logged in using your Jellyfin " +
-        "${JellyseerrAccountStatusFactory.jellyfin().username} account."
+        "${JellyseerrAccountDetailsFactory.jellyfin().username} account."
       onNodeWithText(loggedInText).assertIsDisplayed()
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON).assertIsDisplayed()
     }
@@ -211,7 +211,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
         .performClick()
-        .performTextInput(JellyseerrAccountStatusFactory.jellyseerr().username)
+        .performTextInput(JellyseerrAccountDetailsFactory.jellyseerr().username)
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD)
         .performClick()
@@ -219,7 +219,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD,
-      ).assert(hasText(JellyseerrAccountStatusFactory.jellyseerr().username))
+      ).assert(hasText(JellyseerrAccountDetailsFactory.jellyseerr().username))
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD,
@@ -238,7 +238,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsDisplayed()
 
       val loggedInText = "You are logged in using your Jellyseerr " +
-        "${JellyseerrAccountStatusFactory.jellyseerr().username} account."
+        "${JellyseerrAccountDetailsFactory.jellyseerr().username} account."
       onNodeWithText(loggedInText).assertIsDisplayed()
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON).assertIsDisplayed()
     }

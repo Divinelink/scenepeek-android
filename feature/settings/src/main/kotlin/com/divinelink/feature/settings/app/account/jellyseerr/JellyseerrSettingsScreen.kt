@@ -1,6 +1,9 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,10 +22,12 @@ import com.divinelink.feature.settings.navigation.SlideTransition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 @Destination<SettingsGraph>(style = SlideTransition::class)
-fun JellyseerrSettingsScreen(
+fun SharedTransitionScope.JellyseerrSettingsScreen(
   navigator: DestinationsNavigator,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: JellyseerrSettingsViewModel = hiltViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsState().value
@@ -60,6 +65,7 @@ fun JellyseerrSettingsScreen(
             .padding(paddingValues)
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
           jellyseerrState = state,
+          animatedVisibilityScope = animatedVisibilityScope,
           onLogoutClock = {
             viewModel.onJellyseerrInteraction(it)
           },

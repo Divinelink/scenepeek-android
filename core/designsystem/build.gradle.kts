@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+  api(libs.compose.ui.foundation)
   api(libs.compose.material.icons)
   api(libs.compose.material3)
   api(libs.compose.runtime)

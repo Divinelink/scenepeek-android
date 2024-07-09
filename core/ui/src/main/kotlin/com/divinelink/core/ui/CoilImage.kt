@@ -14,14 +14,13 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 
 @Composable
-fun AvatarImage(
+fun CoilImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Crop,
   url: String?,
 ) {
   AsyncImage(
-    modifier = modifier
-      .clip(CircleShape),
+    modifier = modifier.clip(CircleShape),
     model = ImageRequest.Builder(LocalContext.current)
       .memoryCachePolicy(CachePolicy.ENABLED)
       .diskCachePolicy(CachePolicy.ENABLED)

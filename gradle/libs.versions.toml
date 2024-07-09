@@ -44,6 +44,7 @@ hilt = "2.51.1"
 
 # Compose
 compose-bom = "2024.06.00"
+compose-foundation = "1.7.0-beta04"
 compose-destinations = "2.1.0-beta09"
 compose-hilt-navigation = "1.2.0"
 material3 = "1.2.1"
@@ -95,7 +96,7 @@ compose-material-icons = { group = "androidx.compose.material", name = "material
 compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "compose-hilt-navigation" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-compose-ui-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-ui-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose-foundation" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }

@@ -13,5 +13,5 @@ removeAccountDetails:
 DELETE FROM jellyseerrAccountDetailsEntity;
 
 insertAccountDetails:
-INSERT INTO jellyseerrAccountDetailsEntity(id,displayName,requestCount,avatar)
+INSERT OR REPLACE INTO jellyseerrAccountDetailsEntity (id, displayName, requestCount, avatar)
 VALUES ?;
