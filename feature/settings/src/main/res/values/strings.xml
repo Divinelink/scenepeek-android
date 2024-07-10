@@ -16,6 +16,7 @@
   <string name="AccountSettingsScreen__login">Login to TMDB</string>
   <string name="AccountSettingsScreen__logout">Logout</string>
   <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
+  <string name="feature_settings_logged_in">Logged in •\u00A0</string>
 
   <string name="feature_settings_currently_login_dialog_summary">You are currently logged in using your %s account. Do you want to logout?</string>
 

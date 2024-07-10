@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,16 +13,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.AppTheme
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
@@ -75,20 +76,37 @@ fun SharedTransitionScope.JellyseerrAccountItem(
               text = stringResource(R.string.feature_settings_jellyseerr_integration),
               style = MaterialTheme.typography.bodyLarge,
             )
-            Text(
-              modifier = Modifier.sharedBounds(
-                sharedContentState = rememberSharedContentState(
-                  key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+            Row(modifier = Modifier.fillMaxWidth()) {
+              Canvas(
+                modifier = Modifier
+                  .align(Alignment.CenterVertically)
+                  .padding(MaterialTheme.dimensions.keyline_4)
+                  .size(MaterialTheme.dimensions.keyline_8),
+              ) {
+                drawCircle(
+                  color = Color.Green,
+                  radius = 4.dp.toPx(),
+                )
+              }
+
+              Text(
+                text = stringResource(R.string.feature_settings_logged_in),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+              )
+
+              Text(
+                modifier = Modifier.sharedBounds(
+                  sharedContentState = rememberSharedContentState(
+                    key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+                  ),
+                  animatedVisibilityScope = animatedVisibilityScope,
                 ),
-                animatedVisibilityScope = animatedVisibilityScope,
-              ),
-              text = stringResource(
-                id = R.string.AccountSettingsScreen__logged_in_as,
-                details.displayName,
-              ),
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.secondary,
-            )
+                text = details.displayName,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+              )
+            }
           }
         }
       }
@@ -96,28 +114,28 @@ fun SharedTransitionScope.JellyseerrAccountItem(
   }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun AccountItemPreview() {
-  AppTheme {
-    Surface {
-      Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
-        AccountItem(
-          accountDetails = null,
-          onLoginClick = {},
-          onLogoutClick = {},
-        )
+  AnimatedVisibilityScopeProvider {
+    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
+      JellyseerrAccountItem(
+        accountDetails = null,
+        animatedVisibilityScope = it,
+        onNavigateToJellyseerrLogin = {},
+      )
 
-        AccountItem(
-          accountDetails = AccountDetails(
-            id = 123,
-            username = "Jessee Pinkman",
-            name = "name",
-          ),
-          onLoginClick = {},
-          onLogoutClick = {},
-        )
-      }
+      JellyseerrAccountItem(
+        accountDetails = JellyseerrAccountDetails(
+          id = 1,
+          displayName = "John Doe",
+          avatar = "https://example.com/avatar.jpg",
+          requestCount = 100,
+        ),
+        animatedVisibilityScope = it,
+        onNavigateToJellyseerrLogin = {},
+      )
     }
   }
 }

@@ -13,18 +13,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.divinelink.feature.settings.navigation.SlideTransition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Destination<SettingsGraph>(style = SlideTransition::class)
+@Destination<SettingsGraph>
 fun SharedTransitionScope.JellyseerrSettingsScreen(
   navigator: DestinationsNavigator,
   animatedVisibilityScope: AnimatedVisibilityScope,
@@ -70,7 +68,9 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
             viewModel.onJellyseerrInteraction(it)
           },
         )
-        JellyseerrState.Loading -> LoadingContent()
+        JellyseerrState.Loading -> {
+          // Do nothing
+        }
       }
     }
   }

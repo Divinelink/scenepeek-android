@@ -72,6 +72,7 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
             top = MaterialTheme.dimensions.keyline_24,
           ),
         text = jellyseerrState.accountDetails.displayName,
+        color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleMedium,
       )
     }

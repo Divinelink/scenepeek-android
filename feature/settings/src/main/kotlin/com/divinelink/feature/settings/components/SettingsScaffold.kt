@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,9 @@ fun SettingsScaffold(
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
   Scaffold(
+    modifier = modifier
+      .fillMaxSize()
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       TopAppBar(
         modifier = Modifier.testTag(TestTags.Settings.TOP_APP_BAR),
@@ -60,7 +64,6 @@ fun SettingsScaffold(
         colors = topAppBarColors(),
       )
     },
-    modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     content = content,
   )
 }
