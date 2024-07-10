@@ -196,6 +196,21 @@ class JellyseerrSettingsViewModelTest {
       )
   }
 
+  @Test
+  fun `test getJellyseerrAccount with null clear logged in data`() = runTest {
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(Result.success(null))
+      .buildViewModel()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.Initial(
+            isLoading = false,
+            address = "",
+          ),
+        ),
+      )
+  }
+
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
     jellyseerrState: JellyseerrState = JellyseerrState.Initial(

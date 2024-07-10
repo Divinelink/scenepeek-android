@@ -29,6 +29,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     loginJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 
+  fun mockJellyseerrAccountDetailsResponse(response: Result<JellyseerrAccountDetails?>) = apply {
+    getJellyseerrDetailsUseCase.mockSuccess(response)
+  }
+
   fun onUserAddressChange(address: String) = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnAddressChange(address))
   }

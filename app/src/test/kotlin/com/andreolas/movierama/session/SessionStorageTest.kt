@@ -1,9 +1,11 @@
 package com.andreolas.movierama.session
 
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Test
@@ -124,5 +126,36 @@ class SessionStorageTest {
     sessionStorage.setAccountId("account_id")
 
     assertThat(preferenceStorage.accountId.value).isEqualTo("account_id")
+  }
+
+  @Test
+  fun `test clearJellyseerrSession clears jellyseerr data`() = runTest {
+    val preferenceStorage = FakePreferenceStorage(
+      jellyseerrAccount = "Zabaob",
+      jellyseerrAddress = "http://localhost:5050",
+      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+    )
+    val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(
+      jellyseerrAuthCookie = "123456789qwertyuiop",
+    )
+
+    val sessionStorage = SessionStorage(
+      preferenceStorage,
+      encryptedPreferenceStorage,
+    )
+
+    assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("Zabaob")
+    assertThat(preferenceStorage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
+    assertThat(preferenceStorage.jellyseerrSignInMethod.first()).isEqualTo(
+      JellyseerrLoginMethod.JELLYSEERR.name,
+    )
+    assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isEqualTo("123456789qwertyuiop")
+
+    sessionStorage.clearJellyseerrSession()
+
+    assertThat(preferenceStorage.jellyseerrAccount.first()).isNull()
+    assertThat(preferenceStorage.jellyseerrAddress.first()).isNull()
+    assertThat(preferenceStorage.jellyseerrSignInMethod.first()).isNull()
+    assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isNull()
   }
 }

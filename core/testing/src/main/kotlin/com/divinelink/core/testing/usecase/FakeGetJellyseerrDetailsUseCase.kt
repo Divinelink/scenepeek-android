@@ -23,7 +23,7 @@ class FakeGetJellyseerrDetailsUseCase {
     )
   }
 
-  fun mockSuccess(response: Result<JellyseerrAccountDetails>) {
+  fun mockSuccess(response: Result<JellyseerrAccountDetails?>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }
