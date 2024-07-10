@@ -178,12 +178,6 @@ dependencies {
   testImplementation(libs.ui.automator)
   debugImplementation(libs.androidx.test.ktx)
 
-  testImplementation(libs.datastore)
-  testImplementation(libs.datastore.core)
-  testImplementation(libs.datastore.preferences)
-  testImplementation(libs.datastore.preferences.core)
-  testImplementation(libs.encrypted.preferences)
-
   testImplementation(libs.kotlin.test.junit)
 
   androidTestImplementation(libs.androidx.compose.ui.test)

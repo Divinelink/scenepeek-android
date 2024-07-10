@@ -7,8 +7,8 @@ import javax.inject.Singleton
 
 @Singleton
 class SessionStorage @Inject constructor(
-  private val storage: PreferenceStorage,
-  private val encryptedStorage: EncryptedStorage,
+  val storage: PreferenceStorage,
+  val encryptedStorage: EncryptedStorage,
 ) {
   val sessionId: String?
     get() = encryptedStorage.sessionId

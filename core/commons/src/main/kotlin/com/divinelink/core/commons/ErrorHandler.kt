@@ -1,6 +1,6 @@
 package com.divinelink.core.commons
 
-import com.divinelink.core.commons.ApiConstants.HTTP_ERROR_CODE
+import com.divinelink.core.commons.exception.InvalidStatusException
 
 class ErrorHandler(private val throwable: Throwable) {
 
@@ -22,7 +22,7 @@ class ErrorHandler(private val throwable: Throwable) {
     return this
   }
 
-  inline fun <reified T : Throwable> on(noinline action: (ErrorHandler) -> Unit): ErrorHandler =
+  inline fun <reified T : Exception> on(noinline action: (ErrorHandler) -> Unit): ErrorHandler =
     apply {
       exceptionActions[T::class.java] = action
     }
@@ -64,12 +64,18 @@ class ErrorHandler(private val throwable: Throwable) {
   }
 
   /**
-   * Our [com.divinelink.core.network.client.androidClient] always throws an [Exception]
-   * with the status code in the message. This method extracts the status code from the message.
+   * Our [com.divinelink.core.network.client.androidClient] always throws [InvalidStatusException]
+   * This method extracts the status code from the message.
    */
-  private fun getErrorCode(throwable: Throwable): Int {
-    val message = throwable.message ?: ""
-    val statusCode = message.substringAfter(HTTP_ERROR_CODE).replace("\"", "")
-    return statusCode.toIntOrNull() ?: 0
+  private fun getErrorCode(throwable: Throwable): Int = when {
+    throwable.cause is InvalidStatusException -> {
+      val status = throwable.cause as InvalidStatusException
+      status.status
+    }
+    throwable is InvalidStatusException -> {
+      val status = throwable
+      status.status
+    }
+    else -> -1
   }
 }

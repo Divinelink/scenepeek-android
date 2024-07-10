@@ -30,4 +30,12 @@ dependencies {
 
   implementation(libs.androidx.compose.ui.test)
   implementation(libs.robolectric)
+
+  implementation(libs.sqldelight.driver)
+
+  api(libs.datastore)
+  api(libs.datastore.core)
+  api(libs.datastore.preferences)
+  api(libs.datastore.preferences.core)
+  api(libs.encrypted.preferences)
 }

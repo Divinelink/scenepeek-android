@@ -1,43 +1,23 @@
 package com.andreolas.movierama.base.storage
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
-import androidx.test.platform.app.InstrumentationRegistry
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.testing.datastore.TestDatastoreFactory
+import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-
-private const val TEST_DATASTORE_NAME: String = "test_datastore"
 
 @RunWith(RobolectricTestRunner::class)
 class DataStorePreferenceStorageTest {
 
   private lateinit var storage: DataStorePreferenceStorage
 
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
-  private val testDispatcher = mainDispatcherRule.testDispatcher
-
-  private val testContext: Context = InstrumentationRegistry.getInstrumentation().targetContext
-
-  private val testCoroutineScope = TestScope(testDispatcher)
-
-  private val fakeDataStore: DataStore<Preferences> =
-    PreferenceDataStoreFactory.create(
-      scope = testCoroutineScope,
-      produceFile = { testContext.preferencesDataStoreFile(TEST_DATASTORE_NAME) },
-    )
+  private val fakeDataStore = TestDatastoreFactory.create()
 
   @Test
   fun `test selectTheme sets selectedTheme`() = runTest {
@@ -147,5 +127,73 @@ class DataStorePreferenceStorageTest {
     storage.clearAccountId()
 
     assertThat(storage.accountId.first()).isNull()
+  }
+
+  @Test
+  fun `test setJellyseerrAddress`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    assertThat(storage.jellyseerrAddress.first()).isEqualTo(null)
+
+    storage.setJellyseerrAddress("http://localhost:5050")
+    assertThat(storage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
+  }
+
+  @Test
+  fun `test clearJellyseerrAddress`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.setJellyseerrAddress("http://localhost:5050")
+    assertThat(storage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
+
+    storage.clearJellyseerrAddress()
+    assertThat(storage.jellyseerrAddress.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test setJellyseerrAccount`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+    assertThat(storage.jellyseerrAccount.first()).isEqualTo(null)
+
+    val displayName = JellyseerrAccountDetailsFactory.jellyseerr().displayName
+
+    storage.setJellyseerrAccount(displayName)
+    assertThat(storage.jellyseerrAccount.first()).isEqualTo(displayName)
+  }
+
+  @Test
+  fun `test clearJellyseerrAccount`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+    val displayName = JellyseerrAccountDetailsFactory.jellyseerr().displayName
+
+    storage.setJellyseerrAccount(displayName)
+    assertThat(storage.jellyseerrAccount.first()).isEqualTo(displayName)
+
+    storage.clearJellyseerrAccount()
+    assertThat(storage.jellyseerrAccount.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test testJellyseerrSignInMethod`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+    assertThat(storage.jellyseerrSignInMethod.first()).isEqualTo(null)
+
+    storage.setJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYSEERR.name)
+    assertThat(
+      storage.jellyseerrSignInMethod.first(),
+    ).isEqualTo(JellyseerrLoginMethod.JELLYSEERR.name)
+  }
+
+  @Test
+  fun `test clearJellyseerrSignInMethod`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.setJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYSEERR.name)
+    assertThat(
+      storage.jellyseerrSignInMethod.first(),
+    ).isEqualTo(JellyseerrLoginMethod.JELLYSEERR.name)
+
+    storage.clearJellyseerrSignInMethod()
+    assertThat(storage.jellyseerrSignInMethod.first()).isEqualTo(null)
   }
 }

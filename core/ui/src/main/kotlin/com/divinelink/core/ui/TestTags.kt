@@ -40,6 +40,8 @@ object TestTags {
       const val LOGGED_IN_BOTTOM_SHEET = "Jellyseerr Logged In Bottom Sheet"
       const val ADDRESS_TEXT_FIELD = "Jellyseerr Address Text Field"
 
+      const val LOGGED_IN_AVATAR = "Jellyseerr Logged In Avatar"
+
       const val JELLYFIN_EXPANDABLE_CARD_BUTTON = "Jellyfin Expandable Card"
       const val JELLYFIN_USERNAME_TEXT_FIELD = "Jellyfin Username"
       const val JELLYFIN_PASSWORD_TEXT_FIELD = "Jellyfin Password"

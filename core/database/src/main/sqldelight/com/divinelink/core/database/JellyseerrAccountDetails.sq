@@ -1,0 +1,17 @@
+CREATE TABLE jellyseerrAccountDetailsEntity (
+  id INTEGER PRIMARY KEY NOT NULL,
+  displayName TEXT NOT NULL,
+  requestCount INTEGER NOT NULL,
+  avatar TEXT
+);
+
+selectAll:
+SELECT *
+FROM jellyseerrAccountDetailsEntity;
+
+removeAccountDetails:
+DELETE FROM jellyseerrAccountDetailsEntity;
+
+insertAccountDetails:
+INSERT OR REPLACE INTO jellyseerrAccountDetailsEntity (id, displayName, requestCount, avatar)
+VALUES ?;

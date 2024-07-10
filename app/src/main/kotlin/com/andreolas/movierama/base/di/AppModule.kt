@@ -5,9 +5,9 @@ import android.content.Context
 import androidx.room.Room
 import com.divinelink.core.commons.di.ApplicationScope
 import com.divinelink.core.commons.di.DefaultDispatcher
+import com.divinelink.core.database.AppDatabase
+import com.divinelink.core.database.AppDatabase.Companion.DB_NAME
 import com.divinelink.core.network.client.RestClient
-import com.divinelink.database.AppDatabase
-import com.divinelink.database.AppDatabase.Companion.DB_NAME
 import com.google.firebase.ktx.BuildConfig
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig

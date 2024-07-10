@@ -11,11 +11,12 @@
   <string name="AppearanceSettingsScreen__material_you">Material You</string>
   <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
 
-  <!-- AccountSettingsFragment -->
+  <!-- AccountSettingsScreen -->
   <string name="AccountSettingsScreen__account">Account</string>
   <string name="AccountSettingsScreen__login">Login to TMDB</string>
   <string name="AccountSettingsScreen__logout">Logout</string>
   <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
+  <string name="feature_settings_logged_in">Logged in •\u00A0</string>
 
   <string name="feature_settings_currently_login_dialog_summary">You are currently logged in using your %s account. Do you want to logout?</string>
 
@@ -29,18 +30,18 @@
   <string name="feature_settings_login_using_jellyseerr">Use your Jellyseerr account</string>
 
   <string name="feature_settings_username">Username</string>
-  <string name="feature_settings_username_or_email">Email address / Username</string>
+  <string name="feature_settings_username_or_email">Email address</string>
   <string name="feature_settings_password">Password</string>
 
   <string name="feature_settings_additional_features">Additional features</string>
   <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
 
+  <!-- JellyseerrSettingsScreen -->
   <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
+  <string name="feature_settings_jellyseerr_account">Jellyseerr account</string>
+  <string name="feature_settings_jellyseerr_total_requests">Total requests</string>
 
-  <string name="feature_settings_jellyfin_already_logged_in">You are logged in using your Jellyfin %s account.</string>
-  <string name="feature_settings_jellyseerr_already_logged_in">You are logged in using your Jellyseerr %s account.</string>
-
-  <!-- HelpSettingsFragment -->
+  <!-- HelpSettingsScreen -->
   <string name="HelpSettingsFragment__help">Help</string>
   <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
   <string name="HelpSettingsFragment__version">Version</string>

@@ -1,18 +1,18 @@
 package com.divinelink.core.model.jellyseerr
 
 sealed class JellyseerrState(
-  open var address: String,
   open var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
   open var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
 ) {
+  data object Loading : JellyseerrState()
+
   data class Initial(
+    val address: String,
     val isLoading: Boolean,
     val preferredOption: JellyseerrLoginMethod? = null,
-    override var address: String = "",
     override var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
     override var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
   ) : JellyseerrState(
-    address = address,
     jellyfinLogin = jellyfinLogin,
     jellyseerrLogin = jellyseerrLogin,
   ) {
@@ -21,8 +21,8 @@ sealed class JellyseerrState(
 
   data class LoggedIn(
     val isLoading: Boolean,
-    val loginData: JellyseerrAccountStatus,
-  ) : JellyseerrState(address = loginData.address)
+    val accountDetails: JellyseerrAccountDetails,
+  ) : JellyseerrState()
 }
 
 val JellyseerrState.loginParams: JellyseerrLoginParams?

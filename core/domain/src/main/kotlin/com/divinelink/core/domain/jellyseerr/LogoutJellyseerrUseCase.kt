@@ -3,7 +3,6 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,13 +13,12 @@ import javax.inject.Inject
 
 open class LogoutJellyseerrUseCase @Inject constructor(
   private val repository: JellyseerrRepository,
-  private val storage: PreferenceStorage,
   private val sessionStorage: SessionStorage,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, Unit>(dispatcher) {
+) : FlowUseCase<Unit, String>(dispatcher) {
 
-  override fun execute(parameters: Unit): Flow<Result<Unit>> = flow {
-    val address = storage.jellyseerrAddress.first()
+  override fun execute(parameters: Unit): Flow<Result<String>> = flow {
+    val address = sessionStorage.storage.jellyseerrAddress.first()
     if (address == null) {
       emit(Result.failure(Exception("No address found.")))
       return@flow
@@ -30,7 +28,8 @@ open class LogoutJellyseerrUseCase @Inject constructor(
       repository.logout(address).last().fold(
         onSuccess = {
           sessionStorage.clearJellyseerrSession()
-          Result.success(Unit)
+          repository.clearJellyseerrAccountDetails()
+          Result.success(address)
         },
         onFailure = {
           Result.failure(it)
