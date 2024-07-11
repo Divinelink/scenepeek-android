@@ -4,6 +4,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.commons.BuildConfig
+import com.divinelink.core.commons.BuildConfigProvider
+import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
@@ -16,7 +18,10 @@ import com.divinelink.core.commons.R as commonR
 
 @Composable
 @Destination<SettingsGraph>
-fun HelpSettingsScreen(navigator: DestinationsNavigator) {
+fun HelpSettingsScreen(
+  navigator: DestinationsNavigator,
+  buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
+) {
   SettingsScaffold(
     title = stringResource(id = R.string.HelpSettingsFragment__help),
     onNavigationClick = navigator::navigateUp,
@@ -24,7 +29,7 @@ fun HelpSettingsScreen(navigator: DestinationsNavigator) {
 
     val version = UIText.ResourceText(commonR.string.version_name)
 
-    val buildVersion = if (BuildConfig.DEBUG) {
+    val buildVersion = if (buildConfigProvider.isDebug) {
       UIText.StringText(version.getString() + " ${BuildConfig.BUILD_TYPE}")
     } else {
       version

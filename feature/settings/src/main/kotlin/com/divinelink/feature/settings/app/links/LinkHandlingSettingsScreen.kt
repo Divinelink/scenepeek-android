@@ -1,8 +1,5 @@
 package com.divinelink.feature.settings.app.links
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -13,13 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.core.content.ContextCompat.startActivity
+import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsTextItem
@@ -33,11 +32,39 @@ import com.divinelink.core.commons.R as CoreR
 fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
   val context = LocalContext.current
 
+  val directions = buildAnnotatedString {
+    append(stringResource(id = R.string.feature_settings_enable_link_handling_step_1))
+    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+      append(stringResource(id = R.string.feature_settings_enable_link_handling_step_2))
+    }
+    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+      append(stringResource(id = R.string.feature_settings_enable_link_handling_step_3))
+    }
+    append(stringResource(id = R.string.feature_settings_enable_link_handling_step_4))
+    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+      append(
+        stringResource(
+          id = R.string.feature_settings_enable_link_handling_step_5,
+          stringResource(CoreR.string.core_commons_app_name),
+        ),
+      )
+    }
+    append(
+      stringResource(
+        id = R.string.feature_settings_enable_link_handling_step_6,
+        stringResource(CoreR.string.core_commons_app_name),
+      ),
+    )
+  }
+
   SettingsScaffold(
     title = stringResource(id = R.string.feature_settings_link_handling),
     onNavigationClick = navigator::navigateUp,
   ) {
-    LazyColumn(contentPadding = it) {
+    LazyColumn(
+      modifier = Modifier.testTag(TestTags.LAZY_COLUMN),
+      contentPadding = it,
+    ) {
       item {
         SettingsTextItem(
           title = stringResource(
@@ -52,32 +79,10 @@ fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
       }
 
       item {
-        val directions = buildAnnotatedString {
-          append(stringResource(id = R.string.feature_settings_enable_link_handling_step_1))
-          withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-            append(stringResource(id = R.string.feature_settings_enable_link_handling_step_2))
-          }
-          withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-            append(stringResource(id = R.string.feature_settings_enable_link_handling_step_3))
-          }
-          append(stringResource(id = R.string.feature_settings_enable_link_handling_step_4))
-          withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-            append(
-              stringResource(
-                id = R.string.feature_settings_enable_link_handling_step_5,
-                stringResource(CoreR.string.core_commons_app_name),
-              ),
-            )
-          }
-          append(
-            stringResource(
-              id = R.string.feature_settings_enable_link_handling_step_6,
-              stringResource(CoreR.string.core_commons_app_name),
-            ),
-          )
-        }
         Text(
-          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+          modifier = Modifier
+            .testTag(TestTags.Settings.LinkHandling.DIRECTIONS_TEXT)
+            .padding(MaterialTheme.dimensions.keyline_16),
           text = directions,
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.secondary,
@@ -88,14 +93,9 @@ fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
         Row {
           Spacer(modifier = Modifier.weight(1f))
           Button(
-            onClick = {
-              val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                data = Uri.fromParts("package", context.packageName, null)
-              }
-              startActivity(context, intent, null)
-            },
+            onClick = { AppSettingsUtil.openAppDetails(context) },
           ) {
-            Text("Open Settings")
+            Text(stringResource(id = R.string.feature_settings_open_settings))
           }
           Spacer(modifier = Modifier.weight(1f))
         }

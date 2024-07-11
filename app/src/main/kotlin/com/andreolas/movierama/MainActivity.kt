@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
     setContent {
       val darkTheme = shouldUseDarkTheme(
-        uiState = viewModel.viewState.collectAsState().value,
+        uiState = viewModel.uiState.collectAsState().value,
         selectedTheme = viewModel.theme.collectAsState().value,
       )
 
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
         MovieApp(
-          uiState = viewModel.viewState.collectAsState().value,
+          uiState = viewModel.uiState.collectAsState().value,
           uiEvent = viewModel.uiEvent.collectAsState().value,
           onConsumeEvent = viewModel::consumeUiEvent,
         )

@@ -3,6 +3,7 @@ package com.andreolas.movierama
 import androidx.lifecycle.ViewModel
 import com.andreolas.movierama.ui.ThemedActivityDelegate
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.feature.details.ui.DetailsNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +15,9 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
   ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
 
-  private val _viewState: MutableStateFlow<MainUiState> =
+  private val _uiState: MutableStateFlow<MainUiState> =
     MutableStateFlow(MainUiState.Completed)
-  val viewState: StateFlow<MainUiState> = _viewState
+  val uiState: StateFlow<MainUiState> = _uiState
 
   private val _uiEvent: MutableStateFlow<MainUiEvent> = MutableStateFlow(MainUiEvent.None)
   val uiEvent: StateFlow<MainUiEvent> = _uiEvent
@@ -32,15 +33,19 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
   fun handleDeepLink(url: String?) {
     val (id, mediaType) = url.extractDetailsFromDeepLink() ?: return
 
-    updateUiEvent(
-      MainUiEvent.NavigateToDetails(
-        DetailsNavArguments(
-          id = id,
-          mediaType = mediaType,
-          isFavorite = false,
+    if (MediaType.from(mediaType) != MediaType.UNKNOWN) {
+      updateUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = id,
+            mediaType = mediaType,
+            isFavorite = false,
+          ),
         ),
-      ),
-    )
+      )
+    } else {
+      updateUiEvent(MainUiEvent.None)
+    }
   }
 
   /**
@@ -58,14 +63,14 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
     }
 
     private fun setRemoteConfig() {
-      _viewState.value = MainViewState.Loading
+      _uiState.value = MainViewState.Loading
       viewModelScope.launch {
         val result = setRemoteConfigUseCase.invoke(Unit)
 
         if (result.isSuccess) {
-          _viewState.value = MainViewState.Completed
+          _uiState.value = MainViewState.Completed
         } else {
-          _viewState.value = MainViewState.Error(
+          _uiState.value = MainViewState.Error(
             UIText.StringText("Something went wrong. Trying again..."),
           )
         }

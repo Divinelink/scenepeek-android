@@ -1,7 +1,9 @@
 package com.andreolas.movierama.main.ui
 
+import com.andreolas.movierama.MainUiEvent
 import com.andreolas.movierama.MainUiState
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.feature.details.ui.DetailsNavArguments
 import org.junit.Rule
 import org.junit.Test
 
@@ -17,9 +19,85 @@ class MainViewModelTest {
     robot
       .mockSetRemoteConfigResult(Unit)
       .buildViewModel()
-      .assertViewState(
+      .assertUiState(
         MainUiState.Completed,
       )
+  }
+
+  @Test
+  fun `test handleDeepLink with movie deeplink`() {
+    val url = "https://www.themoviedb.org/movie/693134-dune-part-two"
+
+    robot
+      .buildViewModel()
+      .assertUiEvent(MainUiEvent.None)
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = 693134,
+            mediaType = "movie",
+            isFavorite = false,
+          ),
+        ),
+      )
+      .onConsumeUiEvent()
+      .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeepLink with tv deeplink`() {
+    val url = "https://www.themoviedb.org/tv/693134-dune-part-two"
+
+    robot
+      .buildViewModel()
+      .assertUiEvent(MainUiEvent.None)
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = 693134,
+            mediaType = "tv",
+            isFavorite = false,
+          ),
+        ),
+      )
+      .onConsumeUiEvent()
+      .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeepLink with person deeplink`() {
+    val url = "https://www.themoviedb.org/person/693134-dune-part-two"
+
+    robot
+      .buildViewModel()
+      .assertUiEvent(MainUiEvent.None)
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = 693134,
+            mediaType = "person",
+            isFavorite = false,
+          ),
+        ),
+      )
+      .onConsumeUiEvent()
+      .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeepLink with invalid deeplink`() {
+    val url = "https://www.themoviedb.org/invalid/693134-dune-part-two"
+
+    robot
+      .buildViewModel()
+      .assertUiEvent(MainUiEvent.None)
+      .onHandleDeeplink(url)
+      .assertUiEvent(MainUiEvent.None)
+      .onConsumeUiEvent()
+      .assertUiEvent(MainUiEvent.None)
   }
 
 //  @Test

@@ -37,6 +37,7 @@
   <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
 
   <!-- Link Handling -->
+  <string name="feature_settings_open_settings">Open settings</string>
   <string name="feature_settings_link_handling_dialog_title">Allow %s to handle specific URLs?</string>
   <string name="feature_settings_link_handling_dialog_summary">%s can open specific URLs in the app. This can be useful for opening links to movies and TV shows directly in the app.</string>
 

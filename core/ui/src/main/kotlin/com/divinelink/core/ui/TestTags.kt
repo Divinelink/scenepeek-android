@@ -7,6 +7,8 @@ object TestTags {
   const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
   const val LOADING_PROGRESS = "Loading Progress Bar"
 
+  const val LAZY_COLUMN = "Lazy Column"
+
   object Details {
     const val YOUR_RATING = "Details Your Rating"
     const val RATE_DIALOG = "Details Rate Dialog"
@@ -52,6 +54,10 @@ object TestTags {
 
       const val JELLYSEERR_LOGIN_BUTTON = "Jellyseerr Login Button"
       const val JELLYSEERR_LOGOUT_BUTTON = "Jellyseerr Logout Button"
+    }
+
+    object LinkHandling {
+      const val DIRECTIONS_TEXT = "Link Handling Directions"
     }
   }
 
