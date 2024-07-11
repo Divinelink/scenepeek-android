@@ -1,6 +1,4 @@
 <resources>
-  <string name="app_name">MovieRama</string>
-
   <string name="ok">OK</string>
   <string name="close">Close</string>
   <string name="save">Save</string>

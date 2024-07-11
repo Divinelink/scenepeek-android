@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,7 +20,6 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
-import com.divinelink.feature.settings.R
 
 @Composable
 fun SettingsTextItem(
@@ -75,13 +76,13 @@ private fun SettingsScreenPreview() {
     Surface {
       Column {
         SettingsTextItem(
-          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_appearance_24),
+          icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
           title = "Version",
           summary = "1.0.0 Debug",
         )
 
         SettingsTextItem(
-          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_appearance_24),
+          icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
           title = "Version",
           summary = null,
         )

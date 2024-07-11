@@ -36,6 +36,18 @@
   <string name="feature_settings_additional_features">Additional features</string>
   <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
 
+  <!-- Link Handling -->
+  <string name="feature_settings_link_handling_dialog_title">Allow %s to handle specific URLs?</string>
+  <string name="feature_settings_link_handling_dialog_summary">%s can open specific URLs in the app. This can be useful for opening links to movies and TV shows directly in the app.</string>
+
+  <string name="feature_settings_enable_link_handling_step_1">To enable this, follow these steps\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_2">1. Open the settings by pressing the button below.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_3">2. Open by default or Set as default section.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_4">You might find this option directly or under "Advanced" settings, depending on your device.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_5">3. Choose "Open supported links" for %s\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_6">(some devices have this listed under "Default Apps" in the main settings followed by selecting %s for relevant categories)\n\n</string>
+
+
   <!-- JellyseerrSettingsScreen -->
   <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
   <string name="feature_settings_jellyseerr_account">Jellyseerr account</string>
@@ -50,6 +62,7 @@
   <string name="preferences__none">None</string>
   <string name="preferences__account">Account</string>
   <string name="preferences__appearance">Appearance</string>
+  <string name="feature_settings_link_handling">Link handling</string>
   <string name="preferences__help">Help</string>
   <string name="preferences__theme">Theme</string>
   <string name="preferences__light_theme">Light</string>
