@@ -11,6 +11,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -21,23 +22,43 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.andreolas.movierama.MainViewState
+import com.andreolas.movierama.MainUiEvent
+import com.andreolas.movierama.MainUiState
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-fun MovieApp(uiState: MainViewState) {
+fun MovieApp(
+  uiState: MainUiState,
+  uiEvent: MainUiEvent,
+  onConsumeEvent: () -> Unit,
+) {
   val navController: NavHostController = rememberNavController()
   val navigator = navController.rememberDestinationsNavigator()
 
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
+
+  LaunchedEffect(uiEvent) {
+    when (uiEvent) {
+      is MainUiEvent.NavigateToDetails -> {
+        navigator.navigate(
+          direction = DetailsScreenDestination(uiEvent.navArgs),
+        )
+        onConsumeEvent()
+      }
+      MainUiEvent.None -> {
+        // Do nothing
+      }
+    }
+  }
 
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
@@ -99,11 +120,11 @@ fun MovieApp(uiState: MainViewState) {
           .padding(it),
       ) {
         when (uiState) {
-          is MainViewState.Completed -> AppNavHost(
+          is MainUiState.Completed -> AppNavHost(
             navController = navController,
             startRoute = HomeScreenDestination,
           )
-          MainViewState.Loading -> LoadingContent()
+          MainUiState.Loading -> LoadingContent()
         }
       }
     }

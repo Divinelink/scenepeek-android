@@ -1,7 +1,7 @@
 package com.andreolas.movierama.main.ui
 
+import com.andreolas.movierama.MainUiState
 import com.andreolas.movierama.MainViewModel
-import com.andreolas.movierama.MainViewState
 import com.andreolas.movierama.fakes.usecase.FakeSetRemoteConfigUseCase
 import com.andreolas.movierama.test.util.fakes.FakeThemedActivityDelegate
 import com.divinelink.core.testing.MainDispatcherRule
@@ -23,7 +23,7 @@ class MainViewModelRobot {
     )
   }
 
-  fun assertViewState(expectedViewState: MainViewState) = apply {
+  fun assertViewState(expectedViewState: MainUiState) = apply {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 

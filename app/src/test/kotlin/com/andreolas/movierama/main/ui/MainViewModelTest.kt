@@ -1,6 +1,6 @@
 package com.andreolas.movierama.main.ui
 
-import com.andreolas.movierama.MainViewState
+import com.andreolas.movierama.MainUiState
 import com.divinelink.core.testing.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +18,7 @@ class MainViewModelTest {
       .mockSetRemoteConfigResult(Unit)
       .buildViewModel()
       .assertViewState(
-        MainViewState.Completed,
+        MainUiState.Completed,
       )
   }
 
