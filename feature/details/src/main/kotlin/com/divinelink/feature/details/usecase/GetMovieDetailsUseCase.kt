@@ -3,6 +3,7 @@ package com.divinelink.feature.details.usecase
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
@@ -31,9 +32,18 @@ open class GetMovieDetailsUseCase @Inject constructor(
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<DetailsRequestApi, MovieDetailsResult>(dispatcher) {
   override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> {
+    if (parameters == DetailsRequestApi.Unknown) {
+      return flow {
+        emit(Result.failure(MediaDetailsException()))
+      }
+    }
+
     val requestApi = when (parameters) {
       is DetailsRequestApi.Movie -> parameters
       is DetailsRequestApi.TV -> parameters
+      DetailsRequestApi.Unknown -> return flow {
+        emit(Result.failure(InvalidMediaTypeException()))
+      }
     }
 
     val favorite = flow {
@@ -49,6 +59,11 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val detailsRequestApi = when (parameters) {
       is DetailsRequestApi.Movie -> DetailsRequestApi.Movie(parameters.id)
       is DetailsRequestApi.TV -> DetailsRequestApi.TV(parameters.id)
+      DetailsRequestApi.Unknown -> {
+        return flow {
+          emit(Result.failure(InvalidMediaTypeException()))
+        }
+      }
     }
 
     val details = repository.fetchMovieDetails(
@@ -60,6 +75,11 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val reviewsApi = when (parameters) {
       is DetailsRequestApi.Movie -> ReviewsRequestApi.Movie(parameters.id)
       is DetailsRequestApi.TV -> ReviewsRequestApi.TV(parameters.id)
+      DetailsRequestApi.Unknown -> {
+        return flow {
+          emit(Result.failure(InvalidMediaTypeException()))
+        }
+      }
     }
 
     val reviews = repository.fetchMovieReviews(reviewsApi)
@@ -70,6 +90,11 @@ open class GetMovieDetailsUseCase @Inject constructor(
     val similarApi = when (parameters) {
       is DetailsRequestApi.Movie -> SimilarRequestApi.Movie(parameters.id)
       is DetailsRequestApi.TV -> SimilarRequestApi.TV(parameters.id)
+      DetailsRequestApi.Unknown -> {
+        return flow {
+          emit(Result.failure(InvalidMediaTypeException()))
+        }
+      }
     }
 
     val similar = repository.fetchSimilarMovies(

@@ -87,7 +87,8 @@ class DetailsViewModel @Inject constructor(
     val requestApi = when (viewState.value.mediaType) {
       MediaType.TV -> DetailsRequestApi.TV(args.id)
       MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
-      else -> throw IllegalArgumentException("Unknown media value")
+      MediaType.PERSON -> DetailsRequestApi.Unknown
+      MediaType.UNKNOWN -> DetailsRequestApi.Unknown
     }
     getMovieDetailsUseCase(
       parameters = requestApi,
