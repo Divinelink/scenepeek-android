@@ -18,6 +18,7 @@ import com.divinelink.feature.details.screens.destinations.DetailsScreenDestinat
 import com.divinelink.feature.details.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
@@ -27,6 +28,10 @@ private const val BOTTOM_SHEET_DELAY = 200L
 @Destination<DetailsGraph>(
   start = true,
   navArgs = DetailsNavArguments::class,
+  deepLinks = [
+    DeepLink(uriPattern = "https://www.themoviedb.org/{mediaType}/{id}-.*"),
+    DeepLink(uriPattern = "https://www.themoviedb.org/{mediaType}/{id}"),
+  ],
 )
 @Composable
 fun DetailsScreen(
