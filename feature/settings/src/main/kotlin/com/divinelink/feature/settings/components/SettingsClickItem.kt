@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
-import com.divinelink.feature.settings.R
 
 @Composable
 fun SettingsClickItem(
@@ -62,7 +64,7 @@ fun SettingsClickItem(
 private fun SettingsScreenPreview() {
   MaterialTheme {
     SettingsClickItem(
-      icon = IconWrapper.Icon(resourceId = R.drawable.feature_settings_ic_settings),
+      icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
       text = "Appearance",
       onClick = {},
     )

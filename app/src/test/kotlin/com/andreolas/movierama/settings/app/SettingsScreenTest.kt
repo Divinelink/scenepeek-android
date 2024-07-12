@@ -4,12 +4,14 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import org.junit.Test
 import com.divinelink.core.ui.R as uiR
@@ -76,6 +78,33 @@ class SettingsScreenTest : ComposeTest() {
 
     destinationsNavigator.verifyNavigatedToDirection(
       AppearanceSettingsScreenDestination,
+    )
+  }
+
+  @Test
+  fun `test navigate to link handling screen`() {
+    val destinationsNavigator = FakeDestinationsNavigator()
+
+    destinationsNavigator.navigate(
+      direction = SettingsScreenDestination(),
+    )
+
+    composeTestRule.setContent {
+      SettingsScreen(
+        navigator = destinationsNavigator,
+      )
+    }
+
+    val linkHandlingSetting = getString(R.string.feature_settings_link_handling)
+
+    with(composeTestRule) {
+      onNodeWithText(linkHandlingSetting).assertExists()
+
+      onNodeWithText(linkHandlingSetting).performClick()
+    }
+
+    destinationsNavigator.verifyNavigatedToDirection(
+      LinkHandlingSettingsScreenDestination,
     )
   }
 

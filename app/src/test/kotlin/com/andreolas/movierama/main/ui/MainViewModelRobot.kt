@@ -1,7 +1,8 @@
 package com.andreolas.movierama.main.ui
 
+import com.andreolas.movierama.MainUiEvent
+import com.andreolas.movierama.MainUiState
 import com.andreolas.movierama.MainViewModel
-import com.andreolas.movierama.MainViewState
 import com.andreolas.movierama.fakes.usecase.FakeSetRemoteConfigUseCase
 import com.andreolas.movierama.test.util.fakes.FakeThemedActivityDelegate
 import com.divinelink.core.testing.MainDispatcherRule
@@ -23,8 +24,20 @@ class MainViewModelRobot {
     )
   }
 
-  fun assertViewState(expectedViewState: MainViewState) = apply {
-    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  fun onHandleDeeplink(uri: String?) = apply {
+    viewModel.handleDeepLink(uri)
+  }
+
+  fun onConsumeUiEvent() = apply {
+    viewModel.consumeUiEvent()
+  }
+
+  fun assertUiState(expectedUiState: MainUiState) = apply {
+    assertThat(viewModel.uiState.value).isEqualTo(expectedUiState)
+  }
+
+  fun assertUiEvent(expectedUiEvent: MainUiEvent) = apply {
+    assertThat(viewModel.uiEvent.value).isEqualTo(expectedUiEvent)
   }
 
   fun mockSetRemoteConfigResult(result: Unit) = apply {

@@ -27,4 +27,9 @@ sealed class DetailsRequestApi(
     id = seriesId,
     endpoint = MediaType.TV.value,
   )
+
+  data object Unknown : DetailsRequestApi(
+    id = -1,
+    endpoint = "",
+  )
 }

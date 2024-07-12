@@ -1,5 +1,6 @@
 package com.andreolas.movierama
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,12 +20,19 @@ class MainActivity : ComponentActivity() {
 
   private val viewModel: MainViewModel by viewModels()
 
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    if (intent != null && intent.action == Intent.ACTION_VIEW) {
+      viewModel.handleDeepLink(intent.data?.toString())
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContent {
       val darkTheme = shouldUseDarkTheme(
-        uiState = viewModel.viewState.collectAsState().value,
+        uiState = viewModel.uiState.collectAsState().value,
         selectedTheme = viewModel.theme.collectAsState().value,
       )
 
@@ -34,7 +42,9 @@ class MainActivity : ComponentActivity() {
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
         MovieApp(
-          uiState = viewModel.viewState.collectAsState().value,
+          uiState = viewModel.uiState.collectAsState().value,
+          uiEvent = viewModel.uiEvent.collectAsState().value,
+          onConsumeEvent = viewModel::consumeUiEvent,
         )
       }
     }
@@ -43,11 +53,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun shouldUseDarkTheme(
-  uiState: MainViewState,
+  uiState: MainUiState,
   selectedTheme: Theme,
 ): Boolean = when (uiState) {
-  is MainViewState.Loading -> isSystemInDarkTheme()
-  is MainViewState.Completed -> when (selectedTheme) {
+  is MainUiState.Loading -> isSystemInDarkTheme()
+  is MainUiState.Completed -> when (selectedTheme) {
     Theme.SYSTEM -> isSystemInDarkTheme()
     Theme.LIGHT -> false
     Theme.DARK -> true

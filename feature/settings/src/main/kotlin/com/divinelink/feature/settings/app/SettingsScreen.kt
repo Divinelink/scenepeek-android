@@ -2,7 +2,11 @@ package com.divinelink.feature.settings.app
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Link
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.ui.IconWrapper
@@ -14,6 +18,7 @@ import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -31,7 +36,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
     ) {
       item {
         SettingsClickItem(
-          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_account_24),
+          icon = IconWrapper.Vector(Icons.Outlined.AccountCircle),
           text = stringResource(R.string.preferences__account),
           onClick = { navigator.navigate(AccountSettingsScreenDestination) },
         )
@@ -43,7 +48,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_appearance_24),
+          icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
           text = stringResource(R.string.preferences__appearance),
           onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
         )
@@ -55,7 +60,19 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
 
       item {
         SettingsClickItem(
-          icon = IconWrapper.Icon(R.drawable.feature_settings_ic_help_24),
+          icon = IconWrapper.Vector(Icons.Outlined.Link),
+          text = stringResource(R.string.feature_settings_link_handling),
+          onClick = { navigator.navigate(LinkHandlingSettingsScreenDestination) },
+        )
+      }
+
+      item {
+        SettingsDivider()
+      }
+
+      item {
+        SettingsClickItem(
+          icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
           text = stringResource(R.string.preferences__help),
           onClick = { navigator.navigate(HelpSettingsScreenDestination) },
         )
