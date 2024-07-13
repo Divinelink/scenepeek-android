@@ -57,12 +57,12 @@ import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
@@ -79,6 +79,8 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.components.details.SpannableRating
 import com.divinelink.core.ui.components.details.cast.CastList
+import com.divinelink.core.ui.components.details.cast.CreatorsItem
+import com.divinelink.core.ui.components.details.cast.DirectorItem
 import com.divinelink.core.ui.components.details.genres.GenreLabel
 import com.divinelink.core.ui.components.details.reviews.ReviewsList
 import com.divinelink.core.ui.components.details.similar.SimilarMoviesList
@@ -328,10 +330,16 @@ fun MediaDetailsContent(
           modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
           thickness = MaterialTheme.dimensions.keyline_1,
         )
-        CastList(
-          cast = mediaDetails.cast,
-          director = mediaDetails.director,
-        )
+        if (mediaDetails is TV) {
+          CastList(cast = mediaDetails.credits)
+          CreatorsItem(creators = mediaDetails.creators)
+        } else if (mediaDetails is Movie) {
+          CastList(cast = mediaDetails.cast)
+          mediaDetails.director?.let {
+            DirectorItem(director = it)
+          }
+        }
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
       }
       if (similarMoviesList?.isNotEmpty() == true) {
         item {
@@ -575,6 +583,44 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         overview = "This movie is good.",
         isFavorite = false,
       )
+
+      fun TheOffice() = TV(
+        id = 2316,
+        title = "The Office",
+        posterPath = "the_office.jpg",
+        overview = "Michael Scarn is the best.",
+        credits = listOf(
+          Person(
+            id = 1,
+            name = "Jack",
+            profilePath = "AllWorkAndNoPlay.jpg",
+            role = PersonRole.MovieActor(
+              character = "Here's Johnny!",
+            ),
+          ),
+        ),
+        releaseDate = "2005-03-24",
+        rating = "9.5",
+        isFavorite = false,
+        genres = listOf("Comedy", "Romance"),
+        seasons = listOf(),
+        creators = listOf(
+          Person(
+            id = 1216630,
+            name = "Greg Daniels",
+            profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
+            role = PersonRole.Creator,
+          ),
+          Person(
+            id = 17835,
+            name = "Ricky Gervais",
+            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
+            role = PersonRole.Creator,
+          ),
+        ),
+        numberOfSeasons = 9,
+      )
+
       val movieDetails = Movie(
         id = 1123,
         posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
@@ -586,39 +632,44 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           " male aggression into a shocking new form of therapy. Their concept catches on," +
           " with underground fight clubs forming in every town, until an eccentric gets in the" +
           " way and ignites an out-of-control spiral toward oblivion.",
-        director = Director(
+        director = Person(
           id = 123443321,
           name = "Forest Gump",
           profilePath = "BoxOfChocolates.jpg",
+          role = PersonRole.Director,
         ),
         cast = listOf(
-          Actor(
+          Person(
             id = 1,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
-            character = "HelloJohnny",
-            order = 0,
+            role = PersonRole.MovieActor(
+              character = "Here's Johnny!",
+            ),
           ),
-          Actor(
+          Person(
             id = 2,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
-            character = "McMurphy",
-            order = 1,
+            role = PersonRole.MovieActor(
+              character = "McMurphy",
+            ),
           ),
-          Actor(
+          Person(
             id = 3,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
-            character = "HelloJohnny",
-            order = 0,
+            role = PersonRole.MovieActor(
+              character = "HelloJohnny",
+            ),
           ),
-          Actor(
+          Person(
             id = 4,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
-            character = "McMurphy",
-            order = 1,
+            role = PersonRole.MovieActor(
+              character = "McMurphy",
+            ),
           ),
         ),
         genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
@@ -647,7 +698,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
-          mediaDetails = movieDetails,
+          mediaDetails = TheOffice(),
           similarMovies = similarMovies,
         ),
 

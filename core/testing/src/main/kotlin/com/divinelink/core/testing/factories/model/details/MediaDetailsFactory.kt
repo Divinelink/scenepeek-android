@@ -1,8 +1,9 @@
 package com.divinelink.core.testing.factories.model.details
 
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.crew.Director
 
 object MediaDetailsFactory {
 
@@ -14,10 +15,11 @@ object MediaDetailsFactory {
     rating = "7.3",
     isFavorite = false,
     overview = "This movie is good.",
-    director = Director(
+    director = Person(
       id = 123443321,
       name = "Forest Gump",
       profilePath = "BoxOfChocolates.jpg",
+      role = PersonRole.Director,
     ),
     cast = ActorFactory.all(),
     genres = listOf("Thriller", "Drama", "Comedy"),
@@ -29,17 +31,26 @@ object MediaDetailsFactory {
     title = "The Office",
     posterPath = "the_office.jpg",
     overview = "Michael Scarn is the best.",
-    director = Director(
-      id = 123443321,
-      name = "Forest Gump",
-      profilePath = "BoxOfChocolates.jpg",
-    ),
-    cast = ActorFactory.all(),
+    credits = ActorFactory.all(),
     releaseDate = "2005-03-24",
     rating = "9.5",
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
     seasons = listOf(),
+    creators = listOf(
+      Person(
+        id = 1216630,
+        name = "Greg Daniels",
+        profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
+        role = PersonRole.Creator,
+      ),
+      Person(
+        id = 17835,
+        name = "Ricky Gervais",
+        profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
+        role = PersonRole.Creator,
+      ),
+    ),
     numberOfSeasons = 9,
   )
 }

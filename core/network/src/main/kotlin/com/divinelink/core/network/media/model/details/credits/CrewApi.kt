@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Crew(
+data class CrewApi(
   val adult: Boolean,
   @SerialName("credit_id") val creditId: String,
   val department: String,

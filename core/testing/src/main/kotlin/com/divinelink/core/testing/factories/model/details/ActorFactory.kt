@@ -1,23 +1,26 @@
 package com.divinelink.core.testing.factories.model.details
 
-import com.divinelink.core.model.details.crew.Actor
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
 
 object ActorFactory {
 
-  fun JackNicholson() = Actor(
+  fun JackNicholson() = Person(
     id = 10,
     name = "Jack Nicholson",
     profilePath = "jack_nicholson.jpg",
-    character = "Here's Johnny!",
-    order = 0,
+    role = PersonRole.MovieActor(
+      character = "Here's Johnny!",
+    ),
   )
 
-  fun AaronPaul() = Actor(
+  fun AaronPaul() = Person(
     id = 20,
     name = "Aaron Paul",
     profilePath = "Aaron_paul.jpg",
-    character = "Jessee Pinkman",
-    order = 1,
+    role = PersonRole.MovieActor(
+      character = "Jessee Pinkman",
+    ),
   )
 
   fun all() = listOf(

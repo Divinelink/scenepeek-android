@@ -1,7 +1,8 @@
 package com.divinelink.core.data.details.mapper
 
-import com.divinelink.core.model.credits.SeriesCrew
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.network.media.model.credits.SeriesCrewApi
 
 /**
@@ -23,13 +24,14 @@ fun List<SeriesCrewApi>.map(): List<SeriesCrewDepartment> {
   return crewList
 }
 
-fun SeriesCrewApi.map() = SeriesCrew(
+fun SeriesCrewApi.map() = Person(
   id = id,
-  creditId = this.jobs.firstOrNull()?.creditId,
-  adult = adult,
   name = name,
-  episodeCount = totalEpisodeCount,
-  job = jobs.firstOrNull()?.job,
   profilePath = profilePath,
-  department = department,
+  role = PersonRole.Crew(
+    job = jobs.firstOrNull()?.job,
+    creditId = jobs.firstOrNull()?.creditId,
+    totalEpisodes = totalEpisodeCount,
+    department = department,
+  ),
 )

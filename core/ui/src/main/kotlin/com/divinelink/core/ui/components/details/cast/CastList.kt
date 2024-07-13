@@ -14,24 +14,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.ListPaddingValues
-import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.core.model.details.crew.Director
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.R
 
 @Composable
-fun CastList(
-  cast: List<Actor>,
-  director: Director?,
-) {
+fun CastList(cast: List<Person>) {
   Column(
     modifier = Modifier
-      .padding(top = 16.dp, bottom = 16.dp)
+      .padding(top = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
     if (cast.isNotEmpty()) {
       Text(
         modifier = Modifier
-          .padding(start = 12.dp, end = 12.dp),
+          .padding(horizontal = MaterialTheme.dimensions.keyline_12),
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
         text = stringResource(id = R.string.details__cast_title),
@@ -43,21 +40,11 @@ fun CastList(
       ) {
         items(
           items = cast,
-          key = {
-            it.id
-          },
+          key = { it.id },
         ) {
-          CrewItemCard(
-            actor = it,
-          )
+          CreditsItemCard(person = it)
         }
       }
-    }
-
-    if (director != null) {
-      DirectorItem(
-        director = director,
-      )
     }
   }
 }

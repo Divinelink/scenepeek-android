@@ -2,7 +2,6 @@ package com.divinelink.core.ui
 
 import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -20,11 +19,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.model.details.shareUrl
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
@@ -123,10 +123,11 @@ private fun DetailsDropdownMenuPreview() {
           rating = "7.3",
           isFavorite = false,
           overview = "This movie is good.",
-          director = Director(
+          director = Person(
             id = 123443321,
             name = "Forest Gump",
             profilePath = "BoxOfChocolates.jpg",
+            role = PersonRole.Director,
           ),
           cast = listOf(),
           genres = listOf("Thriller", "Drama", "Comedy"),

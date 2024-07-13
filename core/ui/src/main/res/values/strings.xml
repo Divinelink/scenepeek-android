@@ -22,6 +22,9 @@
 
   <string name="details__director_title">Director</string>
   <string name="details__cast_title">Cast</string>
+  <string name="core_ui_series_creator">Creator</string>
+  <string name="core_ui_series_creators">Creators</string>
+  <string name="core_ui_series_cast_title">Series Cast</string>
 
   <string name="toolbar_search">Search MovieRama</string>
 

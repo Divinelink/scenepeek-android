@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable(with = CastSerializer::class)
-sealed class Cast {
+sealed class CastApi {
   abstract val id: Int
   abstract val name: String
   abstract val profilePath: String?
@@ -25,7 +25,7 @@ sealed class Cast {
     override val character: String,
     @SerialName("credit_id") val creditId: String,
     override val order: Int,
-  ) : Cast()
+  ) : CastApi()
 
   @Serializable
   data class TV(
@@ -40,5 +40,5 @@ sealed class Cast {
     override val character: String,
     @SerialName("credit_id") val creditId: String,
     override val order: Int,
-  ) : Cast()
+  ) : CastApi()
 }
