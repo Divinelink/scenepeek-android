@@ -32,6 +32,10 @@
         <data
             android:host="www.themoviedb.org"
             android:scheme="https" />
+
+        <data android:pathPattern="/tv/.*" />
+        <data android:pathPattern="/movie/.*" />
+        <data android:pathPattern="/person/.*" />
       </intent-filter>
     </activity>
 
