@@ -1,0 +1,12 @@
+CREATE TABLE seriesCastRole(
+    creditId TEXT PRIMARY KEY,
+    character TEXT NOT NULL,
+    episodeCount INTEGER,
+    castId INTEGER NOT NULL,
+    aggregateCreditId INTEGER NOT NULL,
+    FOREIGN KEY (castId, aggregateCreditId) REFERENCES seriesCast(id, aggregateCreditId)
+);
+
+insertRole:
+INSERT INTO seriesCastRole(creditId, character, episodeCount, castId, aggregateCreditId)
+VALUES ?;

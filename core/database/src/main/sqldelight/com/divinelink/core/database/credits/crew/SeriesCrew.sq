@@ -1,0 +1,50 @@
+CREATE TABLE seriesCrew (
+    id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    originalName TEXT NOT NULL,
+    job TEXT NOT NULL,
+    profilePath TEXT,
+    department TEXT NOT NULL,
+    totalEpisodeCount INTEGER NOT NULL,
+    aggregateCreditId INTEGER NOT NULL REFERENCES aggregateCredits(id),
+    PRIMARY KEY(id, aggregateCreditId)
+);
+
+insertCrew:
+INSERT INTO seriesCrew(
+  id,
+  name,
+  originalName,
+  job,
+  profilePath,
+  department,
+  totalEpisodeCount,
+  aggregateCreditId
+)
+VALUES ?;
+
+CREATE VIEW seriesCrewWithJob AS
+SELECT
+  sc.id AS crewId,
+  sc.name AS crewName,
+  sc.originalName AS crewOriginalName,
+  sc.job AS crewJob,
+  sc.profilePath AS crewProfilePath,
+  sc.department AS crewDepartment,
+  sc.totalEpisodeCount AS crewTotalEpisodeCount,
+  sc.aggregateCreditId AS aggregateCreditId,
+  scj.creditId AS jobCreditId,
+  scj.job AS jobTitle,
+  scj.episodeCount AS jobEpisodeCount
+FROM
+  seriesCrew sc
+LEFT JOIN
+  seriesCrewJob scj ON sc.id = scj.crewId AND sc.aggregateCreditId = scj.aggregateCreditId;
+
+fetchSeriesCrewWithJobs:
+SELECT *
+FROM seriesCrewWithJob
+WHERE aggregateCreditId = ?
+AND jobTitle IS NOT NULL
+AND jobCreditId IS NOT NULL
+AND jobEpisodeCount > 0;

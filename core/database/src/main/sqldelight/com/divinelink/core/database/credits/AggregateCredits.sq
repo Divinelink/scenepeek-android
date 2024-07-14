@@ -1,0 +1,15 @@
+CREATE TABLE aggregateCredits(
+    id INTEGER PRIMARY KEY
+);
+
+selectById:
+SELECT 1
+FROM aggregateCredits
+WHERE id = ?;
+
+checkIfExist:
+SELECT EXISTS(SELECT 1 FROM aggregateCredits WHERE id = ?);
+
+insert:
+INSERT INTO aggregateCredits (id)
+VALUES (?);

@@ -1,0 +1,39 @@
+CREATE TABLE seriesCast(
+    id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    originalName TEXT NOT NULL,
+    knownForDepartment TEXT NOT NULL,
+    profilePath TEXT,
+    totalEpisodeCount INTEGER NOT NULL,
+    aggregateCreditId INTEGER NOT NULL REFERENCES aggregateCredits(id),
+    PRIMARY KEY (id, aggregateCreditId)
+);
+
+insertSeriesCast:
+INSERT INTO seriesCast(id, name, originalName, knownForDepartment, profilePath, totalEpisodeCount, aggregateCreditId)
+VALUES ?;
+
+CREATE VIEW seriesCastWithRole AS
+SELECT
+  sc.id AS castId,
+  sc.name AS castName,
+  sc.originalName AS castOriginalName,
+  sc.knownForDepartment AS castKnownForDepartment,
+  sc.profilePath AS castProfilePath,
+  sc.totalEpisodeCount AS castTotalEpisodeCount,
+  sc.aggregateCreditId AS aggregateCreditId,
+  scr.creditId AS roleCreditId,
+  scr.character AS roleCharacter,
+  scr.episodeCount AS roleEpisodeCount
+FROM
+  seriesCast sc
+LEFT JOIN
+  seriesCastRole scr ON sc.id = scr.castId AND sc.aggregateCreditId = scr.aggregateCreditId;
+
+fetchSeriesCastWithRoles:
+SELECT *
+FROM seriesCastWithRole
+WHERE aggregateCreditId = ?
+AND roleCharacter IS NOT NULL
+AND roleCreditId IS NOT NULL
+AND roleEpisodeCount IS NOT NULL;

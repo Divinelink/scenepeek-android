@@ -1,5 +1,6 @@
 package com.divinelink.core.data.details.repository
 
+import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
@@ -37,4 +38,10 @@ interface DetailsRepository {
   fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>>
 
   fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>>
+
+  fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsEntity)
+
+  fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>>
+
+  fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>>
 }

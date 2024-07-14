@@ -5,6 +5,8 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.database.credits.dao.CreditsDao
+import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
@@ -29,8 +31,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ProdDetailsRepository @Inject constructor(private val mediaRemote: MediaService) :
-  DetailsRepository {
+class ProdDetailsRepository @Inject constructor(
+  private val mediaRemote: MediaService,
+  private val creditsDao: CreditsDao,
+) : DetailsRepository {
 
   override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
     mediaRemote
@@ -93,4 +97,18 @@ class ProdDetailsRepository @Inject constructor(private val mediaRemote: MediaSe
     .map {
       Result.success(Unit)
     }
+
+  override fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsEntity) {
+    creditsDao.insertAggregateCredits(aggregateCredits.id)
+  }
+
+  override fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>> =
+    creditsDao.fetchAllCredits(id)
+      .map { aggregateCredits ->
+        Result.success(aggregateCredits)
+      }.catch {
+        throw it
+      }
+
+  override fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>> = TODO()
 }
