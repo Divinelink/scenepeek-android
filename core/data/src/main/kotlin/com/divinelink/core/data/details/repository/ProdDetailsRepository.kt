@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProdDetailsRepository @Inject constructor(
@@ -76,7 +77,7 @@ class ProdDetailsRepository @Inject constructor(
       throw SimilarException()
     }
 
-  override fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>> = mediaRemote
+  override fun fetchVideos(request: DetailsRequestApi): Flow<Result<List<Video>>> = mediaRemote
     .fetchVideos(request)
     .map { apiResponse ->
       Result.success(apiResponse.toDomainVideosList())
@@ -132,16 +133,14 @@ class ProdDetailsRepository @Inject constructor(
     }
 
   override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
-    try {
-      val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
-      val result = if (localExists) {
-        fetchLocalAggregateCredits(id).first()
-      } else {
-        fetchRemoteAggregateCredits(id).first()
-      }
-      emit(result)
-    } catch (e: Exception) {
-      emit(Result.failure(e))
+    val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
+    val result = if (localExists) {
+      Timber.d("Fetching local credits")
+      fetchLocalAggregateCredits(id).first()
+    } else {
+      Timber.d("Fetching remote credits")
+      fetchRemoteAggregateCredits(id).first()
     }
+    emit(result)
   }.flowOn(dispatcher)
 }

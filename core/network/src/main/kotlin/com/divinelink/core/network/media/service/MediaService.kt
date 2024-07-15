@@ -7,7 +7,6 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
@@ -38,7 +37,7 @@ interface MediaService {
 
   fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi>
 
-  fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi>
+  fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi>
 
   fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi>
 

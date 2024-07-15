@@ -180,6 +180,7 @@ fun DetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
               userDetails = viewState.userDetails,
+              tvCredits = viewState.tvCredits,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
@@ -245,6 +246,7 @@ private fun VideoPlayerSection(
 fun MediaDetailsContent(
   modifier: Modifier = Modifier,
   mediaDetails: MediaDetails,
+  tvCredits: List<Person>?,
   userDetails: AccountMediaDetails?,
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
@@ -326,14 +328,18 @@ fun MediaDetailsContent(
       }
 
       item {
-        HorizontalDivider(
-          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-          thickness = MaterialTheme.dimensions.keyline_1,
-        )
-        if (mediaDetails is TV) {
-          CastList(cast = mediaDetails.credits)
+        if (mediaDetails is TV && tvCredits != null) {
+          HorizontalDivider(
+            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+            thickness = MaterialTheme.dimensions.keyline_1,
+          )
+          CastList(cast = tvCredits.take(30)) // This is temporary
           CreatorsItem(creators = mediaDetails.creators)
         } else if (mediaDetails is Movie) {
+          HorizontalDivider(
+            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+            thickness = MaterialTheme.dimensions.keyline_1,
+          )
           CastList(cast = mediaDetails.cast)
           mediaDetails.director?.let {
             DirectorItem(director = it)
@@ -680,6 +686,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          tvCredits = emptyList(),
           isLoading = true,
         ),
 
@@ -692,6 +699,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             watchlist = false,
           ),
           mediaType = MediaType.MOVIE,
+          tvCredits = emptyList(),
           mediaDetails = movieDetails,
         ),
 
@@ -699,6 +707,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = TheOffice(),
+          tvCredits = emptyList(),
           similarMovies = similarMovies,
         ),
 
@@ -707,6 +716,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
+          tvCredits = emptyList(),
           reviews = reviews,
         ),
 
@@ -721,12 +731,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             rating = 9.0f,
             watchlist = true,
           ),
+          tvCredits = emptyList(),
           reviews = reviews,
         ),
 
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          tvCredits = emptyList(),
           error = UIText.StringText("Something went wrong."),
         ),
       )

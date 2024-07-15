@@ -8,7 +8,6 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
@@ -102,10 +101,10 @@ class ProdMediaService @Inject constructor(private val restClient: RestClient) :
     emit(response)
   }
 
-  override fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/movie/"
+  override fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi> = flow {
+    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
-      "${request.movieId}" +
+      "${request.id}" +
       "/videos?" +
       "&language=en-US"
 

@@ -27,7 +27,7 @@ interface DetailsRepository {
 
   fun fetchSimilarMovies(request: SimilarRequestApi): Flow<Result<List<MediaItem.Media>>>
 
-  fun fetchVideos(request: VideosRequestApi): Flow<Result<List<Video>>>
+  fun fetchVideos(request: DetailsRequestApi): Flow<Result<List<Video>>>
 
   fun fetchAccountMediaDetails(
     request: AccountMediaDetailsRequestApi,

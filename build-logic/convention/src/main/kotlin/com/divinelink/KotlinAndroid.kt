@@ -44,6 +44,7 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
 
   dependencies {
     add("coreLibraryDesugaring", libs.findLibrary("android.tools.desugar").get())
+    add("implementation", libs.findLibrary("timber").get())
   }
 }
 
