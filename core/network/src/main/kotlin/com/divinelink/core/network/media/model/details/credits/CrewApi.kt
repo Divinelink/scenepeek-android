@@ -9,7 +9,7 @@ data class CrewApi(
   @SerialName("credit_id") val creditId: String,
   val department: String,
   val gender: Int,
-  val id: Int,
+  val id: Long,
   val job: String,
   @SerialName("known_for_department") val knownForDepartment: String,
   val name: String,

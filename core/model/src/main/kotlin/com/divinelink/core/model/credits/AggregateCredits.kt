@@ -5,5 +5,5 @@ import com.divinelink.core.model.details.Person
 data class AggregateCredits(
   val cast: List<Person>,
   val crewDepartments: List<SeriesCrewDepartment>,
-  val id: Int,
+  val id: Long,
 )

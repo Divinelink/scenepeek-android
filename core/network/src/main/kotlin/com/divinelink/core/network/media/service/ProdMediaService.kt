@@ -1,6 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
@@ -109,6 +110,14 @@ class ProdMediaService @Inject constructor(private val restClient: RestClient) :
       "&language=en-US"
 
     val response = restClient.get<VideosResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi> = flow {
+    val url = "${restClient.tmdbUrl}/tv/$id/aggregate_credits"
+
+    val response = restClient.get<AggregateCreditsApi>(url = url)
 
     emit(response)
   }

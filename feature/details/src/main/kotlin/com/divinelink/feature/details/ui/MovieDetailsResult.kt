@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.ui
 
+import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
@@ -18,6 +19,8 @@ sealed class MovieDetailsResult {
   data class SimilarSuccess(val similar: List<MediaItem.Media>) : MovieDetailsResult()
 
   data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
+
+  data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MovieDetailsResult()
 
   sealed class Failure(
     open val message: UIText = UIText.ResourceText(R.string.general_error_message),

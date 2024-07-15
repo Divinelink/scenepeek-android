@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SeriesCrewApi(
-  val id: Int,
+  val id: Long,
   val adult: Boolean,
   val gender: Int,
   @SerialName("known_for_department") val knownForDepartment: String,
@@ -15,5 +15,5 @@ data class SeriesCrewApi(
   @SerialName("profile_path") val profilePath: String?,
   val jobs: List<JobsApi>,
   val department: String,
-  @SerialName("total_episode_count") val totalEpisodeCount: Int,
+  @SerialName("total_episode_count") val totalEpisodeCount: Long,
 )

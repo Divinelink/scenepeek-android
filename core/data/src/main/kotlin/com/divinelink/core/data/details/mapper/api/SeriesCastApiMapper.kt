@@ -1,4 +1,4 @@
-package com.divinelink.core.data.details.mapper
+package com.divinelink.core.data.details.mapper.api
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
@@ -12,6 +12,7 @@ fun SeriesCastApi.map() = Person(
   profilePath = profilePath,
   role = PersonRole.SeriesActor(
     character = this.roles.firstOrNull()?.character,
+    creditId = this.roles.firstOrNull()?.creditId,
     totalEpisodes = totalEpisodeCount,
   ),
 )

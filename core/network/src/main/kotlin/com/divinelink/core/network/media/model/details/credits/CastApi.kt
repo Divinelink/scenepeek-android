@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable(with = CastSerializer::class)
 sealed class CastApi {
-  abstract val id: Int
+  abstract val id: Long
   abstract val name: String
   abstract val profilePath: String?
   abstract val character: String
@@ -15,7 +15,7 @@ sealed class CastApi {
   data class Movie(
     val adult: Boolean,
     val gender: Int,
-    override val id: Int,
+    override val id: Long,
     @SerialName("cast_id") val castId: Int?,
     @SerialName("known_for_department") val knownForDepartment: String,
     override val name: String,
@@ -31,7 +31,7 @@ sealed class CastApi {
   data class TV(
     val adult: Boolean,
     val gender: Int,
-    override val id: Int,
+    override val id: Long,
     @SerialName("known_for_department") val knownForDepartment: String,
     override val name: String,
     @SerialName("original_name") val originalName: String,

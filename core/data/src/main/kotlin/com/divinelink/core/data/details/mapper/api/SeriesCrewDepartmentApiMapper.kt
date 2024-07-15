@@ -1,4 +1,4 @@
-package com.divinelink.core.data.details.mapper
+package com.divinelink.core.data.details.mapper.api
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment

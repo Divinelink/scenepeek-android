@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SeriesCastApi(
-  val id: Int,
+  val id: Long,
   val name: String,
   val adult: Boolean,
   val gender: Int,

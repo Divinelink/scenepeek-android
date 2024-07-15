@@ -5,6 +5,7 @@ import com.divinelink.core.database.credits.model.CrewEntity
 
 fun SeriesCrewWithJob.toEntity() = CrewEntity(
   id = crewId,
+  creditId = jobCreditId!!,
   name = crewName,
   originalName = crewOriginalName,
   job = jobTitle!!,

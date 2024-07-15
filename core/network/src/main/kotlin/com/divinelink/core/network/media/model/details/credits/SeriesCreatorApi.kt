@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SeriesCreatorApi(
-  val id: Int,
+  val id: Long,
   @SerialName("credit_id") val creditId: String,
   val name: String,
   @SerialName("original_name") val originalName: String,

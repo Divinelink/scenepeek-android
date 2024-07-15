@@ -115,6 +115,10 @@ class DetailsViewModel @Inject constructor(
               trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
             )
 
+            is MovieDetailsResult.CreditsSuccess -> {
+              viewState.copy()
+            }
+
             is MovieDetailsResult.Failure.FatalError -> viewState.copy(
               error = (result.data as MovieDetailsResult.Failure.FatalError).message,
               isLoading = false,

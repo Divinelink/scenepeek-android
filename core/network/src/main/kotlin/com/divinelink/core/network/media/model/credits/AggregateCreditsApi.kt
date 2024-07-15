@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class AggregateCreditsApi(
   val cast: List<SeriesCastApi>,
   val crew: List<SeriesCrewApi>,
-  val id: Int,
+  val id: Long,
 )

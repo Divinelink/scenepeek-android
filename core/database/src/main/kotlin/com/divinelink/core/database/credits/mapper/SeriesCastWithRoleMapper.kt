@@ -7,7 +7,6 @@ fun SeriesCastWithRole.toEntity() = CastEntity(
   id = castId,
   name = castName,
   originalName = castOriginalName,
-  knownForDepartment = castKnownForDepartment,
   profilePath = castProfilePath,
   totalEpisodeCount = castTotalEpisodeCount,
   character = roleCharacter!!,

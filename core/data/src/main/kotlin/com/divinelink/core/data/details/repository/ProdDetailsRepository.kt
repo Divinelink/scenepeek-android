@@ -1,18 +1,25 @@
 package com.divinelink.core.data.details.repository
 
+import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.data.details.mapper.api.map
+import com.divinelink.core.data.details.mapper.api.toSeriesCastEntity
+import com.divinelink.core.data.details.mapper.api.toSeriesCastRoleEntity
+import com.divinelink.core.data.details.mapper.api.toSeriesCrewEntity
+import com.divinelink.core.data.details.mapper.api.toSeriesCrewJobEntity
 import com.divinelink.core.data.details.mapper.map
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.database.credits.dao.CreditsDao
-import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.toDomainReviewsList
@@ -26,14 +33,19 @@ import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.service.MediaService
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProdDetailsRepository @Inject constructor(
   private val mediaRemote: MediaService,
   private val creditsDao: CreditsDao,
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : DetailsRepository {
 
   override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
@@ -98,17 +110,38 @@ class ProdDetailsRepository @Inject constructor(
       Result.success(Unit)
     }
 
-  override fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsEntity) {
+  private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
     creditsDao.insertAggregateCredits(aggregateCredits.id)
+    creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
+    creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
+    creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
+    creditsDao.insertCrew(aggregateCredits.toSeriesCrewEntity())
   }
 
-  override fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>> =
-    creditsDao.fetchAllCredits(id)
-      .map { aggregateCredits ->
-        Result.success(aggregateCredits)
-      }.catch {
-        throw it
-      }
+  override fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = creditsDao
+    .fetchAllCredits(id)
+    .map { localCredits ->
+      Result.success(localCredits.map())
+    }
 
-  override fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCreditsEntity>> = TODO()
+  override fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = mediaRemote
+    .fetchAggregatedCredits(id)
+    .map { apiResponse ->
+      insertLocalAggregateCredits(apiResponse)
+      Result.success(apiResponse.map())
+    }
+
+  override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
+    try {
+      val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
+      val result = if (localExists) {
+        fetchLocalAggregateCredits(id).first()
+      } else {
+        fetchRemoteAggregateCredits(id).first()
+      }
+      emit(result)
+    } catch (e: Exception) {
+      emit(Result.failure(e))
+    }
+  }.flowOn(dispatcher)
 }

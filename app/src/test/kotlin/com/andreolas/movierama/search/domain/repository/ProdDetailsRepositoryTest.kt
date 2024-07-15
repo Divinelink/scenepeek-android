@@ -30,6 +30,7 @@ import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistR
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
@@ -108,6 +109,7 @@ class ProdDetailsRepositoryTest {
   )
 
   private var mediaRemote = FakeMediaService()
+  private var creditsDao = TestCreditsDao()
 
   private lateinit var repository: DetailsRepository
 
@@ -115,6 +117,7 @@ class ProdDetailsRepositoryTest {
   fun setUp() {
     repository = ProdDetailsRepository(
       mediaRemote = mediaRemote.mock,
+      creditsDao = creditsDao.mock,
     )
   }
 
@@ -396,4 +399,7 @@ class ProdDetailsRepositoryTest {
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
+
+  @Test
+  fun `test fetch
 }

@@ -139,10 +139,11 @@ private fun CastApi.toPerson(): Person = Person(
   id = this.id,
   name = this.name,
   profilePath = this.profilePath,
-  role = if (this is CastApi.Movie) {
-    PersonRole.MovieActor(this.character)
-  } else {
-    PersonRole.SeriesActor(this.character)
+  role = when (this) {
+    is CastApi.Movie -> {
+      PersonRole.MovieActor(this.character)
+    }
+    is CastApi.TV -> PersonRole.Unknown
   },
 )
 
