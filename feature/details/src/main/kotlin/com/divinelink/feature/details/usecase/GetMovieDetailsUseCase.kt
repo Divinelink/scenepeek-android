@@ -13,7 +13,6 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -31,7 +30,6 @@ open class GetMovieDetailsUseCase @Inject constructor(
     channelFlow {
       if (parameters == DetailsRequestApi.Unknown) {
         send(Result.failure(MediaDetailsException()))
-        awaitClose()
         return@channelFlow
       }
 

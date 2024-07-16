@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS aggregateCredits (
-    id INTEGER PRIMARY KEY
+CREATE TABLE IF NOT EXISTS aggregateCredits(
+  id INTEGER PRIMARY KEY
 );
 
 checkIfExist:
