@@ -1,4 +1,4 @@
-CREATE TABLE aggregateCredits(
+CREATE TABLE IF NOT EXISTS aggregateCredits (
     id INTEGER PRIMARY KEY
 );
 

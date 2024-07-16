@@ -7,7 +7,7 @@ CREATE TABLE seriesCrew (
     department TEXT NOT NULL,
     totalEpisodeCount INTEGER NOT NULL,
     aggregateCreditId INTEGER NOT NULL REFERENCES aggregateCredits(id),
-    PRIMARY KEY(id, aggregateCreditId)
+    PRIMARY KEY(id, aggregateCreditId, job)
 );
 
 insertCrew:

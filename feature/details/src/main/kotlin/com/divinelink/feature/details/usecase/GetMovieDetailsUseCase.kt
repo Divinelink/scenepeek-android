@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("LongMethod")
@@ -60,6 +61,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
       launch(dispatcher) {
         repository.fetchMovieDetails(requestApi)
           .catch {
+            Timber.e(it)
             send(Result.failure(MediaDetailsException()))
           }
           .collect { result ->
@@ -75,9 +77,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
       launch(dispatcher) {
         repository.fetchSimilarMovies(similarApi)
-          .catch {
-            // Do nothing
-          }
+          .catch { Timber.e(it) }
           .collect { result ->
             send(Result.success(MovieDetailsResult.SimilarSuccess(result.data)))
           }
@@ -85,9 +85,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
       launch(dispatcher) {
         repository.fetchMovieReviews(reviewsApi)
-          .catch {
-            // Do nothing
-          }
+          .catch { Timber.e(it) }
           .collect { result ->
             send(Result.success(MovieDetailsResult.ReviewsSuccess(result.data)))
           }
@@ -96,6 +94,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
       if (parameters is DetailsRequestApi.TV) {
         launch(dispatcher) {
           repository.fetchAggregateCredits(parameters.id.toLong())
+            .catch { Timber.e(it) }
             .collect { result ->
               send(Result.success(MovieDetailsResult.CreditsSuccess(result.data)))
             }
@@ -104,9 +103,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
 
       launch(dispatcher) {
         repository.fetchVideos(requestApi)
-          .catch {
-            // Do nothing
-          }
+          .catch { Timber.e(it) }
           .collect { result ->
             val video = if (parameters is DetailsRequestApi.TV) {
               result.data.firstOrNull()
