@@ -4,7 +4,6 @@ import com.divinelink.core.network.client.RestClient
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
@@ -77,7 +76,7 @@ class ProdMediaService @Inject constructor(private val restClient: RestClient) :
     emit(response)
   }
 
-  override fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi> = flow {
+  override fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
       "${request.id}" +

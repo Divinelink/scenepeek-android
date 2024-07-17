@@ -7,9 +7,7 @@ import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -23,7 +21,7 @@ interface DetailsRepository {
 
   fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>>
 
-  fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>>
+  fun fetchMovieReviews(request: DetailsRequestApi): Flow<Result<List<Review>>>
 
   fun fetchSimilarMovies(request: SimilarRequestApi): Flow<Result<List<MediaItem.Media>>>
 

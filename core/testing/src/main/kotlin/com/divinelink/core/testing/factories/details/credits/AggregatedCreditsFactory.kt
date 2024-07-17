@@ -33,6 +33,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Kevin Malone",
       totalEpisodes = 217,
+      creditId = "525730a9760ee3776a3447f1",
     ),
     profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
   )
@@ -43,6 +44,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Angela Martin",
       totalEpisodes = 210,
+      creditId = "525730ab760ee3776a344a0b",
     ),
     profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
   )
@@ -53,6 +55,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Óscar Martínez",
       totalEpisodes = 203,
+      creditId = "525730ab760ee3776a3449d5",
     ),
     profilePath = "/UBILHiRphJdlshvsyH920QSAhk.jpg",
   )
@@ -63,6 +66,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Meredith Palmer",
       totalEpisodes = 202,
+      creditId = "525730ac760ee3776a344bfb",
     ),
     profilePath = "/wFXWKB2IUyB6Cu08PyovyBAm9WT.jpg",
   )
@@ -73,6 +77,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Creed Bratton",
       totalEpisodes = 194,
+      creditId = "525730ac760ee3776a344bc5",
     ),
     profilePath = "/72hNnta4igAn2cE6fDyKElHcZ09.jpg",
   )
@@ -83,6 +88,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Stanley Hudson",
       totalEpisodes = 193,
+      creditId = "525730ab760ee3776a344a87",
     ),
     profilePath = "/9h3xlV5IYqKinlQCW1ouU7sjwWF.jpg",
   )
@@ -93,6 +99,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Phyllis Lapin",
       totalEpisodes = 190,
+      creditId = "525730ab760ee3776a344b03",
     ),
     profilePath = "/h9w9pQbiderRWAC2mi7spjzuIGz.jpg",
   )
@@ -103,6 +110,7 @@ object SeriesCastFactory {
     role = PersonRole.SeriesActor(
       character = "Dwight Schrute",
       totalEpisodes = 188,
+      creditId = "525730a9760ee3776a34474f",
     ),
     profilePath = "/rEDRAFYX5n2JKJh9EKILX42klA5.jpg",
   )

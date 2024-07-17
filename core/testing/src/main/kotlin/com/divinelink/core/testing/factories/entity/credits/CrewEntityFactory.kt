@@ -14,6 +14,7 @@ object CrewEntityFactory {
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    creditId = "5bdaa68f92514153f500859f",
   )
 
   fun daleAlexander() = CrewEntity(
@@ -25,6 +26,7 @@ object CrewEntityFactory {
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    creditId = "5bdaa7d90e0a2603c60086d9",
   )
 
   fun ronNichols() = CrewEntity(
@@ -36,6 +38,7 @@ object CrewEntityFactory {
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    creditId = "5bdaa3e40e0a2603b1008d3f",
   )
 
   fun peterSmokler() = CrewEntity(
@@ -47,6 +50,7 @@ object CrewEntityFactory {
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    creditId = "5bdaa2d4c3a368078f007f5c",
   )
 
   fun cameraDepartment() = listOf(

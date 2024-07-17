@@ -2,14 +2,13 @@ package com.andreolas.movierama.fakes.repository
 
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -31,7 +30,7 @@ class FakeDetailsRepository {
   }
 
   fun mockFetchMovieReviews(
-    request: ReviewsRequestApi,
+    request: DetailsRequestApi,
     response: Result<List<Review>>,
   ) {
     whenever(
@@ -53,11 +52,19 @@ class FakeDetailsRepository {
   }
 
   fun mockFetchMovieVideos(
-    request: VideosRequestApi,
+    request: DetailsRequestApi,
     response: Result<List<Video>>,
   ) {
     whenever(
       mock.fetchVideos(request),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
+
+  fun mockFetchAggregateCredits(response: Result<AggregateCredits>) {
+    whenever(
+      mock.fetchAggregateCredits(any()),
     ).thenReturn(
       flowOf(response),
     )

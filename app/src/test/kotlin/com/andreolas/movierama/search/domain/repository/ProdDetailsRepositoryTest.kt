@@ -18,18 +18,17 @@ import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
@@ -37,11 +36,17 @@ import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWiza
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class ProdDetailsRepositoryTest {
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  val testDispatcher = mainDispatcherRule.testDispatcher
 
   private val movieDetails = MediaDetailsFactory.FightClub()
 
@@ -118,6 +123,8 @@ class ProdDetailsRepositoryTest {
     repository = ProdDetailsRepository(
       mediaRemote = mediaRemote.mock,
       creditsDao = creditsDao.mock,
+      dispatcher = testDispatcher,
+      scope = TestScope(),
     )
   }
 
@@ -141,7 +148,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testFetchMovieReviewsSuccessfully() = runTest {
-    val request = ReviewsRequestApi.Movie(movieId = 555)
+    val request = DetailsRequestApi.Movie(movieId = 555)
 
     val expectedResult = expectedReviews
 
@@ -199,7 +206,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testMovieReviewsError() = runTest {
-    val request = ReviewsRequestApi.Movie(movieId = 555)
+    val request = DetailsRequestApi.Movie(movieId = 555)
 
     val expectedResult = ReviewsException()
 
@@ -226,7 +233,7 @@ class ProdDetailsRepositoryTest {
   // Movie Videos success
   @Test
   fun testFetchMovieVideosSuccessfully() = runTest {
-    val request = VideosRequestApi(
+    val request = DetailsRequestApi.Movie(
       movieId = 555,
     )
     val expectedResult = listOf(
@@ -267,7 +274,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testMovieVideosError() = runTest {
-    val request = VideosRequestApi(
+    val request = DetailsRequestApi.Movie(
       movieId = 555,
     )
 
@@ -399,7 +406,4 @@ class ProdDetailsRepositoryTest {
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
-
-  @Test
-  fun `test fetch
 }

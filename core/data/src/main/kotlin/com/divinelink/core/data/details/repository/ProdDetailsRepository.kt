@@ -22,7 +22,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.toDomainReviewsList
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.toDomainMoviesList
@@ -50,7 +49,7 @@ import kotlin.time.measureTime
 class ProdDetailsRepository @Inject constructor(
   private val mediaRemote: MediaService,
   private val creditsDao: CreditsDao,
-  @IoDispatcher val ioDispatcher: CoroutineDispatcher,
+  @IoDispatcher val dispatcher: CoroutineDispatcher,
   @ApplicationScope private val scope: CoroutineScope,
 ) : DetailsRepository {
 
@@ -63,7 +62,7 @@ class ProdDetailsRepository @Inject constructor(
         throw MediaDetailsException()
       }
 
-  override fun fetchMovieReviews(request: ReviewsRequestApi): Flow<Result<List<Review>>> =
+  override fun fetchMovieReviews(request: DetailsRequestApi): Flow<Result<List<Review>>> =
     mediaRemote
       .fetchReviews(request)
       .map { apiResponse ->
@@ -119,7 +118,7 @@ class ProdDetailsRepository @Inject constructor(
   private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
     creditsDao.insertAggregateCredits(aggregateCredits.id)
 
-    CoroutineScope(scope.coroutineContext + ioDispatcher).launch {
+    CoroutineScope(scope.coroutineContext + dispatcher).launch {
       creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
       creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
       creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
@@ -136,7 +135,7 @@ class ProdDetailsRepository @Inject constructor(
   override fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
     mediaRemote.fetchAggregatedCredits(id)
       .onEach { apiResponse ->
-        CoroutineScope(scope.coroutineContext + ioDispatcher).launch {
+        CoroutineScope(scope.coroutineContext + dispatcher).launch {
           val duration = measureTime {
             insertLocalAggregateCredits(apiResponse)
           }
@@ -157,5 +156,5 @@ class ProdDetailsRepository @Inject constructor(
       fetchRemoteAggregateCredits(id).first()
     }
     emit(result)
-  }.flowOn(ioDispatcher)
+  }.flowOn(dispatcher)
 }

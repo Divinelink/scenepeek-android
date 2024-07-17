@@ -9,7 +9,6 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.ui.MovieDetailsResult
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,12 +38,6 @@ open class GetMovieDetailsUseCase @Inject constructor(
         DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
       }
 
-      val reviewsApi = when (parameters) {
-        is DetailsRequestApi.Movie -> ReviewsRequestApi.Movie(parameters.id)
-        is DetailsRequestApi.TV -> ReviewsRequestApi.TV(parameters.id)
-        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
-      }
-
       val similarApi = when (parameters) {
         is DetailsRequestApi.Movie -> SimilarRequestApi.Movie(parameters.id)
         is DetailsRequestApi.TV -> SimilarRequestApi.TV(parameters.id)
@@ -66,7 +59,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
             send(
               Result.success(
                 MovieDetailsResult.DetailsSuccess(
-                  result.data.copy(isFavorite = isFavorite.data),
+                  result.data.copy(isFavorite = isFavorite.getOrNull() ?: false),
                 ),
               ),
             )
@@ -77,15 +70,19 @@ open class GetMovieDetailsUseCase @Inject constructor(
         repository.fetchSimilarMovies(similarApi)
           .catch { Timber.e(it) }
           .collect { result ->
-            send(Result.success(MovieDetailsResult.SimilarSuccess(result.data)))
+            result.onSuccess {
+              send(Result.success(MovieDetailsResult.SimilarSuccess(result.data)))
+            }
           }
       }
 
       launch(dispatcher) {
-        repository.fetchMovieReviews(reviewsApi)
+        repository.fetchMovieReviews(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
-            send(Result.success(MovieDetailsResult.ReviewsSuccess(result.data)))
+            result.onSuccess {
+              send(Result.success(MovieDetailsResult.ReviewsSuccess(result.data)))
+            }
           }
       }
 
@@ -94,7 +91,9 @@ open class GetMovieDetailsUseCase @Inject constructor(
           repository.fetchAggregateCredits(parameters.id.toLong())
             .catch { Timber.e(it) }
             .collect { result ->
-              send(Result.success(MovieDetailsResult.CreditsSuccess(result.data)))
+              result.onSuccess {
+                send(Result.success(MovieDetailsResult.CreditsSuccess(result.data)))
+              }
             }
         }
       }

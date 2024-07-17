@@ -3,7 +3,6 @@ package com.divinelink.core.network.media.service
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
@@ -33,7 +32,7 @@ interface MediaService {
 
   fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi>
 
-  fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi>
+  fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi>
 
   fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi>
 
