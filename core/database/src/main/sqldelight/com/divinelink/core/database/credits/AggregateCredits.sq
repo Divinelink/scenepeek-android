@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS aggregateCredits(
-  id INTEGER PRIMARY KEY
+  id INTEGER PRIMARY KEY,
+  expiresAtEpochSeconds TEXT
 );
 
-checkIfExist:
-SELECT EXISTS(SELECT 1 FROM aggregateCredits WHERE id = ?);
+checkIfExistAndNotExpired:
+SELECT EXISTS(SELECT 1 FROM aggregateCredits WHERE id = ? AND expiresAtEpochSeconds > ?);
 
 insert:
-INSERT INTO aggregateCredits (id)
-VALUES (?);
+INSERT INTO aggregateCredits (id, expiresAtEpochSeconds)
+VALUES ?;

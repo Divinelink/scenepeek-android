@@ -1,10 +1,12 @@
 package com.divinelink.core.database.credits.dao
 
+import app.cash.turbine.test
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.credits.cast.SeriesCast
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
+import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.database.credits.AggregateCreditsFactory
 import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastFactory
 import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastRoleFactory
@@ -16,6 +18,7 @@ import com.divinelink.core.testing.factories.entity.credits.CrewEntityFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,12 +33,16 @@ class ProdCreditsDaoTest {
 
   private lateinit var dao: ProdCreditsDao
 
+  private lateinit var clock: Clock
+
   @Before
   fun setUp() {
     database = TestDatabaseFactory.createInMemoryDatabase()
+    clock = ClockFactory.augustFirst2021()
 
     dao = ProdCreditsDao(
       database = database,
+      clock = clock,
       dispatcher = testDispatcher,
     )
   }
@@ -56,6 +63,58 @@ class ProdCreditsDaoTest {
     val result = dao.checkIfAggregateCreditsExist(id = 1).first()
 
     assertThat(result).isTrue()
+  }
+
+  @Test
+  fun `test checkIfExists query when credits are expired`() = runTest {
+    clock = ClockFactory.augustFirst2021()
+
+    dao = ProdCreditsDao(
+      database = database,
+      clock = clock,
+      dispatcher = testDispatcher,
+    )
+
+    // It should expire 1 month after
+    dao.insertAggregateCredits(aggregateCreditsId = 1)
+
+    clock = ClockFactory.septemberSecond2021()
+
+    dao = ProdCreditsDao(
+      database = database,
+      clock = clock,
+      dispatcher = testDispatcher,
+    )
+
+    dao.checkIfAggregateCreditsExist(id = 1).test {
+      assertThat(awaitItem()).isFalse()
+    }
+  }
+
+  @Test
+  fun `test checkIfExists query when credits are not expired`() = runTest {
+    clock = ClockFactory.augustFirst2021()
+
+    dao = ProdCreditsDao(
+      database = database,
+      clock = clock,
+      dispatcher = testDispatcher,
+    )
+
+    // It should expire 1 month after
+    dao.insertAggregateCredits(aggregateCreditsId = 1)
+
+    clock = ClockFactory.augustFifteenth2021()
+
+    dao = ProdCreditsDao(
+      database = database,
+      clock = clock,
+      dispatcher = testDispatcher,
+    )
+
+    dao.checkIfAggregateCreditsExist(id = 1).test {
+      assertThat(awaitItem()).isTrue()
+    }
   }
 
   @Test

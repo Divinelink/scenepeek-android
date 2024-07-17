@@ -23,6 +23,8 @@ dependencies {
   api(libs.sqldelight.android)
   api(libs.sqldelight.coroutines)
 
+  implementation(libs.kotlinx.datetime)
+
   testImplementation(projects.core.testing)
 }
 

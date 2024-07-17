@@ -5,6 +5,8 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrDefault
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.database.Database
+import com.divinelink.core.database.cacheExpiresAtToEpochSeconds
+import com.divinelink.core.database.credits.AggregateCredits
 import com.divinelink.core.database.credits.cast.SeriesCast
 import com.divinelink.core.database.credits.cast.SeriesCastRole
 import com.divinelink.core.database.credits.cast.SeriesCastWithRole
@@ -15,29 +17,45 @@ import com.divinelink.core.database.credits.mapper.toEntity
 import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.database.credits.model.CastEntity
 import com.divinelink.core.database.credits.model.CrewEntity
+import com.divinelink.core.database.currentEpochSeconds
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
 import javax.inject.Inject
 
 class ProdCreditsDao @Inject constructor(
   private val database: Database,
+  private val clock: Clock,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : CreditsDao {
 
-  override fun insertAggregateCredits(aggregateCreditsId: Long) = database
-    .aggregateCreditsQueries
-    .insert(id = aggregateCreditsId)
+  override fun insertAggregateCredits(aggregateCreditsId: Long) {
+    val expirationTimestamp = clock.cacheExpiresAtToEpochSeconds()
 
-  override fun checkIfAggregateCreditsExist(id: Long): Flow<Boolean> = database
-    .aggregateCreditsQueries
-    .checkIfExist(id = id)
-    .asFlow()
-    .mapToOneOrDefault(
-      defaultValue = false,
-      context = dispatcher,
-    )
+    database
+      .aggregateCreditsQueries
+      .insert(
+        aggregateCredits = AggregateCredits(
+          id = aggregateCreditsId,
+          expiresAtEpochSeconds = expirationTimestamp,
+        ),
+      )
+  }
+
+  override fun checkIfAggregateCreditsExist(id: Long): Flow<Boolean> {
+    val currentTime = clock.currentEpochSeconds()
+
+    return database
+      .aggregateCreditsQueries
+      .checkIfExistAndNotExpired(id = id, expiresAtEpochSeconds = currentTime)
+      .asFlow()
+      .mapToOneOrDefault(
+        defaultValue = false,
+        context = dispatcher,
+      )
+  }
 
   override fun insertCast(cast: List<SeriesCast>) = cast.forEach { castMember ->
     database.seriesCastQueries.insertSeriesCast(castMember)

@@ -21,5 +21,7 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.timber)
 
+  implementation(libs.kotlinx.datetime)
+
   testImplementation(projects.core.testing)
 }

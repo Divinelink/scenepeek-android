@@ -14,6 +14,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.datetime.Clock
 import javax.inject.Singleton
 
 @Module
@@ -37,9 +38,11 @@ object DatabaseModule {
   @Singleton
   fun provideCreditsDao(
     database: Database,
+    clock: Clock,
     @IoDispatcher dispatcher: CoroutineDispatcher,
   ): CreditsDao = ProdCreditsDao(
     database = database,
+    clock = clock,
     dispatcher = dispatcher,
   )
 
