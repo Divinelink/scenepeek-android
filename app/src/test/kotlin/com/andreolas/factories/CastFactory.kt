@@ -1,10 +1,10 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.media.model.details.credits.Cast
+import com.divinelink.core.network.media.model.details.credits.CastApi
 
 object CastFactory {
 
-  fun JackNicholson() = Cast.Movie(
+  fun JackNicholson() = CastApi.Movie(
     id = 10,
     adult = false,
     castId = 10,
@@ -19,7 +19,7 @@ object CastFactory {
     profilePath = "jack_nicholson.jpg",
   )
 
-  fun AaronPaul() = Cast.Movie(
+  fun AaronPaul() = CastApi.Movie(
     id = 20,
     adult = false,
     castId = 20,

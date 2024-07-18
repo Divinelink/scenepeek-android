@@ -1,0 +1,12 @@
+CREATE TABLE seriesCrewJob(
+    creditId TEXT PRIMARY KEY,
+    job TEXT NOT NULL,
+    episodeCount INTEGER,
+    crewId INTEGER NOT NULL,
+    aggregateCreditId INTEGER NOT NULL,
+    FOREIGN KEY (crewId, aggregateCreditId) REFERENCES seriesCrew(id, aggregateCreditId)
+);
+
+insertCrewJob:
+INSERT INTO seriesCrewJob(creditId, job, episodeCount, crewId, aggregateCreditId)
+VALUES ?;

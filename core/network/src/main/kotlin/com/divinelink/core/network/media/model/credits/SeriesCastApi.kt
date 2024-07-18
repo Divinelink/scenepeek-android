@@ -1,19 +1,19 @@
-package com.divinelink.core.network.media.model.details.credits
+package com.divinelink.core.network.media.model.credits
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Crew(
-  val adult: Boolean,
-  @SerialName("credit_id") val creditId: String,
-  val department: String,
-  val gender: Int,
-  val id: Int,
-  val job: String,
-  @SerialName("known_for_department") val knownForDepartment: String,
+data class SeriesCastApi(
+  val id: Long,
   val name: String,
-  @SerialName("original_name") val originalName: String,
+  val adult: Boolean,
+  val gender: Int,
   val popularity: Double,
+  val roles: List<RolesApi>,
+  val order: Int,
+  @SerialName("known_for_department") val knownForDepartment: String,
+  @SerialName("original_name") val originalName: String,
   @SerialName("profile_path") val profilePath: String?,
+  @SerialName("total_episode_count") val totalEpisodeCount: Int,
 )

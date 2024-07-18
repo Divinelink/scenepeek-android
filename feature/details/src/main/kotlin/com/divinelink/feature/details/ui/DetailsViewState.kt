@@ -4,6 +4,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.video.Video
@@ -18,6 +19,7 @@ data class DetailsViewState(
   val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
   val userDetails: AccountMediaDetails? = null,
+  val tvCredits: List<Person>? = null,
   val reviews: List<Review>? = null,
   val similarMovies: List<MediaItem.Media>? = null,
   val trailer: Video? = null,

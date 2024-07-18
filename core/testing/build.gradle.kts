@@ -33,6 +33,8 @@ dependencies {
 
   implementation(libs.sqldelight.driver)
 
+  implementation(libs.kotlinx.datetime)
+
   api(libs.datastore)
   api(libs.datastore.core)
   api(libs.datastore.preferences)

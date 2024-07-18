@@ -14,6 +14,7 @@ android {
 
 dependencies {
   api(projects.core.model)
+  implementation(projects.core.commons)
 
   implementation(libs.room.ktx)
   implementation(libs.room.runtime)
@@ -21,6 +22,8 @@ dependencies {
 
   api(libs.sqldelight.android)
   api(libs.sqldelight.coroutines)
+
+  implementation(libs.kotlinx.datetime)
 
   testImplementation(projects.core.testing)
 }

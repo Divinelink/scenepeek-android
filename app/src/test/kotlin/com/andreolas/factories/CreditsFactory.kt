@@ -1,10 +1,10 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.media.model.details.Credits
+import com.divinelink.core.network.media.model.details.CreditsApi
 
 object CreditsFactory {
 
-  fun all() = Credits(
+  fun all() = CreditsApi(
     cast = CastFactory.all(),
     crew = CrewFactory.all(),
   )

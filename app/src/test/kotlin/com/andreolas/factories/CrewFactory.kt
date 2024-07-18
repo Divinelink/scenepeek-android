@@ -1,10 +1,10 @@
 package com.andreolas.factories
 
-import com.divinelink.core.network.media.model.details.credits.Crew
+import com.divinelink.core.network.media.model.details.credits.CrewApi
 
 object CrewFactory {
 
-  fun Director() = Crew(
+  fun Director() = CrewApi(
     adult = false,
     creditId = "",
     department = "",
@@ -18,7 +18,7 @@ object CrewFactory {
     profilePath = "BoxOfChocolates.jpg",
   )
 
-  fun Boomer() = Crew(
+  fun Boomer() = CrewApi(
     adult = false,
     creditId = "",
     department = "",

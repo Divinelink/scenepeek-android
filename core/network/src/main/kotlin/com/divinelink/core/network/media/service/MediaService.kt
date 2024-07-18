@@ -1,12 +1,11 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
@@ -33,11 +32,13 @@ interface MediaService {
 
   fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi>
 
-  fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi>
+  fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi>
 
   fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi>
 
-  fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi>
+  fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi>
+
+  fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi>
 
   fun fetchAccountMediaDetails(
     request: AccountMediaDetailsRequestApi,

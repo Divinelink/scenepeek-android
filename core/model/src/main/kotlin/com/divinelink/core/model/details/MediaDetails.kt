@@ -1,7 +1,5 @@
 package com.divinelink.core.model.details
 
-import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.core.model.details.crew.Director
 import com.divinelink.core.model.media.MediaType
 
 /**
@@ -12,8 +10,6 @@ sealed class MediaDetails {
   abstract val title: String
   abstract val posterPath: String
   abstract val overview: String?
-  abstract val director: Director?
-  abstract val cast: List<Actor>
   abstract val releaseDate: String
   abstract val rating: String
   abstract val genres: List<String>?
@@ -24,8 +20,6 @@ sealed class MediaDetails {
     title: String = this.title,
     posterPath: String = this.posterPath,
     overview: String? = this.overview,
-    director: Director? = this.director,
-    cast: List<Actor> = this.cast,
     releaseDate: String = this.releaseDate,
     genres: List<String>? = this.genres,
     rating: String = this.rating,
@@ -37,11 +31,11 @@ sealed class MediaDetails {
       posterPath = posterPath,
       overview = overview,
       director = director,
-      cast = cast,
       releaseDate = releaseDate,
       rating = rating,
       isFavorite = isFavorite,
       genres = genres,
+      cast = cast,
       runtime = runtime,
     )
     is TV -> TV(
@@ -49,13 +43,13 @@ sealed class MediaDetails {
       title = title,
       posterPath = posterPath,
       overview = overview,
-      director = director,
-      cast = cast,
+      credits = credits,
       releaseDate = releaseDate,
       rating = rating,
       isFavorite = isFavorite,
       genres = genres,
       seasons = seasons,
+      creators = creators,
       numberOfSeasons = numberOfSeasons,
     )
   }

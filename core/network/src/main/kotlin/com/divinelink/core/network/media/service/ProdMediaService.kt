@@ -1,13 +1,12 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
@@ -77,7 +76,7 @@ class ProdMediaService @Inject constructor(private val restClient: RestClient) :
     emit(response)
   }
 
-  override fun fetchReviews(request: ReviewsRequestApi): Flow<ReviewsResponseApi> = flow {
+  override fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
       "${request.id}" +
@@ -101,14 +100,22 @@ class ProdMediaService @Inject constructor(private val restClient: RestClient) :
     emit(response)
   }
 
-  override fun fetchVideos(request: VideosRequestApi): Flow<VideosResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/movie/"
+  override fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi> = flow {
+    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
-      "${request.movieId}" +
+      "${request.id}" +
       "/videos?" +
       "&language=en-US"
 
     val response = restClient.get<VideosResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi> = flow {
+    val url = "${restClient.tmdbUrl}/tv/$id/aggregate_credits"
+
+    val response = restClient.get<AggregateCreditsApi>(url = url)
 
     emit(response)
   }

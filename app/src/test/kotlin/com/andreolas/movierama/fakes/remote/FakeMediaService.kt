@@ -1,12 +1,11 @@
 package com.andreolas.movierama.fakes.remote
 
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
-import com.divinelink.core.network.media.model.details.reviews.ReviewsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
-import com.divinelink.core.network.media.model.details.videos.VideosRequestApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
@@ -20,6 +19,7 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequest
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -61,7 +61,7 @@ class FakeMediaService {
   }
 
   fun mockFetchMovieReviews(
-    request: ReviewsRequestApi,
+    request: DetailsRequestApi,
     response: Flow<ReviewsResponseApi>,
   ) {
     whenever(
@@ -83,7 +83,7 @@ class FakeMediaService {
   }
 
   fun mockFetchMovieVideos(
-    request: VideosRequestApi,
+    request: DetailsRequestApi,
     response: Flow<VideosResponseApi>,
   ) {
     whenever(
@@ -132,6 +132,14 @@ class FakeMediaService {
   ) {
     whenever(
       mock.addToWatchlist(request),
+    ).thenReturn(
+      response,
+    )
+  }
+
+  fun mockFetchAggregateCredits(response: Flow<AggregateCreditsApi>) {
+    whenever(
+      mock.fetchAggregatedCredits(any()),
     ).thenReturn(
       response,
     )

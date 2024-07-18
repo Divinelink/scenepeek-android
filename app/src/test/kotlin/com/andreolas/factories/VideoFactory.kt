@@ -6,7 +6,7 @@ import com.divinelink.core.model.details.video.VideoSite
 object VideoFactory {
 
   fun Youtube(): Video = Video(
-    id = "id",
+    id = "youtubeId",
     name = "name",
     officialTrailer = true,
     site = VideoSite.YouTube,
@@ -14,10 +14,20 @@ object VideoFactory {
   )
 
   fun Vimeo() = Video(
-    id = "definitiones",
+    id = "vimeoId",
     name = "Stacey Tyler",
     officialTrailer = true,
     site = VideoSite.Vimeo,
     key = "contentiones",
   )
+
+  fun RickRoll() = Video(
+    id = "dQw4w9WgXcQ",
+    name = "Rick Astley - Never Gonna Give You Up (Video)",
+    officialTrailer = false,
+    site = VideoSite.YouTube,
+    key = "dQw4w9WgXcQ",
+  )
+
+  fun all() = listOf(RickRoll(), Youtube(), Vimeo())
 }

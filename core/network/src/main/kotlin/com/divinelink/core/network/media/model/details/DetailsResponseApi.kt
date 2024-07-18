@@ -1,13 +1,15 @@
 package com.divinelink.core.network.media.model.details
 
 import com.divinelink.core.commons.extensions.round
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.crew.Actor
-import com.divinelink.core.model.details.crew.Director
-import com.divinelink.core.network.media.model.details.credits.Cast
-import com.divinelink.core.network.media.model.details.credits.Crew
+import com.divinelink.core.network.media.mapper.credits.map
+import com.divinelink.core.network.media.model.details.credits.CastApi
+import com.divinelink.core.network.media.model.details.credits.CrewApi
+import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -61,7 +63,7 @@ sealed class DetailsResponseApi {
     val video: Boolean,
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
-    val credits: Credits,
+    val credits: CreditsApi,
   ) : DetailsResponseApi()
 
   @Serializable
@@ -80,9 +82,9 @@ sealed class DetailsResponseApi {
     val name: String,
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
-    @SerialName("created_by") val createdBy: List<JsonObject>,
+    @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
-    val credits: Credits,
+    val credits: CreditsApi,
   ) : DetailsResponseApi()
 }
 
@@ -113,31 +115,36 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   genres = this.genres.map { it.name },
   rating = this.voteAverage.round(1).toString(),
   overview = this.overview,
-  director = this.credits.crew.toDirector(),
-  cast = this.credits.cast.toActors(),
   isFavorite = false,
   numberOfSeasons = this.numberOfSeasons,
+  creators = this.createdBy.map(),
+  credits = this.credits.cast.toActors(),
 )
 
-private fun List<Crew>.toDirector(): Director? {
+private fun List<CrewApi>.toDirector(): Person? {
   val director = this.find { it.job == "Director" }
   return director?.let {
-    Director(
+    Person(
       id = director.id,
       name = director.name,
       profilePath = director.profilePath ?: "",
+      role = PersonRole.Director,
     )
   }
 }
 
-private fun List<Cast>.toActors(): List<Actor> = this.map(Cast::toActor)
+private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
 
-private fun Cast.toActor(): Actor = Actor(
+private fun CastApi.toPerson(): Person = Person(
   id = this.id,
   name = this.name,
-  profilePath = this.profilePath ?: "",
-  character = this.character,
-  order = this.order,
+  profilePath = this.profilePath,
+  role = when (this) {
+    is CastApi.Movie -> {
+      PersonRole.MovieActor(this.character)
+    }
+    is CastApi.TV -> PersonRole.Unknown
+  },
 )
 
 @Suppress("MagicNumber")
@@ -153,9 +160,9 @@ private fun Int?.toHourMinuteFormat(): String? {
 }
 
 @Serializable
-data class Credits(
-  val cast: List<Cast>,
-  val crew: List<Crew>,
+data class CreditsApi(
+  val cast: List<CastApi>,
+  val crew: List<CrewApi>,
 )
 
 @Serializable
