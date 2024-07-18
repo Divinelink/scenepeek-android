@@ -117,9 +117,7 @@ class DetailsViewModel @Inject constructor(
 
             is MovieDetailsResult.CreditsSuccess -> {
               val credits = (result.data as MovieDetailsResult.CreditsSuccess).aggregateCredits
-              viewState.copy(
-                tvCredits = credits.cast,
-              )
+              viewState.copy(tvCredits = credits)
             }
 
             is MovieDetailsResult.Failure.FatalError -> viewState.copy(

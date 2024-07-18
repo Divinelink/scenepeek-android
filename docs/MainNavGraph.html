@@ -14,12 +14,13 @@ graph TD
 main(["MainGraph"]) -- "start" --- home_screen("HomeScreen")
 main(["MainGraph"]) --- details_screen_destination("DetailsScreen 🧩")
 main(["MainGraph"]) --- watchlist_screen_destination("WatchlistScreen 🧩")
+main(["MainGraph"]) --- credits_screen_destination("CreditsScreen 🧩")
 main(["MainGraph"]) --- settings_nav_g(["SettingsGraph 🧩"])
 
 click settings_nav_g "SettingsNavGraph.html" "See SettingsGraph details" _blank
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class home_screen,details_screen_destination,watchlist_screen_destination destination;
+class home_screen,details_screen_destination,watchlist_screen_destination,credits_screen_destination destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
 class main,settings_nav_g navgraph;
 

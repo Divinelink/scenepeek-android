@@ -14,6 +14,7 @@
   <string name="core_ui_logout">Logout</string>
   <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
   <string name="core_ui_password">Password</string>
+  <string name="core_ui_view_all">View all</string>
 
   <string name="general_error_title">An error occurred</string>
 

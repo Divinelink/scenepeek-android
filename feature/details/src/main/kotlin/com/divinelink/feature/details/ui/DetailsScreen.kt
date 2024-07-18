@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.TestTags
+import com.divinelink.feature.credits.navigation.CreditsNavArguments
+import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.navigation.DetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.rate.RateModalBottomSheet
@@ -99,5 +101,15 @@ fun DetailsScreen(
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
     requestMedia = viewModel::onRequestMedia,
+    viewAllCreditsClicked = {
+      navigator.navigate(
+        CreditsScreenDestination(
+          CreditsNavArguments(
+            mediaType = viewState.value.mediaType,
+            aggregateCredits = viewState.value.tvCredits!!,
+          ),
+        ),
+      )
+    },
   )
 }

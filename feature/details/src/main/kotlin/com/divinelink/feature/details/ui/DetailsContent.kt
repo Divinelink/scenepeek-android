@@ -108,6 +108,7 @@ fun DetailsContent(
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   requestMedia: (List<Int>) -> Unit,
+  viewAllCreditsClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -180,13 +181,14 @@ fun DetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
               mediaDetails = mediaDetails,
               userDetails = viewState.userDetails,
-              tvCredits = viewState.tvCredits,
+              tvCredits = viewState.tvCredits?.cast,
               similarMoviesList = viewState.similarMovies,
               reviewsList = viewState.reviews,
               trailer = viewState.trailer,
               onSimilarMovieClicked = onSimilarMovieClicked,
               onAddRateClicked = onAddRateClicked,
               onAddToWatchlistClicked = onAddToWatchlistClicked,
+              viewAllCreditsClicked = viewAllCreditsClicked,
             )
           }
         }
@@ -254,6 +256,7 @@ fun MediaDetailsContent(
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
+  viewAllCreditsClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -333,14 +336,20 @@ fun MediaDetailsContent(
             modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
             thickness = MaterialTheme.dimensions.keyline_1,
           )
-          CastList(cast = tvCredits.take(30)) // This is temporary
+          CastList(
+            cast = tvCredits.take(30),
+            onViewAllClick = viewAllCreditsClicked,
+          ) // This is temporary
           CreatorsItem(creators = mediaDetails.creators)
         } else if (mediaDetails is Movie) {
           HorizontalDivider(
             modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
             thickness = MaterialTheme.dimensions.keyline_1,
           )
-          CastList(cast = mediaDetails.cast)
+          CastList(
+            cast = mediaDetails.cast,
+            onViewAllClick = viewAllCreditsClicked,
+          )
           mediaDetails.director?.let {
             DirectorItem(director = it)
           }
@@ -542,6 +551,7 @@ private fun DetailsContentPreview(
           onAddRateClicked = {},
           onAddToWatchlistClicked = {},
           requestMedia = {},
+          viewAllCreditsClicked = {},
         )
       }
     }
@@ -686,7 +696,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          tvCredits = emptyList(),
+          tvCredits = null,
           isLoading = true,
         ),
 
@@ -699,7 +709,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             watchlist = false,
           ),
           mediaType = MediaType.MOVIE,
-          tvCredits = emptyList(),
+          tvCredits = null,
           mediaDetails = movieDetails,
         ),
 
@@ -707,7 +717,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = TheOffice(),
-          tvCredits = emptyList(),
+          tvCredits = null,
           similarMovies = similarMovies,
         ),
 
@@ -716,7 +726,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaType = MediaType.MOVIE,
           mediaDetails = movieDetails,
           similarMovies = similarMovies,
-          tvCredits = emptyList(),
+          tvCredits = null,
           reviews = reviews,
         ),
 
@@ -731,14 +741,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             rating = 9.0f,
             watchlist = true,
           ),
-          tvCredits = emptyList(),
+          tvCredits = null,
           reviews = reviews,
         ),
 
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          tvCredits = emptyList(),
+          tvCredits = null,
           error = UIText.StringText("Something went wrong."),
         ),
       )
