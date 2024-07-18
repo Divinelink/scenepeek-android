@@ -16,6 +16,7 @@ ksp {
 
 dependencies {
   implementation(libs.kotlinx.serialization.json)
+  implementation(projects.core.domain)
 
   testImplementation(projects.core.testing)
 }

@@ -106,7 +106,7 @@ fun DetailsScreen(
         CreditsScreenDestination(
           CreditsNavArguments(
             mediaType = viewState.value.mediaType,
-            aggregateCredits = viewState.value.tvCredits!!,
+            id = viewState.value.tvCredits?.id!!, // TODO fix this
           ),
         ),
       )

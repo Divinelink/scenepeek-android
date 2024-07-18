@@ -73,4 +73,8 @@ object TestTags {
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }
+
+  object Credits {
+    const val TAB_BAR = "Credits Tab Bar $%s"
+  }
 }
