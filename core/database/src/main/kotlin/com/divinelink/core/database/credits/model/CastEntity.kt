@@ -7,4 +7,5 @@ data class CastEntity(
   val profilePath: String?,
   val totalEpisodeCount: Long,
   val character: String,
+  val creditId: String,
 )

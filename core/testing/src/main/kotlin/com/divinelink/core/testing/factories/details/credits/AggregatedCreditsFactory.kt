@@ -12,6 +12,12 @@ object AggregatedCreditsFactory {
     cast = SeriesCastFactory.cast(),
     crewDepartments = SeriesCrewListFactory.crewDepartments(),
   )
+
+  fun partialCredits() = AggregateCredits(
+    id = 2316,
+    cast = SeriesCastFactory.cast().take(2),
+    crewDepartments = listOf(SeriesCrewListFactory.camera()),
+  )
 }
 
 object SeriesCastFactory {

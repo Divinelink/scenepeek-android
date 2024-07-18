@@ -1,13 +1,13 @@
 ---
-title: Details/root Navigation Graph
+title: Watchlist/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-details/root(["RootGraph"]) -- "start" --- details/details(["DetailsGraph"])
-details/details(["DetailsGraph"]) -- "start" --- details/details_screen("DetailsScreen")
+watchlist/root(["RootGraph"]) -- "start" --- watchlist/watchlist(["WatchlistGraph"])
+watchlist/watchlist(["WatchlistGraph"]) -- "start" --- watchlist/watchlist_screen("WatchlistScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class details/details_screen destination;
+class watchlist/watchlist_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class details/details,details/root,details/details navgraph;
+class watchlist/watchlist,watchlist/root,watchlist/watchlist navgraph;

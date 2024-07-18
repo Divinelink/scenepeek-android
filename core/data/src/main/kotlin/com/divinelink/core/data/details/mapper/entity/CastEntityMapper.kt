@@ -13,5 +13,6 @@ fun CastEntity.map() = Person(
   role = PersonRole.SeriesActor(
     character = this.character,
     totalEpisodes = totalEpisodeCount.toInt(),
+    creditId = creditId,
   ),
 )

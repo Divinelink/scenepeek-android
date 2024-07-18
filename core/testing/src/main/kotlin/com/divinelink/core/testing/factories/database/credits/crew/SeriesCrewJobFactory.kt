@@ -38,8 +38,8 @@ object SeriesCrewJobFactory {
   )
 
   fun allCrewJobs() = listOf(
-    daleAlexander(),
     randallEinhorn(),
+    daleAlexander(),
     ronNichols(),
     peterSmokler(),
   )

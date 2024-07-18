@@ -37,9 +37,5 @@ interface DetailsRepository {
 
   fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>>
 
-  fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
-
-  fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
-
   fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
 }

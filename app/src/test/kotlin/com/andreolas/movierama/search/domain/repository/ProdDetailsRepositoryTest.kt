@@ -1,5 +1,6 @@
 package com.andreolas.movierama.search.domain.repository
 
+import JvmUnitTestDemoAssetManager
 import app.cash.turbine.test
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.api.DetailsResponseApiFactory
@@ -15,8 +16,10 @@ import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
+import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
@@ -30,6 +33,10 @@ import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestCreditsDao
+import com.divinelink.core.testing.database.TestDatabaseFactory
+import com.divinelink.core.testing.factories.core.commons.ClockFactory
+import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
+import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
@@ -38,6 +45,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -112,6 +120,20 @@ class ProdDetailsRepositoryTest {
       ),
     ),
   )
+
+  private val creditsResponseApi = JvmUnitTestDemoAssetManager
+    .open("credits.json")
+    .use { inputStream ->
+      val credits = inputStream.readBytes().decodeToString().trimIndent()
+      val serializer = AggregateCreditsApi.serializer()
+      val fullApi = Json.decodeFromString(serializer, credits)
+
+      AggregateCreditsApi(
+        id = fullApi.id,
+        cast = fullApi.cast.take(2),
+        crew = listOf(fullApi.crew[4], fullApi.crew[5], fullApi.crew[6], fullApi.crew[7]),
+      )
+    }
 
   private var mediaRemote = FakeMediaService()
   private var creditsDao = TestCreditsDao()
@@ -405,5 +427,70 @@ class ProdDetailsRepositoryTest {
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test fetchCredits when credits exist locally fetches local data`() = runTest {
+    creditsDao.mockCheckIfAggregateCreditsExist(true)
+    creditsDao.mockFetchAllCredits(AggregateCreditsEntityFactory.theOffice())
+
+    repository.fetchAggregateCredits(1).test {
+      val result = awaitItem()
+      assertThat(result.isSuccess).isTrue()
+      assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetchCredits when credits do not exist locally fetches remote data`() = runTest {
+    creditsDao.mockCheckIfAggregateCreditsExist(false)
+
+    mediaRemote.mockFetchAggregateCredits(response = flowOf(creditsResponseApi))
+
+    repository.fetchAggregateCredits(1).test {
+      val result = awaitItem()
+      assertThat(result.isSuccess).isTrue()
+      assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
+      awaitComplete()
+    }
+  }
+
+  // Use the DefaultCreditDao instead of the TestCreditDao so that we can actually test the insert
+  // of the credits into the database for this use case.
+  @Test
+  fun `test fetchCredits when credits do not exist locally inserts data to database`() = runTest {
+    val defaultCreditDao = ProdCreditsDao(
+      database = TestDatabaseFactory.createInMemoryDatabase(),
+      clock = ClockFactory.augustFifteenth2021(),
+      dispatcher = testDispatcher,
+    )
+
+    repository = ProdDetailsRepository(
+      mediaRemote = mediaRemote.mock,
+      creditsDao = defaultCreditDao,
+      dispatcher = testDispatcher,
+      scope = TestScope(),
+    )
+
+    mediaRemote.mockFetchAggregateCredits(response = flowOf(creditsResponseApi))
+
+    repository.fetchAggregateCredits(creditsResponseApi.id).test {
+      val existResult = defaultCreditDao.checkIfAggregateCreditsExist(creditsResponseApi.id).first()
+      assertThat(existResult).isTrue()
+
+      awaitItem()
+      awaitComplete()
+
+      // Re-fetch to ensure that the data is being fetched from the local source
+      repository.fetchAggregateCredits(creditsResponseApi.id).test {
+        val localResult = defaultCreditDao.fetchAllCredits(creditsResponseApi.id).first()
+        assertThat(localResult).isEqualTo(AggregateCreditsEntityFactory.theOffice())
+        val result = awaitItem()
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
+        awaitComplete()
+      }
+    }
   }
 }

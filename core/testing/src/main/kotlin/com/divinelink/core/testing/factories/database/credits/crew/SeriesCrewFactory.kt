@@ -50,8 +50,8 @@ object SeriesCrewFactory {
   )
 
   fun cameraDepartment() = listOf(
-    daleAlexander(),
     randallEinhorn(),
+    daleAlexander(),
     ronNichols(),
     peterSmokler(),
   )

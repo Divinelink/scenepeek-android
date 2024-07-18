@@ -1,5 +1,6 @@
 package com.andreolas.movierama.fakes.remote
 
+import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
@@ -18,6 +19,7 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequest
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -130,6 +132,14 @@ class FakeMediaService {
   ) {
     whenever(
       mock.addToWatchlist(request),
+    ).thenReturn(
+      response,
+    )
+  }
+
+  fun mockFetchAggregateCredits(response: Flow<AggregateCreditsApi>) {
+    whenever(
+      mock.fetchAggregatedCredits(any()),
     ).thenReturn(
       response,
     )

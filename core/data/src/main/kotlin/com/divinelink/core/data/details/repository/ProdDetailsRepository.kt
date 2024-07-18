@@ -115,6 +115,18 @@ class ProdDetailsRepository @Inject constructor(
       Result.success(Unit)
     }
 
+  override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
+    val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
+    val result = if (localExists) {
+      Timber.d("Fetching local credits")
+      fetchLocalAggregateCredits(id).first()
+    } else {
+      Timber.d("Fetching remote credits")
+      fetchRemoteAggregateCredits(id).first()
+    }
+    emit(result)
+  }.flowOn(dispatcher)
+
   private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
     creditsDao.insertAggregateCredits(aggregateCredits.id)
 
@@ -126,13 +138,13 @@ class ProdDetailsRepository @Inject constructor(
     }
   }
 
-  override fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = creditsDao
+  private fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = creditsDao
     .fetchAllCredits(id)
     .map { localCredits ->
       Result.success(localCredits.map())
     }
 
-  override fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
+  private fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
     mediaRemote.fetchAggregatedCredits(id)
       .onEach { apiResponse ->
         CoroutineScope(scope.coroutineContext + dispatcher).launch {
@@ -145,16 +157,4 @@ class ProdDetailsRepository @Inject constructor(
       .map { apiResponse ->
         Result.success(apiResponse.map())
       }
-
-  override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
-    val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
-    val result = if (localExists) {
-      Timber.d("Fetching local credits")
-      fetchLocalAggregateCredits(id).first()
-    } else {
-      Timber.d("Fetching remote credits")
-      fetchRemoteAggregateCredits(id).first()
-    }
-    emit(result)
-  }.flowOn(dispatcher)
 }
