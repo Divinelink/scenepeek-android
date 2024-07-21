@@ -1,6 +1,8 @@
 package com.divinelink.feature.details.ui
 
+import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
+import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.video.Video
@@ -12,6 +14,8 @@ import com.divinelink.feature.details.R
  * A collection of possible results for an attempt to fetch movie details, similar movies and reviews.
  */
 sealed class MovieDetailsResult {
+  data class AccountDetailsSuccess(val accountDetails: AccountMediaDetails) : MovieDetailsResult()
+
   data class DetailsSuccess(val mediaDetails: MediaDetails) : MovieDetailsResult()
 
   data class ReviewsSuccess(val reviews: List<Review>) : MovieDetailsResult()
@@ -21,6 +25,8 @@ sealed class MovieDetailsResult {
   data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
 
   data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MovieDetailsResult()
+
+  data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MovieDetailsResult()
 
   sealed class Failure(
     open val message: UIText = UIText.ResourceText(R.string.general_error_message),

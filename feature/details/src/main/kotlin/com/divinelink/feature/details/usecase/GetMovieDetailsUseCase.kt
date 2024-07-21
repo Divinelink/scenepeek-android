@@ -5,8 +5,10 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
@@ -23,6 +25,8 @@ import javax.inject.Inject
 open class GetMovieDetailsUseCase @Inject constructor(
   private val repository: DetailsRepository,
   private val mediaRepository: MediaRepository,
+  private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
+  private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
 ) : FlowUseCase<DetailsRequestApi, MovieDetailsResult>(dispatcher) {
   override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> =
@@ -108,6 +112,31 @@ open class GetMovieDetailsUseCase @Inject constructor(
               result.data.firstOrNull { it.officialTrailer }
             }
             send(Result.success(MovieDetailsResult.VideosSuccess(video)))
+          }
+      }
+
+      launch(dispatcher) {
+        fetchAccountMediaDetailsUseCase(
+          MediaDetailsParams(
+            id = requestApi.id,
+            mediaType = MediaType.from(requestApi.endpoint),
+          ),
+        )
+          .catch { Timber.e(it) }
+          .collect { result ->
+            result.onSuccess {
+              send(Result.success(MovieDetailsResult.AccountDetailsSuccess(result.data)))
+            }
+          }
+      }
+
+      launch(dispatcher) {
+        getMenuItemsUseCase(Unit)
+          .catch { Timber.e(it) }
+          .collect { result ->
+            result.onSuccess {
+              send(Result.success(MovieDetailsResult.MenuOptionsSuccess(result.data)))
+            }
           }
       }
     }
