@@ -117,14 +117,17 @@ class ProdDetailsRepository @Inject constructor(
 
   override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
     val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()
-    val result = if (localExists) {
+    if (localExists) {
       Timber.d("Fetching local credits")
-      fetchLocalAggregateCredits(id).first()
+      fetchLocalAggregateCredits(id).collect {
+        emit(it)
+      }
     } else {
       Timber.d("Fetching remote credits")
-      fetchRemoteAggregateCredits(id).first()
+      fetchRemoteAggregateCredits(id).collect {
+        emit(it)
+      }
     }
-    emit(result)
   }.flowOn(dispatcher)
 
   private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
@@ -132,8 +135,14 @@ class ProdDetailsRepository @Inject constructor(
 
     CoroutineScope(scope.coroutineContext + dispatcher).launch {
       creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
+    }
+    CoroutineScope(scope.coroutineContext + dispatcher).launch {
       creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
+    }
+    CoroutineScope(scope.coroutineContext + dispatcher).launch {
       creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
+    }
+    CoroutineScope(scope.coroutineContext + dispatcher).launch {
       creditsDao.insertCrew(aggregateCredits.toSeriesCrewEntity())
     }
   }
