@@ -47,4 +47,5 @@ FROM seriesCrewWithJob
 WHERE aggregateCreditId = ?
 AND jobTitle IS NOT NULL
 AND jobCreditId IS NOT NULL
-AND jobEpisodeCount > 0;
+AND jobEpisodeCount > 0
+ORDER BY crewDepartment ASC, crewName ASC;

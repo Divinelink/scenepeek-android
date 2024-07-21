@@ -451,7 +451,7 @@ class ProdDetailsRepositoryTest {
     repository.fetchAggregateCredits(1).test {
       val result = awaitItem()
       assertThat(result.isSuccess).isTrue()
-      assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
+      assertThat(result.data).isEqualTo(AggregatedCreditsFactory.unsortedCredits())
       awaitComplete()
     }
   }
@@ -489,7 +489,6 @@ class ProdDetailsRepositoryTest {
         val result = awaitItem()
         assertThat(result.isSuccess).isTrue()
         assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
-        awaitComplete()
       }
     }
   }

@@ -54,9 +54,9 @@ object CrewEntityFactory {
   )
 
   fun cameraDepartment() = listOf(
-    randallEinhorn(),
     daleAlexander(),
-    ronNichols(),
     peterSmokler(),
+    randallEinhorn(),
+    ronNichols(),
   )
 }

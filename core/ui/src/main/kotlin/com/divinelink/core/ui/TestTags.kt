@@ -76,5 +76,6 @@ object TestTags {
 
   object Credits {
     const val TAB_BAR = "Credits Tab Bar $%s"
+    const val CREDITS_CONTENT = "Credits Content with data"
   }
 }

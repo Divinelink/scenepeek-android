@@ -31,7 +31,6 @@ class CreditsViewModel @Inject constructor(
   init {
     fetchCreditsUseCase(args.id)
       .onEach { result ->
-        println("result: $result")
         result.onSuccess { credits ->
           _uiState.update {
             it.copy(
@@ -39,7 +38,7 @@ class CreditsViewModel @Inject constructor(
                 CreditsTab.Cast(credits.cast.size) to CreditsUiContent.Cast(credits.cast),
                 CreditsTab.Crew(
                   credits.crewDepartments.sumOf { department -> department.uniqueCrewList.size },
-                ) to CreditsUiContent.Crew(credits.crewDepartments.sortedBy { it.department }),
+                ) to CreditsUiContent.Crew(credits.crewDepartments),
               ),
               tabs = listOf(
                 CreditsTab.Cast(credits.cast.size),

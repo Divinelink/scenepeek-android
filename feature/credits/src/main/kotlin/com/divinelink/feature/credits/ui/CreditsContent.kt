@@ -72,7 +72,7 @@ fun CreditsContent(
             return@HorizontalPager
           }
           LazyColumn(
-            modifier = Modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
+            modifier = Modifier.testTag(TestTags.Credits.CREDITS_CONTENT),
             contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
@@ -92,7 +92,7 @@ fun CreditsContent(
             return@HorizontalPager
           }
           LazyColumn(
-            modifier = Modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
+            modifier = Modifier.testTag(TestTags.Credits.CREDITS_CONTENT),
             contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
