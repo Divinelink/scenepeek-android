@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import com.divinelink.core.ui.R
 fun CastList(
   cast: List<Person>,
   onViewAllClick: () -> Unit,
+  viewAllVisible: Boolean = true,
 ) {
   Column(
     modifier = Modifier
@@ -49,11 +51,15 @@ fun CastList(
           text = stringResource(id = R.string.details__cast_title),
         )
         Spacer(modifier = Modifier.weight(1f))
-        TextButton(
-          modifier = Modifier.align(alignment = Alignment.CenterVertically),
-          onClick = onViewAllClick,
-        ) {
-          Text(stringResource(id = R.string.core_ui_view_all))
+        if (viewAllVisible) {
+          TextButton(
+            modifier = Modifier.align(alignment = Alignment.CenterVertically),
+            onClick = onViewAllClick,
+          ) {
+            Text(stringResource(id = R.string.core_ui_view_all))
+          }
+        } else {
+          Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_40))
         }
       }
 

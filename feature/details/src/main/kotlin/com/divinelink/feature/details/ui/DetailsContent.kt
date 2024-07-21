@@ -349,6 +349,7 @@ fun MediaDetailsContent(
           CastList(
             cast = mediaDetails.cast,
             onViewAllClick = viewAllCreditsClicked,
+            viewAllVisible = false,
           )
           mediaDetails.director?.let {
             DirectorItem(director = it)
