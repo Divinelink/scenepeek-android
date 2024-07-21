@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -69,21 +72,14 @@ fun PersonItem(
           PersonRole.Creator -> TODO()
           is PersonRole.Crew -> {
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
-              Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = (person.role as PersonRole.Crew).job!!,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-              )
+              val job = (person.role as PersonRole.Crew).job
+              val totalEpisodes = (person.role as PersonRole.Crew).totalEpisodes?.toInt()
+
+              val jobText = buildPersonSubHeader(mapOf(job to totalEpisodes))
 
               Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = stringResource(
-                  R.string.feature_credits_character_total_episodes,
-                  (person.role as PersonRole.Crew).totalEpisodes!!,
-                ),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+                text = jobText,
               )
             }
           }
@@ -91,21 +87,14 @@ fun PersonItem(
           is PersonRole.MovieActor -> TODO()
           is PersonRole.SeriesActor -> {
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
-              Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = (person.role as PersonRole.SeriesActor).character!!,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-              )
+              val character = (person.role as PersonRole.SeriesActor).character
+              val totalEpisodes = (person.role as PersonRole.SeriesActor).totalEpisodes
+
+              val characterText = buildPersonSubHeader(mapOf(character to totalEpisodes))
 
               Text(
                 modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = stringResource(
-                  R.string.feature_credits_character_total_episodes,
-                  (person.role as PersonRole.SeriesActor).totalEpisodes!!,
-                ),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+                text = characterText,
               )
             }
           }
@@ -116,6 +105,42 @@ fun PersonItem(
     }
   }
 }
+
+/**
+ * Builds the text for the character and total episodes.
+ * @param roles The role and total episodes.
+ * Can be a character if the person is an actor or a job if the person is a crew member.
+ */
+@Composable
+private fun buildPersonSubHeader(roles: Map<String?, Int?>): AnnotatedString =
+  buildAnnotatedString {
+    roles.forEach { (role, totalEpisodes) ->
+      withStyle(MaterialTheme.typography.labelMedium.toSpanStyle()) {
+        append(role)
+      }
+
+      totalEpisodes?.let {
+        append(" ")
+        withStyle(
+          MaterialTheme.typography.labelMedium.toSpanStyle().copy(
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+          ),
+        ) {
+          append(
+            stringResource(
+              R.string.feature_credits_character_total_episodes,
+              totalEpisodes,
+            ),
+          )
+        }
+      }
+
+      // Add a comma if there are more roles to display
+      if (roles.size > 1 && role != roles.keys.last()) {
+        append(", ")
+      }
+    }
+  }
 
 @Previews
 @Composable
