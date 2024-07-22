@@ -22,7 +22,7 @@ import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.usecase.DeleteRatingUseCase
-import com.divinelink.feature.details.usecase.GetMovieDetailsUseCase
+import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.usecase.SubmitRatingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +42,7 @@ import com.divinelink.core.ui.R as uiR
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-  getMovieDetailsUseCase: GetMovieDetailsUseCase,
+  getMediaDetailsUseCase: GetMediaDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
@@ -86,56 +86,56 @@ class DetailsViewModel @Inject constructor(
       MediaType.UNKNOWN -> DetailsRequestApi.Unknown
     }
 
-    getMovieDetailsUseCase(parameters = requestApi)
+    getMediaDetailsUseCase(parameters = requestApi)
       .onEach { result ->
         result.onSuccess {
           _viewState.update { viewState ->
             when (result.data) {
-              is MovieDetailsResult.DetailsSuccess -> {
+              is MediaDetailsResult.DetailsSuccess -> {
                 viewState.copy(
                   isLoading = false,
-                  mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails,
+                  mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
                 )
               }
 
-              is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
-                reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
+              is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
+                reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
               )
 
-              is MovieDetailsResult.SimilarSuccess -> viewState.copy(
-                similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
+              is MediaDetailsResult.SimilarSuccess -> viewState.copy(
+                similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
               )
 
-              is MovieDetailsResult.VideosSuccess -> viewState.copy(
-                trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
+              is MediaDetailsResult.VideosSuccess -> viewState.copy(
+                trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,
               )
 
-              is MovieDetailsResult.CreditsSuccess -> {
-                val credits = (result.data as MovieDetailsResult.CreditsSuccess).aggregateCredits
+              is MediaDetailsResult.CreditsSuccess -> {
+                val credits = (result.data as MediaDetailsResult.CreditsSuccess).aggregateCredits
                 viewState.copy(tvCredits = credits)
               }
 
-              is MovieDetailsResult.AccountDetailsSuccess -> {
-                val successData = (result.data as MovieDetailsResult.AccountDetailsSuccess)
+              is MediaDetailsResult.AccountDetailsSuccess -> {
+                val successData = (result.data as MediaDetailsResult.AccountDetailsSuccess)
                 viewState.copy(
                   userDetails = successData.accountDetails,
                 )
               }
 
-              is MovieDetailsResult.MenuOptionsSuccess -> {
-                val successData = (result.data as MovieDetailsResult.MenuOptionsSuccess)
+              is MediaDetailsResult.MenuOptionsSuccess -> {
+                val successData = (result.data as MediaDetailsResult.MenuOptionsSuccess)
                 viewState.copy(
                   menuOptions = successData.menuOptions,
                 )
               }
 
-              is MovieDetailsResult.Failure.FatalError -> viewState.copy(
-                error = (result.data as MovieDetailsResult.Failure.FatalError).message,
+              is MediaDetailsResult.Failure.FatalError -> viewState.copy(
+                error = (result.data as MediaDetailsResult.Failure.FatalError).message,
                 isLoading = false,
               )
 
-              MovieDetailsResult.Failure.Unknown -> viewState.copy(
-                error = MovieDetailsResult.Failure.Unknown.message,
+              MediaDetailsResult.Failure.Unknown -> viewState.copy(
+                error = MediaDetailsResult.Failure.Unknown.message,
                 isLoading = false,
               )
             }
@@ -144,14 +144,14 @@ class DetailsViewModel @Inject constructor(
           if (it is MediaDetailsException) {
             _viewState.update { viewState ->
               viewState.copy(
-                error = MovieDetailsResult.Failure.FatalError().message,
+                error = MediaDetailsResult.Failure.FatalError().message,
                 isLoading = false,
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
-                error = MovieDetailsResult.Failure.Unknown.message,
+                error = MediaDetailsResult.Failure.Unknown.message,
                 isLoading = false,
               )
             }

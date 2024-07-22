@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
@@ -30,7 +30,7 @@ import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLAB
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.DetailsNavArguments
 import com.divinelink.feature.details.ui.DetailsScreen
-import com.divinelink.feature.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.ui.MediaDetailsResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -41,7 +41,7 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun navigateToAnotherDetailsScreen() {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
@@ -67,15 +67,15 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
         Result.success(
-          MovieDetailsResult.SimilarSuccess(
+          MediaDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
           ),
         ),
@@ -86,14 +86,12 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         navigator = destinationsNavigator,
         viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-          getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
           submitRatingUseCase = submitRateUseCase.mock,
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
-          getMenuItemsUseCase = getMenuItemsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -101,7 +99,6 @@ class DetailsScreenTest : ComposeTest() {
               "mediaType" to MediaType.MOVIE.value,
             ),
           ),
-
         ),
       )
     }
@@ -155,39 +152,37 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog is visible when your rating is clicked`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val requestMediaUseCase = FakeRequestMediaUseCase()
-    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = flowOf(Result.success(AccountMediaDetailsFactory.Rated())),
-    )
-
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.AccountDetailsSuccess(
+            accountDetails = AccountMediaDetailsFactory.Rated(),
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
+
       ),
     )
 
     val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-      getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -216,7 +211,7 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog onSubmitRate`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
@@ -234,10 +229,10 @@ class DetailsScreenTest : ComposeTest() {
       response = flowOf(Result.success(Unit)),
     )
 
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
@@ -245,14 +240,12 @@ class DetailsScreenTest : ComposeTest() {
     )
 
     val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-      getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,

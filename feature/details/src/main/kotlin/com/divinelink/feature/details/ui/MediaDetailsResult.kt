@@ -13,24 +13,24 @@ import com.divinelink.feature.details.R
 /**
  * A collection of possible results for an attempt to fetch movie details, similar movies and reviews.
  */
-sealed class MovieDetailsResult {
-  data class AccountDetailsSuccess(val accountDetails: AccountMediaDetails) : MovieDetailsResult()
+sealed class MediaDetailsResult {
+  data class AccountDetailsSuccess(val accountDetails: AccountMediaDetails) : MediaDetailsResult()
 
-  data class DetailsSuccess(val mediaDetails: MediaDetails) : MovieDetailsResult()
+  data class DetailsSuccess(val mediaDetails: MediaDetails) : MediaDetailsResult()
 
-  data class ReviewsSuccess(val reviews: List<Review>) : MovieDetailsResult()
+  data class ReviewsSuccess(val reviews: List<Review>) : MediaDetailsResult()
 
-  data class SimilarSuccess(val similar: List<MediaItem.Media>) : MovieDetailsResult()
+  data class SimilarSuccess(val similar: List<MediaItem.Media>) : MediaDetailsResult()
 
-  data class VideosSuccess(val trailer: Video?) : MovieDetailsResult()
+  data class VideosSuccess(val trailer: Video?) : MediaDetailsResult()
 
-  data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MovieDetailsResult()
+  data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MediaDetailsResult()
 
-  data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MovieDetailsResult()
+  data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MediaDetailsResult()
 
   sealed class Failure(
     open val message: UIText = UIText.ResourceText(R.string.general_error_message),
-  ) : MovieDetailsResult() {
+  ) : MediaDetailsResult() {
 
     data class FatalError(
       override val message: UIText = UIText.ResourceText(

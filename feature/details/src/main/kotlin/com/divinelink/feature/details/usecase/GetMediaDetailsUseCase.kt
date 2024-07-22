@@ -12,7 +12,7 @@ import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.feature.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.ui.MediaDetailsResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,14 +22,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @Suppress("LongMethod")
-open class GetMovieDetailsUseCase @Inject constructor(
+open class GetMediaDetailsUseCase @Inject constructor(
   private val repository: DetailsRepository,
   private val mediaRepository: MediaRepository,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<DetailsRequestApi, MovieDetailsResult>(dispatcher) {
-  override fun execute(parameters: DetailsRequestApi): Flow<Result<MovieDetailsResult>> =
+) : FlowUseCase<DetailsRequestApi, MediaDetailsResult>(dispatcher) {
+  override fun execute(parameters: DetailsRequestApi): Flow<Result<MediaDetailsResult>> =
     channelFlow {
       if (parameters == DetailsRequestApi.Unknown) {
         send(Result.failure(MediaDetailsException()))
@@ -62,7 +62,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           .collect { result ->
             send(
               Result.success(
-                MovieDetailsResult.DetailsSuccess(
+                MediaDetailsResult.DetailsSuccess(
                   result.data.copy(isFavorite = isFavorite.getOrNull() ?: false),
                 ),
               ),
@@ -75,7 +75,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
-              send(Result.success(MovieDetailsResult.SimilarSuccess(result.data)))
+              send(Result.success(MediaDetailsResult.SimilarSuccess(result.data)))
             }
           }
       }
@@ -85,7 +85,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
-              send(Result.success(MovieDetailsResult.ReviewsSuccess(result.data)))
+              send(Result.success(MediaDetailsResult.ReviewsSuccess(result.data)))
             }
           }
       }
@@ -96,7 +96,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
             .catch { Timber.e(it) }
             .collect { result ->
               result.onSuccess {
-                send(Result.success(MovieDetailsResult.CreditsSuccess(result.data)))
+                send(Result.success(MediaDetailsResult.CreditsSuccess(result.data)))
               }
             }
         }
@@ -111,7 +111,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
             } else {
               result.data.firstOrNull { it.officialTrailer }
             }
-            send(Result.success(MovieDetailsResult.VideosSuccess(video)))
+            send(Result.success(MediaDetailsResult.VideosSuccess(video)))
           }
       }
 
@@ -125,7 +125,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
-              send(Result.success(MovieDetailsResult.AccountDetailsSuccess(result.data)))
+              send(Result.success(MediaDetailsResult.AccountDetailsSuccess(result.data)))
             }
           }
       }
@@ -135,7 +135,7 @@ open class GetMovieDetailsUseCase @Inject constructor(
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
-              send(Result.success(MovieDetailsResult.MenuOptionsSuccess(result.data)))
+              send(Result.success(MediaDetailsResult.MenuOptionsSuccess(result.data)))
             }
           }
       }

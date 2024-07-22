@@ -22,11 +22,11 @@ object AggregatedCreditsFactory {
     ),
   )
 
-  // Data fetched from the database is sorted
+  // Data fetched from the database is sorted by name
   fun partialCredits() = AggregateCredits(
     id = 2316,
     cast = SeriesCastFactory.cast().take(2),
-    crewDepartments = listOf(SeriesCrewListFactory.camera()),
+    crewDepartments = listOf(SeriesCrewListFactory.sortedCameraDepartment()),
   )
 }
 
@@ -241,6 +241,56 @@ object SeriesCrewListFactory {
   )
 
   fun camera() = SeriesCrewDepartment(
+    department = "Camera",
+    crewList = listOf(
+      Person(
+        id = 1215572,
+        name = "Randall Einhorn",
+        profilePath = null,
+        role = PersonRole.Crew(
+          job = "Director of Photography",
+          creditId = "5bdaa68f92514153f500859f",
+          totalEpisodes = 3,
+          department = "Camera",
+        ),
+      ),
+      Person(
+        id = 1879373,
+        name = "Dale Alexander",
+        profilePath = null,
+        role = PersonRole.Crew(
+          job = "Key Grip",
+          creditId = "5bdaa7d90e0a2603c60086d9",
+          totalEpisodes = 3,
+          department = "Camera",
+        ),
+      ),
+      Person(
+        id = 2166021,
+        name = "Ron Nichols",
+        profilePath = null,
+        role = PersonRole.Crew(
+          job = "Key Grip",
+          creditId = "5bdaa3e40e0a2603b1008d3f",
+          totalEpisodes = 1,
+          department = "Camera",
+        ),
+      ),
+      Person(
+        id = 67864,
+        name = "Peter Smokler",
+        profilePath = null,
+        role = PersonRole.Crew(
+          job = "Director of Photography",
+          creditId = "5bdaa2d4c3a368078f007f5c",
+          totalEpisodes = 1,
+          department = "Camera",
+        ),
+      ),
+    ),
+  )
+
+  fun sortedCameraDepartment() = SeriesCrewDepartment(
     department = "Camera",
     crewList = listOf(
       Person(
