@@ -8,7 +8,6 @@ import com.andreolas.factories.api.ReviewsResultsApiFactory
 import com.andreolas.factories.api.SimilarMovieApiFactory
 import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.fakes.remote.FakeMediaService
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
@@ -40,6 +39,7 @@ import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEnti
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.testing.service.TestMediaService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -135,7 +135,7 @@ class ProdDetailsRepositoryTest {
       )
     }
 
-  private var mediaRemote = FakeMediaService()
+  private var mediaRemote = TestMediaService()
   private var creditsDao = TestCreditsDao()
 
   private lateinit var repository: DetailsRepository

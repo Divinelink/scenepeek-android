@@ -1,10 +1,10 @@
 package com.andreolas.movierama.details.domain.usecase
 
-import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.usecase.AddToWatchlistParameters
@@ -22,13 +22,13 @@ class AddToWatchlistUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeDetailsRepository
+  private lateinit var repository: TestDetailsRepository
 
   private lateinit var sessionStorage: SessionStorage
 
   @Before
   fun setUp() {
-    repository = FakeDetailsRepository()
+    repository = TestDetailsRepository()
   }
 
   @Test

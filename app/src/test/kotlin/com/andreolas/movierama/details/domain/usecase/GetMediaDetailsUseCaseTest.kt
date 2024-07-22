@@ -3,7 +3,6 @@ package com.andreolas.movierama.details.domain.usecase
 import app.cash.turbine.test
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.fakes.repository.FakeDetailsRepository
 import com.andreolas.movierama.fakes.repository.FakeMoviesRepository
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.core.data.details.model.MediaDetailsException
@@ -20,6 +19,7 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
+import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.divinelink.feature.details.ui.MediaDetailsResult
 import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
@@ -38,7 +38,7 @@ class GetMediaDetailsUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeDetailsRepository
+  private lateinit var repository: TestDetailsRepository
   private lateinit var moviesRepository: FakeMoviesRepository
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
@@ -82,7 +82,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Before
   fun setUp() {
-    repository = FakeDetailsRepository()
+    repository = TestDetailsRepository()
     moviesRepository = FakeMoviesRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
