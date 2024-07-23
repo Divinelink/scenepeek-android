@@ -29,7 +29,7 @@ import com.divinelink.feature.details.ui.DetailsViewState
 import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 import com.divinelink.feature.details.R as detailsR
 

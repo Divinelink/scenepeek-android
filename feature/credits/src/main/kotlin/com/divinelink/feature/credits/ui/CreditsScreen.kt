@@ -59,7 +59,6 @@ fun CreditsScreen(
             )
           }
         },
-
       )
     },
   ) { paddingValues ->
