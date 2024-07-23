@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="feature_credits_cast_and_crew_title">Cast &amp; Crew</string>
+  <string name="feature_credits_cast">Cast (%s)</string>
+  <string name="feature_credits_crew">Crew (%s)</string>
+  <string name="feature_credits_character_total_episodes">(%s Episodes)</string>
+
+  <string name="feature_credits_cast_missing">No cast information available</string>
+  <string name="feature_credits_crew_missing">No crew information available</string>
+</resources>

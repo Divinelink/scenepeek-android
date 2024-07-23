@@ -1,4 +1,4 @@
-package com.andreolas.movierama.fakes.repository
+package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -9,12 +9,13 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class FakeDetailsRepository {
+class TestDetailsRepository {
 
   val mock: DetailsRepository = mock()
 
@@ -68,6 +69,10 @@ class FakeDetailsRepository {
     ).thenReturn(
       flowOf(response),
     )
+  }
+
+  fun mockFetchAggregateCredits(response: Flow<Result<AggregateCredits>>) {
+    whenever(mock.fetchAggregateCredits(any())).thenReturn(response)
   }
 
   fun mockFetchAccountMediaDetails(response: Result<AccountMediaDetails>) {

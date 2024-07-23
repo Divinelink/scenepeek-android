@@ -21,8 +21,7 @@ dependencies {
   implementation(projects.core.model)
 
   implementation(projects.feature.settings)
-
-  implementation(libs.timber)
+  implementation(projects.feature.credits)
 
   testImplementation(projects.core.testing)
 }

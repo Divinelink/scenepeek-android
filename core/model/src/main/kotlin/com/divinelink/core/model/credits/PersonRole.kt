@@ -1,15 +1,21 @@
 package com.divinelink.core.model.credits
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 sealed class PersonRole(val title: String?) {
 
+  @Serializable
   data class SeriesActor(
     val character: String?,
     val creditId: String? = null,
     val totalEpisodes: Int? = null,
   ) : PersonRole(character)
 
+  @Serializable
   data class MovieActor(val character: String?) : PersonRole(character)
 
+  @Serializable
   data class Crew(
     val job: String?,
     val creditId: String?,

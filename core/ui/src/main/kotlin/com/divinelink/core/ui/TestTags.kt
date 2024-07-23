@@ -6,6 +6,7 @@ object TestTags {
   const val MOVIES_LIST_TAG = "MOVIES_LIST_TAG"
   const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
   const val LOADING_PROGRESS = "Loading Progress Bar"
+  const val BLANK_SLATE = "Blank Slate"
 
   const val LAZY_COLUMN = "Lazy Column"
 
@@ -72,5 +73,11 @@ object TestTags {
     const val WATCHLIST_CONTENT = "Watchlist Content with data"
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
+  }
+
+  object Credits {
+    const val TAB_BAR = "Credits Tab Bar $%s"
+    const val CAST_CREDITS_CONTENT = "Credits Content with cast"
+    const val CREW_CREDITS_CONTENT = "Credits Content with crew"
   }
 }

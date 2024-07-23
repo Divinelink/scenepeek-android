@@ -6,12 +6,13 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
@@ -19,18 +20,24 @@ import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetail
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
-import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
+import com.divinelink.feature.credits.navigation.CreditsNavArguments
+import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.DetailsNavArguments
 import com.divinelink.feature.details.ui.DetailsScreen
-import com.divinelink.feature.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.ui.DetailsViewModel
+import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
+import com.divinelink.feature.details.ui.MediaDetailsResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -41,14 +48,13 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun navigateToAnotherDetailsScreen() {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val requestMediaUseCase = FakeRequestMediaUseCase()
-    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     destinationsNavigator.navigate(
@@ -67,15 +73,15 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
         Result.success(
-          MovieDetailsResult.SimilarSuccess(
+          MediaDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
           ),
         ),
@@ -85,15 +91,13 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
-        viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-          getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+        viewModel = DetailsViewModel(
+          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
           submitRatingUseCase = submitRateUseCase.mock,
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
-          getMenuItemsUseCase = getMenuItemsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -101,13 +105,12 @@ class DetailsScreenTest : ComposeTest() {
               "mediaType" to MediaType.MOVIE.value,
             ),
           ),
-
         ),
       )
     }
 
     composeTestRule
-      .onNodeWithTag(com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
       .performScrollToNode(
         matcher = hasText(
           MediaItemFactory.MoviesList()[0].name,
@@ -155,39 +158,37 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog is visible when your rating is clicked`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val requestMediaUseCase = FakeRequestMediaUseCase()
-    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = flowOf(Result.success(AccountMediaDetailsFactory.Rated())),
-    )
-
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.AccountDetailsSuccess(
+            accountDetails = AccountMediaDetailsFactory.Rated(),
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
+
       ),
     )
 
-    val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-      getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -216,14 +217,13 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog onSubmitRate`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
     val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     val submitRateUseCase = FakeSubmitRatingUseCase()
     val deleteRatingUseCase = FakeDeleteRatingUseCase()
     val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     val requestMediaUseCase = FakeRequestMediaUseCase()
-    val getMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -234,25 +234,23 @@ class DetailsScreenTest : ComposeTest() {
       response = flowOf(Result.success(Unit)),
     )
 
-    getMovieDetailsUseCase.mockFetchMovieDetails(
+    getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
-          MovieDetailsResult.DetailsSuccess(
+          MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
           ),
         ),
       ),
     )
 
-    val viewModel = com.divinelink.feature.details.ui.DetailsViewModel(
-      getMovieDetailsUseCase = getMovieDetailsUseCase.mock,
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
       onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-      fetchAccountMediaDetailsUseCase = fetchAccountMediaDetailsUseCase.mock,
       submitRatingUseCase = submitRateUseCase.mock,
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
-      getMenuItemsUseCase = getMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -300,5 +298,151 @@ class DetailsScreenTest : ComposeTest() {
       TestTags.Details.YOUR_RATING,
       useUnmergedTree = true,
     ).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test navigate to credits screen with tv credits`() {
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
+    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+    val submitRateUseCase = FakeSubmitRatingUseCase()
+    val deleteRatingUseCase = FakeDeleteRatingUseCase()
+    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+    val requestMediaUseCase = FakeRequestMediaUseCase()
+    val destinationsNavigator = FakeDestinationsNavigator()
+
+    // Initial navigation to Details screen
+    destinationsNavigator.navigate(
+      direction = DetailsScreenDestination(
+        DetailsNavArguments(
+          id = 2316,
+          mediaType = MediaType.TV.name,
+          isFavorite = false,
+        ),
+      ),
+    )
+
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.TheOffice(),
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.CreditsSuccess(
+            aggregateCredits = AggregatedCreditsFactory.credits(),
+          ),
+        ),
+      ),
+    )
+
+    setContentWithTheme {
+      DetailsScreen(
+        navigator = destinationsNavigator,
+        viewModel = DetailsViewModel(
+          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+          submitRatingUseCase = submitRateUseCase.mock,
+          deleteRatingUseCase = deleteRatingUseCase.mock,
+          addToWatchlistUseCase = addToWatchlistUseCase.mock,
+          requestMediaUseCase = requestMediaUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "id" to 2316,
+              "isFavorite" to false,
+              "mediaType" to MediaType.TV.value,
+            ),
+          ),
+        ),
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(getString(R.string.core_ui_view_all))
+        .performScrollTo()
+        .assertIsDisplayed()
+        .performClick()
+
+      destinationsNavigator.verifyNavigatedToDirection(
+        expectedDirection = CreditsScreenDestination(
+          CreditsNavArguments(
+            id = 2316,
+            mediaType = MediaType.TV,
+          ),
+        ),
+      )
+
+      // Navigate up from Credits screen
+      onNodeWithContentDescription(
+        getString(uiR.string.core_ui_navigate_up_button_content_description),
+      ).assertIsDisplayed().performClick()
+
+      destinationsNavigator.verifyNavigatedToDirection(
+        expectedDirection = DetailsScreenDestination(
+          DetailsNavArguments(
+            id = 2316,
+            isFavorite = false,
+            mediaType = MediaType.TV.name,
+          ),
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test viewAll credits does not exist without tv credits`() {
+    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
+    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+    val submitRateUseCase = FakeSubmitRatingUseCase()
+    val deleteRatingUseCase = FakeDeleteRatingUseCase()
+    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+    val requestMediaUseCase = FakeRequestMediaUseCase()
+    val destinationsNavigator = FakeDestinationsNavigator()
+
+    // Initial navigation to Details screen
+    destinationsNavigator.navigate(
+      direction = DetailsScreenDestination(
+        DetailsNavArguments(
+          id = 2316,
+          mediaType = MediaType.TV.name,
+          isFavorite = false,
+        ),
+      ),
+    )
+
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.TheOffice(),
+          ),
+        ),
+      ),
+    )
+
+    setContentWithTheme {
+      DetailsScreen(
+        navigator = destinationsNavigator,
+        viewModel = DetailsViewModel(
+          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+          submitRatingUseCase = submitRateUseCase.mock,
+          deleteRatingUseCase = deleteRatingUseCase.mock,
+          addToWatchlistUseCase = addToWatchlistUseCase.mock,
+          requestMediaUseCase = requestMediaUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "id" to 2316,
+              "isFavorite" to false,
+              "mediaType" to MediaType.TV.value,
+            ),
+          ),
+        ),
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(getString(R.string.core_ui_view_all)).assertDoesNotExist()
+    }
   }
 }

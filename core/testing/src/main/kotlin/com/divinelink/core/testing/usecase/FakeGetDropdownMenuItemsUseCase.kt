@@ -16,7 +16,7 @@ class FakeGetDropdownMenuItemsUseCase {
     mockFailure()
   }
 
-  private fun mockFailure() {
+  fun mockFailure() {
     whenever(
       mock.invoke(any()),
     ).thenReturn(

@@ -7,10 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
-import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -24,8 +22,7 @@ import com.divinelink.feature.details.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.usecase.DeleteRatingUseCase
-import com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase
-import com.divinelink.feature.details.usecase.GetMovieDetailsUseCase
+import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.usecase.SubmitRatingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,14 +42,12 @@ import com.divinelink.core.ui.R as uiR
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-  getMovieDetailsUseCase: GetMovieDetailsUseCase,
+  getMediaDetailsUseCase: GetMediaDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
-  private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
-  private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -90,70 +85,79 @@ class DetailsViewModel @Inject constructor(
       MediaType.PERSON -> DetailsRequestApi.Unknown
       MediaType.UNKNOWN -> DetailsRequestApi.Unknown
     }
-    getMovieDetailsUseCase(
-      parameters = requestApi,
-    ).onEach { result ->
-      result.onSuccess {
-        _viewState.update { viewState ->
-          when (result.data) {
-            is MovieDetailsResult.DetailsSuccess -> {
-              viewState.copy(
+
+    getMediaDetailsUseCase(parameters = requestApi)
+      .onEach { result ->
+        result.onSuccess {
+          _viewState.update { viewState ->
+            when (result.data) {
+              is MediaDetailsResult.DetailsSuccess -> {
+                viewState.copy(
+                  isLoading = false,
+                  mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
+                )
+              }
+
+              is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
+                reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
+              )
+
+              is MediaDetailsResult.SimilarSuccess -> viewState.copy(
+                similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
+              )
+
+              is MediaDetailsResult.VideosSuccess -> viewState.copy(
+                trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,
+              )
+
+              is MediaDetailsResult.CreditsSuccess -> {
+                val credits = (result.data as MediaDetailsResult.CreditsSuccess).aggregateCredits
+                viewState.copy(tvCredits = credits)
+              }
+
+              is MediaDetailsResult.AccountDetailsSuccess -> {
+                val successData = (result.data as MediaDetailsResult.AccountDetailsSuccess)
+                viewState.copy(
+                  userDetails = successData.accountDetails,
+                )
+              }
+
+              is MediaDetailsResult.MenuOptionsSuccess -> {
+                val successData = (result.data as MediaDetailsResult.MenuOptionsSuccess)
+                viewState.copy(
+                  menuOptions = successData.menuOptions,
+                )
+              }
+
+              is MediaDetailsResult.Failure.FatalError -> viewState.copy(
+                error = (result.data as MediaDetailsResult.Failure.FatalError).message,
                 isLoading = false,
-                mediaDetails = (result.data as MovieDetailsResult.DetailsSuccess).mediaDetails,
+              )
+
+              MediaDetailsResult.Failure.Unknown -> viewState.copy(
+                error = MediaDetailsResult.Failure.Unknown.message,
+                isLoading = false,
               )
             }
-
-            is MovieDetailsResult.ReviewsSuccess -> viewState.copy(
-              reviews = (result.data as MovieDetailsResult.ReviewsSuccess).reviews,
-            )
-
-            is MovieDetailsResult.SimilarSuccess -> viewState.copy(
-              similarMovies = (result.data as MovieDetailsResult.SimilarSuccess).similar,
-            )
-
-            is MovieDetailsResult.VideosSuccess -> viewState.copy(
-              trailer = (result.data as MovieDetailsResult.VideosSuccess).trailer,
-            )
-
-            is MovieDetailsResult.CreditsSuccess -> {
-              val credits = (result.data as MovieDetailsResult.CreditsSuccess).aggregateCredits
+          }
+        }.onFailure {
+          if (it is MediaDetailsException) {
+            _viewState.update { viewState ->
               viewState.copy(
-                tvCredits = credits.cast,
+                error = MediaDetailsResult.Failure.FatalError().message,
+                isLoading = false,
               )
             }
-
-            is MovieDetailsResult.Failure.FatalError -> viewState.copy(
-              error = (result.data as MovieDetailsResult.Failure.FatalError).message,
-              isLoading = false,
-            )
-
-            MovieDetailsResult.Failure.Unknown -> viewState.copy(
-              error = MovieDetailsResult.Failure.Unknown.message,
-              isLoading = false,
-            )
+          } else {
+            _viewState.update { viewState ->
+              viewState.copy(
+                error = MediaDetailsResult.Failure.Unknown.message,
+                isLoading = false,
+              )
+            }
           }
         }
-      }.onFailure {
-        if (it is MediaDetailsException) {
-          _viewState.update { viewState ->
-            viewState.copy(
-              error = MovieDetailsResult.Failure.FatalError().message,
-              isLoading = false,
-            )
-          }
-        } else {
-          _viewState.update { viewState ->
-            viewState.copy(
-              error = MovieDetailsResult.Failure.Unknown.message,
-              isLoading = false,
-            )
-          }
-        }
-      }
-    }.onCompletion {
-      fetchAccountMediaDetails()
-      getMenuItems()
-    }.launchIn(viewModelScope)
+      }.launchIn(viewModelScope)
   }
 
   fun onSubmitRate(rating: Int) {
@@ -369,37 +373,6 @@ class DetailsViewModel @Inject constructor(
         )
       }
     }
-  }
-
-  private suspend fun getMenuItems() {
-    getMenuItemsUseCase(Unit)
-      .collectLatest { result ->
-        result.onSuccess {
-          _viewState.update { viewState ->
-            viewState.copy(
-              menuOptions = result.data,
-            )
-          }
-        }
-      }
-  }
-
-  private suspend fun fetchAccountMediaDetails() {
-    val params = MediaDetailsParams(
-      id = viewState.value.mediaId,
-      mediaType = viewState.value.mediaType,
-    )
-
-    fetchAccountMediaDetailsUseCase.invoke(params)
-      .collectLatest { result ->
-        result.onSuccess {
-          _viewState.update { viewState ->
-            viewState.copy(
-              userDetails = result.data,
-            )
-          }
-        }
-      }
   }
 
   private fun setSnackbarMessage(text: UIText) {

@@ -162,11 +162,11 @@ class WatchlistViewModelTest {
       .buildViewModel()
       .expectUiStates(
         action = {
-          testRobot.selectTab(1)
-          testRobot.mockFetchWatchlist {
+          selectTab(1)
+          mockFetchWatchlist {
             mockSuccess(Result.success(WatchlistResponseFactory.tv()))
           }
-          testRobot.onLoadMore()
+          onLoadMore()
         },
         uiStates = expectedUiStates,
       )

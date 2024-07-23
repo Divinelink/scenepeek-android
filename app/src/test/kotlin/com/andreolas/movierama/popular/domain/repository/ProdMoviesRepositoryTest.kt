@@ -2,7 +2,6 @@ package com.andreolas.movierama.popular.domain.repository
 
 import com.andreolas.factories.api.SearchMovieApiFactory
 import com.andreolas.movierama.fakes.dao.FakeMediaDao
-import com.andreolas.movierama.fakes.remote.FakeMediaService
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
@@ -15,6 +14,7 @@ import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.testing.service.TestMediaService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -53,7 +53,7 @@ class ProdMoviesRepositoryTest {
   )
 
   private var mediaDao = FakeMediaDao()
-  private var mediaRemote = FakeMediaService()
+  private var mediaRemote = TestMediaService()
 
   private lateinit var repository: MediaRepository
 

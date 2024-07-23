@@ -107,6 +107,7 @@ dependencies {
   implementation(projects.feature.watchlist)
   implementation(projects.feature.details)
   implementation(projects.feature.settings)
+  implementation(projects.feature.credits)
 
   // Firebase
   implementation(platform(libs.firebase.bom))

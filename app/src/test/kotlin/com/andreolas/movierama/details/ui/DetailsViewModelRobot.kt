@@ -2,21 +2,18 @@ package com.andreolas.movierama.details.ui
 
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
-import com.andreolas.movierama.fakes.usecase.FakeGetMoviesDetailsUseCase
+import com.andreolas.movierama.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
-import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
-import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.feature.details.ui.DetailsViewModel
 import com.divinelink.feature.details.ui.DetailsViewState
-import com.divinelink.feature.details.ui.MovieDetailsResult
+import com.divinelink.feature.details.ui.MediaDetailsResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
@@ -29,13 +26,11 @@ class DetailsViewModelRobot {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-  private val fakeGetMovieDetailsUseCase = FakeGetMoviesDetailsUseCase()
-  private val fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
+  private val fakeGetMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
-  private val fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
 
   fun buildViewModel(
     id: Int,
@@ -43,13 +38,11 @@ class DetailsViewModelRobot {
   ) = apply {
     viewModel = DetailsViewModel(
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
-      getMovieDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
+      getMediaDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
       requestMediaUseCase = fakeRequestMediaUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -66,8 +59,8 @@ class DetailsViewModelRobot {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
-  fun mockFetchMovieDetails(response: Flow<Result<MovieDetailsResult>>) = apply {
-    fakeGetMovieDetailsUseCase.mockFetchMovieDetails(
+  fun mockFetchMediaDetails(response: Flow<Result<MediaDetailsResult>>) = apply {
+    fakeGetMovieDetailsUseCase.mockFetchMediaDetails(
       response = response,
     )
   }
@@ -115,12 +108,6 @@ class DetailsViewModelRobot {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = media,
       result = response,
-    )
-  }
-
-  fun mockFetchAccountMediaDetails(response: Flow<Result<AccountMediaDetails>>) = apply {
-    fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
-      response = response,
     )
   }
 

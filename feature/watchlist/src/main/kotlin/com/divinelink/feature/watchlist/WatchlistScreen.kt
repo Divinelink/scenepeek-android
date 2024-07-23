@@ -7,15 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,12 +22,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.ui.EmptyContent
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.watchlist.navigation.WatchlistGraph
@@ -46,8 +43,6 @@ internal fun WatchlistScreen(
   navigator: DestinationsNavigator,
   viewModel: WatchlistViewModel = hiltViewModel(),
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
   var selectedPage by rememberSaveable { mutableIntStateOf(0) }
   val uiState = viewModel.uiState.collectAsState()
 
@@ -64,15 +59,10 @@ internal fun WatchlistScreen(
     }
   }
 
-  Scaffold(
-    modifier = Modifier
-      .fillMaxSize()
-      .nestedScroll(scrollBehavior.nestedScrollConnection),
-    topBar = {
+  AppScaffold(
+    topBar = { scrollBehavior, topAppBarColors ->
       TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-          scrolledContainerColor = MaterialTheme.colorScheme.surface,
-        ),
+        colors = topAppBarColors,
         scrollBehavior = scrollBehavior,
         title = {
           Text(stringResource(R.string.feature_watchlist_title))
@@ -112,7 +102,7 @@ internal fun WatchlistScreen(
               )
               is WatchlistForm.Data -> {
                 if (it.isEmpty) {
-                  WatchlistEmptyContent(it.emptyResultsUiText)
+                  EmptyContent(it.emptyResultsUiText)
                 } else {
                   WatchlistContent(
                     list = it.data,

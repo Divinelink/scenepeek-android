@@ -1,4 +1,4 @@
-package com.andreolas.movierama.fakes.remote
+package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -23,7 +23,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class FakeMediaService {
+class TestMediaService {
 
   val mock: MediaService = mock()
 
