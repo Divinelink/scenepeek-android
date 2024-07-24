@@ -17,6 +17,7 @@ import javax.inject.Inject
 data class MultiSearchResult(
   val query: String,
   val searchList: List<MediaItem>,
+  val totalPages: Int,
 )
 
 open class FetchMultiInfoSearchUseCase @Inject constructor(
@@ -34,13 +35,16 @@ open class FetchMultiInfoSearchUseCase @Inject constructor(
           val searchWithFavorites = getMediaWithUpdatedFavoriteStatus(
             favoriteIds = Result.success(favorite.data).data,
             // Filter out persons for now
-            mediaResult = Result.success(search.data.filterNot { it is MediaItem.Person }).data,
+            mediaResult = Result.success(
+              search.data.searchList.filterNot { it is MediaItem.Person },
+            ).data,
           )
           emit(
             Result.success(
               MultiSearchResult(
                 query = parameters.query,
                 searchList = searchWithFavorites,
+                totalPages = search.data.totalPages,
               ),
             ),
           )

@@ -7,10 +7,12 @@ import com.andreolas.movierama.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
+import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.Filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -45,11 +47,7 @@ class HomeViewModel @Inject constructor(
   private var cachedSearchResults: HashMap<String, SearchCache> = hashMapOf()
 
   private val _viewState: MutableStateFlow<HomeViewState> = MutableStateFlow(
-    HomeViewState(
-      isLoading = true,
-      popularMovies = emptyList(),
-      error = null,
-    ),
+    HomeViewState.initial(),
   )
   val viewState: StateFlow<HomeViewState> = _viewState
 
@@ -59,22 +57,16 @@ class HomeViewModel @Inject constructor(
 
   private fun fetchPopularMovies() {
     viewModelScope.launch {
-      _viewState.setLoading()
-
       getPopularMoviesUseCase.invoke(
         parameters = MoviesRequestApi(
           page = currentPage,
         ),
       ).collectLatest { result ->
         result.onSuccess {
-          val updatedList = getUpdatedMedia(
-            currentMediaList = viewState.value.popularMovies,
-            updatedMediaList = result.data,
-          )
           _viewState.update { viewState ->
             viewState.copy(
               isLoading = false,
-              popularMovies = updatedList.filterIsInstance<MediaItem.Media.Movie>(),
+              popularMovies = viewState.popularMovies.addMore(result.data),
             )
           }
         }.onFailure {
@@ -103,18 +95,19 @@ class HomeViewModel @Inject constructor(
    * If there are filters selected, it will not load more movies.
    */
   fun onLoadNextPage() {
-    if (viewState.value.hasFiltersSelected) return
-
-    if (viewState.value.loadMorePopular) {
-      currentPage++
-      fetchPopularMovies()
-    } else {
-      // load next page for searching
-      searchPage++
-      fetchFromSearchQuery(
-        query = viewState.value.query,
-        page = searchPage,
-      )
+    when (viewState.value.mode) {
+      HomeMode.Filtered -> return
+      HomeMode.Browser -> if (viewState.value.popularMovies.shouldLoadMore) {
+        currentPage++
+        fetchPopularMovies()
+      }
+      HomeMode.Search -> if (viewState.value.searchResults?.shouldLoadMore == true) {
+        searchPage++
+        fetchFromSearchQuery(
+          query = viewState.value.query,
+          page = searchPage,
+        )
+      }
     }
   }
 
@@ -128,8 +121,7 @@ class HomeViewModel @Inject constructor(
       _viewState.update { viewState ->
         viewState.copy(
           query = query,
-          loadMorePopular = false,
-          searchLoadingIndicator = true,
+          isSearchLoading = true,
         )
       }
       searchJob = viewModelScope.launch {
@@ -140,8 +132,10 @@ class HomeViewModel @Inject constructor(
             latestQuery = query
             viewState.copy(
               isLoading = false,
-              searchResults = cachedSearchResults[query]?.result,
-              emptyResult = cachedSearchResults[query]?.result?.isEmpty() == true,
+              searchResults = MediaSection(
+                data = cachedSearchResults[query]?.result ?: emptyList(),
+                shouldLoadMore = true,
+              ),
             )
           }
           // If cache found, set search page to last cached search page
@@ -159,14 +153,18 @@ class HomeViewModel @Inject constructor(
     searchJob?.cancel()
     searchPage = 1
     allowSearchResult = false
+    latestQuery = null
     _viewState.update { viewState ->
       viewState.copy(
         searchResults = null,
-        loadMorePopular = true,
         query = "",
-        emptyResult = false,
         isLoading = false,
-        searchLoadingIndicator = false,
+        isSearchLoading = false,
+        mode = if (viewState.filters.any { it.isSelected }) {
+          HomeMode.Filtered
+        } else {
+          HomeMode.Browser
+        },
       )
     }
   }
@@ -175,11 +173,7 @@ class HomeViewModel @Inject constructor(
     query: String,
     page: Int,
   ) {
-    val currentMoviesList = if (query != latestQuery) {
-      emptyList()
-    } else {
-      viewState.value.searchResults ?: emptyList()
-    }
+    val isNewSearch = query != latestQuery
     latestQuery = query
 
     viewModelScope.launch {
@@ -196,28 +190,27 @@ class HomeViewModel @Inject constructor(
           result.onSuccess {
             if (allowSearchResult && result.data.query == latestQuery) {
               _viewState.update { viewState ->
-                val updatedSearchList = getUpdatedMedia(
-                  currentMediaList = currentMoviesList,
-                  updatedMediaList = result.data.searchList,
-                )
-                /*.also { updatedSearchList -> TODO: Implement caching
-                    updateSearchCaches(query, page, updatedSearchList)
-                  }*/
-
                 viewState.copy(
-                  searchLoadingIndicator = false,
+                  isSearchLoading = false,
                   isLoading = false,
-                  // cachedSearchResults[query]?.result,
-                  searchResults = updatedSearchList,
-                  // cachedSearchResults[query]?.result?.isEmpty() == true,
-                  emptyResult = updatedSearchList.isEmpty(),
+                  mode = HomeMode.Search,
+                  searchResults = if (isNewSearch) {
+                    MediaSection(
+                      data = result.data.searchList,
+                      shouldLoadMore = result.data.totalPages > page,
+                    )
+                  } else {
+                    viewState.searchResults
+                      ?.addMore(result.data.searchList)
+                      ?.copy(shouldLoadMore = result.data.totalPages > page)
+                  },
                 )
               }
             }
           }.onFailure {
             _viewState.update { viewState ->
               viewState.copy(
-                searchLoadingIndicator = false,
+                isSearchLoading = false,
                 error = UIText.StringText(it.message ?: "Something went wrong."),
               )
             }
@@ -250,32 +243,18 @@ class HomeViewModel @Inject constructor(
   }
    */
 
-  private fun getUpdatedMedia(
-    currentMediaList: List<MediaItem>,
-    updatedMediaList: List<MediaItem>,
-  ): List<MediaItem> {
-    val combinedList = currentMediaList.plus(updatedMediaList).distinctBy { it.id }
-    val updatedList = combinedList.toMutableList()
-    updatedMediaList.forEach { updatedMovie ->
-      val index = updatedList.indexOfFirst { it.id == updatedMovie.id }
-      if (index != -1) {
-        updatedList[index] = updatedMovie
-      }
-    }
-    return updatedList.distinctBy { it.id }
-  }
-
   fun onClearFiltersClicked() {
     _viewState.update { viewState ->
       viewState.copy(
         filters = HomeFilter.entries.map { it.filter },
         filteredResults = null,
+        mode = HomeMode.Browser,
       )
     }
   }
 
-  fun onFilterClicked(filter: String) {
-    val homeFilter = HomeFilter.entries.find { it.filter.name == filter }
+  fun onFilterClick(filter: Filter) {
+    val homeFilter = HomeFilter.entries.find { it.filter.name == filter.name }
     updateFilters(homeFilter)
 
     when (homeFilter) {
@@ -300,13 +279,17 @@ class HomeViewModel @Inject constructor(
           if (viewState.value.showFavorites == true) {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredResults = result.data,
+                filteredResults = MediaSection(data = result.data, shouldLoadMore = false),
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
-                filteredResults = viewState.filteredResults?.minus((result.data.toSet()).toSet()),
+                filteredResults = MediaSection(
+                  data = viewState.filteredResults?.data?.minus((result.data.toSet()).toSet())
+                    ?: emptyList(),
+                  shouldLoadMore = false,
+                ),
               )
             }
           }
@@ -330,6 +313,15 @@ class HomeViewModel @Inject constructor(
           } else {
             currentFilter
           }
+        },
+      )
+    }
+    _viewState.update {
+      it.copy(
+        mode = if (viewState.value.filters.any { filter -> filter.isSelected }) {
+          HomeMode.Filtered
+        } else {
+          HomeMode.Browser
         },
       )
     }

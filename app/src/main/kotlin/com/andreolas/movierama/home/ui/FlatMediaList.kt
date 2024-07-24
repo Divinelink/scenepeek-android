@@ -35,9 +35,9 @@ import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.extensions.OnBottomReached
 
 @Composable
-fun MediaList(
+fun FlatMediaList(
   modifier: Modifier = Modifier,
-  searches: List<MediaItem>,
+  data: List<MediaItem>,
   onMovieClicked: (MediaItem) -> Unit,
   onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
@@ -62,7 +62,7 @@ fun MediaList(
   ) {
     items(
       key = { it.id },
-      items = searches,
+      items = data,
     ) { search ->
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
@@ -141,8 +141,8 @@ fun MoviesListScreenPreview() {
 
   AppTheme {
     Surface {
-      MediaList(
-        searches = movies,
+      FlatMediaList(
+        data = movies,
         onMovieClicked = {},
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},

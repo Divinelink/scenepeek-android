@@ -27,7 +27,7 @@ fun HomeScreen(
     onLoadNextPage = viewModel::onLoadNextPage,
     onSearchMovies = viewModel::onSearchMovies,
     onClearClicked = viewModel::onClearClicked,
-    onGoToDetails = { movie ->
+    onNavigateToDetails = { movie ->
       if (movie is MediaItem.Media) { // FIXME
         val navArgs = DetailsNavArguments(
           id = movie.id,
@@ -40,8 +40,8 @@ fun HomeScreen(
         navigator.navigate(destination)
       }
     },
-    onFilterClicked = viewModel::onFilterClicked,
-    onClearFiltersClicked = viewModel::onClearFiltersClicked,
+    onFilterClick = viewModel::onFilterClick,
+    onClearFiltersClick = viewModel::onClearFiltersClicked,
     onNavigateToSettings = {
       navigator.navigate(SettingsScreenDestination())
     },

@@ -3,6 +3,8 @@ package com.andreolas.movierama.popular.ui
 import com.andreolas.movierama.home.domain.usecase.MultiSearchResult
 import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
+import com.andreolas.movierama.home.ui.MediaSection
+import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
@@ -30,10 +32,9 @@ class HomeViewModelTest {
       .mockFetchPopularMovies(Result.success(emptyList()))
       .buildViewModel()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = listOf(),
-          error = null,
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
         ),
       )
   }
@@ -46,9 +47,9 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = popularMoviesList,
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           error = null,
         ),
       )
@@ -62,9 +63,9 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = popularMoviesList,
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           error = null,
         ),
       )
@@ -73,9 +74,12 @@ class HomeViewModelTest {
       )
       .onLoadNextPage()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = popularMoviesList + loadData(12, 20),
+          popularMovies = MediaSection(
+            data = popularMoviesList + loadData(12, 20),
+            shouldLoadMore = true,
+          ),
           error = null,
         ),
       )
@@ -95,9 +99,9 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = loadData(1, 5),
+          popularMovies = MediaSection(data = loadData(1, 5), shouldLoadMore = true),
           error = null,
         ),
       )
@@ -106,9 +110,9 @@ class HomeViewModelTest {
       )
       .onLoadNextPage()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = loadData(1, 10),
+          popularMovies = MediaSection(data = loadData(1, 10), shouldLoadMore = true),
           error = null,
         ),
       )
@@ -122,9 +126,9 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .assertViewState(
-        HomeViewState(
+        HomeViewState.initial().copy(
           isLoading = false,
-          popularMovies = listOf(),
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
           error = UIText.StringText("oops"),
         ),
       )
@@ -140,9 +144,9 @@ class HomeViewModelTest {
 //            )
 //            .onMarkAsFavorite(popularMoviesList[5])
 //            .assertViewState(
-//                HomeViewState(
+//                HomeViewState.initial().copy(
 //                    isLoading = false,
-//                    popularMovies = popularMoviesList.apply {
+//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
 //
@@ -152,9 +156,9 @@ class HomeViewModelTest {
 //            )
 //            .onMarkAsFavorite(popularMoviesList[2])
 //            .assertViewState(
-//                HomeViewState(
+//                HomeViewState.initial().copy(
 //                    isLoading = false,
-//                    popularMovies = popularMoviesList.apply {
+//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
 //                        this[2] = this[2].copy(isFavorite = true)
 //                    },
 //
@@ -163,9 +167,9 @@ class HomeViewModelTest {
 //                )
 //            )
 //            .assertFalseViewState(
-//                HomeViewState(
+//                HomeViewState.initial().copy(
 //                    isLoading = false,
-//                    popularMovies = popularMoviesList.apply {
+//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
 //                        this[2] = this[2].copy(isFavorite = false)
 //                    },
 //
@@ -188,9 +192,9 @@ class HomeViewModelTest {
 //            )
 //            .onMarkAsFavorite(popularMoviesList[5])
 //            .assertViewState(
-//                HomeViewState(
+//                HomeViewState.initial().copy(
 //                    isLoading = false,
-//                    popularMovies = popularMoviesList.apply {
+//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
 //                        this[5] = this[5].copy(isFavorite = true)
 //                    },
 //
@@ -200,9 +204,9 @@ class HomeViewModelTest {
 //            )
 //            .onMarkAsFavorite(popularMoviesList[5])
 //            .assertViewState(
-//                HomeViewState(
+//                HomeViewState.initial().copy(
 //                    isLoading = false,
-//                    popularMovies = popularMoviesList.apply {
+//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
 //                        this[5] = this[5].copy(isFavorite = false)
 //                    },
 //
@@ -220,31 +224,30 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
+            totalPages = 1,
           ),
         ),
       )
       .buildViewModel()
       .onSearchMovies("test query")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = true,
-          emptyResult = false,
+          isSearchLoading = true,
+          mode = HomeMode.Browser,
         ),
       )
       .delay(300)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
-          searchResults = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
+          searchResults = MediaSection(data = popularMoviesList, shouldLoadMore = false),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
+          mode = HomeMode.Search,
         ),
       )
   }
@@ -258,42 +261,38 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = popularMoviesList,
+            totalPages = 1,
           ),
         ),
       )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("tes")
       .onSearchMovies("test ")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = false,
           query = "test ",
-          searchLoadingIndicator = true,
-          emptyResult = false,
+          isSearchLoading = true,
         ),
       )
       .onSearchMovies("test query")
       .delay(300)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
-          searchResults = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
+          searchResults = MediaSection(data = popularMoviesList, shouldLoadMore = false),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
+          mode = HomeMode.Search,
         ),
       )
   }
@@ -307,41 +306,36 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
+            totalPages = 1,
           ),
         ),
       )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("test ")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = false,
           query = "test ",
-          searchLoadingIndicator = true,
-          emptyResult = false,
+          isSearchLoading = true,
         ),
       )
       .onSearchMovies("test query")
       .delay(200)
       .onClearClicked()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = emptyList(),
-          loadMorePopular = true,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
           query = "",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
   }
@@ -355,52 +349,47 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
+            totalPages = 1,
           ),
         ),
       )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("test query")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = true,
-          emptyResult = false,
+          isSearchLoading = true,
         ),
       )
       .delay(400)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          searchResults = searchMovies,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = searchMovies, shouldLoadMore = false),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
+          mode = HomeMode.Search,
         ),
       )
       .onClearClicked()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = true,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           query = "",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
           searchResults = null,
+          mode = HomeMode.Browser,
         ),
       )
   }
@@ -409,37 +398,41 @@ class HomeViewModelTest {
   fun `given loading state when I search then I expect SearchLoading to be true`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.success(popularMoviesList))
-      .mockFetchSearchMedia(Result.success(MultiSearchResult("test query", emptyList())))
+      .mockFetchSearchMedia(
+        Result.success(
+          MultiSearchResult(
+            "test query",
+            emptyList(),
+            totalPages = 2,
+          ),
+        ),
+      )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("test query")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = true,
+          isSearchLoading = true,
         ),
       )
       .delay(300)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = true,
-          searchResults = emptyList(),
+          isSearchLoading = false,
+          searchResults = MediaSection(data = emptyList(), shouldLoadMore = true),
+          mode = HomeMode.Search,
         ),
       )
   }
@@ -451,24 +444,20 @@ class HomeViewModelTest {
       .mockFetchSearchMedia(Result.failure(Exception("Oops.")))
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("test query")
       .delay(300)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = true,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
           error = UIText.StringText("Oops."),
         ),
       )
@@ -483,30 +472,28 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = emptyList(),
+            totalPages = 1,
           ),
         ),
       )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("test query")
       .delay(300)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          searchResults = emptyList(),
-          loadMorePopular = false,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = emptyList(), shouldLoadMore = false),
           isLoading = false,
           query = "test query",
-          searchLoadingIndicator = false,
-          emptyResult = true,
+          isSearchLoading = false,
+          mode = HomeMode.Search,
         ),
       )
   }
@@ -521,44 +508,41 @@ class HomeViewModelTest {
             MultiSearchResult(
               query = "test query",
               searchList = searchMovies,
+              totalPages = 1,
             ),
           ),
         )
         .buildViewModel()
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
             isLoading = false,
-            loadMorePopular = true,
-            searchLoadingIndicator = false,
-            emptyResult = false,
+            isSearchLoading = false,
           ),
         )
         .onSearchMovies("test query")
         .delay(300)
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
-            searchResults = searchMovies,
-            loadMorePopular = false,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+            searchResults = MediaSection(data = searchMovies, shouldLoadMore = false),
             isLoading = false,
             query = "test query",
-            searchLoadingIndicator = false,
-            emptyResult = false,
+            isSearchLoading = false,
+            mode = HomeMode.Search,
           ),
         )
         .mockFetchPopularMovies(Result.success(searchMovies.plus(searchMovies)))
         .onLoadNextPage()
         .delay(300)
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
-            searchResults = searchMovies,
-            loadMorePopular = false,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+            searchResults = MediaSection(data = searchMovies, shouldLoadMore = false),
             isLoading = false,
             query = "test query",
-            searchLoadingIndicator = false,
-            emptyResult = false,
+            isSearchLoading = false,
+            mode = HomeMode.Search,
           ),
         )
     }
@@ -572,28 +556,25 @@ class HomeViewModelTest {
           MultiSearchResult(
             query = "test query",
             searchList = searchMovies,
+            totalPages = 0,
           ),
         ),
       )
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .onSearchMovies("")
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
-          loadMorePopular = true,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           query = "",
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
   }
@@ -604,17 +585,15 @@ class HomeViewModelTest {
       .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
         ),
       )
@@ -626,23 +605,21 @@ class HomeViewModelTest {
       .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
         ),
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
         ),
       )
@@ -654,19 +631,17 @@ class HomeViewModelTest {
       .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .delay(50)
       .delay(50)
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
         ),
       )
@@ -679,23 +654,21 @@ class HomeViewModelTest {
         .mockFetchPopularMovies(Result.success(popularMoviesList))
         .buildViewModel()
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
             isLoading = false,
-            loadMorePopular = true,
-            searchLoadingIndicator = false,
-            emptyResult = false,
+            isSearchLoading = false,
           ),
         )
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
             isLoading = false,
           ),
         )
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = popularMoviesList,
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
             isLoading = false,
           ),
         )
@@ -707,12 +680,10 @@ class HomeViewModelTest {
       .mockFetchPopularMovies(Result.success(popularMoviesList))
       .buildViewModel()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          loadMorePopular = true,
-          searchLoadingIndicator = false,
-          emptyResult = false,
+          isSearchLoading = false,
         ),
       )
       .mockMarkAsFavorite(
@@ -723,8 +694,8 @@ class HomeViewModelTest {
         movie = popularMoviesList[0],
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = popularMoviesList,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
         ),
       )
@@ -746,25 +717,28 @@ class HomeViewModelTest {
         )
         .buildViewModel()
         .onFilterClicked(
-          filter = HomeFilter.Liked.filter.name,
+          filter = HomeFilter.Liked.filter,
         )
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = searchMovies,
-            filteredResults = searchMovies.filter { it.isFavorite == true },
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
+            filteredResults = MediaSection(
+              data = searchMovies.filter { it.isFavorite == true },
+              shouldLoadMore = false,
+            ),
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
+            mode = HomeMode.Filtered,
           ),
         )
-        .onFilterClicked(
-          filter = HomeFilter.Liked.filter.name,
-        )
+        .onFilterClicked(filter = HomeFilter.Liked.filter)
         .assertViewState(
-          expectedViewState = HomeViewState(
-            popularMovies = searchMovies,
-            filteredResults = emptyList(),
+          expectedViewState = HomeViewState.initial().copy(
+            popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
+            filteredResults = MediaSection(data = emptyList(), shouldLoadMore = false),
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
+            mode = HomeMode.Browser,
           ),
         )
     }
@@ -784,23 +758,28 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .onFilterClicked(
-        filter = HomeFilter.Liked.filter.name,
+        filter = HomeFilter.Liked.filter,
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = searchMovies,
-          filteredResults = searchMovies.filter { it.isFavorite == true },
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
+          filteredResults = MediaSection(
+            data = searchMovies.filter { it.isFavorite == true },
+            shouldLoadMore = false,
+          ),
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
+          mode = HomeMode.Filtered,
         ),
       )
       .onClearFiltersClicked()
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = searchMovies,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
           filteredResults = null,
           isLoading = false,
           filters = HomeFilter.entries.map { it.filter },
+          mode = HomeMode.Browser,
         ),
       )
   }
@@ -815,13 +794,74 @@ class HomeViewModelTest {
       )
       .buildViewModel()
       .onFilterClicked(
-        filter = "Some filter",
+        filter = HomeFilter.Liked.filter.copy(name = "Unknown"),
       )
       .assertViewState(
-        expectedViewState = HomeViewState(
-          popularMovies = searchMovies,
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter),
+        ),
+      )
+  }
+
+  @Test
+  fun `test pagination on search mode`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(response = Result.success(popularMoviesList))
+      .mockFetchSearchMedia(
+        response = Result.success(
+          MultiSearchResult(
+            query = "test query",
+            searchList = searchMovies,
+            totalPages = 2,
+          ),
+        ),
+      )
+      .buildViewModel()
+      .onSearchMovies("test query")
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = true,
+          mode = HomeMode.Browser,
+        ),
+      )
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = searchMovies, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          mode = HomeMode.Search,
+        ),
+      )
+      .mockFetchSearchMedia(
+        response = Result.success(
+          MultiSearchResult(
+            query = "test query",
+            searchList = loadData(21, 30),
+            totalPages = 2,
+          ),
+        ),
+      )
+      .onLoadNextPage()
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(
+            data = searchMovies + loadData(21, 30),
+            shouldLoadMore = false,
+          ),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          mode = HomeMode.Search,
         ),
       )
   }

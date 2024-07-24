@@ -20,24 +20,21 @@ open class GetPopularMoviesUseCase @Inject constructor(
     val favoriteMediaIdsFlow = repository.fetchFavoriteIds()
     val popularMoviesFlow = repository.fetchPopularMovies(parameters)
 
-    return combine(favoriteMediaIdsFlow, popularMoviesFlow) { favorite, popular ->
-      when {
-        favorite.isSuccess && popular.isSuccess -> {
-          Result.success(
-            getMediaWithUpdatedFavoriteStatus(
-              favoriteIds = favorite.data,
-              mediaResult = popular.data,
-            ),
-          )
-        }
-        popular.isSuccess -> Result.success(popular.data)
-//        favorite.isFailure -> Result.failure // TODO Fix this
-//        popular is Result.Error -> popular
-//        else -> Result.Loading
-        else -> {
-          Result.failure(Exception("Something went wrong."))
+    return combine(favoriteMediaIdsFlow, popularMoviesFlow) { _, popular ->
+      val dataWithUpdatedFavoriteStatus = popular.data.map { mediaItem ->
+        val checkIfFavorite = repository.checkIfMediaIsFavorite(
+          id = mediaItem.id,
+          mediaType = mediaItem.mediaType,
+        )
+        val isFavorite = checkIfFavorite.getOrNull() == true
+
+        when (mediaItem) {
+          is MediaItem.Media.Movie -> mediaItem.copy(isFavorite = isFavorite)
+          is MediaItem.Media.TV -> mediaItem.copy(isFavorite = isFavorite)
         }
       }
+
+      Result.success(dataWithUpdatedFavoriteStatus)
     }
   }
 }

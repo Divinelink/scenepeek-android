@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,20 +24,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.andreolas.movierama.R
 import com.andreolas.movierama.ui.composables.transitionspec.fadeTransitionSpec
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.EmptyContent
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.TestTags.MOVIES_LIST_TAG
-import com.divinelink.core.ui.UIText
-import com.divinelink.core.ui.components.EmptySectionCard
+import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
+import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.ui.components.FilterBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.MovieRamaSearchBar
-import com.divinelink.core.ui.getString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,9 +48,9 @@ fun HomeContent(
   onSearchMovies: (String) -> Unit,
   onClearClicked: () -> Unit,
   onLoadNextPage: () -> Unit,
-  onGoToDetails: (MediaItem) -> Unit,
-  onFilterClicked: (String) -> Unit,
-  onClearFiltersClicked: () -> Unit,
+  onNavigateToDetails: (MediaItem) -> Unit,
+  onFilterClick: (Filter) -> Unit,
+  onClearFiltersClick: () -> Unit,
   onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -72,7 +73,7 @@ fun HomeContent(
             )
           }
         },
-        isLoading = viewState.searchLoadingIndicator,
+        isLoading = viewState.isSearchLoading,
         query = viewState.query,
         onSearchFieldChanged = { query ->
           onSearchMovies(query)
@@ -82,52 +83,54 @@ fun HomeContent(
     },
   ) { paddingValues ->
     Column(modifier = Modifier.padding(paddingValues)) {
-      AnimatedVisibility(
-        visible = viewState.query.isEmpty(),
-      ) {
+      AnimatedVisibility(visible = viewState.query.isEmpty()) {
         FilterBar(
           modifier = modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .padding(
+              horizontal = MaterialTheme.dimensions.keyline_8,
+              vertical = MaterialTheme.dimensions.keyline_4,
+            ),
           filters = viewState.filters,
-          onFilterClick = { homeFilter ->
-            onFilterClicked(homeFilter.name)
-          },
-          onClearClick = onClearFiltersClicked,
+          onFilterClick = onFilterClick,
+          onClearClick = onClearFiltersClick,
         )
       }
 
-      if (viewState.emptyResult) {
-        EmptySectionCard(
-          modifier = modifier
-            .padding(start = 8.dp, end = 8.dp),
-          title = UIText.ResourceText(R.string.search__empty_result_title).getString(),
-          description = UIText.ResourceText(R.string.search__empty_result_description).getString(),
-        )
-      } else {
-        AnimatedContent(
-          targetState = viewState.filteredResults.isNullOrEmpty(),
-          transitionSpec = fadeTransitionSpec(),
-          label = "Movies",
-        ) { unselectedFilters ->
-          when (unselectedFilters) {
-            true -> {
-              MoviesLazyGrid(
-                modifier = Modifier,
-                onMovieClicked = onGoToDetails,
-                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                searchList = viewState.searchList,
+      AnimatedContent(
+        targetState = viewState.isEmpty,
+        transitionSpec = fadeTransitionSpec(),
+        label = "HomeContentEmptyTransition",
+      ) { isEmpty ->
+        when (isEmpty) {
+          true -> viewState.emptyContentUiState?.let {
+            EmptyContent(it)
+          }
+          false -> AnimatedContent(
+            targetState = viewState.mode,
+            transitionSpec = fadeTransitionSpec(),
+            label = "HomeContentTransition",
+          ) { mode ->
+            when (mode) {
+              HomeMode.Browser -> MediaContent(
+                modifier = modifier,
+                section = viewState.popularMovies,
+                onMediaClick = onNavigateToDetails,
+                onMarkAsFavoriteClick = onMarkAsFavoriteClicked,
                 onLoadNextPage = onLoadNextPage,
-                loadMore = viewState.loadMore,
               )
-            }
-            false -> {
-              MoviesLazyGrid(
-                modifier = Modifier,
-                onMovieClicked = onGoToDetails,
-                onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
-                searchList = viewState.filteredResults ?: emptyList(),
+              HomeMode.Search -> MediaContent(
+                modifier = modifier,
+                section = viewState.searchResults,
+                onMediaClick = onNavigateToDetails,
+                onMarkAsFavoriteClick = onMarkAsFavoriteClicked,
                 onLoadNextPage = onLoadNextPage,
-                loadMore = viewState.loadMore,
+              )
+              HomeMode.Filtered -> MediaContent(
+                modifier = modifier,
+                section = viewState.filteredResults,
+                onMediaClick = onNavigateToDetails,
+                onMarkAsFavoriteClick = onMarkAsFavoriteClicked,
+                onLoadNextPage = onLoadNextPage,
               )
             }
           }
@@ -141,23 +144,24 @@ fun HomeContent(
 }
 
 @Composable
-private fun MoviesLazyGrid(
-  modifier: Modifier,
-  searchList: List<MediaItem>,
-  onMovieClicked: (MediaItem) -> Unit,
-  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
+private fun MediaContent(
+  modifier: Modifier = Modifier,
+  section: MediaSection?,
+  onMediaClick: (MediaItem) -> Unit,
+  onMarkAsFavoriteClick: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
-  loadMore: Boolean,
 ) {
-  MediaList(
+  if (section == null) return
+
+  FlatMediaList(
     modifier = modifier
       .fillMaxSize()
-      .testTag(MOVIES_LIST_TAG),
-    searches = searchList,
-    onMovieClicked = onMovieClicked,
-    onMarkAsFavoriteClicked = onMarkAsFavoriteClicked,
+      .testTag(MEDIA_LIST_TAG),
+    data = section.data,
+    onMovieClicked = onMediaClick,
+    onMarkAsFavoriteClicked = onMarkAsFavoriteClick,
     onLoadNextPage = onLoadNextPage,
-    isLoading = loadMore,
+    isLoading = section.shouldLoadMore,
   )
 }
 
@@ -169,37 +173,48 @@ private fun HomeContentPreview() {
       HomeContent(
         viewState = HomeViewState(
           isLoading = false,
-          popularMovies = (1..10).map {
-            MediaItem.Media.Movie(
-              id = it,
-              name = "Movie 1",
-              posterPath = "/poster1",
-              overview = "Overview 1",
-              releaseDate = "2021-01-01",
-              isFavorite = false,
-              rating = it.toString(),
-            )
-          },
+          popularMovies = MediaSection(
+            data = (1..10).map {
+              MediaItem.Media.Movie(
+                id = it,
+                name = "Movie 1",
+                posterPath = "/poster1",
+                overview = "Overview 1",
+                releaseDate = "2021-01-01",
+                isFavorite = false,
+                rating = it.toString(),
+              )
+            },
+            shouldLoadMore = true,
+          ),
           error = null,
-          searchResults = (1..10).map {
-            MediaItem.Media.Movie(
-              id = it,
-              name = "Movie 1",
-              posterPath = "/poster1",
-              overview = "Overview 1",
-              releaseDate = "2021-01-01",
-              isFavorite = false,
-              rating = it.toString(),
-            )
-          },
+          searchResults = MediaSection(
+            data = (1..10).map {
+              MediaItem.Media.Movie(
+                id = it,
+                name = "Movie 1",
+                posterPath = "/poster1",
+                overview = "Overview 1",
+                releaseDate = "2021-01-01",
+                isFavorite = false,
+                rating = it.toString(),
+              )
+            },
+            shouldLoadMore = false,
+          ),
+          filters = HomeFilter.entries.map { it.filter },
+          filteredResults = null,
+          isSearchLoading = false,
+          query = "",
+          mode = HomeMode.Browser,
         ),
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onSearchMovies = {},
         onClearClicked = {},
-        onGoToDetails = {},
-        onFilterClicked = {},
-        onClearFiltersClicked = {},
+        onNavigateToDetails = {},
+        onFilterClick = {},
+        onClearFiltersClick = {},
         onNavigateToSettings = {},
       )
     }

@@ -54,6 +54,14 @@ class GetPopularMoviesUseCaseTest {
       ),
     )
 
+    localFavoriteMovies.forEach {
+      repository.mockCheckFavorite(
+        id = it.id,
+        mediaType = it.mediaType,
+        response = Result.success(true),
+      )
+    }
+
     val useCase = GetPopularMoviesUseCase(
       repository = repository.mock,
       dispatcher = testDispatcher,
