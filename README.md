@@ -1,4 +1,4 @@
-[![codecov](https://img.shields.io/codecov/c/gh/Divinelink/MovieRama/main?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/MovieRama)
+[![codecov](https://codecov.io/gh/Divinelink/movierama-android/graph/badge.svg?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/movierama-android)
 
 
 # MovieRama
