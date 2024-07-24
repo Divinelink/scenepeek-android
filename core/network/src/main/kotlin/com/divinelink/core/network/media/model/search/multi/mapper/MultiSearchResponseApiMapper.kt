@@ -12,7 +12,7 @@ fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
       MediaType.TV -> MediaItem.Media.TV(
         id = it.id,
         posterPath = it.posterPath,
-        releaseDate = it.releaseDate ?: "",
+        releaseDate = it.firstAirDate ?: "",
         name = it.name!!,
         rating = it.voteAverage?.round(1).toString(),
         overview = it.overview ?: "",
