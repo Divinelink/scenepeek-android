@@ -22,6 +22,11 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
+      - name: Decode and create google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 --decode > $GITHUB_WORKSPACE/app/google-services.json
+
       - name: Cache Gradle wrapper
         uses: actions/cache@v3
         with:

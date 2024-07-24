@@ -7,7 +7,6 @@ import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -63,7 +62,6 @@ class EncryptedPreferenceStorage @Inject constructor(
 
   override suspend fun setSessionId(sessionId: String) {
     with(encryptedPreferences.edit()) {
-      Timber.d("Session ID: $sessionId saved to encrypted preferences.")
       putString(PreferencesKeys.SECRET_TMDB_SESSION_ID, sessionId)
       apply()
     }

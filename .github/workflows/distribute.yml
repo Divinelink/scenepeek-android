@@ -2,9 +2,9 @@ name: Build Release App Bundle
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
 
 jobs:
   build:
@@ -48,6 +48,11 @@ jobs:
         env:
           TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
         run: echo "TMDB_AUTH_TOKEN=${TMDB_AUTH_TOKEN}" >> local.properties
+
+      - name: Decode and create google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 --decode > $GITHUB_WORKSPACE/app/google-services.json
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
