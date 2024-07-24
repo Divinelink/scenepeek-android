@@ -173,7 +173,7 @@ class HomeViewModel @Inject constructor(
     query: String,
     page: Int,
   ) {
-    val isNewSearch = query != latestQuery
+    var isNewSearch = query != latestQuery
     latestQuery = query
 
     viewModelScope.launch {
@@ -195,6 +195,7 @@ class HomeViewModel @Inject constructor(
                   isLoading = false,
                   mode = HomeMode.Search,
                   searchResults = if (isNewSearch) {
+                    isNewSearch = false
                     MediaSection(
                       data = result.data.searchList,
                       shouldLoadMore = result.data.totalPages > page,
