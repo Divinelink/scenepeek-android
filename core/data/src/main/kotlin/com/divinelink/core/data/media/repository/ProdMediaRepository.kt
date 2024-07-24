@@ -1,7 +1,14 @@
 package com.divinelink.core.data.media.repository
 
+import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.database.media.dao.checkIfMediaIsFavorite
+import com.divinelink.core.database.media.dao.fetchFavoriteMediaIDs
+import com.divinelink.core.database.media.dao.insertFavoriteMedia
+import com.divinelink.core.database.media.dao.removeFavoriteMedia
+import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.toMoviesList
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -9,12 +16,6 @@ import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.service.MediaService
-import com.divinelink.core.database.media.dao.MediaDao
-import com.divinelink.core.database.media.dao.checkIfMediaIsFavorite
-import com.divinelink.core.database.media.dao.fetchFavoriteMediaIDs
-import com.divinelink.core.database.media.dao.insertFavoriteMedia
-import com.divinelink.core.database.media.dao.removeFavoriteMedia
-import com.divinelink.core.database.media.mapper.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -72,7 +73,7 @@ class ProdMediaRepository @Inject constructor(
       flowOf(Result.failure<Exception>(exception))
     }
 
-  override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult> =
+  override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>> =
     mediaRemote
       .fetchMultiInfo(requestApi)
       .map { apiResponse ->

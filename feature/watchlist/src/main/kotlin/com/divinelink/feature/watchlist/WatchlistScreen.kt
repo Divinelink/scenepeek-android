@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.EmptyContent
+import com.divinelink.core.ui.EmptyContentUiState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
@@ -102,7 +103,7 @@ internal fun WatchlistScreen(
               )
               is WatchlistForm.Data -> {
                 if (it.isEmpty) {
-                  EmptyContent(it.emptyResultsUiText)
+                  EmptyContent(uiState = EmptyContentUiState(title = it.emptyResultsUiText))
                 } else {
                   WatchlistContent(
                     list = it.data,

@@ -1,37 +1,61 @@
 package com.andreolas.movierama.home.ui
 
-import com.divinelink.core.model.media.MediaItem
+import com.andreolas.movierama.R
+import com.divinelink.core.model.home.HomeMode
+import com.divinelink.core.ui.EmptyContentUiState
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.Filter
 
-/**
- * @param loadMorePopular indicates whether to load more popularMovies movies when reaching the end of screen,
- * false otherwise.
- * @param popularMovies a collection of movies list that are to be shown on the screen.
- * */
 data class HomeViewState(
-  val isLoading: Boolean = true,
-  val filters: List<Filter> = HomeFilter.entries.map { it.filter },
-  val popularMovies: List<MediaItem.Media.Movie>,
-  val searchResults: List<MediaItem>? = null,
-  val filteredResults: List<MediaItem.Media>? = null,
-  val loadMorePopular: Boolean = true,
-  val query: String = "",
-  val searchLoadingIndicator: Boolean = false,
-  val emptyResult: Boolean = false,
-  val error: UIText? = null,
+  val isLoading: Boolean,
+  val filters: List<Filter>,
+  val popularMovies: MediaSection,
+  val searchResults: MediaSection?,
+  val filteredResults: MediaSection?,
+  val query: String,
+  val isSearchLoading: Boolean,
+  val error: UIText?,
+  val mode: HomeMode,
 ) {
-  val initialLoading = isLoading && popularMovies.isEmpty()
-  val loadMore = isLoading && popularMovies.isNotEmpty()
-
-  val hasFiltersSelected = filters.any { it.isSelected }
+  val initialLoading = isLoading && popularMovies.data.isEmpty()
 
   val showFavorites = filters.find { it.name == HomeFilter.Liked.filter.name }?.isSelected
 
-  val searchList = if (searchResults?.isNotEmpty() == true) {
-    searchResults
-  } else {
-    popularMovies
+  val isEmpty: Boolean = when (mode) {
+    HomeMode.Browser -> popularMovies.data.isEmpty()
+    HomeMode.Search -> searchResults?.data?.isEmpty() ?: true
+    HomeMode.Filtered -> filteredResults?.data?.isEmpty() ?: true
+  }
+
+  val emptyContentUiState: EmptyContentUiState? = when (mode) {
+    HomeMode.Search -> EmptyContentUiState(
+      icon = com.divinelink.core.ui.R.drawable.core_ui_ic_error_64,
+      title = UIText.ResourceText(R.string.search__empty_result_title),
+      description = UIText.ResourceText(R.string.search__empty_result_description),
+    )
+    HomeMode.Filtered -> EmptyContentUiState(
+      icon = com.divinelink.core.ui.R.drawable.core_ui_ic_error_64,
+      title = UIText.ResourceText(R.string.home__empty_filtered_result_title),
+      description = UIText.ResourceText(R.string.home__empty_filtered_result_description),
+    )
+    else -> null
+  }
+
+  companion object {
+    fun initial() = HomeViewState(
+      isLoading = true,
+      popularMovies = MediaSection(
+        data = emptyList(),
+        shouldLoadMore = true,
+      ),
+      filters = HomeFilter.entries.map { it.filter },
+      searchResults = null,
+      filteredResults = null,
+      isSearchLoading = false,
+      error = null,
+      query = "",
+      mode = HomeMode.Browser,
+    )
   }
 }
 

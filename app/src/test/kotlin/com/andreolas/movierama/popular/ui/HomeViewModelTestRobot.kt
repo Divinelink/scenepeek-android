@@ -10,6 +10,7 @@ import com.andreolas.movierama.home.ui.HomeViewState
 import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.ui.components.Filter
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 
@@ -90,8 +91,8 @@ class HomeViewModelTestRobot {
     viewModel.onClearFiltersClicked()
   }
 
-  fun onFilterClicked(filter: String) = apply {
-    viewModel.onFilterClicked(filter)
+  fun onFilterClicked(filter: Filter) = apply {
+    viewModel.onFilterClick(filter)
   }
 
   suspend fun delay(timeInMillis: Long) = apply {

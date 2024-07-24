@@ -14,6 +14,9 @@
   <string name="search__empty_result_title">Oops. We couldn\'t find that.</string>
   <string name="search__empty_result_description">Try searching for something else.</string>
 
+  <string name="home__empty_filtered_result_title">No media found</string>
+  <string name="home__empty_filtered_result_description">You can try to change the filters or search for something else.</string>
+
   <!-- Error -->
   <string name="empty_field_error_message">%s is required.</string>
   <string name="general_error_title">An error occurred</string>

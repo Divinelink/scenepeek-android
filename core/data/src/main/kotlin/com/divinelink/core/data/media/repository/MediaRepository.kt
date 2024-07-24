@@ -2,6 +2,7 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -46,7 +47,7 @@ interface MediaRepository {
   /**
    * Request movies, tv series and persons through a search query.
    */
-  fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<MultiListResult>
+  fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>>
 
   /**
    * Add favorite [media] to local storage.
