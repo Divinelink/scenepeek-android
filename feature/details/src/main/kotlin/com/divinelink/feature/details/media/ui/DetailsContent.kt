@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui
+package com.divinelink.feature.details.media.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi

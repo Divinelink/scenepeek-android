@@ -21,8 +21,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
-import com.divinelink.feature.details.ui.MediaDetailsResult
-import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

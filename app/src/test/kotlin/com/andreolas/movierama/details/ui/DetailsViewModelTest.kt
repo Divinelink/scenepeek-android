@@ -20,8 +20,9 @@ import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWiza
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.ui.DetailsViewState
-import com.divinelink.feature.details.ui.MediaDetailsResult
+import com.divinelink.feature.details.media.ui.DetailsViewModel
+import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -531,7 +532,7 @@ class DetailsViewModelTest {
 
   @Test
   fun `given NoSession error submit rate, when I submit, then I expect error message`() {
-    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
+    lateinit var viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(movieDetails)),
@@ -562,7 +563,7 @@ class DetailsViewModelTest {
 
   @Test
   fun `given NoSession error, when login action clicked, then I expect navigation to login`() {
-    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
+    lateinit var viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(movieDetails)),
@@ -786,7 +787,7 @@ class DetailsViewModelTest {
 
   @Test
   fun `given invalid accountId when I add to watchlist I expect error`() = runTest {
-    lateinit var viewModel: com.divinelink.feature.details.ui.DetailsViewModel
+    lateinit var viewModel: DetailsViewModel
 
     testRobot
       .mockFetchMediaDetails(

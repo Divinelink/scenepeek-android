@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui
+package com.divinelink.feature.details.media.ui
 
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
@@ -19,13 +19,13 @@ import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.usecase.AddToWatchlistParameters
-import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
-import com.divinelink.feature.details.usecase.DeleteRatingParameters
-import com.divinelink.feature.details.usecase.DeleteRatingUseCase
-import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
-import com.divinelink.feature.details.usecase.SubmitRatingParameters
-import com.divinelink.feature.details.usecase.SubmitRatingUseCase
+import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
+import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
+import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
+import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
+import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
+import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
+import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

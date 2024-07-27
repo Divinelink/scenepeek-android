@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui.rate
+package com.divinelink.feature.details.media.ui.rate
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

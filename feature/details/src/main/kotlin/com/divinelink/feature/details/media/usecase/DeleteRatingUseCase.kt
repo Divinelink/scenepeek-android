@@ -1,26 +1,30 @@
-package com.divinelink.feature.details.usecase
+package com.divinelink.feature.details.media.usecase
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.last
 import javax.inject.Inject
 
-open class FetchAccountMediaDetailsUseCase @Inject constructor(
+data class DeleteRatingParameters(
+  val id: Int,
+  val mediaType: MediaType,
+)
+
+open class DeleteRatingUseCase @Inject constructor(
   private val sessionStorage: SessionStorage,
   private val repository: DetailsRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<MediaDetailsParams, AccountMediaDetails>(dispatcher) {
-  override fun execute(parameters: MediaDetailsParams): Flow<Result<AccountMediaDetails>> = flow {
+) : FlowUseCase<DeleteRatingParameters, Unit>(dispatcher) {
+  override fun execute(parameters: DeleteRatingParameters): Flow<Result<Unit>> = flow {
     val sessionId = sessionStorage.sessionId
 
     if (sessionId == null) {
@@ -28,22 +32,21 @@ open class FetchAccountMediaDetailsUseCase @Inject constructor(
       return@flow
     } else {
       val request = when (parameters.mediaType) {
-        MediaType.MOVIE -> AccountMediaDetailsRequestApi.Movie(
+        MediaType.MOVIE -> DeleteRatingRequestApi.Movie(
           movieId = parameters.id,
           sessionId = sessionId,
         )
-        MediaType.TV -> AccountMediaDetailsRequestApi.TV(
+        MediaType.TV -> DeleteRatingRequestApi.TV(
           seriesId = parameters.id,
           sessionId = sessionId,
         )
+
         else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")
       }
 
-      repository.fetchAccountMediaDetails(
-        request = request,
-      ).collect {
-        emit(Result.success(it.data))
-      }
+      val response = repository.deleteRating(request).last()
+
+      emit(Result.success(response.data))
     }
   }
 }

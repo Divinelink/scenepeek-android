@@ -24,9 +24,9 @@ import com.divinelink.core.ui.TestTags.LOADING_CONTENT_TAG
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
-import com.divinelink.feature.details.ui.DetailsContent
-import com.divinelink.feature.details.ui.DetailsViewState
-import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
+import com.divinelink.feature.details.media.ui.DetailsContent
+import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui
+package com.divinelink.feature.details.media.ui
 
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits

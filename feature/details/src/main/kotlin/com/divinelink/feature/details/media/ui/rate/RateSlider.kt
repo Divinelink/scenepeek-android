@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui.rate
+package com.divinelink.feature.details.media.ui.rate
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement

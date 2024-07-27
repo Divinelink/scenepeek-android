@@ -7,7 +7,7 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.setContentWithTheme
-import com.divinelink.feature.details.ui.rate.RateDialogContent
+import com.divinelink.feature.details.media.ui.rate.RateDialogContent
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import com.divinelink.feature.details.R as detailsR

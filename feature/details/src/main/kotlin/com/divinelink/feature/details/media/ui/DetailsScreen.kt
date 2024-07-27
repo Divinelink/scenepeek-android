@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui
+package com.divinelink.feature.details.media.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -15,9 +15,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.details.navigation.DetailsGraph
+import com.divinelink.feature.details.navigation.MediaDetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.ui.rate.RateModalBottomSheet
+import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -26,7 +26,7 @@ import kotlinx.coroutines.delay
 private const val BOTTOM_SHEET_DELAY = 200L
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination<DetailsGraph>(
+@Destination<MediaDetailsGraph>(
   start = true,
   navArgs = DetailsNavArguments::class,
   deepLinks = [

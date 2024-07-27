@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.usecase
+package com.divinelink.feature.details.media.usecase
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase

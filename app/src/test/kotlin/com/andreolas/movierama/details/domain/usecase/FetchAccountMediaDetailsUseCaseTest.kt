@@ -10,6 +10,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.feature.details.media.usecase.FetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -36,7 +37,7 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test user with no session id cannot fetch account media details`() = runTest {
     sessionStorage = createSessionStorage(sessionId = null)
 
-    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
+    val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -63,7 +64,7 @@ class FetchAccountMediaDetailsUseCaseTest {
       response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
 
-    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
+    val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -88,7 +89,7 @@ class FetchAccountMediaDetailsUseCaseTest {
       response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
 
-    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
+    val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -109,7 +110,7 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test cannot fetch account media details for unknown media type`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
-    val useCase = com.divinelink.feature.details.usecase.FetchAccountMediaDetailsUseCase(
+    val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,

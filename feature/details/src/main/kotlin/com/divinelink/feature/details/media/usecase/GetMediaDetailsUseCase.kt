@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.usecase
+package com.divinelink.feature.details.media.usecase
 
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
@@ -12,7 +12,7 @@ import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.feature.details.ui.MediaDetailsResult
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
