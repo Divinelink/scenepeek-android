@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.navigation
+package com.divinelink.feature.details.navigation.details
 
 import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootGraph

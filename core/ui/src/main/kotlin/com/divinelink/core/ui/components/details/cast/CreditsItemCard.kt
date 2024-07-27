@@ -33,6 +33,7 @@ import com.divinelink.core.ui.R
 fun CreditsItemCard(
   modifier: Modifier = Modifier,
   person: Person,
+  onPersonClick: (Person) -> Unit,
 ) {
   Card(
     shape = PopularMovieItemShape,
@@ -44,6 +45,7 @@ fun CreditsItemCard(
         // todo
       },
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    onClick = { onPersonClick(person) },
   ) {
     MovieImage(
       modifier = Modifier,
@@ -110,6 +112,7 @@ private fun CreditsItemCardPreview() {
           ),
           profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
         ),
+        onPersonClick = {},
       )
     }
   }

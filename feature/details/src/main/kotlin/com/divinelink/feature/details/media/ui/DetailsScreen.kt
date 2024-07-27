@@ -15,9 +15,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.details.navigation.MediaDetailsGraph
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
+import com.divinelink.feature.details.navigation.details.DetailsNavArguments
+import com.divinelink.feature.details.navigation.details.MediaDetailsGraph
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -92,12 +94,11 @@ fun DetailsScreen(
         mediaType = movie.mediaType.value,
         isFavorite = movie.isFavorite ?: false,
       )
-      val destination = DetailsScreenDestination(
-        navArgs = navArgs,
-      )
+      val destination = DetailsScreenDestination(navArgs = navArgs)
 
       navigator.navigate(destination)
     },
+    onPersonClick = { navigator.navigate(PersonScreenDestination(id = it.id)) },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,

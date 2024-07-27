@@ -1,7 +1,7 @@
-package com.divinelink.feature.details.navigation
+package com.divinelink.feature.details.navigation.person
 
 import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootGraph
 
-@NavGraph<RootGraph>(start = true)
-annotation class DetailsGraph
+@NavGraph<RootGraph>(start = false)
+annotation class PersonGraph

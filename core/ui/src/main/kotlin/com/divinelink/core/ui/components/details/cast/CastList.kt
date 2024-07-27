@@ -29,6 +29,7 @@ import com.divinelink.core.ui.R
 @Composable
 fun CastList(
   cast: List<Person>,
+  onPersonClick: (Person) -> Unit,
   onViewAllClick: () -> Unit,
   viewAllVisible: Boolean = true,
 ) {
@@ -76,7 +77,7 @@ fun CastList(
           items = cast,
           key = { it.id },
         ) {
-          CreditsItemCard(person = it)
+          CreditsItemCard(person = it, onPersonClick = onPersonClick)
         }
       }
     }
@@ -109,6 +110,7 @@ private fun CastListPreview() {
             ),
           ),
         ),
+        onPersonClick = {},
         onViewAllClick = {},
       )
     }

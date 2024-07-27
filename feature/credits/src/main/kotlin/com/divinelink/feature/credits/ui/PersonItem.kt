@@ -98,7 +98,9 @@ fun PersonItem(
               )
             }
           }
-          PersonRole.Unknown -> TODO()
+          PersonRole.Unknown -> {
+            // Do nothing
+          }
         }
         Spacer(Modifier.weight(1f))
       }

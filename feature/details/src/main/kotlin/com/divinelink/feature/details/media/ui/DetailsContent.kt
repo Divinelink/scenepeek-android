@@ -104,6 +104,7 @@ fun DetailsContent(
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onPersonClick: (Person) -> Unit,
   onConsumeSnackbar: () -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
@@ -189,6 +190,7 @@ fun DetailsContent(
               onAddRateClicked = onAddRateClicked,
               onAddToWatchlistClicked = onAddToWatchlistClicked,
               viewAllCreditsClicked = viewAllCreditsClicked,
+              onPersonClick = onPersonClick,
             )
           }
         }
@@ -253,6 +255,7 @@ fun MediaDetailsContent(
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
+  onPersonClick: (Person) -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
@@ -339,8 +342,12 @@ fun MediaDetailsContent(
           CastList(
             cast = tvCredits.take(30),
             onViewAllClick = viewAllCreditsClicked,
+            onPersonClick = onPersonClick,
           ) // This is temporary
-          CreatorsItem(creators = mediaDetails.creators)
+          CreatorsItem(
+            creators = mediaDetails.creators,
+            onClick = onPersonClick,
+          )
         } else if (mediaDetails is Movie) {
           HorizontalDivider(
             modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
@@ -350,9 +357,10 @@ fun MediaDetailsContent(
             cast = mediaDetails.cast,
             onViewAllClick = viewAllCreditsClicked,
             viewAllVisible = false,
+            onPersonClick = onPersonClick,
           )
           mediaDetails.director?.let {
-            DirectorItem(director = it)
+            DirectorItem(director = it, onClick = onPersonClick)
           }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
@@ -552,6 +560,7 @@ private fun DetailsContentPreview(
           onAddRateClicked = {},
           onAddToWatchlistClicked = {},
           requestMedia = {},
+          onPersonClick = {},
           viewAllCreditsClicked = {},
         )
       }

@@ -158,7 +158,7 @@ private fun MediaContent(
       .fillMaxSize()
       .testTag(MEDIA_LIST_TAG),
     data = section.data,
-    onMovieClicked = onMediaClick,
+    onItemClick = onMediaClick,
     onMarkAsFavoriteClicked = onMarkAsFavoriteClick,
     onLoadNextPage = onLoadNextPage,
     isLoading = section.shouldLoadMore,

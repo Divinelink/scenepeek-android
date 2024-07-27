@@ -162,3 +162,4 @@ web/js/*
 /hello_js/web/js/
 
 node_modules
+/app/google-services.json.base64
