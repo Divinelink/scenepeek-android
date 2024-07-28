@@ -204,7 +204,7 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `test similar movies are not fetched is details has error`() = runTest {
+  fun `test similar movies are not fetched if details has error`() = runTest {
     repository.mockFetchMovieReviews(
       DetailsRequestApi.Movie(movieId = 555),
       Result.success(reviewsList),

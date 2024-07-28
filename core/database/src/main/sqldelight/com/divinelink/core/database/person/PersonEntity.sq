@@ -1,4 +1,4 @@
-CREATE TABLE PersonEntity (
+CREATE TABLE IF NOT EXISTS PersonEntity (
   id INTEGER NOT NULL PRIMARY KEY,
   biography TEXT,
   birthday TEXT,

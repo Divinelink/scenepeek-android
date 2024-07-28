@@ -8,6 +8,8 @@ import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.credits.dao.CreditsDao
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
+import com.divinelink.core.database.person.PersonDao
+import com.divinelink.core.database.person.ProdPersonDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,6 +46,17 @@ object DatabaseModule {
     database = database,
     clock = clock,
     dispatcher = dispatcher,
+  )
+
+  @Provides
+  @Singleton
+  fun providePersonDao(
+    database: Database,
+    @IoDispatcher dispatcher: CoroutineDispatcher,
+  ): PersonDao = ProdPersonDao(
+    database = database,
+    dispatcher = dispatcher,
+
   )
 
   @Singleton

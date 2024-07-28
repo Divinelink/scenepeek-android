@@ -5,6 +5,8 @@ import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.account.ProdAccountService
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.details.person.service.PersonService
+import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.network.jellyseerr.service.ProdJellyseerrService
 import dagger.Module
@@ -31,6 +33,10 @@ object RemoteModule {
   @Provides
   fun provideJellyseerrService(restClient: JellyseerrRestClient): JellyseerrService =
     ProdJellyseerrService(restClient)
+
+  @Singleton
+  @Provides
+  fun providePersonService(restClient: RestClient): PersonService = ProdPersonService(restClient)
 
   @Singleton
   @Provides

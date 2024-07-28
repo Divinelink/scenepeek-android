@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.Clock
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProdPersonRepository @Inject constructor(
@@ -24,11 +25,11 @@ class ProdPersonRepository @Inject constructor(
   override fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>> = channelFlow {
     dao.fetchPersonById(id).collectLatest { personDetails ->
       if (personDetails != null) {
-        // Fetch from database
+        Timber.d("Person details | ${personDetails.name} | found in database")
         send(Result.success(personDetails.map()))
         return@collectLatest
       } else {
-        // Fetch from network and save to database, then emitted through the channel
+        Timber.d("Person details not found in database")
         service.fetchPersonDetails(id).collectLatest { response ->
           dao.insertPerson(response.mapToEntity(clock.currentEpochSeconds()))
         }
