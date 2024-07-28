@@ -10,7 +10,7 @@ data class PersonDetailsApi(
   val deathday: String? = null,
   val gender: Int,
   val homepage: String? = null,
-  val id: Int,
+  val id: Long,
   @SerialName("imdb_id") val imdbId: String? = null,
   @SerialName("known_for_department") val knownForDepartment: String,
   val name: String,

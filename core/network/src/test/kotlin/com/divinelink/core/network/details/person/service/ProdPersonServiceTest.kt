@@ -1,7 +1,6 @@
-package com.divinelink.core.network.details.person
+package com.divinelink.core.network.details.person.service
 
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
-import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.testing.factories.api.details.person.PersonDetailsApiFactory
 import com.divinelink.core.testing.network.TestRestClient
 import com.google.common.truth.Truth.assertThat

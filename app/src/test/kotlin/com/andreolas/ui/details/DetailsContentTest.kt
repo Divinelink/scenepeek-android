@@ -54,6 +54,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -84,6 +85,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -109,6 +111,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -135,6 +138,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -174,6 +178,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -217,6 +222,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -243,6 +249,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -277,6 +284,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -308,6 +316,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -343,6 +352,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -388,6 +398,7 @@ class DetailsContentTest : ComposeTest() {
         },
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -433,6 +444,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -461,6 +473,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -493,6 +506,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 

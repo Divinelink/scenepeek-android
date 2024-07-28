@@ -15,7 +15,7 @@ CREATE TABLE PersonEntity (
 );
 
 insertPerson:
-INSERT INTO PersonEntity(
+INSERT OR REPLACE INTO PersonEntity(
   id,
   biography,
   birthday,
