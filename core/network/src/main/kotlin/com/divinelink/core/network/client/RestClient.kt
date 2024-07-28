@@ -2,17 +2,19 @@ package com.divinelink.core.network.client
 
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import javax.inject.Inject
 
-class RestClient {
+class RestClient @Inject constructor(engine: HttpClientEngine) {
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
   private val authToken = BuildConfig.TMDB_AUTH_TOKEN
 
-  val client: HttpClient = androidClient().config {
+  val client: HttpClient = ktorClient(engine).config {
     defaultRequest {
       contentType(ContentType.Application.Json)
       bearerAuth(authToken)

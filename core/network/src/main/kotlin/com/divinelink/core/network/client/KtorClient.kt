@@ -1,9 +1,9 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.network.BuildConfig
 import com.divinelink.core.commons.exception.InvalidStatusException
+import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -34,7 +34,7 @@ val localJson = Json {
   ignoreUnknownKeys = true
 }
 
-fun androidClient(): HttpClient = HttpClient(Android) {
+fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
   install(Logging) {
     logger = HttpLogger()
     level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE

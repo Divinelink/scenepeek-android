@@ -11,11 +11,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.android.Android
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
+
+  @Singleton
+  @Provides
+  fun provideAndroidClientEngine(): HttpClientEngine = Android.create()
 
   @Singleton
   @Provides
@@ -28,6 +34,8 @@ object RemoteModule {
 
   @Singleton
   @Provides
-  fun provideJellyseerrRestClient(storage: EncryptedStorage): JellyseerrRestClient =
-    JellyseerrRestClient(storage)
+  fun provideJellyseerrRestClient(
+    engine: HttpClientEngine,
+    storage: EncryptedStorage,
+  ): JellyseerrRestClient = JellyseerrRestClient(engine, storage)
 }
