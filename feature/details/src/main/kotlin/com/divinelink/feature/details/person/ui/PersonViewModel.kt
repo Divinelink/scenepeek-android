@@ -3,6 +3,7 @@ package com.divinelink.feature.details.person.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.details.person.model.PersonDetailsResult
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.feature.details.navigation.person.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +25,7 @@ class PersonViewModel @Inject constructor(
   private val args: PersonNavArguments = PersonScreenDestination.argsFrom(savedStateHandle)
 
   private val _uiState: MutableStateFlow<PersonUiState> = MutableStateFlow(
-    PersonUiState.initial(args.id),
+    PersonUiState.Loading,
   )
   val uiState: StateFlow<PersonUiState> = _uiState.asStateFlow()
 
@@ -31,11 +33,19 @@ class PersonViewModel @Inject constructor(
     fetchPersonDetailsUseCase(args.id)
       .onEach { result ->
         result.fold(
-          onSuccess = { personDetails ->
-//            _uiState.value = PersonUiState.success(personDetails)
+          onSuccess = { detailsResult ->
+            when (detailsResult) {
+              is PersonDetailsResult.DetailsSuccess -> {
+                _uiState.update {
+                  PersonUiState.Success(personDetails = detailsResult.personDetails)
+                }
+              }
+
+              is PersonDetailsResult.DetailsFailure -> _uiState.update { PersonUiState.Error }
+            }
           },
           onFailure = {
-            // TODO: Handle error
+            _uiState.update { PersonUiState.Error }
           },
         )
       }

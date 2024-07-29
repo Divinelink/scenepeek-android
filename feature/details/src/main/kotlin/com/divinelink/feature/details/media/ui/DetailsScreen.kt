@@ -16,7 +16,6 @@ import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
-import com.divinelink.feature.details.navigation.details.DetailsNavArguments
 import com.divinelink.feature.details.navigation.details.MediaDetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination

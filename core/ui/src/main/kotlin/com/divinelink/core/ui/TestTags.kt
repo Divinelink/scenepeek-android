@@ -16,6 +16,10 @@ object TestTags {
     const val RATE_SLIDER = "Details Rate Slider"
   }
 
+  object Person {
+    const val CONTENT_LIST = "Person Details Lazy List"
+  }
+
   object Dialogs {
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"

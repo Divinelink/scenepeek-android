@@ -13,26 +13,3 @@ CREATE TABLE PersonEntity (
   profilePath TEXT,
   insertedAt TEXT NOT NULL
 );
-
-insertPerson:
-INSERT OR REPLACE INTO PersonEntity(
-  id,
-  biography,
-  birthday,
-  deathday,
-  gender,
-  homepage,
-  imdbId,
-  knownForDepartment,
-  name,
-  placeOfBirth,
-  popularity,
-  profilePath,
-  insertedAt
-)
-VALUES ?;
-
-fetchPersonById:
-SELECT *
-FROM PersonEntity
-WHERE id = ?;

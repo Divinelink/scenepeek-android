@@ -41,5 +41,6 @@ object PersonDetailsFactory {
     ),
     imdbId = "nm0136797",
     popularity = 77.108,
+    knownForDepartment = "Acting",
   )
 }

@@ -26,5 +26,9 @@
   <string name="feature_details_request">Request</string>
   <string name="feature_details_season">Season %s</string>
 
+  <!-- 1.%s birthday 2. %s current age -->
+  <string name="feature_details_person_birthday">%s (%s years old)</string>
+  <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>
+
   <string name="login">Login</string>
 </resources>

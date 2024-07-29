@@ -22,4 +22,5 @@ fun PersonDetailsApi.map() = PersonDetails(
   alsoKnownAs = alsoKnownAs,
   imdbId = imdbId,
   popularity = popularity,
+  knownForDepartment = knownForDepartment,
 )

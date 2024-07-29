@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="gender_not_set">-</string>
+  <string name="gender_male">Male</string>
+  <string name="gender_female">Female</string>
+  <string name="gender_non_binary">Non binary</string>
+</resources>
