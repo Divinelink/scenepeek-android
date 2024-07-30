@@ -27,9 +27,11 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.credits.R
+import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun PersonItem(
@@ -51,9 +53,11 @@ fun PersonItem(
     ) {
       MovieImage(
         path = person.profilePath,
-        errorPlaceHolder = painterResource(
-          id = com.divinelink.core.ui.R.drawable.core_ui_ic_person_placeholder,
-        ),
+        errorPlaceHolder = if (person.gender == Gender.FEMALE) {
+          painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
+        } else {
+          painterResource(id = uiR.drawable.core_ui_ic_person_placeholder)
+        },
       )
 
       Column(

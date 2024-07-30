@@ -9,14 +9,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.PersonDetails
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.details.R
+import com.divinelink.core.ui.R as uiR
 
 fun PersonDetails.toUiSections() = listOf(
   // Known for
@@ -78,6 +81,11 @@ fun PersonalDetails(personalDetails: PersonDetails) {
     MovieImage(
       modifier = Modifier.weight(1f),
       path = personalDetails.person.profilePath,
+      errorPlaceHolder = if (personalDetails.person.gender == Gender.FEMALE) {
+        painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
+      } else {
+        painterResource(id = uiR.drawable.core_ui_ic_person_placeholder)
+      },
     )
     Column(
       modifier = Modifier
