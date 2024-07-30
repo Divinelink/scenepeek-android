@@ -16,6 +16,7 @@ import com.andreolas.movierama.home.ui.HomeScreen
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
@@ -23,7 +24,6 @@ import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.ui.components.FILTER_BAR_TEST_TAG
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.ui.DetailsNavArguments
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

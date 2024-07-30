@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.credits.R
 import com.divinelink.feature.credits.navigation.CreditsGraph
-import com.divinelink.feature.credits.navigation.CreditsNavArguments
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.divinelink.core.ui.R as uiR
@@ -33,6 +33,7 @@ import com.divinelink.core.ui.R as uiR
 fun CreditsScreen(
   navigator: DestinationsNavigator,
   viewModel: CreditsViewModel = hiltViewModel(),
+  onNavigateToPersonDetails: (Long) -> Unit,
 ) {
   val uiState = viewModel.uiState.collectAsState().value
 
@@ -66,9 +67,7 @@ fun CreditsScreen(
       modifier = Modifier.padding(paddingValues),
       state = uiState,
       onTabSelected = viewModel::onTabSelected,
-      onPersonSelected = {
-        // TODO navigate to person details
-      },
+      onPersonSelected = { onNavigateToPersonDetails(it.id) },
     )
   }
 }

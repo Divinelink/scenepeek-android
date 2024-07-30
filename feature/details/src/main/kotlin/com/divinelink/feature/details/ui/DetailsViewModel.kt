@@ -13,6 +13,7 @@ import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage

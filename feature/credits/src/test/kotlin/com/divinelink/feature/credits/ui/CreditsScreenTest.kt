@@ -51,6 +51,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -69,6 +70,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -92,6 +94,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -124,6 +127,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -160,6 +164,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -184,6 +189,7 @@ class CreditsScreenTest : ComposeTest() {
       CreditsScreen(
         navigator = navigator,
         viewModel = viewModel,
+        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {

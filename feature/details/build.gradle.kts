@@ -19,9 +19,7 @@ dependencies {
   implementation(projects.core.datastore)
   implementation(projects.core.domain)
   implementation(projects.core.model)
-
-  implementation(projects.feature.settings)
-  implementation(projects.feature.credits)
+  implementation(projects.core.navigation)
 
   testImplementation(projects.core.testing)
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase
-import com.divinelink.feature.credits.navigation.CreditsNavArguments
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 

@@ -19,6 +19,8 @@ import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
@@ -30,14 +32,13 @@ import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
-import com.divinelink.feature.credits.navigation.CreditsNavArguments
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.ui.DetailsNavArguments
 import com.divinelink.feature.details.ui.DetailsScreen
 import com.divinelink.feature.details.ui.DetailsViewModel
 import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.divinelink.feature.details.ui.MediaDetailsResult
+import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -91,6 +92,8 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -201,6 +204,8 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
         viewModel = viewModel,
       )
     }
@@ -263,6 +268,8 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
         viewModel = viewModel,
       )
     }
@@ -310,6 +317,9 @@ class DetailsScreenTest : ComposeTest() {
     val requestMediaUseCase = FakeRequestMediaUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
+    var verifyNavigatedToCredits: Pair<Boolean, CreditsNavArguments?> = false to null
+    var verifyNavigatedToDetails = false
+
     // Initial navigation to Details screen
     destinationsNavigator.navigate(
       direction = DetailsScreenDestination(
@@ -339,6 +349,18 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {
+          destinationsNavigator.navigate(
+            direction = AccountSettingsScreenDestination(),
+          )
+        },
+        onNavigateToCredits = {
+          destinationsNavigator.navigate(
+            direction = CreditsScreenDestination(
+              CreditsNavArguments(id = it.id, mediaType = it.mediaType),
+            ),
+          )
+        },
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -365,10 +387,7 @@ class DetailsScreenTest : ComposeTest() {
 
       destinationsNavigator.verifyNavigatedToDirection(
         expectedDirection = CreditsScreenDestination(
-          CreditsNavArguments(
-            id = 2316,
-            mediaType = MediaType.TV,
-          ),
+          CreditsNavArguments(id = 2316, mediaType = MediaType.TV),
         ),
       )
 
@@ -423,6 +442,8 @@ class DetailsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailsScreen(
         navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,

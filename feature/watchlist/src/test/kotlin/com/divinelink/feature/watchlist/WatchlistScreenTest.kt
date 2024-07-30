@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
@@ -17,8 +18,7 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Test
 import com.divinelink.core.ui.R as uiR
@@ -30,13 +30,12 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test unknown error`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     observeSessionUseCase.mockSuccess(response = Result.success(true))
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -54,13 +53,16 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test unauthenticated error`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
+    var verifyNavigatedToAccountSettings = false
 
     observeSessionUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {
+          verifyNavigatedToAccountSettings = true
+        },
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -82,18 +84,17 @@ class WatchlistScreenTest : ComposeTest() {
 
     // Navigate to Login
     composeTestRule.onNodeWithText(loginButton).performClick()
-    destinationsNavigator.verifyNavigatedToDirection(AccountSettingsScreenDestination())
+    assertThat(verifyNavigatedToAccountSettings).isTrue()
   }
 
   @Test
   fun `test watchlist tabs are visible with movies and tv tabs`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     observeSessionUseCase.mockSuccess(response = Result.success(true))
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -128,7 +129,8 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -171,7 +173,8 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -213,7 +216,8 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -250,7 +254,8 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test nagivate to details from tv content`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
+    var verifyNavigatedToMediaDetails = false
+    var navArgs: DetailsNavArguments? = null
 
     observeSessionUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
@@ -262,7 +267,11 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToMediaDetails = {
+          verifyNavigatedToMediaDetails = true
+          navArgs = it
+        },
         viewModel = WatchlistViewModel(
           observeSessionUseCase = observeSessionUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
@@ -287,8 +296,9 @@ class WatchlistScreenTest : ComposeTest() {
 
     composeTestRule.onNodeWithText(tvList.first().name).performClick()
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      DetailsScreenDestination(
+    assertThat(verifyNavigatedToMediaDetails).isTrue()
+    assertThat(navArgs).isEqualTo(
+      DetailsNavArguments(
         mediaType = MediaType.TV.value,
         id = tvList.first().id,
         isFavorite = tvList.first().isFavorite,

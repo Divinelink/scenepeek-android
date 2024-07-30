@@ -12,13 +12,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.credits.navigation.CreditsNavArguments
-import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.navigation.DetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.ui.rate.RateModalBottomSheet
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -39,13 +38,15 @@ private const val BOTTOM_SHEET_DELAY = 200L
 fun DetailsScreen(
   navigator: DestinationsNavigator,
   viewModel: DetailsViewModel = hiltViewModel(),
+  onNavigateToCredits: (CreditsNavArguments) -> Unit,
+  onNavigateToAccountSettings: () -> Unit,
 ) {
   val viewState = viewModel.viewState.collectAsState()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
   LaunchedEffect(viewState.value.navigateToLogin) {
     viewState.value.navigateToLogin?.let {
-      navigator.navigate(AccountSettingsScreenDestination)
+      onNavigateToAccountSettings()
 
       viewModel.consumeNavigateToLogin()
     }
@@ -102,12 +103,10 @@ fun DetailsScreen(
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
     requestMedia = viewModel::onRequestMedia,
     viewAllCreditsClicked = {
-      navigator.navigate(
-        CreditsScreenDestination(
-          CreditsNavArguments(
-            mediaType = viewState.value.mediaType,
-            id = viewState.value.tvCredits?.id!!, // TODO fix this
-          ),
+      onNavigateToCredits(
+        CreditsNavArguments(
+          mediaType = viewState.value.mediaType,
+          id = viewState.value.mediaDetails?.id?.toLong()!!,
         ),
       )
     },
