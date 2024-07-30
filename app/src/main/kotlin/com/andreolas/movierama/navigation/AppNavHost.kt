@@ -5,12 +5,18 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.andreolas.movierama.home.ui.HomeScreen
+import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
+import com.divinelink.feature.credits.ui.CreditsScreen
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.ui.DetailsScreen
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsScreen
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
+import com.divinelink.feature.watchlist.WatchlistScreen
 import com.divinelink.ui.screens.NavGraphs
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
+import com.divinelink.ui.screens.destinations.WatchlistScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.spec.Route
@@ -53,6 +59,48 @@ fun AppNavHost(
             JellyseerrSettingsScreen(
               navigator = destinationsNavigator,
               animatedVisibilityScope = this@composable,
+            )
+          },
+        )
+
+        composable(
+          destination = DetailsScreenDestination,
+          content = {
+            DetailsScreen(
+              navigator = destinationsNavigator,
+              onNavigateToAccountSettings = {
+                destinationsNavigator.navigate(AccountSettingsScreenDestination)
+              },
+              onNavigateToCredits = {
+                destinationsNavigator.navigate(CreditsScreenDestination(it))
+              },
+            )
+          },
+        )
+
+        composable(
+          destination = CreditsScreenDestination,
+          content = {
+            CreditsScreen(
+              navigator = destinationsNavigator,
+              onNavigateToPersonDetails = {
+                // destinationsNavigator
+                // .navigate(PersonScreenDestination(PersonNavArguments(id = it)))
+              },
+            )
+          },
+        )
+
+        composable(
+          destination = WatchlistScreenDestination,
+          content = {
+            WatchlistScreen(
+              onNavigateToAccountSettings = {
+                destinationsNavigator.navigate(AccountSettingsScreenDestination)
+              },
+              onNavigateToMediaDetails = {
+                destinationsNavigator.navigate(DetailsScreenDestination(it))
+              },
             )
           },
         )

@@ -1,6 +1,6 @@
 package com.andreolas.movierama
 
-import com.divinelink.feature.details.ui.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 
 sealed interface MainUiEvent {
   data object None : MainUiEvent

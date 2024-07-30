@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.ui
+package com.divinelink.core.navigation.arguments
 
 /**
  * Information required when launching the movie details screen.

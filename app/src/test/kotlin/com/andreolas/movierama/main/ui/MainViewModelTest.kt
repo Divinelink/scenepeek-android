@@ -2,8 +2,8 @@ package com.andreolas.movierama.main.ui
 
 import com.andreolas.movierama.MainUiEvent
 import com.andreolas.movierama.MainUiState
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.feature.details.ui.DetailsNavArguments
 import org.junit.Rule
 import org.junit.Test
 

@@ -6,7 +6,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.feature.credits.navigation.CreditsNavArguments
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch

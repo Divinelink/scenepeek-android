@@ -25,24 +25,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.EmptyContent
 import com.divinelink.core.ui.EmptyContentUiState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination<WatchlistGraph>(start = true)
-internal fun WatchlistScreen(
-  navigator: DestinationsNavigator,
+fun WatchlistScreen(
   viewModel: WatchlistViewModel = hiltViewModel(),
+  onNavigateToAccountSettings: () -> Unit,
+  onNavigateToMediaDetails: (DetailsNavArguments) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(0) }
   val uiState = viewModel.uiState.collectAsState()
@@ -95,9 +94,7 @@ internal fun WatchlistScreen(
               is WatchlistForm.Loading -> LoadingContent()
               is WatchlistForm.Error -> WatchlistErrorContent(
                 error = it,
-                onLogin = {
-                  navigator.navigate(AccountSettingsScreenDestination)
-                },
+                onLogin = onNavigateToAccountSettings,
                 onRetry = {
                 },
               )
@@ -108,8 +105,8 @@ internal fun WatchlistScreen(
                   WatchlistContent(
                     list = it.data,
                     onMediaClick = { media ->
-                      navigator.navigate(
-                        DetailsScreenDestination(
+                      onNavigateToMediaDetails(
+                        DetailsNavArguments(
                           mediaType = media.mediaType.value,
                           id = media.id,
                           isFavorite = media.isFavorite,
