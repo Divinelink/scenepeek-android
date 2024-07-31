@@ -28,6 +28,7 @@ import com.andreolas.movierama.navigation.TopLevelDestination
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
@@ -47,9 +48,11 @@ fun MovieApp(
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
       is MainUiEvent.NavigateToDetails -> {
-        navigator.navigate(
-          direction = DetailsScreenDestination(uiEvent.navArgs),
-        )
+        navigator.navigate(direction = DetailsScreenDestination(uiEvent.navArgs))
+        onConsumeEvent()
+      }
+      is MainUiEvent.NavigateToPersonDetails -> {
+        navigator.navigate(direction = PersonScreenDestination(uiEvent.navArgs))
         onConsumeEvent()
       }
       MainUiEvent.None -> {
