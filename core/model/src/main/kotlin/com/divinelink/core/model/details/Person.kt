@@ -12,3 +12,12 @@ data class Person(
   val gender: Gender = Gender.NOT_SET,
   val role: PersonRole,
 )
+
+fun Person.shareUrl(): String {
+  val urlName = name
+    .lowercase()
+    .replace(":", "")
+    .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
+
+  return "https://themoviedb.org/person/$id-$urlName"
+}
