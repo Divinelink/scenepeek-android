@@ -48,6 +48,9 @@
   <string name="core_ui_request_series">Request series</string>
   <string name="core_ui_request_confirmation_text">Are you sure you want to request %s?</string>
 
+  <string name="core_ui_read_more">Read more</string>
+  <string name="core_ui_show_less">Show less</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

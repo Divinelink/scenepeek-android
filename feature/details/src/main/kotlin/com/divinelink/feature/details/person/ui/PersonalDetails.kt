@@ -17,6 +17,8 @@ import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.expanding.ExpandingComponents
+import com.divinelink.core.ui.components.expanding.ExpandingText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
@@ -121,10 +123,21 @@ fun PersonalDetails(personalDetails: PersonDetails) {
       text = "Biography",
       style = MaterialTheme.typography.titleSmall,
     )
-    Text(
-      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_12),
+    ExpandingText(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = MaterialTheme.dimensions.keyline_12),
       text = biography,
       style = MaterialTheme.typography.bodyMedium,
+      expandComponent = { modifier ->
+        ExpandingComponents.InlineEdgeFadingEffect(
+          modifier = modifier,
+          text = stringResource(id = uiR.string.core_ui_read_more),
+        )
+      },
+      shrinkComponent = { modifier, onClick ->
+        ExpandingComponents.ShowLess(modifier = modifier, onClick = onClick)
+      },
     )
   }
 }
