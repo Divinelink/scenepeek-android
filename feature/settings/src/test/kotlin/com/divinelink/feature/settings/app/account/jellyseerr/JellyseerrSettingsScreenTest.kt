@@ -29,7 +29,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 class JellyseerrSettingsScreenTest : ComposeTest() {

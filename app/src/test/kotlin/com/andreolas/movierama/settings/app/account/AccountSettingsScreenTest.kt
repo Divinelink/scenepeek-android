@@ -27,7 +27,7 @@ import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDe
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 class AccountSettingsScreenTest : ComposeTest() {

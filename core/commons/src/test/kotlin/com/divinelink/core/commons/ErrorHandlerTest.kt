@@ -2,7 +2,7 @@ package com.divinelink.core.commons
 
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 import java.net.ConnectException
 import java.net.UnknownHostException
 

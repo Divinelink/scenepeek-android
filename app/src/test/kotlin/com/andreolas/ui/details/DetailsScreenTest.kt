@@ -41,7 +41,7 @@ import com.divinelink.feature.details.screens.destinations.DetailsScreenDestinat
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 import com.divinelink.feature.details.R as detailsR
 

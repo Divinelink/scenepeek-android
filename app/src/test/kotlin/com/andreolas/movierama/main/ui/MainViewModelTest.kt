@@ -6,7 +6,7 @@ import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 class MainViewModelTest {
 

@@ -5,7 +5,7 @@ import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import io.ktor.http.Url
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 
 // TODO: Fix tests here
 class PersistentCookieStorageTest {

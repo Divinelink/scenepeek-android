@@ -13,7 +13,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 import java.net.ConnectException
 import java.net.UnknownHostException
 import com.divinelink.core.ui.R as uiR

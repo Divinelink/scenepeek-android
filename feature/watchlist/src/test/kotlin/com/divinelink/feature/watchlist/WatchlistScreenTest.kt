@@ -20,7 +20,7 @@ import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class WatchlistScreenTest : ComposeTest() {

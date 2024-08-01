@@ -5,7 +5,7 @@ import com.divinelink.core.database.jellyseerr.mapper.mapToEntity
 import com.divinelink.core.testing.factories.entity.JellyseerrAccountDetailsEntityFactory
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 
 class JellyseerrAccountDetailsEntityMapperTest {
 

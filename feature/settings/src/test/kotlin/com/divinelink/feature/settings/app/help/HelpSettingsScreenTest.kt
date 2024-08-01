@@ -15,7 +15,7 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.commons.R as CommonR
 
 class HelpSettingsScreenTest : ComposeTest() {
