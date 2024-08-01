@@ -5,7 +5,7 @@ import com.andreolas.movierama.ui.ThemedActivityDelegate
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.feature.details.navigation.person.PersonNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

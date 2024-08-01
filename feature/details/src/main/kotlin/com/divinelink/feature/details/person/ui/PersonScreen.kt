@@ -23,7 +23,7 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.details.navigation.person.PersonGraph
-import com.divinelink.feature.details.navigation.person.PersonNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

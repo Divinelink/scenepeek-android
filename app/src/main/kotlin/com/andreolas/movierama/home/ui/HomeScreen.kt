@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.navigation.MainGraph
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.feature.details.navigation.person.PersonNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination

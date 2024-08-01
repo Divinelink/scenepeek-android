@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.details.person.model.PersonDetailsResult
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
-import com.divinelink.feature.details.navigation.person.PersonNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

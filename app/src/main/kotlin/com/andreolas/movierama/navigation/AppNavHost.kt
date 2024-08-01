@@ -5,10 +5,10 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.andreolas.movierama.home.ui.HomeScreen
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.credits.ui.CreditsScreen
 import com.divinelink.feature.details.media.ui.DetailsScreen
-import com.divinelink.feature.details.navigation.person.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
