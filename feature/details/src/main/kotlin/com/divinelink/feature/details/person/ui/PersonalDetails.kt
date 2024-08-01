@@ -16,61 +16,11 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.expanding.ExpandingComponents
 import com.divinelink.core.ui.components.expanding.ExpandingText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
-
-fun PersonDetails.toUiSections() = listOf(
-  // Known for
-  PersonalInfoSectionData(
-    title = UIText.StringText("Known for"),
-    value = UIText.StringText(knownForDepartment ?: "-"),
-  ),
-
-  // Gender
-  PersonalInfoSectionData(
-    title = UIText.StringText("Gender"),
-    value = UIText.ResourceText(this.person.gender.stringRes),
-  ),
-
-  // Birthday
-  PersonalInfoSectionData(
-    title = UIText.StringText("Birthday"),
-    value = if (isAlive) {
-      UIText.ResourceText(
-        R.string.feature_details_person_birthday,
-        birthday!!,
-        currentAge!!,
-      )
-    } else {
-      UIText.StringText(birthday ?: "-")
-    },
-  ),
-
-  deathday?.let { deathday ->
-    PersonalInfoSectionData(
-      title = UIText.StringText("Day of death"),
-      value = if (ageAtDeath != null) {
-        UIText.ResourceText(
-          R.string.feature_details_person_birthday,
-          deathday,
-          ageAtDeath ?: "-",
-        )
-      } else {
-        UIText.StringText(deathday)
-      },
-    )
-  },
-
-  // Place of birth
-  PersonalInfoSectionData(
-    title = UIText.StringText("Place of birth"),
-    value = UIText.StringText(placeOfBirth ?: "-"),
-  ),
-)
 
 @Composable
 fun PersonalDetails(personalDetails: PersonDetails) {
@@ -120,7 +70,7 @@ fun PersonalDetails(personalDetails: PersonDetails) {
   Column {
     Text(
       modifier = Modifier.padding(MaterialTheme.dimensions.keyline_12),
-      text = "Biography",
+      text = stringResource(id = R.string.feature_details_biography_section),
       style = MaterialTheme.typography.titleSmall,
     )
     ExpandingText(
@@ -141,11 +91,6 @@ fun PersonalDetails(personalDetails: PersonDetails) {
     )
   }
 }
-
-data class PersonalInfoSectionData(
-  val title: UIText,
-  val value: UIText,
-)
 
 @Composable
 private fun PersonalInfoSection(section: PersonalInfoSectionData) {
