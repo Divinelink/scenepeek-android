@@ -15,7 +15,7 @@ import com.divinelink.core.ui.TestTags
 fun LoadingContent(modifier: Modifier = Modifier) {
   Box(
     modifier = modifier
-      .testTag(TestTags.LOADING_CONTENT_TAG)
+      .testTag(TestTags.LOADING_CONTENT)
       .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.50f))
       .fillMaxSize(),
   ) {

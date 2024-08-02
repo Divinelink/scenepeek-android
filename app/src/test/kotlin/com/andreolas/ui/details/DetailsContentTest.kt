@@ -20,7 +20,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.TestTags.LOADING_CONTENT_TAG
+import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
@@ -90,7 +90,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     composeTestRule
-      .onNodeWithTag(LOADING_CONTENT_TAG)
+      .onNodeWithTag(LOADING_CONTENT)
       .assertIsDisplayed()
   }
 

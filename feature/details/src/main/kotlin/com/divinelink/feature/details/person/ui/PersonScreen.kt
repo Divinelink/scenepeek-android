@@ -72,6 +72,7 @@ fun PersonScreen(
   ) { paddingValues ->
     when (uiState) {
       PersonUiState.Error -> {
+        // TODO Add error content
       }
       PersonUiState.Loading -> LoadingContent()
       is PersonUiState.Success -> PersonContent(

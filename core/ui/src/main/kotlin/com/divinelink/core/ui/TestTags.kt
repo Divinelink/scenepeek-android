@@ -2,7 +2,15 @@ package com.divinelink.core.ui
 
 object TestTags {
 
-  const val LOADING_CONTENT_TAG = "LOADING_CONTENT_TAG"
+  object Components {
+
+    object TopAppBar {
+      const val TOP_APP_BAR = "Top App Bar"
+      const val TOP_APP_BAR_TITLE = "Top App Bar Title"
+    }
+  }
+
+  const val LOADING_CONTENT = "LOADING_CONTENT"
   const val MEDIA_LIST_TAG = "MEDIA_LIST_TAG"
   const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
   const val LOADING_PROGRESS = "Loading Progress Bar"
@@ -17,6 +25,7 @@ object TestTags {
   }
 
   object Person {
+    const val PERSONAL_DETAILS = "Person Personal Details"
     const val CONTENT_LIST = "Person Details Lazy List"
   }
 

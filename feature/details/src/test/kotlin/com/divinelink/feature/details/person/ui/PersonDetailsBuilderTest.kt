@@ -1,10 +1,8 @@
-package com.divinelink.feature.details.person
+package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.person.ui.PersonalInfoSectionData
-import com.divinelink.feature.details.person.ui.toUiSections
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

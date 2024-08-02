@@ -199,7 +199,7 @@ class WatchlistScreenTest : ComposeTest() {
     composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
       .performClick()
 
-    composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT_TAG).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
   }
 
   @Test

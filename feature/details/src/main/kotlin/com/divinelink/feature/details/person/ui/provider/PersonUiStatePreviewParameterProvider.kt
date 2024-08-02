@@ -21,25 +21,25 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       personDetails = PersonUiStateData.steveCarell.copy(biography = null),
     ),
   )
-}
 
-private object PersonUiStateData {
-  val steveCarell = PersonDetails(
-    person = Person(
-      id = 4495,
-      name = "Steve carell",
-      profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
-      gender = Gender.MALE,
-      role = PersonRole.Unknown,
-    ),
-    biography = LoremIpsum(50).values.joinToString(),
-    birthday = "1962-08-16",
-    deathday = null,
-    placeOfBirth = "Concord, Massachusetts, USA",
-    homepage = null,
-    alsoKnownAs = emptyList(),
-    imdbId = "nm0136797",
-    popularity = 77.108,
-    knownForDepartment = "Acting",
-  )
+  private object PersonUiStateData {
+    val steveCarell = PersonDetails(
+      person = Person(
+        id = 4495,
+        name = "Steve carell",
+        profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
+        gender = Gender.MALE,
+        role = PersonRole.Unknown,
+      ),
+      biography = LoremIpsum(50).values.joinToString(),
+      birthday = "1962-08-16",
+      deathday = null,
+      placeOfBirth = "Concord, Massachusetts, USA",
+      homepage = null,
+      alsoKnownAs = emptyList(),
+      imdbId = "nm0136797",
+      popularity = 77.108,
+      knownForDepartment = "Acting",
+    )
+  }
 }

@@ -26,14 +26,13 @@
   <string name="feature_details_request">Request</string>
   <string name="feature_details_season">Season %s</string>
 
+  <string name="feature_details_personal_info_section">Personal info</string>
   <string name="feature_details_known_for_section">Known For</string>
   <string name="feature_details_gender_section">Gender</string>
   <string name="feature_details_birthday_section">Birthday</string>
   <string name="feature_details_day_of_death_section">Death of death</string>
   <string name="feature_details_biography_section">Biography</string>
   <string name="feature_details_place_of_birth_section">Place of Birth</string>
-
-
 
   <!-- 1.%s birthday 2. %s current age -->
   <string name="feature_details_person_birthday">%s (%s years old)</string>

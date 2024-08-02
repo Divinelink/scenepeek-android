@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.ListPaddingValues
@@ -16,6 +17,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.expanding.ExpandingComponents
 import com.divinelink.core.ui.components.expanding.ExpandingText
 import com.divinelink.core.ui.getString
@@ -26,6 +28,7 @@ import com.divinelink.core.ui.R as uiR
 fun PersonalDetails(personalDetails: PersonDetails) {
   Row(
     modifier = Modifier
+      .testTag(TestTags.Person.PERSONAL_DETAILS)
       .padding(paddingValues = ListPaddingValues)
       .fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_12),
@@ -46,14 +49,12 @@ fun PersonalDetails(personalDetails: PersonDetails) {
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     ) {
       Text(
-        text = "Personal info",
+        text = stringResource(id = R.string.feature_details_personal_info_section),
         style = MaterialTheme.typography.titleMedium,
       )
 
       personalDetails.toUiSections().forEach { section ->
-        if (section != null) {
-          PersonalInfoSection(section)
-        }
+        PersonalInfoSection(section)
       }
     }
   }

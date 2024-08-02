@@ -12,9 +12,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 
@@ -28,10 +31,12 @@ fun AppTopAppBar(
   onNavigateUp: () -> Unit,
 ) {
   TopAppBar(
+    modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehaviour,
     colors = topAppBarColors,
     title = {
       Text(
+        modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE),
         text = text.getString(),
         maxLines = 2,
         style = MaterialTheme.typography.titleLarge,
