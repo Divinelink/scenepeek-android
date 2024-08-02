@@ -35,6 +35,8 @@ dependencies {
 
   implementation(libs.kotlinx.datetime)
 
+  implementation(libs.ktor.client.mock)
+
   api(libs.datastore)
   api(libs.datastore.core)
   api(libs.datastore.preferences)

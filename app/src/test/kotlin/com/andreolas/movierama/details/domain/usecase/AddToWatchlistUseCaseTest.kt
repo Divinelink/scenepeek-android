@@ -7,14 +7,14 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
-import com.divinelink.feature.details.usecase.AddToWatchlistParameters
-import com.divinelink.feature.details.usecase.AddToWatchlistUseCase
+import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
+import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 class AddToWatchlistUseCaseTest {
 

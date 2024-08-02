@@ -7,7 +7,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.andreolas.movierama.navigation.MainGraph
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -27,18 +29,20 @@ fun HomeScreen(
     onLoadNextPage = viewModel::onLoadNextPage,
     onSearchMovies = viewModel::onSearchMovies,
     onClearClicked = viewModel::onClearClicked,
-    onNavigateToDetails = { movie ->
-      if (movie is MediaItem.Media) { // FIXME
+    onNavigateToDetails = { media ->
+      val destination = if (media is MediaItem.Media) {
         val navArgs = DetailsNavArguments(
-          id = movie.id,
-          mediaType = movie.mediaType.value,
-          isFavorite = movie.isFavorite,
+          id = media.id,
+          mediaType = media.mediaType.value,
+          isFavorite = media.isFavorite,
         )
-        val destination = DetailsScreenDestination(
-          navArgs = navArgs,
+        DetailsScreenDestination(navArgs = navArgs)
+      } else {
+        PersonScreenDestination(
+          navArgs = PersonNavArguments(id = media.id.toLong()),
         )
-        navigator.navigate(destination)
       }
+      navigator.navigate(destination)
     },
     onFilterClick = viewModel::onFilterClick,
     onClearFiltersClick = viewModel::onClearFiltersClicked,

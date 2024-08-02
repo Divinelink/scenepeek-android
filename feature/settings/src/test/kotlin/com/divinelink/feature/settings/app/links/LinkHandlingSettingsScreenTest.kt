@@ -11,7 +11,7 @@ import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
-import org.junit.Test
+import kotlin.test.Test
 
 class LinkHandlingSettingsScreenTest : ComposeTest() {
 

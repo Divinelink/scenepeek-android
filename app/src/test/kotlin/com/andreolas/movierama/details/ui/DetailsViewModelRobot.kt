@@ -11,9 +11,9 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
-import com.divinelink.feature.details.ui.DetailsViewModel
-import com.divinelink.feature.details.ui.DetailsViewState
-import com.divinelink.feature.details.ui.MediaDetailsResult
+import com.divinelink.feature.details.media.ui.DetailsViewModel
+import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule

@@ -2,7 +2,7 @@ package com.divinelink.core.model.details
 
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 
 class MediaDetailsTest {
 

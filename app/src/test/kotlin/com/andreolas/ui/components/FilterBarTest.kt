@@ -8,7 +8,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.ui.components.FilterBar
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class FilterBarTest : ComposeTest() {

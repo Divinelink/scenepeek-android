@@ -27,7 +27,10 @@ import com.divinelink.core.ui.R
 
 // TODO Add UI Tests
 @Composable
-fun CreatorsItem(creators: List<Person>?) {
+fun CreatorsItem(
+  creators: List<Person>?,
+  onClick: (Person) -> Unit,
+) {
   if (creators.isNullOrEmpty()) return
 
   Column(
@@ -56,7 +59,7 @@ fun CreatorsItem(creators: List<Person>?) {
       columns = GridCells.Adaptive(100.dp),
     ) {
       items(creators, key = { it.id }) { creator ->
-        TextButton(onClick = { /*TODO*/ }) {
+        TextButton(onClick = { onClick(creator) }) {
           Text(
             text = creator.name,
             textAlign = TextAlign.Center,
@@ -101,6 +104,7 @@ private fun CreatorsItemPreview() {
             role = PersonRole.Creator,
           ),
         ),
+        onClick = {},
       )
     }
   }

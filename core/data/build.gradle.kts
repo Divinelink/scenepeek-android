@@ -10,5 +10,7 @@ dependencies {
 
   implementation(projects.core.commons)
 
+  implementation(libs.kotlinx.datetime)
+
   testImplementation(projects.core.testing)
 }

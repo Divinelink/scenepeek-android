@@ -20,7 +20,7 @@ import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class WatchlistScreenTest : ComposeTest() {
@@ -199,7 +199,7 @@ class WatchlistScreenTest : ComposeTest() {
     composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
       .performClick()
 
-    composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT_TAG).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
   }
 
   @Test

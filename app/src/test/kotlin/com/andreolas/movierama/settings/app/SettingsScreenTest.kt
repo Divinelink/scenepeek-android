@@ -13,7 +13,7 @@ import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsSc
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class SettingsScreenTest : ComposeTest() {

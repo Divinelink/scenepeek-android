@@ -27,7 +27,7 @@ import com.divinelink.feature.details.screens.destinations.DetailsScreenDestinat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class HomeScreenTest : ComposeTest() {

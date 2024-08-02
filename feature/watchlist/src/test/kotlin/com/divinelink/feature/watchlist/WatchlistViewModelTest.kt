@@ -10,7 +10,7 @@ import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFa
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 class WatchlistViewModelTest {
 

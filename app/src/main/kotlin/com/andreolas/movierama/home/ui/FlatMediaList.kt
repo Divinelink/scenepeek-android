@@ -28,17 +28,20 @@ import com.andreolas.movierama.R
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.textColorDisabled
+import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
+import com.divinelink.core.ui.components.details.cast.CreditsItemCard
 import com.divinelink.core.ui.components.extensions.OnBottomReached
 
 @Composable
 fun FlatMediaList(
   modifier: Modifier = Modifier,
   data: List<MediaItem>,
-  onMovieClicked: (MediaItem) -> Unit,
+  onItemClick: (MediaItem) -> Unit,
   onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   isLoading: Boolean,
@@ -67,16 +70,27 @@ fun FlatMediaList(
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
           movie = search,
-          onMovieItemClick = { onMovieClicked(search) },
+          onMovieItemClick = { onItemClick(search) },
           onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Media.TV -> MediaItem(
           movie = search,
-          onMovieItemClick = { onMovieClicked(search) },
+          onMovieItemClick = { onItemClick(search) },
           onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Person -> {
-          // FIXME Do nothing yet
+          CreditsItemCard(
+            // TODO FIX Duplicate model
+            person = Person(
+              id = search.id.toLong(),
+              name = search.name,
+              profilePath = search.posterPath,
+              role = PersonRole.Unknown,
+            ),
+            onPersonClick = {
+              onItemClick(search)
+            },
+          )
         }
         MediaItem.Unknown -> {
           // Do nothing
@@ -143,7 +157,7 @@ fun MoviesListScreenPreview() {
     Surface {
       FlatMediaList(
         data = movies,
-        onMovieClicked = {},
+        onItemClick = {},
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         isLoading = true,

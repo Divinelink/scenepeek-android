@@ -1,5 +1,11 @@
 package com.divinelink.core.commons.extensions
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -26,4 +32,29 @@ fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
     }
     return null
   }
+}
+
+fun calculateAge(
+  fromDate: String,
+  toDate: String? = null,
+  clock: Clock = Clock.System,
+): Int {
+  // Parse the birthday string into a LocalDate object
+  val birthDate = LocalDate.parse(fromDate)
+  // Get the current date or the the date of death in the specified timezone
+  val currentDate = if (toDate == null) {
+    clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+  } else {
+    LocalDate.parse(toDate)
+  }
+
+  // Calculate the age by finding the difference in years
+  var age = currentDate.year - birthDate.year
+
+  // Check if the birthday has not occurred yet this year, subtract one year if so
+  if (currentDate < birthDate.plus(DatePeriod(years = age))) {
+    age--
+  }
+
+  return age
 }

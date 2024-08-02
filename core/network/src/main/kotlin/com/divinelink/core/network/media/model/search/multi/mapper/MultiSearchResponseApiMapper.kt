@@ -29,7 +29,7 @@ fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
       )
       MediaType.PERSON -> MediaItem.Person(
         id = it.id,
-        posterPath = it.posterPath ?: "",
+        posterPath = it.profilePath ?: "",
         name = it.name ?: "",
       )
       MediaType.UNKNOWN -> MediaItem.Unknown

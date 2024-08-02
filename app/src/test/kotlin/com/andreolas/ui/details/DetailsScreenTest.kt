@@ -33,15 +33,15 @@ import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
+import com.divinelink.feature.details.media.ui.DetailsScreen
+import com.divinelink.feature.details.media.ui.DetailsViewModel
+import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.ui.DetailsScreen
-import com.divinelink.feature.details.ui.DetailsViewModel
-import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
-import com.divinelink.feature.details.ui.MediaDetailsResult
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 import com.divinelink.feature.details.R as detailsR
 

@@ -3,9 +3,10 @@ package com.andreolas.movierama.main.ui
 import com.andreolas.movierama.MainUiEvent
 import com.andreolas.movierama.MainUiState
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 class MainViewModelTest {
 
@@ -74,15 +75,7 @@ class MainViewModelTest {
       .buildViewModel()
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
-      .assertUiEvent(
-        MainUiEvent.NavigateToDetails(
-          DetailsNavArguments(
-            id = 693134,
-            mediaType = "person",
-            isFavorite = false,
-          ),
-        ),
-      )
+      .assertUiEvent(MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = 693134)))
       .onConsumeUiEvent()
       .assertUiEvent(MainUiEvent.None)
   }

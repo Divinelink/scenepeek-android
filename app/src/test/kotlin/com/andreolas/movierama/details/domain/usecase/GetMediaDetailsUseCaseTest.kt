@@ -21,8 +21,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
-import com.divinelink.feature.details.ui.MediaDetailsResult
-import com.divinelink.feature.details.usecase.GetMediaDetailsUseCase
+import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 class GetMediaDetailsUseCaseTest {
 
@@ -204,7 +204,7 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `test similar movies are not fetched is details has error`() = runTest {
+  fun `test similar movies are not fetched if details has error`() = runTest {
     repository.mockFetchMovieReviews(
       DetailsRequestApi.Movie(movieId = 555),
       Result.success(reviewsList),

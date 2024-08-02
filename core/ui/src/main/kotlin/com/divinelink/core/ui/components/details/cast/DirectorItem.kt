@@ -14,7 +14,10 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.R
 
 @Composable
-fun DirectorItem(director: Person) {
+fun DirectorItem(
+  director: Person,
+  onClick: (Person) -> Unit,
+) {
   Column {
     Text(
       modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_12),
@@ -24,7 +27,7 @@ fun DirectorItem(director: Person) {
       color = MaterialTheme.colorScheme.onSurface,
     )
 
-    TextButton(onClick = { /*TODO*/ }) {
+    TextButton(onClick = { onClick(director) }) {
       Text(
         text = director.name,
         style = MaterialTheme.typography.bodyMedium,

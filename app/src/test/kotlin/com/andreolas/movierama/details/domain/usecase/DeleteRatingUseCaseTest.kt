@@ -8,8 +8,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
-import com.divinelink.feature.details.usecase.DeleteRatingParameters
-import com.divinelink.feature.details.usecase.DeleteRatingUseCase
+import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
+import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

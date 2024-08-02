@@ -24,3 +24,8 @@ open class ComposeTest : UnitTest() {
 }
 
 fun ComposeTest.getString(resId: Int): String = composeTestRule.activity.getString(resId)
+
+fun ComposeTest.getString(
+  resId: Int,
+  vararg formatArgs: Any,
+): String = composeTestRule.activity.getString(resId, *formatArgs)

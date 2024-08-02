@@ -1,0 +1,38 @@
+CREATE TABLE PersonEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  biography TEXT,
+  birthday TEXT,
+  deathday TEXT,
+  gender INTEGER NOT NULL,
+  homepage TEXT,
+  imdbId TEXT,
+  knownForDepartment TEXT,
+  name TEXT NOT NULL,
+  placeOfBirth TEXT,
+  popularity REAL NOT NULL,
+  profilePath TEXT,
+  insertedAt TEXT NOT NULL
+);
+
+insertPerson:
+INSERT OR REPLACE INTO PersonEntity(
+  id,
+  biography,
+  birthday,
+  deathday,
+  gender,
+  homepage,
+  imdbId,
+  knownForDepartment,
+  name,
+  placeOfBirth,
+  popularity,
+  profilePath,
+  insertedAt
+)
+VALUES ?;
+
+fetchPersonById:
+SELECT *
+FROM PersonEntity
+WHERE id = ?;

@@ -6,7 +6,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertThrows
-import org.junit.Test
+import kotlin.test.Test
 
 class RateResponseApiSerializerTest {
 

@@ -11,7 +11,7 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 
 class RequestDialogsTest : ComposeTest() {
 

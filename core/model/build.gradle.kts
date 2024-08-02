@@ -4,7 +4,9 @@ plugins {
 }
 
 dependencies {
+  implementation(projects.core.commons)
   testImplementation(projects.core.testing)
 
   implementation(libs.kotlinx.serialization.json)
+  implementation(libs.kotlinx.datetime)
 }

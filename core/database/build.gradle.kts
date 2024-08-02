@@ -47,6 +47,8 @@ sqldelight {
   databases {
     create("Database") {
       packageName.set("com.divinelink.core.database")
+      migrationOutputDirectory.set(file("src/main/sqldelight/migrations"))
+      version = 2
     }
   }
 }

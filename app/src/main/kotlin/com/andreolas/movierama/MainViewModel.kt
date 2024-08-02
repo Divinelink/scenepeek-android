@@ -5,6 +5,7 @@ import com.andreolas.movierama.ui.ThemedActivityDelegate
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,8 +16,7 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
   ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
 
-  private val _uiState: MutableStateFlow<MainUiState> =
-    MutableStateFlow(MainUiState.Completed)
+  private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Completed)
   val uiState: StateFlow<MainUiState> = _uiState
 
   private val _uiEvent: MutableStateFlow<MainUiEvent> = MutableStateFlow(MainUiEvent.None)
@@ -33,8 +33,8 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
   fun handleDeepLink(url: String?) {
     val (id, mediaType) = url.extractDetailsFromDeepLink() ?: return
 
-    if (MediaType.from(mediaType) != MediaType.UNKNOWN) {
-      updateUiEvent(
+    when (MediaType.from(mediaType)) {
+      MediaType.TV, MediaType.MOVIE -> updateUiEvent(
         MainUiEvent.NavigateToDetails(
           DetailsNavArguments(
             id = id,
@@ -43,8 +43,10 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
           ),
         ),
       )
-    } else {
-      updateUiEvent(MainUiEvent.None)
+      MediaType.PERSON -> updateUiEvent(
+        MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = id.toLong())),
+      )
+      MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
     }
   }
 

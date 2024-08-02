@@ -5,17 +5,25 @@ import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.account.ProdAccountService
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.details.person.service.PersonService
+import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.network.jellyseerr.service.ProdJellyseerrService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.android.Android
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
+
+  @Singleton
+  @Provides
+  fun provideAndroidClientEngine(): HttpClientEngine = Android.create()
 
   @Singleton
   @Provides
@@ -28,6 +36,12 @@ object RemoteModule {
 
   @Singleton
   @Provides
-  fun provideJellyseerrRestClient(storage: EncryptedStorage): JellyseerrRestClient =
-    JellyseerrRestClient(storage)
+  fun providePersonService(restClient: RestClient): PersonService = ProdPersonService(restClient)
+
+  @Singleton
+  @Provides
+  fun provideJellyseerrRestClient(
+    engine: HttpClientEngine,
+    storage: EncryptedStorage,
+  ): JellyseerrRestClient = JellyseerrRestClient(engine, storage)
 }

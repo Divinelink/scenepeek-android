@@ -12,7 +12,7 @@ import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWiza
 import com.divinelink.core.ui.UIText
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 
 @Suppress("LargeClass")
 class HomeViewModelTest {

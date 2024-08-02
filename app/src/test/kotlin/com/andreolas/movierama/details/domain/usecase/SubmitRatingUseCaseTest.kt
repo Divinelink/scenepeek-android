@@ -8,6 +8,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
+import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -34,14 +36,14 @@ class SubmitRatingUseCaseTest {
   fun `test user with no session id cannot submit rating`() = runTest {
     sessionStorage = createSessionStorage(sessionId = null)
 
-    val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
+    val useCase = SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.SubmitRatingParameters(
+      SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
         rating = 5,
@@ -62,14 +64,14 @@ class SubmitRatingUseCaseTest {
       response = Result.success(Unit),
     )
 
-    val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
+    val useCase = SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.SubmitRatingParameters(
+      SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.MOVIE,
         rating = 5,
@@ -88,14 +90,14 @@ class SubmitRatingUseCaseTest {
       response = Result.success(Unit),
     )
 
-    val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
+    val useCase = SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.SubmitRatingParameters(
+      SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.TV,
         rating = 5,
@@ -110,14 +112,14 @@ class SubmitRatingUseCaseTest {
   fun `test cannot fetch account media details for unknown media type`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
-    val useCase = com.divinelink.feature.details.usecase.SubmitRatingUseCase(
+    val useCase = SubmitRatingUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
     )
 
     val result = useCase.invoke(
-      com.divinelink.feature.details.usecase.SubmitRatingParameters(
+      SubmitRatingParameters(
         id = 0,
         mediaType = MediaType.UNKNOWN,
         rating = 5,

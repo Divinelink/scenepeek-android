@@ -28,6 +28,7 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.shareUrl
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
+import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
 
 @Composable
 fun DetailsDropdownMenu(
@@ -77,11 +78,7 @@ fun DetailsDropdownMenu(
     expanded = expanded,
     onDismissRequest = onDismissDropdown,
   ) {
-    DropdownMenuItem(
-      modifier = Modifier.testTag(
-        TestTags.Menu.MENU_ITEM.format(stringResource(id = R.string.core_ui_share)),
-      ),
-      text = { Text(text = stringResource(id = R.string.core_ui_share)) },
+    ShareMenuItem(
       onClick = {
         onDismissDropdown()
         showShareDialog = true

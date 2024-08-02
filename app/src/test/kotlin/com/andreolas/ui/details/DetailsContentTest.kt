@@ -20,13 +20,13 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.TestTags.LOADING_CONTENT_TAG
+import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
-import com.divinelink.feature.details.ui.DetailsContent
-import com.divinelink.feature.details.ui.DetailsViewState
-import com.divinelink.feature.details.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
+import com.divinelink.feature.details.media.ui.DetailsContent
+import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -54,6 +54,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -84,11 +85,12 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
     composeTestRule
-      .onNodeWithTag(LOADING_CONTENT_TAG)
+      .onNodeWithTag(LOADING_CONTENT)
       .assertIsDisplayed()
   }
 
@@ -109,6 +111,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -135,6 +138,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -174,6 +178,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -217,6 +222,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -243,6 +249,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -277,6 +284,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -308,6 +316,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -343,6 +352,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -388,6 +398,7 @@ class DetailsContentTest : ComposeTest() {
         },
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -433,6 +444,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -461,6 +473,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 
@@ -493,6 +506,7 @@ class DetailsContentTest : ComposeTest() {
         onAddToWatchlistClicked = {},
         requestMedia = {},
         viewAllCreditsClicked = {},
+        onPersonClick = {},
       )
     }
 

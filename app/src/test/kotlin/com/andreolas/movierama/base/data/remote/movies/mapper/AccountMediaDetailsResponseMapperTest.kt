@@ -4,7 +4,7 @@ import com.andreolas.factories.api.account.states.AccountMediaDetailsResponseApi
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.core.data.details.mapper.map
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import kotlin.test.Test
 
 class AccountMediaDetailsResponseMapperTest {
 
