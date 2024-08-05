@@ -1,0 +1,62 @@
+CREATE TABLE PersonCrewCreditEntity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    personId INTEGER NOT NULL,
+    adult INTEGER NOT NULL,
+    backdropPath TEXT,
+    genreIds TEXT NOT NULL,
+    originalLanguage TEXT NOT NULL,
+    originalTitle TEXT,
+    originalName TEXT,
+    overview TEXT NOT NULL,
+    popularity REAL NOT NULL,
+    posterPath TEXT,
+    releaseDate TEXT,
+    firstAirDate TEXT,
+    title TEXT,
+    name TEXT,
+    video INTEGER,
+    voteAverage REAL NOT NULL,
+    voteCount INTEGER NOT NULL,
+    creditId TEXT NOT NULL,
+    department TEXT NOT NULL,
+    job TEXT NOT NULL,
+    episodeCount INTEGER,
+    mediaType TEXT NOT NULL,
+    originCountry TEXT,
+    FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
+);
+
+insertPersonCrewCredit:
+INSERT OR REPLACE INTO PersonCrewCreditEntity(
+  id,
+  personId,
+  adult,
+  backdropPath,
+  genreIds,
+  originalLanguage,
+  originalTitle,
+  originalName,
+  overview,
+  popularity,
+  posterPath,
+  releaseDate,
+  firstAirDate,
+  title,
+  name,
+  video,
+  voteAverage,
+  voteCount,
+  creditId,
+  department,
+  job,
+  episodeCount,
+  mediaType,
+  originCountry
+)
+VALUES ?;
+
+fetchPersonCrewCredit:
+SELECT * FROM PersonCrewCreditEntity
+WHERE personId = ?
+ORDER BY
+  COALESCE(releaseDate, firstAirDate) DESC;
