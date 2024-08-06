@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components.details.similar
+package com.divinelink.feature.details.person.ui.credits
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,29 +14,31 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.R
+import com.divinelink.core.model.person.credits.PersonCredit
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.components.MediaItem
-
-const val SIMILAR_MOVIES_SCROLLABLE_LIST = "SIMILAR_MOVIES_LAZY_ROW_TAG"
+import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
+import com.divinelink.feature.details.R
 
 @Composable
-fun SimilarMoviesList(
-  movies: List<MediaItem.Media>,
-  onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+fun KnownForSection(
+  list: List<PersonCredit>,
+  onMediaClick: (MediaItem) -> Unit,
 ) {
   Column(
     modifier = Modifier
-      .padding(top = 16.dp, bottom = 16.dp)
+      .padding(vertical = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
     Text(
-      modifier = Modifier
-        .padding(start = 12.dp, end = 12.dp),
+      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_12),
       style = MaterialTheme.typography.titleLarge,
       fontWeight = FontWeight.Bold,
-      text = stringResource(id = R.string.details__more_like_this),
+      text = stringResource(id = R.string.feature_details_known_for_section),
     )
 
     LazyRow(
@@ -45,15 +47,24 @@ fun SimilarMoviesList(
       contentPadding = ListPaddingValues,
     ) {
       items(
-        items = movies,
+        items = list.map { it.mediaItem },
         key = { it.id },
-      ) { similarMovie ->
+      ) { media ->
         MediaItem(
-          media = similarMovie,
-          onMediaItemClick = onSimilarMovieClicked,
-          onLikeMediaClick = {},
+          media = media,
+          onMediaItemClick = onMediaClick,
+          onLikeMediaClick = { /* Do nothing */ },
         )
       }
     }
+  }
+}
+
+@Previews
+@Composable
+private fun KnowForSectionPreview() {
+  AppTheme {
+//    KnowForSection(
+//    )
   }
 }

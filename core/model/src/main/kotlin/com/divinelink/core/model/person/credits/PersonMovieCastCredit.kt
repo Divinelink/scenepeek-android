@@ -1,6 +1,7 @@
 package com.divinelink.core.model.person.credits
 
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
 data class PersonMovieCastCredit(
@@ -12,21 +13,25 @@ data class PersonMovieCastCredit(
   val originalTitle: String,
   override val overview: String,
   override val popularity: Double,
-  override val posterPath: String?,
+  val posterPath: String?,
   val releaseDate: String,
   val title: String,
   val video: Boolean,
   override val voteAverage: Double,
   override val voteCount: Long,
   val character: String,
-  override val mediaType: MediaType,
+  val mediaType: MediaType,
   override val creditId: String,
 ) : PersonCredit(
   id = id,
-  mediaName = title,
-  mediaOriginalName = originalTitle,
-  mediaReleaseDate = releaseDate,
-  mediaType = mediaType,
-  posterPath = posterPath,
+  mediaItem = MediaItem.Media.Movie(
+    id = id.toInt(),
+    name = title,
+    posterPath = posterPath,
+    releaseDate = releaseDate,
+    rating = voteAverage.toString(),
+    overview = overview,
+    isFavorite = null,
+  ),
   role = PersonRole.MovieActor(character),
 )

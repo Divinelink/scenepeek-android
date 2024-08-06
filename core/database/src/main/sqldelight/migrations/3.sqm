@@ -1,0 +1,61 @@
+CREATE TABLE PersonCreditsEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  insertedAt TEXT NOT NULL
+);
+
+CREATE TABLE PersonCastCreditEntity (
+    id INTEGER NOT NULL,
+    creditId TEXT PRIMARY KEY  NOT NULL,
+    personId INTEGER NOT NULL,
+    adult INTEGER NOT NULL,
+    backdropPath TEXT,
+    genreIds TEXT NOT NULL,
+    originalLanguage TEXT NOT NULL,
+    originalTitle TEXT,
+    originalName TEXT,
+    overview TEXT NOT NULL,
+    popularity REAL NOT NULL,
+    posterPath TEXT,
+    releaseDate TEXT,
+    firstAirDate TEXT,
+    originCountry TEXT,
+    title TEXT,
+    name TEXT,
+    video INTEGER,
+    voteAverage REAL NOT NULL,
+    voteCount INTEGER NOT NULL,
+    character TEXT NOT NULL,
+    episodeCount INTEGER,
+    mediaType TEXT NOT NULL,
+    FOREIGN KEY(id) REFERENCES PersonCreditsEntity(id)
+);
+
+CREATE TABLE PersonCrewCreditEntity (
+    id INTEGER NOT NULL,
+    creditId TEXT PRIMARY KEY  NOT NULL,
+    personId INTEGER NOT NULL,
+    adult INTEGER NOT NULL,
+    backdropPath TEXT,
+    genreIds TEXT NOT NULL,
+    originalLanguage TEXT NOT NULL,
+    overview TEXT NOT NULL,
+    popularity REAL NOT NULL,
+    posterPath TEXT,
+    voteAverage REAL NOT NULL,
+    voteCount INTEGER NOT NULL,
+    department TEXT NOT NULL,
+    job TEXT NOT NULL,
+    mediaType TEXT NOT NULL,
+    -- Movie Properties
+    title TEXT,
+    video INTEGER,
+    releaseDate TEXT,
+    originalTitle TEXT,
+    -- TV Show Properties
+    name TEXT,
+    originalName TEXT,
+    originCountry TEXT,
+    firstAirDate TEXT,
+    episodeCount INTEGER,
+    FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
+);

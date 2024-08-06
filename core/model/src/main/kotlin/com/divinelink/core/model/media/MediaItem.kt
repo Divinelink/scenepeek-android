@@ -1,5 +1,7 @@
 package com.divinelink.core.model.media
 
+import com.divinelink.core.commons.extensions.round
+
 sealed class MediaItem(
   open val id: Int,
   open val name: String,
@@ -22,6 +24,8 @@ sealed class MediaItem(
     name = name,
     mediaType = mediaType,
   ) {
+    val decimalRating: String
+      get() = this.rating.toDouble().round(1).toString()
 
     data class TV(
       override val id: Int,

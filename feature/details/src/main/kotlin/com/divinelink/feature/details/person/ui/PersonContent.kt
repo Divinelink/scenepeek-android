@@ -12,14 +12,17 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
 
 @Composable
 fun PersonContent(
   modifier: Modifier = Modifier,
   uiState: PersonUiState.Success,
+  onMediaClick: (MediaItem) -> Unit,
 ) {
   LazyColumn(
     modifier = modifier
@@ -37,6 +40,15 @@ fun PersonContent(
     item {
       PersonalDetails(uiState.personDetails)
     }
+
+    if (uiState.credits is PersonCreditsUiState.Visible) {
+      item {
+        KnownForSection(
+          list = uiState.credits.knownFor,
+          onMediaClick = onMediaClick,
+        )
+      }
+    }
   }
 }
 
@@ -48,7 +60,10 @@ private fun PersonContentPreview(
 ) {
   AppTheme {
     Surface {
-      PersonContent(uiState = uiState)
+      PersonContent(
+        uiState = uiState,
+        onMediaClick = { /* Do nothing */ },
+      )
     }
   }
 }

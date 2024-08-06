@@ -17,13 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.details.navigation.person.PersonGraph
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -78,6 +80,17 @@ fun PersonScreen(
       is PersonUiState.Success -> PersonContent(
         modifier = Modifier.padding(paddingValues),
         uiState = uiState,
+        onMediaClick = {
+          navigator.navigate(
+            DetailsScreenDestination(
+              DetailsNavArguments(
+                id = it.id,
+                mediaType = it.mediaType.value,
+                isFavorite = null,
+              ),
+            ),
+          )
+        },
       )
     }
   }

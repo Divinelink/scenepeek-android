@@ -38,9 +38,9 @@ const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 @Composable
 fun MediaItem(
   modifier: Modifier = Modifier,
-  movie: MediaItem.Media,
-  onMovieItemClick: (MediaItem.Media) -> Unit,
-  onLikeMovieClick: () -> Unit,
+  media: MediaItem.Media,
+  onMediaItemClick: (MediaItem.Media) -> Unit,
+  onLikeMediaClick: () -> Unit,
 ) {
   val offset = MaterialTheme.dimensions.keyline_28
 
@@ -52,7 +52,7 @@ fun MediaItem(
       .clip(PopularMovieItemShape)
       .clipToBounds()
       .clickable {
-        onMovieItemClick(movie)
+        onMediaItemClick(media)
       },
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
@@ -63,13 +63,13 @@ fun MediaItem(
         .wrapContentHeight(),
     ) {
       MovieImage(
-        path = movie.posterPath,
+        path = media.posterPath,
       )
-      movie.isFavorite?.let { isFavorite ->
+      media.isFavorite?.let { isFavorite ->
         FavoriteButton(
           modifier = Modifier.align(Alignment.TopStart),
           isFavorite = isFavorite,
-          onClick = onLikeMovieClick,
+          onClick = onLikeMediaClick,
         )
       }
 
@@ -78,7 +78,7 @@ fun MediaItem(
           .align(Alignment.BottomStart)
           .offset(y = offset)
           .padding(start = MaterialTheme.dimensions.keyline_8),
-        rating = movie.rating,
+        rating = media.decimalRating,
       )
     }
 
@@ -90,7 +90,7 @@ fun MediaItem(
         .padding(horizontal = MaterialTheme.dimensions.keyline_8)
         .offset(y = offset)
         .height(MaterialTheme.dimensions.keyline_58),
-      text = movie.name,
+      text = media.name,
       overflow = TextOverflow.Ellipsis,
       style = MaterialTheme.typography.titleSmall,
       color = MaterialTheme.colorScheme.onSurface,
@@ -101,7 +101,7 @@ fun MediaItem(
         .offset(y = offset)
         .padding(horizontal = MaterialTheme.dimensions.keyline_8)
         .padding(bottom = MaterialTheme.dimensions.keyline_4),
-      text = movie.releaseDate,
+      text = media.releaseDate,
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
     )
@@ -121,7 +121,7 @@ fun PopularMovieItemPreview() {
     ) {
       MediaItem(
         modifier = Modifier,
-        movie = MediaItem.Media.TV(
+        media = MediaItem.Media.TV(
           id = 0,
           posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
@@ -130,8 +130,8 @@ fun PopularMovieItemPreview() {
           isFavorite = true,
           overview = "",
         ),
-        onMovieItemClick = {},
-        onLikeMovieClick = {},
+        onMediaItemClick = {},
+        onLikeMediaClick = {},
       )
     }
   }
@@ -146,7 +146,7 @@ fun MovieItemPreview() {
     ) {
       MediaItem(
         modifier = Modifier,
-        movie = MediaItem.Media.Movie(
+        media = MediaItem.Media.Movie(
           id = 0,
           posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
@@ -157,8 +157,8 @@ fun MovieItemPreview() {
           isFavorite = null,
           overview = "",
         ),
-        onMovieItemClick = {},
-        onLikeMovieClick = {},
+        onMediaItemClick = {},
+        onLikeMediaClick = {},
       )
     }
   }

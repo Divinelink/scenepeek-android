@@ -1,6 +1,7 @@
 package com.divinelink.core.model.person.credits
 
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
 data class PersonTVCastCredit(
@@ -12,7 +13,7 @@ data class PersonTVCastCredit(
   val originalName: String,
   override val overview: String,
   override val popularity: Double,
-  override val posterPath: String?,
+  val posterPath: String?,
   val firstAirDate: String,
   val name: String,
   override val voteAverage: Double,
@@ -20,15 +21,19 @@ data class PersonTVCastCredit(
   val character: String,
   val episodeCount: Int,
   val originCountry: List<String>,
-  override val mediaType: MediaType,
+  val mediaType: MediaType,
   override val creditId: String,
 ) : PersonCredit(
   id = id,
-  mediaName = name,
-  mediaOriginalName = originalName,
-  mediaReleaseDate = firstAirDate,
-  mediaType = mediaType,
-  posterPath = posterPath,
+  mediaItem = MediaItem.Media.TV(
+    id = id.toInt(),
+    name = name,
+    posterPath = posterPath,
+    releaseDate = firstAirDate,
+    rating = voteAverage.toString(),
+    overview = overview,
+    isFavorite = null,
+  ),
   role = PersonRole.SeriesActor(
     character = character,
     creditId = creditId,

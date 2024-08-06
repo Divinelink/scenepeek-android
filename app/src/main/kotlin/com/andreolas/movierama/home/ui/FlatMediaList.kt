@@ -69,14 +69,14 @@ fun FlatMediaList(
     ) { search ->
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
-          movie = search,
-          onMovieItemClick = { onItemClick(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
+          media = search,
+          onMediaItemClick = { onItemClick(search) },
+          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Media.TV -> MediaItem(
-          movie = search,
-          onMovieItemClick = { onItemClick(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
+          media = search,
+          onMediaItemClick = { onItemClick(search) },
+          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Person -> {
           CreditsItemCard(

@@ -1,15 +1,11 @@
 package com.divinelink.core.model.person.credits
 
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.MediaItem
 
 sealed class PersonCredit(
   open val id: Long,
-  open val mediaName: String,
-  open val mediaOriginalName: String,
-  open val mediaReleaseDate: String,
-  open val mediaType: MediaType,
-  open val posterPath: String?,
+  open val mediaItem: MediaItem.Media,
   open val role: PersonRole,
 ) {
   abstract val adult: Boolean

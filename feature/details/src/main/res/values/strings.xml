@@ -34,6 +34,8 @@
   <string name="feature_details_biography_section">Biography</string>
   <string name="feature_details_place_of_birth_section">Place of Birth</string>
 
+  <string name="feature_details_person_credits_known_for_section">Known For</string>
+
   <!-- 1.%s birthday 2. %s current age -->
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>

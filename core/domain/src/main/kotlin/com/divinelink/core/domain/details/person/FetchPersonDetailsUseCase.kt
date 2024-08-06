@@ -35,5 +35,16 @@ class FetchPersonDetailsUseCase @Inject constructor(
           )
         }
     }
+
+    // TODO add test
+    launch(dispatcher) {
+      repository.fetchPersonCredits(parameters)
+        .collect { result ->
+          result.fold(
+            onFailure = { Timber.e(it) },
+            onSuccess = { send(Result.success(PersonDetailsResult.CreditsSuccess(result.data))) },
+          )
+        }
+    }
   }
 }
