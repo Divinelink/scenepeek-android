@@ -105,4 +105,11 @@ object PersonCastCreditFactory {
     despicableMe(),
     theOffice(),
   )
+
+  fun sortedByDate() = listOf(
+    despicableMe(),
+    littleMissSunshine(),
+    theOffice(),
+    bruceAlmighty(),
+  )
 }

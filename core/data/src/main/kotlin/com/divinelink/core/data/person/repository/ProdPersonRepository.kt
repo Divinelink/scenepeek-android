@@ -1,6 +1,9 @@
 package com.divinelink.core.data.person.repository
 
 import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.data.person.credits.mapper.map
+import com.divinelink.core.data.person.credits.mapper.toEntityCast
+import com.divinelink.core.data.person.credits.mapper.toEntityCrew
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
@@ -38,7 +41,19 @@ class ProdPersonRepository @Inject constructor(
     }
   }
 
-  override fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>> {
-    TODO("Not yet implemented")
+  override fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>> = channelFlow {
+    dao.fetchPersonCombinedCredits(id).collectLatest { personCredits ->
+      if (personCredits != null) {
+        Timber.d("Person credits | ${personCredits.id} | found in database")
+        send(Result.success(personCredits.map()))
+      } else {
+        Timber.d("Person credits not found in database")
+        service.fetchPersonCombinedCredits(id).collectLatest { response ->
+          dao.insertPersonCredits(response.id)
+          dao.insertPersonCrewCredits(response.toEntityCrew())
+          dao.insertPersonCastCredits(response.toEntityCast())
+        }
+      }
+    }
   }
 }

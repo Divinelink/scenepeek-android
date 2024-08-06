@@ -1,5 +1,6 @@
 CREATE TABLE PersonCrewCreditEntity (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL,
+    creditId TEXT PRIMARY KEY  NOT NULL,
     personId INTEGER NOT NULL,
     adult INTEGER NOT NULL,
     backdropPath TEXT,
@@ -10,7 +11,6 @@ CREATE TABLE PersonCrewCreditEntity (
     posterPath TEXT,
     voteAverage REAL NOT NULL,
     voteCount INTEGER NOT NULL,
-    creditId TEXT NOT NULL,
     department TEXT NOT NULL,
     job TEXT NOT NULL,
     mediaType TEXT NOT NULL,

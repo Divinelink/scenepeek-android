@@ -11,6 +11,7 @@ import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
 import javax.inject.Inject
 
@@ -51,13 +52,31 @@ class ProdPersonDao @Inject constructor(
     database.personCrewCreditEntityQueries.insertPersonCrewCredit(it)
   }
 
-  override fun fetchPersonCredits(id: Long): Flow<PersonCreditsEntity?> = database
+  override fun fetchPersonCombinedCredits(id: Long): Flow<PersonCombinedCreditsEntity?> {
+    val personCreditId = fetchPersonCredits(id)
+    val castCredits = fetchPersonCastCredits(id)
+    val crewCredits = fetchPersonCrewCredits(id)
+
+    return combine(personCreditId, castCredits, crewCredits) { personCredit, cast, crew ->
+      if (personCredit != null) {
+        PersonCombinedCreditsEntity(
+          id = id,
+          cast = cast,
+          crew = crew,
+        )
+      } else {
+        null
+      }
+    }
+  }
+
+  private fun fetchPersonCredits(id: Long): Flow<PersonCreditsEntity?> = database
     .personCreditsEntityQueries
     .fetchPersonCredits(id)
     .asFlow()
     .mapToOneOrNull(context = dispatcher)
 
-  override fun fetchPersonCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
+  private fun fetchPersonCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
     .personCastCreditEntityQueries
     .fetchPersonCastCredit(id)
     .asFlow()
@@ -69,7 +88,7 @@ class ProdPersonDao @Inject constructor(
     .asFlow()
     .mapToList(context = dispatcher)
 
-  override fun fetchPersonCrewCredits(id: Long): Flow<List<PersonCrewCreditEntity>> = database
+  private fun fetchPersonCrewCredits(id: Long): Flow<List<PersonCrewCreditEntity>> = database
     .personCrewCreditEntityQueries
     .fetchPersonCrewCredit(id)
     .asFlow()

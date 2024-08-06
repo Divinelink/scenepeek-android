@@ -116,4 +116,11 @@ object PersonCrewCreditFactory {
     theIncredibleBurtWonderstone(),
     riot(),
   )
+
+  fun sortedByDate() = listOf(
+    riot(),
+    theIncredibleBurtWonderstone(),
+    getSmart(),
+    the40YearOldVirgin(),
+  )
 }

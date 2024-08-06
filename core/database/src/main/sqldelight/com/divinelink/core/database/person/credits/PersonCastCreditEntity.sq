@@ -1,5 +1,6 @@
 CREATE TABLE PersonCastCreditEntity (
-    id INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER NOT NULL,
+    creditId TEXT PRIMARY KEY  NOT NULL,
     personId INTEGER NOT NULL,
     adult INTEGER NOT NULL,
     backdropPath TEXT,
@@ -19,7 +20,6 @@ CREATE TABLE PersonCastCreditEntity (
     voteAverage REAL NOT NULL,
     voteCount INTEGER NOT NULL,
     character TEXT NOT NULL,
-    creditId TEXT NOT NULL,
     episodeCount INTEGER,
     mediaType TEXT NOT NULL,
     FOREIGN KEY(id) REFERENCES PersonCreditsEntity(id)

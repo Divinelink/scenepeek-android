@@ -2,7 +2,6 @@ package com.divinelink.core.database.person.dao
 
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
-import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
@@ -70,37 +69,52 @@ class ProdPersonDaoTest {
   }
 
   @Test
-  fun `test fetch person credits by id`() = runTest {
+  fun `test fetch person combined credits by id without initial credits`() = runTest {
     val person = PersonEntityFactory.steveCarell()
+    val cast = PersonCastCreditEntityFactory.despicableMe()
+    val crew = PersonCrewCreditEntityFactory.riot()
 
     with(dao) {
-      fetchPersonCredits(id = person.id).test {
+      fetchPersonCombinedCredits(id = person.id).test {
         assertThat(awaitItem()).isNull()
         expectNoEvents()
 
         insertPersonCredits(id = person.id)
+        insertPersonCastCredits(listOf(cast))
+        insertPersonCrewCredits(listOf(crew))
 
-        val result = awaitItem()
-        assertThat(result).isNotNull()
-        assertThat(result?.id).isEqualTo(person.id)
-        assertThat(result?.insertedAt).isEqualTo(
-          ClockFactory.augustFirst2021().currentEpochSeconds(),
-        )
+        val firstEmission = awaitItem()
+        assertThat(firstEmission).isNotNull()
+        assertThat(firstEmission?.id).isEqualTo(person.id)
+
+        assertThat(awaitItem()?.cast).containsExactly(cast)
+        assertThat(awaitItem()?.crew).containsExactly(crew)
         expectNoEvents()
       }
     }
   }
 
   @Test
-  fun `test insert and fetch person cast credits by id are sorted by date`() = runTest {
+  fun `test fetch person combined credits are sorted by date`() = runTest {
     val person = PersonEntityFactory.steveCarell()
-
     val cast = PersonCastCreditEntityFactory.all()
-    dao.insertPersonCastCredits(cast)
+    val crew = PersonCrewCreditEntityFactory.all()
 
     with(dao) {
-      fetchPersonCastCredits(id = person.id).test {
-        assertThat(awaitItem()).isEqualTo(PersonCastCreditEntityFactory.sortedByDate())
+      insertPersonCredits(id = person.id)
+      insertPersonCastCredits(cast)
+      insertPersonCrewCredits(crew)
+
+      fetchPersonCombinedCredits(id = person.id).test {
+        val result = awaitItem()
+        assertThat(result).isNotNull()
+        assertThat(result?.id).isEqualTo(person.id)
+        assertThat(result?.cast).isEqualTo(PersonCastCreditEntityFactory.sortedByDate())
+        assertThat(result?.crew).isEqualTo(PersonCrewCreditEntityFactory.sortedByDate())
+
+        assertThat(result?.cast).isNotEqualTo(cast)
+        assertThat(result?.crew).isNotEqualTo(crew)
+
         expectNoEvents()
       }
     }
@@ -116,21 +130,6 @@ class ProdPersonDaoTest {
     with(dao) {
       fetchTopPopularCastCredits(id = person.id).test {
         assertThat(awaitItem()).isEqualTo(PersonCastCreditEntityFactory.sortedByPopularity())
-        expectNoEvents()
-      }
-    }
-  }
-
-  @Test
-  fun `test fetch person crew credits by id`() = runTest {
-    val person = PersonEntityFactory.steveCarell()
-
-    val crew = PersonCrewCreditEntityFactory.all()
-    dao.insertPersonCrewCredits(crew)
-
-    with(dao) {
-      fetchPersonCrewCredits(id = person.id).test {
-        assertThat(awaitItem()).isEqualTo(PersonCrewCreditEntityFactory.sortedByDate())
         expectNoEvents()
       }
     }
