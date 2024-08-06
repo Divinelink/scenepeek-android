@@ -1,7 +1,7 @@
 package com.divinelink.feature.details.person.ui
 
 import androidx.lifecycle.SavedStateHandle
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase

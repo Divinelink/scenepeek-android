@@ -74,18 +74,18 @@ fun PersonItem(
         )
         when (person.role) {
           PersonRole.Creator -> TODO()
-          is PersonRole.Crew -> {
-            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
-              val job = (person.role as PersonRole.Crew).job
-              val totalEpisodes = (person.role as PersonRole.Crew).totalEpisodes?.toInt()
+          is PersonRole.Crew,
+          is PersonRole.MovieCrew,
+          -> Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
+            val job = (person.role as PersonRole.Crew).job
+            val totalEpisodes = (person.role as PersonRole.Crew).totalEpisodes?.toInt()
 
-              val jobText = buildPersonSubHeader(mapOf(job to totalEpisodes))
+            val jobText = buildPersonSubHeader(mapOf(job to totalEpisodes))
 
-              Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = jobText,
-              )
-            }
+            Text(
+              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
+              text = jobText,
+            )
           }
           PersonRole.Director -> TODO()
           is PersonRole.MovieActor -> TODO()

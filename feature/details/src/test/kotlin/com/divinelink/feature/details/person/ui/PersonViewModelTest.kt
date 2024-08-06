@@ -1,6 +1,6 @@
 package com.divinelink.feature.details.person.ui
 
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState

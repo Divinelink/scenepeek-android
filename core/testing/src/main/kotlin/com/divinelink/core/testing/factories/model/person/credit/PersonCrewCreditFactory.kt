@@ -1,13 +1,15 @@
-package com.divinelink.core.testing.factories.entity.person.credits
+package com.divinelink.core.testing.factories.model.person.credit
 
-import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.credits.PersonMovieCrewCredit
+import com.divinelink.core.model.person.credits.PersonTVCrewCredit
 
-object PersonCrewCreditEntityFactory {
+object PersonCrewCreditFactory {
 
-  fun the40YearOldVirgin(): PersonCrewCreditEntity = PersonCrewCreditEntity(
-    adult = 0,
+  fun the40YearOldVirgin(): PersonMovieCrewCredit = PersonMovieCrewCredit(
+    adult = false,
     backdropPath = "/8GWECkJcBsdReaotUFbl96gAngj.jpg",
-    genreIds = "35, 10749",
+    genreIds = listOf(35, 10749),
     id = 6957,
     originalLanguage = "en",
     originalTitle = "The 40 Year Old Virgin",
@@ -23,25 +25,18 @@ object PersonCrewCreditEntityFactory {
     posterPath = "/mVeoqL37gzhMXQVpONi9DGOQ3tZ.jpg",
     releaseDate = "2005-08-11",
     title = "The 40 Year Old Virgin",
-    video = 0,
     voteAverage = 6.402,
     voteCount = 6545,
-    personId = 4495,
-    originalName = null,
-    firstAirDate = null,
     creditId = "52fe446ac3a36847f8094c49",
     department = "Writing",
     job = "Screenplay",
-    episodeCount = null,
-    mediaType = "movie",
-    originCountry = null,
-    name = null,
+    mediaType = MediaType.MOVIE,
   )
 
-  fun getSmart(): PersonCrewCreditEntity = PersonCrewCreditEntity(
-    adult = 0,
+  fun getSmart(): PersonMovieCrewCredit = PersonMovieCrewCredit(
+    adult = false,
     backdropPath = "/u0yaNgikY92zkI0t3fiEGZP3UWq.jpg",
-    genreIds = "28, 35, 53",
+    genreIds = listOf(28, 35, 53),
     id = 11665,
     originalLanguage = "en",
     originalTitle = "Get Smart",
@@ -56,25 +51,18 @@ object PersonCrewCreditEntityFactory {
     posterPath = "/sZUjbtUS8qxXp4mj90evnqPJqX7.jpg",
     releaseDate = "2008-06-19",
     title = "Get Smart",
-    video = 0,
     voteAverage = 6.191,
     voteCount = 3484,
-    personId = 4495,
-    originalName = null,
-    firstAirDate = null,
     creditId = "52fe44749251416c750355d3",
     department = "Production",
     job = "Executive Producer",
-    episodeCount = null,
-    mediaType = "movie",
-    originCountry = null,
-    name = null,
+    mediaType = MediaType.MOVIE,
   )
 
-  fun theIncredibleBurtWonderstone(): PersonCrewCreditEntity = PersonCrewCreditEntity(
-    adult = 0,
+  fun theIncredibleBurtWonderstone(): PersonMovieCrewCredit = PersonMovieCrewCredit(
+    adult = false,
     backdropPath = "/1Zoti1xJRgKMCuNKnsYLzTyNOOH.jpg",
-    genreIds = "35",
+    genreIds = listOf(35),
     id = 124459,
     originalLanguage = "en",
     originalTitle = "The Incredible Burt Wonderstone",
@@ -85,25 +73,18 @@ object PersonCrewCreditEntityFactory {
     posterPath = "/Bl95sg5Ljo3Hu9SSL0JOvLerLh.jpg",
     releaseDate = "2013-03-14",
     title = "The Incredible Burt Wonderstone",
-    video = 0,
     voteAverage = 5.675,
     voteCount = 1389,
-    personId = 4495,
-    originalName = null,
-    firstAirDate = null,
     creditId = "5640b22e925141705c00145f",
     department = "Production",
     job = "Producer",
-    episodeCount = null,
-    mediaType = "movie",
-    originCountry = null,
-    name = null,
+    mediaType = MediaType.MOVIE,
   )
 
-  fun riot() = PersonCrewCreditEntity(
-    adult = 0,
+  fun riot(): PersonTVCrewCredit = PersonTVCrewCredit(
+    adult = false,
     backdropPath = null,
-    genreIds = "35",
+    genreIds = listOf(35),
     id = 60734,
     originalLanguage = "en",
     originalName = "Riot",
@@ -125,13 +106,8 @@ object PersonCrewCreditEntityFactory {
     department = "Production",
     job = "Executive Producer",
     episodeCount = 4,
-    mediaType = "tv",
-    originCountry = "",
-    personId = 4495,
-    title = null,
-    video = null,
-    releaseDate = null,
-    originalTitle = null,
+    mediaType = MediaType.TV,
+    originCountry = emptyList(),
   )
 
   fun all() = listOf(
@@ -139,12 +115,5 @@ object PersonCrewCreditEntityFactory {
     getSmart(),
     theIncredibleBurtWonderstone(),
     riot(),
-  )
-
-  fun sortedByDate() = listOf(
-    riot(),
-    theIncredibleBurtWonderstone(),
-    getSmart(),
-    the40YearOldVirgin(),
   )
 }

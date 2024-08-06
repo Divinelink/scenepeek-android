@@ -18,5 +18,7 @@ enum class MediaType(val value: String) {
       PERSON.value -> PERSON
       else -> UNKNOWN
     }
+
+    fun isMedia(type: String) = from(type) != UNKNOWN && from(type) != PERSON
   }
 }

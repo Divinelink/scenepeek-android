@@ -1,4 +1,4 @@
-package com.divinelink.core.data.details.person.model
+package com.divinelink.core.data.person.details.model
 
 import com.divinelink.core.model.details.person.PersonDetails
 

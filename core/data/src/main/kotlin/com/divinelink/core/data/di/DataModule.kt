@@ -2,8 +2,8 @@ package com.divinelink.core.data.di
 
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.account.ProdAccountRepository
-import com.divinelink.core.data.details.person.repository.PersonRepository
-import com.divinelink.core.data.details.person.repository.ProdPersonRepository
+import com.divinelink.core.data.person.repository.PersonRepository
+import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import dagger.Binds

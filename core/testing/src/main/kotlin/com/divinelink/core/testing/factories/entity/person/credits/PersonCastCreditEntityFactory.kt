@@ -33,6 +33,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    originCountry = null,
   )
 
   fun littleMissSunshine(): PersonCastCreditEntity = PersonCastCreditEntity(
@@ -60,6 +61,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    originCountry = null,
   )
 
   fun despicableMe(): PersonCastCreditEntity = PersonCastCreditEntity(
@@ -88,6 +90,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    originCountry = null,
   )
 
   fun theOffice(): PersonCastCreditEntity = PersonCastCreditEntity(
@@ -114,6 +117,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = "2005-03-24",
     name = "The Office",
     episodeCount = 140,
+    originCountry = "US",
   )
 
   fun all() = listOf(

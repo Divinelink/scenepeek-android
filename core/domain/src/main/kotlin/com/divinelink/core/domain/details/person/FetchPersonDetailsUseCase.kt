@@ -3,8 +3,8 @@ package com.divinelink.core.domain.details.person
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
-import com.divinelink.core.data.details.person.repository.PersonRepository
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.data.person.repository.PersonRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

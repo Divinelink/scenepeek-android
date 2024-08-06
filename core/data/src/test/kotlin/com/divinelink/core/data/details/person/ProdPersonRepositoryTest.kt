@@ -1,8 +1,8 @@
 package com.divinelink.core.data.details.person
 
 import app.cash.turbine.test
-import com.divinelink.core.data.details.person.mapper.map
-import com.divinelink.core.data.details.person.repository.ProdPersonRepository
+import com.divinelink.core.data.person.details.mapper.map
+import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.testing.MainDispatcherRule
@@ -32,6 +32,7 @@ class ProdPersonRepositoryTest {
   @BeforeTest
   fun setUp() {
     dao = ProdPersonDao(
+      clock = ClockFactory.augustFifteenth2021(),
       database = TestDatabaseFactory.createInMemoryDatabase(),
       dispatcher = testDispatcher,
     )

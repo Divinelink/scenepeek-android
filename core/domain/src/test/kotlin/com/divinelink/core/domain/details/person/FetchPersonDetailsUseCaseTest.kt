@@ -1,7 +1,7 @@
 package com.divinelink.core.domain.details.person
 
 import app.cash.turbine.test
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.repository.TestPersonRepository

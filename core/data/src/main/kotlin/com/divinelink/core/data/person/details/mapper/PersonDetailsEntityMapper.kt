@@ -1,4 +1,4 @@
-package com.divinelink.core.data.details.person.mapper
+package com.divinelink.core.data.person.details.mapper
 
 import com.divinelink.core.database.person.PersonEntity
 import com.divinelink.core.model.credits.PersonRole

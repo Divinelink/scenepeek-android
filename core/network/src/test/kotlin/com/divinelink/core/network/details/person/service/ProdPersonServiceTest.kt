@@ -1,6 +1,6 @@
 package com.divinelink.core.network.details.person.service
 
-import com.divinelink.core.network.details.person.model.PersonCombinedCreditsApi
+import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import com.divinelink.core.testing.factories.api.details.person.PersonCastCreditApiFactory
 import com.divinelink.core.testing.factories.api.details.person.PersonCrewCreditApiFactory
@@ -38,7 +38,7 @@ class ProdPersonServiceTest {
 
   @Test
   fun `test fetch person combined credits`() = runTest {
-    testRestClient.mockGetResponse<PersonCombinedCreditsApi>(
+    testRestClient.mockGetResponse<PersonCreditsApi>(
       url = "https://api.themoviedb.org/3/person/4495/combined_credits",
       jsonFileName = "person-combined-credits.json",
     )

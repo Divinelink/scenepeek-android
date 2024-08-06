@@ -6,7 +6,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator

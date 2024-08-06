@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.repository
 
-import com.divinelink.core.data.details.person.repository.PersonRepository
+import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.details.person.PersonDetails
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any

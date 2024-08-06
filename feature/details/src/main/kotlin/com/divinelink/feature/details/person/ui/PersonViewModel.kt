@@ -3,7 +3,7 @@ package com.divinelink.feature.details.person.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.data.details.person.model.PersonDetailsResult
+import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination

@@ -1,8 +1,8 @@
 package com.divinelink.core.network.details.person.mapper
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.data.details.person.mapper.map
-import com.divinelink.core.data.details.person.mapper.mapToEntity
+import com.divinelink.core.data.person.details.mapper.map
+import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
