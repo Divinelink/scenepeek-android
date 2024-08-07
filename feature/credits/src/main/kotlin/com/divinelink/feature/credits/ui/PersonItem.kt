@@ -74,9 +74,9 @@ fun PersonItem(
         )
         when (person.role) {
           PersonRole.Creator -> TODO()
-          is PersonRole.Crew,
-          is PersonRole.MovieCrew,
-          -> Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
+          is PersonRole.Crew -> Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          ) {
             val job = (person.role as PersonRole.Crew).job
             val totalEpisodes = (person.role as PersonRole.Crew).totalEpisodes?.toInt()
 

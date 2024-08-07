@@ -33,7 +33,7 @@ data class PersonMovieCrewCredit(
     overview = overview,
     isFavorite = null,
   ),
-  role = PersonRole.MovieCrew(
+  role = PersonRole.Crew(
     job = job,
     creditId = creditId,
     department = department,

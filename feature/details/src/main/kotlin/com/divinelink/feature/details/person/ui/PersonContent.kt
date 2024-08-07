@@ -16,6 +16,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
+import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
 
 @Composable
@@ -24,6 +25,8 @@ fun PersonContent(
   uiState: PersonUiState.Success,
   onMediaClick: (MediaItem) -> Unit,
 ) {
+  uiState.personDetails as PersonDetailsUiState.Visible
+
   LazyColumn(
     modifier = modifier
       .fillMaxSize()
@@ -33,12 +36,12 @@ fun PersonContent(
       Text(
         modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_12),
         style = MaterialTheme.typography.displaySmall,
-        text = uiState.personDetails.person.name,
+        text = uiState.personDetails.personDetails.person.name,
       )
     }
 
     item {
-      PersonalDetails(uiState.personDetails)
+      PersonalDetails(uiState.personDetails.personDetails)
     }
 
     if (uiState.credits is PersonCreditsUiState.Visible) {

@@ -36,24 +36,13 @@ class PersonViewModel @Inject constructor(
         result.fold(
           onSuccess = { detailsResult ->
             when (detailsResult) {
-              is PersonDetailsResult.DetailsSuccess -> _uiState.update {
-                PersonUiState.Success(personDetails = detailsResult.personDetails)
+              is PersonDetailsResult.DetailsSuccess -> _uiState.update { uiState ->
+                uiState.updatePersonDetails(detailsResult.personDetails)
               }
 
               is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
-                when (uiState) {
-                  is PersonUiState.Success -> uiState.copy(
-                    credits = PersonCreditsUiState.Visible(
-                      knownFor = detailsResult.credits.cast
-                        .sortedByDescending { it.popularity }
-                        .distinctBy { it.id } // TODO Remove this and make actor has multiple roles
-                        .take(10),
-                    ),
-                  )
-                  else -> uiState
-                }
+                uiState.updateCredits(knownFor = detailsResult.knownForCredits)
               }
-
               is PersonDetailsResult.DetailsFailure -> _uiState.update { PersonUiState.Error }
             }
           },

@@ -48,11 +48,14 @@ fun PersonScreen(
 
   AppScaffold(
     topBar = { scrollBehaviour, topAppBarColors ->
-      if (uiState is PersonUiState.Success) {
+      if (
+        uiState is PersonUiState.Success &&
+        uiState.personDetails is PersonDetailsUiState.Visible
+      ) {
         AppTopAppBar(
           scrollBehaviour = scrollBehaviour,
           topAppBarColors = topAppBarColors,
-          text = UIText.StringText(uiState.personDetails.person.name),
+          text = UIText.StringText(uiState.personDetails.personDetails.person.name),
           onNavigateUp = navigator::navigateUp,
           actions = {
             IconButton(
@@ -63,7 +66,7 @@ fun PersonScreen(
             }
 
             PersonDropdownMenu(
-              person = uiState.personDetails.person,
+              person = uiState.personDetails.personDetails.person,
               expanded = showDropdownMenu,
               onDismissDropdown = { showDropdownMenu = false },
             )
@@ -77,21 +80,27 @@ fun PersonScreen(
         // TODO Add error content
       }
       PersonUiState.Loading -> LoadingContent()
-      is PersonUiState.Success -> PersonContent(
-        modifier = Modifier.padding(paddingValues),
-        uiState = uiState,
-        onMediaClick = {
-          navigator.navigate(
-            DetailsScreenDestination(
-              DetailsNavArguments(
-                id = it.id,
-                mediaType = it.mediaType.value,
-                isFavorite = null,
-              ),
-            ),
+      is PersonUiState.Success -> {
+        if (uiState.personDetails is PersonDetailsUiState.Loading) {
+          LoadingContent()
+        } else {
+          PersonContent(
+            modifier = Modifier.padding(paddingValues),
+            uiState = uiState,
+            onMediaClick = {
+              navigator.navigate(
+                DetailsScreenDestination(
+                  DetailsNavArguments(
+                    id = it.id,
+                    mediaType = it.mediaType.value,
+                    isFavorite = null,
+                  ),
+                ),
+              )
+            },
           )
-        },
-      )
+        }
+      }
     }
   }
 }

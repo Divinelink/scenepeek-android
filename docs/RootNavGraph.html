@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Watchlist/root Navigation Graph</title>
+    <title>Featurecredits/root Navigation Graph</title>
 </head>
 <body>
 <pre id='scene' class="mermaid">
 ---
-title: Watchlist/root Navigation Graph
+title: Featurecredits/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-watchlist/root(["RootGraph"]) -- "start" --- watchlist/watchlist(["WatchlistGraph"])
-watchlist/watchlist(["WatchlistGraph"]) -- "start" --- watchlist/watchlist_screen("WatchlistScreen")
+featurecredits/root(["RootGraph"]) -- "start" --- featurecredits/credits(["CreditsGraph"])
+featurecredits/credits(["CreditsGraph"]) -- "start" --- featurecredits/credits_screen("CreditsScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class watchlist/watchlist_screen destination;
+class featurecredits/credits_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class watchlist/watchlist,watchlist/root,watchlist/watchlist navgraph;
+class featurecredits/credits,featurecredits/root,featurecredits/credits navgraph;
 
 </pre>
 <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
