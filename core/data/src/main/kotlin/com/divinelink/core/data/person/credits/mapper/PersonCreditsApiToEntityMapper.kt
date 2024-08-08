@@ -32,6 +32,7 @@ fun PersonCreditsApi.toEntityCast() = cast
       creditId = it.creditId,
       episodeCount = it.episodeCount?.toLong(),
       mediaType = it.mediaType,
+      creditOrder = it.order?.toLong(),
     )
   }
 

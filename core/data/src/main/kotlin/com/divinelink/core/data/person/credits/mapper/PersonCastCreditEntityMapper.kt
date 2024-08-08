@@ -44,5 +44,6 @@ fun PersonCastCreditEntity.map() = when (MediaType.from(mediaType)) {
     creditId = creditId,
     video = video?.toInt() == 1,
     character = character,
+    order = creditOrder?.toInt() ?: Int.MAX_VALUE,
   )
 }

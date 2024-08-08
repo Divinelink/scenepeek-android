@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -41,20 +42,22 @@ fun KnownForSection(
       text = stringResource(id = R.string.feature_details_known_for_section),
     )
 
-    LazyRow(
-      modifier = Modifier.testTag(SIMILAR_MOVIES_SCROLLABLE_LIST),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = ListPaddingValues,
-    ) {
-      items(
-        items = list.map { it.mediaItem },
-        key = { it.id },
-      ) { media ->
-        MediaItem(
-          media = media,
-          onMediaItemClick = onMediaClick,
-          onLikeMediaClick = { /* Do nothing */ },
-        )
+    key(list) {
+      LazyRow(
+        modifier = Modifier.testTag(SIMILAR_MOVIES_SCROLLABLE_LIST),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = ListPaddingValues,
+      ) {
+        items(
+          items = list.map { it.mediaItem },
+          key = { it.id },
+        ) { media ->
+          MediaItem(
+            media = media,
+            onMediaItemClick = onMediaClick,
+            onLikeMediaClick = { /* Do nothing */ },
+          )
+        }
       }
     }
   }

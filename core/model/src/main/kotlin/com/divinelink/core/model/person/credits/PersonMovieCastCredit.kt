@@ -21,6 +21,7 @@ data class PersonMovieCastCredit(
   override val voteCount: Long,
   val character: String,
   val mediaType: MediaType,
+  val order: Int?,
   override val creditId: String,
 ) : PersonCredit(
   id = id,
@@ -33,5 +34,8 @@ data class PersonMovieCastCredit(
     overview = overview,
     isFavorite = null,
   ),
-  role = PersonRole.MovieActor(character),
+  role = PersonRole.MovieActor(
+    character = character,
+    order = order,
+  ),
 )

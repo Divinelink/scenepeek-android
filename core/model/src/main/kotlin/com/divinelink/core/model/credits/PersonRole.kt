@@ -13,7 +13,10 @@ sealed class PersonRole(val title: String?) {
   ) : PersonRole(character)
 
   @Serializable
-  data class MovieActor(val character: String?) : PersonRole(character)
+  data class MovieActor(
+    val character: String?,
+    val order: Int? = Int.MAX_VALUE,
+  ) : PersonRole(character)
 
   @Serializable
   data class Crew(

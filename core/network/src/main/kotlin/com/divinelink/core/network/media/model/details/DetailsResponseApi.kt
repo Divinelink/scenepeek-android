@@ -141,7 +141,10 @@ private fun CastApi.toPerson(): Person = Person(
   profilePath = this.profilePath,
   role = when (this) {
     is CastApi.Movie -> {
-      PersonRole.MovieActor(this.character)
+      PersonRole.MovieActor(
+        character = this.character,
+        order = this.order,
+      )
     }
     is CastApi.TV -> PersonRole.Unknown
   },

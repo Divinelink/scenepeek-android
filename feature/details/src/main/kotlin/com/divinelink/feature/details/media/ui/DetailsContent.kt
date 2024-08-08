@@ -622,6 +622,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             profilePath = "AllWorkAndNoPlay.jpg",
             role = PersonRole.MovieActor(
               character = "Here's Johnny!",
+              order = 0,
             ),
           ),
         ),
@@ -671,6 +672,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             profilePath = "AllWorkAndNoPlay.jpg",
             role = PersonRole.MovieActor(
               character = "Here's Johnny!",
+              order = 0,
             ),
           ),
           Person(
@@ -679,6 +681,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             profilePath = "Cuckoo.jpg",
             role = PersonRole.MovieActor(
               character = "McMurphy",
+              order = 0,
             ),
           ),
           Person(
@@ -687,6 +690,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             profilePath = "AllWorkAndNoPlay.jpg",
             role = PersonRole.MovieActor(
               character = "HelloJohnny",
+              order = 0,
             ),
           ),
           Person(
@@ -695,6 +699,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             profilePath = "Cuckoo.jpg",
             role = PersonRole.MovieActor(
               character = "McMurphy",
+              order = 0,
             ),
           ),
         ),

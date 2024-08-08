@@ -48,6 +48,7 @@ CREATE TABLE PersonCrewCreditEntity (
     mediaType TEXT NOT NULL,
     -- Movie Properties
     title TEXT,
+    creditOrder INTEGER,
     video INTEGER,
     releaseDate TEXT,
     originalTitle TEXT,

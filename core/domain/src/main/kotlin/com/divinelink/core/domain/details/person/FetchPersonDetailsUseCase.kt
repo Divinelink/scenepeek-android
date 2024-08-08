@@ -78,14 +78,31 @@ class FetchPersonDetailsUseCase @Inject constructor(
     }
   }
 
+  private fun calculateMovieScore(media: PersonCredit): Double {
+    val order = (media.role as? PersonRole.MovieActor)?.order ?: Int.MAX_VALUE
+    return (media.voteCount / (order + 1)) * (0.04 * media.popularity)
+  }
+
+  private fun calculateScore(media: PersonCredit) = when (media.role) {
+    is PersonRole.MovieActor -> calculateMovieScore(media)
+    is PersonRole.SeriesActor -> calculateTvScore(media)
+    else -> 1.0
+  }
+
+  private fun calculateTvScore(media: PersonCredit): Double {
+    val episodeCount = (media.role as? PersonRole.SeriesActor)?.totalEpisodes ?: 0
+    return media.voteCount * episodeCount / (0.1 * media.popularity)
+  }
+
   private fun calculateKnownForCredits(
     department: String,
     result: Result<PersonCombinedCredits>,
   ): List<PersonCredit> = if (department == KnownForDepartment.Acting.value) {
     result.data.cast
-      .sortedByDescending { it.popularity }
+      .sortedByDescending { calculateScore(it) }
       .distinctBy { it.id }
       .take(10)
+      .sortedByDescending { it.voteAverage }
   } else {
     result.data.crew
       .filter { (it.role as? PersonRole.Crew)?.department == department }
