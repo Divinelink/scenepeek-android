@@ -11,6 +11,7 @@ object ActorFactory {
     profilePath = "jack_nicholson.jpg",
     role = PersonRole.MovieActor(
       character = "Here's Johnny!",
+      order = 0,
     ),
   )
 
@@ -20,6 +21,7 @@ object ActorFactory {
     profilePath = "Aaron_paul.jpg",
     role = PersonRole.MovieActor(
       character = "Jessee Pinkman",
+      order = 1,
     ),
   )
 

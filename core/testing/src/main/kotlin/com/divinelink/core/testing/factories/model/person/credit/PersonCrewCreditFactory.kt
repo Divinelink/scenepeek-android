@@ -123,4 +123,10 @@ object PersonCrewCreditFactory {
     getSmart(),
     the40YearOldVirgin(),
   )
+
+  fun productionSortedByPopularity() = listOf(
+    riot(),
+    getSmart(),
+    theIncredibleBurtWonderstone(),
+  )
 }

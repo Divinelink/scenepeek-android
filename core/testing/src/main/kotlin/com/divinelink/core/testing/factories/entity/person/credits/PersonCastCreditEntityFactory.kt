@@ -33,6 +33,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    creditOrder = 6,
     originCountry = null,
   )
 
@@ -61,6 +62,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    creditOrder = 2,
     originCountry = null,
   )
 
@@ -90,6 +92,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = null,
     name = null,
     episodeCount = null,
+    creditOrder = 0,
     originCountry = null,
   )
 
@@ -117,6 +120,7 @@ object PersonCastCreditEntityFactory {
     firstAirDate = "2005-03-24",
     name = "The Office",
     episodeCount = 140,
+    creditOrder = null,
     originCountry = "US",
   )
 

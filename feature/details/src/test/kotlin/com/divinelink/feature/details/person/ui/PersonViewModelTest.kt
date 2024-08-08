@@ -36,7 +36,9 @@ class PersonViewModelTest {
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
       .buildViewModel()
-      .assertUiState(PersonUiState.Success(PersonDetailsFactory.steveCarell()))
+      .assertUiState(
+        PersonUiState.Success(PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell())),
+      )
   }
 
   @Test

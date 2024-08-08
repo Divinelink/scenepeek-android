@@ -11,7 +11,6 @@ import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -27,54 +26,52 @@ class FetchPersonDetailsUseCase @Inject constructor(
 ) : FlowUseCase<Long, PersonDetailsResult>(dispatcher) {
 
   override fun execute(parameters: Long): Flow<Result<PersonDetailsResult>> = channelFlow {
-    coroutineScope {
-      val personDetailsResult = async(dispatcher) {
-        repository.fetchPersonDetails(parameters)
-          .catch {
-            Timber.e(it)
-            emit(Result.failure(PersonDetailsResult.DetailsFailure))
-          }
-          .map { result ->
-            result.fold(
-              onFailure = {
-                Timber.e(it)
-                Result.failure(PersonDetailsResult.DetailsFailure)
-              },
-              onSuccess = { Result.success(PersonDetailsResult.DetailsSuccess(it)) },
-            )
-          }
-          .first()
-      }
+    val personDetailsResult = async(dispatcher) {
+      repository.fetchPersonDetails(parameters)
+        .catch {
+          Timber.e(it)
+          emit(Result.failure(PersonDetailsResult.DetailsFailure))
+        }
+        .map { result ->
+          result.fold(
+            onFailure = {
+              Timber.e(it)
+              Result.failure(PersonDetailsResult.DetailsFailure)
+            },
+            onSuccess = { Result.success(PersonDetailsResult.DetailsSuccess(it)) },
+          )
+        }
+        .first()
+    }
 
-      send(personDetailsResult.await())
+    send(personDetailsResult.await())
 
-      launch(dispatcher) {
-        val knownForDepartment = personDetailsResult.await().data.personDetails.knownForDepartment
-          ?: KnownForDepartment.Acting.value
+    launch(dispatcher) {
+      val knownForDepartment = personDetailsResult.await().data.personDetails.knownForDepartment
+        ?: KnownForDepartment.Acting.value
 
-        repository.fetchPersonCredits(parameters)
-          .catch { Timber.e(it) }
-          .collect { result ->
-            result.fold(
-              onFailure = { Timber.e(it) },
-              onSuccess = {
-                val knownForCredits = calculateKnownForCredits(
-                  department = knownForDepartment,
-                  result = result,
-                )
+      repository.fetchPersonCredits(parameters)
+        .catch { Timber.e(it) }
+        .collect { result ->
+          result.fold(
+            onFailure = { Timber.e(it) },
+            onSuccess = {
+              val knownForCredits = calculateKnownForCredits(
+                department = knownForDepartment,
+                result = result,
+              )
 
-                send(
-                  Result.success(
-                    PersonDetailsResult.CreditsSuccess(
-                      credits = result.data,
-                      knownForCredits = knownForCredits,
-                    ),
+              send(
+                Result.success(
+                  PersonDetailsResult.CreditsSuccess(
+                    credits = result.data,
+                    knownForCredits = knownForCredits,
                   ),
-                )
-              },
-            )
-          }
-      }
+                ),
+              )
+            },
+          )
+        }
     }
   }
 

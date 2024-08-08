@@ -29,6 +29,7 @@ object PersonCastCreditFactory {
     voteCount = 10485,
     creditId = "52fe4236c3a36847f800c65f",
     video = false,
+    order = 6,
     character = "Evan Baxter",
   )
 
@@ -51,6 +52,7 @@ object PersonCastCreditFactory {
     voteCount = 6948,
     creditId = "52fe4274c3a36847f80200d3",
     video = false,
+    order = 2,
     character = "Frank Ginsberg",
   )
 
@@ -74,6 +76,7 @@ object PersonCastCreditFactory {
     voteCount = 14804,
     creditId = "52fe43e2c3a368484e003e77",
     video = false,
+    order = 0,
     character = "Gru (voice)",
   )
 
@@ -110,6 +113,13 @@ object PersonCastCreditFactory {
     despicableMe(),
     littleMissSunshine(),
     theOffice(),
+    bruceAlmighty(),
+  )
+
+  fun knownFor() = listOf(
+    theOffice(),
+    littleMissSunshine(),
+    despicableMe(),
     bruceAlmighty(),
   )
 }
