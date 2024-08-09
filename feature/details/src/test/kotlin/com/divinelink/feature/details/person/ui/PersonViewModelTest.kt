@@ -4,7 +4,13 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
+import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
+import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
+import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -50,5 +56,118 @@ class PersonViewModelTest {
       .mockFetchPersonDetailsUseCaseSuccess(PersonDetailsResult.DetailsFailure)
       .buildViewModel()
       .assertUiState(PersonUiState.Error)
+  }
+
+  @Test
+  fun `test updatePersonDetails when uiState is already success`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    robot
+      .withNavArgs(PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id))
+      .setupChannelForUseCase(channel)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          launch {
+            // Send the first emission
+            channel.send(
+              Result.success(
+                PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+              ),
+            )
+
+            // Send the second emission
+            channel.send(
+              Result.success(
+                PersonDetailsResult.DetailsSuccess(
+                  PersonDetailsFactory.steveCarell().copy(
+                    person = PersonDetailsFactory.steveCarell().person.copy(name = "Michael Scarn"),
+                  ),
+                ),
+              ),
+            )
+          }
+        },
+        uiStates = listOf(
+          PersonUiState.Loading,
+          PersonUiState.Success(
+            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+          ),
+          PersonUiState.Success(
+            personDetails = PersonDetailsUiState.Visible(
+              PersonDetailsFactory.steveCarell().copy(
+                person = PersonDetailsFactory.steveCarell().person.copy(name = "Michael Scarn"),
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test updateCredits when uiState is not yet success`() = runTest {
+    robot
+      .withNavArgs(
+        PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id),
+      )
+      .mockFetchPersonDetailsUseCaseSuccess(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = PersonCastCreditFactory.knownFor(),
+          credits = PersonCombinedCreditsFactory.all(),
+        ),
+      )
+      .buildViewModel()
+      .assertUiState(
+        PersonUiState.Success(
+          credits = PersonCreditsUiState.Visible(
+            knownFor = PersonCastCreditFactory.knownFor(),
+          ),
+          personDetails = PersonDetailsUiState.Loading,
+        ),
+      )
+  }
+
+  @Test
+  fun `test updateCredits when uiState is already success`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    robot
+      .withNavArgs(PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id))
+      .setupChannelForUseCase(channel)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          launch {
+            // Send the first emission
+            channel.send(
+              Result.success(
+                PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+              ),
+            )
+
+            // Send the second emission
+            channel.send(
+              Result.success(
+                PersonDetailsResult.CreditsSuccess(
+                  knownForCredits = PersonCastCreditFactory.knownFor(),
+                  credits = PersonCombinedCreditsFactory.all(),
+                ),
+              ),
+            )
+          }
+        },
+        uiStates = listOf(
+          PersonUiState.Loading,
+          PersonUiState.Success(
+            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+          ),
+          PersonUiState.Success(
+            credits = PersonCreditsUiState.Visible(
+              knownFor = PersonCastCreditFactory.knownFor(),
+            ),
+            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+          ),
+        ),
+      )
   }
 }

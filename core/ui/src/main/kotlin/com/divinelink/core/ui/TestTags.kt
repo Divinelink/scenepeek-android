@@ -19,6 +19,8 @@ object TestTags {
   const val LAZY_COLUMN = "Lazy Column"
 
   object Details {
+    const val SIMILAR_MOVIES_LIST = "Details Similar Movies Lazy List"
+
     const val YOUR_RATING = "Details Your Rating"
     const val RATE_DIALOG = "Details Rate Dialog"
     const val RATE_SLIDER = "Details Rate Slider"
@@ -27,6 +29,9 @@ object TestTags {
   object Person {
     const val PERSONAL_DETAILS = "Person Personal Details"
     const val CONTENT_LIST = "Person Details Lazy List"
+
+    const val KNOWN_FOR_SECTION = "Person Known For Section"
+    const val KNOWN_FOR_SECTION_LIST = "Person Known For Section Lazy List"
   }
 
   object Dialogs {

@@ -43,6 +43,7 @@ class PersonViewModel @Inject constructor(
               is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
                 uiState.updateCredits(knownFor = detailsResult.knownForCredits)
               }
+
               is PersonDetailsResult.DetailsFailure -> _uiState.update { PersonUiState.Error }
             }
           },

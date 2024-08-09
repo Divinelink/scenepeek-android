@@ -44,7 +44,7 @@ fun PersonContent(
       PersonalDetails(uiState.personDetails.personDetails)
     }
 
-    if (uiState.credits is PersonCreditsUiState.Visible) {
+    if (uiState.credits is PersonCreditsUiState.Visible && uiState.credits.knownFor.isNotEmpty()) {
       item {
         KnownForSection(
           list = uiState.credits.knownFor,

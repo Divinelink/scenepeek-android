@@ -14,15 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.credits.PersonCredit
-import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
-import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.feature.details.R
 
 @Composable
@@ -32,6 +29,7 @@ fun KnownForSection(
 ) {
   Column(
     modifier = Modifier
+      .testTag(TestTags.Person.KNOWN_FOR_SECTION)
       .padding(vertical = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
@@ -44,8 +42,8 @@ fun KnownForSection(
 
     key(list) {
       LazyRow(
-        modifier = Modifier.testTag(SIMILAR_MOVIES_SCROLLABLE_LIST),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.testTag(TestTags.Person.KNOWN_FOR_SECTION_LIST),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         contentPadding = ListPaddingValues,
       ) {
         items(
@@ -60,14 +58,5 @@ fun KnownForSection(
         }
       }
     }
-  }
-}
-
-@Previews
-@Composable
-private fun KnowForSectionPreview() {
-  AppTheme {
-//    KnowForSection(
-//    )
   }
 }
