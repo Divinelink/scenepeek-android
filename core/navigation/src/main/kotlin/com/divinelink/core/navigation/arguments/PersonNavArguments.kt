@@ -1,5 +1,6 @@
 package com.divinelink.core.navigation.arguments
 
+import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 
@@ -17,4 +18,13 @@ fun Person.map() = PersonNavArguments(
   name = name,
   profilePath = profilePath,
   gender = gender,
+)
+
+fun PersonNavArguments.map() = Person(
+  id = id,
+  knownForDepartment = knownForDepartment,
+  name = name ?: "",
+  profilePath = profilePath,
+  gender = gender ?: Gender.NOT_SET,
+  role = PersonRole.Unknown,
 )

@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
@@ -25,7 +24,7 @@ import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-fun PersonalDetails(personalDetails: PersonDetails) {
+fun PersonalDetails(data: PersonDetailsUiState.Data) {
   Row(
     modifier = Modifier
       .testTag(TestTags.Person.PERSONAL_DETAILS)
@@ -35,8 +34,8 @@ fun PersonalDetails(personalDetails: PersonDetails) {
   ) {
     MovieImage(
       modifier = Modifier.weight(1f),
-      path = personalDetails.person.profilePath,
-      errorPlaceHolder = if (personalDetails.person.gender == Gender.FEMALE) {
+      path = data.personDetails.person.profilePath,
+      errorPlaceHolder = if (data.personDetails.person.gender == Gender.FEMALE) {
         painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
       } else {
         painterResource(id = uiR.drawable.core_ui_ic_person_placeholder)
@@ -53,19 +52,19 @@ fun PersonalDetails(personalDetails: PersonDetails) {
         style = MaterialTheme.typography.titleMedium,
       )
 
-      personalDetails.toUiSections().forEach { section ->
+      data.personDetails.toUiSections().forEach { section ->
         PersonalInfoSection(section)
       }
     }
   }
 
-  val biography = if (personalDetails.biography.isNullOrBlank()) {
+  val biography = if (data.personDetails.biography.isNullOrBlank()) {
     stringResource(
       id = R.string.feature_details_person_blank_biography,
-      personalDetails.person.name,
+      data.personDetails.person.name,
     )
   } else {
-    personalDetails.biography!!
+    data.personDetails.biography!!
   }
 
   Column {

@@ -18,9 +18,9 @@ sealed interface PersonUiState {
 
 fun PersonUiState.updatePersonDetails(personDetails: PersonDetails): PersonUiState = when (this) {
   is PersonUiState.Success -> copy(
-    personDetails = PersonDetailsUiState.Visible(personDetails),
+    personDetails = PersonDetailsUiState.Data.Visible(personDetails),
   )
-  else -> PersonUiState.Success(personDetails = PersonDetailsUiState.Visible(personDetails))
+  else -> PersonUiState.Success(personDetails = PersonDetailsUiState.Data.Visible(personDetails))
 }
 
 fun PersonUiState.updateCredits(knownFor: List<PersonCredit>): PersonUiState = when (this) {

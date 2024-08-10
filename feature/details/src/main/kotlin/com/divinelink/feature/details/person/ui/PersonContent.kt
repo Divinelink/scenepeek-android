@@ -25,7 +25,7 @@ fun PersonContent(
   uiState: PersonUiState.Success,
   onMediaClick: (MediaItem) -> Unit,
 ) {
-  uiState.personDetails as PersonDetailsUiState.Visible
+  uiState.personDetails as PersonDetailsUiState.Data
 
   LazyColumn(
     modifier = modifier
@@ -41,7 +41,7 @@ fun PersonContent(
     }
 
     item {
-      PersonalDetails(uiState.personDetails.personDetails)
+      PersonalDetails(uiState.personDetails)
     }
 
     if (uiState.credits is PersonCreditsUiState.Visible && uiState.credits.knownFor.isNotEmpty()) {

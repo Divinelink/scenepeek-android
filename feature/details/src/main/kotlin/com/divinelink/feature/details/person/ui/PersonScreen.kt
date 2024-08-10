@@ -50,7 +50,7 @@ fun PersonScreen(
     topBar = { scrollBehaviour, topAppBarColors ->
       if (
         uiState is PersonUiState.Success &&
-        uiState.personDetails is PersonDetailsUiState.Visible
+        uiState.personDetails is PersonDetailsUiState.Data
       ) {
         AppTopAppBar(
           scrollBehaviour = scrollBehaviour,
