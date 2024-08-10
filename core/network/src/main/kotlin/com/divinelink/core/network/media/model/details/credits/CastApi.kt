@@ -11,11 +11,12 @@ sealed class CastApi {
   abstract val character: String
   abstract val order: Int
   abstract val knownForDepartment: String?
+  abstract val gender: Int
 
   @Serializable
   data class Movie(
     val adult: Boolean,
-    val gender: Int,
+    override val gender: Int,
     override val id: Long,
     @SerialName("cast_id") val castId: Int?,
     @SerialName("known_for_department") override val knownForDepartment: String,
@@ -31,7 +32,7 @@ sealed class CastApi {
   @Serializable
   data class TV(
     val adult: Boolean,
-    val gender: Int,
+    override val gender: Int,
     override val id: Long,
     @SerialName("known_for_department") override val knownForDepartment: String,
     override val name: String,

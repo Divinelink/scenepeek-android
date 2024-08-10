@@ -84,6 +84,7 @@ fun FlatMediaList(
             id = search.id.toLong(),
             name = search.name,
             profilePath = search.posterPath,
+            gender = search.gender,
             knownForDepartment = search.knownForDepartment,
             role = PersonRole.Unknown,
           ),

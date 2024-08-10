@@ -30,24 +30,29 @@ fun HomeScreen(
     onSearchMovies = viewModel::onSearchMovies,
     onClearClicked = viewModel::onClearClicked,
     onNavigateToDetails = { media ->
-      val destination = if (media is MediaItem.Media) {
-        val navArgs = DetailsNavArguments(
-          id = media.id,
-          mediaType = media.mediaType.value,
-          isFavorite = media.isFavorite,
-        )
-        DetailsScreenDestination(navArgs = navArgs)
-      } else if (media is MediaItem.Person) {
-        PersonScreenDestination(
-          navArgs = PersonNavArguments(
-            id = media.id.toLong(),
-            knownForDepartment = media.knownForDepartment,
-            name = media.name,
-            profilePath = media.profilePath,
-          ),
-        )
-      } else {
-        return@HomeContent
+      val destination = when (media) {
+        is MediaItem.Media -> {
+          val navArgs = DetailsNavArguments(
+            id = media.id,
+            mediaType = media.mediaType.value,
+            isFavorite = media.isFavorite,
+          )
+          DetailsScreenDestination(navArgs = navArgs)
+        }
+        is MediaItem.Person -> {
+          PersonScreenDestination(
+            navArgs = PersonNavArguments(
+              id = media.id.toLong(),
+              knownForDepartment = media.knownForDepartment,
+              name = media.name,
+              profilePath = media.profilePath,
+              gender = media.gender,
+            ),
+          )
+        }
+        else -> {
+          return@HomeContent
+        }
       }
       navigator.navigate(destination)
     },

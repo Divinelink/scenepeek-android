@@ -8,5 +8,6 @@ data class CastEntity(
   val knownForDepartment: String?,
   val totalEpisodeCount: Long,
   val character: String,
+  val gender: Long,
   val creditId: String,
 )

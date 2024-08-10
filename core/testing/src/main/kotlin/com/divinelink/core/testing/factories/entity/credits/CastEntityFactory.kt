@@ -11,6 +11,7 @@ object CastEntityFactory {
     profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
     totalEpisodeCount = 217,
     character = "Kevin Malone",
+    gender = 2,
     knownForDepartment = "Acting",
     creditId = "525730a9760ee3776a3447f1",
   )
@@ -23,6 +24,7 @@ object CastEntityFactory {
     totalEpisodeCount = 210,
     character = "Angela Martin",
     knownForDepartment = "Acting",
+    gender = 1,
     creditId = "525730ab760ee3776a344a0b",
   )
 

@@ -7,6 +7,7 @@ CREATE TABLE seriesCrew (
     department TEXT NOT NULL,
     totalEpisodeCount INTEGER NOT NULL,
     knownForDepartment TEXT,
+    gender INTEGER NOT NULL,
     aggregateCreditId INTEGER NOT NULL REFERENCES aggregateCredits(id),
     PRIMARY KEY(id, aggregateCreditId, job)
 );
@@ -21,6 +22,7 @@ INSERT INTO seriesCrew(
   department,
   totalEpisodeCount,
   knownForDepartment,
+  gender,
   aggregateCreditId
 )
 VALUES ?;
@@ -35,6 +37,7 @@ SELECT
   sc.department AS crewDepartment,
   sc.totalEpisodeCount AS crewTotalEpisodeCount,
   sc.knownForDepartment AS crewKnownForDepartment,
+  sc.gender AS crewGender,
   sc.aggregateCreditId AS aggregateCreditId,
   scj.creditId AS jobCreditId,
   scj.job AS jobTitle,

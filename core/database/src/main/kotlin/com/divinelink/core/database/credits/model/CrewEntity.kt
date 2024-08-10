@@ -8,6 +8,7 @@ data class CrewEntity(
   val job: String,
   val profilePath: String?,
   val department: String,
+  val gender: Long,
   val knownForDepartment: String?,
   val totalEpisodeCount: Long,
   val aggregateCreditId: Long,

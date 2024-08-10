@@ -8,7 +8,7 @@ data class SeriesCastApi(
   val id: Long,
   val name: String,
   val adult: Boolean,
-  val gender: Int,
+  val gender: Long,
   val popularity: Double,
   val roles: List<RolesApi>,
   val order: Int,
