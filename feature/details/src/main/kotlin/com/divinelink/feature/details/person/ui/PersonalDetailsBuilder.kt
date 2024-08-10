@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.person.ui
 
+import com.divinelink.core.commons.Constants
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
@@ -9,7 +10,7 @@ fun PersonDetails.toUiSections() = buildList {
   add(
     PersonalInfoSectionData(
       title = UIText.ResourceText(R.string.feature_details_known_for_section),
-      value = UIText.StringText(person.knownForDepartment ?: "-"),
+      value = UIText.StringText(person.knownForDepartment ?: Constants.String.EMPTY_DASH),
     ),
   )
 
@@ -32,7 +33,7 @@ fun PersonDetails.toUiSections() = buildList {
           currentAge!!,
         )
       } else {
-        UIText.StringText(birthday ?: "-")
+        UIText.StringText(birthday ?: Constants.String.EMPTY_DASH)
       },
     ),
   )
@@ -57,7 +58,7 @@ fun PersonDetails.toUiSections() = buildList {
   add(
     PersonalInfoSectionData(
       title = UIText.ResourceText(R.string.feature_details_place_of_birth_section),
-      value = UIText.StringText(placeOfBirth ?: "-"),
+      value = UIText.StringText(placeOfBirth ?: Constants.String.EMPTY_DASH),
     ),
   )
 }

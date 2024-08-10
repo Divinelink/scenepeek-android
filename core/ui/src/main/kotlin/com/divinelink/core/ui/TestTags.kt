@@ -98,4 +98,9 @@ object TestTags {
     const val CAST_CREDITS_CONTENT = "Credits Content with cast"
     const val CREW_CREDITS_CONTENT = "Credits Content with crew"
   }
+
+  object Shimmer {
+    const val HALF_LINE = "Shimmer Half Line - %s"
+    const val LINE = "Shimmer Line - %s"
+  }
 }

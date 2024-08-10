@@ -27,6 +27,7 @@ internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*,
       add("testImplementation", platform(bom))
       add("implementation", libs.findLibrary("compose-ui-tooling-preview").get())
       add("debugImplementation", libs.findLibrary("compose-ui-tooling").get())
+      add("implementation", libs.findLibrary("compose-shimmer").get())
     }
 
     testOptions {
