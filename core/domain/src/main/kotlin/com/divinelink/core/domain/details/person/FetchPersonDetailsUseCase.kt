@@ -20,61 +20,92 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+data class PersonDetailsParams(
+  val id: Long,
+  val knownForDepartment: String?,
+)
+
 class FetchPersonDetailsUseCase @Inject constructor(
   private val repository: PersonRepository,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Long, PersonDetailsResult>(dispatcher) {
+) : FlowUseCase<PersonDetailsParams, PersonDetailsResult>(dispatcher) {
 
-  override fun execute(parameters: Long): Flow<Result<PersonDetailsResult>> = channelFlow {
-    val personDetailsResult = async(dispatcher) {
-      repository.fetchPersonDetails(parameters)
-        .catch {
-          Timber.e(it)
-          emit(Result.failure(PersonDetailsResult.DetailsFailure))
-        }
-        .map { result ->
-          result.fold(
-            onFailure = {
+  override fun execute(parameters: PersonDetailsParams): Flow<Result<PersonDetailsResult>> =
+    channelFlow {
+      if (parameters.knownForDepartment != null) {
+        launch(dispatcher) {
+          repository.fetchPersonDetails(parameters.id)
+            .catch {
               Timber.e(it)
-              Result.failure(PersonDetailsResult.DetailsFailure)
-            },
-            onSuccess = { Result.success(PersonDetailsResult.DetailsSuccess(it)) },
-          )
+              send(Result.failure(PersonDetailsResult.DetailsFailure))
+            }
+            .collect { result ->
+              result.fold(
+                onFailure = {
+                  Timber.e(it)
+                  send(Result.failure(PersonDetailsResult.DetailsFailure))
+                },
+                onSuccess = {
+                  send(Result.success(PersonDetailsResult.DetailsSuccess(result.data)))
+                },
+              )
+            }
         }
-        .first()
-    }
+      }
 
-    send(personDetailsResult.await())
+      val asyncDetails = if (parameters.knownForDepartment == null) {
+        async(dispatcher) {
+          repository.fetchPersonDetails(parameters.id)
+            .catch {
+              Timber.e(it)
+              emit(Result.failure(PersonDetailsResult.DetailsFailure))
+            }
+            .map { result ->
+              result.fold(
+                onFailure = {
+                  Timber.e(it)
+                  Result.failure(PersonDetailsResult.DetailsFailure)
+                },
+                onSuccess = { Result.success(PersonDetailsResult.DetailsSuccess(it)) },
+              )
+            }
+            .first()
+        }
+      } else {
+        null
+      }
 
-    launch(dispatcher) {
-      val knownForDepartment =
-        personDetailsResult.await().data.personDetails.person.knownForDepartment
+      asyncDetails?.await()?.let { send(it) }
+
+      launch(dispatcher) {
+        val knownForDepartment = parameters.knownForDepartment
+          ?: asyncDetails?.await()?.data?.personDetails?.person?.knownForDepartment
           ?: KnownForDepartment.Acting.value
 
-      repository.fetchPersonCredits(parameters)
-        .catch { Timber.e(it) }
-        .collect { result ->
-          result.fold(
-            onFailure = { Timber.e(it) },
-            onSuccess = {
-              val knownForCredits = calculateKnownForCredits(
-                department = knownForDepartment,
-                result = result,
-              )
+        repository.fetchPersonCredits(parameters.id)
+          .catch { Timber.e(it) }
+          .collect { result ->
+            result.fold(
+              onFailure = { Timber.e(it) },
+              onSuccess = {
+                val knownForCredits = calculateKnownForCredits(
+                  department = knownForDepartment,
+                  result = result,
+                )
 
-              send(
-                Result.success(
-                  PersonDetailsResult.CreditsSuccess(
-                    credits = result.data,
-                    knownForCredits = knownForCredits,
+                send(
+                  Result.success(
+                    PersonDetailsResult.CreditsSuccess(
+                      credits = result.data,
+                      knownForCredits = knownForCredits,
+                    ),
                   ),
-                ),
-              )
-            },
-          )
-        }
+                )
+              },
+            )
+          }
+      }
     }
-  }
 
   private fun calculateMovieScore(media: PersonCredit): Double {
     val order = (media.role as? PersonRole.MovieActor)?.order ?: Int.MAX_VALUE

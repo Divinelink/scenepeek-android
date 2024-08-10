@@ -16,6 +16,7 @@ import com.divinelink.core.testing.factories.model.person.credit.PersonCrewCredi
 import com.divinelink.core.testing.repository.TestPersonRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -29,6 +30,11 @@ class FetchPersonDetailsUseCaseTest {
 
   private lateinit var repository: TestPersonRepository
   private lateinit var useCase: FetchPersonDetailsUseCase
+
+  private var params = PersonDetailsParams(
+    id = 4495,
+    knownForDepartment = "Acting",
+  )
 
   @BeforeTest
   fun setUp() {
@@ -44,7 +50,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchPersonDetails with success person details response`() = runTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -56,7 +62,29 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchPersonDetails with failure person details response`() = runTest {
     repository.mockFetchPersonDetails(Result.failure(Exception("Something went wrong")))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
+      val expectedFailure = awaitItem()
+      assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
+      assertThat(expectedFailure.isFailure).isTrue()
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetchPersonDetails with error`() = runTest {
+    useCase.invoke(params).test {
+      val expectedFailure = awaitItem()
+      assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
+      assertThat(expectedFailure.isFailure).isTrue()
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test async fetchPersonDetails with failure person details response`() = runTest {
+    repository.mockFetchPersonDetails(Result.failure(Exception("Something went wrong")))
+
+    useCase.invoke(params.copy(knownForDepartment = null)).test {
       val expectedFailure = awaitItem()
       assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       assertThat(expectedFailure.isFailure).isTrue()
@@ -66,8 +94,8 @@ class FetchPersonDetailsUseCaseTest {
   }
 
   @Test
-  fun `test fetchPersonDetails with error`() = runTest {
-    useCase.invoke(4495).test {
+  fun `test async fetchPersonDetails with error`() = runTest {
+    useCase.invoke(params.copy(knownForDepartment = null)).test {
       val expectedFailure = awaitItem()
       assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       assertThat(expectedFailure.isFailure).isTrue()
@@ -81,7 +109,7 @@ class FetchPersonDetailsUseCaseTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -112,7 +140,12 @@ class FetchPersonDetailsUseCaseTest {
     )
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(
+      PersonDetailsParams(
+        id = 4495,
+        knownForDepartment = "Production",
+      ),
+    ).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(
           PersonDetailsFactory.steveCarell().copy(
@@ -143,7 +176,7 @@ class FetchPersonDetailsUseCaseTest {
     )
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(
           PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
@@ -177,7 +210,7 @@ class FetchPersonDetailsUseCaseTest {
       ),
     )
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -211,7 +244,7 @@ class FetchPersonDetailsUseCaseTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(Result.failure(Exception("Something went wrong")))
 
-    useCase.invoke(4495).test {
+    useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -221,12 +254,17 @@ class FetchPersonDetailsUseCaseTest {
   }
 
   @Test
-  fun `test fetchCredits awaits for person details`() = runTest {
+  fun `test fetchCredits awaits for person details iff knownForDepartment is null`() = runTest {
     val detailsChannel = Channel<Result<PersonDetails>>()
     repository.mockFetchPersonDetails(detailsChannel)
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
 
-    useCase.invoke(4495).test {
+    val params = PersonDetailsParams(
+      id = 4495,
+      knownForDepartment = null,
+    )
+
+    useCase.invoke(params).test {
       expectNoEvents()
 
       detailsChannel.send(Result.success(PersonDetailsFactory.steveCarell()))
@@ -242,6 +280,71 @@ class FetchPersonDetailsUseCaseTest {
       )
 
       awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetchCredits knownForDepartment defaults to Acting iff all are null`() = runTest {
+    val detailsChannel = Channel<Result<PersonDetails>>()
+    repository.mockFetchPersonDetails(detailsChannel)
+    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+
+    val params = PersonDetailsParams(
+      id = 4495,
+      knownForDepartment = null,
+    )
+
+    useCase.invoke(params).test {
+      expectNoEvents()
+
+      detailsChannel.send(
+        Result.success(PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) }),
+      )
+
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.DetailsSuccess(
+          PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
+        ),
+      )
+
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = PersonCastCreditFactory.knownFor(),
+          credits = PersonCombinedCreditsFactory.all(),
+        ),
+      )
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetchCredits is concurrent iff knownForDepartment param is known`() = runTest {
+    val detailsChannel = Channel<Result<PersonDetails>>()
+    repository.mockFetchPersonDetails(detailsChannel)
+    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+
+    val paramss = PersonDetailsParams(
+      id = 4495,
+      knownForDepartment = "Acting",
+    )
+
+    useCase.invoke(paramss).test {
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = PersonCastCreditFactory.knownFor(),
+          credits = PersonCombinedCreditsFactory.all(),
+        ),
+      )
+
+      delay(3000)
+      detailsChannel.send(Result.success(PersonDetailsFactory.steveCarell()))
+
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+      )
+
+      expectNoEvents()
     }
   }
 }

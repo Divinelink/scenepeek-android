@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
+import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +32,12 @@ class PersonViewModel @Inject constructor(
   val uiState: StateFlow<PersonUiState> = _uiState.asStateFlow()
 
   init {
-    fetchPersonDetailsUseCase(args.id)
+    fetchPersonDetailsUseCase(
+      PersonDetailsParams(
+        id = args.id,
+        knownForDepartment = args.knownForDepartment,
+      ),
+    )
       .onEach { result ->
         result.fold(
           onSuccess = { detailsResult ->

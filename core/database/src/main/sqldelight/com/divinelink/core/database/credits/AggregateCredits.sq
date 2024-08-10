@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS aggregateCredits(
+CREATE TABLE aggregateCredits (
   id INTEGER PRIMARY KEY,
   expiresAtEpochSeconds TEXT
 );
