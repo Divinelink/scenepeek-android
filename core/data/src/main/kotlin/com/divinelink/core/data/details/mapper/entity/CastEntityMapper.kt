@@ -10,6 +10,7 @@ fun CastEntity.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  knownForDepartment = knownForDepartment,
   role = PersonRole.SeriesActor(
     character = this.character,
     totalEpisodes = totalEpisodeCount.toInt(),

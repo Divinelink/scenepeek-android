@@ -23,6 +23,7 @@ fun CrewEntity.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  knownForDepartment = knownForDepartment,
   role = PersonRole.Crew(
     job = job,
     creditId = creditId,

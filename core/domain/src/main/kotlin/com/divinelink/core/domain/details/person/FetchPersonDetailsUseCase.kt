@@ -47,8 +47,9 @@ class FetchPersonDetailsUseCase @Inject constructor(
     send(personDetailsResult.await())
 
     launch(dispatcher) {
-      val knownForDepartment = personDetailsResult.await().data.personDetails.knownForDepartment
-        ?: KnownForDepartment.Acting.value
+      val knownForDepartment =
+        personDetailsResult.await().data.personDetails.person.knownForDepartment
+          ?: KnownForDepartment.Acting.value
 
       repository.fetchPersonCredits(parameters)
         .catch { Timber.e(it) }

@@ -28,6 +28,7 @@ fun SeriesCrewApi.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  knownForDepartment = knownForDepartment,
   role = PersonRole.Crew(
     job = jobs.firstOrNull()?.job,
     creditId = jobs.firstOrNull()?.creditId,

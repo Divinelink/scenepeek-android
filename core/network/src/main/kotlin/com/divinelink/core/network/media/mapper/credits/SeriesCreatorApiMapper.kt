@@ -10,5 +10,6 @@ fun SeriesCreatorApi.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  knownForDepartment = knownForDepartment,
   role = PersonRole.Creator,
 )

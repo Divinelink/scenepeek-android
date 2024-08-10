@@ -95,6 +95,7 @@ private fun CastListPreview() {
             id = 1,
             name = "John Doe",
             profilePath = null,
+            knownForDepartment = "Acting",
             role = PersonRole.SeriesActor(
               character = "Character Name",
               totalEpisodes = 10,
@@ -104,6 +105,7 @@ private fun CastListPreview() {
             id = 2,
             name = "Jane Doe",
             profilePath = "/profile.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.SeriesActor(
               character = "Character Name",
               totalEpisodes = 10,

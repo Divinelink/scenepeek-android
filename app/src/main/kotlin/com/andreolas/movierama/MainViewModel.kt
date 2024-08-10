@@ -44,7 +44,14 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
         ),
       )
       MediaType.PERSON -> updateUiEvent(
-        MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = id.toLong())),
+        MainUiEvent.NavigateToPersonDetails(
+          PersonNavArguments(
+            id = id.toLong(),
+            knownForDepartment = null,
+            name = null,
+            profilePath = null,
+          ),
+        ),
       )
       MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
     }

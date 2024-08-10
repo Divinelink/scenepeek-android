@@ -17,6 +17,7 @@ data class MultiSearchResultApi(
   @SerialName("profile_path") val profilePath: String? = null,
   @SerialName("media_type") val mediaType: String,
   @SerialName("genre_ids") val genreIds: List<Int>? = null,
+  val gender: Int? = null,
   @SerialName("popularity") val popularity: Double,
   @SerialName("first_air_date") val firstAirDate: String? = null,
   @SerialName("release_date") val releaseDate: String? = null,
@@ -24,4 +25,5 @@ data class MultiSearchResultApi(
   @SerialName("vote_count") val voteCount: Int? = null,
   @SerialName("origin_country") val originCountry: List<String>? = null,
   @SerialName("original_title") val originalTitle: String? = null,
+  @SerialName("known_for_department") val knownForDepartment: String? = null,
 )

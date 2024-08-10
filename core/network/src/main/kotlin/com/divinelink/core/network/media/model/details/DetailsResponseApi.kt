@@ -127,7 +127,8 @@ private fun List<CrewApi>.toDirector(): Person? {
     Person(
       id = director.id,
       name = director.name,
-      profilePath = director.profilePath ?: "",
+      profilePath = director.profilePath,
+      knownForDepartment = director.knownForDepartment,
       role = PersonRole.Director,
     )
   }
@@ -139,6 +140,7 @@ private fun CastApi.toPerson(): Person = Person(
   id = this.id,
   name = this.name,
   profilePath = this.profilePath,
+  knownForDepartment = this.knownForDepartment,
   role = when (this) {
     is CastApi.Movie -> {
       PersonRole.MovieActor(

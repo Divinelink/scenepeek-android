@@ -620,6 +620,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 1,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.MovieActor(
               character = "Here's Johnny!",
               order = 0,
@@ -636,12 +637,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 1216630,
             name = "Greg Daniels",
             profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
+            knownForDepartment = "Writing",
             role = PersonRole.Creator,
           ),
           Person(
             id = 17835,
             name = "Ricky Gervais",
             profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
+            knownForDepartment = "Writing",
             role = PersonRole.Creator,
           ),
         ),
@@ -663,6 +666,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           id = 123443321,
           name = "Forest Gump",
           profilePath = "BoxOfChocolates.jpg",
+          knownForDepartment = "Directing",
           role = PersonRole.Director,
         ),
         cast = listOf(
@@ -670,6 +674,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 1,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.MovieActor(
               character = "Here's Johnny!",
               order = 0,
@@ -679,6 +684,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 2,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.MovieActor(
               character = "McMurphy",
               order = 0,
@@ -688,6 +694,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 3,
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.MovieActor(
               character = "HelloJohnny",
               order = 0,
@@ -697,6 +704,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             id = 4,
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.MovieActor(
               character = "McMurphy",
               order = 0,

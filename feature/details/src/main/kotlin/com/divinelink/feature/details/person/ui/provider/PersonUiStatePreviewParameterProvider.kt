@@ -35,6 +35,7 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
         profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
         gender = Gender.MALE,
         role = PersonRole.Unknown,
+        knownForDepartment = "Acting",
       ),
       biography = LoremIpsum(50).values.joinToString(),
       birthday = "1962-08-16",
@@ -44,7 +45,6 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       alsoKnownAs = emptyList(),
       imdbId = "nm0136797",
       popularity = 77.108,
-      knownForDepartment = "Acting",
     )
   }
 }

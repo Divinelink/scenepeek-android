@@ -9,6 +9,7 @@ object ActorFactory {
     id = 10,
     name = "Jack Nicholson",
     profilePath = "jack_nicholson.jpg",
+    knownForDepartment = "Acting",
     role = PersonRole.MovieActor(
       character = "Here's Johnny!",
       order = 0,
@@ -19,6 +20,7 @@ object ActorFactory {
     id = 20,
     name = "Aaron Paul",
     profilePath = "Aaron_paul.jpg",
+    knownForDepartment = "Acting",
     role = PersonRole.MovieActor(
       character = "Jessee Pinkman",
       order = 1,

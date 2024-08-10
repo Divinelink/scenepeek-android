@@ -10,6 +10,7 @@ fun SeriesCastApi.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  knownForDepartment = knownForDepartment,
   role = PersonRole.SeriesActor(
     character = this.roles.firstOrNull()?.character,
     creditId = this.roles.firstOrNull()?.creditId,

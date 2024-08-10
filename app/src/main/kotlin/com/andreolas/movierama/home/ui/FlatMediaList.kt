@@ -78,20 +78,20 @@ fun FlatMediaList(
           onMediaItemClick = { onItemClick(search) },
           onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
-        is MediaItem.Person -> {
-          CreditsItemCard(
-            // TODO FIX Duplicate model
-            person = Person(
-              id = search.id.toLong(),
-              name = search.name,
-              profilePath = search.posterPath,
-              role = PersonRole.Unknown,
-            ),
-            onPersonClick = {
-              onItemClick(search)
-            },
-          )
-        }
+        is MediaItem.Person -> CreditsItemCard(
+          // TODO FIX Duplicate model
+          person = Person(
+            id = search.id.toLong(),
+            name = search.name,
+            profilePath = search.posterPath,
+            knownForDepartment = search.knownForDepartment,
+            role = PersonRole.Unknown,
+          ),
+          onPersonClick = {
+            onItemClick(search)
+          },
+        )
+
         MediaItem.Unknown -> {
           // Do nothing
         }

@@ -12,6 +12,7 @@ fun PersonEntity.map() = PersonDetails(
     name = name,
     profilePath = profilePath,
     gender = Gender.from(gender.toInt()),
+    knownForDepartment = knownForDepartment,
     role = PersonRole.Unknown, // TODO Implement
   ),
   biography = biography,
@@ -22,5 +23,4 @@ fun PersonEntity.map() = PersonDetails(
   alsoKnownAs = emptyList(), // TODO Implement
   imdbId = imdbId,
   popularity = popularity,
-  knownForDepartment = knownForDepartment,
 )

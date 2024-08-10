@@ -10,6 +10,7 @@ data class Person(
   val name: String,
   val profilePath: String?,
   val gender: Gender = Gender.NOT_SET,
+  val knownForDepartment: String?,
   val role: PersonRole,
 )
 

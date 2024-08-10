@@ -14,6 +14,7 @@ object PersonDetailsFactory {
       name = "Steve Carell",
       profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
       gender = Gender.MALE,
+      knownForDepartment = "Acting",
       role = PersonRole.Unknown,
     ),
     biography = BIOGRAPHY,
@@ -41,6 +42,19 @@ object PersonDetailsFactory {
     ),
     imdbId = "nm0136797",
     popularity = 77.108,
-    knownForDepartment = "Acting",
   )
+
+  class PersonDetailsWzd(private var personDetails: PersonDetails) {
+
+    fun withKnownForDepartment(knownForDepartment: String?) = apply {
+      personDetails = personDetails.copy(
+        person = personDetails.person.copy(knownForDepartment = knownForDepartment),
+      )
+    }
+
+    fun create() = personDetails
+  }
+
+  fun PersonDetails.toWzd(block: PersonDetailsWzd.() -> Unit) =
+    PersonDetailsWzd(this).apply(block).create()
 }

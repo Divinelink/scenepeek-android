@@ -11,6 +11,7 @@ object SeriesCastFactory {
     originalName = "Brian Baumgartner",
     profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
     totalEpisodeCount = 217,
+    knownForDepartment = "Acting",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 
@@ -20,6 +21,7 @@ object SeriesCastFactory {
     originalName = "Angela Kinsey",
     profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
     totalEpisodeCount = 210,
+    knownForDepartment = "Acting",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 

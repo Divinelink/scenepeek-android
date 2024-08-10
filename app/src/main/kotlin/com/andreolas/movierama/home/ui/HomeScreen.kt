@@ -37,10 +37,17 @@ fun HomeScreen(
           isFavorite = media.isFavorite,
         )
         DetailsScreenDestination(navArgs = navArgs)
-      } else {
+      } else if (media is MediaItem.Person) {
         PersonScreenDestination(
-          navArgs = PersonNavArguments(id = media.id.toLong()),
+          navArgs = PersonNavArguments(
+            id = media.id.toLong(),
+            knownForDepartment = media.knownForDepartment,
+            name = media.name,
+            profilePath = media.profilePath,
+          ),
         )
+      } else {
+        return@HomeContent
       }
       navigator.navigate(destination)
     },

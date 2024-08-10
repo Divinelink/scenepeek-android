@@ -13,6 +13,7 @@ fun AggregateCreditsApi.toSeriesCastEntity() = cast.map { cast ->
     profilePath = cast.profilePath,
     originalName = cast.name,
     totalEpisodeCount = cast.totalEpisodeCount.toLong(),
+    knownForDepartment = cast.knownForDepartment,
     aggregateCreditId = id,
   )
 }
@@ -41,6 +42,7 @@ fun AggregateCreditsApi.toSeriesCrewEntity(): List<SeriesCrew> = crew
       aggregateCreditId = id,
       originalName = crew.originalName,
       totalEpisodeCount = crew.totalEpisodeCount,
+      knownForDepartment = crew.knownForDepartment,
     )
   }
 

@@ -110,6 +110,7 @@ private fun CreditsItemCardPreview() {
             "Kevin Malone",
             totalEpisodes = 217,
           ),
+          knownForDepartment = "Acting",
           profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
         ),
         onPersonClick = {},

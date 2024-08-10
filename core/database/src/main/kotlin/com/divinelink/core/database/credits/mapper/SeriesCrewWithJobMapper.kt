@@ -12,5 +12,6 @@ fun SeriesCrewWithJob.toEntity() = CrewEntity(
   profilePath = crewProfilePath,
   department = crewDepartment,
   totalEpisodeCount = crewTotalEpisodeCount,
+  knownForDepartment = crewKnownForDepartment,
   aggregateCreditId = aggregateCreditId,
 )

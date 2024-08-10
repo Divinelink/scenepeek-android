@@ -155,6 +155,7 @@ private fun CreditsContentPreview() {
                   id = 1,
                   name = "Person 1",
                   profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
+                  knownForDepartment = "Acting",
                   role = PersonRole.SeriesActor(
                     character = "Character 1",
                   ),
@@ -163,6 +164,7 @@ private fun CreditsContentPreview() {
                   id = 2,
                   name = "Person 2",
                   profilePath = "https://image.tmdb.org/t/p/w185/2.jpg",
+                  knownForDepartment = "Acting",
                   role = PersonRole.SeriesActor(
                     character = "Character 2",
                     totalEpisodes = 10,
@@ -179,6 +181,7 @@ private fun CreditsContentPreview() {
                       id = 3,
                       name = "Person 3",
                       profilePath = "https://image.tmdb.org/t/p/w185/3.jpg",
+                      knownForDepartment = "Directing",
                       role = PersonRole.Crew(
                         job = "Job 3",
                         creditId = "Credit 3",
@@ -188,6 +191,7 @@ private fun CreditsContentPreview() {
                       id = 4,
                       name = "Person 4",
                       profilePath = "https://image.tmdb.org/t/p/w185/4.jpg",
+                      knownForDepartment = "Directing",
                       role = PersonRole.Crew(
                         job = "Job 4",
                         creditId = "Credit 4",

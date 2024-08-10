@@ -158,6 +158,7 @@ private fun PersonItemPreview() {
           id = 1,
           name = "Person 1",
           profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
+          knownForDepartment = "Acting",
           role = PersonRole.SeriesActor(
             character = "Character 1",
             totalEpisodes = 10,

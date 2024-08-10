@@ -75,7 +75,16 @@ class MainViewModelTest {
       .buildViewModel()
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
-      .assertUiEvent(MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = 693134)))
+      .assertUiEvent(
+        MainUiEvent.NavigateToPersonDetails(
+          PersonNavArguments(
+            id = 693134,
+            knownForDepartment = null,
+            name = null,
+            profilePath = null,
+          ),
+        ),
+      )
       .onConsumeUiEvent()
       .assertUiEvent(MainUiEvent.None)
   }

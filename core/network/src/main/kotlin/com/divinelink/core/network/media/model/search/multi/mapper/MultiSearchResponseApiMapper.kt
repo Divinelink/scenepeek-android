@@ -3,6 +3,7 @@ package com.divinelink.core.network.media.model.search.multi.mapper
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.search.MultiSearch
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 
@@ -29,8 +30,10 @@ fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
       )
       MediaType.PERSON -> MediaItem.Person(
         id = it.id,
-        posterPath = it.profilePath ?: "",
+        profilePath = it.profilePath ?: "",
         name = it.name ?: "",
+        knownForDepartment = it.knownForDepartment,
+        gender = Gender.from(it.gender),
       )
       MediaType.UNKNOWN -> MediaItem.Unknown
     }

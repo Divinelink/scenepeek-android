@@ -9,7 +9,7 @@ fun PersonDetails.toUiSections() = buildList {
   add(
     PersonalInfoSectionData(
       title = UIText.ResourceText(R.string.feature_details_known_for_section),
-      value = UIText.StringText(knownForDepartment ?: "-"),
+      value = UIText.StringText(person.knownForDepartment ?: "-"),
     ),
   )
 

@@ -2,6 +2,7 @@ package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
@@ -25,9 +26,7 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with error`() = runTest {
     robot
-      .withNavArgs(
-        PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id),
-      )
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .buildViewModel()
       .assertUiState(PersonUiState.Error)
   }
@@ -35,9 +34,7 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with success person details`() = runTest {
     robot
-      .withNavArgs(
-        PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id),
-      )
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
       )
@@ -50,9 +47,7 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with error on details`() = runTest {
     robot
-      .withNavArgs(
-        PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id),
-      )
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .mockFetchPersonDetailsUseCaseSuccess(PersonDetailsResult.DetailsFailure)
       .buildViewModel()
       .assertUiState(PersonUiState.Error)
@@ -63,7 +58,7 @@ class PersonViewModelTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     robot
-      .withNavArgs(PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id))
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .setupChannelForUseCase(channel)
       .buildViewModel()
       .expectUiStates(
@@ -107,9 +102,7 @@ class PersonViewModelTest {
   @Test
   fun `test updateCredits when uiState is not yet success`() = runTest {
     robot
-      .withNavArgs(
-        PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id),
-      )
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .mockFetchPersonDetailsUseCaseSuccess(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
@@ -132,7 +125,7 @@ class PersonViewModelTest {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     robot
-      .withNavArgs(PersonNavArguments(id = PersonDetailsFactory.steveCarell().person.id))
+      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .setupChannelForUseCase(channel)
       .buildViewModel()
       .expectUiStates(

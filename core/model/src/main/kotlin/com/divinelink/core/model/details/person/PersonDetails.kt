@@ -8,7 +8,6 @@ data class PersonDetails(
   val biography: String?,
   val birthday: String?,
   val deathday: String?,
-  val knownForDepartment: String?,
   val placeOfBirth: String?,
   val homepage: String?,
   val alsoKnownAs: List<String>,

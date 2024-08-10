@@ -5,6 +5,7 @@ data class CastEntity(
   val name: String,
   val originalName: String,
   val profilePath: String?,
+  val knownForDepartment: String?,
   val totalEpisodeCount: Long,
   val character: String,
   val creditId: String,

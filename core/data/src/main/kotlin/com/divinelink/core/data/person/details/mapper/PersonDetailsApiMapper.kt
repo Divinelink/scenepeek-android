@@ -12,6 +12,7 @@ fun PersonDetailsApi.map() = PersonDetails(
     name = name,
     profilePath = profilePath,
     gender = Gender.from(gender),
+    knownForDepartment = knownForDepartment,
     role = PersonRole.Unknown, // TODO Implement
   ),
   biography = biography,
@@ -22,5 +23,4 @@ fun PersonDetailsApi.map() = PersonDetails(
   alsoKnownAs = alsoKnownAs,
   imdbId = imdbId,
   popularity = popularity,
-  knownForDepartment = knownForDepartment,
 )

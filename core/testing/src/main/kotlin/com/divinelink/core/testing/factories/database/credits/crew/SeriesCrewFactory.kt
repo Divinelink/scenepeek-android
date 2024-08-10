@@ -13,6 +13,7 @@ object SeriesCrewFactory {
     profilePath = null,
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+    knownForDepartment = "Directing",
     department = "Camera",
   )
 
@@ -24,6 +25,7 @@ object SeriesCrewFactory {
     profilePath = null,
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+    knownForDepartment = "Camera",
     department = "Camera",
   )
 
@@ -35,6 +37,7 @@ object SeriesCrewFactory {
     profilePath = null,
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+    knownForDepartment = "Camera",
     department = "Camera",
   )
 
@@ -46,6 +49,7 @@ object SeriesCrewFactory {
     profilePath = null,
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+    knownForDepartment = "Camera",
     department = "Camera",
   )
 

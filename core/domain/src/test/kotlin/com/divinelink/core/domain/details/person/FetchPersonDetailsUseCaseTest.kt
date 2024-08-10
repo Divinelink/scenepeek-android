@@ -5,6 +5,7 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
+import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory.toWzd
 import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.despicableMe
@@ -101,7 +102,12 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchPersonCredits for crew returns crew credits on known for dep`() = runTest {
     repository.mockFetchPersonDetails(
       Result.success(
-        PersonDetailsFactory.steveCarell().copy(knownForDepartment = "Production"),
+        PersonDetailsFactory.steveCarell()
+          .copy(
+            person = PersonDetailsFactory.steveCarell().person.copy(
+              knownForDepartment = "Production",
+            ),
+          ),
       ),
     )
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
@@ -109,7 +115,11 @@ class FetchPersonDetailsUseCaseTest {
     useCase.invoke(4495).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(
-          PersonDetailsFactory.steveCarell().copy(knownForDepartment = "Production"),
+          PersonDetailsFactory.steveCarell().copy(
+            person = PersonDetailsFactory.steveCarell().person.copy(
+              knownForDepartment = "Production",
+            ),
+          ),
         ),
       )
 
@@ -128,7 +138,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchPersonCredits person without knownForDepartment data yields acting`() = runTest {
     repository.mockFetchPersonDetails(
       Result.success(
-        PersonDetailsFactory.steveCarell().copy(knownForDepartment = null),
+        PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
       ),
     )
     repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
@@ -136,7 +146,7 @@ class FetchPersonDetailsUseCaseTest {
     useCase.invoke(4495).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.DetailsSuccess(
-          PersonDetailsFactory.steveCarell().copy(knownForDepartment = null),
+          PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
         ),
       )
 
