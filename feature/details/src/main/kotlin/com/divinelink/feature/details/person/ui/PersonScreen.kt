@@ -17,13 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.details.navigation.person.PersonGraph
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -46,11 +48,14 @@ fun PersonScreen(
 
   AppScaffold(
     topBar = { scrollBehaviour, topAppBarColors ->
-      if (uiState is PersonUiState.Success) {
+      if (
+        uiState is PersonUiState.Success &&
+        uiState.personDetails is PersonDetailsUiState.Data
+      ) {
         AppTopAppBar(
           scrollBehaviour = scrollBehaviour,
           topAppBarColors = topAppBarColors,
-          text = UIText.StringText(uiState.personDetails.person.name),
+          text = UIText.StringText(uiState.personDetails.personDetails.person.name),
           onNavigateUp = navigator::navigateUp,
           actions = {
             IconButton(
@@ -61,7 +66,7 @@ fun PersonScreen(
             }
 
             PersonDropdownMenu(
-              person = uiState.personDetails.person,
+              person = uiState.personDetails.personDetails.person,
               expanded = showDropdownMenu,
               onDismissDropdown = { showDropdownMenu = false },
             )
@@ -75,10 +80,27 @@ fun PersonScreen(
         // TODO Add error content
       }
       PersonUiState.Loading -> LoadingContent()
-      is PersonUiState.Success -> PersonContent(
-        modifier = Modifier.padding(paddingValues),
-        uiState = uiState,
-      )
+      is PersonUiState.Success -> {
+        if (uiState.personDetails is PersonDetailsUiState.Loading) {
+          LoadingContent()
+        } else {
+          PersonContent(
+            modifier = Modifier.padding(paddingValues),
+            uiState = uiState,
+            onMediaClick = {
+              navigator.navigate(
+                DetailsScreenDestination(
+                  DetailsNavArguments(
+                    id = it.id,
+                    mediaType = it.mediaType.value,
+                    isFavorite = null,
+                  ),
+                ),
+              )
+            },
+          )
+        }
+      }
     }
   }
 }

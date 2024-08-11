@@ -6,6 +6,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
@@ -127,7 +128,9 @@ private fun List<CrewApi>.toDirector(): Person? {
     Person(
       id = director.id,
       name = director.name,
-      profilePath = director.profilePath ?: "",
+      profilePath = director.profilePath,
+      gender = Gender.from(director.gender),
+      knownForDepartment = director.knownForDepartment,
       role = PersonRole.Director,
     )
   }
@@ -139,9 +142,14 @@ private fun CastApi.toPerson(): Person = Person(
   id = this.id,
   name = this.name,
   profilePath = this.profilePath,
+  knownForDepartment = this.knownForDepartment,
+  gender = Gender.from(this.gender),
   role = when (this) {
     is CastApi.Movie -> {
-      PersonRole.MovieActor(this.character)
+      PersonRole.MovieActor(
+        character = this.character,
+        order = this.order,
+      )
     }
     is CastApi.TV -> PersonRole.Unknown
   },

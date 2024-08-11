@@ -14,6 +14,6 @@ enum class Gender(
   NON_BINARY(value = 3, stringRes = R.string.gender_non_binary);
 
   companion object {
-    fun from(value: Int) = entries.find { it.value == value } ?: NOT_SET
+    fun from(value: Int?) = entries.find { it.value == value } ?: NOT_SET
   }
 }

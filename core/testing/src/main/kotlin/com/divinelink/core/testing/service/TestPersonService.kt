@@ -1,5 +1,6 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import com.divinelink.core.network.details.person.service.PersonService
 import kotlinx.coroutines.flow.flowOf
@@ -12,5 +13,9 @@ class TestPersonService {
 
   fun mockFetchPersonDetails(response: PersonDetailsApi) {
     whenever(mock.fetchPersonDetails(id = any())).thenReturn(flowOf(response))
+  }
+
+  fun mockFetchPersonCombinedCredits(response: PersonCreditsApi) {
+    whenever(mock.fetchPersonCombinedCredits(id = any())).thenReturn(flowOf(response))
   }
 }

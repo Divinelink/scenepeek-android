@@ -8,7 +8,6 @@ data class PersonDetails(
   val biography: String?,
   val birthday: String?,
   val deathday: String?,
-  val knownForDepartment: String?,
   val placeOfBirth: String?,
   val homepage: String?,
   val alsoKnownAs: List<String>,
@@ -20,4 +19,18 @@ data class PersonDetails(
     birthday?.let { calculateAge(birthday, deathday) }
   }
   val isAlive = deathday == null && currentAge != null
+
+  companion object {
+    fun initial(person: Person) = PersonDetails(
+      person = person,
+      biography = null,
+      birthday = null,
+      deathday = null,
+      placeOfBirth = null,
+      homepage = null,
+      alsoKnownAs = emptyList(),
+      imdbId = null,
+      popularity = 0.0,
+    )
+  }
 }

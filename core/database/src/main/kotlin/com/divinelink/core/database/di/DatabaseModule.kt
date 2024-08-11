@@ -54,12 +54,13 @@ object DatabaseModule {
   @Provides
   @Singleton
   fun providePersonDao(
+    clock: Clock,
     database: Database,
     @IoDispatcher dispatcher: CoroutineDispatcher,
   ): PersonDao = ProdPersonDao(
     database = database,
     dispatcher = dispatcher,
-
+    clock = clock,
   )
 
   @Singleton

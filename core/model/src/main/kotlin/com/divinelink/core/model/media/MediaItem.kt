@@ -1,5 +1,8 @@
 package com.divinelink.core.model.media
 
+import com.divinelink.core.commons.extensions.round
+import com.divinelink.core.model.person.Gender
+
 sealed class MediaItem(
   open val id: Int,
   open val name: String,
@@ -22,6 +25,8 @@ sealed class MediaItem(
     name = name,
     mediaType = mediaType,
   ) {
+    val decimalRating: String
+      get() = this.rating.toDouble().round(1).toString()
 
     data class TV(
       override val id: Int,
@@ -65,11 +70,13 @@ sealed class MediaItem(
   data class Person(
     override val id: Int,
     override val name: String,
-    override val posterPath: String,
+    val profilePath: String?,
+    val gender: Gender,
+    val knownForDepartment: String?,
   ) : MediaItem(
     id = id,
-    posterPath = name,
-    name = posterPath,
+    name = name,
+    posterPath = profilePath,
     mediaType = MediaType.PERSON,
   )
 

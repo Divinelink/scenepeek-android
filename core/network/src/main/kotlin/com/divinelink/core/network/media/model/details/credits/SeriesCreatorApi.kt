@@ -11,4 +11,5 @@ data class SeriesCreatorApi(
   @SerialName("original_name") val originalName: String,
   val gender: Int,
   @SerialName("profile_path") val profilePath: String?,
+  @SerialName("known_for_department") val knownForDepartment: String? = null,
 )

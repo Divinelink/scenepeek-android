@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.andreolas.movierama.ui.ThemedActivityDelegate
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,7 +45,15 @@ class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDe
         ),
       )
       MediaType.PERSON -> updateUiEvent(
-        MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = id.toLong())),
+        MainUiEvent.NavigateToPersonDetails(
+          PersonNavArguments(
+            id = id.toLong(),
+            knownForDepartment = null,
+            name = null,
+            profilePath = null,
+            gender = Gender.NOT_SET,
+          ),
+        ),
       )
       MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
     }

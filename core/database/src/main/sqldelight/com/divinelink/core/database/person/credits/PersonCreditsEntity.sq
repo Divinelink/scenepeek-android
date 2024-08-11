@@ -1,0 +1,15 @@
+CREATE TABLE PersonCreditsEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  insertedAt TEXT NOT NULL
+);
+
+insertPersonCredits:
+INSERT OR REPLACE INTO PersonCreditsEntity(
+  id,
+  insertedAt
+)
+VALUES ?;
+
+fetchPersonCredits:
+SELECT * FROM PersonCreditsEntity
+WHERE id = ?;

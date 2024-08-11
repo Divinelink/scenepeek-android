@@ -11,7 +11,7 @@ data class CrewApi(
   val gender: Int,
   val id: Long,
   val job: String,
-  @SerialName("known_for_department") val knownForDepartment: String,
+  @SerialName("known_for_department") val knownForDepartment: String? = null,
   val name: String,
   @SerialName("original_name") val originalName: String,
   val popularity: Double,

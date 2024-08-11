@@ -1,4 +1,4 @@
-package com.divinelink.core.data.details.person.mapper
+package com.divinelink.core.data.person.details.mapper
 
 import com.divinelink.core.database.person.PersonEntity
 import com.divinelink.core.model.credits.PersonRole
@@ -12,7 +12,8 @@ fun PersonEntity.map() = PersonDetails(
     name = name,
     profilePath = profilePath,
     gender = Gender.from(gender.toInt()),
-    role = PersonRole.Unknown, // TODO Implement
+    knownForDepartment = knownForDepartment,
+    role = PersonRole.Unknown,
   ),
   biography = biography,
   birthday = birthday,
@@ -22,5 +23,4 @@ fun PersonEntity.map() = PersonDetails(
   alsoKnownAs = emptyList(), // TODO Implement
   imdbId = imdbId,
   popularity = popularity,
-  knownForDepartment = knownForDepartment,
 )

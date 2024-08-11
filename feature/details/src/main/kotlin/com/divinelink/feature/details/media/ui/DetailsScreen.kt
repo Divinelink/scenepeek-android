@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.details.navigation.details.MediaDetailsGraph
@@ -97,7 +98,7 @@ fun DetailsScreen(
 
       navigator.navigate(destination)
     },
-    onPersonClick = { navigator.navigate(PersonScreenDestination(id = it.id)) },
+    onPersonClick = { person -> navigator.navigate(PersonScreenDestination(person.map())) },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,

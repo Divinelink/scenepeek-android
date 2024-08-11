@@ -2,6 +2,7 @@ package com.andreolas.movierama.main.ui
 
 import com.andreolas.movierama.MainUiEvent
 import com.andreolas.movierama.MainUiState
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
@@ -75,7 +76,17 @@ class MainViewModelTest {
       .buildViewModel()
       .assertUiEvent(MainUiEvent.None)
       .onHandleDeeplink(url)
-      .assertUiEvent(MainUiEvent.NavigateToPersonDetails(PersonNavArguments(id = 693134)))
+      .assertUiEvent(
+        MainUiEvent.NavigateToPersonDetails(
+          PersonNavArguments(
+            id = 693134,
+            knownForDepartment = null,
+            name = null,
+            profilePath = null,
+            gender = Gender.NOT_SET,
+          ),
+        ),
+      )
       .onConsumeUiEvent()
       .assertUiEvent(MainUiEvent.None)
   }

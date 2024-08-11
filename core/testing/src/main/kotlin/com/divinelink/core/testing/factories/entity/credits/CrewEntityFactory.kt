@@ -14,6 +14,8 @@ object CrewEntityFactory {
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    gender = 2,
+    knownForDepartment = "Directing",
     creditId = "5bdaa68f92514153f500859f",
   )
 
@@ -26,6 +28,8 @@ object CrewEntityFactory {
     totalEpisodeCount = 3,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    knownForDepartment = "Camera",
+    gender = 0,
     creditId = "5bdaa7d90e0a2603c60086d9",
   )
 
@@ -38,6 +42,8 @@ object CrewEntityFactory {
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    knownForDepartment = "Camera",
+    gender = 0,
     creditId = "5bdaa3e40e0a2603b1008d3f",
   )
 
@@ -50,6 +56,8 @@ object CrewEntityFactory {
     totalEpisodeCount = 1,
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
     department = "Camera",
+    knownForDepartment = "Camera",
+    gender = 2,
     creditId = "5bdaa2d4c3a368078f007f5c",
   )
 

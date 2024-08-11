@@ -31,7 +31,6 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.details.similar.SIMILAR_MOVIES_SCROLLABLE_LIST
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -121,7 +120,7 @@ class DetailsScreenTest : ComposeTest() {
       )
 
     composeTestRule
-      .onNodeWithTag(SIMILAR_MOVIES_SCROLLABLE_LIST)
+      .onNodeWithTag(TestTags.Details.SIMILAR_MOVIES_LIST)
       .performScrollToNode(
         matcher = hasText(MediaItemFactory.MoviesList()[0].name),
       )

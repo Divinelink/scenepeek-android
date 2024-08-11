@@ -26,6 +26,7 @@ import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.R
 
@@ -48,9 +49,12 @@ fun CreditsItemCard(
     onClick = { onPersonClick(person) },
   ) {
     MovieImage(
-      modifier = Modifier,
       path = person.profilePath,
-      errorPlaceHolder = painterResource(id = R.drawable.core_ui_ic_person_placeholder),
+      errorPlaceHolder = if (person.gender == Gender.FEMALE) {
+        painterResource(id = R.drawable.core_ui_ic_female_person_placeholder)
+      } else {
+        painterResource(id = R.drawable.core_ui_ic_person_placeholder)
+      },
     )
 
     Spacer(modifier = Modifier.height(4.dp))
@@ -110,6 +114,7 @@ private fun CreditsItemCardPreview() {
             "Kevin Malone",
             totalEpisodes = 217,
           ),
+          knownForDepartment = "Acting",
           profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
         ),
         onPersonClick = {},

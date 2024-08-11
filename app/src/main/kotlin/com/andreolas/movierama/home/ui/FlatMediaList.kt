@@ -69,29 +69,30 @@ fun FlatMediaList(
     ) { search ->
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
-          movie = search,
-          onMovieItemClick = { onItemClick(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
+          media = search,
+          onMediaItemClick = { onItemClick(search) },
+          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Media.TV -> MediaItem(
-          movie = search,
-          onMovieItemClick = { onItemClick(search) },
-          onLikeMovieClick = { onMarkAsFavoriteClicked(search) },
+          media = search,
+          onMediaItemClick = { onItemClick(search) },
+          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
-        is MediaItem.Person -> {
-          CreditsItemCard(
-            // TODO FIX Duplicate model
-            person = Person(
-              id = search.id.toLong(),
-              name = search.name,
-              profilePath = search.posterPath,
-              role = PersonRole.Unknown,
-            ),
-            onPersonClick = {
-              onItemClick(search)
-            },
-          )
-        }
+        is MediaItem.Person -> CreditsItemCard(
+          // TODO FIX Duplicate model
+          person = Person(
+            id = search.id.toLong(),
+            name = search.name,
+            profilePath = search.posterPath,
+            gender = search.gender,
+            knownForDepartment = search.knownForDepartment,
+            role = PersonRole.Unknown,
+          ),
+          onPersonClick = {
+            onItemClick(search)
+          },
+        )
+
         MediaItem.Unknown -> {
           // Do nothing
         }

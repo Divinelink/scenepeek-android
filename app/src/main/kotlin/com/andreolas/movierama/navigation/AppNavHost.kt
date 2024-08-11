@@ -5,7 +5,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.andreolas.movierama.home.ui.HomeScreen
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.arguments.map
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.credits.ui.CreditsScreen
 import com.divinelink.feature.details.media.ui.DetailsScreen
@@ -86,9 +86,7 @@ fun AppNavHost(
             CreditsScreen(
               navigator = destinationsNavigator,
               onNavigateToPersonDetails = {
-                destinationsNavigator.navigate(
-                  PersonScreenDestination(PersonNavArguments(id = it)),
-                )
+                destinationsNavigator.navigate(PersonScreenDestination(it.map()))
               },
             )
           },

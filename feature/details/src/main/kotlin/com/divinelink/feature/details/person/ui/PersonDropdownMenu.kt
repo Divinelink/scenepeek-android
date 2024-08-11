@@ -67,6 +67,7 @@ private fun PersonDropdownMenuPreview() {
           profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
           gender = Gender.MALE,
           role = PersonRole.Unknown,
+          knownForDepartment = "Acting",
         ),
         expanded = true,
         onDismissDropdown = {},

@@ -13,13 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.ListPaddingValues
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
-
-const val SIMILAR_MOVIES_SCROLLABLE_LIST = "SIMILAR_MOVIES_LAZY_ROW_TAG"
 
 @Composable
 fun SimilarMoviesList(
@@ -28,33 +27,30 @@ fun SimilarMoviesList(
 ) {
   Column(
     modifier = Modifier
-      .padding(top = 16.dp, bottom = 16.dp)
+      .padding(vertical = MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
     Text(
       modifier = Modifier
-        .padding(start = 12.dp, end = 12.dp),
+        .padding(horizontal = MaterialTheme.dimensions.keyline_12),
       style = MaterialTheme.typography.titleLarge,
       fontWeight = FontWeight.Bold,
       text = stringResource(id = R.string.details__more_like_this),
     )
 
     LazyRow(
-      modifier = Modifier.testTag(SIMILAR_MOVIES_SCROLLABLE_LIST),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      modifier = Modifier.testTag(TestTags.Details.SIMILAR_MOVIES_LIST),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       contentPadding = ListPaddingValues,
     ) {
       items(
         items = movies,
-        key = {
-          it.id
-        },
+        key = { it.id },
       ) { similarMovie ->
-
         MediaItem(
-          movie = similarMovie,
-          onMovieItemClick = onSimilarMovieClicked,
-          onLikeMovieClick = {},
+          media = similarMovie,
+          onMediaItemClick = onSimilarMovieClicked,
+          onLikeMediaClick = {},
         )
       }
     }

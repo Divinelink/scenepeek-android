@@ -6,19 +6,24 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
+import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonUiState
 
 class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState.Success> {
   override val values: Sequence<PersonUiState.Success> = sequenceOf(
     PersonUiState.Success(
-      personDetails = PersonUiStateData.steveCarell,
+      personDetails = PersonDetailsUiState.Data.Visible(PersonUiStateData.steveCarell),
     ),
     // Sorry for making you dead Steve Carell, it's only for testing purposes!
     PersonUiState.Success(
-      personDetails = PersonUiStateData.steveCarell.copy(deathday = "2022-05-16"),
+      personDetails = PersonDetailsUiState.Data.Visible(
+        PersonUiStateData.steveCarell.copy(deathday = "2022-05-16"),
+      ),
     ),
     PersonUiState.Success(
-      personDetails = PersonUiStateData.steveCarell.copy(biography = null),
+      personDetails = PersonDetailsUiState.Data.Visible(
+        PersonUiStateData.steveCarell.copy(biography = null),
+      ),
     ),
   )
 
@@ -30,6 +35,7 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
         profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
         gender = Gender.MALE,
         role = PersonRole.Unknown,
+        knownForDepartment = "Acting",
       ),
       biography = LoremIpsum(50).values.joinToString(),
       birthday = "1962-08-16",
@@ -39,7 +45,6 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       alsoKnownAs = emptyList(),
       imdbId = "nm0136797",
       popularity = 77.108,
-      knownForDepartment = "Acting",
     )
   }
 }

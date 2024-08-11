@@ -4,12 +4,23 @@ CREATE TABLE seriesCast(
     originalName TEXT NOT NULL,
     profilePath TEXT,
     totalEpisodeCount INTEGER NOT NULL,
+    knownForDepartment TEXT,
+    gender INTEGER NOT NULL,
     aggregateCreditId INTEGER NOT NULL REFERENCES aggregateCredits(id),
     PRIMARY KEY (id, aggregateCreditId)
 );
 
 insertSeriesCast:
-INSERT INTO seriesCast(id, name, originalName, profilePath, totalEpisodeCount, aggregateCreditId)
+INSERT INTO seriesCast(
+  id,
+  name,
+  originalName,
+  profilePath,
+  totalEpisodeCount,
+  knownForDepartment,
+  gender,
+  aggregateCreditId
+)
 VALUES ?;
 
 CREATE VIEW seriesCastWithRole AS
@@ -19,6 +30,8 @@ SELECT
   sc.originalName AS castOriginalName,
   sc.profilePath AS castProfilePath,
   sc.totalEpisodeCount AS castTotalEpisodeCount,
+  sc.knownForDepartment AS castKnownForDepartment,
+  sc.gender AS castGender,
   sc.aggregateCreditId AS aggregateCreditId,
   scr.creditId AS roleCreditId,
   scr.character AS roleCharacter,

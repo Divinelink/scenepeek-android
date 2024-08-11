@@ -4,6 +4,8 @@ import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
+import com.divinelink.core.testing.factories.details.person.PersonFactory
 
 object AggregatedCreditsFactory {
 
@@ -51,6 +53,8 @@ object SeriesCastFactory {
       totalEpisodes = 217,
       creditId = "525730a9760ee3776a3447f1",
     ),
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
     profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
   )
 
@@ -62,6 +66,8 @@ object SeriesCastFactory {
       totalEpisodes = 210,
       creditId = "525730ab760ee3776a344a0b",
     ),
+    gender = Gender.FEMALE,
+    knownForDepartment = "Acting",
     profilePath = "/qHFidnMcFqUWdMFyjmXufBlYckd.jpg",
   )
 
@@ -73,6 +79,8 @@ object SeriesCastFactory {
       totalEpisodes = 203,
       creditId = "525730ab760ee3776a3449d5",
     ),
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
     profilePath = "/UBILHiRphJdlshvsyH920QSAhk.jpg",
   )
 
@@ -84,6 +92,8 @@ object SeriesCastFactory {
       totalEpisodes = 202,
       creditId = "525730ac760ee3776a344bfb",
     ),
+    gender = Gender.FEMALE,
+    knownForDepartment = "Acting",
     profilePath = "/wFXWKB2IUyB6Cu08PyovyBAm9WT.jpg",
   )
 
@@ -95,6 +105,8 @@ object SeriesCastFactory {
       totalEpisodes = 194,
       creditId = "525730ac760ee3776a344bc5",
     ),
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
     profilePath = "/72hNnta4igAn2cE6fDyKElHcZ09.jpg",
   )
 
@@ -106,6 +118,8 @@ object SeriesCastFactory {
       totalEpisodes = 193,
       creditId = "525730ab760ee3776a344a87",
     ),
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
     profilePath = "/9h3xlV5IYqKinlQCW1ouU7sjwWF.jpg",
   )
 
@@ -117,6 +131,8 @@ object SeriesCastFactory {
       totalEpisodes = 190,
       creditId = "525730ab760ee3776a344b03",
     ),
+    gender = Gender.FEMALE,
+    knownForDepartment = "Acting",
     profilePath = "/h9w9pQbiderRWAC2mi7spjzuIGz.jpg",
   )
 
@@ -128,6 +144,8 @@ object SeriesCastFactory {
       totalEpisodes = 188,
       creditId = "525730a9760ee3776a34474f",
     ),
+    gender = Gender.MALE,
+    knownForDepartment = "Acting",
     profilePath = "/rEDRAFYX5n2JKJh9EKILX42klA5.jpg",
   )
 }
@@ -143,200 +161,40 @@ object SeriesCrewListFactory {
   fun art() = SeriesCrewDepartment(
     department = "Art",
     crewList = listOf(
-      Person(
-        id = 2166017,
-        name = "Steve Rostine",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Set Decoration",
-          creditId = "5bdaa3990e0a2603b40089a6",
-          totalEpisodes = 4,
-          department = "Art",
-        ),
-      ),
-      Person(
-        id = 1844757,
-        name = "Philip D. Shea",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Property Master",
-          creditId = "5bdaa766c3a36807820082a8",
-          totalEpisodes = 3,
-          department = "Art",
-        ),
-      ),
-      Person(
-        id = 33562,
-        name = "Donald Lee Harris",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Production Design",
-          creditId = "5bdaafa2c3a368078b008d77",
-          totalEpisodes = 1,
-          department = "Art",
-        ),
-      ),
-      Person(
-        id = 2166018,
-        name = "Melody Melton",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Property Master",
-          creditId = "5bdaa3a29251415407007e49",
-          totalEpisodes = 1,
-          department = "Art",
-        ),
-      ),
+      PersonFactory.Art.steveRostine(),
+      PersonFactory.Art.philipDShea(),
+      PersonFactory.Art.donaldLeeHarris(),
+      PersonFactory.Art.melodyMelton(),
     ),
   )
 
   fun unsortedCameraDepartment() = SeriesCrewDepartment(
     department = "Camera",
     crewList = listOf(
-      Person(
-        id = 1215572,
-        name = "Randall Einhorn",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa68f92514153f500859f",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 1879373,
-        name = "Dale Alexander",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa7d90e0a2603c60086d9",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 2166021,
-        name = "Ron Nichols",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa3e40e0a2603b1008d3f",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 67864,
-        name = "Peter Smokler",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa2d4c3a368078f007f5c",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
+      PersonFactory.Camera.randallEinhorn(),
+      PersonFactory.Camera.daleAlexander(),
+      PersonFactory.Camera.ronNichols(),
+      PersonFactory.Camera.peterSmokler(),
     ),
   )
 
   fun camera() = SeriesCrewDepartment(
     department = "Camera",
     crewList = listOf(
-      Person(
-        id = 1215572,
-        name = "Randall Einhorn",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa68f92514153f500859f",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 1879373,
-        name = "Dale Alexander",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa7d90e0a2603c60086d9",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 2166021,
-        name = "Ron Nichols",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa3e40e0a2603b1008d3f",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 67864,
-        name = "Peter Smokler",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa2d4c3a368078f007f5c",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
+      PersonFactory.Camera.randallEinhorn(),
+      PersonFactory.Camera.daleAlexander(),
+      PersonFactory.Camera.ronNichols(),
+      PersonFactory.Camera.peterSmokler(),
     ),
   )
 
   fun sortedCameraDepartment() = SeriesCrewDepartment(
     department = "Camera",
     crewList = listOf(
-      Person(
-        id = 1879373,
-        name = "Dale Alexander",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa7d90e0a2603c60086d9",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 67864,
-        name = "Peter Smokler",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa2d4c3a368078f007f5c",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 1215572,
-        name = "Randall Einhorn",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Director of Photography",
-          creditId = "5bdaa68f92514153f500859f",
-          totalEpisodes = 3,
-          department = "Camera",
-        ),
-      ),
-      Person(
-        id = 2166021,
-        name = "Ron Nichols",
-        profilePath = null,
-        role = PersonRole.Crew(
-          job = "Key Grip",
-          creditId = "5bdaa3e40e0a2603b1008d3f",
-          totalEpisodes = 1,
-          department = "Camera",
-        ),
-      ),
+      PersonFactory.Camera.daleAlexander(),
+      PersonFactory.Camera.peterSmokler(),
+      PersonFactory.Camera.randallEinhorn(),
+      PersonFactory.Camera.ronNichols(),
     ),
   )
 
@@ -347,6 +205,7 @@ object SeriesCrewListFactory {
         id = 1325655,
         name = "Elinor Bardach",
         profilePath = null,
+        knownForDepartment = "Costume & Make-Up",
         role = PersonRole.Crew(
           job = "Costume Supervisor",
           creditId = "5bdaa36e92514153fb008795",
@@ -358,6 +217,7 @@ object SeriesCrewListFactory {
         id = 2166015,
         name = "Carey Bennett",
         profilePath = null,
+        knownForDepartment = "Costume & Make-Up",
         role = PersonRole.Crew(
           job = "Costume Designer",
           creditId = "5bdaa3650e0a2603bf008174",
@@ -369,6 +229,7 @@ object SeriesCrewListFactory {
         id = 1664353,
         name = "Cyndra Dunn",
         profilePath = null,
+        knownForDepartment = "Costume & Make-Up",
         role = PersonRole.Crew(
           job = "Key Hair Stylist",
           creditId = "5bdaa74d0e0a2603b4008cbf",
@@ -380,6 +241,7 @@ object SeriesCrewListFactory {
         id = 1543004,
         name = "Maria Valdivia",
         profilePath = null,
+        knownForDepartment = "Costume & Make-Up",
         role = PersonRole.Crew(
           job = "Key Hair Stylist",
           creditId = "5bdaa38cc3a3680772009017",

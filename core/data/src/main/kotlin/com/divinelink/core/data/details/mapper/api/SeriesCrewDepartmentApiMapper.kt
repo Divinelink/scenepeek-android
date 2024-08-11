@@ -3,6 +3,7 @@ package com.divinelink.core.data.details.mapper.api
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.model.credits.SeriesCrewApi
 
 /**
@@ -28,6 +29,8 @@ fun SeriesCrewApi.map() = Person(
   id = id,
   name = name,
   profilePath = profilePath,
+  gender = Gender.from(gender),
+  knownForDepartment = knownForDepartment,
   role = PersonRole.Crew(
     job = jobs.firstOrNull()?.job,
     creditId = jobs.firstOrNull()?.creditId,

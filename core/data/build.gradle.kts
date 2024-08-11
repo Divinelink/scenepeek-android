@@ -3,6 +3,14 @@ plugins {
   alias(libs.plugins.divinelink.android.hilt)
 }
 
+android {
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
+}
+
 dependencies {
   api(projects.core.model)
   api(projects.core.network)
@@ -12,5 +20,6 @@ dependencies {
 
   implementation(libs.kotlinx.datetime)
 
+  testImplementation(libs.kotlinx.serialization.json)
   testImplementation(projects.core.testing)
 }

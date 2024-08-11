@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
+import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory.toWzd
 import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
 import com.google.common.truth.Truth.assertThat
@@ -18,7 +19,7 @@ class PersonDetailsBuilderTest {
     assertThat(uiSections[0]).isEqualTo(
       PersonalInfoSectionData(
         title = UIText.ResourceText(R.string.feature_details_known_for_section),
-        value = UIText.StringText(personDetails.knownForDepartment!!),
+        value = UIText.StringText(personDetails.person.knownForDepartment!!),
       ),
     )
     assertThat(uiSections[1]).isEqualTo(
@@ -47,9 +48,9 @@ class PersonDetailsBuilderTest {
 
   @Test
   fun `test toUiSection know for section without known for department`() {
-    val personDetails = PersonDetailsFactory.steveCarell().copy(
-      knownForDepartment = null,
-    )
+    val personDetails = PersonDetailsFactory.steveCarell().toWzd {
+      withKnownForDepartment(null)
+    }
 
     val uiSections = personDetails.toUiSections()
 
@@ -123,7 +124,7 @@ class PersonDetailsBuilderTest {
     assertThat(uiSections[0]).isEqualTo(
       PersonalInfoSectionData(
         title = UIText.ResourceText(R.string.feature_details_known_for_section),
-        value = UIText.StringText(personDetails.knownForDepartment!!),
+        value = UIText.StringText(personDetails.person.knownForDepartment!!),
       ),
     )
     assertThat(uiSections[1]).isEqualTo(

@@ -124,6 +124,7 @@ private fun DetailsDropdownMenuPreview() {
             id = 123443321,
             name = "Forest Gump",
             profilePath = "BoxOfChocolates.jpg",
+            knownForDepartment = "Acting",
             role = PersonRole.Director,
           ),
           cast = listOf(),
