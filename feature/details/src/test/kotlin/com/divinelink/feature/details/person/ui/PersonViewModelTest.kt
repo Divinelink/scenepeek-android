@@ -1,7 +1,6 @@
 package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
-import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
@@ -40,7 +39,9 @@ class PersonViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        PersonUiState.Success(PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell())),
+        PersonUiState.Success(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
       )
   }
 
@@ -86,10 +87,10 @@ class PersonViewModelTest {
         uiStates = listOf(
           PersonUiState.Loading,
           PersonUiState.Success(
-            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+            personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
           PersonUiState.Success(
-            personDetails = PersonDetailsUiState.Visible(
+            personDetails = PersonDetailsUiState.Data.Visible(
               PersonDetailsFactory.steveCarell().copy(
                 person = PersonDetailsFactory.steveCarell().person.copy(name = "Michael Scarn"),
               ),
@@ -152,13 +153,13 @@ class PersonViewModelTest {
         uiStates = listOf(
           PersonUiState.Loading,
           PersonUiState.Success(
-            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+            personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
           PersonUiState.Success(
             credits = PersonCreditsUiState.Visible(
               knownFor = PersonCastCreditFactory.knownFor(),
             ),
-            personDetails = PersonDetailsUiState.Visible(PersonDetailsFactory.steveCarell()),
+            personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
         ),
       )

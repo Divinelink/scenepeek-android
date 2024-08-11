@@ -30,6 +30,8 @@ object TestTags {
     const val PERSONAL_DETAILS = "Person Personal Details"
     const val CONTENT_LIST = "Person Details Lazy List"
 
+    const val SHIMMERING_BIOGRAPHY_CONTENT = "Shimmering Biography Content"
+
     const val KNOWN_FOR_SECTION = "Person Known For Section"
     const val KNOWN_FOR_SECTION_LIST = "Person Known For Section Lazy List"
   }

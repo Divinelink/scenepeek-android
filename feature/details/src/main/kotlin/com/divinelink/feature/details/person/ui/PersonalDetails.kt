@@ -80,7 +80,9 @@ fun PersonalDetails(data: PersonDetailsUiState.Data) {
     )
     if (isLoading) {
       Column(
-        modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_12),
+        modifier = Modifier
+          .testTag(TestTags.Person.SHIMMERING_BIOGRAPHY_CONTENT)
+          .padding(horizontal = MaterialTheme.dimensions.keyline_12),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
         (0..2).forEach { _ ->
