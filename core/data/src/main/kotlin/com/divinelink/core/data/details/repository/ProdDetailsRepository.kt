@@ -1,6 +1,5 @@
 package com.divinelink.core.data.details.repository
 
-import com.divinelink.core.commons.di.ApplicationScope
 import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.data.details.mapper.api.map
 import com.divinelink.core.data.details.mapper.api.toSeriesCastEntity
@@ -33,7 +32,6 @@ import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -41,7 +39,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.measureTime
@@ -50,7 +47,6 @@ class ProdDetailsRepository @Inject constructor(
   private val mediaRemote: MediaService,
   private val creditsDao: CreditsDao,
   @IoDispatcher val dispatcher: CoroutineDispatcher,
-  @ApplicationScope private val scope: CoroutineScope,
 ) : DetailsRepository {
 
   override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
@@ -132,19 +128,10 @@ class ProdDetailsRepository @Inject constructor(
 
   private fun insertLocalAggregateCredits(aggregateCredits: AggregateCreditsApi) {
     creditsDao.insertAggregateCredits(aggregateCredits.id)
-
-    CoroutineScope(scope.coroutineContext + dispatcher).launch {
-      creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
-    }
-    CoroutineScope(scope.coroutineContext + dispatcher).launch {
-      creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
-    }
-    CoroutineScope(scope.coroutineContext + dispatcher).launch {
-      creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
-    }
-    CoroutineScope(scope.coroutineContext + dispatcher).launch {
-      creditsDao.insertCrew(aggregateCredits.toSeriesCrewEntity())
-    }
+    creditsDao.insertCastRoles(aggregateCredits.toSeriesCastRoleEntity())
+    creditsDao.insertCast(aggregateCredits.toSeriesCastEntity())
+    creditsDao.insertCrewJobs(aggregateCredits.toSeriesCrewJobEntity())
+    creditsDao.insertCrew(aggregateCredits.toSeriesCrewEntity())
   }
 
   private fun fetchLocalAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = creditsDao
@@ -156,12 +143,10 @@ class ProdDetailsRepository @Inject constructor(
   private fun fetchRemoteAggregateCredits(id: Long): Flow<Result<AggregateCredits>> =
     mediaRemote.fetchAggregatedCredits(id)
       .onEach { apiResponse ->
-        CoroutineScope(scope.coroutineContext + dispatcher).launch {
-          val duration = measureTime {
-            insertLocalAggregateCredits(apiResponse)
-          }
-          Timber.d("Inserting credits took $duration")
+        val duration = measureTime {
+          insertLocalAggregateCredits(apiResponse)
         }
+        Timber.d("Inserting credits took $duration")
       }
       .map { apiResponse ->
         Result.success(apiResponse.map())

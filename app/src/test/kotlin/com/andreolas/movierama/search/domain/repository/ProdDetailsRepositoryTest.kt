@@ -43,7 +43,6 @@ import com.divinelink.core.testing.service.TestMediaService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.Before
@@ -146,7 +145,6 @@ class ProdDetailsRepositoryTest {
       mediaRemote = mediaRemote.mock,
       creditsDao = creditsDao.mock,
       dispatcher = testDispatcher,
-      scope = TestScope(),
     )
   }
 
@@ -470,7 +468,6 @@ class ProdDetailsRepositoryTest {
       mediaRemote = mediaRemote.mock,
       creditsDao = defaultCreditDao,
       dispatcher = testDispatcher,
-      scope = TestScope(),
     )
 
     mediaRemote.mockFetchAggregateCredits(response = flowOf(creditsResponseApi))

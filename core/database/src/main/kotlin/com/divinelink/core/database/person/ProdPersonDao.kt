@@ -44,12 +44,16 @@ class ProdPersonDao @Inject constructor(
       )
   }
 
-  override fun insertPersonCastCredits(cast: List<PersonCastCreditEntity>) = cast.forEach {
-    database.personCastCreditEntityQueries.insertPersonCastCredit(it)
+  override fun insertPersonCastCredits(cast: List<PersonCastCreditEntity>) = database.transaction {
+    cast.forEach {
+      database.personCastCreditEntityQueries.insertPersonCastCredit(it)
+    }
   }
 
-  override fun insertPersonCrewCredits(crew: List<PersonCrewCreditEntity>) = crew.forEach {
-    database.personCrewCreditEntityQueries.insertPersonCrewCredit(it)
+  override fun insertPersonCrewCredits(crew: List<PersonCrewCreditEntity>) = database.transaction {
+    crew.forEach {
+      database.personCrewCreditEntityQueries.insertPersonCrewCredit(it)
+    }
   }
 
   override fun fetchPersonCombinedCredits(id: Long): Flow<PersonCombinedCreditsEntity?> {
