@@ -93,6 +93,10 @@ fun MovieApp(
                     restoreState = true
                   },
                 )
+                navigator.popBackStack(
+                  route = destination.direction,
+                  inclusive = false,
+                )
               },
               label = {
                 Text(text = stringResource(id = destination.titleTextId))
