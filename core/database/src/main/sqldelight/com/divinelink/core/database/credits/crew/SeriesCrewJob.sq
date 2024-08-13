@@ -8,5 +8,5 @@ CREATE TABLE seriesCrewJob(
 );
 
 insertCrewJob:
-INSERT INTO seriesCrewJob(creditId, job, episodeCount, crewId, aggregateCreditId)
+INSERT OR REPLACE INTO seriesCrewJob(creditId, job, episodeCount, crewId, aggregateCreditId)
 VALUES ?;
