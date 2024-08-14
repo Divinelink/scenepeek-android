@@ -1,19 +1,18 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.PreferenceStorage
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import timber.log.Timber
-import javax.inject.Inject
 
-open class CreateRequestTokenUseCase @Inject constructor(
+open class CreateRequestTokenUseCase(
   private val storage: PreferenceStorage,
   private val repository: SessionRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : UseCase<Unit, String>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : UseCase<Unit, String>(dispatcher.io) {
 
   override suspend fun execute(parameters: Unit): String {
     Timber.d("Creating new token")

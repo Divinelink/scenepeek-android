@@ -10,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -19,6 +18,7 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -26,7 +26,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun SharedTransitionScope.JellyseerrSettingsScreen(
   navigator: DestinationsNavigator,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: JellyseerrSettingsViewModel = hiltViewModel(),
+  viewModel: JellyseerrSettingsViewModel = koinViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsState().value
 

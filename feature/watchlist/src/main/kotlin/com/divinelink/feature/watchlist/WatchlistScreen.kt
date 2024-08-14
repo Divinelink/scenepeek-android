@@ -24,7 +24,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.EmptyContent
 import com.divinelink.core.ui.EmptyContentUiState
@@ -34,12 +33,13 @@ import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.watchlist.navigation.WatchlistGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination<WatchlistGraph>(start = true)
 fun WatchlistScreen(
-  viewModel: WatchlistViewModel = hiltViewModel(),
+  viewModel: WatchlistViewModel = koinViewModel(),
   onNavigateToAccountSettings: () -> Unit,
   onNavigateToMediaDetails: (DetailsNavArguments) -> Unit,
 ) {

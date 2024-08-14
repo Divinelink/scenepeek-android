@@ -9,9 +9,8 @@ import com.divinelink.core.network.session.model.DeleteSessionRequestApi
 import com.divinelink.core.network.session.model.DeleteSessionResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ProdSessionService @Inject constructor(private val restClient: RestClient) : SessionService {
+class ProdSessionService(private val restClient: RestClient) : SessionService {
 
   override suspend fun createRequestToken(): Result<CreateRequestTokenResponseApi> {
     val url = "${restClient.tmdbUrl}/authentication/token/new"

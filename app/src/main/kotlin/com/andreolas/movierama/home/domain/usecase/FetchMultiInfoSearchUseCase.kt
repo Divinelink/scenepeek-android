@@ -1,18 +1,16 @@
 package com.andreolas.movierama.home.domain.usecase
 
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
 
 data class MultiSearchResult(
   val query: String,
@@ -20,10 +18,10 @@ data class MultiSearchResult(
   val totalPages: Int,
 )
 
-open class FetchMultiInfoSearchUseCase @Inject constructor(
+open class FetchMultiInfoSearchUseCase(
   private val repository: MediaRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<MultiSearchRequestApi, MultiSearchResult>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<MultiSearchRequestApi, MultiSearchResult>(dispatcher.io) {
   override fun execute(parameters: MultiSearchRequestApi): Flow<Result<MultiSearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()
     val searchResult = repository.fetchMultiInfo(parameters)

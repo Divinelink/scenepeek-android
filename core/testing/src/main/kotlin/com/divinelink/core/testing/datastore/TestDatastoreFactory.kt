@@ -16,7 +16,7 @@ class TestDatastoreFactory {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private val testCoroutineScope = TestScope(testDispatcher)
+  private val testCoroutineScope = TestScope(testDispatcher.default)
 
   private val testContext: Context = InstrumentationRegistry.getInstrumentation().targetContext
 

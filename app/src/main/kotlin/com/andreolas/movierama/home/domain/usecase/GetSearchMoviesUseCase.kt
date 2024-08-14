@@ -1,27 +1,25 @@
 package com.andreolas.movierama.home.domain.usecase
 
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
 
 data class SearchResult(
   val query: String,
   val searchList: List<MediaItem.Media>,
 )
 
-open class GetSearchMoviesUseCase @Inject constructor(
+open class GetSearchMoviesUseCase(
   private val repository: MediaRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<SearchRequestApi, SearchResult>(dispatcher.io) {
   override fun execute(parameters: SearchRequestApi): Flow<Result<SearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()
     val searchMovies = repository.fetchSearchMovies(parameters)

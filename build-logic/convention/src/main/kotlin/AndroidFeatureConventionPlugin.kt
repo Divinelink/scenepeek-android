@@ -26,7 +26,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     with(target) {
       pluginManager.apply {
         apply("divinelink.android.library")
-        apply("divinelink.android.hilt")
+        apply("divinelink.android.koin")
         apply("com.google.devtools.ksp")
       }
       extensions.configure<LibraryExtension> {
@@ -40,7 +40,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("implementation", project(":core:ui"))
         add("implementation", project(":core:designsystem"))
 
-        add("implementation", libs.findLibrary("compose-hilt-navigation").get())
+        add("implementation", libs.findLibrary("koin.android.compose").get())
         add("implementation", libs.findLibrary("compose-runtime").get())
 
         add("implementation", libs.findLibrary("compose.destinations.core").get())
@@ -48,8 +48,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
         "ksp"(libs.findLibrary("compose.destinations.ksp").get())
 
-        //add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
-        //add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
+        // add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+        // add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
 
 //        add(
 //          "androidTestImplementation",

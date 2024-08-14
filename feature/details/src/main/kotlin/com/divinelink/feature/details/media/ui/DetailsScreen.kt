@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.map
@@ -24,6 +23,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 private const val BOTTOM_SHEET_DELAY = 200L
 
@@ -39,7 +39,7 @@ private const val BOTTOM_SHEET_DELAY = 200L
 @Composable
 fun DetailsScreen(
   navigator: DestinationsNavigator,
-  viewModel: DetailsViewModel = hiltViewModel(),
+  viewModel: DetailsViewModel = koinViewModel(),
   onNavigateToCredits: (CreditsNavArguments) -> Unit,
   onNavigateToAccountSettings: () -> Unit,
 ) {

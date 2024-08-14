@@ -16,19 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 @Destination<SettingsGraph>(navArgs = LoginScreenArgs::class)
 @SuppressLint("SetJavaScriptEnabled")
 fun LoginWebViewScreen(
   navigator: DestinationsNavigator,
-  viewModel: LoginWebViewViewModel = hiltViewModel(),
+  viewModel: LoginWebViewViewModel = koinViewModel(),
 ) {
   val context = LocalContext.current
 

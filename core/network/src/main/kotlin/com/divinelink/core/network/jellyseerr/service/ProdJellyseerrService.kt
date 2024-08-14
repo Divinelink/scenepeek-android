@@ -9,10 +9,8 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ProdJellyseerrService @Inject constructor(private val restClient: JellyseerrRestClient) :
-  JellyseerrService {
+class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : JellyseerrService {
 
   override suspend fun signInWithJellyfin(
     jellyfinLogin: JellyseerrLoginData,

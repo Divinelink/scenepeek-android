@@ -2,7 +2,7 @@ package com.divinelink.core.data.jellyseerr.repository
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.database.jellyseerr.mapper.map
 import com.divinelink.core.database.jellyseerr.mapper.mapToEntity
@@ -13,16 +13,14 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 import com.divinelink.core.network.jellyseerr.model.map
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.database.JellyseerrAccountDetailsQueries
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class ProdJellyseerrRepository @Inject constructor(
+class ProdJellyseerrRepository(
   private val service: JellyseerrService,
   private val queries: JellyseerrAccountDetailsQueries,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
+  val dispatcher: DispatcherProvider,
 ) : JellyseerrRepository {
 
   override suspend fun signInWithJellyfin(
@@ -50,7 +48,7 @@ class ProdJellyseerrRepository @Inject constructor(
   override fun getJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?> = queries
     .selectAll()
     .asFlow()
-    .mapToOneOrNull(context = dispatcher)
+    .mapToOneOrNull(context = dispatcher.io)
     .map { entity ->
       entity?.map()
     }

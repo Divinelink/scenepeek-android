@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 /**
  * Interface to implement activity theming via a ViewModel.
@@ -66,7 +65,7 @@ interface ThemedActivityDelegate {
   val blackBackgrounds: StateFlow<Boolean>
 }
 
-class ThemedActivityDelegateImpl @Inject constructor(
+class ThemedActivityDelegateImpl(
   @ApplicationScope externalScope: CoroutineScope,
   observeThemeUseCase: ObserveThemeModeUseCase,
   private val getThemeUseCase: GetThemeUseCase,

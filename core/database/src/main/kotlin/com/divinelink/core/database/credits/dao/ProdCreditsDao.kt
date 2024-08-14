@@ -3,7 +3,7 @@ package com.divinelink.core.database.credits.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrDefault
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.cacheExpiresAtToEpochSeconds
 import com.divinelink.core.database.credits.AggregateCredits
@@ -18,17 +18,15 @@ import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.database.credits.model.CastEntity
 import com.divinelink.core.database.credits.model.CrewEntity
 import com.divinelink.core.database.currentEpochSeconds
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
-import javax.inject.Inject
 
-class ProdCreditsDao @Inject constructor(
+class ProdCreditsDao(
   private val database: Database,
   private val clock: Clock,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
+  val dispatcher: DispatcherProvider,
 ) : CreditsDao {
 
   override fun insertAggregateCredits(aggregateCreditsId: Long) {
@@ -53,7 +51,7 @@ class ProdCreditsDao @Inject constructor(
       .asFlow()
       .mapToOneOrDefault(
         defaultValue = false,
-        context = dispatcher,
+        context = dispatcher.io,
       )
   }
 
@@ -86,7 +84,7 @@ class ProdCreditsDao @Inject constructor(
     .seriesCastQueries
     .fetchSeriesCastWithRoles(id)
     .asFlow()
-    .mapToList(dispatcher)
+    .mapToList(dispatcher.io)
     .map { listOfCast ->
       listOfCast.map(SeriesCastWithRole::toEntity)
     }
@@ -107,7 +105,7 @@ class ProdCreditsDao @Inject constructor(
     .seriesCrewQueries
     .fetchSeriesCrewWithJobs(aggregateCreditId)
     .asFlow()
-    .mapToList(dispatcher)
+    .mapToList(dispatcher.io)
     .map { listOfCrewWithJob ->
       listOfCrewWithJob.map(SeriesCrewWithJob::toEntity)
     }

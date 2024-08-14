@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   alias(libs.plugins.divinelink.android.library)
-  alias(libs.plugins.divinelink.android.hilt)
+  alias(libs.plugins.divinelink.android.koin)
 
+  alias(libs.plugins.ksp)
   alias(libs.plugins.sqldelight)
 }
 

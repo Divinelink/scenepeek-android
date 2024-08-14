@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.media.usecase
 
-import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.InvalidMediaTypeException
@@ -13,22 +12,21 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @Suppress("LongMethod")
-open class GetMediaDetailsUseCase @Inject constructor(
+open class GetMediaDetailsUseCase(
   private val repository: DetailsRepository,
   private val mediaRepository: MediaRepository,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<DetailsRequestApi, MediaDetailsResult>(dispatcher) {
+  val dispatcher: DispatcherProvider,
+) : FlowUseCase<DetailsRequestApi, MediaDetailsResult>(dispatcher.io) {
   override fun execute(parameters: DetailsRequestApi): Flow<Result<MediaDetailsResult>> =
     channelFlow {
       if (parameters == DetailsRequestApi.Unknown) {
@@ -53,7 +51,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
         mediaType = MediaType.from(requestApi.endpoint),
       )
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         repository.fetchMovieDetails(requestApi)
           .catch {
             Timber.e(it)
@@ -70,7 +68,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
           }
       }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         repository.fetchSimilarMovies(similarApi)
           .catch { Timber.e(it) }
           .collect { result ->
@@ -80,7 +78,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
           }
       }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         repository.fetchMovieReviews(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
@@ -91,7 +89,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
       }
 
       if (parameters is DetailsRequestApi.TV) {
-        launch(dispatcher) {
+        launch(dispatcher.io) {
           repository.fetchAggregateCredits(parameters.id.toLong())
             .catch { Timber.e(it) }
             .collect { result ->
@@ -102,7 +100,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
         }
       }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         repository.fetchVideos(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
@@ -115,7 +113,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
           }
       }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         fetchAccountMediaDetailsUseCase(
           MediaDetailsParams(
             id = requestApi.id,
@@ -130,7 +128,7 @@ open class GetMediaDetailsUseCase @Inject constructor(
           }
       }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         getMenuItemsUseCase(Unit)
           .catch { Timber.e(it) }
           .collect { result ->

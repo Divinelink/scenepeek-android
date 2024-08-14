@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.media.usecase
 
-import com.divinelink.core.commons.di.IoDispatcher
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsParams
@@ -10,16 +9,15 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-open class FetchAccountMediaDetailsUseCase @Inject constructor(
+open class FetchAccountMediaDetailsUseCase(
   private val sessionStorage: SessionStorage,
   private val repository: DetailsRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<MediaDetailsParams, AccountMediaDetails>(dispatcher) {
+  val dispatcher: DispatcherProvider,
+) : FlowUseCase<MediaDetailsParams, AccountMediaDetails>(dispatcher.io) {
   override fun execute(parameters: MediaDetailsParams): Flow<Result<AccountMediaDetails>> = flow {
     val sessionId = sessionStorage.sessionId
 

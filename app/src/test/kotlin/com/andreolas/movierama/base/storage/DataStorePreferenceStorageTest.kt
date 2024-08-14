@@ -9,7 +9,9 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.AfterTest
 import kotlin.test.Test
 
 @RunWith(RobolectricTestRunner::class)
@@ -18,6 +20,11 @@ class DataStorePreferenceStorageTest {
   private lateinit var storage: DataStorePreferenceStorage
 
   private val fakeDataStore = TestDatastoreFactory.create()
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
+  }
 
   @Test
   fun `test selectTheme sets selectedTheme`() = runTest {

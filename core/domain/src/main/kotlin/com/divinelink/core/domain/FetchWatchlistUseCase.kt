@@ -1,6 +1,6 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
@@ -8,18 +8,17 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.watchlist.WatchlistParameters
 import com.divinelink.core.model.watchlist.WatchlistResponse
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
-import javax.inject.Inject
 
-class FetchWatchlistUseCase @Inject constructor(
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
+class FetchWatchlistUseCase(
   private val sessionStorage: SessionStorage,
   private val accountRepository: AccountRepository,
-) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher.io) {
 
   override fun execute(parameters: WatchlistParameters): Flow<Result<WatchlistResponse>> = flow {
     val accountId = sessionStorage.accountId.first()

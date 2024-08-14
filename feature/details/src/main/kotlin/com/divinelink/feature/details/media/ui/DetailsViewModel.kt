@@ -18,7 +18,6 @@ import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
@@ -26,7 +25,7 @@ import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,11 +37,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 import com.divinelink.core.ui.R as uiR
 
-@HiltViewModel
-class DetailsViewModel @Inject constructor(
+class DetailsViewModel(
   getMediaDetailsUseCase: GetMediaDetailsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,

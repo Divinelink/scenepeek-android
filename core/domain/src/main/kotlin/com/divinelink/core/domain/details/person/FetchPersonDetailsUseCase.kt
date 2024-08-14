@@ -1,6 +1,6 @@
 package com.divinelink.core.domain.details.person
 
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
@@ -9,7 +9,6 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,22 +17,21 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 data class PersonDetailsParams(
   val id: Long,
   val knownForDepartment: String?,
 )
 
-class FetchPersonDetailsUseCase @Inject constructor(
+class FetchPersonDetailsUseCase(
   private val repository: PersonRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<PersonDetailsParams, PersonDetailsResult>(dispatcher) {
+  val dispatcher: DispatcherProvider,
+) : FlowUseCase<PersonDetailsParams, PersonDetailsResult>(dispatcher.io) {
 
   override fun execute(parameters: PersonDetailsParams): Flow<Result<PersonDetailsResult>> =
     channelFlow {
       if (parameters.knownForDepartment != null) {
-        launch(dispatcher) {
+        launch(dispatcher.io) {
           repository.fetchPersonDetails(parameters.id)
             .catch {
               Timber.e(it)
@@ -54,7 +52,7 @@ class FetchPersonDetailsUseCase @Inject constructor(
       }
 
       val asyncDetails = if (parameters.knownForDepartment == null) {
-        async(dispatcher) {
+        async(dispatcher.io) {
           repository.fetchPersonDetails(parameters.id)
             .catch {
               Timber.e(it)
@@ -77,7 +75,7 @@ class FetchPersonDetailsUseCase @Inject constructor(
 
       asyncDetails?.await()?.let { send(it) }
 
-      launch(dispatcher) {
+      launch(dispatcher.io) {
         val knownForDepartment = parameters.knownForDepartment
           ?: asyncDetails?.await()?.data?.personDetails?.person?.knownForDepartment
           ?: KnownForDepartment.Acting.value

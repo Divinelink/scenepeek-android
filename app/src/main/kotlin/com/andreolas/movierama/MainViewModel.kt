@@ -7,13 +7,10 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(themedActivityDelegate: ThemedActivityDelegate) :
+class MainViewModel(themedActivityDelegate: ThemedActivityDelegate) :
   ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
 

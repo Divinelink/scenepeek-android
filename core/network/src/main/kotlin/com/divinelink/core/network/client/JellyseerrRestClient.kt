@@ -4,9 +4,8 @@ import com.divinelink.core.datastore.EncryptedStorage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.cookies.HttpCookies
-import javax.inject.Inject
 
-class JellyseerrRestClient @Inject constructor(
+class JellyseerrRestClient(
   engine: HttpClientEngine,
   private val encryptedStorage: EncryptedStorage,
 ) {

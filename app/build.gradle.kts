@@ -3,6 +3,7 @@
 plugins {
   alias(libs.plugins.divinelink.android.application)
   alias(libs.plugins.divinelink.android.application.compose)
+  alias(libs.plugins.divinelink.android.koin)
 
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.android.application)
@@ -12,7 +13,6 @@ plugins {
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
   alias(libs.plugins.gms)
-  alias(libs.plugins.hilt)
   alias(libs.plugins.ktlint)
 }
 
@@ -127,7 +127,7 @@ dependencies {
   implementation(platform(libs.compose.bom))
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.ui.tooling.preview)
-  implementation(libs.compose.hilt.navigation)
+//  implementation(libs.compose.hilt.navigation)
 
   implementation(libs.compose.coil)
 
@@ -150,13 +150,14 @@ dependencies {
   implementation(libs.kotlinx.serialization.json)
 
   // DI
-  ksp(libs.dagger.hilt.compiler)
-  implementation(libs.dagger.hilt.android)
-  kspTest(libs.dagger.hilt.compiler)
-  testImplementation(libs.dagger.hilt.android.testing)
-  androidTestImplementation(libs.dagger.hilt.android.testing)
-  kspAndroidTest(libs.dagger.hilt.compiler)
-  kspAndroidTest(libs.dagger.hilt.android.compiler)
+//  ksp(libs.dagger.hilt.compiler)
+//  implementation(libs.dagger.hilt.android)
+//  kspTest(libs.dagger.hilt.compiler)
+//  testImplementation(libs.dagger.hilt.android.testing)
+//  androidTestImplementation(libs.dagger.hilt.android.testing)
+//  kspAndroidTest(libs.dagger.hilt.compiler)
+//  kspAndroidTest(libs.dagger.hilt.android.compiler)
+  implementation(libs.koin.android.compose)
 
   // Database
   implementation(libs.room.ktx) // TODO Remove room deps and add di for database

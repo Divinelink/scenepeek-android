@@ -1,6 +1,6 @@
 package com.divinelink.core.data.person.repository
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.data.person.credits.mapper.map
 import com.divinelink.core.data.person.credits.mapper.toEntityCast
 import com.divinelink.core.data.person.credits.mapper.toEntityCrew
@@ -11,19 +11,18 @@ import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.network.details.person.service.PersonService
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.Clock
 import timber.log.Timber
-import javax.inject.Inject
 
-class ProdPersonRepository @Inject constructor(
+class ProdPersonRepository(
   private val service: PersonService,
   private val dao: PersonDao,
   private val clock: Clock,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
+  val dispatcher: DispatcherProvider
 ) : PersonRepository {
 
   override fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>> = channelFlow {

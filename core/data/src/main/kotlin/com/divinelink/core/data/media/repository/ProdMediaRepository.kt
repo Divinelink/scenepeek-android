@@ -20,9 +20,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class ProdMediaRepository @Inject constructor(
+class ProdMediaRepository(
   private val mediaDao: MediaDao,
   private val mediaRemote: MediaService,
 ) : MediaRepository {

@@ -1,19 +1,18 @@
 package com.divinelink.core.domain.credits
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.credits.AggregateCredits
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class FetchCreditsUseCase @Inject constructor(
+class FetchCreditsUseCase(
   private val repository: DetailsRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Long, AggregateCredits>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<Long, AggregateCredits>(dispatcher.io) {
 
   override fun execute(parameters: Long): Flow<Result<AggregateCredits>> = flow {
     repository.fetchAggregateCredits(parameters).collect {

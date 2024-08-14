@@ -13,7 +13,6 @@ import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.Filter
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,10 +24,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
   private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
   private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,

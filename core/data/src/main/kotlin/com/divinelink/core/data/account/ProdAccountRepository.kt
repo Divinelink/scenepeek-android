@@ -8,10 +8,8 @@ import com.divinelink.core.network.media.model.tv.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class ProdAccountRepository @Inject constructor(private val remote: AccountService) :
-  AccountRepository {
+class ProdAccountRepository(private val remote: AccountService) : AccountRepository {
 
   override suspend fun fetchMoviesWatchlist(
     page: Int,

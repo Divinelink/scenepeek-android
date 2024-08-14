@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.feature.settings.R
@@ -18,6 +17,7 @@ import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsSc
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -26,7 +26,7 @@ import com.divinelink.core.ui.R as uiR
 fun SharedTransitionScope.AccountSettingsScreen(
   navigator: DestinationsNavigator,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  viewModel: AccountSettingsViewModel = hiltViewModel(),
+  viewModel: AccountSettingsViewModel = koinViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
 
