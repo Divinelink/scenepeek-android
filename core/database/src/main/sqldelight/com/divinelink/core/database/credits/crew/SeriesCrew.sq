@@ -13,7 +13,7 @@ CREATE TABLE seriesCrew (
 );
 
 insertCrew:
-INSERT INTO seriesCrew(
+INSERT OR REPLACE INTO seriesCrew(
   id,
   name,
   originalName,

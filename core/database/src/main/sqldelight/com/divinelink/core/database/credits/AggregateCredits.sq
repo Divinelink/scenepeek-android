@@ -7,5 +7,5 @@ checkIfExistAndNotExpired:
 SELECT EXISTS(SELECT 1 FROM aggregateCredits WHERE id = ? AND expiresAtEpochSeconds > ?);
 
 insert:
-INSERT INTO aggregateCredits (id, expiresAtEpochSeconds)
+INSERT OR REPLACE INTO aggregateCredits (id, expiresAtEpochSeconds)
 VALUES ?;

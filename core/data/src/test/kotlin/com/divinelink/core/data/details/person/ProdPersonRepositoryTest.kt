@@ -100,7 +100,6 @@ class ProdPersonRepositoryTest {
         val first = awaitItem().getOrNull()
         assertThat(first?.cast?.size).isEqualTo(124)
         assertThat(first?.crew?.size).isEqualTo(17)
-        awaitItem()
         expectNoEvents()
       }
     }

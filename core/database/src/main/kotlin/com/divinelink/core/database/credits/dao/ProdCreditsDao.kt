@@ -57,8 +57,10 @@ class ProdCreditsDao @Inject constructor(
       )
   }
 
-  override fun insertCast(cast: List<SeriesCast>) = cast.forEach { castMember ->
-    database.seriesCastQueries.insertSeriesCast(castMember)
+  override fun insertCast(cast: List<SeriesCast>) = database.transaction {
+    cast.forEach { castMember ->
+      database.seriesCastQueries.insertSeriesCast(castMember)
+    }
   }
 
   override fun fetchAllCredits(id: Long): Flow<AggregateCreditsEntity> {
@@ -74,8 +76,10 @@ class ProdCreditsDao @Inject constructor(
     }
   }
 
-  override fun insertCastRoles(roles: List<SeriesCastRole>) = roles.forEach { role ->
-    database.seriesCastRoleQueries.insertRole(seriesCastRole = role)
+  override fun insertCastRoles(roles: List<SeriesCastRole>) = database.transaction {
+    roles.forEach { role ->
+      database.seriesCastRoleQueries.insertRole(seriesCastRole = role)
+    }
   }
 
   override fun fetchAllCastWithRoles(id: Long): Flow<List<CastEntity>> = database
@@ -87,12 +91,16 @@ class ProdCreditsDao @Inject constructor(
       listOfCast.map(SeriesCastWithRole::toEntity)
     }
 
-  override fun insertCrew(crew: List<SeriesCrew>) = crew.forEach { crewMember ->
-    database.seriesCrewQueries.insertCrew(crewMember)
+  override fun insertCrew(crew: List<SeriesCrew>) = database.transaction {
+    crew.forEach { crewMember ->
+      database.seriesCrewQueries.insertCrew(crewMember)
+    }
   }
 
-  override fun insertCrewJobs(jobs: List<SeriesCrewJob>) = jobs.forEach { job ->
-    database.seriesCrewJobQueries.insertCrewJob(seriesCrewJob = job)
+  override fun insertCrewJobs(jobs: List<SeriesCrewJob>) = database.transaction {
+    jobs.forEach { job ->
+      database.seriesCrewJobQueries.insertCrewJob(seriesCrewJob = job)
+    }
   }
 
   override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<CrewEntity>> = database

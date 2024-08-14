@@ -8,5 +8,5 @@ CREATE TABLE seriesCastRole(
 );
 
 insertRole:
-INSERT INTO seriesCastRole(creditId, character, episodeCount, castId, aggregateCreditId)
+INSERT OR REPLACE INTO seriesCastRole(creditId, character, episodeCount, castId, aggregateCreditId)
 VALUES ?;
