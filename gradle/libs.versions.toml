@@ -1,5 +1,5 @@
 [versions]
-version-name = "0.4.1"
+version-name = "0.4.2"
 version-code = "9"
 
 firebase-appdistribution-gradle = "4.2.0"

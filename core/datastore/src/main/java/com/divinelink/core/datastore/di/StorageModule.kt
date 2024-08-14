@@ -7,6 +7,8 @@ import com.divinelink.core.datastore.EncryptedPreferenceStorage
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
@@ -18,15 +20,7 @@ val storageModule = module {
     DataStorePreferenceStorage(context.dataStore)
   }
 
-  single<EncryptedStorage> {
-    val context: Context = get()
-    val preferenceStorage: PreferenceStorage = get()
-    EncryptedPreferenceStorage(preferenceStorage, context)
-  }
+  singleOf(::EncryptedPreferenceStorage) { bind<EncryptedStorage>() }
 
-  single<SessionStorage> {
-    val storage: PreferenceStorage = get()
-    val encryptedStorage: EncryptedStorage = get()
-    SessionStorage(storage, encryptedStorage)
-  }
+  singleOf(::SessionStorage)
 }

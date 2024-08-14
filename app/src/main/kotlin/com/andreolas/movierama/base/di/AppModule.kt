@@ -14,6 +14,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import io.ktor.client.engine.HttpClientEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
@@ -49,13 +51,5 @@ val appModule = module {
 
   single<CoroutineScope> { CoroutineScope(SupervisorJob()) }
 
-  single<ThemedActivityDelegate> {
-    ThemedActivityDelegateImpl(
-      externalScope = get(),
-      observeThemeUseCase = get(),
-      getThemeUseCase = get(),
-      observeMaterialYouUseCase = get(),
-      observeBlackBackgroundsUseCase = get(),
-    )
-  }
+  singleOf(::ThemedActivityDelegateImpl) { bind<ThemedActivityDelegate>() }
 }

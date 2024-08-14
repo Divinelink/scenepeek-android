@@ -11,23 +11,23 @@ import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMa
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.ObserveMaterialYouModeUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
-import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 // TODO Transfer to domain module
 val settingsUseCaseModule = module {
 
-  singleOf(::SetThemeUseCase)
-  singleOf(::GetThemeUseCase)
-  singleOf(::GetAvailableThemesUseCase)
-  singleOf(::SetMaterialYouUseCase)
-  singleOf(::GetMaterialYouUseCase)
-  singleOf(::SetBlackBackgroundsUseCase)
-  singleOf(::GetBlackBackgroundsUseCase)
-  singleOf(::GetMaterialYouVisibleUseCase)
+  factoryOf(::SetThemeUseCase)
+  factoryOf(::GetThemeUseCase)
+  factoryOf(::GetAvailableThemesUseCase)
+  factoryOf(::SetMaterialYouUseCase)
+  factoryOf(::GetMaterialYouUseCase)
+  factoryOf(::SetBlackBackgroundsUseCase)
+  factoryOf(::GetBlackBackgroundsUseCase)
+  factoryOf(::GetMaterialYouVisibleUseCase)
 
-  singleOf(::GetBlackBackgroundsUseCase)
-  singleOf(::ObserveBlackBackgroundsUseCase)
-  singleOf(::ObserveThemeModeUseCase)
-  singleOf(::ObserveMaterialYouModeUseCase)
+  factoryOf(::GetBlackBackgroundsUseCase)
+  factoryOf(::ObserveBlackBackgroundsUseCase)
+  factoryOf(::ObserveThemeModeUseCase)
+  factoryOf(::ObserveMaterialYouModeUseCase)
 }

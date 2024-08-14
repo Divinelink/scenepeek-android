@@ -15,31 +15,32 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
 
   // Credits
-  factory { FetchCreditsUseCase(get(), get()) }
+  factoryOf(::FetchCreditsUseCase)
 
   // Details - Person
-  factory { FetchPersonDetailsUseCase(get(), get()) }
+  factoryOf(::FetchPersonDetailsUseCase)
 
   // Jellyseerr
-  factory { GetJellyseerrDetailsUseCase(get(), get(), get()) }
-  factory { LoginJellyseerrUseCase(get(), get(), get()) }
-  factory { LogoutJellyseerrUseCase(get(), get(), get()) }
-  factory { RequestMediaUseCase(get(), get(), get()) }
+  factoryOf(::GetJellyseerrDetailsUseCase)
+  factoryOf(::LoginJellyseerrUseCase)
+  factoryOf(::LogoutJellyseerrUseCase)
+  factoryOf(::RequestMediaUseCase)
 
   // Session
-  factory { CreateSessionUseCase(get(), get(), get()) }
-  factory { LogoutUseCase(get(), get(), get()) }
-  factory { ObserveSessionUseCase(get(), get()) }
+  factoryOf(::CreateSessionUseCase)
+  factoryOf(::LogoutUseCase)
+  factoryOf(::ObserveSessionUseCase)
 
-  factory { CreateRequestTokenUseCase(get(), get(), get()) }
-  factory { FetchWatchlistUseCase(get(), get(), get()) }
-  factory { GetAccountDetailsUseCase(get(), get(), get()) }
-  factory { GetDropdownMenuItemsUseCase(get(), get()) }
-  factory { HandleAuthenticationRequestUseCase(get(), get(), get(), get()) }
-  factory { MarkAsFavoriteUseCase(get(), get()) }
+  factoryOf(::CreateRequestTokenUseCase)
+  factoryOf(::FetchWatchlistUseCase)
+  factoryOf(::GetAccountDetailsUseCase)
+  factoryOf(::GetDropdownMenuItemsUseCase)
+  factoryOf(::HandleAuthenticationRequestUseCase)
+  factoryOf(::MarkAsFavoriteUseCase)
 }

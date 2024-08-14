@@ -6,25 +6,13 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
-  single<AccountRepository> { ProdAccountRepository(remote = get()) }
 
-  single<JellyseerrRepository> {
-    ProdJellyseerrRepository(
-      service = get(),
-      queries = get(),
-      dispatcher = get(),
-    )
-  }
-
-  single<PersonRepository> {
-    ProdPersonRepository(
-      service = get(),
-      dao = get(),
-      clock = get(),
-      dispatcher = get(),
-    )
-  }
+  singleOf(::ProdAccountRepository) { bind<AccountRepository>() }
+  singleOf(::ProdJellyseerrRepository) { bind<JellyseerrRepository>() }
+  singleOf(::ProdPersonRepository) { bind<PersonRepository>() }
 }
