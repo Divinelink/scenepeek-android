@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 plugins {
   alias(libs.plugins.divinelink.android.application)
   alias(libs.plugins.divinelink.android.application.compose)
@@ -127,7 +125,6 @@ dependencies {
   implementation(platform(libs.compose.bom))
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.ui.tooling.preview)
-//  implementation(libs.compose.hilt.navigation)
 
   implementation(libs.compose.coil)
 
@@ -149,14 +146,6 @@ dependencies {
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.kotlinx.serialization.json)
 
-  // DI
-//  ksp(libs.dagger.hilt.compiler)
-//  implementation(libs.dagger.hilt.android)
-//  kspTest(libs.dagger.hilt.compiler)
-//  testImplementation(libs.dagger.hilt.android.testing)
-//  androidTestImplementation(libs.dagger.hilt.android.testing)
-//  kspAndroidTest(libs.dagger.hilt.compiler)
-//  kspAndroidTest(libs.dagger.hilt.android.compiler)
   implementation(libs.koin.android.compose)
 
   // Database
