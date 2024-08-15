@@ -2,6 +2,7 @@ plugins {
   alias(libs.plugins.divinelink.android.library)
   alias(libs.plugins.divinelink.android.koin)
 
+  alias(libs.plugins.ksp)
   alias(libs.plugins.sqldelight)
 }
 
@@ -15,6 +16,7 @@ dependencies {
 
   implementation(libs.room.ktx)
   implementation(libs.room.runtime)
+  ksp(libs.room.compiler)
 
   api(libs.sqldelight.android)
   api(libs.sqldelight.coroutines)
