@@ -20,7 +20,7 @@ data class MultiSearchResult(
 
 open class FetchMultiInfoSearchUseCase(
   private val repository: MediaRepository,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<MultiSearchRequestApi, MultiSearchResult>(dispatcher.io) {
   override fun execute(parameters: MultiSearchRequestApi): Flow<Result<MultiSearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()

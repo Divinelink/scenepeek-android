@@ -15,7 +15,7 @@ import com.divinelink.core.domain.di.useCaseModule
 import com.divinelink.core.network.di.remoteModule
 import com.divinelink.feature.settings.di.settingsUseCaseModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.startKoin
 
 class Application : Application() {
   override fun onCreate() {

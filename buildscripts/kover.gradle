@@ -31,6 +31,7 @@ kover {
               "*BuildConfig*",
               "*Module*",
 
+              "*Service*",
               "*Activity*",
               "*.BuildConfig",
               "*.BR",

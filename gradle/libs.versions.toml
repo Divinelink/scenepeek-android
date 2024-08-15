@@ -30,18 +30,18 @@ datastore = '1.1.1'
 encrypted-prefs = '1.1.0-alpha04'
 
 # Multithreading
-kotlinx-coroutines = '1.8.1'
+kotlinx-coroutines = '1.9.0-RC'
 
 # Network & Serialization
 ktor = "2.3.8"
-kotlinx-serialization = "1.5.1"
+kotlinx-serialization = "1.7.1"
 
 # Depedency Injection
 koin = "4.0.0-RC1"
 
 # Compose
 compose-bom = "2024.06.00"
-compose-foundation = "1.7.0-beta04"
+compose-foundation = "1.7.0-beta07"
 compose-destinations = "2.1.0-beta09"
 material3 = "1.2.1"
 
@@ -63,9 +63,8 @@ androidx-compose-ui-test = "1.6.8"
 ui-automator = "2.3.0"
 
 # Mockers
-mockito = "5.11.0"
-mockito-kotlin = "5.3.1"
-mockk = "1.13.2"
+mockito = "5.12.0"
+mockito-kotlin = "5.4.0"
 
 [libraries]
 
@@ -118,6 +117,7 @@ ktor-serialization-kotlinx-json = { group = 'io.ktor', name = 'ktor-serializatio
 kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-serialization-json', version.ref = 'kotlinx-serialization' }
 
 # Depedency Injection
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
@@ -167,7 +167,6 @@ ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref =
 # Mockers
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

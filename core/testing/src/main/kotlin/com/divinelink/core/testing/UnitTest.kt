@@ -1,3 +1,5 @@
 package com.divinelink.core.testing
 
-open class UnitTest
+import org.koin.test.KoinTest
+
+open class UnitTest : KoinTest

@@ -60,6 +60,7 @@ fun WatchlistScreen(
   }
 
   AppScaffold(
+    modifier = Modifier.testTag(TestTags.Watchlist.WATCHLIST_SCREEN),
     topBar = { scrollBehavior, topAppBarColors ->
       TopAppBar(
         colors = topAppBarColors,

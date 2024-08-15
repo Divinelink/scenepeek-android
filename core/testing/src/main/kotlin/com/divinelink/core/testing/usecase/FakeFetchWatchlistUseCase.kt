@@ -20,26 +20,14 @@ class FakeFetchWatchlistUseCase {
   }
 
   private fun mockFailure() {
-    whenever(
-      mock.invoke(any()),
-    ).thenReturn(
-      flowOf(Result.failure(Exception())),
-    )
+    whenever(mock.invoke(any())).thenReturn(flowOf(Result.failure(Exception())))
   }
 
   fun mockSuccess(response: Result<WatchlistResponse>) {
-    whenever(
-      mock.invoke(any()),
-    ).thenReturn(
-      flowOf(response),
-    )
+    whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 
   fun mockSuccess(response: Flow<Result<WatchlistResponse>>) {
-    whenever(
-      mock.invoke(any()),
-    ).thenReturn(
-      response,
-    )
+    whenever(mock.invoke(any())).thenReturn(response)
   }
 }

@@ -160,7 +160,6 @@ dependencies {
   testImplementation(libs.mockito)
   testImplementation(libs.mockito.kotlin)
   testImplementation(libs.kotlinx.coroutines.test)
-  testImplementation(libs.mockk)
   testImplementation(libs.truth)
   testImplementation(libs.turbine)
   testImplementation(libs.androidx.test.ktx)
