@@ -19,8 +19,6 @@ import com.divinelink.core.designsystem.theme.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface PreferenceStorage {
   suspend fun selectTheme(theme: String)
@@ -59,10 +57,8 @@ interface PreferenceStorage {
   val jellyseerrSignInMethod: Flow<String?>
 }
 
-@Singleton
-class DataStorePreferenceStorage @Inject constructor(
-  private val dataStore: DataStore<Preferences>,
-) : PreferenceStorage {
+class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
+  PreferenceStorage {
 
   companion object {
     const val PREFS_NAME = "application_preferences"

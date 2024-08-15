@@ -8,9 +8,8 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import javax.inject.Inject
 
-class RestClient @Inject constructor(engine: HttpClientEngine) {
+class RestClient(engine: HttpClientEngine) {
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
   private val authToken = BuildConfig.TMDB_AUTH_TOKEN
 

@@ -5,9 +5,8 @@ import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ProdPersonService @Inject constructor(private val restClient: RestClient) : PersonService {
+class ProdPersonService(private val restClient: RestClient) : PersonService {
 
   override fun fetchPersonDetails(id: Long): Flow<PersonDetailsApi> = flow {
     val url = "${restClient.tmdbUrl}/person/$id"

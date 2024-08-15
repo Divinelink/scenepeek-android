@@ -9,7 +9,6 @@ import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,10 +16,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class PersonViewModel @Inject constructor(
+class PersonViewModel(
   fetchPersonDetailsUseCase: FetchPersonDetailsUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {

@@ -5,9 +5,8 @@ import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ProdAccountService @Inject constructor(private val restClient: RestClient) : AccountService {
+class ProdAccountService(private val restClient: RestClient) : AccountService {
 
   override fun fetchMoviesWatchlist(
     page: Int,

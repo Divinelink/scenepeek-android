@@ -1,6 +1,6 @@
 package com.divinelink.feature.details.media.usecase
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.repository.DetailsRepository
@@ -8,11 +8,10 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
-import javax.inject.Inject
 
 data class SubmitRatingParameters(
   val id: Int,
@@ -20,11 +19,11 @@ data class SubmitRatingParameters(
   val rating: Int,
 )
 
-open class SubmitRatingUseCase @Inject constructor(
+open class SubmitRatingUseCase(
   private val sessionStorage: SessionStorage,
   private val repository: DetailsRepository,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<SubmitRatingParameters, Unit>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<SubmitRatingParameters, Unit>(dispatcher.io) {
   override fun execute(parameters: SubmitRatingParameters): Flow<Result<Unit>> = flow {
     val sessionId = sessionStorage.sessionId
 

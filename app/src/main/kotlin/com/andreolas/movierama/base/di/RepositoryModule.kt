@@ -6,25 +6,13 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.data.session.repository.ProdSessionRepository
 import com.divinelink.core.data.session.repository.SessionRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-/**
- * This module is responsible for defining the creation of any repository dependencies used in the
- * application.
- */
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+val appRepositoryModule = module {
 
-  @Binds
-  abstract fun bindMovieRepository(moviesRepository: ProdMediaRepository): MediaRepository
-
-  @Binds
-  abstract fun bindDetailsRepository(moviesRepository: ProdDetailsRepository): DetailsRepository
-
-  @Binds
-  abstract fun bindSessionRepository(sessionRepository: ProdSessionRepository): SessionRepository
+  singleOf(::ProdMediaRepository) { bind<MediaRepository>() }
+  singleOf(::ProdDetailsRepository) { bind<DetailsRepository>() }
+  singleOf(::ProdSessionRepository) { bind<SessionRepository>() }
 }

@@ -1,49 +1,21 @@
 package com.divinelink.core.commons.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Qualifier
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatcherModule {
-  @DefaultDispatcher
-  @Provides
-  fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
-
-  @IoDispatcher
-  @Provides
-  fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-  @MainDispatcher
-  @Provides
-  fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
-
-  @MainImmediateDispatcher
-  @Provides
-  fun providesMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
-}
+import org.koin.dsl.module
 
 @Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class DefaultDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class IoDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class MainDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class MainImmediateDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
 annotation class ApplicationScope
+
+val dispatcherModule = module {
+
+  single<DispatcherProvider> {
+    object : DispatcherProvider {
+      override val main: CoroutineDispatcher = Dispatchers.Main
+      override val default: CoroutineDispatcher = Dispatchers.Default
+      override val io: CoroutineDispatcher = Dispatchers.IO
+      override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
+    }
+  }
+}

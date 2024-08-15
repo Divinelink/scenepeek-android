@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -12,17 +11,16 @@ import androidx.compose.runtime.collectAsState
 import com.andreolas.movierama.ui.MovieApp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.Theme
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalAnimationApi
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-  private val viewModel: MainViewModel by viewModels()
+  private val viewModel: MainViewModel by viewModel()
 
-  override fun onNewIntent(intent: Intent?) {
+  override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
-    if (intent != null && intent.action == Intent.ACTION_VIEW) {
+    if (intent.action == Intent.ACTION_VIEW) {
       viewModel.handleDeepLink(intent.data?.toString())
     }
   }

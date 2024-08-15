@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.ui.components.scaffold.AppScaffold
@@ -22,6 +21,7 @@ import com.divinelink.feature.credits.R
 import com.divinelink.feature.credits.navigation.CreditsGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 import com.divinelink.core.ui.R as uiR
 
 // TODO Check we could add deep link
@@ -33,7 +33,7 @@ import com.divinelink.core.ui.R as uiR
 )
 fun CreditsScreen(
   navigator: DestinationsNavigator,
-  viewModel: CreditsViewModel = hiltViewModel(),
+  viewModel: CreditsViewModel = koinViewModel(),
   onNavigateToPersonDetails: (Person) -> Unit,
 ) {
   val uiState = viewModel.uiState.collectAsState().value

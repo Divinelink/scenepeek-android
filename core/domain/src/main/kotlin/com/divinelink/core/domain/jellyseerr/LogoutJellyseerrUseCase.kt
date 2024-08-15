@@ -1,21 +1,20 @@
 package com.divinelink.core.domain.jellyseerr
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.SessionStorage
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
-import javax.inject.Inject
 
-open class LogoutJellyseerrUseCase @Inject constructor(
+open class LogoutJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val sessionStorage: SessionStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, String>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<Unit, String>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<String>> = flow {
     val address = sessionStorage.storage.jellyseerrAddress.first()

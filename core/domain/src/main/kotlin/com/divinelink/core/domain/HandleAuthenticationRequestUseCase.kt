@@ -1,14 +1,13 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.session.tokenIsApproved
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 /**
  * Use case that handles the authentication request.
@@ -18,12 +17,12 @@ import javax.inject.Inject
  * In any case, it clears the token from the session storage when the request is either
  * approved or denied.
  */
-class HandleAuthenticationRequestUseCase @Inject constructor(
+class HandleAuthenticationRequestUseCase(
   private val storage: PreferenceStorage,
   private val sessionStorage: SessionStorage,
   private val createSessionUseCase: CreateSessionUseCase,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : UseCase<String, Unit>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : UseCase<String, Unit>(dispatcher.io) {
 
   override suspend fun execute(parameters: String) {
     val token = storage.token.first() ?: return

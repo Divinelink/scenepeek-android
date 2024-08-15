@@ -2,18 +2,17 @@ package com.andreolas.movierama.fakes.usecase
 
 import com.andreolas.movierama.home.domain.usecase.GetSearchMoviesUseCase
 import com.andreolas.movierama.home.domain.usecase.SearchResult
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @Deprecated("Use FakeFetchMultiInfoSearch instead")
 class FakeGetSearchMoviesUseCase {
 
-  val mock: GetSearchMoviesUseCase = mockk()
+  val mock: GetSearchMoviesUseCase = mock()
 
   fun mockFetchSearchMovies(response: Result<SearchResult>) {
-    coEvery {
-      mock.invoke(any())
-    } returns flowOf(response)
+    whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }

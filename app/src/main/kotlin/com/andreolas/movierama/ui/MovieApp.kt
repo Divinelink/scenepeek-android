@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andreolas.movierama.MainUiEvent
 import com.andreolas.movierama.MainUiState
+import com.andreolas.movierama.R
 import com.andreolas.movierama.navigation.AppNavHost
 import com.andreolas.movierama.navigation.TopLevelDestination
 import com.divinelink.core.ui.components.LoadingContent
@@ -105,12 +106,18 @@ fun MovieApp(
                 if (selected) {
                   Icon(
                     imageVector = destination.selectedIcon,
-                    contentDescription = null,
+                    contentDescription = stringResource(
+                      id = R.string.top_level_navigation_content_description_selected,
+                      stringResource(id = destination.titleTextId),
+                    ),
                   )
                 } else {
                   Icon(
                     imageVector = destination.unselectedIcon,
-                    contentDescription = null,
+                    contentDescription = stringResource(
+                      id = R.string.top_level_navigation_content_description_unselected,
+                      stringResource(id = destination.titleTextId),
+                    ),
                   )
                 }
               },

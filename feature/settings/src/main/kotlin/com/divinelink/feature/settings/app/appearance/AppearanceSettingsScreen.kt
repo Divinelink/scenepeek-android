@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
@@ -15,12 +14,13 @@ import com.divinelink.feature.settings.components.SettingsSwitchItem
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 @Destination<SettingsGraph>
 fun AppearanceSettingsScreen(
   navigator: DestinationsNavigator,
-  viewModel: AppearanceSettingsViewModel = hiltViewModel(),
+  viewModel: AppearanceSettingsViewModel = koinViewModel(),
 ) {
   val viewState by viewModel.uiState.collectAsState()
 

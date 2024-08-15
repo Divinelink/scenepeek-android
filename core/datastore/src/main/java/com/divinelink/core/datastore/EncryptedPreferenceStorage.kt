@@ -4,12 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface EncryptedStorage {
   suspend fun setTmdbAuthToken(key: String)
@@ -24,10 +21,9 @@ interface EncryptedStorage {
   val jellyseerrAuthCookie: String?
 }
 
-@Singleton
-class EncryptedPreferenceStorage @Inject constructor(
+class EncryptedPreferenceStorage(
   private val preferenceStorage: PreferenceStorage,
-  @ApplicationContext val context: Context,
+  val context: Context,
 ) : EncryptedStorage {
 
   private var masterKey: MasterKey = MasterKey

@@ -1,18 +1,16 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 
 @Suppress("ThrowingExceptionsWithoutMessageOrCause")
-open class MarkAsFavoriteUseCase @Inject constructor(
+open class MarkAsFavoriteUseCase(
   private val repository: MediaRepository,
-  @IoDispatcher dispatcher: CoroutineDispatcher,
-) : UseCase<MediaItem.Media, Unit>(dispatcher) {
+  dispatcher: DispatcherProvider,
+) : UseCase<MediaItem.Media, Unit>(dispatcher.io) {
   override suspend fun execute(parameters: MediaItem.Media) {
     val isFavorite = repository.checkIfMediaIsFavorite(
       id = parameters.id,

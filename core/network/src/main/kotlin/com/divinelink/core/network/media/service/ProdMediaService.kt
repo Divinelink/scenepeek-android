@@ -24,9 +24,8 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequest
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ProdMediaService @Inject constructor(private val restClient: RestClient) : MediaService {
+class ProdMediaService(private val restClient: RestClient) : MediaService {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/movie/popular?"

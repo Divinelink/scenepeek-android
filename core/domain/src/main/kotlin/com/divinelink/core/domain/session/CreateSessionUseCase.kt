@@ -1,19 +1,18 @@
 package com.divinelink.core.domain.session
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
+import com.divinelink.core.commons.domain.DispatcherProvider
 
-class CreateSessionUseCase @Inject constructor(
+class CreateSessionUseCase(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : UseCase<String, Unit>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : UseCase<String, Unit>(dispatcher.io) {
 
   override suspend fun execute(parameters: String) {
     val result = repository.createSession(CreateSessionRequestApi(parameters))

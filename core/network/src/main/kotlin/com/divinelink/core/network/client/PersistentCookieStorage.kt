@@ -6,13 +6,12 @@ import io.ktor.http.Cookie
 import io.ktor.http.CookieEncoding
 import io.ktor.http.Url
 import io.ktor.util.date.GMTDate
-import javax.inject.Inject
 
 /**
  * A [CookiesStorage] implementation that stores cookies in an encrypted storage.
  */
 
-class PersistentCookieStorage @Inject constructor(val storage: EncryptedStorage) : CookiesStorage {
+class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
   override suspend fun get(requestUrl: Url): List<Cookie> {
     val cookies = mutableListOf<Cookie>()
 

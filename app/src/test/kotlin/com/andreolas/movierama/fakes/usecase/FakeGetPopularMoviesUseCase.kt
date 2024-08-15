@@ -2,30 +2,21 @@ package com.andreolas.movierama.fakes.usecase
 
 import com.andreolas.movierama.home.domain.usecase.GetPopularMoviesUseCase
 import com.divinelink.core.data.media.repository.MediaListResult
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class FakeGetPopularMoviesUseCase {
 
-  /**
-   * For reasons unknown for now, Mockito wasn't working when I had to emit flows using a mock.
-   * I tried many things. Using mockk seems to work for now. I'll have to get back on that.
-   * I guess it's a good thing I'm using a Mock Wrapper so that I can replace them quickly in the future!
-   * :)
-   */
-  val mock: GetPopularMoviesUseCase = mockk()
+  val mock: GetPopularMoviesUseCase = mock()
 
   fun mockFetchPopularMovies(response: Flow<MediaListResult>) {
-    coEvery {
-      mock.invoke(any())
-    } returns response
+    whenever(mock.invoke(any())).thenReturn(response)
   }
 
   fun mockFetchPopularMovies(response: MediaListResult) {
-    coEvery {
-      mock.invoke(any())
-    } returns flowOf(response)
+    whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }

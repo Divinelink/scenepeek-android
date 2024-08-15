@@ -13,7 +13,6 @@ import com.divinelink.feature.settings.app.appearance.usecase.black.backgrounds.
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMaterialYouVisibleUseCase
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,10 +21,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AppearanceSettingsViewModel @Inject constructor(
+class AppearanceSettingsViewModel(
   val setThemeUseCase: SetThemeUseCase,
   getThemeUseCase: GetThemeUseCase,
   getAvailableThemesUseCase: GetAvailableThemesUseCase,

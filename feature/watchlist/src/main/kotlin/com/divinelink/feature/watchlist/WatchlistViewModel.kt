@@ -8,17 +8,14 @@ import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.watchlist.WatchlistParameters
 import com.divinelink.core.model.watchlist.WatchlistResponse
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-@HiltViewModel
-class WatchlistViewModel @Inject constructor(
+class WatchlistViewModel(
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val fetchWatchlistUseCase: FetchWatchlistUseCase,
 ) : ViewModel() {

@@ -3,29 +3,27 @@ package com.divinelink.core.database.person
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import com.divinelink.core.commons.di.IoDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
-import javax.inject.Inject
 
-class ProdPersonDao @Inject constructor(
+class ProdPersonDao(
   private val clock: Clock,
   private val database: Database,
-  @IoDispatcher private val dispatcher: CoroutineDispatcher,
+  private val dispatcher: DispatcherProvider,
 ) : PersonDao {
 
   override fun fetchPersonById(id: Long): Flow<PersonEntity?> = database
     .personEntityQueries
     .fetchPersonById(id)
     .asFlow()
-    .mapToOneOrNull(context = dispatcher)
+    .mapToOneOrNull(context = dispatcher.io)
 
   override fun insertPerson(person: PersonEntity) = database
     .personEntityQueries
@@ -78,23 +76,23 @@ class ProdPersonDao @Inject constructor(
     .personCreditsEntityQueries
     .fetchPersonCredits(id)
     .asFlow()
-    .mapToOneOrNull(context = dispatcher)
+    .mapToOneOrNull(context = dispatcher.io)
 
   private fun fetchPersonCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
     .personCastCreditEntityQueries
     .fetchPersonCastCredit(id)
     .asFlow()
-    .mapToList(context = dispatcher)
+    .mapToList(context = dispatcher.io)
 
   override fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
     .personCastCreditEntityQueries
     .fetchPopularPersonCastCredits(id)
     .asFlow()
-    .mapToList(context = dispatcher)
+    .mapToList(context = dispatcher.io)
 
   private fun fetchPersonCrewCredits(id: Long): Flow<List<PersonCrewCreditEntity>> = database
     .personCrewCreditEntityQueries
     .fetchPersonCrewCredit(id)
     .asFlow()
-    .mapToList(context = dispatcher)
+    .mapToList(context = dispatcher.io)
 }

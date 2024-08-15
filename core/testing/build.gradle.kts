@@ -37,6 +37,9 @@ dependencies {
 
   implementation(libs.ktor.client.mock)
 
+  api(libs.koin.test)
+//  implementation(libs.koin.android)
+
   api(libs.datastore)
   api(libs.datastore.core)
   api(libs.datastore.preferences)

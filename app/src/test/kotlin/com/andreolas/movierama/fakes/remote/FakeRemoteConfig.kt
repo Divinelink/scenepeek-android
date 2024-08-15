@@ -1,63 +1,45 @@
 package com.andreolas.movierama.fakes.remote
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import io.mockk.coEvery
-import io.mockk.mockk
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class FakeRemoteConfig {
 
-  val mock: FirebaseRemoteConfig = mockk()
+  val mock: FirebaseRemoteConfig = mock()
 
   fun mockFetchAndActivate(response: Boolean) {
-    coEvery {
-      mock.fetchAndActivate().isSuccessful
-    } returns response
+    whenever(mock.fetchAndActivate()).thenReturn(mock())
 
-    coEvery {
-      mock.fetchAndActivate().isComplete
-    } returns true
+    whenever(mock.fetchAndActivate().isSuccessful).thenReturn(response)
 
-    coEvery {
-      mock.fetchAndActivate().result
-    } returns true
+    whenever(mock.fetchAndActivate().isComplete).thenReturn(true)
 
-    coEvery {
-      mock.fetchAndActivate().isCanceled
-    } returns false
+    whenever(mock.fetchAndActivate().result).thenReturn(true)
 
-    coEvery {
-      mock.fetchAndActivate().exception
-    } returns null
+    whenever(mock.fetchAndActivate().isCanceled).thenReturn(false)
+
+    whenever(mock.fetchAndActivate().exception).thenReturn(null)
   }
 
   fun mockException(exception: Exception) {
-    coEvery {
-      mock.fetchAndActivate().isSuccessful
-    } returns true
+    whenever(mock.fetchAndActivate()).thenReturn(mock())
 
-    coEvery {
-      mock.fetchAndActivate().isComplete
-    } returns true
+    whenever(mock.fetchAndActivate().isSuccessful).thenReturn(true)
 
-    coEvery {
-      mock.fetchAndActivate().result
-    } returns false
+    whenever(mock.fetchAndActivate().isComplete).thenReturn(true)
 
-    coEvery {
-      mock.fetchAndActivate().isCanceled
-    } returns true
+    whenever(mock.fetchAndActivate().result).thenReturn(false)
 
-    coEvery {
-      mock.fetchAndActivate().exception
-    } returns exception
+    whenever(mock.fetchAndActivate().isCanceled).thenReturn(true)
+
+    whenever(mock.fetchAndActivate().exception).thenReturn(exception)
   }
 
   fun mockGetApiKey(
     key: String,
     response: String,
   ) {
-    coEvery {
-      mock.getString(key)
-    } returns response
+    whenever(mock.getString(key)).thenReturn(response)
   }
 }

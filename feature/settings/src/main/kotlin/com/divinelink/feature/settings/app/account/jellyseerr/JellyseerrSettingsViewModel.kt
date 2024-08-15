@@ -15,7 +15,6 @@ import com.divinelink.core.model.jellyseerr.loginParams
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -25,11 +24,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import java.net.ConnectException
 import java.net.UnknownHostException
-import javax.inject.Inject
 import com.divinelink.core.ui.R as uiR
 
-@HiltViewModel
-class JellyseerrSettingsViewModel @Inject constructor(
+class JellyseerrSettingsViewModel(
   private val logoutJellyseerrUseCase: LogoutJellyseerrUseCase,
   getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
   private val loginJellyseerrUseCase: LoginJellyseerrUseCase,

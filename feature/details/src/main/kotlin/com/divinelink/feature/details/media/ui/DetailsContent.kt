@@ -121,6 +121,7 @@ fun DetailsContent(
 
   Scaffold(
     modifier = modifier
+      .testTag(TestTags.Details.CONTENT_SCAFFOLD)
       .navigationBarsPadding()
       .nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {

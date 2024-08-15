@@ -1,23 +1,22 @@
 package com.divinelink.core.domain
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.AccountDetails
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class GetAccountDetailsUseCase @Inject constructor(
+class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, AccountDetails>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<Unit, AccountDetails>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = flow {
     val sessionId = sessionStorage.sessionId

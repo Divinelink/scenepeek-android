@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.ui.TestTags
@@ -29,6 +28,7 @@ import com.divinelink.feature.details.screens.destinations.DetailsScreenDestinat
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 @Destination<PersonGraph>(
@@ -41,7 +41,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 )
 fun PersonScreen(
   navigator: DestinationsNavigator,
-  viewModel: PersonViewModel = hiltViewModel(),
+  viewModel: PersonViewModel = koinViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsState().value
   var showDropdownMenu by remember { mutableStateOf(false) }

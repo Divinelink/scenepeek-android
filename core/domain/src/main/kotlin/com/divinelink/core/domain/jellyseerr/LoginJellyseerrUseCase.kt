@@ -1,23 +1,22 @@
 package com.divinelink.core.domain.jellyseerr
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
-import javax.inject.Inject
 
-open class LoginJellyseerrUseCase @Inject constructor(
+open class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val storage: PreferenceStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher.io) {
 
   override fun execute(parameters: JellyseerrLoginParams?): Flow<Result<JellyseerrAccountDetails>> =
     flow {

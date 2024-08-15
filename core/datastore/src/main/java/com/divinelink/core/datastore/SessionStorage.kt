@@ -2,11 +2,8 @@ package com.divinelink.core.datastore
 
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SessionStorage @Inject constructor(
+class SessionStorage(
   val storage: PreferenceStorage,
   val encryptedStorage: EncryptedStorage,
 ) {

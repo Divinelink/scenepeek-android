@@ -1,18 +1,17 @@
 package com.divinelink.core.domain.session
 
-import com.divinelink.core.commons.di.IoDispatcher
+
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.PreferenceStorage
-import kotlinx.coroutines.CoroutineDispatcher
+import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class ObserveSessionUseCase @Inject constructor(
+class ObserveSessionUseCase(
   private val storage: PreferenceStorage,
-  @IoDispatcher val dispatcher: CoroutineDispatcher,
-) : FlowUseCase<Unit, Boolean>(dispatcher) {
+  val dispatcher: DispatcherProvider
+) : FlowUseCase<Unit, Boolean>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<Boolean>> = flow {
     storage.hasSession.collect { hasSession ->
