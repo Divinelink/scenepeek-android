@@ -9,4 +9,6 @@ interface PersonRepository {
   fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>>
 
   fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>>
+
+  fun fetchPersonChanges(id: Long): Flow<Result<List<PersonDetails>>>
 }

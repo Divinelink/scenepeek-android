@@ -1,5 +1,6 @@
 package com.divinelink.core.network.details.person.service
 
+import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.client.RestClient
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
@@ -18,5 +19,11 @@ class ProdPersonService(private val restClient: RestClient) : PersonService {
     val url = "${restClient.tmdbUrl}/person/$id/combined_credits"
 
     emit(restClient.get<PersonCreditsApi>(url = url))
+  }
+
+  override fun fetchPersonChanges(id: Long): Flow<ChangesResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/person/$id/changes"
+
+    emit(restClient.get(url = url))
   }
 }
