@@ -2,6 +2,7 @@ package com.divinelink.core.commons.extensions
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
@@ -57,4 +58,31 @@ fun calculateAge(
   }
 
   return age
+}
+
+fun String.calculateFourteenDayRange(clock: Clock = Clock.System): List<Pair<String, String>> {
+  val startInstant = Instant.fromEpochSeconds(this.toLong())
+
+  val startDate = startInstant.toLocalDateTime(TimeZone.currentSystemDefault()).date
+  val currentDate = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+  val periods = mutableListOf<Pair<String, String>>()
+
+  var periodStartDate = startDate
+
+  while (periodStartDate <= currentDate) {
+    // Calculate the end date for the current period (14 days after the start date)
+    val periodEndDate = (periodStartDate + DatePeriod(days = 14)).coerceAtMost(currentDate)
+
+    periods.add(
+      Pair(
+        periodStartDate.toString(),
+        periodEndDate.toString(),
+      ),
+    )
+
+    periodStartDate = periodEndDate + DatePeriod(days = 1)
+  }
+
+  return periods
 }

@@ -62,4 +62,20 @@ class StringExtensionsTest {
 
     assertThat(result).isEqualTo(25)
   }
+
+  @Test
+  fun `test calculateFourteenDayRange`() {
+    val timestamp = ClockFactory.augustFirst2021().now().epochSeconds.toString()
+
+    val result = timestamp.calculateFourteenDayRange(
+      clock = ClockFactory.septemberSecond2021(), // 2021-09-02
+    )
+
+    val expected = listOf(
+      Pair("2021-08-01", "2021-08-15"),
+      Pair("2021-08-16", "2021-08-30"),
+      Pair("2021-08-31", "2021-09-02"),
+    )
+    assertThat(result).isEqualTo(expected)
+  }
 }
