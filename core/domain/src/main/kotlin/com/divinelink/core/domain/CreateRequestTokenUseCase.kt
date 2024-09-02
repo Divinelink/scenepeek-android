@@ -1,17 +1,16 @@
 package com.divinelink.core.domain
 
-
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.PreferenceStorage
-import com.divinelink.core.commons.domain.DispatcherProvider
 import timber.log.Timber
 
-open class CreateRequestTokenUseCase(
+class CreateRequestTokenUseCase(
   private val storage: PreferenceStorage,
   private val repository: SessionRepository,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : UseCase<Unit, String>(dispatcher.io) {
 
   override suspend fun execute(parameters: Unit): String {

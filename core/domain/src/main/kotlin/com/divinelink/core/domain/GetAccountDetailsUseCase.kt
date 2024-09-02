@@ -1,6 +1,5 @@
 package com.divinelink.core.domain
 
-
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, AccountDetails>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = flow {

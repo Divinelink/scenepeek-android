@@ -1,6 +1,5 @@
 package com.divinelink.core.domain
 
-
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
@@ -21,7 +20,7 @@ class HandleAuthenticationRequestUseCase(
   private val storage: PreferenceStorage,
   private val sessionStorage: SessionStorage,
   private val createSessionUseCase: CreateSessionUseCase,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : UseCase<String, Unit>(dispatcher.io) {
 
   override suspend fun execute(parameters: String) {

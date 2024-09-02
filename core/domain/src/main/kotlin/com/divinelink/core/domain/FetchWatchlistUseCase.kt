@@ -1,6 +1,5 @@
 package com.divinelink.core.domain
 
-
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.last
 class FetchWatchlistUseCase(
   private val sessionStorage: SessionStorage,
   private val accountRepository: AccountRepository,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher.io) {
 
   override fun execute(parameters: WatchlistParameters): Flow<Result<WatchlistResponse>> = flow {
