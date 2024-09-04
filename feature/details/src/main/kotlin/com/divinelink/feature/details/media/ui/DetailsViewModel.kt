@@ -345,18 +345,21 @@ class DetailsViewModel(
             )
           }
         }.onFailure {
-          ErrorHandler.create(it).on(409) {
-            setSnackbarMessage(
-              UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
-            )
-          }.otherwise {
-            setSnackbarMessage(
-              UIText.ResourceText(
-                R.string.feature_details_jellyseerr_request_failed,
-                viewState.value.mediaDetails?.title ?: "",
-              ),
-            )
-          }.handle()
+          ErrorHandler.create(it) {
+            on(409) {
+              setSnackbarMessage(
+                text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+              )
+            }
+            otherwise {
+              setSnackbarMessage(
+                text = UIText.ResourceText(
+                  R.string.feature_details_jellyseerr_request_failed,
+                  viewState.value.mediaDetails?.title ?: "",
+                ),
+              )
+            }
+          }
         }
       }
       .launchIn(viewModelScope)

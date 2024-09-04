@@ -2,9 +2,9 @@ package com.divinelink.core.commons
 
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.google.common.truth.Truth.assertThat
-import kotlin.test.Test
 import java.net.ConnectException
 import java.net.UnknownHostException
+import kotlin.test.Test
 
 class ErrorHandlerTest {
 
@@ -14,18 +14,17 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(InvalidStatusException(500))
-      .on(500) {
+    ErrorHandler.create(InvalidStatusException(500)) {
+      on(500) {
         actionFor500Invoked = true
       }
-      .on(404) {
+      on(404) {
         actionFor404Invoked = true
       }
-      .otherwise {
+      otherwise {
         actionForOtherErrorInvoked = true
       }
-      .handle()
-
+    }
     assertThat(actionFor500Invoked).isTrue()
     assertThat(actionForOtherErrorInvoked).isFalse()
     assertThat(actionFor404Invoked).isFalse()
@@ -37,17 +36,17 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(InvalidStatusException(404))
-      .on(500) {
+    ErrorHandler.create(InvalidStatusException(404)) {
+      on(500) {
         actionFor500Invoked = true
       }
-      .on(404) {
+      on(404) {
         actionFor404Invoked = true
       }
-      .otherwise {
+      otherwise {
         actionForOtherErrorInvoked = true
       }
-      .handle()
+    }
 
     assertThat(actionFor500Invoked).isFalse()
     assertThat(actionFor404Invoked).isTrue()
@@ -60,17 +59,17 @@ class ErrorHandlerTest {
     var actionFor404Invoked = false
     var actionForOtherErrorInvoked = false
 
-    ErrorHandler.create(InvalidStatusException(400))
-      .on(500) {
+    ErrorHandler.create(InvalidStatusException(400)) {
+      on(500) {
         actionFor500Invoked = true
       }
-      .on(404) {
+      on(404) {
         actionFor404Invoked = true
       }
-      .otherwise {
+      otherwise {
         actionForOtherErrorInvoked = true
       }
-      .handle()
+    }
 
     assertThat(actionFor500Invoked).isFalse()
     assertThat(actionFor404Invoked).isFalse()
@@ -82,14 +81,14 @@ class ErrorHandlerTest {
     var actionFor500Invoked = false
     var actionFor404Invoked = false
 
-    ErrorHandler.create(Exception("Some error with code 500"))
-      .on(500) {
+    ErrorHandler.create(Exception("Some error with code 500")) {
+      on(500) {
         actionFor500Invoked = true
       }
-      .on(404) {
+      on(404) {
         actionFor404Invoked = true
       }
-      .handle()
+    }
 
     assertThat(actionFor500Invoked).isFalse()
     assertThat(actionFor404Invoked).isFalse()
@@ -100,14 +99,14 @@ class ErrorHandlerTest {
     var actionForConnectExceptionInvoked = false
     var actionForFooExceptionInvoked = false
 
-    ErrorHandler.create(Exception("Error"))
-      .on<ConnectException> {
+    ErrorHandler.create(Exception("Error")) {
+      on<ConnectException> {
         actionForConnectExceptionInvoked = true
       }
-      .on<FooException> {
+      on<FooException> {
         actionForFooExceptionInvoked = true
       }
-      .handle()
+    }
 
     assertThat(actionForConnectExceptionInvoked).isFalse()
     assertThat(actionForFooExceptionInvoked).isFalse()
@@ -118,14 +117,14 @@ class ErrorHandlerTest {
     var actionForConnectExceptionInvoked = false
     var actionForFooExceptionInvoked = false
 
-    ErrorHandler.create(ConnectException())
-      .on<ConnectException> {
+    ErrorHandler.create(ConnectException()) {
+      on<ConnectException> {
         actionForConnectExceptionInvoked = true
       }
-      .on<FooException> {
+      on<FooException> {
         actionForFooExceptionInvoked = true
       }
-      .handle()
+    }
 
     assertThat(actionForConnectExceptionInvoked).isTrue()
     assertThat(actionForFooExceptionInvoked).isFalse()
@@ -137,17 +136,17 @@ class ErrorHandlerTest {
     var actionForFooExceptionInvoked = false
     var otherwiseActionInvoked = false
 
-    ErrorHandler.create(Exception(UnknownHostException()))
-      .on<ConnectException> {
+    ErrorHandler.create(Exception(UnknownHostException())) {
+      on<ConnectException> {
         actionForConnectExceptionInvoked = true
       }
-      .on<FooException> {
+      on<FooException> {
         actionForFooExceptionInvoked = true
       }
-      .otherwise {
+      otherwise {
         otherwiseActionInvoked = true
       }
-      .handle()
+    }
 
     assertThat(actionForConnectExceptionInvoked).isFalse()
     assertThat(actionForFooExceptionInvoked).isFalse()
