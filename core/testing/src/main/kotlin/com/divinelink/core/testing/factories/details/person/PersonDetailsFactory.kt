@@ -4,6 +4,7 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.entity.person.BIOGRAPHY
 
 object PersonDetailsFactory {
@@ -42,6 +43,7 @@ object PersonDetailsFactory {
     ),
     imdbId = "nm0136797",
     popularity = 77.108,
+    insertedAt = ClockFactory.augustFifteenth2021().now().epochSeconds.toString(),
   )
 
   class PersonDetailsWzd(private var personDetails: PersonDetails) {

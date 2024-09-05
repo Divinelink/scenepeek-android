@@ -78,4 +78,44 @@ class StringExtensionsTest {
     )
     assertThat(result).isEqualTo(expected)
   }
+
+  @Test
+  fun `test isDayToday when is the same day`() {
+    val result = "2021-08-01".isDateToday(
+      clock = ClockFactory.augustFirst2021(),
+    )
+
+    assertThat(result).isTrue()
+  }
+
+  @Test
+  fun `test isDayToday when is not the same day`() {
+    val result = "2021-08-01".isDateToday(
+      clock = ClockFactory.augustFifteenth2021(), // 2021-08-15
+    )
+
+    assertThat(result).isFalse()
+  }
+
+  @Test
+  fun `test isInstantToday when is the same day`() {
+    val timestamp = ClockFactory.augustFirst2021().now().epochSeconds.toString()
+
+    val result = timestamp.isInstantToday(
+      clock = ClockFactory.augustFirst2021(),
+    )
+
+    assertThat(result).isTrue()
+  }
+
+  @Test
+  fun `test isInstantToday when is not the same day`() {
+    val timestamp = ClockFactory.augustFirst2021().now().epochSeconds.toString()
+
+    val result = timestamp.isInstantToday(
+      clock = ClockFactory.augustFifteenth2021(), // 2021-08-15
+    )
+
+    assertThat(result).isFalse()
+  }
 }

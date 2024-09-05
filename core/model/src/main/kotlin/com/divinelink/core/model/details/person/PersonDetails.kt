@@ -13,6 +13,7 @@ data class PersonDetails(
   val alsoKnownAs: List<String>,
   val imdbId: String?,
   val popularity: Double,
+  val insertedAt: String,
 ) {
   val currentAge = birthday?.let { birthday -> calculateAge(birthday) }
   val ageAtDeath = deathday?.let { deathday ->
@@ -31,6 +32,7 @@ data class PersonDetails(
       alsoKnownAs = emptyList(),
       imdbId = null,
       popularity = 0.0,
+      insertedAt = "-1",
     )
   }
 }

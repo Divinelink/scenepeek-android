@@ -9,18 +9,18 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonUiState
 
-class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState.Success> {
-  override val values: Sequence<PersonUiState.Success> = sequenceOf(
-    PersonUiState.Success(
+class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState> {
+  override val values: Sequence<PersonUiState> = sequenceOf(
+    PersonUiState(
       personDetails = PersonDetailsUiState.Data.Visible(PersonUiStateData.steveCarell),
     ),
     // Sorry for making you dead Steve Carell, it's only for testing purposes!
-    PersonUiState.Success(
+    PersonUiState(
       personDetails = PersonDetailsUiState.Data.Visible(
         PersonUiStateData.steveCarell.copy(deathday = "2022-05-16"),
       ),
     ),
-    PersonUiState.Success(
+    PersonUiState(
       personDetails = PersonDetailsUiState.Data.Visible(
         PersonUiStateData.steveCarell.copy(biography = null),
       ),
@@ -45,6 +45,7 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       alsoKnownAs = emptyList(),
       imdbId = "nm0136797",
       popularity = 77.108,
+      insertedAt = "1642185600",
     )
   }
 }

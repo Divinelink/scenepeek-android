@@ -86,3 +86,19 @@ fun String.calculateFourteenDayRange(clock: Clock = Clock.System): List<Pair<Str
 
   return periods
 }
+
+/**
+ * Check if the string in format "yyyy-MM-dd" is today's date
+ */
+fun String.isDateToday(clock: Clock = Clock.System): Boolean =
+  this == clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
+
+/**
+ * Check if timestamp is today's date
+ */
+fun String.isInstantToday(clock: Clock = Clock.System): Boolean {
+  val instant = Instant.fromEpochSeconds(this.toLong())
+  val date = instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+  return date == clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+}

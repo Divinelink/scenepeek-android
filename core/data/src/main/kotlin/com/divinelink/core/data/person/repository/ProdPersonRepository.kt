@@ -11,9 +11,11 @@ import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.network.details.person.service.PersonService
+import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import timber.log.Timber
 
@@ -55,7 +57,10 @@ class ProdPersonRepository(
     }
   }
 
-  override fun fetchPersonChanges(id: Long): Flow<Result<List<PersonDetails>>> {
-    TODO("Not yet implemented")
-  }
+  override fun fetchPersonChanges(
+    id: Long,
+    params: ChangesParameters,
+  ): Flow<Result<Any>> = service
+    .fetchPersonChanges(id, params)
+    .map { Result.success(it) }
 }

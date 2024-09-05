@@ -3,6 +3,7 @@ package com.divinelink.core.network.details.person.service
 import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
+import com.divinelink.core.network.media.model.changes.ChangesParameters
 import com.divinelink.core.testing.factories.api.details.person.PersonCastCreditApiFactory
 import com.divinelink.core.testing.factories.api.details.person.PersonCrewCreditApiFactory
 import com.divinelink.core.testing.factories.api.details.person.PersonDetailsApiFactory
@@ -62,7 +63,14 @@ class ProdPersonServiceTest {
 
     service = ProdPersonService(testRestClient.restClient)
 
-    val changesResponseApi = service.fetchPersonChanges(id = 4495).single()
+    val changesResponseApi = service.fetchPersonChanges(
+      id = 4495,
+      body = ChangesParameters(
+        page = 1,
+        startDate = "2023-03-01",
+        endDate = "2023-03-15",
+      ),
+    ).single()
 
     assertThat(changesResponseApi.changes.size).isEqualTo(13)
   }

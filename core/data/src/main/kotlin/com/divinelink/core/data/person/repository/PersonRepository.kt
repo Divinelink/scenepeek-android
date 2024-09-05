@@ -2,6 +2,7 @@ package com.divinelink.core.data.person.repository
 
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.Flow
 
 interface PersonRepository {
@@ -10,5 +11,8 @@ interface PersonRepository {
 
   fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>>
 
-  fun fetchPersonChanges(id: Long): Flow<Result<List<PersonDetails>>>
+  fun fetchPersonChanges(
+    id: Long,
+    params: ChangesParameters,
+  ): Flow<Result<Any>>
 }

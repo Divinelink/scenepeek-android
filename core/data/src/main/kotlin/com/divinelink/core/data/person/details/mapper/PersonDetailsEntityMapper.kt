@@ -23,4 +23,5 @@ fun PersonEntity.map() = PersonDetails(
   alsoKnownAs = emptyList(), // TODO Implement
   imdbId = imdbId,
   popularity = popularity,
+  insertedAt = insertedAt,
 )
