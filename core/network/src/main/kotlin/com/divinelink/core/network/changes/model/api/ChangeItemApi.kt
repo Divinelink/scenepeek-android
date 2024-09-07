@@ -1,6 +1,6 @@
 package com.divinelink.core.network.changes.model.api
 
-import com.divinelink.core.network.changes.model.serializer.ChangeValue
+import com.divinelink.core.model.change.ChangeValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

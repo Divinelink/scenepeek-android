@@ -2,14 +2,16 @@ package com.divinelink.core.domain
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.commons.extensions.calculateFourteenDayRange
 import com.divinelink.core.commons.extensions.isDateToday
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.database.person.PersonDao
-import com.divinelink.core.network.changes.model.serializer.ChangeValue
+import com.divinelink.core.domain.change.PersonChangesActionFactory
+import com.divinelink.core.model.change.Change
+import com.divinelink.core.model.change.ChangeValue
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
 import kotlinx.datetime.Clock
 import timber.log.Timber
 
@@ -21,8 +23,11 @@ class FetchChangesUseCase(
 ) : UseCase<Long, Result<List<ChangeValue>>>(dispatcher.io) {
 
   override suspend fun execute(parameters: Long): Result<List<ChangeValue>> {
-    personDao.fetchPersonById(parameters).collectLatest {
-      val dateRange = it?.insertedAt?.calculateFourteenDayRange(clock)
+    personDao.fetchPersonById(parameters).collectLatest { person ->
+      val changes: MutableList<Change> = mutableListOf()
+
+//      val dateRange = person?.insertedAt?.calculateFourteenDayRange(clock)
+      val dateRange = "1717620904".calculateFourteenDayRange(clock)
 
       dateRange?.let { range ->
         range.forEach { dateRange ->
@@ -38,8 +43,20 @@ class FetchChangesUseCase(
               startDate = dateRange.first,
               endDate = dateRange.second,
             ),
-          ).last()
+          ).collect { res ->
+            changes.addAll(res.data.changes)
+          }
         }
+      }
+
+      changes.filter {
+        // Only apply changes with that apply to the current locale.
+        it.items.any { item -> item.iso6391 == "en" || item.iso31661 == "" }
+      }
+      changes.forEach { change ->
+        PersonChangesActionFactory(personDao)
+          .getAction(change.key)
+          ?.execute(change.items)
       }
     }
 

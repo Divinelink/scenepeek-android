@@ -8,8 +8,11 @@ import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.person.PersonDao
+import com.divinelink.core.model.change.Change
+import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.changes.mapper.map
 import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.Flow
@@ -60,7 +63,16 @@ class ProdPersonRepository(
   override fun fetchPersonChanges(
     id: Long,
     params: ChangesParameters,
-  ): Flow<Result<Any>> = service
+  ): Flow<Result<Changes>> = service
     .fetchPersonChanges(id, params)
-    .map { Result.success(it) }
+    .map { response ->
+      Result.success(response.map())
+    }
+
+  override fun applyChanges(
+    id: Long,
+    changes: List<Change>,
+  ) {
+    // TODO
+  }
 }

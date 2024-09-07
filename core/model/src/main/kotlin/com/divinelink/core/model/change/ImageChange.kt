@@ -1,4 +1,4 @@
-package com.divinelink.core.network.changes.model.serializer
+package com.divinelink.core.model.change
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

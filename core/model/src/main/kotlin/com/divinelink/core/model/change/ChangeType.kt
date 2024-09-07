@@ -1,6 +1,9 @@
-package com.divinelink.core.network.changes.model.serializer
+@file:Suppress("ktlint:standard:trailing-comma-on-declaration-site")
 
-enum class ChangeKeyType(val key: String) {
+package com.divinelink.core.model.change
+
+enum class ChangeType(val key: String) {
+  ALSO_KNOWN_AS("also_known_as"),
   BIOGRAPHY("biography"),
   TRANSLATIONS("translations"),
   IMAGES("images"),
@@ -11,9 +14,9 @@ enum class ChangeKeyType(val key: String) {
   RELEASE_DATES("release_dates"),
   ALTERNATIVE_TITLES("alternative_titles"),
   TAGLINE("tagline"),
-  ;
+  UNKNOWN("unknown");
 
   companion object {
-    fun from(key: String?): ChangeKeyType? = entries.find { it.key == key }
+    fun from(key: String?): ChangeType = entries.find { it.key == key } ?: UNKNOWN
   }
 }

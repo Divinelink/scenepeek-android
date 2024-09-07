@@ -1,5 +1,6 @@
 package com.divinelink.core.network.changes.model.serializer
 
+import com.divinelink.core.model.change.StringValue
 import com.divinelink.core.network.changes.model.api.ChangeItemApi
 import com.divinelink.core.network.client.localJson
 import com.google.common.truth.Truth.assertThat

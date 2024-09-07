@@ -1,5 +1,18 @@
 package com.divinelink.core.network.changes.model.serializer
 
+import com.divinelink.core.model.change.AlternativeTitlesValue
+import com.divinelink.core.model.change.BackdropValue
+import com.divinelink.core.model.change.CastValue
+import com.divinelink.core.model.change.ChangeType
+import com.divinelink.core.model.change.ChangeValue
+import com.divinelink.core.model.change.PlotKeywordsValue
+import com.divinelink.core.model.change.PosterValue
+import com.divinelink.core.model.change.ProfileValue
+import com.divinelink.core.model.change.ReleaseDatesValue
+import com.divinelink.core.model.change.StringValue
+import com.divinelink.core.model.change.TaglineValue
+import com.divinelink.core.model.change.TitleLogoValue
+import com.divinelink.core.model.change.VideosValue
 import com.divinelink.core.network.changes.model.api.ChangeApi
 import com.divinelink.core.network.changes.model.api.ChangeApi.Companion.JsonKeys
 import com.divinelink.core.network.changes.model.api.ChangeItemApi
@@ -39,20 +52,20 @@ object ChangeApiSerializer : KSerializer<ChangeApi> {
   private fun JsonObject.extractChangeItems(): List<ChangeItemApi> {
     val key = this[JsonKeys.KEY]?.jsonPrimitive?.content
 
-    val changeKey = ChangeKeyType.from(key)
+    val changeKey = ChangeType.from(key)
 
     return when (changeKey) {
-      ChangeKeyType.TRANSLATIONS,
-      ChangeKeyType.BIOGRAPHY,
-      ChangeKeyType.NAME,
+      ChangeType.TRANSLATIONS,
+      ChangeType.BIOGRAPHY,
+      ChangeType.NAME,
       -> extractStringFromJson()
-      ChangeKeyType.IMAGES -> extractImagesFromJson()
-      ChangeKeyType.VIDEOS -> extractFromJson<VideosValue>()
-      ChangeKeyType.CAST -> extractFromJson<CastValue>()
-      ChangeKeyType.PLOT_KEYWORDS -> extractFromJson<PlotKeywordsValue>()
-      ChangeKeyType.RELEASE_DATES -> extractFromJson<ReleaseDatesValue>()
-      ChangeKeyType.ALTERNATIVE_TITLES -> extractFromJson<AlternativeTitlesValue>()
-      ChangeKeyType.TAGLINE -> extractFromJson<TaglineValue>()
+      ChangeType.IMAGES -> extractImagesFromJson()
+      ChangeType.VIDEOS -> extractFromJson<VideosValue>()
+      ChangeType.CAST -> extractFromJson<CastValue>()
+      ChangeType.PLOT_KEYWORDS -> extractFromJson<PlotKeywordsValue>()
+      ChangeType.RELEASE_DATES -> extractFromJson<ReleaseDatesValue>()
+      ChangeType.ALTERNATIVE_TITLES -> extractFromJson<AlternativeTitlesValue>()
+      ChangeType.TAGLINE -> extractFromJson<TaglineValue>()
       else -> {
         // TODO Send error log
         emptyList()
