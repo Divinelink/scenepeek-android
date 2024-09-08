@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
 
   private val fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
+  private val fetchChangesUseCase = TestFetchChangesUseCase()
 
   private lateinit var viewModel: PersonViewModel
   private lateinit var navArgs: PersonNavArguments
@@ -21,9 +23,14 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
   override fun buildViewModel() = apply {
     viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
+          "knownForDepartment" to navArgs.knownForDepartment,
+          "name" to navArgs.name,
+          "profilePath" to navArgs.profilePath,
+          "gender" to navArgs.gender,
         ),
       ),
     )
@@ -39,5 +46,10 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
 
   fun setupChannelForUseCase(result: Channel<Result<PersonDetailsResult>>) = apply {
     fetchPersonDetailsUseCase.mockSuccess(result)
+  }
+
+  // Essentially, when this is success the dao should emit new values for a person
+  suspend fun mockFetchChangesUseCaseSuccess() = apply {
+    fetchChangesUseCase.mockSuccess()
   }
 }

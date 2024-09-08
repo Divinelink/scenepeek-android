@@ -55,7 +55,7 @@ class ProdPersonRepositoryTest {
 
   @Test
   fun `test fetchPersonDetails with local data only fetches from database`() = runTest {
-    dao.upsertPerson(PersonEntityFactory.steveCarell())
+    dao.insertPerson(PersonEntityFactory.steveCarell())
 
     repository.fetchPersonDetails(id = 4495).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(PersonEntityFactory.steveCarell().map())

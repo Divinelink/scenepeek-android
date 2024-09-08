@@ -6,7 +6,6 @@ import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
 data class PersonUiState(
   val isLoading: Boolean = false,
   val isError: Boolean = false,
-  val lastFetch: Long = -1,
   val personDetails: PersonDetailsUiState = PersonDetailsUiState.Loading,
   val credits: PersonCreditsUiState = PersonCreditsUiState.Hidden,
   val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),

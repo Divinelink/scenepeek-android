@@ -16,9 +16,9 @@ class FetchChangesUseCase(
   private val repository: PersonRepository,
   private val clock: Clock,
   val dispatcher: DispatcherProvider,
-) : UseCase<Long, Result<Unit>>(dispatcher.io) {
+) : UseCase<Long, Unit>(dispatcher.io) {
 
-  override suspend fun execute(parameters: Long): Result<Unit> {
+  override suspend fun execute(parameters: Long) {
     val person = repository.fetchPersonDetails(parameters).first().getOrNull()
 
     val dateRange = person?.insertedAt?.calculateFourteenDayRange(clock)
@@ -55,7 +55,5 @@ class FetchChangesUseCase(
         repository.updatePerson(parameters, insertedAt = clock.currentEpochSeconds())
       }
     }
-
-    return Result.success(Unit)
   }
 }
