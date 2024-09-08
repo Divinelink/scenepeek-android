@@ -15,8 +15,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -42,51 +42,50 @@ class PersonViewModel(
   private var fetchPersonDetailsJob: Job? = null
 
   init {
-    fetchPersonDetailsJob = viewModelScope.launch {
-      fetchPersonDetailsUseCase(
-        PersonDetailsParams(
-          id = args.id,
-          knownForDepartment = args.knownForDepartment,
-        ),
-      ).onEach { result ->
-        result.fold(
-          onSuccess = { detailsResult ->
-            when (detailsResult) {
-              is PersonDetailsResult.DetailsSuccess -> _uiState.update { uiState ->
-                uiState.copy(
-                  lastFetch = detailsResult.personDetails.insertedAt.toLong(),
-                  personDetails = PersonDetailsUiState.Data.Visible(
-                    detailsResult.personDetails,
-                  ),
-                )
-              }
-
-              is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
-                uiState.copy(
-                  credits = PersonCreditsUiState.Visible(
-                    knownFor = detailsResult.knownForCredits,
-                  ),
-                )
-              }
-
-              is PersonDetailsResult.DetailsFailure -> _uiState.update { uiState ->
-                uiState.copy(isError = true)
-              }
+    fetchPersonDetailsUseCase(
+      PersonDetailsParams(
+        id = args.id,
+        knownForDepartment = args.knownForDepartment,
+      ),
+    ).onEach { result ->
+      result.fold(
+        onSuccess = { detailsResult ->
+          when (detailsResult) {
+            is PersonDetailsResult.DetailsSuccess -> _uiState.update { uiState ->
+              uiState.copy(
+                lastFetch = detailsResult.personDetails.insertedAt.toLong(),
+                personDetails = PersonDetailsUiState.Data.Visible(
+                  detailsResult.personDetails,
+                ),
+              )
             }
-          },
-          onFailure = {
-            Timber.d(it)
-            _uiState.update { uiState ->
+
+            is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
+              uiState.copy(
+                credits = PersonCreditsUiState.Visible(
+                  knownFor = detailsResult.knownForCredits,
+                ),
+              )
+            }
+
+            is PersonDetailsResult.DetailsFailure -> _uiState.update { uiState ->
               uiState.copy(isError = true)
             }
-          },
-        )
-      }
-        .distinctUntilChanged()
-        .collectLatest {
-          Timber.d("Collecting for id: ${args.id}")
-          fetchChangesUseCase(args.id)
-        }
+          }
+        },
+        onFailure = {
+          Timber.d(it)
+          _uiState.update { uiState ->
+            uiState.copy(isError = true)
+          }
+        },
+      )
+    }
+      .distinctUntilChanged()
+      .launchIn(viewModelScope)
+
+    viewModelScope.launch {
+      fetchChangesUseCase(args.id)
     }
   }
 

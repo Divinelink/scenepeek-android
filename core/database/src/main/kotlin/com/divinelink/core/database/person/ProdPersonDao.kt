@@ -29,6 +29,38 @@ class ProdPersonDao(
     .personEntityQueries
     .insertPerson(person)
 
+  override fun updatePerson(
+    biography: String?,
+    name: String?,
+    birthday: String?,
+    deathday: String?,
+    gender: Int?,
+    homepage: String?,
+    imdbId: String?,
+    knownForDepartment: String?,
+    placeOfBirth: String?,
+    popularity: Double?,
+    profilePath: String?,
+    insertedAt: String?,
+    id: Long,
+  ) = database
+    .personEntityQueries
+    .updatePerson(
+      biography = biography,
+      name = name,
+      birthday = birthday,
+      deathday = deathday,
+      gender = gender?.toLong(),
+      homepage = homepage,
+      imdbId = imdbId,
+      knownForDepartment = knownForDepartment,
+      placeOfBirth = placeOfBirth,
+      popularity = popularity,
+      profilePath = profilePath,
+      insertedAt = insertedAt,
+      id = id,
+    )
+
   override fun insertPersonCredits(id: Long) {
     val currentEpochSeconds = clock.currentEpochSeconds()
 

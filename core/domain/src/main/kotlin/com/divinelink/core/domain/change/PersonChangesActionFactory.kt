@@ -7,7 +7,7 @@ class PersonChangesActionFactory(personDao: PersonDao) {
 
   private val actionMap: Map<ChangeType, ChangeHandler> = mapOf(
     ChangeType.BIOGRAPHY to UpdateBiography(personDao),
-    ChangeType.NAME to UpdateName(),
+    ChangeType.NAME to UpdateName(personDao),
   )
 
   fun getAction(key: ChangeType): ChangeHandler? = actionMap[key]

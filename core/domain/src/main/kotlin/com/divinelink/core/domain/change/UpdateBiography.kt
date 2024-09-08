@@ -5,13 +5,16 @@ import com.divinelink.core.model.change.ChangeItem
 import com.divinelink.core.model.change.StringValue
 
 class UpdateBiography(private val personDao: PersonDao) : ChangeHandler {
-  override fun execute(items: List<ChangeItem>) {
-    items.forEach { item ->
-      item.originalValue as? StringValue
-      item.value as? StringValue
+  override fun execute(
+    id: Long,
+    items: List<ChangeItem>,
+  ) {
+    val latestUpdate = items.last()
+    val value = latestUpdate.value as? StringValue
 
-      println("Updating biography with ${item.originalValue}")
-      println("Updating biography with ${item.value}")
-    }
+    personDao.updatePerson(
+      biography = value?.value,
+      id = id,
+    )
   }
 }

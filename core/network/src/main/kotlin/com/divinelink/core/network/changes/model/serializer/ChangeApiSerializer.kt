@@ -58,6 +58,16 @@ object ChangeApiSerializer : KSerializer<ChangeApi> {
       ChangeType.TRANSLATIONS,
       ChangeType.BIOGRAPHY,
       ChangeType.NAME,
+      ChangeType.TIKTOD_ID,
+      ChangeType.YOUTUBE_ID,
+      ChangeType.FACEBOOK_ID,
+      ChangeType.IMDB_ID,
+      ChangeType.INSTAGRAM_ID,
+      ChangeType.TWITTER_ID,
+      ChangeType.BIRTHDAY,
+      ChangeType.DAY_OF_DEATH,
+      ChangeType.PLACE_OF_BIRTH,
+      ChangeType.GENDER,
       -> extractStringFromJson()
       ChangeType.IMAGES -> extractImagesFromJson()
       ChangeType.VIDEOS -> extractFromJson<VideosValue>()
@@ -66,8 +76,9 @@ object ChangeApiSerializer : KSerializer<ChangeApi> {
       ChangeType.RELEASE_DATES -> extractFromJson<ReleaseDatesValue>()
       ChangeType.ALTERNATIVE_TITLES -> extractFromJson<AlternativeTitlesValue>()
       ChangeType.TAGLINE -> extractFromJson<TaglineValue>()
-      else -> {
-        // TODO Send error log
+      ChangeType.ALSO_KNOWN_AS -> emptyList()
+      ChangeType.UNKNOWN -> {
+        // TODO Send log for missing type
         emptyList()
       }
     }
