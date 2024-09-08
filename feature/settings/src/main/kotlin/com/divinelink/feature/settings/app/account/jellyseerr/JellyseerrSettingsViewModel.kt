@@ -96,28 +96,28 @@ class JellyseerrSettingsViewModel(
                 )
               }
             }.onFailure { error ->
-              ErrorHandler.create(error)
-                .on(401) {
+              ErrorHandler.create(error) {
+                on(401) {
                   _uiState.setSnackbarMessage(
                     UIText.ResourceText(R.string.feature_settings_invalid_credentials),
                   )
                 }
-                .on<UnknownHostException> {
+                on<UnknownHostException> {
                   _uiState.setSnackbarMessage(
                     UIText.ResourceText(R.string.feature_settings_could_not_connect),
                   )
                 }
-                .on<ConnectException> {
+                on<ConnectException> {
                   _uiState.setSnackbarMessage(
                     UIText.ResourceText(R.string.feature_settings_could_not_connect),
                   )
                 }
-                .otherwise {
+                otherwise {
                   _uiState.setSnackbarMessage(
                     UIText.ResourceText(uiR.string.core_ui_error_retry),
                   )
                 }
-                .handle()
+              }
             }
           }.launchIn(viewModelScope)
       }

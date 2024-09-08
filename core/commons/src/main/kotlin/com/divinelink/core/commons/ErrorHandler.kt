@@ -11,7 +11,10 @@ class ErrorHandler(private val throwable: Throwable) {
   private var otherwiseAction: ((ErrorHandler) -> Unit)? = null
 
   companion object {
-    fun create(throwable: Throwable): ErrorHandler = ErrorHandler(throwable)
+    fun create(
+      throwable: Throwable,
+      actions: ErrorHandler.() -> Unit,
+    ) = ErrorHandler(throwable).apply(actions).handle()
   }
 
   fun on(

@@ -81,7 +81,7 @@ fun JellyseerrInitialContent(
       value = jellyseerrState.address,
       singleLine = true,
       onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
-      label = { Text(text = stringResource(R.string.feature_settings_address)) },
+      label = { Text(text = stringResource(R.string.feature_settings_jellyseerr_address)) },
     )
 
     ExpandableCard(
