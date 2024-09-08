@@ -8,7 +8,6 @@ import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.person.PersonDao
-import com.divinelink.core.model.change.Change
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
@@ -69,10 +68,33 @@ class ProdPersonRepository(
       Result.success(response.map())
     }
 
-  override fun applyChanges(
+  override fun updatePerson(
     id: Long,
-    changes: List<Change>,
-  ) {
-    // TODO
-  }
+    biography: String?,
+    name: String?,
+    birthday: String?,
+    deathday: String?,
+    gender: Int?,
+    homepage: String?,
+    imdbId: String?,
+    knownForDepartment: String?,
+    placeOfBirth: String?,
+    popularity: Double?,
+    profilePath: String?,
+    insertedAt: String?,
+  ) = dao.updatePerson(
+    id = id,
+    biography = biography,
+    name = name,
+    birthday = birthday,
+    deathday = deathday,
+    gender = gender,
+    homepage = homepage,
+    imdbId = imdbId,
+    knownForDepartment = knownForDepartment,
+    placeOfBirth = placeOfBirth,
+    popularity = popularity,
+    profilePath = profilePath,
+    insertedAt = insertedAt,
+  )
 }

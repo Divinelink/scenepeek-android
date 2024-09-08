@@ -15,6 +15,7 @@ enum class ChangeType(val key: String) {
   BIRTHDAY("birthday"),
   DAY_OF_DEATH("day_of_death"),
   PLACE_OF_BIRTH("place_of_birth"),
+  HOMEPAGE("homepage"),
   GENDER("gender"),
   TRANSLATIONS("translations"),
   IMAGES("images"),

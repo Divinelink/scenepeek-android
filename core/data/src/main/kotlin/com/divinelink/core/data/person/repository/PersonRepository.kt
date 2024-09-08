@@ -1,6 +1,5 @@
 package com.divinelink.core.data.person.repository
 
-import com.divinelink.core.model.change.Change
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
@@ -18,11 +17,19 @@ interface PersonRepository {
     params: ChangesParameters,
   ): Flow<Result<Changes>>
 
-  /**
-   * Only apply changes with the given locale. Discard the rest.
-   */
-  fun applyChanges(
+  fun updatePerson(
     id: Long,
-    changes: List<Change>,
+    biography: String? = null,
+    name: String? = null,
+    birthday: String? = null,
+    deathday: String? = null,
+    gender: Int? = null,
+    homepage: String? = null,
+    imdbId: String? = null,
+    knownForDepartment: String? = null,
+    placeOfBirth: String? = null,
+    popularity: Double? = null,
+    profilePath: String? = null,
+    insertedAt: String? = null,
   )
 }

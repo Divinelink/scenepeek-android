@@ -1,10 +1,10 @@
 package com.divinelink.core.domain.change
 
-import com.divinelink.core.database.person.PersonDao
+import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.change.ChangeItem
 import com.divinelink.core.model.change.StringValue
 
-class UpdateGender(private val personDao: PersonDao) : ChangeHandler {
+class UpdateGender(private val repository: PersonRepository) : ChangeHandler {
   override fun execute(
     id: Long,
     items: List<ChangeItem>,
@@ -12,7 +12,7 @@ class UpdateGender(private val personDao: PersonDao) : ChangeHandler {
     val latestUpdate = items.last()
     val value = latestUpdate.value as? StringValue
 
-    personDao.updatePerson(
+    repository.updatePerson(
       gender = value?.value?.toInt(),
       id = id,
     )
