@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.session
 
-
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
@@ -11,7 +10,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 class CreateSessionUseCase(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : UseCase<String, Unit>(dispatcher.io) {
 
   override suspend fun execute(parameters: String) {

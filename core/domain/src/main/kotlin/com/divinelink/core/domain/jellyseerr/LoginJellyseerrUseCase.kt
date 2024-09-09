@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.jellyseerr
 
-
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.last
 open class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val storage: PreferenceStorage,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher.io) {
 
   override fun execute(parameters: JellyseerrLoginParams?): Flow<Result<JellyseerrAccountDetails>> =
