@@ -1,4 +1,4 @@
-package com.divinelink.core.domain
+package com.divinelink.core.domain.change
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
@@ -6,7 +6,7 @@ import com.divinelink.core.commons.extensions.calculateFourteenDayRange
 import com.divinelink.core.commons.extensions.isDateToday
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.database.currentEpochSeconds
-import com.divinelink.core.domain.change.PersonChangesActionFactory
+import com.divinelink.core.domain.change.person.PersonChangesActionFactory
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock

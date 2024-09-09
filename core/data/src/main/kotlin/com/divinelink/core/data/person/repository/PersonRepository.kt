@@ -1,5 +1,6 @@
 package com.divinelink.core.data.person.repository
 
+import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
@@ -28,8 +29,12 @@ interface PersonRepository {
     imdbId: String? = null,
     knownForDepartment: String? = null,
     placeOfBirth: String? = null,
-    popularity: Double? = null,
     profilePath: String? = null,
     insertedAt: String? = null,
+  )
+
+  fun deleteFromPerson(
+    id: Long,
+    field: PersonChangeField,
   )
 }

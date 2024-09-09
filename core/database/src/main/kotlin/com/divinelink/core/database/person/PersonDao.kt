@@ -20,10 +20,14 @@ interface PersonDao {
     imdbId: String? = null,
     knownForDepartment: String? = null,
     placeOfBirth: String? = null,
-    popularity: Double? = null,
     profilePath: String? = null,
     insertedAt: String? = null,
     id: Long,
+  )
+
+  fun deleteFromPerson(
+    id: Long,
+    field: PersonChangeField,
   )
 
   fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>>

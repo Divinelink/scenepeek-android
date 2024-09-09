@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.usecase
 
-import com.divinelink.core.domain.FetchChangesUseCase
+import com.divinelink.core.domain.change.FetchChangesUseCase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import org.mockito.kotlin.any

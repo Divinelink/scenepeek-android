@@ -7,6 +7,7 @@ import com.divinelink.core.data.person.credits.mapper.toEntityCrew
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
@@ -79,7 +80,6 @@ class ProdPersonRepository(
     imdbId: String?,
     knownForDepartment: String?,
     placeOfBirth: String?,
-    popularity: Double?,
     profilePath: String?,
     insertedAt: String?,
   ) = dao.updatePerson(
@@ -93,8 +93,12 @@ class ProdPersonRepository(
     imdbId = imdbId,
     knownForDepartment = knownForDepartment,
     placeOfBirth = placeOfBirth,
-    popularity = popularity,
     profilePath = profilePath,
     insertedAt = insertedAt,
   )
+
+  override fun deleteFromPerson(
+    id: Long,
+    field: PersonChangeField,
+  ) = dao.deleteFromPerson(id, field)
 }

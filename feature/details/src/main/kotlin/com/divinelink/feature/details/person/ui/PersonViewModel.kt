@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
-import com.divinelink.core.domain.FetchChangesUseCase
+import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.navigation.arguments.PersonNavArguments

@@ -1,7 +1,7 @@
 package com.divinelink.core.domain.di
 
 import com.divinelink.core.domain.CreateRequestTokenUseCase
-import com.divinelink.core.domain.FetchChangesUseCase
+import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase

@@ -1,6 +1,7 @@
-package com.divinelink.core.domain.change
+package com.divinelink.core.domain.change.person
 
 import com.divinelink.core.data.person.repository.PersonRepository
+import com.divinelink.core.domain.change.ChangeHandler
 import com.divinelink.core.model.change.ChangeType
 
 class PersonChangesActionFactory(repository: PersonRepository) {
