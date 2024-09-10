@@ -60,6 +60,8 @@ class HomeViewModel(
         ),
       ).collectLatest { result ->
         result.onSuccess {
+          currentPage++
+
           _viewState.update { viewState ->
             viewState.copy(
               isLoading = false,
@@ -95,11 +97,9 @@ class HomeViewModel(
     when (viewState.value.mode) {
       HomeMode.Filtered -> return
       HomeMode.Browser -> if (viewState.value.popularMovies.shouldLoadMore) {
-        currentPage++
         fetchPopularMovies()
       }
       HomeMode.Search -> if (viewState.value.searchResults?.shouldLoadMore == true) {
-        searchPage++
         fetchFromSearchQuery(
           query = viewState.value.query,
           page = searchPage,
@@ -185,6 +185,8 @@ class HomeViewModel(
         .distinctUntilChanged()
         .collectLatest { result ->
           result.onSuccess {
+            searchPage++
+
             if (allowSearchResult && result.data.query == latestQuery) {
               _viewState.update { viewState ->
                 viewState.copy(
