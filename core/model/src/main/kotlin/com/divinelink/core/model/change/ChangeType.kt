@@ -25,6 +25,7 @@ enum class ChangeType(val key: String) {
   RELEASE_DATES("release_dates"),
   ALTERNATIVE_TITLES("alternative_titles"),
   TAGLINE("tagline"),
+  PRIMARY("primary"),
   UNKNOWN("unknown");
 
   companion object {

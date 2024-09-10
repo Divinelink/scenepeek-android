@@ -7,7 +7,6 @@ import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
-import com.divinelink.core.network.changes.mapper.map
 import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
@@ -19,6 +18,7 @@ import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
+import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.testing.service.TestPersonService
 import com.google.common.truth.Truth.assertThat
@@ -127,7 +127,7 @@ class ProdPersonRepositoryTest {
           endDate = "2021-08-15",
         ),
       ).test {
-        assertThat(awaitItem().data).isEqualTo(changesResponseApi.map())
+        assertThat(awaitItem().data).isEqualTo(ChangeSample.changes())
         awaitComplete()
       }
     }
