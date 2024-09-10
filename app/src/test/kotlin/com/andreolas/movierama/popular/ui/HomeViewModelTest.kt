@@ -455,7 +455,7 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState.initial().copy(
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = true,
+          isLoading = false,
           query = "test query",
           isSearchLoading = false,
           error = UIText.StringText("Oops."),
