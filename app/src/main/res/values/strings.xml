@@ -4,6 +4,8 @@
   <string name="save">Save</string>
   <string name="update">Update</string>
 
+  <string name="not_connected">🛜  You aren\'t connected to the internet</string>
+
   <string name="home">Home</string>
   <string name="watchlist">Watchlist</string>
 

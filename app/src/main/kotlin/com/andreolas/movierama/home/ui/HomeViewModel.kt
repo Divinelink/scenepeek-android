@@ -208,6 +208,7 @@ class HomeViewModel(
           }.onFailure {
             _viewState.update { viewState ->
               viewState.copy(
+                isLoading = false,
                 isSearchLoading = false,
                 error = UIText.StringText(it.message ?: "Something went wrong."),
               )
