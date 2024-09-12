@@ -32,6 +32,38 @@ INSERT OR REPLACE INTO PersonEntity(
 )
 VALUES ?;
 
+updatePerson:
+UPDATE PersonEntity
+SET
+  biography = CASE WHEN :biography IS NOT NULL THEN :biography ELSE biography END,
+  name = CASE WHEN :name IS NOT NULL THEN :name ELSE name END,
+  birthday = CASE WHEN :birthday IS NOT NULL THEN :birthday ELSE birthday END,
+  deathday = CASE WHEN :deathday IS NOT NULL THEN :deathday ELSE deathday END,
+  gender = CASE WHEN :gender IS NOT NULL THEN :gender ELSE gender END,
+  homepage = CASE WHEN :homepage IS NOT NULL THEN :homepage ELSE homepage END,
+  imdbId = CASE WHEN :imdbId IS NOT NULL THEN :imdbId ELSE imdbId END,
+  knownForDepartment = CASE WHEN :knownForDepartment IS NOT NULL THEN :knownForDepartment ELSE knownForDepartment END,
+  placeOfBirth = CASE WHEN :placeOfBirth IS NOT NULL THEN :placeOfBirth ELSE placeOfBirth END,
+  profilePath = CASE WHEN :profilePath IS NOT NULL THEN :profilePath ELSE profilePath END,
+  insertedAt = CASE WHEN :insertedAt IS NOT NULL THEN :insertedAt ELSE insertedAt END
+WHERE id = :id;
+
+deleteFromPerson:
+UPDATE PersonEntity
+SET
+  biography = CASE WHEN :biography THEN NULL ELSE biography END,
+  name = CASE WHEN :name THEN "" ELSE name END,
+  birthday = CASE WHEN :birthday THEN NULL ELSE birthday END,
+  deathday = CASE WHEN :deathday THEN NULL ELSE deathday END,
+  gender = CASE WHEN :gender THEN 0 ELSE gender END,
+  homepage = CASE WHEN :homepage THEN NULL ELSE homepage END,
+  imdbId = CASE WHEN :imdbId THEN NULL ELSE imdbId END,
+  knownForDepartment = CASE WHEN :knownForDepartment THEN NULL ELSE knownForDepartment END,
+  placeOfBirth = CASE WHEN :placeOfBirth THEN NULL ELSE placeOfBirth END,
+  profilePath = CASE WHEN :profilePath THEN NULL ELSE profilePath END,
+  biography = CASE WHEN :biography THEN NULL ELSE biography END
+WHERE id = :id;
+
 fetchPersonById:
 SELECT *
 FROM PersonEntity

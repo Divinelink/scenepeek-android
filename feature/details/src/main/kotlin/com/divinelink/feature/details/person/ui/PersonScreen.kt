@@ -48,10 +48,7 @@ fun PersonScreen(
 
   AppScaffold(
     topBar = { scrollBehaviour, topAppBarColors ->
-      if (
-        uiState is PersonUiState.Success &&
-        uiState.personDetails is PersonDetailsUiState.Data
-      ) {
+      if (uiState.personDetails is PersonDetailsUiState.Data) {
         AppTopAppBar(
           scrollBehaviour = scrollBehaviour,
           topAppBarColors = topAppBarColors,
@@ -75,12 +72,12 @@ fun PersonScreen(
       }
     },
   ) { paddingValues ->
-    when (uiState) {
-      PersonUiState.Error -> {
+    when {
+      uiState.isError -> {
         // TODO Add error content
       }
-      PersonUiState.Loading -> LoadingContent()
-      is PersonUiState.Success -> {
+      uiState.isLoading -> LoadingContent()
+      else -> {
         if (uiState.personDetails is PersonDetailsUiState.Loading) {
           LoadingContent()
         } else {

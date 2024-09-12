@@ -29,6 +29,53 @@ class ProdPersonDao(
     .personEntityQueries
     .insertPerson(person)
 
+  override fun updatePerson(
+    biography: String?,
+    name: String?,
+    birthday: String?,
+    deathday: String?,
+    gender: Int?,
+    homepage: String?,
+    imdbId: String?,
+    knownForDepartment: String?,
+    placeOfBirth: String?,
+    profilePath: String?,
+    insertedAt: String?,
+    id: Long,
+  ) = database
+    .personEntityQueries
+    .updatePerson(
+      biography = biography,
+      name = name,
+      birthday = birthday,
+      deathday = deathday,
+      gender = gender?.toLong(),
+      homepage = homepage,
+      imdbId = imdbId,
+      knownForDepartment = knownForDepartment,
+      placeOfBirth = placeOfBirth,
+      profilePath = profilePath,
+      insertedAt = insertedAt,
+      id = id,
+    )
+
+  override fun deleteFromPerson(
+    id: Long,
+    field: PersonChangeField,
+  ) = database.personEntityQueries.deleteFromPerson(
+    biography = field == PersonChangeField.BIOGRAPHY,
+    name = field == PersonChangeField.NAME,
+    birthday = field == PersonChangeField.BIRTHDAY,
+    deathday = field == PersonChangeField.DEATHDAY,
+    gender = field == PersonChangeField.GENDER,
+    homepage = field == PersonChangeField.HOMEPAGE,
+    imdbId = field == PersonChangeField.IMDB_ID,
+    knownForDepartment = field == PersonChangeField.KNOWN_FOR_DEPARTMENT,
+    placeOfBirth = field == PersonChangeField.PLACE_OF_BIRTH,
+    profilePath = field == PersonChangeField.PROFILE_PATH,
+    id = id,
+  )
+
   override fun insertPersonCredits(id: Long) {
     val currentEpochSeconds = clock.currentEpochSeconds()
 

@@ -22,7 +22,7 @@ import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewPar
 @Composable
 fun PersonContent(
   modifier: Modifier = Modifier,
-  uiState: PersonUiState.Success,
+  uiState: PersonUiState,
   onMediaClick: (MediaItem) -> Unit,
 ) {
   uiState.personDetails as PersonDetailsUiState.Data
@@ -59,7 +59,7 @@ fun PersonContent(
 @Composable
 private fun PersonContentPreview(
   @PreviewParameter(PersonUiStatePreviewParameterProvider::class)
-  uiState: PersonUiState.Success,
+  uiState: PersonUiState,
 ) {
   AppTheme {
     Surface {

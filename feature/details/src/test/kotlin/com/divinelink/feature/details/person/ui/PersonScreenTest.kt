@@ -14,6 +14,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
@@ -24,6 +25,7 @@ import com.divinelink.core.testing.factories.model.person.credit.PersonCastCredi
 import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
@@ -37,21 +39,36 @@ class PersonScreenTest : ComposeTest() {
 
   private lateinit var navigator: FakeDestinationsNavigator
   private lateinit var fetchPersonDetailsUseCase: TestFetchPersonDetailsUseCase
+  private lateinit var fetchChangesUseCase: TestFetchChangesUseCase
   private lateinit var savedStateHandle: SavedStateHandle
+
+  private lateinit var navArgs: PersonNavArguments
 
   @BeforeTest
   fun setUp() {
+    navArgs = PersonNavArguments(
+      id = PersonDetailsFactory.steveCarell().person.id,
+      knownForDepartment = null,
+      name = PersonDetailsFactory.steveCarell().person.name,
+      profilePath = null,
+      gender = null,
+    )
     navigator = FakeDestinationsNavigator()
     fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
+    fetchChangesUseCase = TestFetchChangesUseCase()
     savedStateHandle = SavedStateHandle(
       mapOf(
-        "id" to PersonDetailsFactory.steveCarell().person.id,
+        "id" to navArgs.id,
+        "knownForDepartment" to navArgs.knownForDepartment,
+        "name" to navArgs.name,
+        "profilePath" to navArgs.profilePath,
+        "gender" to navArgs.gender,
       ),
     )
   }
 
   @Test
-  fun `test loading content is visible when loading`() {
+  fun `test loading content is visible when navArgs name is null`() {
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -60,7 +77,16 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to navArgs.id,
+          "knownForDepartment" to navArgs.knownForDepartment,
+          "name" to null,
+          "profilePath" to navArgs.profilePath,
+          "gender" to navArgs.gender,
+        ),
+      ),
     )
 
     setContentWithTheme {
@@ -81,6 +107,7 @@ class PersonScreenTest : ComposeTest() {
     )
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -99,10 +126,19 @@ class PersonScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test topAppBar is not visible when failure`() {
+  fun `test topAppBar is not visible when personDetails is not success`() {
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to navArgs.id,
+          "knownForDepartment" to navArgs.knownForDepartment,
+          "name" to null,
+          "profilePath" to navArgs.profilePath,
+          "gender" to navArgs.gender,
+        ),
+      ),
     )
 
     setContentWithTheme {
@@ -124,6 +160,7 @@ class PersonScreenTest : ComposeTest() {
     )
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -148,6 +185,7 @@ class PersonScreenTest : ComposeTest() {
     )
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -157,6 +195,7 @@ class PersonScreenTest : ComposeTest() {
         viewModel = viewModel,
       )
     }
+
     with(composeTestRule) {
       onNodeWithTag(TestTags.Person.CONTENT_LIST).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.PERSONAL_DETAILS).assertIsDisplayed()
@@ -173,6 +212,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -183,7 +223,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -205,6 +245,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -215,7 +256,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -246,6 +287,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -256,7 +298,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -324,7 +366,16 @@ class PersonScreenTest : ComposeTest() {
 
       val viewModel = PersonViewModel(
         fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
-        savedStateHandle = savedStateHandle,
+        fetchChangesUseCase = fetchChangesUseCase.mock,
+        savedStateHandle = SavedStateHandle(
+          mapOf(
+            "id" to navArgs.id,
+            "knownForDepartment" to null,
+            "name" to null,
+            "profilePath" to null,
+            "gender" to null,
+          ),
+        ),
       )
 
       setContentWithTheme {
@@ -359,6 +410,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -369,7 +421,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -417,6 +469,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -427,7 +480,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
@@ -452,6 +505,7 @@ class PersonScreenTest : ComposeTest() {
 
     val viewModel = PersonViewModel(
       fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
       savedStateHandle = savedStateHandle,
     )
 
@@ -462,7 +516,7 @@ class PersonScreenTest : ComposeTest() {
       )
     }
     with(composeTestRule) {
-      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
 
       channel.send(
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),

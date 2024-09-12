@@ -1,12 +1,12 @@
 package com.divinelink.core.network.media.model.details.credits
 
+import com.divinelink.core.network.client.decode
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.jsonObject
 
@@ -17,17 +17,9 @@ object CastSerializer : KSerializer<CastApi> {
     val jsonInput = decoder as? JsonDecoder ?: error("Can be deserialized only by JSON")
     val json = jsonInput.decodeJsonElement().jsonObject
 
-    val format = Json { ignoreUnknownKeys = true }
-
     return when {
-      json.containsKey("cast_id") -> format.decodeFromJsonElement(
-        deserializer = CastApi.Movie.serializer(),
-        element = json,
-      )
-      json.containsKey("known_for_department") -> format.decodeFromJsonElement(
-        deserializer = CastApi.TV.serializer(),
-        element = json,
-      )
+      json.containsKey("cast_id") -> json.decode<CastApi.Movie>()
+      json.containsKey("known_for_department") -> json.decode<CastApi.TV>()
       else -> throw SerializationException("Unknown type: $json")
     }
   }

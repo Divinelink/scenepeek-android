@@ -1,0 +1,236 @@
+{
+  "changes": [
+    {
+      "key": "biography",
+      "items": [
+        {
+          "id": "66daae6273d2cc58165ddd76",
+          "action": "added",
+          "time": "2024-09-06 07:25:22 UTC",
+          "iso_639_1": "en",
+          "iso_3166_1": "US",
+          "value": "Alexandros Karpas is a Greek YouTuber, filmmaker, and co-founder of the multimedia company Unboxholics."
+        },
+        {
+          "id": "66dab3782b4e67af085dde2c",
+          "action": "updated",
+          "time": "2024-09-06 07:47:04 UTC",
+          "iso_639_1": "en",
+          "iso_3166_1": "US",
+          "value": "Alexandros Karpas is a Greek YouTuber, filmmaker, and co-founder of the multimedia company Unboxholics, where he serves as the art director. He is also known for his work as a director and cinematographer, having directed and edited the 2024 horror film \"Don't Open The Door\", the short film \"Lurking Near\" in 2017 and the 2015 TV documentary \"Volta stin Aridaia\".\n\nHe has a strong interest in horror-themed photography and often shares his creative work with his substantial Instagram following of over 300,000 fans. Alongside his twin brother, Sakis Karpas, Alexandros has built a prominent online presence through YouTube and Twitch, where they have gained a significant audience​.",
+          "original_value": "Alexandros Karpas is a Greek YouTuber, filmmaker, and co-founder of the multimedia company Unboxholics."
+        }
+      ]
+    },
+    {
+      "key": "tiktok_id",
+      "items": [
+        {
+          "id": "66dab0564aac0bc5c3ea9b87",
+          "action": "added",
+          "time": "2024-09-06 07:33:42 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "discover"
+        },
+        {
+          "id": "66dab113acf03a1334de0424",
+          "action": "deleted",
+          "time": "2024-09-06 07:36:51 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "original_value": "discover"
+        },
+        {
+          "id": "66dab19ca91061584121b778",
+          "action": "added",
+          "time": "2024-09-06 07:39:08 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "alexandros-karpas"
+        },
+        {
+          "id": "66dab23fd49ec36b1a34d0ef",
+          "action": "updated",
+          "time": "2024-09-06 07:41:51 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "unboxholics",
+          "original_value": "alexandros-karpas"
+        }
+      ]
+    },
+    {
+      "key": "also_known_as",
+      "items": [
+        {
+          "id": "66dab088702fec8df1d4e170",
+          "action": "added",
+          "time": "2024-09-06 07:34:32 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": [
+            "Voncroy"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "youtube_id",
+      "items": [
+        {
+          "id": "66dab0564aac0bc5c3ea9b8a",
+          "action": "added",
+          "time": "2024-09-06 07:33:42 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "user"
+        },
+        {
+          "id": "66dab141bf788966913c65c2",
+          "action": "deleted",
+          "time": "2024-09-06 07:37:37 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "original_value": "user"
+        },
+        {
+          "id": "66dab19da91061584121b77b",
+          "action": "added",
+          "time": "2024-09-06 07:39:09 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "@Unboxholics"
+        }
+      ]
+    },
+    {
+      "key": "facebook_id",
+      "items": [
+        {
+          "id": "66dab19ca91061584121b777",
+          "action": "added",
+          "time": "2024-09-06 07:39:08 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "alexandroskarpas"
+        }
+      ]
+    },
+    {
+      "key": "name",
+      "items": [
+        {
+          "id": "66db014a0b6801c5793c69b2",
+          "action": "updated",
+          "time": "2024-09-06 13:19:06 UTC",
+          "iso_639_1": "el",
+          "iso_3166_1": "GR",
+          "value": "Αλέξανδρος Καρπάς",
+          "original_value": "Alexandros Karpas"
+        }
+      ]
+    },
+    {
+      "key": "primary",
+      "items": [
+        {
+          "id": "66daae6273d2cc58165ddd75",
+          "action": "updated",
+          "time": "2024-09-06 07:25:22 UTC",
+          "iso_639_1": "en",
+          "iso_3166_1": "US",
+          "value": false
+        }
+      ]
+    },
+    {
+      "key": "imdb_id",
+      "items": [
+        {
+          "id": "66dab0564aac0bc5c3ea9b83",
+          "action": "added",
+          "time": "2024-09-06 07:33:42 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "nm8874716"
+        }
+      ]
+    },
+    {
+      "key": "instagram_id",
+      "items": [
+        {
+          "id": "66dab141bf788966913c65c1",
+          "action": "added",
+          "time": "2024-09-06 07:37:37 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "alexandroskarpas"
+        }
+      ]
+    },
+    {
+      "key": "twitter_id",
+      "items": [
+        {
+          "id": "66dab19ca91061584121b77a",
+          "action": "added",
+          "time": "2024-09-06 07:39:08 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "voncroy_alex"
+        }
+      ]
+    },
+    {
+      "key": "birthday",
+      "items": [
+        {
+          "id": "66daae6273d2cc58165ddd72",
+          "action": "added",
+          "time": "2024-09-06 07:25:22 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "1986-12-04"
+        }
+      ]
+    },
+    {
+      "key": "place_of_birth",
+      "items": [
+        {
+          "id": "66daae6273d2cc58165ddd74",
+          "action": "added",
+          "time": "2024-09-06 07:25:22 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "Aridaia, Macedonia, Greece [now Central Macedonia, Greece]"
+        },
+        {
+          "id": "66daafb639cc7603de25634f",
+          "action": "updated",
+          "time": "2024-09-06 07:31:02 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": "Aridaia, Central Macedonia, Greece",
+          "original_value": "Aridaia, Macedonia, Greece [now Central Macedonia, Greece]"
+        }
+      ]
+    },
+    {
+      "key": "gender",
+      "items": [
+        {
+          "id": "66daae6273d2cc58165ddd73",
+          "action": "updated",
+          "time": "2024-09-06 07:25:22 UTC",
+          "iso_639_1": "",
+          "iso_3166_1": "",
+          "value": 2,
+          "original_value": 0
+        }
+      ]
+    }
+  ]
+}

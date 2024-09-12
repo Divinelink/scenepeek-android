@@ -1,5 +1,6 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import com.divinelink.core.network.details.person.service.PersonService
@@ -17,5 +18,9 @@ class TestPersonService {
 
   fun mockFetchPersonCombinedCredits(response: PersonCreditsApi) {
     whenever(mock.fetchPersonCombinedCredits(id = any())).thenReturn(flowOf(response))
+  }
+
+  fun mockFetchPersonChanges(response: ChangesResponseApi) {
+    whenever(mock.fetchPersonChanges(id = any(), body = any())).thenReturn(flowOf(response))
   }
 }

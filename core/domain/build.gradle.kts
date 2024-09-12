@@ -10,6 +10,7 @@ dependencies {
   implementation(projects.core.datastore)
 
   implementation(libs.timber)
+  implementation(libs.kotlinx.datetime)
 
   testImplementation(projects.core.testing)
 }

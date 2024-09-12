@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.jellyseerr
 
-
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.SessionStorage
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.last
 open class LogoutJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val sessionStorage: SessionStorage,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, String>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<String>> = flow {

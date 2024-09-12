@@ -15,6 +15,11 @@ object ClockFactory {
     override fun now(): Instant = Instant.fromEpochSeconds(1628995200)
   }
 
+  // GMT: Sunday, 28 August 2021 08:00:00
+  fun augustTwentyEighth2021(): Clock = object : Clock {
+    override fun now(): Instant = Instant.fromEpochSeconds(1630137600)
+  }
+
   // GMT: Thursday, 2 September 2021 08:00:00
   fun septemberSecond2021(): Clock = object : Clock {
     override fun now(): Instant = Instant.fromEpochSeconds(1630569600)

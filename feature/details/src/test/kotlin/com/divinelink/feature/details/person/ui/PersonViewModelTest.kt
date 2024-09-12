@@ -1,6 +1,8 @@
 package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
@@ -25,9 +27,22 @@ class PersonViewModelTest {
   @Test
   fun `test initialise viewModel with error`() = runTest {
     robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
+      .withNavArgs(
+        PersonNavArguments(
+          id = PersonDetailsFactory.steveCarell().person.id,
+          knownForDepartment = null,
+          name = null,
+          profilePath = null,
+          gender = null,
+        ),
+      )
       .buildViewModel()
-      .assertUiState(PersonUiState.Error)
+      .assertUiState(
+        createState(
+          isLoading = true,
+          isError = true,
+        ),
+      )
   }
 
   @Test
@@ -39,8 +54,8 @@ class PersonViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        PersonUiState.Success(
-          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        createState(
+          personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
         ),
       )
   }
@@ -51,7 +66,14 @@ class PersonViewModelTest {
       .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
       .mockFetchPersonDetailsUseCaseSuccess(PersonDetailsResult.DetailsFailure)
       .buildViewModel()
-      .assertUiState(PersonUiState.Error)
+      .assertUiState(
+        createState(
+          isError = true,
+          personDetails = PersonDetailsUiState.Data.Prefetch(
+            PersonDetailsFactory.steveCarell().person,
+          ),
+        ),
+      )
   }
 
   @Test
@@ -85,11 +107,15 @@ class PersonViewModelTest {
           }
         },
         uiStates = listOf(
-          PersonUiState.Loading,
-          PersonUiState.Success(
+          createState(
+            personDetails = PersonDetailsUiState.Data.Prefetch(
+              PersonDetailsFactory.steveCarell().person,
+            ),
+          ),
+          createState(
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
-          PersonUiState.Success(
+          createState(
             personDetails = PersonDetailsUiState.Data.Visible(
               PersonDetailsFactory.steveCarell().copy(
                 person = PersonDetailsFactory.steveCarell().person.copy(name = "Michael Scarn"),
@@ -112,11 +138,13 @@ class PersonViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        PersonUiState.Success(
+        createState(
+          personDetails = PersonDetailsUiState.Data.Prefetch(
+            PersonDetailsFactory.steveCarell().person,
+          ),
           credits = PersonCreditsUiState.Visible(
             knownFor = PersonCastCreditFactory.knownFor(),
           ),
-          personDetails = PersonDetailsUiState.Loading,
         ),
       )
   }
@@ -151,11 +179,15 @@ class PersonViewModelTest {
           }
         },
         uiStates = listOf(
-          PersonUiState.Loading,
-          PersonUiState.Success(
+          createState(
+            personDetails = PersonDetailsUiState.Data.Prefetch(
+              PersonDetailsFactory.steveCarell().person,
+            ),
+          ),
+          createState(
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
-          PersonUiState.Success(
+          createState(
             credits = PersonCreditsUiState.Visible(
               knownFor = PersonCastCreditFactory.knownFor(),
             ),
@@ -164,4 +196,18 @@ class PersonViewModelTest {
         ),
       )
   }
+
+  private fun createState(
+    isLoading: Boolean = false,
+    isError: Boolean = false,
+    personDetails: PersonDetailsUiState = PersonDetailsUiState.Loading,
+    credits: PersonCreditsUiState = PersonCreditsUiState.Hidden,
+    dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
+  ) = PersonUiState(
+    isLoading = isLoading,
+    isError = isError,
+    personDetails = personDetails,
+    credits = credits,
+    dropdownMenuItems = dropdownMenuItems,
+  )
 }

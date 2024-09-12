@@ -1,8 +1,25 @@
 package com.divinelink.core.testing.factories.entity.person
 
 import com.divinelink.core.database.person.PersonEntity
+import com.divinelink.core.model.person.Gender
 
 object PersonEntityFactory {
+
+  fun empty() = PersonEntity(
+    id = 4495,
+    biography = null,
+    birthday = null,
+    deathday = null,
+    gender = Gender.NOT_SET.value.toLong(),
+    homepage = null,
+    imdbId = null,
+    knownForDepartment = null,
+    name = "",
+    placeOfBirth = null,
+    popularity = 0.0,
+    profilePath = null,
+    insertedAt = "1628995200",
+  )
 
   fun steveCarell(): PersonEntity = PersonEntity(
     id = 4495,

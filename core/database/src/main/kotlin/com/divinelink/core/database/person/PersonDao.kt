@@ -10,6 +10,26 @@ interface PersonDao {
 
   fun insertPerson(person: PersonEntity)
 
+  fun updatePerson(
+    biography: String? = null,
+    name: String? = null,
+    birthday: String? = null,
+    deathday: String? = null,
+    gender: Int? = null,
+    homepage: String? = null,
+    imdbId: String? = null,
+    knownForDepartment: String? = null,
+    placeOfBirth: String? = null,
+    profilePath: String? = null,
+    insertedAt: String? = null,
+    id: Long,
+  )
+
+  fun deleteFromPerson(
+    id: Long,
+    field: PersonChangeField,
+  )
+
   fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>>
 
   fun fetchPersonCombinedCredits(id: Long): Flow<PersonCombinedCreditsEntity?>

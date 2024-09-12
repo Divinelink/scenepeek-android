@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.jellyseerr
 
-
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.combine
 open class GetJellyseerrDetailsUseCase(
   private val storage: PreferenceStorage,
   private val repository: JellyseerrRepository,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, JellyseerrAccountDetails?>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<JellyseerrAccountDetails?>> = combine(

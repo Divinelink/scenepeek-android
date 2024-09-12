@@ -3,7 +3,6 @@ package com.divinelink.core.testing.usecase
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any

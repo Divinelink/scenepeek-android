@@ -2,12 +2,15 @@ package com.divinelink.core.data.details.person
 
 import JvmUnitTestDemoAssetManager
 import app.cash.turbine.test
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
+import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
+import com.divinelink.core.network.media.model.changes.ChangesParameters
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.details.person.PersonDetailsApiFactory
@@ -15,6 +18,7 @@ import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
+import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.testing.service.TestPersonService
 import com.google.common.truth.Truth.assertThat
@@ -101,6 +105,30 @@ class ProdPersonRepositoryTest {
         assertThat(first?.cast?.size).isEqualTo(124)
         assertThat(first?.crew?.size).isEqualTo(17)
         expectNoEvents()
+      }
+    }
+  }
+
+  @Test
+  fun `test fetchPersonChanges`() = runTest {
+    JvmUnitTestDemoAssetManager.open("changes-person.json").use {
+      val changes = it.readBytes().decodeToString().trimIndent()
+
+      val serializer = ChangesResponseApi.serializer()
+      val changesResponseApi = localJson.decodeFromString(serializer, changes)
+
+      service.mockFetchPersonChanges(response = changesResponseApi)
+
+      repository.fetchPersonChanges(
+        id = 4495,
+        params = ChangesParameters(
+          page = 1,
+          startDate = "2021-08-01",
+          endDate = "2021-08-15",
+        ),
+      ).test {
+        assertThat(awaitItem().data).isEqualTo(ChangeSample.changes())
+        awaitComplete()
       }
     }
   }
