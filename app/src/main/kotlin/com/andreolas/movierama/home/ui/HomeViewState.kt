@@ -33,12 +33,12 @@ data class HomeViewState(
 
   private val emptyContentUiState: BlankSlateState? = when (mode) {
     HomeMode.Search -> BlankSlateState.Custom(
-      icon = uiR.drawable.core_ui_ic_error_64,
+      icon = uiR.drawable.core_ui_search,
       title = UIText.ResourceText(R.string.search__empty_result_title),
       description = UIText.ResourceText(R.string.search__empty_result_description),
     )
     HomeMode.Filtered -> BlankSlateState.Custom(
-      icon = uiR.drawable.core_ui_ic_error_64,
+      icon = uiR.drawable.core_ui_ghost,
       title = UIText.ResourceText(R.string.home__empty_filtered_result_title),
       description = UIText.ResourceText(R.string.home__empty_filtered_result_description),
     )

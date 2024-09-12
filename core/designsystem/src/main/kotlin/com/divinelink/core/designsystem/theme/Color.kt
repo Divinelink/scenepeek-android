@@ -125,3 +125,6 @@ val DarkColors = darkColorScheme(
   inversePrimary = dark_inversePrimary,
   surfaceTint = dark_surfaceTint,
 )
+
+val coreGrey55 = Color(0xFF6A6A6A)
+val coreRedHighlight = Color(0xFFEF5350)
