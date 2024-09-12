@@ -94,7 +94,7 @@ fun MovieRamaSearchBar(
         Row(
           modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.tertiaryContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
           verticalAlignment = Alignment.CenterVertically,
         ) {
           Crossfade(
