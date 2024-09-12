@@ -61,5 +61,6 @@ fun HomeScreen(
     onNavigateToSettings = {
       navigator.navigate(SettingsScreenDestination())
     },
+    onRetryClick = viewModel::onRetryClick,
   )
 }

@@ -2,9 +2,11 @@ package com.andreolas.movierama.home.ui
 
 import com.andreolas.movierama.R
 import com.divinelink.core.model.home.HomeMode
-import com.divinelink.core.ui.EmptyContentUiState
+import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
+import com.divinelink.core.ui.R as uiR
 
 data class HomeViewState(
   val isLoading: Boolean,
@@ -14,8 +16,10 @@ data class HomeViewState(
   val filteredResults: MediaSection?,
   val query: String,
   val isSearchLoading: Boolean,
-  val error: UIText?,
+  val error: BlankSlateState?,
   val mode: HomeMode,
+  val pages: Map<HomePage, Int>,
+  val retryAction: HomeMode?,
 ) {
   val initialLoading = isLoading && popularMovies.data.isEmpty()
 
@@ -27,18 +31,26 @@ data class HomeViewState(
     HomeMode.Filtered -> filteredResults?.data?.isEmpty() ?: true
   }
 
-  val emptyContentUiState: EmptyContentUiState? = when (mode) {
-    HomeMode.Search -> EmptyContentUiState(
-      icon = com.divinelink.core.ui.R.drawable.core_ui_ic_error_64,
+  private val emptyContentUiState: BlankSlateState? = when (mode) {
+    HomeMode.Search -> BlankSlateState.Custom(
+      icon = uiR.drawable.core_ui_ic_error_64,
       title = UIText.ResourceText(R.string.search__empty_result_title),
       description = UIText.ResourceText(R.string.search__empty_result_description),
     )
-    HomeMode.Filtered -> EmptyContentUiState(
-      icon = com.divinelink.core.ui.R.drawable.core_ui_ic_error_64,
+    HomeMode.Filtered -> BlankSlateState.Custom(
+      icon = uiR.drawable.core_ui_ic_error_64,
       title = UIText.ResourceText(R.string.home__empty_filtered_result_title),
       description = UIText.ResourceText(R.string.home__empty_filtered_result_description),
     )
     else -> null
+  }
+
+  val blankSlate = if (mode == HomeMode.Filtered && isEmpty) {
+    emptyContentUiState
+  } else if (isEmpty && error == null) {
+    emptyContentUiState
+  } else {
+    error
   }
 
   companion object {
@@ -55,6 +67,11 @@ data class HomeViewState(
       error = null,
       query = "",
       mode = HomeMode.Browser,
+      pages = mapOf(
+        HomePage.Popular to 1,
+        HomePage.Search to 1,
+      ),
+      retryAction = null,
     )
   }
 }

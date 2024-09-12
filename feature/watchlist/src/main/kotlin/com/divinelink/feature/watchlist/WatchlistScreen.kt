@@ -25,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.ui.EmptyContent
-import com.divinelink.core.ui.EmptyContentUiState
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.watchlist.navigation.WatchlistGraph
@@ -101,7 +101,7 @@ fun WatchlistScreen(
               )
               is WatchlistForm.Data -> {
                 if (it.isEmpty) {
-                  EmptyContent(uiState = EmptyContentUiState(title = it.emptyResultsUiText))
+                  BlankSlate(uiState = BlankSlateState.Custom(title = it.emptyResultsUiText))
                 } else {
                   WatchlistContent(
                     list = it.data,

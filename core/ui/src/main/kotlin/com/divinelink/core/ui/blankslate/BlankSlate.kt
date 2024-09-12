@@ -3,7 +3,7 @@ package com.divinelink.core.ui.blankslate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -12,39 +12,50 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 
 @Composable
 fun BlankSlate(
-  state: BlankSlateState,
+  uiState: BlankSlateState,
   onRetry: ((() -> Unit))? = null,
 ) {
   Column(
-    modifier = Modifier.fillMaxWidth(),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    modifier = Modifier
+      .testTag(TestTags.BLANK_SLATE)
+      .fillMaxSize()
+      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+    verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Image(
-      modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_16),
-      painter = painterResource(R.drawable.core_ui_feeling_blue),
-      contentDescription = null,
-    )
+    uiState.icon?.let { icon ->
+      Image(
+        modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_16),
+        painter = painterResource(id = icon),
+        contentDescription = null,
+      )
+    }
 
     Text(
+      textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleMedium,
-      text = state.title.getString(),
+      text = uiState.title.getString(),
     )
 
-    state.description?.let {
+    uiState.description?.let { description ->
       Text(
+        modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
+        textAlign = TextAlign.Center,
         style = MaterialTheme.typography.bodyMedium,
-        text = it.getString(),
+        text = description.getString(),
       )
     }
 
@@ -65,7 +76,7 @@ private fun BlankSlatePreview() {
   AppTheme {
     Surface {
       BlankSlate(
-        state = BlankSlateState.Offline,
+        uiState = BlankSlateState.Offline,
         onRetry = {},
       )
     }

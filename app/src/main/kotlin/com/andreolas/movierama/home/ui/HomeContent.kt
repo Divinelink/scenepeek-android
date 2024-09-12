@@ -30,10 +30,11 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.home.HomeMode
+import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.EmptyContent
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
+import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.core.ui.components.FilterBar
 import com.divinelink.core.ui.components.LoadingContent
@@ -51,6 +52,7 @@ fun HomeContent(
   onNavigateToDetails: (MediaItem) -> Unit,
   onFilterClick: (Filter) -> Unit,
   onClearFiltersClick: () -> Unit,
+  onRetryClick: () -> Unit,
   onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -102,8 +104,11 @@ fun HomeContent(
         label = "HomeContentEmptyTransition",
       ) { isEmpty ->
         when (isEmpty) {
-          true -> viewState.emptyContentUiState?.let {
-            EmptyContent(it)
+          true -> if (viewState.blankSlate != null) {
+            BlankSlate(
+              uiState = viewState.blankSlate,
+              onRetry = viewState.retryAction?.let { onRetryClick },
+            )
           }
           false -> AnimatedContent(
             targetState = viewState.mode,
@@ -206,7 +211,12 @@ private fun HomeContentPreview() {
           filteredResults = null,
           isSearchLoading = false,
           query = "",
+          pages = mapOf(
+            HomePage.Popular to 1,
+            HomePage.Search to 1,
+          ),
           mode = HomeMode.Browser,
+          retryAction = null,
         ),
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
@@ -216,6 +226,7 @@ private fun HomeContentPreview() {
         onFilterClick = {},
         onClearFiltersClick = {},
         onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
   }
