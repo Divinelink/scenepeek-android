@@ -40,7 +40,7 @@ fun BlankSlate(
       Image(
         modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_16),
         painter = painterResource(id = icon),
-        contentDescription = null,
+        contentDescription = "Blank slate illustration",
       )
     }
 
