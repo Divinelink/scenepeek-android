@@ -2,7 +2,7 @@
   <!-- Base application theme. -->
   <style name="Theme.MovieRama" parent="android:Theme.Material.Light.NoActionBar">
     <item name="android:fontFamily">@font/font_medium</item>
-
+    <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     <item name="android:navigationBarColor">@color/transparent</item>
     <item name="android:statusBarColor">@color/transparent</item>
     <item name="android:windowLightStatusBar">true</item>

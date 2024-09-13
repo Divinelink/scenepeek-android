@@ -5,13 +5,15 @@ import com.andreolas.movierama.home.ui.HomeFilter
 import com.andreolas.movierama.home.ui.HomeViewState
 import com.andreolas.movierama.home.ui.MediaSection
 import com.divinelink.core.model.home.HomeMode
+import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import java.net.UnknownHostException
 import kotlin.test.Test
 
 @Suppress("LargeClass")
@@ -35,6 +37,10 @@ class HomeViewModelTest {
         HomeViewState.initial().copy(
           isLoading = false,
           popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -51,6 +57,142 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           error = null,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given offline error, when popular are already fetched I don't expect offline`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(
+        response = Result.success(popularMoviesList),
+      )
+      .buildViewModel()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          error = null,
+          retryAction = null,
+          mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .mockFetchPopularMovies(
+        response = Result.failure(UnknownHostException("You are offline")),
+      )
+      .onLoadNextPage()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          error = null,
+          retryAction = null,
+          mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given offline error, when popular movies are fetched, I expect offline state`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(
+        response = Result.failure(UnknownHostException("You are offline")),
+      )
+      .buildViewModel()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
+          error = BlankSlateState.Offline,
+          retryAction = HomeMode.Browser,
+          mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 1,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test retryAction on browser when expecting failure does not change state`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(
+        response = Result.failure(UnknownHostException("You are offline")),
+      )
+      .buildViewModel()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
+          error = BlankSlateState.Offline,
+          retryAction = HomeMode.Browser,
+          mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 1,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .onRetryClick()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
+          error = BlankSlateState.Offline,
+          retryAction = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 1,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test retryAction on browser when expecting success, update popular data`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(
+        response = Result.failure(UnknownHostException("You are offline")),
+      )
+      .buildViewModel()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
+          error = BlankSlateState.Offline,
+          retryAction = HomeMode.Browser,
+          mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 1,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .mockFetchPopularMovies(response = Result.success(popularMoviesList))
+      .onRetryClick()
+      .assertViewState(
+        HomeViewState.initial().copy(
+          isLoading = false,
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          error = null,
+          retryAction = null,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -67,6 +209,10 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           error = null,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .mockFetchPopularMovies(
@@ -81,6 +227,10 @@ class HomeViewModelTest {
             shouldLoadMore = true,
           ),
           error = null,
+          pages = mapOf(
+            HomePage.Popular to 3,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -103,6 +253,10 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = MediaSection(data = loadData(1, 5), shouldLoadMore = true),
           error = null,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .mockFetchPopularMovies(
@@ -114,6 +268,10 @@ class HomeViewModelTest {
           isLoading = false,
           popularMovies = MediaSection(data = loadData(1, 10), shouldLoadMore = true),
           error = null,
+          pages = mapOf(
+            HomePage.Popular to 3,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -129,94 +287,13 @@ class HomeViewModelTest {
         HomeViewState.initial().copy(
           isLoading = false,
           popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
-          error = UIText.StringText("oops"),
+          error = null,
         ),
       )
   }
 
-//    @Test
-//    fun `given a list of movies, when I mark a movie as favorite then i expect updated favorite status`() = runTest {
-//        testRobot
-//            .mockFetchPopularMovies(Result.success(popularMoviesList))
-//            .buildViewModel()
-//            .mockMarkAsFavorite(
-//                result = Result.success(Unit)
-//            )
-//            .onMarkAsFavorite(popularMoviesList[5])
-//            .assertViewState(
-//                HomeViewState.initial().copy(
-//                    isLoading = false,
-//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
-//                        this[5] = this[5].copy(isFavorite = true)
-//                    },
-//
-//                    error = null
-//
-//                )
-//            )
-//            .onMarkAsFavorite(popularMoviesList[2])
-//            .assertViewState(
-//                HomeViewState.initial().copy(
-//                    isLoading = false,
-//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
-//                        this[2] = this[2].copy(isFavorite = true)
-//                    },
-//
-//                    error = null
-//
-//                )
-//            )
-//            .assertFalseViewState(
-//                HomeViewState.initial().copy(
-//                    isLoading = false,
-//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
-//                        this[2] = this[2].copy(isFavorite = false)
-//                    },
-//
-//                    error = null
-//
-//                )
-//            )
-//    }
-
-//    @Test
-//    fun `given a list of movies, when I unMark a movie as favorite then i expect updated favorite status`() = runTest {
-//        testRobot
-//            .mockFetchPopularMovies(Result.success(popularMoviesList))
-//            .buildViewModel()
-//            .mockMarkAsFavorite(
-//                result = Result.success(Unit)
-//            )
-//            .mockRemoveFavorite(
-//                result = Result.success(Unit)
-//            )
-//            .onMarkAsFavorite(popularMoviesList[5])
-//            .assertViewState(
-//                HomeViewState.initial().copy(
-//                    isLoading = false,
-//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
-//                        this[5] = this[5].copy(isFavorite = true)
-//                    },
-//
-//                    error = null
-//
-//                )
-//            )
-//            .onMarkAsFavorite(popularMoviesList[5])
-//            .assertViewState(
-//                HomeViewState.initial().copy(
-//                    isLoading = false,
-//                    popularMovies = _root_ide_package_.com.andreolas.movierama.home.ui.MediaSection(data= popularMoviesList.apply , shouldLoadMore = true){
-//                        this[5] = this[5].copy(isFavorite = false)
-//                    },
-//
-//                    error = null
-//                )
-//            )
-//    }
-
   @Test
-  fun `Given Search Data, when I searchMovies then I expect Success Result`() = runTest {
+  fun `given search data, when I search movies then I expect success result`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.success(emptyList()))
       .mockFetchSearchMedia(
@@ -237,6 +314,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = true,
           mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .delay(300)
@@ -248,6 +329,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
   }
@@ -271,6 +356,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("tes")
@@ -281,6 +370,10 @@ class HomeViewModelTest {
           isLoading = false,
           query = "test ",
           isSearchLoading = true,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -293,6 +386,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
   }
@@ -316,6 +413,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = emptyList(), shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test ")
@@ -325,6 +426,10 @@ class HomeViewModelTest {
           isLoading = false,
           query = "test ",
           isSearchLoading = true,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -336,6 +441,10 @@ class HomeViewModelTest {
           isLoading = false,
           query = "",
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -359,6 +468,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -368,6 +481,10 @@ class HomeViewModelTest {
           isLoading = false,
           query = "test query",
           isSearchLoading = true,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .delay(400)
@@ -379,6 +496,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
       .onClearClicked()
@@ -390,6 +511,10 @@ class HomeViewModelTest {
           isSearchLoading = false,
           searchResults = null,
           mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -413,6 +538,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -422,6 +551,10 @@ class HomeViewModelTest {
           isLoading = false,
           query = "test query",
           isSearchLoading = true,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .delay(300)
@@ -433,12 +566,16 @@ class HomeViewModelTest {
           isSearchLoading = false,
           searchResults = MediaSection(data = emptyList(), shouldLoadMore = true),
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
   }
 
   @Test
-  fun `given error state when I search then I expect Error Result`() = runTest {
+  fun `given generic error state when I search then I expect no error result`() = runTest {
     testRobot
       .mockFetchPopularMovies(Result.success(popularMoviesList))
       .mockFetchSearchMedia(Result.failure(Exception("Oops.")))
@@ -448,6 +585,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -455,10 +596,165 @@ class HomeViewModelTest {
       .assertViewState(
         expectedViewState = HomeViewState.initial().copy(
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = true,
+          isLoading = false,
           query = "test query",
           isSearchLoading = false,
-          error = UIText.StringText("Oops."),
+          error = null,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given offline error state when I search then I expect error result`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
+      .mockFetchSearchMedia(Result.failure(UnknownHostException("You are offline.")))
+      .buildViewModel()
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .onSearchMovies("test query")
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          error = BlankSlateState.Offline,
+          mode = HomeMode.Search,
+          retryAction = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test retry on search when expecting success`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
+      .mockFetchSearchMedia(Result.failure(UnknownHostException("You are offline.")))
+      .buildViewModel()
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .onSearchMovies("test query")
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          error = BlankSlateState.Offline,
+          mode = HomeMode.Search,
+          retryAction = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
+        ),
+      )
+      .mockFetchSearchMedia(
+        response = Result.success(
+          MultiSearchResult(
+            query = "test query",
+            searchList = popularMoviesList,
+            totalPages = 2,
+          ),
+        ),
+      )
+      .onRetryClick()
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          error = null,
+          retryAction = null,
+          mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `given offline error, when search are already fetched I don't expect offline`() = runTest {
+    testRobot
+      .mockFetchPopularMovies(Result.success(popularMoviesList))
+      .mockFetchSearchMedia(
+        response = Result.success(
+          MultiSearchResult(
+            query = "test query",
+            searchList = popularMoviesList,
+            totalPages = 2,
+          ),
+        ),
+      )
+      .buildViewModel()
+      .onSearchMovies("test query")
+      .delay(300)
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          error = null,
+          retryAction = null,
+          mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
+        ),
+      )
+      .mockFetchSearchMedia(response = Result.failure(UnknownHostException("You are offline")))
+      .onLoadNextPage()
+      .assertViewState(
+        expectedViewState = HomeViewState.initial().copy(
+          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          searchResults = MediaSection(data = popularMoviesList, shouldLoadMore = true),
+          isLoading = false,
+          query = "test query",
+          isSearchLoading = false,
+          error = null,
+          retryAction = null,
+          mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
   }
@@ -482,6 +778,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("test query")
@@ -494,6 +794,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
   }
@@ -518,6 +822,10 @@ class HomeViewModelTest {
             popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
             isLoading = false,
             isSearchLoading = false,
+            pages = mapOf(
+              HomePage.Popular to 2,
+              HomePage.Search to 1,
+            ),
           ),
         )
         .onSearchMovies("test query")
@@ -530,6 +838,10 @@ class HomeViewModelTest {
             query = "test query",
             isSearchLoading = false,
             mode = HomeMode.Search,
+            pages = mapOf(
+              HomePage.Popular to 2,
+              HomePage.Search to 2,
+            ),
           ),
         )
         .mockFetchPopularMovies(Result.success(searchMovies.plus(searchMovies)))
@@ -543,6 +855,10 @@ class HomeViewModelTest {
             query = "test query",
             isSearchLoading = false,
             mode = HomeMode.Search,
+            pages = mapOf(
+              HomePage.Popular to 2,
+              HomePage.Search to 2,
+            ),
           ),
         )
     }
@@ -566,6 +882,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onSearchMovies("")
@@ -575,104 +895,13 @@ class HomeViewModelTest {
           isLoading = false,
           query = "",
           isSearchLoading = false,
-        ),
-      )
-  }
-
-  @Test
-  fun `selecting a movie successfully updates selectedMovie`() = runTest {
-    testRobot
-      .mockFetchPopularMovies(Result.success(popularMoviesList))
-      .buildViewModel()
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-          isSearchLoading = false,
-        ),
-      )
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-        ),
-      )
-  }
-
-  @Test
-  fun `selecting the same movie sets selectedMovie movie to null`() = runTest {
-    testRobot
-      .mockFetchPopularMovies(Result.success(popularMoviesList))
-      .buildViewModel()
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-          isSearchLoading = false,
-        ),
-      )
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-        ),
-      )
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-        ),
-      )
-  }
-
-  @Test
-  fun `selecting movies within debounce time discards them`() = runTest {
-    testRobot
-      .mockFetchPopularMovies(Result.success(popularMoviesList))
-      .buildViewModel()
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-          isSearchLoading = false,
-        ),
-      )
-      .delay(50)
-      .delay(50)
-      .assertViewState(
-        expectedViewState = HomeViewState.initial().copy(
-          popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-          isLoading = false,
-        ),
-      )
-  }
-
-  @Test
-  fun `given a selected movie, when I swipe down then Ie null expect selectedMovie to be null`() =
-    runTest {
-      testRobot
-        .mockFetchPopularMovies(Result.success(popularMoviesList))
-        .buildViewModel()
-        .assertViewState(
-          expectedViewState = HomeViewState.initial().copy(
-            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-            isLoading = false,
-            isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
           ),
-        )
-        .assertViewState(
-          expectedViewState = HomeViewState.initial().copy(
-            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-            isLoading = false,
-          ),
-        )
-        .assertViewState(
-          expectedViewState = HomeViewState.initial().copy(
-            popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
-            isLoading = false,
-          ),
-        )
-    }
+        ),
+      )
+  }
 
   @Test
   fun `given a selected movie, when I mark it as favorite then update its status`() = runTest {
@@ -684,6 +913,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
           isSearchLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .mockMarkAsFavorite(
@@ -697,6 +930,10 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState.initial().copy(
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -729,6 +966,10 @@ class HomeViewModelTest {
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
             mode = HomeMode.Filtered,
+            pages = mapOf(
+              HomePage.Popular to 2,
+              HomePage.Search to 1,
+            ),
           ),
         )
         .onFilterClicked(filter = HomeFilter.Liked.filter)
@@ -739,6 +980,10 @@ class HomeViewModelTest {
             isLoading = false,
             filters = listOf(HomeFilter.Liked.filter.copy(isSelected = false)),
             mode = HomeMode.Browser,
+            pages = mapOf(
+              HomePage.Popular to 2,
+              HomePage.Search to 1,
+            ),
           ),
         )
     }
@@ -770,6 +1015,10 @@ class HomeViewModelTest {
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter.copy(isSelected = true)),
           mode = HomeMode.Filtered,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .onClearFiltersClicked()
@@ -780,6 +1029,10 @@ class HomeViewModelTest {
           isLoading = false,
           filters = HomeFilter.entries.map { it.filter },
           mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -801,6 +1054,10 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = searchMovies, shouldLoadMore = true),
           isLoading = false,
           filters = listOf(HomeFilter.Liked.filter),
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
   }
@@ -827,6 +1084,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = true,
           mode = HomeMode.Browser,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 1,
+          ),
         ),
       )
       .delay(300)
@@ -838,6 +1099,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 2,
+          ),
         ),
       )
       .mockFetchSearchMedia(
@@ -862,6 +1127,10 @@ class HomeViewModelTest {
           query = "test query",
           isSearchLoading = false,
           mode = HomeMode.Search,
+          pages = mapOf(
+            HomePage.Popular to 2,
+            HomePage.Search to 3,
+          ),
         ),
       )
   }

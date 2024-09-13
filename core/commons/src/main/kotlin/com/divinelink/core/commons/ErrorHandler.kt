@@ -6,9 +6,9 @@ class ErrorHandler(private val throwable: Throwable) {
 
   private var actions = mutableMapOf<Int, (ErrorHandler) -> Unit>()
 
-  val exceptionActions: MutableMap<Class<out Throwable>, (ErrorHandler) -> Unit> = mutableMapOf()
+  val exceptionActions: MutableMap<Class<out Throwable>, (Throwable) -> Unit> = mutableMapOf()
 
-  private var otherwiseAction: ((ErrorHandler) -> Unit)? = null
+  private var otherwiseAction: ((Throwable) -> Unit)? = null
 
   companion object {
     fun create(
@@ -25,7 +25,7 @@ class ErrorHandler(private val throwable: Throwable) {
     return this
   }
 
-  inline fun <reified T : Exception> on(noinline action: (ErrorHandler) -> Unit): ErrorHandler =
+  inline fun <reified T : Exception> on(noinline action: (Throwable) -> Unit): ErrorHandler =
     apply {
       exceptionActions[T::class.java] = action
     }
@@ -34,7 +34,7 @@ class ErrorHandler(private val throwable: Throwable) {
    * This method is used to handle the error in case no other error handler is found.
    * This is useful when you want to handle the error in a generic way.
    */
-  fun otherwise(action: (ErrorHandler) -> Unit) = apply {
+  fun otherwise(action: (Throwable) -> Unit) = apply {
     otherwiseAction = action
     return this
   }
@@ -49,14 +49,14 @@ class ErrorHandler(private val throwable: Throwable) {
     val exceptionAction = findExceptionAction(throwable)
 
     action?.invoke(this)
-    exceptionAction?.invoke(this)
+    exceptionAction?.invoke(throwable)
 
     if (action == null && exceptionAction == null) {
-      otherwiseAction?.invoke(this)
+      otherwiseAction?.invoke(throwable)
     }
   }
 
-  private fun findExceptionAction(throwable: Throwable?): ((ErrorHandler) -> Unit)? {
+  private fun findExceptionAction(throwable: Throwable?): ((Throwable) -> Unit)? {
     if (throwable == null) return null
 
     val action = exceptionActions.entries.firstOrNull {
@@ -67,7 +67,7 @@ class ErrorHandler(private val throwable: Throwable) {
   }
 
   /**
-   * Our [com.divinelink.core.network.client.androidClient] always throws [InvalidStatusException]
+   * Our [com.divinelink.core.network.client.ktorClient] always throws [InvalidStatusException]
    * This method extracts the status code from the message.
    */
   private fun getErrorCode(throwable: Throwable): Int = when {

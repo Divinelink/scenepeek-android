@@ -49,7 +49,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         "ksp"(libs.findLibrary("compose.destinations.ksp").get())
 
         // add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
-        // add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
+        add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
 
 //        add(
 //          "androidTestImplementation",

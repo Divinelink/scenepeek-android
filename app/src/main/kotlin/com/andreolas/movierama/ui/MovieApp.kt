@@ -5,17 +5,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -36,6 +38,7 @@ import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 @Composable
 fun MovieApp(
+  appState: MovieAppState,
   uiState: MainUiState,
   uiEvent: MainUiEvent,
   onConsumeEvent: () -> Unit,
@@ -44,7 +47,17 @@ fun MovieApp(
   val navigator = navController.rememberDestinationsNavigator()
 
   val snackbarHostState = remember { SnackbarHostState() }
-  val coroutineScope = rememberCoroutineScope()
+  val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+
+  val notConnectedMessage = stringResource(R.string.not_connected)
+  LaunchedEffect(isOffline) {
+    if (isOffline) {
+      snackbarHostState.showSnackbar(
+        message = notConnectedMessage,
+        duration = Indefinite,
+      )
+    }
+  }
 
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
@@ -64,7 +77,7 @@ fun MovieApp(
 
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
-    coroutineScope = coroutineScope,
+    coroutineScope = appState.coroutineScope,
   ) {
     Scaffold(
       containerColor = Color.Transparent,

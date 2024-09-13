@@ -17,8 +17,6 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestAp
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class ProdMediaRepository(
@@ -31,17 +29,11 @@ class ProdMediaRepository(
     .map { apiResponse ->
       Result.success(apiResponse.toMoviesList())
     }
-    .catch { exception ->
-      flowOf(Result.failure<Exception>(Exception(exception.message)))
-    }
 
   override fun fetchFavoriteMovies(): Flow<MediaListResult> = mediaDao
     .fetchFavoriteMovies()
     .map { moviesList ->
       Result.success(moviesList.map())
-    }
-    .catch { exception ->
-      flowOf(Result.failure<Exception>(exception))
     }
 
   override fun fetchFavoriteTVSeries(): Flow<MediaListResult> = mediaDao
@@ -49,17 +41,11 @@ class ProdMediaRepository(
     .map { tvList ->
       Result.success(tvList.map())
     }
-    .catch { exception ->
-      flowOf(Result.failure<Exception>(exception))
-    }
 
   override fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>> = mediaDao
     .fetchFavoriteMediaIDs()
     .map { moviesList ->
       Result.success(moviesList)
-    }
-    .catch { exception ->
-      flowOf(Result.failure<Exception>(exception))
     }
 
   @Deprecated("Use fetchMultiInfo instead")
@@ -68,18 +54,12 @@ class ProdMediaRepository(
     .map { apiResponse ->
       Result.success(apiResponse.toDomainMoviesList())
     }
-    .catch { exception ->
-      flowOf(Result.failure<Exception>(exception))
-    }
 
   override fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>> =
     mediaRemote
       .fetchMultiInfo(requestApi)
       .map { apiResponse ->
         Result.success(apiResponse.map())
-      }
-      .catch { exception ->
-        flowOf(Result.failure<Exception>(exception))
       }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit> {

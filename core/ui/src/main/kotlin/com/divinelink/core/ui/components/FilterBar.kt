@@ -3,7 +3,6 @@
 package com.divinelink.core.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
@@ -86,12 +85,7 @@ fun FilterBar(
       ) { index ->
         val filter = sortedFilters[index]
         FilterItem(
-          modifier = Modifier
-            .animateItemPlacement(
-              animationSpec = tween(
-                durationMillis = 600,
-              ),
-            ),
+          modifier = Modifier.animateItem(),
           filter = filter,
           onFilterClick = onFilterClick,
         )
@@ -139,7 +133,7 @@ private fun FilterItem(
   val color = if (filter.isSelected) {
     MaterialTheme.colorScheme.primary
   } else {
-    MaterialTheme.colorScheme.surfaceVariant
+    MaterialTheme.colorScheme.surfaceContainerHighest
   }
   Button(
     colors = ButtonDefaults.buttonColors(

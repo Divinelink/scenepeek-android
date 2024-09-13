@@ -49,13 +49,13 @@ fun RateDialogContent(
     SpannableRating(
       modifier = Modifier
         .fillMaxWidth()
-        .align(Alignment.CenterHorizontally)
         .padding(bottom = MaterialTheme.dimensions.keyline_8),
       text = stringResource(id = R.string.details__your_rating),
       rating = " ${rating.floatValue.roundToInt()}",
     )
 
     RateSlider(
+      modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_8),
       value = value,
       onValueChange = {
         onRateChanged(it)
@@ -98,6 +98,23 @@ private fun BottomSheetRateContentPreview() {
         onSubmitRate = {},
         onClearRate = {},
         canClearRate = true,
+      )
+    }
+  }
+}
+
+@Previews
+@Composable
+private fun BottomSheetRateContentWithoutClearPreview() {
+  AppTheme {
+    Surface {
+      RateDialogContent(
+        value = 5f,
+        mediaTitle = "The Godfather",
+        onRateChanged = {},
+        onSubmitRate = {},
+        onClearRate = {},
+        canClearRate = false,
       )
     }
   }

@@ -28,10 +28,10 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
-import com.divinelink.core.ui.EmptyContent
-import com.divinelink.core.ui.EmptyContentUiState
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -72,7 +72,7 @@ fun CreditsContent(
       when (val content = state.forms.values.elementAt(page)) {
         is CreditsUiContent.Cast -> {
           if (content.cast.isEmpty()) {
-            EmptyContent(uiState = EmptyContentUiState(title = content.castMissingText))
+            BlankSlate(uiState = BlankSlateState.Custom(title = content.castMissingText))
           } else {
             LazyColumn(
               modifier = Modifier
@@ -95,7 +95,7 @@ fun CreditsContent(
         }
         is CreditsUiContent.Crew -> {
           if (content.crew.isEmpty()) {
-            EmptyContent(uiState = EmptyContentUiState(title = content.crewMissingText))
+            BlankSlate(uiState = BlankSlateState.Custom(title = content.crewMissingText))
           } else {
             LazyColumn(
               modifier = Modifier

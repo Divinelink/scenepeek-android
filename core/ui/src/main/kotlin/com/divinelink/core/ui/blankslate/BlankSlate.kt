@@ -1,10 +1,11 @@
-package com.divinelink.core.ui
+package com.divinelink.core.ui.blankslate
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,15 +17,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-
-data class EmptyContentUiState(
-  val icon: Int? = null,
-  val title: UIText = UIText.StringText(""),
-  val description: UIText = UIText.StringText(""),
-)
+import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.getString
 
 @Composable
-fun EmptyContent(uiState: EmptyContentUiState) {
+fun BlankSlate(
+  uiState: BlankSlateState,
+  onRetry: ((() -> Unit))? = null,
+) {
   Column(
     modifier = Modifier
       .testTag(TestTags.BLANK_SLATE)
@@ -34,10 +37,10 @@ fun EmptyContent(uiState: EmptyContentUiState) {
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     uiState.icon?.let { icon ->
-      Icon(
+      Image(
         modifier = Modifier.padding(bottom = MaterialTheme.dimensions.keyline_16),
         painter = painterResource(id = icon),
-        contentDescription = null,
+        contentDescription = "Blank slate illustration",
       )
     }
 
@@ -47,28 +50,34 @@ fun EmptyContent(uiState: EmptyContentUiState) {
       text = uiState.title.getString(),
     )
 
-    if (uiState.description.getString().isNotEmpty()) {
+    uiState.description?.let { description ->
       Text(
         modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.bodyMedium,
-        text = uiState.description.getString(),
+        text = description.getString(),
       )
+    }
+
+    onRetry?.let {
+      Button(
+        onClick = it,
+        modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+      ) {
+        Text(text = UIText.ResourceText(R.string.core_ui_retry).getString())
+      }
     }
   }
 }
 
 @Previews
 @Composable
-private fun CreditsEmptyContentPreview() {
+private fun BlankSlatePreview() {
   AppTheme {
     Surface {
-      EmptyContent(
-        uiState = EmptyContentUiState(
-          icon = R.drawable.core_ui_ic_error_64,
-          title = UIText.StringText("No credits available"),
-          description = UIText.StringText("You haven't added any credits yet."),
-        ),
+      BlankSlate(
+        uiState = BlankSlateState.Offline,
+        onRetry = {},
       )
     }
   }

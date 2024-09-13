@@ -439,7 +439,7 @@ private fun UserRating(
           modifier = Modifier.align(Alignment.CenterVertically),
           text = stringResource(id = R.string.details__your_rating),
           rating = userRating,
-          newLine = true,
+          vertical = true,
         )
       } else {
         Text(

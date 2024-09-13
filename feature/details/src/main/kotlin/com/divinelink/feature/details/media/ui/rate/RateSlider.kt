@@ -21,6 +21,7 @@ import com.divinelink.core.ui.TestTags
 @Composable
 @Suppress("MagicNumber")
 fun RateSlider(
+  modifier: Modifier = Modifier,
   value: Float,
   onValueChange: (Float) -> Unit,
 ) {
@@ -39,13 +40,14 @@ fun RateSlider(
   )
 
   Slider(
-    modifier = Modifier
+    modifier = modifier
       .testTag(TestTags.Details.RATE_SLIDER)
       .fillMaxWidth(),
     colors = SliderDefaults.colors(
       thumbColor = color.value,
       activeTrackColor = color.value,
       inactiveTrackColor = color.value.copy(alpha = 0.2f),
+      inactiveTickColor = color.value.copy(alpha = 0.2f),
     ),
     value = rating.floatValue,
     steps = 8,

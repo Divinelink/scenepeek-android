@@ -1,5 +1,6 @@
 package com.andreolas.movierama.ui
 
+import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
@@ -22,10 +23,12 @@ import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.andreolas.movierama.home.ui.HomeViewModel
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.network.TestNetworkMonitor
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
@@ -49,6 +52,10 @@ class MovieAppTest : ComposeTest() {
 
   private lateinit var uiState: MainUiState
   private lateinit var uiEvent: MainUiEvent
+
+  private val networkMonitor = TestNetworkMonitor()
+
+  private lateinit var appState: MovieAppState
 
   // Home use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
@@ -98,7 +105,7 @@ class MovieAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigation items are visible`() {
+  fun `test navigation items are visible`() = runTest {
     val homeTab = getString(R.string.home)
     val watchlistTab = getString(R.string.watchlist)
 
@@ -118,6 +125,10 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
+          appState = MovieAppState(
+            coroutineScope = backgroundScope,
+            networkMonitor = networkMonitor,
+          ),
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -169,6 +180,10 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
+          appState = MovieAppState(
+            coroutineScope = backgroundScope,
+            networkMonitor = networkMonitor,
+          ),
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -262,6 +277,10 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
+          appState = MovieAppState(
+            coroutineScope = backgroundScope,
+            networkMonitor = networkMonitor,
+          ),
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -336,6 +355,10 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
+          appState = MovieAppState(
+            coroutineScope = backgroundScope,
+            networkMonitor = networkMonitor,
+          ),
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -372,12 +395,16 @@ class MovieAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test loading content is visible when uiState is loading`() {
+  fun `test loading content is visible when uiState is loading`() = runTest {
     uiState = MainUiState.Loading
 
     setContentWithTheme {
       KoinContext {
         MovieApp(
+          appState = MovieAppState(
+            coroutineScope = backgroundScope,
+            networkMonitor = networkMonitor,
+          ),
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -387,6 +414,52 @@ class MovieAppTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test when state is offline not connected snackbar is visible`() = runTest(
+    MainDispatcherRule().testDispatcher.unconfined,
+  ) {
+    popularMoviesUseCase.mockFetchPopularMovies(
+      response = Result.failure(Exception("")),
+    )
+
+    declare {
+      HomeViewModel(
+        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+      )
+    }
+
+    setContentWithTheme {
+      appState = remember {
+        MovieAppState(
+          coroutineScope = backgroundScope,
+          networkMonitor = networkMonitor,
+        )
+      }
+
+      KoinContext {
+        MovieApp(
+          appState = appState,
+          uiState = uiState,
+          uiEvent = uiEvent,
+          onConsumeEvent = {},
+        )
+      }
+    }
+
+    networkMonitor.setConnected(false)
+
+    with(composeTestRule) {
+      onNodeWithText(getString(R.string.not_connected)).assertIsDisplayed()
+
+      networkMonitor.setConnected(true)
+
+      onNodeWithText(getString(R.string.not_connected)).assertDoesNotExist()
     }
   }
 }
