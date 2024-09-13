@@ -65,13 +65,11 @@ class HomeViewModel(
       ).collectLatest { result ->
         result.onSuccess {
           incrementPage(HomePage.Popular)
-          // TODO ADD test for pagination as well
-
           _viewState.update { viewState ->
             viewState.copy(
               isLoading = false,
-              // TODO add test - on success should make error null
               error = null,
+              retryAction = null,
               popularMovies = viewState.popularMovies.addMore(result.data),
             )
           }
@@ -203,7 +201,6 @@ class HomeViewModel(
         .collectLatest { result ->
           result.onSuccess {
             incrementPage(HomePage.Search)
-            // TODO ADD test for pagination as well - on success should make error null
             if (allowSearchResult && result.data.query == latestQuery) {
               _viewState.update { viewState ->
                 viewState.copy(
@@ -211,6 +208,7 @@ class HomeViewModel(
                   isLoading = false,
                   error = null,
                   mode = HomeMode.Search,
+                  retryAction = null,
                   searchResults = if (isNewSearch) {
                     isNewSearch = false
                     MediaSection(

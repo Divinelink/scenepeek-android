@@ -39,7 +39,6 @@ import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.watchlist.WatchlistViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
@@ -50,10 +49,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MovieAppTest : ComposeTest() {
-
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
-  private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var uiState: MainUiState
   private lateinit var uiEvent: MainUiEvent
@@ -424,7 +419,7 @@ class MovieAppTest : ComposeTest() {
 
   @Test
   fun `test when state is offline not connected snackbar is visible`() = runTest(
-    mainDispatcherRule.testDispatcher.unconfined,
+    MainDispatcherRule().testDispatcher.unconfined,
   ) {
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.failure(Exception("")),

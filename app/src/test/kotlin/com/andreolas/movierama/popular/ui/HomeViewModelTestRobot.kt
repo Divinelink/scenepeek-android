@@ -71,6 +71,10 @@ class HomeViewModelTestRobot {
     )
   }
 
+  fun onRetryClick() = apply {
+    viewModel.onRetryClick()
+  }
+
   fun onLoadNextPage() = apply {
     viewModel.onLoadNextPage()
   }
