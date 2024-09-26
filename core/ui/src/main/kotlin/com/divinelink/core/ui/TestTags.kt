@@ -4,6 +4,10 @@ object TestTags {
 
   object Components {
 
+    object SearchBar {
+      const val LOADING_INDICATOR = "Search Bar Loading Indicator"
+    }
+
     object TopAppBar {
       const val TOP_APP_BAR = "Top App Bar"
       const val TOP_APP_BAR_TITLE = "Top App Bar Title"

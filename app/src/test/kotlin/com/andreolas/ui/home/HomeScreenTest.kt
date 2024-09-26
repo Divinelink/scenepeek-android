@@ -4,10 +4,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.andreolas.movierama.R
 import com.andreolas.movierama.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.andreolas.movierama.fakes.usecase.FakeGetPopularMoviesUseCase
@@ -20,6 +18,7 @@ import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.ui.components.FILTER_BAR_TEST_TAG
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
@@ -105,19 +104,11 @@ class HomeScreenTest : ComposeTest() {
       )
     }
 
-    val toolbarSearch = composeTestRule.activity
-      .getString(R.string.toolbar_search)
-
-    val searchContentDescription = composeTestRule.activity
-      .getString(uiR.string.toolbar_search_placeholder)
+    val searchContentDescription = getString(uiR.string.core_ui_toolbar_search_placeholder)
 
     composeTestRule
       .onNodeWithTag(FILTER_BAR_TEST_TAG)
       .assertIsDisplayed()
-
-    composeTestRule
-      .onNodeWithText(toolbarSearch)
-      .performClick()
 
     composeTestRule
       .onNodeWithContentDescription(searchContentDescription)
