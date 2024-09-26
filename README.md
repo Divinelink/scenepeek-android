@@ -87,4 +87,7 @@ properties file that is not committed to the repository.
 2. Add your API keys to this file in the format: `PROPERTY_NAME=value`
 3. In your app's `build.gradle`, reference these properties using `secrets.propertyName`
 
-## Demo
+## Preview
+
+https://github.com/user-attachments/assets/5cde896d-c2ce-4ea7-819b-52884a914efc
+
