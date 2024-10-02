@@ -18,7 +18,8 @@ class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
     val storedCookie = storage.jellyseerrAuthCookie ?: return cookies
 
     val cookie = stringToCookie(storedCookie)
-    if (cookie != null && !cookie.isExpired()) {
+    // TODO handle expired cookie - cookie.isExpired()
+    if (cookie != null) {
       cookies.add(cookie)
     }
     return cookies
