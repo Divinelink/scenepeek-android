@@ -15,13 +15,12 @@ import com.divinelink.core.domain.di.useCaseModule
 import com.divinelink.core.network.di.remoteModule
 import com.divinelink.feature.settings.di.settingsUseCaseModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import org.koin.androix.startup.KoinStartup.onKoinStartup
 
 class Application : Application() {
-  override fun onCreate() {
-    super.onCreate()
 
-    startKoin {
+  init {
+    onKoinStartup {
       androidContext(this@Application)
       modules(
         appModule,

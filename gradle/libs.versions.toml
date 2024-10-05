@@ -2,9 +2,9 @@
 version-name = "0.6.0"
 version-code = "11"
 
-firebase-appdistribution-gradle = "4.2.0"
-firebase-crashlytics-gradle = "2.9.9"
-google-services = "4.4.1"
+firebase-appdistribution-gradle = "5.0.0"
+firebase-crashlytics-gradle = "3.0.2"
+google-services = "4.4.2"
 kotlin = "2.0.20"
 ksp = "2.0.20-1.0.24"
 android-tools = "31.4.0"
@@ -122,6 +122,7 @@ kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-start-up = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
 
 # Misc
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
@@ -133,9 +134,9 @@ detekt-cli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 # Firebase
-firebase-bom = 'com.google.firebase:firebase-bom:33.1.0'
-firebase-crashlytics = 'com.google.firebase:firebase-crashlytics-ktx:19.0.1'
-firebase-analytics = 'com.google.firebase:firebase-analytics-ktx:22.0.1'
+firebase-bom = 'com.google.firebase:firebase-bom:33.4.0'
+firebase-crashlytics = 'com.google.firebase:firebase-crashlytics-ktx:19.2.0'
+firebase-analytics = 'com.google.firebase:firebase-analytics-ktx:22.1.2'
 firebase-config = 'com.google.firebase:firebase-config-ktx:22.0.0'
 
 # Database

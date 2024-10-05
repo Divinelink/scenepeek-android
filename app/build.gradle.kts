@@ -147,6 +147,7 @@ dependencies {
   implementation(libs.kotlinx.serialization.json)
 
   implementation(libs.koin.android.compose)
+  implementation(libs.koin.start.up)
 
   // Database
   implementation(libs.room.ktx) // TODO Remove room deps and add di for database
