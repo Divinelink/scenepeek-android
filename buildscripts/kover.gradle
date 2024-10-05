@@ -41,7 +41,7 @@ kover {
               "*PreviewParameterProvider",
               "*Preview",
 
-              "ConnectivityManagerNetworkMonitor"
+              "ConnectivityManagerNetworkMonitor.kt"
           )
           annotatedBy(
               "androidx.compose.ui.tooling.preview.Preview",
