@@ -1,12 +1,13 @@
 package com.divinelink.core.domain.jellyseerr
 
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
-import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.last
 open class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val storage: PreferenceStorage,
+  private val encryptedStorage: EncryptedStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher.io) {
 
@@ -38,6 +40,7 @@ open class LoginJellyseerrUseCase(
           storage.setJellyseerrAccount(parameters.username.value)
           storage.setJellyseerrAddress(parameters.address)
           storage.setJellyseerrSignInMethod(parameters.signInMethod.name)
+          encryptedStorage.setJellyseerrPassword(parameters.password.value)
           repository.insertJellyseerrAccountDetails(accountDetails)
 
           emit(Result.success(accountDetails))

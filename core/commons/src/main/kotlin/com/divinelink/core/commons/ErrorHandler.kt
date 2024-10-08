@@ -2,30 +2,35 @@ package com.divinelink.core.commons
 
 import com.divinelink.core.commons.exception.InvalidStatusException
 
-class ErrorHandler(private val throwable: Throwable) {
+class ErrorHandler private constructor() {
 
   private var actions = mutableMapOf<Int, (ErrorHandler) -> Unit>()
-
+  private var otherwiseAction: ((Throwable) -> Unit)? = null
   val exceptionActions: MutableMap<Class<out Throwable>, (Throwable) -> Unit> = mutableMapOf()
 
-  private var otherwiseAction: ((Throwable) -> Unit)? = null
-
   companion object {
+    val global = ErrorHandler()
+
     fun create(
       throwable: Throwable,
       actions: ErrorHandler.() -> Unit,
-    ) = ErrorHandler(throwable).apply(actions).handle()
+    ) = ErrorHandler().apply(actions).handle(throwable)
   }
 
+  /**
+   * Registers an action to be executed when an error with the specified code occurs.
+   */
   fun on(
     errorCode: Int,
     action: (ErrorHandler) -> Unit,
   ) = apply {
     actions[errorCode] = action
-    return this
   }
 
-  inline fun <reified T : Exception> on(noinline action: (Throwable) -> Unit): ErrorHandler =
+  /**
+   * Registers an action to be executed when an exception of the specified type occurs.
+   */
+  inline fun <reified T : Throwable> on(noinline action: (Throwable) -> Unit): ErrorHandler =
     apply {
       exceptionActions[T::class.java] = action
     }
@@ -43,7 +48,10 @@ class ErrorHandler(private val throwable: Throwable) {
    * This method is used to handle the error based on the error code or the exception type.
    * If no error code is found, it will call the [otherwiseAction] method.
    */
-  fun handle() {
+  fun handle(
+    throwable: Throwable,
+    skipGlobal: Boolean = false,
+  ) {
     val errorCode = getErrorCode(throwable)
     val action = actions[errorCode]
     val exceptionAction = findExceptionAction(throwable)
@@ -53,6 +61,12 @@ class ErrorHandler(private val throwable: Throwable) {
 
     if (action == null && exceptionAction == null) {
       otherwiseAction?.invoke(throwable)
+    }
+
+    // If global handling is not skipped, pass the error to the global handler
+    if (!skipGlobal) {
+      // Ensure global handler doesn't recurse
+      global.handle(throwable, skipGlobal = true)
     }
   }
 
@@ -75,10 +89,7 @@ class ErrorHandler(private val throwable: Throwable) {
       val status = throwable.cause as InvalidStatusException
       status.status
     }
-    throwable is InvalidStatusException -> {
-      val status = throwable
-      status.status
-    }
+    throwable is InvalidStatusException -> throwable.status
     else -> -1
   }
 }

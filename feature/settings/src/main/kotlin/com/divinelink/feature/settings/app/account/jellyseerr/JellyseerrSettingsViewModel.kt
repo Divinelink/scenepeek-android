@@ -9,6 +9,7 @@ import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.loginParams
@@ -139,8 +140,22 @@ class JellyseerrSettingsViewModel(
                   ),
                 )
               }
-            }.onFailure {
-              _uiState.setSnackbarMessage(UIText.ResourceText(uiR.string.core_ui_error_retry))
+            }.onFailure { throwable ->
+              ErrorHandler.create(throwable) {
+                on<JellyseerrUnauthorizedException> {
+                  _uiState.update {
+                    it.copy(
+                      jellyseerrState = JellyseerrState.Initial(
+                        address = "",
+                        isLoading = false,
+                      ),
+                    )
+                  }
+                }
+                otherwise {
+                  _uiState.setSnackbarMessage(UIText.ResourceText(uiR.string.core_ui_error_retry))
+                }
+              }
             }
           }
           .launchIn(viewModelScope)

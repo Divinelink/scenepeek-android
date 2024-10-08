@@ -10,7 +10,6 @@ import io.ktor.util.date.GMTDate
 /**
  * A [CookiesStorage] implementation that stores cookies in an encrypted storage.
  */
-
 class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
   override suspend fun get(requestUrl: Url): List<Cookie> {
     val cookies = mutableListOf<Cookie>()
@@ -18,8 +17,7 @@ class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
     val storedCookie = storage.jellyseerrAuthCookie ?: return cookies
 
     val cookie = stringToCookie(storedCookie)
-    // TODO handle expired cookie - cookie.isExpired()
-    if (cookie != null) {
+    if (cookie != null && !cookie.isExpired()) {
       cookies.add(cookie)
     }
     return cookies

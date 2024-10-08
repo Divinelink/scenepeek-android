@@ -346,6 +346,13 @@ class DetailsViewModel(
           }
         }.onFailure {
           ErrorHandler.create(it) {
+            on(403) {
+              setSnackbarMessage(
+                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+                snackbarResult = ::navigateToLogin,
+              )
+            }
             on(409) {
               setSnackbarMessage(
                 text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
@@ -376,9 +383,19 @@ class DetailsViewModel(
     }
   }
 
-  private fun setSnackbarMessage(text: UIText) {
+  private fun setSnackbarMessage(
+    text: UIText,
+    actionLabelText: UIText? = null,
+    snackbarResult: (SnackbarResult) -> Unit = {},
+  ) {
     _viewState.update { viewState ->
-      viewState.copy(snackbarMessage = SnackbarMessage.from(text))
+      viewState.copy(
+        snackbarMessage = SnackbarMessage.from(
+          text = text,
+          actionLabelText = actionLabelText,
+          onSnackbarResult = snackbarResult,
+        ),
+      )
     }
   }
 

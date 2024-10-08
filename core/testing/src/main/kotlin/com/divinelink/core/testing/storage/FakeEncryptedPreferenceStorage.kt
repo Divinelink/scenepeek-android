@@ -6,6 +6,7 @@ open class FakeEncryptedPreferenceStorage(
   override var tmdbAuthToken: String = "",
   override var sessionId: String? = null,
   override var jellyseerrAuthCookie: String? = null,
+  override var jellyseerrPassword: String? = null,
 ) : EncryptedStorage {
 
   override suspend fun setTmdbAuthToken(key: String) {
@@ -26,5 +27,13 @@ open class FakeEncryptedPreferenceStorage(
 
   override suspend fun setJellyseerrAuthCookie(cookie: String) {
     this.jellyseerrAuthCookie = cookie
+  }
+
+  override suspend fun clearJellyseerrPassword() {
+    this.jellyseerrPassword = null
+  }
+
+  override suspend fun setJellyseerrPassword(password: String) {
+    this.jellyseerrPassword = password
   }
 }

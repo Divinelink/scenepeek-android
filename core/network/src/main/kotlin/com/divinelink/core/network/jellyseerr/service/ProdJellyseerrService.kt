@@ -2,7 +2,6 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.client.JellyseerrRestClient
-import com.divinelink.core.network.jellyseerr.model.JellyfinLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -17,9 +16,9 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   ): Flow<JellyfinLoginResponseApi> = flow {
     val url = "${jellyfinLogin.address}/api/v1/auth/jellyfin"
 
-    val response = restClient.post<JellyfinLoginRequestBodyApi, JellyfinLoginResponseApi>(
+    val response = restClient.post<JellyseerrLoginRequestBodyApi, JellyfinLoginResponseApi>(
       url = url,
-      body = JellyfinLoginRequestBodyApi(
+      body = JellyseerrLoginRequestBodyApi.Jellyfin(
         username = jellyfinLogin.username.value,
         password = jellyfinLogin.password.value,
       ),
@@ -35,7 +34,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
     val response = restClient.post<JellyseerrLoginRequestBodyApi, JellyfinLoginResponseApi>(
       url = url,
-      body = JellyseerrLoginRequestBodyApi(
+      body = JellyseerrLoginRequestBodyApi.Jellyseerr(
         email = jellyseerrLogin.username.value,
         password = jellyseerrLogin.password.value,
       ),
