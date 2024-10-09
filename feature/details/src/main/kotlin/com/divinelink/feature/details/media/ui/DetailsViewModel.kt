@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -350,6 +351,7 @@ class DetailsViewModel(
               setSnackbarMessage(
                 text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
                 actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+                duration = SnackbarDuration.Long,
                 snackbarResult = ::navigateToLogin,
               )
             }
@@ -386,6 +388,7 @@ class DetailsViewModel(
   private fun setSnackbarMessage(
     text: UIText,
     actionLabelText: UIText? = null,
+    duration: SnackbarDuration = SnackbarDuration.Short,
     snackbarResult: (SnackbarResult) -> Unit = {},
   ) {
     _viewState.update { viewState ->
@@ -393,6 +396,7 @@ class DetailsViewModel(
         snackbarMessage = SnackbarMessage.from(
           text = text,
           actionLabelText = actionLabelText,
+          duration = duration,
           onSnackbarResult = snackbarResult,
         ),
       )

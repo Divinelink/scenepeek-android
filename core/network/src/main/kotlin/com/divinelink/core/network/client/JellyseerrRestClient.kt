@@ -2,6 +2,7 @@ package com.divinelink.core.network.client
 
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.model.exception.JellyseerrInvalidCredentials
 import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
@@ -13,7 +14,9 @@ import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.statement.HttpReceivePipeline
+import io.ktor.client.statement.request
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.Url
 import kotlinx.coroutines.flow.first
 
 class JellyseerrRestClient(
@@ -21,6 +24,10 @@ class JellyseerrRestClient(
   private val encryptedStorage: EncryptedStorage,
   private val datastore: PreferenceStorage,
 ) {
+
+  companion object {
+    const val AUTH_ENDPOINT = "/api/v1/auth/"
+  }
 
   val client: HttpClient = ktorClient(engine)
     .config {
@@ -38,16 +45,20 @@ class JellyseerrRestClient(
 
       install(HttpRequestRetry) {
         retryIf(maxRetries = 1) { _, response ->
+          val isAuthEndpoint = response.request.url.isAuthEndpoint()
+
           when {
-            response.status != HttpStatusCode.Unauthorized -> false
-            else -> true
+            response.status == HttpStatusCode.Unauthorized && !isAuthEndpoint -> true
+            else -> false
           }
         }
       }
     }
     .apply {
       receivePipeline.intercept(HttpReceivePipeline.Before) {
-        if (subject.status == HttpStatusCode.Unauthorized) {
+        val isAuthEndpoint = subject.request.url.isAuthEndpoint()
+
+        if (subject.status == HttpStatusCode.Unauthorized && !isAuthEndpoint) {
           reAuthenticate()
         }
       }
@@ -60,16 +71,16 @@ class JellyseerrRestClient(
     val signInMethod = datastore.jellyseerrSignInMethod.first()
 
     if (account == null || password == null || address == null || signInMethod == null) {
-      throw JellyseerrUnauthorizedException()
+      throw JellyseerrInvalidCredentials()
     }
 
     val loginMethod = JellyseerrLoginMethod.from(signInMethod)
-      ?: throw JellyseerrUnauthorizedException()
+      ?: throw JellyseerrInvalidCredentials()
 
     val body = loginMethod.toRequestBodyApi(account, password)
 
     post<JellyseerrLoginRequestBodyApi, JellyfinLoginResponseApi>(
-      url = "$address/api/v1/auth/${loginMethod.endpoint}",
+      url = "$address$AUTH_ENDPOINT${loginMethod.endpoint}",
       body = body,
     )
   }
@@ -84,4 +95,6 @@ class JellyseerrRestClient(
   fun close() {
     client.close()
   }
+
+  private fun Url.isAuthEndpoint(): Boolean = encodedPath.contains(AUTH_ENDPOINT)
 }

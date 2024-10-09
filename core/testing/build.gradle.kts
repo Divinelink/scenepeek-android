@@ -35,10 +35,9 @@ dependencies {
 
   implementation(libs.kotlinx.datetime)
 
-  implementation(libs.ktor.client.mock)
+  api(libs.ktor.client.mock)
 
   api(libs.koin.test)
-//  implementation(libs.koin.android)
 
   api(libs.datastore)
   api(libs.datastore.core)
