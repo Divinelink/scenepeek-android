@@ -60,6 +60,8 @@ class LoginJellyseerrUseCaseTest {
       encryptedStorage = encryptedStorage,
     )
 
+    assertThat(encryptedStorage.jellyseerrPassword).isNull()
+
     useCase.invoke(
       JellyseerrLoginParams(
         username = Username("jellyfinUsername"),
@@ -75,6 +77,7 @@ class LoginJellyseerrUseCaseTest {
       assertThat(
         preferenceStorage.jellyseerrSignInMethod.first(),
       ).isEqualTo(JellyseerrLoginMethod.JELLYFIN.name)
+      assertThat(encryptedStorage.jellyseerrPassword).isEqualTo("password")
     }
   }
 
@@ -94,6 +97,8 @@ class LoginJellyseerrUseCaseTest {
       encryptedStorage = encryptedStorage,
     )
 
+    assertThat(encryptedStorage.jellyseerrPassword).isNull()
+
     useCase.invoke(
       JellyseerrLoginParams(
         username = Username("jellyseerrUsername"),
@@ -109,6 +114,7 @@ class LoginJellyseerrUseCaseTest {
       assertThat(
         preferenceStorage.jellyseerrSignInMethod.first(),
       ).isEqualTo(JellyseerrLoginMethod.JELLYSEERR.name)
+      assertThat(encryptedStorage.jellyseerrPassword).isEqualTo("password")
     }
   }
 

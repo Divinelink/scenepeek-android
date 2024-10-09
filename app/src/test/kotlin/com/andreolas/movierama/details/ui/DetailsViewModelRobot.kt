@@ -7,6 +7,7 @@ import com.andreolas.movierama.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.andreolas.movierama.fakes.usecase.details.FakeSubmitRatingUseCase
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -65,6 +66,10 @@ class DetailsViewModelRobot {
     )
   }
 
+  fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequest>>) = apply {
+    fakeRequestMediaUseCase.mockSuccess(response = response)
+  }
+
   fun onAddRateClicked() = apply {
     viewModel.onAddRateClicked()
   }
@@ -91,6 +96,10 @@ class DetailsViewModelRobot {
 
   fun onMarkAsFavorite() = apply {
     viewModel.onMarkAsFavorite()
+  }
+
+  fun onRequestMedia(seasons: List<Int>) = apply {
+    viewModel.onRequestMedia(seasons)
   }
 
   fun consumeSnackbar() = apply {

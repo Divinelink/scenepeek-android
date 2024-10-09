@@ -334,14 +334,14 @@ class DetailsViewModel(
       .onEach { result ->
         result.onSuccess { response ->
           response.message?.let { message ->
-            setSnackbarMessage(
-              UIText.StringText(message),
-            )
+            setSnackbarMessage(SnackbarMessage.from(text = UIText.StringText(message)))
           } ?: run {
             setSnackbarMessage(
-              UIText.ResourceText(
-                R.string.feature_details_jellyseerr_success_media_request,
-                viewState.value.mediaDetails?.title ?: "",
+              SnackbarMessage.from(
+                UIText.ResourceText(
+                  R.string.feature_details_jellyseerr_success_media_request,
+                  viewState.value.mediaDetails?.title ?: "",
+                ),
               ),
             )
           }
@@ -349,22 +349,28 @@ class DetailsViewModel(
           ErrorHandler.create(it) {
             on(403) {
               setSnackbarMessage(
-                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-                duration = SnackbarDuration.Long,
-                snackbarResult = ::navigateToLogin,
+                SnackbarMessage.from(
+                  text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+                  actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+                  duration = SnackbarDuration.Long,
+                  onSnackbarResult = ::navigateToLogin,
+                ),
               )
             }
             on(409) {
               setSnackbarMessage(
-                text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+                SnackbarMessage.from(
+                  text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+                ),
               )
             }
             otherwise {
               setSnackbarMessage(
-                text = UIText.ResourceText(
-                  R.string.feature_details_jellyseerr_request_failed,
-                  viewState.value.mediaDetails?.title ?: "",
+                SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.feature_details_jellyseerr_request_failed,
+                    viewState.value.mediaDetails?.title ?: "",
+                  ),
                 ),
               )
             }
@@ -385,20 +391,10 @@ class DetailsViewModel(
     }
   }
 
-  private fun setSnackbarMessage(
-    text: UIText,
-    actionLabelText: UIText? = null,
-    duration: SnackbarDuration = SnackbarDuration.Short,
-    snackbarResult: (SnackbarResult) -> Unit = {},
-  ) {
+  private fun setSnackbarMessage(snackbarMessage: SnackbarMessage) {
     _viewState.update { viewState ->
       viewState.copy(
-        snackbarMessage = SnackbarMessage.from(
-          text = text,
-          actionLabelText = actionLabelText,
-          duration = duration,
-          onSnackbarResult = snackbarResult,
-        ),
+        snackbarMessage = snackbarMessage,
       )
     }
   }
