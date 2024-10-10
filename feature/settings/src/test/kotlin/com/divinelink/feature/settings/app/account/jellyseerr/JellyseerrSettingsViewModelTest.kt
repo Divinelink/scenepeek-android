@@ -3,19 +3,21 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
+import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import kotlin.test.Test
 import java.net.ConnectException
 import java.net.UnknownHostException
+import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModelTest {
@@ -144,6 +146,63 @@ class JellyseerrSettingsViewModelTest {
               password = Password("password"),
             ),
             jellyfinLogin = JellyseerrLoginData.empty(),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test logout with UnauthorizedException returns initial state`() = runTest {
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+      )
+      .mockLogoutJellyseerrResponse(Result.failure(JellyseerrUnauthorizedException()))
+      .buildViewModel()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
+          ),
+        ),
+      )
+      .onLogoutJellyseerr()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.Initial(
+            isLoading = false,
+            address = "",
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test logout with error shows snackbar`() = runTest {
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+      )
+      .mockLogoutJellyseerrResponse(Result.failure(InvalidStatusException(500)))
+      .buildViewModel()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
+          ),
+        ),
+      )
+      .onLogoutJellyseerr()
+      .assertUiState(
+        createUiState(
+          snackbarMessage = SnackbarMessage.from(
+            UIText.ResourceText(uiR.string.core_ui_error_retry),
+          ),
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
           ),
         ),
       )

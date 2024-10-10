@@ -15,12 +15,8 @@ class FakeLogoutJellyseerrUseCase {
     mockFailure()
   }
 
-  private fun mockFailure() {
-    whenever(
-      mock.invoke(any()),
-    ).thenReturn(
-      flowOf(Result.failure(Exception())),
-    )
+  fun mockFailure(error: Throwable = Exception()) {
+    whenever(mock.invoke(any())).thenReturn(flowOf(Result.failure(error)))
   }
 
   fun mockSuccess(response: Flow<Result<String>>) {

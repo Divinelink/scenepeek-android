@@ -137,6 +137,7 @@ class SessionStorageTest {
     )
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(
       jellyseerrAuthCookie = "123456789qwertyuiop",
+      jellyseerrPassword = "password",
     )
 
     val sessionStorage = SessionStorage(
@@ -157,5 +158,6 @@ class SessionStorageTest {
     assertThat(preferenceStorage.jellyseerrAddress.first()).isNull()
     assertThat(preferenceStorage.jellyseerrSignInMethod.first()).isNull()
     assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isNull()
+    assertThat(encryptedPreferenceStorage.jellyseerrPassword).isNull()
   }
 }

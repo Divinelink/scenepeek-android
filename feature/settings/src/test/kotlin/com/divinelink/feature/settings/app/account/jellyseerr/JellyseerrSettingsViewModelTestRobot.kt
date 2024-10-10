@@ -29,6 +29,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     loginJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 
+  fun mockLogoutJellyseerrResponse(response: Result<String>) = apply {
+    logoutJellyseerrUseCase.mockSuccess(flowOf(response))
+  }
+
   fun mockJellyseerrAccountDetailsResponse(response: Result<JellyseerrAccountDetails?>) = apply {
     getJellyseerrDetailsUseCase.mockSuccess(response)
   }
@@ -51,6 +55,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
 
   fun onLoginJellyseerr() = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLoginClick)
+  }
+
+  fun onLogoutJellyseerr() = apply {
+    viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)
   }
 
   fun onDismissSnackbar() = apply {

@@ -2,15 +2,18 @@
 
 package com.andreolas.movierama.details.ui
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.VideoFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -960,6 +963,137 @@ class DetailsViewModelTest {
           userDetails = null,
           mediaDetails = tvDetails,
           tvCredits = credits,
+        ),
+      )
+  }
+
+  @Test
+  fun `test request movie with null success message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(
+        response = flowOf(Result.success(JellyseerrMediaRequest(null))),
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_media_request,
+              movieDetails.title,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request movie with success message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(
+        response = flowOf(Result.success(JellyseerrMediaRequest("Success"))),
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.StringText("Success"),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request with 403 prompts to re-login`() = runTest {
+    val viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(403))))
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+            duration = SnackbarDuration.Long,
+            onSnackbarResult = viewModel::navigateToLogin,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request with 409 informs that movie already exists`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(409))))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request with generic error show generic message`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(500))))
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_request_failed,
+              movieDetails.title,
+            ),
+          ),
         ),
       )
   }

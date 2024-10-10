@@ -1,13 +1,14 @@
 package com.divinelink.core.domain.jellyseerr
 
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.onCompletion
 
 open class LogoutJellyseerrUseCase(
   private val repository: JellyseerrRepository,
@@ -23,16 +24,17 @@ open class LogoutJellyseerrUseCase(
     }
 
     emit(
-      repository.logout(address).last().fold(
-        onSuccess = {
+      repository
+        .logout(address)
+        .onCompletion {
           sessionStorage.clearJellyseerrSession()
           repository.clearJellyseerrAccountDetails()
-          Result.success(address)
-        },
-        onFailure = {
-          Result.failure(it)
-        },
-      ),
+        }
+        .last()
+        .fold(
+          onSuccess = { Result.success(address) },
+          onFailure = { Result.failure(it) },
+        ),
     )
   }
 }

@@ -40,6 +40,7 @@ class SessionStorage(
   }
 
   suspend fun clearJellyseerrSession() {
+    encryptedStorage.clearJellyseerrPassword()
     encryptedStorage.clearJellyseerrAuthCookie()
     storage.clearJellyseerrAccount()
     storage.clearJellyseerrSignInMethod()
