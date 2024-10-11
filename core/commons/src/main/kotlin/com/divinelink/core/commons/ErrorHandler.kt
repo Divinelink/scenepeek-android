@@ -21,10 +21,10 @@ class ErrorHandler private constructor() {
    * Registers an action to be executed when an error with the specified code occurs.
    */
   fun on(
-    errorCode: Int,
+    vararg errorCode: Int,
     action: (ErrorHandler) -> Unit,
   ) = apply {
-    actions[errorCode] = action
+    errorCode.forEach { actions[it] = action }
   }
 
   /**

@@ -12,20 +12,20 @@ import org.mockito.kotlin.whenever
 class TestJellyseerrRepository {
   val mock: JellyseerrRepository = mock()
 
-  suspend fun mockSignInWithJellyfin(response: Result<JellyseerrAccountDetails>) {
+  suspend fun mockSignInWithJellyfin(response: Result<Unit>) {
     whenever(mock.signInWithJellyfin(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockSignInWithJellyseerr(response: Result<JellyseerrAccountDetails>) {
+  suspend fun mockSignInWithJellyseerr(response: Result<Unit>) {
     whenever(mock.signInWithJellyseerr(any())).thenReturn(flowOf(response))
   }
 
-  fun mockGetJellyseerrAccountDetails(response: JellyseerrAccountDetails) {
-    whenever(mock.getJellyseerrAccountDetails()).thenReturn(flowOf(response))
+  fun mockGetLocalJellyseerrAccountDetails(response: JellyseerrAccountDetails?) {
+    whenever(mock.getLocalJellyseerrAccountDetails()).thenReturn(flowOf(response))
   }
 
-  suspend fun mockInsertJellyseerrAccountDetails() {
-    whenever(mock.insertJellyseerrAccountDetails(any())).thenReturn(Unit)
+  suspend fun mockGetRemoteAccountDetails(response: Result<JellyseerrAccountDetails>) {
+    whenever(mock.getRemoteAccountDetails(any())).thenReturn(flowOf(response))
   }
 
   suspend fun verifyClearJellyseerrAccountDetails() {

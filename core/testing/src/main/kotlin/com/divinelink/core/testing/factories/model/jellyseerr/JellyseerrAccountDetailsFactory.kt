@@ -9,6 +9,8 @@ object JellyseerrAccountDetailsFactory {
     displayName = "Cup10",
     avatar = "http://localhost:5000/avatar",
     requestCount = 10,
+    email = "cup10@proton.me",
+    createdAt = "2023-08-19T00:00:00.000Z",
   )
 
   fun jellyseerr() = JellyseerrAccountDetails(
@@ -16,5 +18,7 @@ object JellyseerrAccountDetailsFactory {
     displayName = "Zabaob",
     avatar = "",
     requestCount = 20,
+    email = "zabaob@proton.me",
+    createdAt = "2022-08-20T00:00:00.000Z",
   )
 }

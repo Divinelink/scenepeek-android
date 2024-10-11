@@ -38,7 +38,7 @@ object SessionStorageFactory {
     }
 
     suspend fun withJellyseerrSignInMethod(signInMethod: String) = apply {
-      sessionStorage.storage.setJellyseerrSignInMethod(signInMethod)
+      sessionStorage.storage.setJellyseerrAuthMethod(signInMethod)
     }
 
     suspend fun withJellyseerrAuthCookie(cookie: String) = apply {

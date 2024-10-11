@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.ui.UIText
@@ -22,7 +22,7 @@ class AccountSettingsViewModel(
   private val createRequestTokenUseCase: CreateRequestTokenUseCase,
   private val observeSessionUseCase: ObserveSessionUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
-  getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
+  getJellyseerrDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
   private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
 
@@ -32,7 +32,7 @@ class AccountSettingsViewModel(
   init {
     observeSession()
 
-    getJellyseerrDetailsUseCase.invoke(Unit)
+    getJellyseerrDetailsUseCase.invoke(false)
       .distinctUntilChanged()
       .onEach { result ->
         result

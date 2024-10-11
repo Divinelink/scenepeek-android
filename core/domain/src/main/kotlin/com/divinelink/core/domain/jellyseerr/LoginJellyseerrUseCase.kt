@@ -3,10 +3,9 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.datastore.EncryptedStorage
-import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,8 +13,7 @@ import kotlinx.coroutines.flow.last
 
 open class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
-  private val storage: PreferenceStorage,
-  private val encryptedStorage: EncryptedStorage,
+  private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher.io) {
 
@@ -26,24 +24,30 @@ open class LoginJellyseerrUseCase(
         return@flow
       }
 
-      val result = when (parameters.signInMethod) {
-        JellyseerrLoginMethod.JELLYFIN -> repository.signInWithJellyfin(
+      val result = when (parameters.authMethod) {
+        JellyseerrAuthMethod.JELLYFIN -> repository.signInWithJellyfin(
           parameters.toLoginData(),
         )
-        JellyseerrLoginMethod.JELLYSEERR -> repository.signInWithJellyseerr(
+        JellyseerrAuthMethod.JELLYSEERR -> repository.signInWithJellyseerr(
           parameters.toLoginData(),
         )
       }
 
       result.last().fold(
-        onSuccess = { accountDetails ->
-          storage.setJellyseerrAccount(parameters.username.value)
-          storage.setJellyseerrAddress(parameters.address)
-          storage.setJellyseerrSignInMethod(parameters.signInMethod.name)
-          encryptedStorage.setJellyseerrPassword(parameters.password.value)
-          repository.insertJellyseerrAccountDetails(accountDetails)
+        onSuccess = {
+          repository.getRemoteAccountDetails(parameters.address).collect { result ->
+            val accountDetails = result.getOrThrow()
 
-          emit(Result.success(accountDetails))
+            storage.setJellyseerrSession(
+              username = parameters.username.value,
+              address = parameters.address,
+              authMethod = parameters.authMethod.name,
+              password = parameters.password.value,
+            )
+            repository.insertJellyseerrAccountDetails(accountDetails)
+
+            emit(Result.success(accountDetails))
+          }
         },
         onFailure = {
           emit(Result.failure(it))

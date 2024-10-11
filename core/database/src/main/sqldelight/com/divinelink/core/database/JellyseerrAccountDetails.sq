@@ -2,6 +2,8 @@ CREATE TABLE jellyseerrAccountDetailsEntity (
   id INTEGER PRIMARY KEY NOT NULL,
   displayName TEXT NOT NULL,
   requestCount INTEGER NOT NULL,
+  email TEXT,
+  createdAt TEXT NOT NULL,
   avatar TEXT
 );
 
@@ -13,5 +15,5 @@ removeAccountDetails:
 DELETE FROM jellyseerrAccountDetailsEntity;
 
 insertAccountDetails:
-INSERT OR REPLACE INTO jellyseerrAccountDetailsEntity (id, displayName, requestCount, avatar)
+INSERT OR REPLACE INTO jellyseerrAccountDetailsEntity (id, displayName, requestCount, email, createdAt, avatar)
 VALUES ?;

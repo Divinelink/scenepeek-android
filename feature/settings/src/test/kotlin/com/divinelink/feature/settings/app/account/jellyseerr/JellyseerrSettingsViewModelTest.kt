@@ -3,9 +3,8 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
@@ -39,7 +38,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrLoginMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -48,7 +47,7 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",
@@ -69,7 +68,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrLoginMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -78,7 +77,7 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",
@@ -99,7 +98,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrLoginMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -108,7 +107,7 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",
@@ -129,7 +128,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrLoginMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -138,7 +137,7 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",
@@ -157,7 +156,7 @@ class JellyseerrSettingsViewModelTest {
       .mockJellyseerrAccountDetailsResponse(
         Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
       )
-      .mockLogoutJellyseerrResponse(Result.failure(JellyseerrUnauthorizedException()))
+      .mockLogoutJellyseerrResponse(Result.failure(InvalidStatusException(401)))
       .buildViewModel()
       .assertUiState(
         createUiState(
@@ -216,7 +215,7 @@ class JellyseerrSettingsViewModelTest {
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
-      .onSelectedJellyseerrLoginMethod(JellyseerrLoginMethod.JELLYSEERR)
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .onLoginJellyseerr()
       .assertUiState(
         createUiState(
@@ -225,7 +224,7 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",
@@ -242,7 +241,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = null,
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
-            preferredOption = JellyseerrLoginMethod.JELLYSEERR,
+            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
             jellyseerrLogin = JellyseerrLoginData(
               address = "",

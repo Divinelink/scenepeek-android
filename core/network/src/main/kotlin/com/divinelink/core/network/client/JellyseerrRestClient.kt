@@ -1,11 +1,10 @@
 package com.divinelink.core.network.client
 
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.exception.JellyseerrInvalidCredentials
-import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
-import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.toRequestBodyApi
 import io.ktor.client.HttpClient
@@ -26,7 +25,7 @@ class JellyseerrRestClient(
 ) {
 
   companion object {
-    const val AUTH_ENDPOINT = "/api/v1/auth/"
+    const val AUTH_ENDPOINT = "/api/v1/auth"
   }
 
   val client: HttpClient = ktorClient(engine)
@@ -38,7 +37,7 @@ class JellyseerrRestClient(
       HttpResponseValidator {
         validateResponse { response ->
           if (response.status == HttpStatusCode.Unauthorized) {
-            throw JellyseerrUnauthorizedException()
+            throw InvalidStatusException(response.status.value)
           }
         }
       }
@@ -68,19 +67,19 @@ class JellyseerrRestClient(
     val account = datastore.jellyseerrAccount.first()
     val password = encryptedStorage.jellyseerrPassword
     val address = datastore.jellyseerrAddress.first()
-    val signInMethod = datastore.jellyseerrSignInMethod.first()
+    val signInMethod = datastore.jellyseerrAuthMethod.first()
 
     if (account == null || password == null || address == null || signInMethod == null) {
       throw JellyseerrInvalidCredentials()
     }
 
-    val loginMethod = JellyseerrLoginMethod.from(signInMethod)
+    val loginMethod = JellyseerrAuthMethod.from(signInMethod)
       ?: throw JellyseerrInvalidCredentials()
 
     val body = loginMethod.toRequestBodyApi(account, password)
 
-    post<JellyseerrLoginRequestBodyApi, JellyfinLoginResponseApi>(
-      url = "$address$AUTH_ENDPOINT${loginMethod.endpoint}",
+    post<JellyseerrLoginRequestBodyApi, Unit>(
+      url = "$address$AUTH_ENDPOINT/${loginMethod.endpoint}",
       body = body,
     )
   }

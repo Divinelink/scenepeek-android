@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.service
 
-import com.divinelink.core.network.jellyseerr.model.JellyfinLoginResponseApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.flowOf
@@ -11,7 +11,7 @@ import org.mockito.kotlin.whenever
 class TestJellyseerrService {
   val mock: JellyseerrService = mock()
 
-  suspend fun mockSignInWithJellyfin(response: JellyfinLoginResponseApi) {
+  suspend fun mockSignInWithJellyfin(response: Unit) {
     whenever(
       mock.signInWithJellyfin(jellyfinLogin = any()),
     ).thenReturn(
@@ -19,9 +19,17 @@ class TestJellyseerrService {
     )
   }
 
-  suspend fun mockSignInWithJellyseerr(response: JellyfinLoginResponseApi) {
+  suspend fun mockSignInWithJellyseerr(response: Unit) {
     whenever(
       mock.signInWithJellyseerr(jellyseerrLogin = any()),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
+
+  suspend fun mockFetchAccountDetails(response: JellyseerrAccountDetailsResponseApi) {
+    whenever(
+      mock.fetchAccountDetails(address = any()),
     ).thenReturn(
       flowOf(response),
     )

@@ -13,11 +13,13 @@ import java.util.Locale
 fun String.formatTo(
   inputFormat: String,
   outputFormat: String,
-): String? {
+): String? = try {
   val input = SimpleDateFormat(inputFormat, Locale.ENGLISH)
   val output = SimpleDateFormat(outputFormat, Locale.ENGLISH)
   val date = input.parse(this)
-  return date?.let { output.format(it) }
+  date?.let { output.format(it) }
+} catch (e: Exception) {
+  null
 }
 
 fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
@@ -101,4 +103,9 @@ fun String.isInstantToday(clock: Clock = Clock.System): Boolean {
   val date = instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
 
   return date == clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
+fun String.isValidEmail(): Boolean {
+  val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+  return this.matches(emailRegex.toRegex())
 }

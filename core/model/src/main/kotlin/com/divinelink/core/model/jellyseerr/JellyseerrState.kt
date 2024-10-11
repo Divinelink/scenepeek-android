@@ -9,7 +9,7 @@ sealed class JellyseerrState(
   data class Initial(
     val address: String,
     val isLoading: Boolean,
-    val preferredOption: JellyseerrLoginMethod? = null,
+    val preferredOption: JellyseerrAuthMethod? = null,
     override var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
     override var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
   ) : JellyseerrState(
@@ -29,14 +29,14 @@ val JellyseerrState.loginParams: JellyseerrLoginParams?
   get() = when (this) {
     is JellyseerrState.Initial -> JellyseerrLoginParams(
       address = address,
-      signInMethod = preferredOption!!,
+      authMethod = preferredOption!!,
       username = when (preferredOption) {
-        JellyseerrLoginMethod.JELLYFIN -> jellyfinLogin.username
-        JellyseerrLoginMethod.JELLYSEERR -> jellyseerrLogin.username
+        JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.username
+        JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.username
       },
       password = when (preferredOption) {
-        JellyseerrLoginMethod.JELLYFIN -> jellyfinLogin.password
-        JellyseerrLoginMethod.JELLYSEERR -> jellyseerrLogin.password
+        JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.password
+        JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.password
       },
     )
     else -> null

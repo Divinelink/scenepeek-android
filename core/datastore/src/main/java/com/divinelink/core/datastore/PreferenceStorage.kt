@@ -11,7 +11,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_SIGN_IN_METHOD
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
@@ -53,8 +53,8 @@ interface PreferenceStorage {
   val jellyseerrAccount: Flow<String?>
 
   suspend fun clearJellyseerrSignInMethod()
-  suspend fun setJellyseerrSignInMethod(signInMethod: String)
-  val jellyseerrSignInMethod: Flow<String?>
+  suspend fun setJellyseerrAuthMethod(authMethod: String)
+  val jellyseerrAuthMethod: Flow<String?>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -77,7 +77,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
     val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
     val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
-    val PREF_JELLYSEERR_SIGN_IN_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
+    val PREF_JELLYSEERR_AUTH_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -202,17 +202,17 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override suspend fun clearJellyseerrSignInMethod() {
     dataStore.edit {
-      it.remove(PREF_JELLYSEERR_SIGN_IN_METHOD)
+      it.remove(PREF_JELLYSEERR_AUTH_METHOD)
     }
   }
 
-  override suspend fun setJellyseerrSignInMethod(signInMethod: String) {
+  override suspend fun setJellyseerrAuthMethod(authMethod: String) {
     dataStore.edit {
-      it[PREF_JELLYSEERR_SIGN_IN_METHOD] = signInMethod
+      it[PREF_JELLYSEERR_AUTH_METHOD] = authMethod
     }
   }
 
-  override val jellyseerrSignInMethod: Flow<String?> = dataStore.data.map {
-    it[PREF_JELLYSEERR_SIGN_IN_METHOD]
+  override val jellyseerrAuthMethod: Flow<String?> = dataStore.data.map {
+    it[PREF_JELLYSEERR_AUTH_METHOD]
   }
 }

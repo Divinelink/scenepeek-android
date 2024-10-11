@@ -1050,6 +1050,35 @@ class DetailsViewModelTest {
   }
 
   @Test
+  fun `test request with 401 prompts to re-login`() = runTest {
+    val viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails))),
+      )
+      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(401))))
+      .buildViewModel(mediaId, MediaType.MOVIE).also {
+        viewModel = it.getViewModel()
+      }
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+            duration = SnackbarDuration.Long,
+            onSnackbarResult = viewModel::navigateToLogin,
+          ),
+        ),
+      )
+  }
+
+  @Test
   fun `test request with 409 informs that movie already exists`() = runTest {
     testRobot
       .mockFetchMediaDetails(

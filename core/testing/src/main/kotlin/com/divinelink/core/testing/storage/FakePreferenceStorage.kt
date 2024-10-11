@@ -4,7 +4,7 @@ import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-open class FakePreferenceStorage(
+class FakePreferenceStorage(
   selectedTheme: String = "",
   encryptedPreferences: String = "secret.preferences",
   isMaterialYouEnabled: Boolean = false,
@@ -44,8 +44,8 @@ open class FakePreferenceStorage(
   private val _jellyseerrAccount = MutableStateFlow(jellyseerrAccount)
   override val jellyseerrAccount: Flow<String?> = _jellyseerrAccount
 
-  private val _jellyseerrSignInMethod = MutableStateFlow(jellyseerrSignInMethod)
-  override val jellyseerrSignInMethod: Flow<String?> = _jellyseerrSignInMethod
+  private val _jellyseerrAuthMethod = MutableStateFlow(jellyseerrSignInMethod)
+  override val jellyseerrAuthMethod: Flow<String?> = _jellyseerrAuthMethod
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -100,10 +100,10 @@ open class FakePreferenceStorage(
   }
 
   override suspend fun clearJellyseerrSignInMethod() {
-    _jellyseerrSignInMethod.value = null
+    _jellyseerrAuthMethod.value = null
   }
 
-  override suspend fun setJellyseerrSignInMethod(signInMethod: String) {
-    _jellyseerrSignInMethod.value = signInMethod
+  override suspend fun setJellyseerrAuthMethod(authMethod: String) {
+    _jellyseerrAuthMethod.value = authMethod
   }
 }

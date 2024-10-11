@@ -2,7 +2,7 @@ package com.andreolas.movierama.base.storage
 
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
@@ -183,24 +183,24 @@ class DataStorePreferenceStorageTest {
   @Test
   fun `test testJellyseerrSignInMethod`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
-    assertThat(storage.jellyseerrSignInMethod.first()).isEqualTo(null)
+    assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
 
-    storage.setJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYSEERR.name)
+    storage.setJellyseerrAuthMethod(JellyseerrAuthMethod.JELLYSEERR.name)
     assertThat(
-      storage.jellyseerrSignInMethod.first(),
-    ).isEqualTo(JellyseerrLoginMethod.JELLYSEERR.name)
+      storage.jellyseerrAuthMethod.first(),
+    ).isEqualTo(JellyseerrAuthMethod.JELLYSEERR.name)
   }
 
   @Test
   fun `test clearJellyseerrSignInMethod`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
-    storage.setJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYSEERR.name)
+    storage.setJellyseerrAuthMethod(JellyseerrAuthMethod.JELLYSEERR.name)
     assertThat(
-      storage.jellyseerrSignInMethod.first(),
-    ).isEqualTo(JellyseerrLoginMethod.JELLYSEERR.name)
+      storage.jellyseerrAuthMethod.first(),
+    ).isEqualTo(JellyseerrAuthMethod.JELLYSEERR.name)
 
     storage.clearJellyseerrSignInMethod()
-    assertThat(storage.jellyseerrSignInMethod.first()).isEqualTo(null)
+    assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
   }
 }

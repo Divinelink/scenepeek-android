@@ -8,6 +8,8 @@ fun JellyseerrAccountDetails.mapToEntity() = JellyseerrAccountDetailsEntity(
   displayName = displayName,
   avatar = avatar,
   requestCount = requestCount,
+  email = email,
+  createdAt = createdAt,
 )
 
 fun JellyseerrAccountDetailsEntity.map() = JellyseerrAccountDetails(
@@ -15,4 +17,6 @@ fun JellyseerrAccountDetailsEntity.map() = JellyseerrAccountDetails(
   displayName = displayName,
   avatar = avatar ?: "",
   requestCount = requestCount,
+  email = email,
+  createdAt = createdAt,
 )

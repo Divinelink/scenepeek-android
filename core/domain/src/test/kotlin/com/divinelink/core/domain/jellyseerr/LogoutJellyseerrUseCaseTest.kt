@@ -1,7 +1,7 @@
 package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory.toWzd
@@ -64,14 +64,14 @@ class LogoutJellyseerrUseCaseTest {
     sessionStorage = SessionStorageFactory.empty().toWzd {
       withJellyseerrAddress("http://localhost:8096")
       withJellyseerrAccount("jellyseerrAccount")
-      withJellyseerrSignInMethod(JellyseerrLoginMethod.JELLYSEERR.name)
+      withJellyseerrSignInMethod(JellyseerrAuthMethod.JELLYSEERR.name)
       withJellyseerrAuthCookie("jellyseerrAuthCookie")
     }
 
     assertThat(sessionStorage.storage.jellyseerrAddress.first()).isEqualTo("http://localhost:8096")
     assertThat(sessionStorage.storage.jellyseerrAccount.first()).isEqualTo("jellyseerrAccount")
-    assertThat(sessionStorage.storage.jellyseerrSignInMethod.first()).isEqualTo(
-      JellyseerrLoginMethod.JELLYSEERR.name,
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isEqualTo(
+      JellyseerrAuthMethod.JELLYSEERR.name,
     )
     assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isEqualTo(
       "jellyseerrAuthCookie",
@@ -93,7 +93,7 @@ class LogoutJellyseerrUseCaseTest {
 
     assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
     assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
-    assertThat(sessionStorage.storage.jellyseerrSignInMethod.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
     assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isNull()
   }
 
