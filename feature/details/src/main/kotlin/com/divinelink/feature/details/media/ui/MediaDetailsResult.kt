@@ -2,6 +2,7 @@ package com.divinelink.feature.details.media.ui
 
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
@@ -27,6 +28,9 @@ sealed class MediaDetailsResult {
   data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MediaDetailsResult()
 
   data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MediaDetailsResult()
+
+  data class ActionButtonsSuccess(val actionButtons: List<DetailActionItem>) :
+    MediaDetailsResult()
 
   sealed class Failure(
     open val message: UIText = UIText.ResourceText(R.string.general_error_message),

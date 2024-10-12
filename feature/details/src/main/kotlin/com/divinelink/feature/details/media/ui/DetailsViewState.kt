@@ -2,6 +2,7 @@ package com.divinelink.feature.details.media.ui
 
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
@@ -28,6 +29,7 @@ data class DetailsViewState(
   val showRateDialog: Boolean = false,
   val navigateToLogin: Boolean? = null,
   val menuOptions: List<DetailsMenuOptions> = emptyList(),
+  val actionButtons: List<DetailActionItem> = emptyList(),
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(

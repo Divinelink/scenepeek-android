@@ -22,6 +22,8 @@ interface SnackbarController {
     snackbarVisuals: SnackbarVisuals,
     onSnackbarResult: (SnackbarResult) -> Unit = {},
   )
+
+  fun isVisible(): Boolean
 }
 
 @Stable

@@ -15,7 +15,8 @@ dependencies {
 
   implementation(projects.core.commons)
 
-  implementation(libs.compose.coil)
+  implementation(libs.coil)
+  implementation(libs.coil.ktor)
 
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.youtube.player)

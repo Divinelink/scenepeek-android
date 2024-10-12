@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.usecase
 
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.InvalidMediaTypeException
@@ -7,12 +8,12 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -25,6 +26,7 @@ open class GetMediaDetailsUseCase(
   private val mediaRepository: MediaRepository,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
+  private val getDetailsActionItemsUseCase: GetDetailsActionItemsUseCase,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<DetailsRequestApi, MediaDetailsResult>(dispatcher.io) {
   override fun execute(parameters: DetailsRequestApi): Flow<Result<MediaDetailsResult>> =
@@ -134,6 +136,16 @@ open class GetMediaDetailsUseCase(
           .collect { result ->
             result.onSuccess {
               send(Result.success(MediaDetailsResult.MenuOptionsSuccess(result.data)))
+            }
+          }
+      }
+
+      launch(dispatcher.io) {
+        getDetailsActionItemsUseCase(Unit)
+          .catch { Timber.e(it) }
+          .collect { result ->
+            result.onSuccess {
+              send(Result.success(MediaDetailsResult.ActionButtonsSuccess(result.data)))
             }
           }
       }

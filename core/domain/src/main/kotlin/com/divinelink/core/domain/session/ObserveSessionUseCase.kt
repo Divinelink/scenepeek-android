@@ -1,9 +1,9 @@
 package com.divinelink.core.domain.session
 
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.PreferenceStorage
-import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

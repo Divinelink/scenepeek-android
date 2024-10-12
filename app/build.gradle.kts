@@ -126,8 +126,6 @@ dependencies {
   implementation(libs.compose.ui.tooling)
   implementation(libs.compose.ui.tooling.preview)
 
-  implementation(libs.compose.coil)
-
   debugImplementation(libs.compose.ui.tooling.preview)
   debugImplementation(libs.compose.ui.test.manifest)
 

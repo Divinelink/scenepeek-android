@@ -1,7 +1,10 @@
 package com.divinelink.core.ui.components.expandablefab
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
@@ -35,30 +39,64 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.zIndex
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.getString
+import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
 
 @Composable
-fun ExpandableFloatActionButton(buttons: List<FloatingActionButtonItem>) {
+fun ExpandableFloatActionButton(
+  modifier: Modifier = Modifier,
+  buttons: List<FloatingActionButtonItem>,
+) {
+  val snackbarController = LocalSnackbarController.current
+
   var expanded by remember { mutableStateOf(false) }
   val rotationState by animateFloatAsState(
     targetValue = if (expanded) 45f else 0f,
     animationSpec = tween(durationMillis = 300),
-    label = "FAB Rotation Animation",
+    label = "Floating Action Button Rotation Animation",
   )
 
-  Box(modifier = Modifier.fillMaxSize()) {
+  val fabOffset by animateDpAsState(
+    targetValue = if (snackbarController.isVisible()) {
+      MaterialTheme.dimensions.keyline_58
+    } else {
+      MaterialTheme.dimensions.keyline_0
+    },
+    animationSpec = spring(
+      dampingRatio = Spring.DampingRatioMediumBouncy,
+      stiffness = Spring.StiffnessLow,
+    ),
+    label = "Snackbar Offset Animation",
+  )
+
+  Box(modifier = modifier.fillMaxSize()) {
     AnimatedVisibility(
+      modifier = Modifier
+        .fillMaxSize()
+        .zIndex(1f)
+        .offset(
+          x = MaterialTheme.dimensions.keyline_16,
+          y = MaterialTheme.dimensions.keyline_16,
+        ),
       visible = expanded,
       enter = fadeIn(animationSpec = tween(durationMillis = 300)),
       exit = fadeOut(animationSpec = tween(durationMillis = 300)),
     ) {
       Box(
         modifier = Modifier
-          .fillMaxSize()
           .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
-          .clickable { expanded = false },
+          .fillMaxSize()
+          .clickable(
+            interactionSource = null,
+            indication = null,
+            onClick = { expanded = false },
+          ),
       )
     }
 
@@ -66,8 +104,9 @@ fun ExpandableFloatActionButton(buttons: List<FloatingActionButtonItem>) {
       horizontalAlignment = Alignment.End,
       verticalArrangement = Arrangement.Bottom,
       modifier = Modifier
-        .fillMaxSize()
-        .padding(MaterialTheme.dimensions.keyline_16),
+        .zIndex(2f)
+        .offset { IntOffset(0, -fabOffset.roundToPx()) }
+        .fillMaxSize(),
     ) {
       StaggeredFloatingActionsButtons(
         fabItems = buttons,
@@ -138,24 +177,27 @@ fun StaggeredAnimatedFloatingActionButton(
           interactionSource = null,
           indication = null,
           onClick = {
+            fabItem.onClick()
             onDismiss()
-            fabItem.onClick
           },
         ),
     ) {
       Text(
-        text = fabItem.label,
+        text = fabItem.label.getString(),
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_8),
       )
       SmallFloatingActionButton(
         onClick = {
+          fabItem.onClick()
           onDismiss()
-          fabItem.onClick
         },
       ) {
-        Icon(fabItem.icon, contentDescription = fabItem.contentDescription)
+        Icon(
+          imageVector = fabItem.icon,
+          contentDescription = fabItem.contentDescription.getString(),
+        )
       }
     }
   }
@@ -163,7 +205,7 @@ fun StaggeredAnimatedFloatingActionButton(
 
 @Previews
 @Composable
-fun ExpandableFloatingActionButton() {
+private fun ExpandableFloatingActionButton() {
   AppTheme {
     Surface {
       Text(
@@ -176,20 +218,20 @@ fun ExpandableFloatingActionButton() {
         buttons = listOf(
           FloatingActionButtonItem(
             icon = Icons.Filled.Brush,
-            label = "Brush",
-            contentDescription = "Add",
+            label = UIText.StringText("Brush"),
+            contentDescription = UIText.StringText("Add"),
             onClick = {},
           ),
           FloatingActionButtonItem(
             icon = Icons.Filled.Adb,
-            label = "Adb",
-            contentDescription = "Add",
+            label = UIText.StringText("Adb"),
+            contentDescription = UIText.StringText("Add"),
             onClick = {},
           ),
           FloatingActionButtonItem(
             icon = Icons.Filled.Call,
-            label = "Call",
-            contentDescription = "Add",
+            label = UIText.StringText("Call"),
+            contentDescription = UIText.StringText("Add"),
             onClick = {},
           ),
         ),
