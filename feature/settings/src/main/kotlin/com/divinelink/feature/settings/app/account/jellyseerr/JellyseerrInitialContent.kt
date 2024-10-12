@@ -40,7 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
@@ -94,7 +94,7 @@ fun JellyseerrInitialContent(
         } else {
           0
         }
-        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrLoginMethod.JELLYFIN))
+        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYFIN))
       },
       content = {
         OutlinedTextField(
@@ -127,7 +127,7 @@ fun JellyseerrInitialContent(
         } else {
           1
         }
-        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrLoginMethod.JELLYSEERR))
+        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYSEERR))
       },
       content = {
         OutlinedTextField(

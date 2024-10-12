@@ -132,6 +132,8 @@ private fun AccountItemPreview() {
           displayName = "John Doe",
           avatar = "https://example.com/avatar.jpg",
           requestCount = 100,
+          email = null,
+          createdAt = "August 9th, 2021",
         ),
         animatedVisibilityScope = it,
         onNavigateToJellyseerrLogin = {},

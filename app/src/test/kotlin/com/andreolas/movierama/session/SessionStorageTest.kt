@@ -1,7 +1,7 @@
 package com.andreolas.movierama.session
 
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
@@ -133,7 +133,7 @@ class SessionStorageTest {
     val preferenceStorage = FakePreferenceStorage(
       jellyseerrAccount = "Zabaob",
       jellyseerrAddress = "http://localhost:5050",
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(
       jellyseerrAuthCookie = "123456789qwertyuiop",
@@ -147,8 +147,8 @@ class SessionStorageTest {
 
     assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("Zabaob")
     assertThat(preferenceStorage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
-    assertThat(preferenceStorage.jellyseerrSignInMethod.first()).isEqualTo(
-      JellyseerrLoginMethod.JELLYSEERR.name,
+    assertThat(preferenceStorage.jellyseerrAuthMethod.first()).isEqualTo(
+      JellyseerrAuthMethod.JELLYSEERR.name,
     )
     assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isEqualTo("123456789qwertyuiop")
 
@@ -156,7 +156,7 @@ class SessionStorageTest {
 
     assertThat(preferenceStorage.jellyseerrAccount.first()).isNull()
     assertThat(preferenceStorage.jellyseerrAddress.first()).isNull()
-    assertThat(preferenceStorage.jellyseerrSignInMethod.first()).isNull()
+    assertThat(preferenceStorage.jellyseerrAuthMethod.first()).isNull()
     assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isNull()
     assertThat(encryptedPreferenceStorage.jellyseerrPassword).isNull()
   }

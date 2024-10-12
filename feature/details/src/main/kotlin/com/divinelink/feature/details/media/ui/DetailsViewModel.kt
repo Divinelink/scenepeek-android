@@ -347,7 +347,7 @@ class DetailsViewModel(
           }
         }.onFailure {
           ErrorHandler.create(it) {
-            on(403) {
+            on(401, 403) {
               setSnackbarMessage(
                 SnackbarMessage.from(
                   text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),

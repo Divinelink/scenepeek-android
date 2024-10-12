@@ -4,13 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.loginParams
 import com.divinelink.core.ui.UIText
@@ -29,7 +28,7 @@ import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModel(
   private val logoutJellyseerrUseCase: LogoutJellyseerrUseCase,
-  getJellyseerrDetailsUseCase: GetJellyseerrDetailsUseCase,
+  getJellyseerrDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
   private val loginJellyseerrUseCase: LoginJellyseerrUseCase,
 ) : ViewModel() {
 
@@ -37,7 +36,7 @@ class JellyseerrSettingsViewModel(
   val uiState: StateFlow<JellyseerrSettingsUiState> = _uiState
 
   init {
-    getJellyseerrDetailsUseCase.invoke(Unit)
+    getJellyseerrDetailsUseCase.invoke(true)
       .onEach { result ->
         result.onSuccess {
           result.data?.let { accountDetails ->
@@ -98,7 +97,7 @@ class JellyseerrSettingsViewModel(
               }
             }.onFailure { error ->
               ErrorHandler.create(error) {
-                on(401) {
+                on(401, 403) {
                   _uiState.setSnackbarMessage(
                     UIText.ResourceText(R.string.feature_settings_invalid_credentials),
                   )
@@ -142,7 +141,7 @@ class JellyseerrSettingsViewModel(
               }
             }.onFailure { throwable ->
               ErrorHandler.create(throwable) {
-                on<JellyseerrUnauthorizedException> {
+                on(401) {
                   _uiState.update {
                     it.copy(
                       jellyseerrState = JellyseerrState.Initial(
@@ -192,7 +191,7 @@ class JellyseerrSettingsViewModel(
           it.copy(
             jellyseerrState = when (val state = it.jellyseerrState) {
               is JellyseerrState.Initial -> {
-                if (state.preferredOption == JellyseerrLoginMethod.JELLYFIN) {
+                if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
                   state.copy(
                     jellyfinLogin = state.jellyfinLogin.copy(
                       password = Password(interaction.password),
@@ -216,7 +215,7 @@ class JellyseerrSettingsViewModel(
           it.copy(
             jellyseerrState = when (val state = it.jellyseerrState) {
               is JellyseerrState.Initial -> {
-                if (state.preferredOption == JellyseerrLoginMethod.JELLYFIN) {
+                if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
                   state.copy(
                     jellyfinLogin = state.jellyfinLogin.copy(
                       username = Username(interaction.username),

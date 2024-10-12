@@ -8,15 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface JellyseerrRepository {
 
-  suspend fun signInWithJellyfin(
-    loginData: JellyseerrLoginData,
-  ): Flow<Result<JellyseerrAccountDetails>>
+  suspend fun signInWithJellyfin(loginData: JellyseerrLoginData): Flow<Result<Unit>>
 
-  suspend fun signInWithJellyseerr(
-    loginData: JellyseerrLoginData,
-  ): Flow<Result<JellyseerrAccountDetails>>
+  suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<Unit>>
 
-  fun getJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?>
+  suspend fun getRemoteAccountDetails(address: String): Flow<Result<JellyseerrAccountDetails>>
+
+  fun getLocalJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?>
 
   suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails)
 

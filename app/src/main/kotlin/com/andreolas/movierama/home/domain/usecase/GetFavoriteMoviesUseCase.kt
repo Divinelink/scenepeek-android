@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.combineTransform
 
 open class GetFavoriteMoviesUseCase(
   private val repository: MediaRepository,
-  val dispatcher: DispatcherProvider
+  val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, List<MediaItem.Media>>(dispatcher.io) {
   override fun execute(parameters: Unit): Flow<Result<List<MediaItem.Media>>> {
     val favoriteMovies = repository.fetchFavoriteMovies()

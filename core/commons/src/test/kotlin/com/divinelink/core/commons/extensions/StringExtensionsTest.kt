@@ -1,10 +1,35 @@
 package com.divinelink.core.commons.extensions
 
+import com.divinelink.core.commons.Constants
 import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
 class StringExtensionsTest {
+
+  @Test
+  fun `test formatTo with valid date`() {
+    val date = "2023-08-19T00:00:00.000Z"
+
+    val result = date.formatTo(
+      inputFormat = Constants.ISO_8601,
+      outputFormat = "MMMM dd, yyyy",
+    )
+
+    assertThat(result).isEqualTo("August 19, 2023")
+  }
+
+  @Test
+  fun `test formatTo with unparsable date`() {
+    val date = "2023-08-19T00:00:00"
+
+    val result = date.formatTo(
+      inputFormat = Constants.ISO_8601,
+      outputFormat = "MMMM dd, yyyy",
+    )
+
+    assertThat(result).isNull()
+  }
 
   @Test
   fun `test extractDetailsFromDeeplink with valid url`() {
@@ -117,5 +142,32 @@ class StringExtensionsTest {
     )
 
     assertThat(result).isFalse()
+  }
+
+  @Test
+  fun `test isValidEmail`() {
+    val testCases = listOf(
+      // Valid emails
+      "test.email@example.com" to true,
+      "test.email@sub.example.com" to true,
+      "test.email+123@example.com" to true,
+      "user123@example123.com" to true,
+      "test..email@example.com" to true,
+      "a@b.com" to true, // Edge case: very short valid email
+
+      // Invalid emails
+      "test.email.example.com" to false, // missing '@'
+      "test.email@" to false, // missing domain
+      "@example.com" to false, // missing local part
+      "test email@example.com" to false, // space in email
+      "test.email@example" to false, // missing top-level domain
+      "test@invalid@example.com" to false, // multiple '@' characters
+      "test.email!@example.com" to false, // special characters not allowed
+      "" to false, // empty string
+    )
+
+    for ((email, expected) in testCases) {
+      assertThat(email.isValidEmail()).isEqualTo(expected)
+    }
   }
 }

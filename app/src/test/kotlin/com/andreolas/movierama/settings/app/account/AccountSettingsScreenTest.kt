@@ -10,8 +10,10 @@ import com.andreolas.factories.session.model.RequestTokenFactory
 import com.andreolas.movierama.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
 import com.andreolas.movierama.fakes.usecase.session.login.FakeLogoutUseCase
 import com.andreolas.movierama.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setSharedLayoutContent
@@ -24,6 +26,7 @@ import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -62,7 +65,7 @@ class AccountSettingsScreenTest : ComposeTest() {
   val testDispatcher = mainDispatcherRule.testDispatcher
 
   @Test
-  fun `test login is visible when user not connected`() = runTest {
+  fun `test login is visible when user not connected`() {
     observeSessionUseCase.mockFailure()
 
     val viewModel = setupViewModel()
@@ -109,7 +112,7 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test account details are visible when user connected`() = runTest {
+  fun `test account details are visible when user connected`() {
     observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
@@ -135,7 +138,7 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test logout dialog is shown when logout clicked`() = runTest {
+  fun `test logout dialog is shown when logout clicked`() {
     observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
@@ -189,7 +192,7 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test dismiss dialog when cancel button pressed`() = runTest {
+  fun `test dismiss dialog when cancel button pressed`() {
     observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
@@ -213,7 +216,7 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigate to JellyseerrSettingsScreen`() = runTest {
+  fun `test navigate to JellyseerrSettingsScreen`() {
     val viewModel = setupViewModel()
 
     setSharedLayoutContent {
@@ -230,6 +233,40 @@ class AccountSettingsScreenTest : ComposeTest() {
       onNodeWithText(jellyseerrButton).performClick()
 
       destinationsNavigator.verifyNavigatedToDirection(JellyseerrSettingsScreenDestination())
+    }
+  }
+
+  @Test
+  fun `test observe jellyseerr account`() = runTest {
+    val jellyseerrChannel = Channel<Result<JellyseerrAccountDetails?>>()
+    getJellyseerrDetailsUseCase.mockSuccess(jellyseerrChannel)
+    val viewModel = setupViewModel()
+
+    val account = JellyseerrAccountDetailsFactory.jellyseerr()
+
+    setSharedLayoutContent {
+      AccountSettingsScreen(
+        navigator = destinationsNavigator,
+        animatedVisibilityScope = it,
+        viewModel = viewModel,
+      )
+    }
+
+    val jellyseerrButton = getString(R.string.feature_settings_jellyseerr_integration)
+
+    with(composeTestRule) {
+      onNodeWithText(jellyseerrButton).assertIsDisplayed()
+      onNodeWithText(getString(R.string.feature_settings_logged_in)).assertDoesNotExist()
+
+      jellyseerrChannel.send(Result.success(account))
+
+      onNodeWithText(getString(R.string.feature_settings_logged_in)).assertIsDisplayed()
+      onNodeWithText(account.displayName).assertIsDisplayed()
+
+      jellyseerrChannel.send(Result.success(null))
+
+      onNodeWithText(jellyseerrButton).assertIsDisplayed()
+      onNodeWithText(getString(R.string.feature_settings_logged_in)).assertDoesNotExist()
     }
   }
 

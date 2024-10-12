@@ -2,11 +2,11 @@
 
 package com.divinelink.core.model.jellyseerr
 
-enum class JellyseerrLoginMethod(val endpoint: String) {
+enum class JellyseerrAuthMethod(val endpoint: String) {
   JELLYFIN("jellyfin"),
   JELLYSEERR("local");
 
   companion object {
-    fun from(name: String): JellyseerrLoginMethod? = entries.find { it.name == name }
+    fun from(name: String): JellyseerrAuthMethod? = entries.find { it.name == name }
   }
 }

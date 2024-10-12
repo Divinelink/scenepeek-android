@@ -1,10 +1,10 @@
 package com.divinelink.core.network.client
 
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.exception.JellyseerrInvalidCredentials
-import com.divinelink.core.model.exception.JellyseerrUnauthorizedException
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
@@ -72,7 +72,7 @@ class JellyseerrRestClientTest {
     datastore = FakePreferenceStorage(
       jellyseerrAccount = "testAccount",
       jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
     client = JellyseerrRestClient(
@@ -126,7 +126,7 @@ class JellyseerrRestClientTest {
     datastore = FakePreferenceStorage(
       jellyseerrAccount = "testAccount",
       jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
     client = JellyseerrRestClient(
@@ -135,7 +135,7 @@ class JellyseerrRestClientTest {
       datastore = datastore,
     )
 
-    assertFailsWith<JellyseerrUnauthorizedException> {
+    assertFailsWith<InvalidStatusException> {
       client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
@@ -162,7 +162,7 @@ class JellyseerrRestClientTest {
     datastore = FakePreferenceStorage(
       jellyseerrAccount = "testAccount",
       jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
     client = JellyseerrRestClient(
@@ -195,7 +195,7 @@ class JellyseerrRestClientTest {
     datastore = FakePreferenceStorage(
       jellyseerrAccount = null,
       jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
     client = JellyseerrRestClient(
@@ -228,7 +228,7 @@ class JellyseerrRestClientTest {
     datastore = FakePreferenceStorage(
       jellyseerrAccount = "testAccount",
       jellyseerrAddress = null,
-      jellyseerrSignInMethod = JellyseerrLoginMethod.JELLYSEERR.name,
+      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
     client = JellyseerrRestClient(

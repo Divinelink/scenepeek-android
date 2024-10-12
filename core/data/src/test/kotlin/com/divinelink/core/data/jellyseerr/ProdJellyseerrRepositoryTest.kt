@@ -7,11 +7,11 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
+import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
-import com.divinelink.core.testing.factories.api.jellyseerr.response.JellyfinLoginResponseApiFactory
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
@@ -46,9 +46,7 @@ class ProdJellyseerrRepositoryTest {
 
   @Test
   fun `test sign in with jellyfin successfully`() = runTest {
-    remote.mockSignInWithJellyfin(
-      response = JellyfinLoginResponseApiFactory.jellyfin(),
-    )
+    remote.mockSignInWithJellyfin(response = Unit)
 
     val result = repository.signInWithJellyfin(
       loginData = JellyseerrLoginData(
@@ -58,16 +56,12 @@ class ProdJellyseerrRepositoryTest {
       ),
     )
 
-    assertThat(result.first()).isEqualTo(
-      Result.success(JellyseerrAccountDetailsFactory.jellyfin()),
-    )
+    assertThat(result.first()).isEqualTo(Result.success(Unit))
   }
 
   @Test
   fun `test sign in with jellyseerr successfully`() = runTest {
-    remote.mockSignInWithJellyseerr(
-      response = JellyfinLoginResponseApiFactory.jellyseerr(),
-    )
+    remote.mockSignInWithJellyseerr(response = Unit)
 
     val result = repository.signInWithJellyseerr(
       loginData = JellyseerrLoginData(
@@ -77,9 +71,7 @@ class ProdJellyseerrRepositoryTest {
       ),
     )
 
-    assertThat(result.first()).isEqualTo(
-      Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
-    )
+    assertThat(result.first()).isEqualTo(Result.success(Unit))
   }
 
   @Test
@@ -136,8 +128,28 @@ class ProdJellyseerrRepositoryTest {
   }
 
   @Test
-  fun `test getJellyseerrAccountDetails after insertion`() = runTest {
-    val resultNull = repository.getJellyseerrAccountDetails()
+  fun `test getRemoteJellyseerrAccountDetails after insertion`() = runTest {
+    val domain = JellyseerrAccountDetailsFactory.jellyfin()
+
+    remote.mockFetchAccountDetails(
+      JellyseerrAccountDetailsResponseApi(
+        id = domain.id,
+        email = domain.email!!,
+        displayName = domain.displayName,
+        avatar = domain.avatar,
+        requestCount = domain.requestCount,
+        createdAt = domain.createdAt,
+      ),
+    )
+
+    val result = repository.getRemoteAccountDetails("http://localhost:8096")
+
+    assertThat(result.first()).isEqualTo(Result.success(JellyseerrAccountDetailsFactory.jellyfin()))
+  }
+
+  @Test
+  fun `test getLocalJellyseerrAccountDetails after insertion`() = runTest {
+    val resultNull = repository.getLocalJellyseerrAccountDetails()
 
     assertThat(resultNull.first()).isNull()
 
@@ -145,7 +157,7 @@ class ProdJellyseerrRepositoryTest {
       JellyseerrAccountDetailsFactory.jellyfin(),
     )
 
-    val result = repository.getJellyseerrAccountDetails()
+    val result = repository.getLocalJellyseerrAccountDetails()
 
     assertThat(result.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
   }
@@ -156,12 +168,12 @@ class ProdJellyseerrRepositoryTest {
       JellyseerrAccountDetailsFactory.jellyfin(),
     )
 
-    val resultNotNull = repository.getJellyseerrAccountDetails()
+    val resultNotNull = repository.getLocalJellyseerrAccountDetails()
     assertThat(resultNotNull.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
 
     repository.clearJellyseerrAccountDetails()
 
-    val result = repository.getJellyseerrAccountDetails()
+    val result = repository.getLocalJellyseerrAccountDetails()
 
     assertThat(result.first()).isNull()
   }

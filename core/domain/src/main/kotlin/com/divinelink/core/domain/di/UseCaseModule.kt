@@ -9,7 +9,7 @@ import com.divinelink.core.domain.HandleAuthenticationRequestUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
@@ -29,7 +29,7 @@ val useCaseModule = module {
   factoryOf(::FetchPersonDetailsUseCase)
 
   // Jellyseerr
-  factoryOf(::GetJellyseerrDetailsUseCase)
+  factoryOf(::GetJellyseerrAccountDetailsUseCase)
   factoryOf(::LoginJellyseerrUseCase)
   factoryOf(::LogoutJellyseerrUseCase)
   factoryOf(::RequestMediaUseCase)

@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.model.details.reviews
 
+import com.divinelink.core.commons.Constants.ISO_8601
 import com.divinelink.core.commons.extensions.formatTo
 import com.divinelink.core.model.details.Review
 import kotlinx.serialization.SerialName
@@ -24,7 +25,7 @@ private fun ReviewResultsApi.toReview(): Review = Review(
   rating = this.authorDetails.rating?.toInt(),
   content = this.content,
   date = this.createdAt.formatTo(
-    inputFormat = TMDB_DATE_FORMAT,
+    inputFormat = ISO_8601,
     outputFormat = "dd-MM-yyyy",
   ),
 )
@@ -51,5 +52,3 @@ data class AuthorDetailsApi(
   val rating: Double?,
   val username: String,
 )
-
-private const val TMDB_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"

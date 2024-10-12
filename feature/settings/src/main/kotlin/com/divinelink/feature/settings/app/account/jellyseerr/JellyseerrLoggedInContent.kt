@@ -30,6 +30,8 @@ import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
@@ -59,22 +61,54 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
         url = jellyseerrState.accountDetails.avatar,
       )
 
-      Text(
-        modifier = Modifier
-          .sharedBounds(
-            sharedContentState = rememberSharedContentState(
-              key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+      Column {
+        Text(
+          modifier = Modifier
+            .sharedBounds(
+              sharedContentState = rememberSharedContentState(
+                key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+              ),
+              animatedVisibilityScope = animatedVisibilityScope,
+            )
+            .padding(
+              start = MaterialTheme.dimensions.keyline_16,
+              top = MaterialTheme.dimensions.keyline_24,
             ),
-            animatedVisibilityScope = animatedVisibilityScope,
+          text = jellyseerrState.accountDetails.displayName,
+          color = MaterialTheme.colorScheme.primary,
+          style = MaterialTheme.typography.titleMedium,
+        )
+
+        jellyseerrState.accountDetails.email?.let { email ->
+          Text(
+            modifier = Modifier
+              .padding(
+                start = MaterialTheme.dimensions.keyline_16,
+                top = MaterialTheme.dimensions.keyline_8,
+              ),
+            text = email,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
           )
-          .padding(
-            start = MaterialTheme.dimensions.keyline_16,
-            top = MaterialTheme.dimensions.keyline_24,
-          ),
-        text = jellyseerrState.accountDetails.displayName,
-        color = MaterialTheme.colorScheme.primary,
-        style = MaterialTheme.typography.titleMedium,
-      )
+        }
+
+        Text(
+          modifier = Modifier
+            .padding(
+              start = MaterialTheme.dimensions.keyline_16,
+              top = MaterialTheme.dimensions.keyline_8,
+            ),
+          text = UIText.ResourceText(
+            R.string.feature_settings_jellyseerr_joined_on,
+            jellyseerrState.accountDetails.formattedCreatedAt,
+            jellyseerrState.accountDetails.id,
+          ).getString(),
+          color = MaterialTheme.colorScheme.onSurface,
+          fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+          style = MaterialTheme.typography.bodySmall,
+        )
+      }
     }
 
     Card(
@@ -130,7 +164,7 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
-private fun JellyseerrBottomSheetContentPreview() {
+private fun JellyseerrLoggedInContentPreview() {
   AnimatedVisibilityScopeProvider {
     JellyseerrLoggedInContent(
       animatedVisibilityScope = it,
@@ -141,6 +175,8 @@ private fun JellyseerrBottomSheetContentPreview() {
           avatar = "https://www.example.com/avatar.jpg",
           displayName = "Display Name",
           requestCount = 100,
+          email = "jellyseerr@info.com",
+          createdAt = "2023-08-19T00:00:00Z",
         ),
       ),
       onLogoutClock = {},
@@ -151,7 +187,7 @@ private fun JellyseerrBottomSheetContentPreview() {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
-private fun JellyseerrBottomSheetContentLoadingPreview() {
+private fun JellyseerrLoggedInContentLoadingPreview() {
   AnimatedVisibilityScopeProvider {
     JellyseerrLoggedInContent(
       animatedVisibilityScope = it,
@@ -162,6 +198,8 @@ private fun JellyseerrBottomSheetContentLoadingPreview() {
           avatar = "https://www.example.com/avatar.jpg",
           displayName = "Display Name",
           requestCount = 100,
+          email = "jellyseerr@info.com",
+          createdAt = "2023-08-19T00:00:00Z",
         ),
       ),
       onLogoutClock = {},

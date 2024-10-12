@@ -39,6 +39,18 @@ class SessionStorage(
     storage.setAccountId(accountId)
   }
 
+  suspend fun setJellyseerrSession(
+    username: String,
+    address: String,
+    authMethod: String,
+    password: String,
+  ) {
+    storage.setJellyseerrAccount(username)
+    storage.setJellyseerrAddress(address)
+    storage.setJellyseerrAuthMethod(authMethod)
+    encryptedStorage.setJellyseerrPassword(password)
+  }
+
   suspend fun clearJellyseerrSession() {
     encryptedStorage.clearJellyseerrPassword()
     encryptedStorage.clearJellyseerrAuthCookie()
