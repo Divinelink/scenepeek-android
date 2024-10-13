@@ -2,6 +2,7 @@ package com.andreolas.ui.details
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -13,6 +14,7 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.R
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -514,6 +516,80 @@ class DetailsContentTest : ComposeTest() {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertDoesNotExist()
     }
+  }
+
+  @Test
+  fun `test open request dialog for tv show`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          actionButtons = DetailActionItem.entries,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+      )
+    }
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsNotDisplayed()
+
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsDisplayed()
+      .performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test open request dialog for movie`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          actionButtons = DetailActionItem.entries,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+      )
+    }
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsNotDisplayed()
+
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsDisplayed()
+      .performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_DIALOG).assertIsDisplayed()
   }
 
   private val reviews = ReviewFactory.ReviewList()

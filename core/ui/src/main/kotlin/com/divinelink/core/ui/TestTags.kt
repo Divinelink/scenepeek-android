@@ -12,6 +12,11 @@ object TestTags {
       const val TOP_APP_BAR = "Top App Bar"
       const val TOP_APP_BAR_TITLE = "Top App Bar Title"
     }
+
+    object ExpandableFab {
+      const val BACKGROUND = "Floating Button Background"
+      const val BUTTON = "Expandable Floating Action Button"
+    }
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"

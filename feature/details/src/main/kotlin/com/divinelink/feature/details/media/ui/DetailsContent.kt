@@ -117,7 +117,7 @@ fun DetailsContent(
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
-    onDismissSnackbar = { onConsumeSnackbar() },
+    onDismissSnackbar = onConsumeSnackbar,
   )
 
   var showRequestDialog by remember { mutableStateOf(false) }

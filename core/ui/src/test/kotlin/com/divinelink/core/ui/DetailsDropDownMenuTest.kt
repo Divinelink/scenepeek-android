@@ -25,44 +25,4 @@ class DetailsDropDownMenuTest : ComposeTest() {
       TestTags.Menu.MENU_ITEM.format(getString(R.string.core_ui_share)),
     ).assertIsDisplayed()
   }
-
-//  @Test
-//  fun `test open request dialog for tv show`() {
-//    composeTestRule.setContent {
-//      DetailsDropdownMenu(
-//        mediaDetails = MediaDetailsFactory.TheOffice(),
-//        menuOptions = listOf(DetailsMenuOptions.SHARE, DetailsMenuOptions.REQUEST),
-//        expanded = true,
-//        requestMedia = {},
-//        onDismissDropdown = {},
-//      )
-//    }
-//    composeTestRule.onNodeWithTag(
-//      TestTags.Menu.MENU_ITEM.format(getString(R.string.core_ui_dropdown_menu_request)),
-//    )
-//      .assertIsDisplayed()
-//      .performClick()
-//
-//    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
-//  }
-
-//  @Test
-//  fun `test open request dialog for movie`() {
-//    composeTestRule.setContent {
-//      DetailsDropdownMenu(
-//        mediaDetails = MediaDetailsFactory.FightClub(),
-//        menuOptions = listOf(DetailsMenuOptions.SHARE, DetailsMenuOptions.REQUEST),
-//        expanded = true,
-//        requestMedia = {},
-//        onDismissDropdown = {},
-//      )
-//    }
-//    composeTestRule.onNodeWithTag(
-//      TestTags.Menu.MENU_ITEM.format(getString(R.string.core_ui_dropdown_menu_request)),
-//    )
-//      .assertIsDisplayed()
-//      .performClick()
-//
-//    composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_DIALOG).assertIsDisplayed()
-//  }
 }

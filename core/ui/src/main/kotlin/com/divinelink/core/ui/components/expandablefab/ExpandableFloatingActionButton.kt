@@ -42,12 +42,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
@@ -95,6 +97,7 @@ fun ExpandableFloatActionButton(
       Box(
         modifier = Modifier
           .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+          .testTag(TestTags.Components.ExpandableFab.BACKGROUND)
           .fillMaxSize()
           .clickable(
             interactionSource = null,
@@ -121,9 +124,14 @@ fun ExpandableFloatActionButton(
 
       FloatingActionButton(
         onClick = { expanded = !expanded },
-        modifier = Modifier.rotate(rotationState),
+        modifier = Modifier
+          .testTag(TestTags.Components.ExpandableFab.BUTTON)
+          .rotate(rotationState),
       ) {
-        Icon(Icons.Rounded.Add, contentDescription = "Expandable FAB")
+        Icon(
+          imageVector = Icons.Rounded.Add,
+          contentDescription = "Expandable FAB",
+        )
       }
     }
   }

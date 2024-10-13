@@ -23,20 +23,4 @@ class GetDropdownMenuItemsUseCaseTest {
       assertThat(result.getOrNull()).isEqualTo(listOf(DetailsMenuOptions.SHARE))
     }
   }
-//
-//  @Test
-//  fun `test dropdown menu items with jellyseerr account`() = runTest {
-//    val preferenceStorage = FakePreferenceStorage(jellyseerrAccount = "jellyseerr_account")
-//    val useCase = GetDropdownMenuItemsUseCase(preferenceStorage, testDispatcher)
-//
-//    useCase.invoke(Unit).first().let { result ->
-//      assertThat(result.isSuccess).isTrue()
-//      assertThat(result.getOrNull()).isEqualTo(
-//        listOf(
-//          DetailsMenuOptions.SHARE,
-//          DetailsMenuOptions.REQUEST,
-//        ),
-//      )
-//    }
-//  }
 }
