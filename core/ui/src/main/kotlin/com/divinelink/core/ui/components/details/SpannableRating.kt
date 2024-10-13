@@ -85,10 +85,26 @@ private fun SpannableRatingText(
 fun SpannableRatingPreview() {
   AppTheme {
     Surface {
-      SpannableRating(
-        text = "Your rating",
-        rating = "8",
-      )
+      Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      ) {
+        SpannableRating(
+          text = "Your rating",
+          rating = "0",
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "1",
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "5",
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "8",
+        )
+      }
     }
   }
 }
@@ -98,11 +114,30 @@ fun SpannableRatingPreview() {
 fun SpannableRatingNewLinePreview() {
   AppTheme {
     Surface {
-      SpannableRating(
-        text = "Your rating",
-        rating = "8",
-        vertical = true,
-      )
+      Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      ) {
+        SpannableRating(
+          text = "Your rating",
+          rating = "0",
+          vertical = true,
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "1",
+          vertical = true,
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "5",
+          vertical = true,
+        )
+        SpannableRating(
+          text = "Your rating",
+          rating = "8",
+          vertical = true,
+        )
+      }
     }
   }
 }

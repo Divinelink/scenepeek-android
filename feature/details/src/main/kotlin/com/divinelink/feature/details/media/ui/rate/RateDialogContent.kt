@@ -109,7 +109,7 @@ private fun BottomSheetRateContentWithoutClearPreview() {
   AppTheme {
     Surface {
       RateDialogContent(
-        value = 5f,
+        value = 0f,
         mediaTitle = "The Godfather",
         onRateChanged = {},
         onSubmitRate = {},

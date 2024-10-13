@@ -2,6 +2,7 @@ package com.andreolas.ui.details
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -13,11 +14,14 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.R
+import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
@@ -26,7 +30,6 @@ import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -145,7 +148,7 @@ class DetailsContentTest : ComposeTest() {
     val reviewsTitle = composeTestRule.activity.getString(uiR.string.details__reviews)
 
     composeTestRule
-      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
       .performScrollToNode(
         hasText(reviewsTitle),
       )
@@ -464,6 +467,7 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          menuOptions = listOf(DetailsMenuOptions.SHARE),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -480,9 +484,7 @@ class DetailsContentTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(
-          composeTestRule.activity.getString(uiR.string.core_ui_share),
-        ),
+        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_share)),
       )
         .assertIsDisplayed()
         .performClick()
@@ -514,6 +516,80 @@ class DetailsContentTest : ComposeTest() {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertDoesNotExist()
     }
+  }
+
+  @Test
+  fun `test open request dialog for tv show`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          actionButtons = DetailActionItem.entries,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+      )
+    }
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsNotDisplayed()
+
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsDisplayed()
+      .performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test open request dialog for movie`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          actionButtons = DetailActionItem.entries,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+      )
+    }
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsNotDisplayed()
+
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithText(getString(detailsR.string.feature_details_request))
+      .assertIsDisplayed()
+      .performClick()
+
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_DIALOG).assertIsDisplayed()
   }
 
   private val reviews = ReviewFactory.ReviewList()

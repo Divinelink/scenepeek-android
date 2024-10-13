@@ -87,13 +87,14 @@ import com.divinelink.core.ui.components.details.similar.SimilarMoviesList
 import com.divinelink.core.ui.components.details.videos.VideoState
 import com.divinelink.core.ui.components.details.videos.YoutubePlayer
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
+import com.divinelink.core.ui.components.dialog.RequestMovieDialog
+import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
 
-const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,11 +120,44 @@ fun DetailsContent(
     onDismissSnackbar = onConsumeSnackbar,
   )
 
+  var showRequestDialog by remember { mutableStateOf(false) }
+  if (showRequestDialog) {
+    when (viewState.mediaDetails) {
+      is TV -> SelectSeasonsDialog(
+        numberOfSeasons = viewState.mediaDetails.numberOfSeasons,
+        onRequestClick = {
+          requestMedia(it)
+          showRequestDialog = false
+        },
+        onDismissRequest = { showRequestDialog = false },
+      )
+      is Movie -> RequestMovieDialog(
+        onDismissRequest = { showRequestDialog = false },
+        onConfirm = {
+          requestMedia(emptyList())
+          showRequestDialog = false
+        },
+        title = viewState.mediaDetails.title,
+      )
+      null -> {
+        // Do nothing
+      }
+    }
+  }
+
   Scaffold(
     modifier = modifier
       .testTag(TestTags.Details.CONTENT_SCAFFOLD)
       .navigationBarsPadding()
       .nestedScroll(scrollBehavior.nestedScrollConnection),
+    floatingActionButton = {
+      DetailsExpandableFloatingActionButton(
+        actionButtons = viewState.actionButtons,
+        onAddRateClicked = onAddRateClicked,
+        onAddToWatchlistClicked = onAddToWatchlistClicked,
+        onRequestClicked = { showRequestDialog = true },
+      )
+    },
     topBar = {
       TopAppBar(
         scrollBehavior = scrollBehavior,
@@ -166,9 +200,8 @@ fun DetailsContent(
           viewState.mediaDetails?.let {
             DetailsDropdownMenu(
               mediaDetails = viewState.mediaDetails,
-              menuOptions = viewState.menuOptions,
               expanded = showDropdownMenu,
-              requestMedia = requestMedia,
+              options = viewState.menuOptions,
               onDismissDropdown = { showDropdownMenu = false },
             )
           }
@@ -267,7 +300,7 @@ fun MediaDetailsContent(
   Surface {
     LazyColumn(
       modifier = modifier
-        .testTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+        .testTag(TestTags.Details.CONTENT_LIST)
         .fillMaxWidth(),
     ) {
       item {

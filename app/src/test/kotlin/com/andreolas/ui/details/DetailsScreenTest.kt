@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
@@ -34,7 +34,6 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
-import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
@@ -112,7 +111,7 @@ class DetailsScreenTest : ComposeTest() {
     }
 
     composeTestRule
-      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
       .performScrollToNode(
         matcher = hasText(
           MediaItemFactory.MoviesList()[0].name,
@@ -316,9 +315,6 @@ class DetailsScreenTest : ComposeTest() {
     val requestMediaUseCase = FakeRequestMediaUseCase()
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    var verifyNavigatedToCredits: Pair<Boolean, CreditsNavArguments?> = false to null
-    var verifyNavigatedToDetails = false
-
     // Initial navigation to Details screen
     destinationsNavigator.navigate(
       direction = DetailsScreenDestination(
@@ -379,8 +375,9 @@ class DetailsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.CONTENT_LIST).performScrollToIndex(2)
+
       onNodeWithText(getString(R.string.core_ui_view_all))
-        .performScrollTo()
         .assertIsDisplayed()
         .performClick()
 

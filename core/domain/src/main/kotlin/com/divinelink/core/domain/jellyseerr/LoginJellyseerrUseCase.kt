@@ -8,6 +8,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 
@@ -35,19 +36,17 @@ open class LoginJellyseerrUseCase(
 
       result.last().fold(
         onSuccess = {
-          repository.getRemoteAccountDetails(parameters.address).collect { result ->
-            val accountDetails = result.getOrThrow()
+          val details = repository.getRemoteAccountDetails(parameters.address).first().getOrThrow()
 
-            storage.setJellyseerrSession(
-              username = parameters.username.value,
-              address = parameters.address,
-              authMethod = parameters.authMethod.name,
-              password = parameters.password.value,
-            )
-            repository.insertJellyseerrAccountDetails(accountDetails)
+          storage.setJellyseerrSession(
+            username = parameters.username.value,
+            address = parameters.address,
+            authMethod = parameters.authMethod.name,
+            password = parameters.password.value,
+          )
+          repository.insertJellyseerrAccountDetails(details)
 
-            emit(Result.success(accountDetails))
-          }
+          emit(Result.success(details))
         },
         onFailure = {
           emit(Result.failure(it))

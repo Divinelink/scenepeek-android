@@ -31,7 +31,4 @@
   <color name="light_colorShadow">#000000</color>
   <color name="light_colorSurfaceTint">#00677E</color>
   <color name="light_colorSurfaceTintColor">#00677E</color>
-
-  <color name="light_colorSurface2">#F0F9FE</color>
-  <color name="light_colorSurface_60">#99FBFCFF</color>
 </resources>

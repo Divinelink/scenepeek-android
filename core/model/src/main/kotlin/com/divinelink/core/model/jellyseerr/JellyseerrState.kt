@@ -4,8 +4,6 @@ sealed class JellyseerrState(
   open var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
   open var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
 ) {
-  data object Loading : JellyseerrState()
-
   data class Initial(
     val address: String,
     val isLoading: Boolean,

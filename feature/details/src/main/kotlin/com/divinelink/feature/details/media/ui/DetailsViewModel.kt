@@ -128,6 +128,13 @@ class DetailsViewModel(
                 )
               }
 
+              is MediaDetailsResult.ActionButtonsSuccess -> {
+                val successData = (result.data as MediaDetailsResult.ActionButtonsSuccess)
+                viewState.copy(
+                  actionButtons = successData.actionButtons,
+                )
+              }
+
               is MediaDetailsResult.Failure.FatalError -> viewState.copy(
                 error = (result.data as MediaDetailsResult.Failure.FatalError).message,
                 isLoading = false,

@@ -29,8 +29,4 @@
   <color name="colorShadow">@color/dark_colorShadow</color>
   <color name="colorSurfaceTint">@color/dark_colorSurfaceTint</color>
   <color name="colorSurfaceTintColor">@color/dark_colorSurfaceTintColor</color>
-
-  <color name="colorSurface2">@color/dark_colorSurface2</color>
-
-  <color name="colorSurface_60">@color/dark_colorSurface_60</color>
 </resources>

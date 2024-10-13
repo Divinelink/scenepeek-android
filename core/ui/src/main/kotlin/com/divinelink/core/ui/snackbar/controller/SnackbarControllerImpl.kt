@@ -38,4 +38,6 @@ class SnackbarControllerImpl(
       snackbarHostState.showSnackbar(visuals = snackbarVisuals).let(onSnackbarResult)
     }
   }
+
+  override fun isVisible(): Boolean = snackbarHostState.currentSnackbarData != null
 }

@@ -7,7 +7,7 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class GetJellyseerrAccountDetailsUseCase(
@@ -20,30 +20,29 @@ class GetJellyseerrAccountDetailsUseCase(
    * @param parameters: If true, fetch from remote
    */
   override fun execute(parameters: Boolean): Flow<Result<JellyseerrAccountDetails?>> = channelFlow {
-    val address = storage.jellyseerrAddress.firstOrNull()
+    val address = storage.jellyseerrAddress.first()
 
     launch {
-      repository
-        .getLocalJellyseerrAccountDetails()
-        .collect { details ->
-          if (address == null) {
-            send(Result.failure(Exception("No address found.")))
-          } else {
-            send(Result.success(details))
-          }
+      repository.getLocalJellyseerrAccountDetails().collect { localDetails ->
+        if (storage.jellyseerrAddress.first() == null) {
+          send(Result.success(null))
+        } else {
+          send(Result.success(localDetails))
         }
+      }
     }
 
     launch {
       if (parameters && address != null) {
-        repository.getRemoteAccountDetails(address).collect { remoteResult ->
-          remoteResult.onSuccess { remoteDetails ->
-            repository.insertJellyseerrAccountDetails(remoteDetails)
-            send(Result.success(remoteDetails))
-          }.onFailure { error ->
-            send(Result.failure(error))
-          }
-        }
+        repository.getRemoteAccountDetails(address).first().fold(
+          onSuccess = {
+            repository.insertJellyseerrAccountDetails(it)
+            send(Result.success(it))
+          },
+          onFailure = {
+            send(Result.failure(it))
+          },
+        )
       }
     }
   }

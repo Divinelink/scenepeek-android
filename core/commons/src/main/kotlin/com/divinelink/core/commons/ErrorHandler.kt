@@ -13,8 +13,9 @@ class ErrorHandler private constructor() {
 
     fun create(
       throwable: Throwable,
-      actions: ErrorHandler.() -> Unit,
-    ) = ErrorHandler().apply(actions).handle(throwable)
+      skipGlobal: Boolean = false,
+      actions: ErrorHandler.() -> Unit = {},
+    ) = ErrorHandler().apply(actions).handle(throwable = throwable, skipGlobal = skipGlobal)
   }
 
   /**

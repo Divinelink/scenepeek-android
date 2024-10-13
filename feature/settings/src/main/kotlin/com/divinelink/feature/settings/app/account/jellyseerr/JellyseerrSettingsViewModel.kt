@@ -17,6 +17,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -37,9 +38,20 @@ class JellyseerrSettingsViewModel(
 
   init {
     getJellyseerrDetailsUseCase.invoke(true)
+      .distinctUntilChanged()
       .onEach { result ->
         result.onSuccess {
-          result.data?.let { accountDetails ->
+          val accountDetails = result.data
+          if (accountDetails == null) {
+            _uiState.update {
+              it.copy(
+                jellyseerrState = JellyseerrState.Initial(
+                  address = "",
+                  isLoading = false,
+                ),
+              )
+            }
+          } else {
             _uiState.update {
               it.copy(
                 jellyseerrState = JellyseerrState.LoggedIn(
@@ -48,22 +60,14 @@ class JellyseerrSettingsViewModel(
                 ),
               )
             }
-          } ?: _uiState.update {
-            it.copy(
-              jellyseerrState = JellyseerrState.Initial(
-                address = "",
-                isLoading = false,
-              ),
-            )
           }
         }.onFailure {
-          _uiState.update {
-            it.copy(
-              jellyseerrState = JellyseerrState.Initial(
-                address = "",
-                isLoading = false,
-              ),
-            )
+          ErrorHandler.create(it) {
+            otherwise {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(uiR.string.core_ui_error_retry),
+              )
+            }
           }
         }
       }.launchIn(viewModelScope)
@@ -251,7 +255,6 @@ private fun MutableStateFlow<JellyseerrSettingsUiState>.setJellyseerrLoading(loa
           isLoading = loading,
         ),
       )
-      JellyseerrState.Loading -> uiState
     }
   }
 }

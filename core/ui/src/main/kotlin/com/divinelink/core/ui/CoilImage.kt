@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package com.divinelink.core.ui
 
 import androidx.compose.foundation.shape.CircleShape
