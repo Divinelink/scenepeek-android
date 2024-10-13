@@ -29,8 +29,4 @@
   <color name="dark_colorShadow">#000000</color>
   <color name="dark_colorSurfaceTint">#5BD5FA</color>
   <color name="dark_colorSurfaceTintColor">#5BD5FA</color>
-
-  <color name="dark_colorSurface2">#172224</color>
-
-  <color name="dark_colorSurface_60">#99FBFCFF</color>-->
 </resources>
