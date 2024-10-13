@@ -20,9 +20,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.material.icons.filled.WatchLater
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -61,7 +58,6 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
@@ -94,8 +90,6 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
-import com.divinelink.core.ui.components.expandablefab.ExpandableFloatActionButton
-import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.R
@@ -158,29 +152,11 @@ fun DetailsContent(
       .navigationBarsPadding()
       .nestedScroll(scrollBehavior.nestedScrollConnection),
     floatingActionButton = {
-      ExpandableFloatActionButton(
-        buttons = viewState.actionButtons.map { button ->
-          when (button) {
-            DetailActionItem.RATE -> FloatingActionButtonItem(
-              icon = Icons.Filled.StarRate,
-              label = UIText.ResourceText(R.string.details__add_rating),
-              contentDescription = UIText.ResourceText(R.string.details__add_rating),
-              onClick = onAddRateClicked,
-            )
-            DetailActionItem.WATCHLIST -> FloatingActionButtonItem(
-              icon = Icons.Filled.WatchLater,
-              label = UIText.StringText("Watchlist"),
-              contentDescription = UIText.StringText("Watchlist"),
-              onClick = onAddToWatchlistClicked,
-            )
-            DetailActionItem.REQUEST -> FloatingActionButtonItem(
-              icon = Icons.Filled.Download, // painterResource(id = R.drawable.core_ui_ic_jellyseerr),
-              label = UIText.ResourceText(R.string.feature_details_request),
-              contentDescription = UIText.ResourceText(R.string.feature_details_request),
-              onClick = { showRequestDialog = true },
-            )
-          }
-        },
+      DetailsExpandableFloatingActionButton(
+        actionButtons = viewState.actionButtons,
+        onAddRateClicked = onAddRateClicked,
+        onAddToWatchlistClicked = onAddToWatchlistClicked,
+        onRequestClicked = { showRequestDialog = true },
       )
     },
     topBar = {

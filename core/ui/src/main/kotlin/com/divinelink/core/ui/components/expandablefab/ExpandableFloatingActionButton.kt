@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,9 +23,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,10 +40,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
@@ -120,7 +123,7 @@ fun ExpandableFloatActionButton(
         onClick = { expanded = !expanded },
         modifier = Modifier.rotate(rotationState),
       ) {
-        Icon(Icons.Filled.Add, contentDescription = "Expandable FAB")
+        Icon(Icons.Rounded.Add, contentDescription = "Expandable FAB")
       }
     }
   }
@@ -194,10 +197,20 @@ fun StaggeredAnimatedFloatingActionButton(
           onDismiss()
         },
       ) {
-        Icon(
-          imageVector = fabItem.icon,
-          contentDescription = fabItem.contentDescription.getString(),
-        )
+        when (fabItem.icon) {
+          is IconWrapper.Image -> Image(
+            painter = painterResource(id = fabItem.icon.resourceId),
+            contentDescription = fabItem.contentDescription.getString(),
+          )
+          is IconWrapper.Icon -> Icon(
+            painter = painterResource(id = fabItem.icon.resourceId),
+            contentDescription = fabItem.contentDescription.getString(),
+          )
+          is IconWrapper.Vector -> Icon(
+            imageVector = fabItem.icon.vector,
+            contentDescription = fabItem.contentDescription.getString(),
+          )
+        }
       }
     }
   }
@@ -217,19 +230,19 @@ private fun ExpandableFloatingActionButton() {
       ExpandableFloatActionButton(
         buttons = listOf(
           FloatingActionButtonItem(
-            icon = Icons.Filled.Brush,
+            icon = IconWrapper.Vector(Icons.Filled.Brush),
             label = UIText.StringText("Brush"),
             contentDescription = UIText.StringText("Add"),
             onClick = {},
           ),
           FloatingActionButtonItem(
-            icon = Icons.Filled.Adb,
+            icon = IconWrapper.Vector(Icons.Filled.Adb),
             label = UIText.StringText("Adb"),
             contentDescription = UIText.StringText("Add"),
             onClick = {},
           ),
           FloatingActionButtonItem(
-            icon = Icons.Filled.Call,
+            icon = IconWrapper.Vector(Icons.Filled.Call),
             label = UIText.StringText("Call"),
             contentDescription = UIText.StringText("Add"),
             onClick = {},
