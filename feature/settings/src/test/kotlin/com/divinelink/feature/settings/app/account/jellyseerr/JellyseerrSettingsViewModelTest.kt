@@ -3,11 +3,12 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
+import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -255,7 +256,7 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
-  fun `test getJellyseerrAccount with null clear logged in data`() = runTest {
+  fun `test getJellyseerrAccount with null sets logged in data`() = runTest {
     testRobot
       .mockJellyseerrAccountDetailsResponse(Result.success(null))
       .buildViewModel()
@@ -264,6 +265,52 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
             address = "",
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test login and then logout`() = runTest {
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(Result.success(null))
+      .buildViewModel()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.Initial(
+            isLoading = false,
+            address = "",
+          ),
+        ),
+      )
+      .mockLoginJellyseerrResponse(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .expectUiStates(
+        action = { onLoginJellyseerr() },
+        uiStates = listOf(
+          createUiState(
+            jellyseerrState = JellyseerrState.Initial(
+              address = "",
+              isLoading = false,
+              preferredOption = JellyseerrAuthMethod.JELLYSEERR,
+            ),
+          ),
+          createUiState(
+            jellyseerrState = JellyseerrState.LoggedIn(
+              isLoading = false,
+              accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            ),
+          ),
+        ),
+      )
+      .mockLogoutJellyseerrResponse(Result.success(""))
+      .onLogoutJellyseerr()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.Initial(
+            address = "",
+            isLoading = false,
+            preferredOption = null,
           ),
         ),
       )

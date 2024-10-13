@@ -30,19 +30,20 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.zIndex
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.IconWrapper
@@ -50,6 +51,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
+import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 @Composable
 fun ExpandableFloatActionButton(
@@ -82,7 +84,6 @@ fun ExpandableFloatActionButton(
     AnimatedVisibility(
       modifier = Modifier
         .fillMaxSize()
-        .zIndex(1f)
         .offset(
           x = MaterialTheme.dimensions.keyline_16,
           y = MaterialTheme.dimensions.keyline_16,
@@ -107,7 +108,6 @@ fun ExpandableFloatActionButton(
       horizontalAlignment = Alignment.End,
       verticalArrangement = Arrangement.Bottom,
       modifier = Modifier
-        .zIndex(2f)
         .offset { IntOffset(0, -fabOffset.roundToPx()) }
         .fillMaxSize(),
     ) {
@@ -219,36 +219,44 @@ fun StaggeredAnimatedFloatingActionButton(
 @Previews
 @Composable
 private fun ExpandableFloatingActionButton() {
-  AppTheme {
-    Surface {
-      Text(
-        text = "Click the FAB to expand",
-        style = MaterialTheme.typography.headlineLarge,
-        modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-      )
+  val snackbarHostState = remember { SnackbarHostState() }
+  val coroutineScope = rememberCoroutineScope()
 
-      ExpandableFloatActionButton(
-        buttons = listOf(
-          FloatingActionButtonItem(
-            icon = IconWrapper.Vector(Icons.Filled.Brush),
-            label = UIText.StringText("Brush"),
-            contentDescription = UIText.StringText("Add"),
-            onClick = {},
+  ProvideSnackbarController(
+    snackbarHostState = snackbarHostState,
+    coroutineScope = coroutineScope,
+  ) {
+    AppTheme {
+      Surface {
+        Text(
+          text = "Click the FAB to expand",
+          style = MaterialTheme.typography.headlineLarge,
+          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+        )
+
+        ExpandableFloatActionButton(
+          buttons = listOf(
+            FloatingActionButtonItem(
+              icon = IconWrapper.Vector(Icons.Filled.Brush),
+              label = UIText.StringText("Brush"),
+              contentDescription = UIText.StringText("Add"),
+              onClick = {},
+            ),
+            FloatingActionButtonItem(
+              icon = IconWrapper.Vector(Icons.Filled.Adb),
+              label = UIText.StringText("Adb"),
+              contentDescription = UIText.StringText("Add"),
+              onClick = {},
+            ),
+            FloatingActionButtonItem(
+              icon = IconWrapper.Vector(Icons.Filled.Call),
+              label = UIText.StringText("Call"),
+              contentDescription = UIText.StringText("Add"),
+              onClick = {},
+            ),
           ),
-          FloatingActionButtonItem(
-            icon = IconWrapper.Vector(Icons.Filled.Adb),
-            label = UIText.StringText("Adb"),
-            contentDescription = UIText.StringText("Add"),
-            onClick = {},
-          ),
-          FloatingActionButtonItem(
-            icon = IconWrapper.Vector(Icons.Filled.Call),
-            label = UIText.StringText("Call"),
-            contentDescription = UIText.StringText("Add"),
-            onClick = {},
-          ),
-        ),
-      )
+        )
+      }
     }
   }
 }

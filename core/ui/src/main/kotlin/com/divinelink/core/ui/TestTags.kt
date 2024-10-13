@@ -23,6 +23,7 @@ object TestTags {
   const val LAZY_COLUMN = "Lazy Column"
 
   object Details {
+    const val CONTENT_LIST = "Details Content Scrollable List"
     const val CONTENT_SCAFFOLD = "Details Content Scaffold"
     const val SIMILAR_MOVIES_LIST = "Details Similar Movies Lazy List"
 

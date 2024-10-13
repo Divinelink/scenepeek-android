@@ -20,6 +20,7 @@ import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
@@ -43,6 +44,7 @@ class GetMediaDetailsUseCaseTest {
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
   private lateinit var fakeGetDropdownMenuItemsUseCase: FakeGetDropdownMenuItemsUseCase
+  private lateinit var fakeGetDetailsActionItemsUseCase: FakeGetDetailsActionItemsUseCase
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
   private val movieDetails = Movie(
@@ -86,19 +88,14 @@ class GetMediaDetailsUseCaseTest {
     moviesRepository = FakeMoviesRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
+    fakeGetDetailsActionItemsUseCase = FakeGetDetailsActionItemsUseCase()
   }
 
   @Test
   fun `test unknown parameters return failure`() = runTest {
     val expectedResult = Result.failure<Exception>(MediaDetailsException())
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(DetailsRequestApi.Unknown).test {
       assertThat(this.awaitItem().toString()).isEqualTo(expectedResult.toString())
@@ -110,15 +107,7 @@ class GetMediaDetailsUseCaseTest {
   fun `successfully get movie details`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.failure<Exception>())
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).first()
 
@@ -137,16 +126,7 @@ class GetMediaDetailsUseCaseTest {
   fun `successfully get movie details with false favorite status`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-//    repository.mockFetchMovieReviews(ReviewsRequestApi.Movie(555), Result.Loading)
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
-
+    val flow = createGetMediaDetailsUseCase()
     val result = flow(request).first()
 
     assertThat(result).isEqualTo(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)))
@@ -154,19 +134,12 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `successfully fetch movie reviews`() = runTest {
-//    repository.mockFetchMovieDetails(request, Result.Loading)
     repository.mockFetchMovieReviews(
       DetailsRequestApi.Movie(movieId = 555),
       Result.success(reviewsList),
     )
-//    repository.mockFetchSimilarMovies(SimilarRequestApi.Movie(mediaId = 555), Result.Loading)
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+
+    val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).last()
 
@@ -181,13 +154,7 @@ class GetMediaDetailsUseCaseTest {
       SimilarRequestApi.Movie(movieId = 555),
       Result.success(similarList),
     )
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(request).test {
       assertThat(this.awaitItem()).isEqualTo(
@@ -213,13 +180,8 @@ class GetMediaDetailsUseCaseTest {
       SimilarRequestApi.Movie(movieId = 555),
       Result.success(similarList),
     )
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+
+    val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).first()
 
@@ -237,13 +199,8 @@ class GetMediaDetailsUseCaseTest {
       response = Result.failure(Exception("Oops.")),
     )
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
+
     val result = useCase(request).last()
 
     assertThat(result).isInstanceOf(expectedResult::class.java)
@@ -258,13 +215,8 @@ class GetMediaDetailsUseCaseTest {
       Result.failure(SimilarException()),
     )
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
+
     val result = useCase(request).last()
 
     assertThat(result).isInstanceOf(expectedResult::class.java)
@@ -278,13 +230,7 @@ class GetMediaDetailsUseCaseTest {
       SimilarRequestApi.Movie(movieId = 555),
       Result.failure(SimilarException()),
     )
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).first()
 
@@ -295,13 +241,8 @@ class GetMediaDetailsUseCaseTest {
   fun `successfully get movie details even when reviews and similar calls fail`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+
+    val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).first()
 
@@ -321,15 +262,10 @@ class GetMediaDetailsUseCaseTest {
       ),
     )
     repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.success(videoList))
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
 
-    val result = flow(request).last()
+    val useCase = createGetMediaDetailsUseCase()
+
+    val result = useCase(request).last()
 
     assertThat(
       result,
@@ -348,15 +284,10 @@ class GetMediaDetailsUseCaseTest {
       ),
     )
     repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.success(videoList))
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
 
-    val result = flow(request).last()
+    val useCase = createGetMediaDetailsUseCase()
+
+    val result = useCase(request).last()
 
     assertThat(result).isEqualTo(Result.success(MediaDetailsResult.VideosSuccess(null)))
   }
@@ -369,15 +300,10 @@ class GetMediaDetailsUseCaseTest {
     repository.mockFetchMovieDetails(tvRequest, Result.success(movieDetails))
 
     repository.mockFetchMovieVideos(tvRequest, Result.success(videoList))
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
 
-    flow(tvRequest).test {
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
       )
@@ -395,15 +321,9 @@ class GetMediaDetailsUseCaseTest {
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.success(AggregatedCreditsFactory.credits()))
 
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
-    flow(tvRequest).test {
+    useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
       )
@@ -424,15 +344,9 @@ class GetMediaDetailsUseCaseTest {
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.failure(Exception()))
 
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
-    flow(tvRequest).test {
+    useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
       )
@@ -448,15 +362,9 @@ class GetMediaDetailsUseCaseTest {
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
     repository.mockFetchMovieVideos(request, Result.success(emptyList()))
 
-    val flow = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
-    flow(request).test {
+    useCase(request).test {
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
       )
@@ -473,13 +381,8 @@ class GetMediaDetailsUseCaseTest {
 
     repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.failure(VideosException()))
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
+
     val result = useCase(request).last()
 
     assertThat(result).isInstanceOf(expectedResult::class.java)
@@ -497,13 +400,7 @@ class GetMediaDetailsUseCaseTest {
       flowOf(Result.success(accountDetails)),
     )
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
@@ -522,13 +419,7 @@ class GetMediaDetailsUseCaseTest {
       flowOf(Result.failure(Exception("Oops."))),
     )
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
@@ -542,7 +433,6 @@ class GetMediaDetailsUseCaseTest {
   fun `test getMenuItemsUseCase with success successfully emits data`() = runTest {
     val menuItems = listOf(
       DetailsMenuOptions.SHARE,
-      DetailsMenuOptions.REQUEST,
     )
 
     val expectedResult = Result.success(MediaDetailsResult.MenuOptionsSuccess(menuItems))
@@ -551,13 +441,7 @@ class GetMediaDetailsUseCaseTest {
 
     fakeGetDropdownMenuItemsUseCase.mockSuccess(flowOf(Result.success(menuItems)))
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
@@ -574,13 +458,7 @@ class GetMediaDetailsUseCaseTest {
 
     fakeGetDropdownMenuItemsUseCase
 
-    val useCase = GetMediaDetailsUseCase(
-      repository = repository.mock,
-      mediaRepository = moviesRepository.mock,
-      dispatcher = testDispatcher,
-      fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
-      getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
-    )
+    val useCase = createGetMediaDetailsUseCase()
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
@@ -589,4 +467,13 @@ class GetMediaDetailsUseCaseTest {
       awaitComplete()
     }
   }
+
+  private fun createGetMediaDetailsUseCase() = GetMediaDetailsUseCase(
+    repository = repository.mock,
+    mediaRepository = moviesRepository.mock,
+    dispatcher = testDispatcher,
+    fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
+    getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
+    getDetailsActionItemsUseCase = fakeGetDetailsActionItemsUseCase.mock,
+  )
 }

@@ -36,10 +36,10 @@ class GetJellyseerrDetailsUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(false).first()
-
-    assertThat(result.isFailure).isTrue()
-    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
+    useCase.invoke(false).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(null))
+      awaitComplete()
+    }
   }
 
   @Test
@@ -83,10 +83,10 @@ class GetJellyseerrDetailsUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(true).first()
-
-    assertThat(result.isFailure).isTrue()
-    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
+    useCase.invoke(true).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(null))
+      awaitComplete()
+    }
   }
 
   @Test

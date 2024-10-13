@@ -44,7 +44,6 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
       label = "Jellyseerr State Animated Content",
       contentKey = { state ->
         when (state) {
-          is JellyseerrState.Loading -> "Loading"
           is JellyseerrState.Initial -> "Initial"
           is JellyseerrState.LoggedIn -> "LoggedIn"
         }
@@ -68,9 +67,6 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
             viewModel.onJellyseerrInteraction(it)
           },
         )
-        JellyseerrState.Loading -> {
-          // Do nothing
-        }
       }
     }
   }

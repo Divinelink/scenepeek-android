@@ -30,8 +30,8 @@ internal fun DetailsExpandableFloatingActionButton(
         )
         DetailActionItem.WATCHLIST -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.WatchLater),
-          label = UIText.StringText("Watchlist"),
-          contentDescription = UIText.StringText("Watchlist"),
+          label = UIText.ResourceText(R.string.feature_details__watchlist),
+          contentDescription = UIText.ResourceText(R.string.feature_details__watchlist),
           onClick = onAddToWatchlistClicked,
         )
         DetailActionItem.REQUEST -> FloatingActionButtonItem(

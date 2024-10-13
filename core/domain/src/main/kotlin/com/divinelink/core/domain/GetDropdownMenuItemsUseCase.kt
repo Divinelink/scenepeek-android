@@ -13,6 +13,6 @@ class GetDropdownMenuItemsUseCase(val dispatcher: DispatcherProvider) :
     val menuItems = buildList {
       add(DetailsMenuOptions.SHARE)
     }
-    Result.success(menuItems)
+    emit(Result.success(menuItems))
   }
 }

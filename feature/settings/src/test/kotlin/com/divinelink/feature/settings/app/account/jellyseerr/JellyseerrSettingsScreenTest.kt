@@ -76,6 +76,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test jellyseerr state is initial when user is not logged in`() = runTest {
+    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
     val viewModel = setupViewModel()
 
     setSharedLayoutContent {
@@ -94,6 +95,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   @Test
   fun `test login with jellyfin account`() = runTest {
     loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyfin))
+    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
 
     val viewModel = setupViewModel()
 
@@ -173,6 +175,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   @Test
   fun `test login with jellyseerr account`() = runTest {
     loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyseerr))
+    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
 
     val viewModel = setupViewModel()
 
@@ -287,6 +290,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   @Test
   fun `test re-selecting the same login method hides it`() = runTest {
     loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyseerr))
+    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
 
     val viewModel = setupViewModel()
 
@@ -333,6 +337,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   fun `test credentials for login methods are kept across expanding and collapsing cards`() =
     runTest {
       loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyseerr))
+      getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
 
       val viewModel = setupViewModel()
 

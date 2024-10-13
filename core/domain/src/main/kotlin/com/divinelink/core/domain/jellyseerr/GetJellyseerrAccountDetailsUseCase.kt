@@ -24,7 +24,11 @@ class GetJellyseerrAccountDetailsUseCase(
 
     launch {
       repository.getLocalJellyseerrAccountDetails().collect { localDetails ->
-        send(Result.success(localDetails))
+        if (storage.jellyseerrAddress.first() == null) {
+          send(Result.success(null))
+        } else {
+          send(Result.success(localDetails))
+        }
       }
     }
 

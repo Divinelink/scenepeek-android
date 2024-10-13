@@ -63,11 +63,11 @@ class JellyseerrSettingsViewModel(
           }
         }.onFailure {
           ErrorHandler.create(it) {
-//            otherwise {
-            _uiState.setSnackbarMessage(
-              UIText.ResourceText(uiR.string.core_ui_error_retry),
-            )
-//            }
+            otherwise {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(uiR.string.core_ui_error_retry),
+              )
+            }
           }
         }
       }.launchIn(viewModelScope)
@@ -255,7 +255,6 @@ private fun MutableStateFlow<JellyseerrSettingsUiState>.setJellyseerrLoading(loa
           isLoading = loading,
         ),
       )
-      JellyseerrState.Loading -> uiState
     }
   }
 }

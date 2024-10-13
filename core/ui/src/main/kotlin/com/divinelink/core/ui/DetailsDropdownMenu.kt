@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
@@ -24,6 +25,7 @@ import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
 @Composable
 fun DetailsDropdownMenu(
   mediaDetails: MediaDetails,
+  options: List<DetailsMenuOptions>,
   expanded: Boolean,
   onDismissDropdown: () -> Unit,
 ) {
@@ -45,12 +47,16 @@ fun DetailsDropdownMenu(
     expanded = expanded,
     onDismissRequest = onDismissDropdown,
   ) {
-    ShareMenuItem(
-      onClick = {
-        onDismissDropdown()
-        showShareDialog = true
-      },
-    )
+    options.forEach { option ->
+      when (option) {
+        DetailsMenuOptions.SHARE -> ShareMenuItem(
+          onClick = {
+            onDismissDropdown()
+            showShareDialog = true
+          },
+        )
+      }
+    }
   }
 }
 
@@ -80,6 +86,7 @@ private fun DetailsDropdownMenuPreview() {
           runtime = "2h 10m",
         ),
         expanded = true,
+        options = DetailsMenuOptions.entries,
         onDismissDropdown = {},
       )
     }

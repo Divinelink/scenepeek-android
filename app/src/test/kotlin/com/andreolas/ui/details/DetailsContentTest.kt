@@ -13,11 +13,13 @@ import com.andreolas.factories.ReviewFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.andreolas.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.andreolas.movierama.R
+import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
@@ -26,7 +28,6 @@ import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.feature.details.media.ui.MOVIE_DETAILS_SCROLLABLE_LIST_TAG
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -145,7 +146,7 @@ class DetailsContentTest : ComposeTest() {
     val reviewsTitle = composeTestRule.activity.getString(uiR.string.details__reviews)
 
     composeTestRule
-      .onNodeWithTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
       .performScrollToNode(
         hasText(reviewsTitle),
       )
@@ -464,6 +465,7 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          menuOptions = listOf(DetailsMenuOptions.SHARE),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
@@ -480,9 +482,7 @@ class DetailsContentTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(
-          composeTestRule.activity.getString(uiR.string.core_ui_share),
-        ),
+        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_share)),
       )
         .assertIsDisplayed()
         .performClick()

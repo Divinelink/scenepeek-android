@@ -95,7 +95,6 @@ import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
 
-const val MOVIE_DETAILS_SCROLLABLE_LIST_TAG = "MOVIE_DETAILS_LAZY_COLUMN_TAG"
 private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -202,6 +201,7 @@ fun DetailsContent(
             DetailsDropdownMenu(
               mediaDetails = viewState.mediaDetails,
               expanded = showDropdownMenu,
+              options = viewState.menuOptions,
               onDismissDropdown = { showDropdownMenu = false },
             )
           }
@@ -300,7 +300,7 @@ fun MediaDetailsContent(
   Surface {
     LazyColumn(
       modifier = modifier
-        .testTag(MOVIE_DETAILS_SCROLLABLE_LIST_TAG)
+        .testTag(TestTags.Details.CONTENT_LIST)
         .fillMaxWidth(),
     ) {
       item {
