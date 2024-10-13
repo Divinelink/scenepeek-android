@@ -17,6 +17,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.designsystem.theme.Theme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
@@ -150,7 +151,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val hasSession: Flow<Boolean> = dataStore.data.map {
     it[PREF_HAS_SESSION] ?: false
-  }
+  }.distinctUntilChanged()
 
   override suspend fun clearAccountId() {
     dataStore.edit {
