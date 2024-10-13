@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +35,7 @@ fun RateSlider(
       in 0.1f..3.5f -> Color(0xFFDB2360)
       in 3.5f..6.9f -> Color(0xFFD2D531)
       in 7.0f..10.0f -> Color(0xFF21D07A)
-      else -> Color.White
+      else -> MaterialTheme.colorScheme.onSurface
     },
     label = "Color Rating Slider",
   )
@@ -63,26 +64,28 @@ fun RateSlider(
 @Composable
 private fun RateSliderPreview() {
   AppTheme {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-      RateSlider(
-        value = 0f,
-        onValueChange = {},
-      )
+    Surface {
+      Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+        RateSlider(
+          value = 0f,
+          onValueChange = {},
+        )
 
-      RateSlider(
-        value = 1f,
-        onValueChange = {},
-      )
+        RateSlider(
+          value = 1f,
+          onValueChange = {},
+        )
 
-      RateSlider(
-        value = 5f,
-        onValueChange = {},
-      )
+        RateSlider(
+          value = 5f,
+          onValueChange = {},
+        )
 
-      RateSlider(
-        value = 8f,
-        onValueChange = {},
-      )
+        RateSlider(
+          value = 8f,
+          onValueChange = {},
+        )
+      }
     }
   }
 }
