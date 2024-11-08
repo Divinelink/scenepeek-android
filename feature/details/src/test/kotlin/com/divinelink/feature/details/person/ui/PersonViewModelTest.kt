@@ -2,6 +2,7 @@ package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
@@ -10,7 +11,6 @@ import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
-import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -142,9 +142,7 @@ class PersonViewModelTest {
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
-          credits = PersonCreditsUiState.Visible(
-            knownFor = PersonCastCreditFactory.knownFor(),
-          ),
+          credits = PersonCastCreditFactory.knownFor(),
         ),
       )
   }
@@ -188,9 +186,7 @@ class PersonViewModelTest {
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
           createState(
-            credits = PersonCreditsUiState.Visible(
-              knownFor = PersonCastCreditFactory.knownFor(),
-            ),
+            credits = PersonCastCreditFactory.knownFor(),
             personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
           ),
         ),
@@ -201,7 +197,7 @@ class PersonViewModelTest {
     isLoading: Boolean = false,
     isError: Boolean = false,
     personDetails: PersonDetailsUiState = PersonDetailsUiState.Loading,
-    credits: PersonCreditsUiState = PersonCreditsUiState.Hidden,
+    credits: List<PersonCredit>? = null,
     dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
   ) = PersonUiState(
     isLoading = isLoading,
