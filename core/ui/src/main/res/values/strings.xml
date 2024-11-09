@@ -26,6 +26,7 @@
   <string name="core_ui_series_creator">Creator</string>
   <string name="core_ui_series_creators">Creators</string>
   <string name="core_ui_series_cast_title">Series Cast</string>
+  <string name="core_ui_episode_count">%s episodes</string>
 
   <string name="core_ui_toolbar_search">Search</string>
   <string name="core_ui_movies">movies</string>

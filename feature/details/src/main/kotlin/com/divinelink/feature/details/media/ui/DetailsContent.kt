@@ -655,9 +655,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.MovieActor(
-              character = "Here's Johnny!",
-              order = 0,
+            role = listOf(
+              PersonRole.MovieActor(
+                character = "Here's Johnny!",
+                order = 0,
+              ),
             ),
           ),
         ),
@@ -672,14 +674,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Greg Daniels",
             profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
             knownForDepartment = "Writing",
-            role = PersonRole.Creator,
+            role = listOf(PersonRole.Creator),
           ),
           Person(
             id = 17835,
             name = "Ricky Gervais",
             profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
             knownForDepartment = "Writing",
-            role = PersonRole.Creator,
+            role = listOf(PersonRole.Creator),
           ),
         ),
         numberOfSeasons = 9,
@@ -701,7 +703,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           name = "Forest Gump",
           profilePath = "BoxOfChocolates.jpg",
           knownForDepartment = "Directing",
-          role = PersonRole.Director,
+          role = listOf(PersonRole.Director),
         ),
         cast = listOf(
           Person(
@@ -709,9 +711,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.MovieActor(
-              character = "Here's Johnny!",
-              order = 0,
+            role = listOf(
+              PersonRole.MovieActor(
+                character = "Here's Johnny!",
+                order = 0,
+              ),
             ),
           ),
           Person(
@@ -719,9 +723,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.MovieActor(
-              character = "McMurphy",
-              order = 0,
+            role = listOf(
+              PersonRole.MovieActor(
+                character = "McMurphy",
+                order = 0,
+              ),
             ),
           ),
           Person(
@@ -729,9 +735,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Jack",
             profilePath = "AllWorkAndNoPlay.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.MovieActor(
-              character = "HelloJohnny",
-              order = 0,
+            role = listOf(
+              PersonRole.MovieActor(
+                character = "HelloJohnny",
+                order = 0,
+              ),
             ),
           ),
           Person(
@@ -739,9 +747,11 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             name = "Nicholson",
             profilePath = "Cuckoo.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.MovieActor(
-              character = "McMurphy",
-              order = 0,
+            role = listOf(
+              PersonRole.MovieActor(
+                character = "McMurphy",
+                order = 0,
+              ),
             ),
           ),
         ),

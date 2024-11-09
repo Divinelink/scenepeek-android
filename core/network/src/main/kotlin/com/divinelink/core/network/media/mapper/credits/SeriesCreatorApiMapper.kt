@@ -13,5 +13,5 @@ fun SeriesCreatorApi.map() = Person(
   profilePath = profilePath,
   gender = Gender.from(gender),
   knownForDepartment = knownForDepartment,
-  role = PersonRole.Creator,
+  role = listOf(PersonRole.Creator),
 )

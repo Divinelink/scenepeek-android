@@ -86,7 +86,7 @@ fun FlatMediaList(
             profilePath = search.posterPath,
             gender = search.gender,
             knownForDepartment = search.knownForDepartment,
-            role = PersonRole.Unknown,
+            role = listOf(PersonRole.Unknown),
           ),
           onPersonClick = {
             onItemClick(search)

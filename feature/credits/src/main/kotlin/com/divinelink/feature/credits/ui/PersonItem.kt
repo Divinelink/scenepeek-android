@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
@@ -47,12 +47,12 @@ fun PersonItem(
     Row(
       modifier = Modifier
         .padding(MaterialTheme.dimensions.keyline_8)
-        .heightIn(max = 120.dp)
         .wrapContentSize()
         .fillMaxWidth(),
     ) {
       MovieImage(
         path = person.profilePath,
+        modifier = Modifier.height(120.dp),
         errorPlaceHolder = if (person.gender == Gender.FEMALE) {
           painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
         } else {
@@ -72,37 +72,33 @@ fun PersonItem(
           text = person.name,
           style = MaterialTheme.typography.titleMedium,
         )
-        when (person.role) {
-          PersonRole.Creator -> TODO()
+        // Find the first role of the person, it'll the same for all the roles
+        when (person.role.first()) {
           is PersonRole.Crew -> Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
-            val job = (person.role as PersonRole.Crew).job
-            val totalEpisodes = (person.role as PersonRole.Crew).totalEpisodes?.toInt()
-
-            val jobText = buildPersonSubHeader(mapOf(job to totalEpisodes))
+            val jobText = buildPersonSubHeader(person.role)
 
             Text(
               modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
               text = jobText,
             )
           }
-          PersonRole.Director -> TODO()
-          is PersonRole.MovieActor -> TODO()
-          is PersonRole.SeriesActor -> {
-            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4)) {
-              val character = (person.role as PersonRole.SeriesActor).character
-              val totalEpisodes = (person.role as PersonRole.SeriesActor).totalEpisodes
+          is PersonRole.SeriesActor -> Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          ) {
+            val characterText = buildPersonSubHeader(person.role)
 
-              val characterText = buildPersonSubHeader(mapOf(character to totalEpisodes))
-
-              Text(
-                modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-                text = characterText,
-              )
-            }
+            Text(
+              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
+              text = characterText,
+            )
           }
-          PersonRole.Unknown -> {
+          is PersonRole.MovieActor,
+          PersonRole.Unknown,
+          PersonRole.Director,
+          PersonRole.Creator,
+          -> {
             // Do nothing
           }
         }
@@ -118,35 +114,47 @@ fun PersonItem(
  * Can be a character if the person is an actor or a job if the person is a crew member.
  */
 @Composable
-private fun buildPersonSubHeader(roles: Map<String?, Int?>): AnnotatedString =
-  buildAnnotatedString {
-    roles.forEach { (role, totalEpisodes) ->
-      withStyle(MaterialTheme.typography.labelMedium.toSpanStyle()) {
-        append(role)
-      }
+private fun buildPersonSubHeader(roles: List<PersonRole>): AnnotatedString = buildAnnotatedString {
+  val baseStyle = MaterialTheme.typography.labelMedium.toSpanStyle()
+  val episodeStyle = baseStyle.copy(
+    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+  )
 
-      totalEpisodes?.let {
-        append(" ")
-        withStyle(
-          MaterialTheme.typography.labelMedium.toSpanStyle().copy(
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+  roles.forEachIndexed { index, role ->
+    val isLastRole = index == roles.lastIndex
+
+    withStyle(baseStyle) {
+      append(
+        when (role) {
+          is PersonRole.SeriesActor -> role.character.ifBlank { "—" }
+          is PersonRole.Crew -> if (role.job.isNullOrBlank()) "—" else role.job
+          else -> ""
+        },
+      )
+    }
+    // Append episode count if available
+    when (role) {
+      is PersonRole.SeriesActor -> role.totalEpisodes
+      is PersonRole.Crew -> role.totalEpisodes
+      else -> null
+    }?.let { episodes ->
+      append(" ")
+      withStyle(episodeStyle) {
+        append(
+          stringResource(
+            R.string.feature_credits_character_total_episodes,
+            episodes,
           ),
-        ) {
-          append(
-            stringResource(
-              R.string.feature_credits_character_total_episodes,
-              totalEpisodes,
-            ),
-          )
-        }
-      }
-
-      // Add a comma if there are more roles to display
-      if (roles.size > 1 && role != roles.keys.last()) {
-        append(", ")
+        )
       }
     }
+
+    // Add separator if not the last item
+    if (!isLastRole) {
+      append(", ")
+    }
   }
+}
 
 @Previews
 @Composable
@@ -159,9 +167,19 @@ private fun PersonItemPreview() {
           name = "Person 1",
           profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
           knownForDepartment = "Acting",
-          role = PersonRole.SeriesActor(
-            character = "Character 1",
-            totalEpisodes = 10,
+          role = listOf(
+            PersonRole.SeriesActor(
+              character = "Character 1",
+              totalEpisodes = 10,
+            ),
+            PersonRole.SeriesActor(
+              character = "Character 2",
+              totalEpisodes = 5,
+            ),
+            PersonRole.SeriesActor(
+              character = "Character 3",
+              totalEpisodes = 5,
+            ),
           ),
         ),
         onClick = {},

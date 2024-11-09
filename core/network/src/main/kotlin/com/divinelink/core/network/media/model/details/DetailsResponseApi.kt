@@ -131,7 +131,7 @@ private fun List<CrewApi>.toDirector(): Person? {
       profilePath = director.profilePath,
       gender = Gender.from(director.gender),
       knownForDepartment = director.knownForDepartment,
-      role = PersonRole.Director,
+      role = listOf(PersonRole.Director),
     )
   }
 }
@@ -146,12 +146,14 @@ private fun CastApi.toPerson(): Person = Person(
   gender = Gender.from(this.gender),
   role = when (this) {
     is CastApi.Movie -> {
-      PersonRole.MovieActor(
-        character = this.character,
-        order = this.order,
+      listOf(
+        PersonRole.MovieActor(
+          character = this.character,
+          order = this.order,
+        ),
       )
     }
-    is CastApi.TV -> PersonRole.Unknown
+    is CastApi.TV -> listOf(PersonRole.Unknown)
   },
 )
 

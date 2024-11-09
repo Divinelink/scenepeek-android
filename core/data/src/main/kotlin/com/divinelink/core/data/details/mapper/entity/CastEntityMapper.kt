@@ -13,9 +13,11 @@ fun CastEntity.map() = Person(
   profilePath = profilePath,
   knownForDepartment = knownForDepartment,
   gender = Gender.from(gender.toInt()),
-  role = PersonRole.SeriesActor(
-    character = this.character,
-    totalEpisodes = totalEpisodeCount.toInt(),
-    creditId = creditId,
-  ),
+  role = roles.map {
+    PersonRole.SeriesActor(
+      character = it.character,
+      totalEpisodes = it.episodeCount?.toInt(),
+      creditId = it.creditId,
+    )
+  },
 )

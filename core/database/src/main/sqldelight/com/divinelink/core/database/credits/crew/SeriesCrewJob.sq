@@ -3,10 +3,16 @@ CREATE TABLE seriesCrewJob(
     job TEXT NOT NULL,
     episodeCount INTEGER,
     crewId INTEGER NOT NULL,
+    department TEXT NOT NULL,
     aggregateCreditId INTEGER NOT NULL,
     FOREIGN KEY (crewId, aggregateCreditId) REFERENCES seriesCrew(id, aggregateCreditId)
 );
 
 insertCrewJob:
-INSERT OR REPLACE INTO seriesCrewJob(creditId, job, episodeCount, crewId, aggregateCreditId)
+INSERT OR REPLACE INTO seriesCrewJob(creditId, job, episodeCount, crewId, department, aggregateCreditId)
 VALUES ?;
+
+fetchCrewJobs:
+SELECT *
+FROM seriesCrewJob
+WHERE aggregateCreditId = :aggregateCreditId;

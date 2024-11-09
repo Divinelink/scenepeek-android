@@ -4,6 +4,7 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.network.media.model.credits.JobsApi
 import com.divinelink.core.network.media.model.credits.SeriesCrewApi
 
 /**
@@ -31,10 +32,14 @@ fun SeriesCrewApi.map() = Person(
   profilePath = profilePath,
   gender = Gender.from(gender),
   knownForDepartment = knownForDepartment,
-  role = PersonRole.Crew(
-    job = jobs.firstOrNull()?.job,
-    creditId = jobs.firstOrNull()?.creditId,
-    totalEpisodes = totalEpisodeCount,
-    department = department,
-  ),
+  role = jobs.mapJobs(department),
 )
+
+private fun List<JobsApi>.mapJobs(department: String): List<PersonRole.Crew> = map { job ->
+  PersonRole.Crew(
+    job = job.job,
+    creditId = job.creditId,
+    totalEpisodes = job.episodeCount.toLong(),
+    department = department,
+  )
+}

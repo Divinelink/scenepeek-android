@@ -9,10 +9,8 @@ import com.divinelink.core.database.cacheExpiresAtToEpochSeconds
 import com.divinelink.core.database.credits.AggregateCredits
 import com.divinelink.core.database.credits.cast.SeriesCast
 import com.divinelink.core.database.credits.cast.SeriesCastRole
-import com.divinelink.core.database.credits.cast.SeriesCastWithRole
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
-import com.divinelink.core.database.credits.crew.SeriesCrewWithJob
 import com.divinelink.core.database.credits.mapper.toEntity
 import com.divinelink.core.database.credits.model.AggregateCreditsEntity
 import com.divinelink.core.database.credits.model.CastEntity
@@ -81,12 +79,23 @@ class ProdCreditsDao(
   }
 
   override fun fetchAllCastWithRoles(id: Long): Flow<List<CastEntity>> = database
-    .seriesCastQueries
-    .fetchSeriesCastWithRoles(id)
-    .asFlow()
-    .mapToList(dispatcher.io)
-    .map { listOfCast ->
-      listOfCast.map(SeriesCastWithRole::toEntity)
+    .transactionWithResult {
+      val rolesByCastId = database.seriesCastRoleQueries
+        .fetchRoles(aggregateCreditId = id)
+        .executeAsList()
+        .groupBy { it.castId }
+
+      database
+        .seriesCastQueries
+        .fetchSeriesCast(id)
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { listOfCast ->
+          listOfCast.map { cast ->
+            val roles = rolesByCastId[cast.id] ?: emptyList()
+            cast.toEntity(roles = roles)
+          }
+        }
     }
 
   override fun insertCrew(crew: List<SeriesCrew>) = database.transaction {
@@ -101,12 +110,23 @@ class ProdCreditsDao(
     }
   }
 
-  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<CrewEntity>> = database
-    .seriesCrewQueries
-    .fetchSeriesCrewWithJobs(aggregateCreditId)
-    .asFlow()
-    .mapToList(dispatcher.io)
-    .map { listOfCrewWithJob ->
-      listOfCrewWithJob.map(SeriesCrewWithJob::toEntity)
+  override fun fetchAllCrewJobs(aggregateCreditId: Long): Flow<List<CrewEntity>> =
+    database.transactionWithResult {
+      val crewJobs = database.seriesCrewJobQueries
+        .fetchCrewJobs(aggregateCreditId)
+        .executeAsList()
+        .groupBy { Pair(it.crewId, it.department) }
+
+      database
+        .seriesCrewQueries
+        .fetchSeriesCrew(aggregateCreditId)
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { listOfCrew ->
+          listOfCrew.map { crew ->
+            val jobs = crewJobs[Pair(crew.id, crew.department)] ?: emptyList()
+            crew.toEntity(roles = jobs)
+          }
+        }
     }
 }

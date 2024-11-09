@@ -11,7 +11,7 @@ data class Person(
   val profilePath: String?,
   val gender: Gender = Gender.NOT_SET,
   val knownForDepartment: String?,
-  val role: PersonRole,
+  val role: List<PersonRole>,
 )
 
 fun Person.shareUrl(): String {

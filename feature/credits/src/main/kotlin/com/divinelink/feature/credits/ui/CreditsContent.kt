@@ -119,7 +119,8 @@ fun CreditsContent(
                 items(
                   items = department.uniqueCrewList,
                   key = {
-                    (it.role as PersonRole.Crew).creditId + (it.role as PersonRole.Crew).department
+                    (it.role.first() as PersonRole.Crew).creditId +
+                      (it.role.first() as PersonRole.Crew).department
                   },
                 ) { person ->
                   PersonItem(
@@ -156,8 +157,13 @@ private fun CreditsContentPreview() {
                   name = "Person 1",
                   profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
                   knownForDepartment = "Acting",
-                  role = PersonRole.SeriesActor(
-                    character = "Character 1",
+                  role = listOf(
+                    PersonRole.SeriesActor(
+                      character = "Character 1",
+                    ),
+                    PersonRole.SeriesActor(
+                      character = "Character 2",
+                    ),
                   ),
                 ),
                 Person(
@@ -165,9 +171,11 @@ private fun CreditsContentPreview() {
                   name = "Person 2",
                   profilePath = "https://image.tmdb.org/t/p/w185/2.jpg",
                   knownForDepartment = "Acting",
-                  role = PersonRole.SeriesActor(
-                    character = "Character 2",
-                    totalEpisodes = 10,
+                  role = listOf(
+                    PersonRole.SeriesActor(
+                      character = "Character 2",
+                      totalEpisodes = 10,
+                    ),
                   ),
                 ),
               ),
@@ -182,9 +190,11 @@ private fun CreditsContentPreview() {
                       name = "Person 3",
                       profilePath = "https://image.tmdb.org/t/p/w185/3.jpg",
                       knownForDepartment = "Directing",
-                      role = PersonRole.Crew(
-                        job = "Job 3",
-                        creditId = "Credit 3",
+                      role = listOf(
+                        PersonRole.Crew(
+                          job = "Job 3",
+                          creditId = "Credit 3",
+                        ),
                       ),
                     ),
                     Person(
@@ -192,9 +202,11 @@ private fun CreditsContentPreview() {
                       name = "Person 4",
                       profilePath = "https://image.tmdb.org/t/p/w185/4.jpg",
                       knownForDepartment = "Directing",
-                      role = PersonRole.Crew(
-                        job = "Job 4",
-                        creditId = "Credit 4",
+                      role = listOf(
+                        PersonRole.Crew(
+                          job = "Job 4",
+                          creditId = "Credit 4",
+                        ),
                       ),
                     ),
                   ),
