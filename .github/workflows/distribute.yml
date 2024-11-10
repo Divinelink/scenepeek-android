@@ -1,4 +1,4 @@
-name: Build Release App Bundle
+name: Build & Distribute Release APK
 
 on:
   workflow_dispatch:
@@ -64,7 +64,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Build Artifacts
           path: app/build/outputs/
