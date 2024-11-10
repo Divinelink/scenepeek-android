@@ -3,8 +3,6 @@ package com.divinelink.feature.credits.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -63,11 +61,9 @@ fun PersonItem(
       Column(
         modifier = Modifier
           .fillMaxWidth()
-          .fillMaxHeight()
           .padding(start = MaterialTheme.dimensions.keyline_12),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
-        Spacer(Modifier.weight(1f))
         Text(
           text = person.name,
           style = MaterialTheme.typography.titleMedium,
@@ -102,7 +98,6 @@ fun PersonItem(
             // Do nothing
           }
         }
-        Spacer(Modifier.weight(1f))
       }
     }
   }

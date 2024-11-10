@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
@@ -29,6 +30,7 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.provider.PersonParameterProvider
 
 @Composable
 fun CreditsItemCard(
@@ -66,33 +68,37 @@ fun CreditsItemCard(
       color = MaterialTheme.colorScheme.onSurface,
     )
 
-    person.role.firstOrNull()?.title?.let { title ->
-      Column {
-        Text(
-          modifier = Modifier
-            .padding(horizontal = MaterialTheme.dimensions.keyline_8)
-            .padding(bottom = MaterialTheme.dimensions.keyline_4),
-          text = title,
-          maxLines = 1,
-          style = MaterialTheme.typography.bodySmall,
-          overflow = TextOverflow.Ellipsis,
-          color = MaterialTheme.colorScheme.onSurface,
-        )
+    person.role.firstOrNull()?.let { role ->
+      role.title?.let { title ->
+        Column {
+          Text(
+            modifier = Modifier
+              .padding(horizontal = MaterialTheme.dimensions.keyline_8)
+              .padding(bottom = MaterialTheme.dimensions.keyline_4),
+            text = title,
+            maxLines = 1,
+            style = MaterialTheme.typography.bodySmall,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onSurface,
+          )
 
-        val episodes = person.role
-          .filterIsInstance<PersonRole.SeriesActor>()
-          .sumOf { it.totalEpisodes ?: 0 }
+          if (role is PersonRole.SeriesActor) {
+            val episodes = person.role
+              .filterIsInstance<PersonRole.SeriesActor>()
+              .sumOf { it.totalEpisodes ?: 0 }
 
-        Text(
-          modifier = Modifier
-            .padding(horizontal = MaterialTheme.dimensions.keyline_8)
-            .padding(bottom = MaterialTheme.dimensions.keyline_4),
-          text = stringResource(R.string.core_ui_episode_count, episodes),
-          maxLines = 1,
-          style = MaterialTheme.typography.bodySmall,
-          overflow = TextOverflow.Ellipsis,
-          color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
-        )
+            Text(
+              modifier = Modifier
+                .padding(horizontal = MaterialTheme.dimensions.keyline_8)
+                .padding(bottom = MaterialTheme.dimensions.keyline_4),
+              text = stringResource(R.string.core_ui_episode_count, episodes),
+              maxLines = 1,
+              style = MaterialTheme.typography.bodySmall,
+              overflow = TextOverflow.Ellipsis,
+              color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.60f),
+            )
+          }
+        }
       }
     }
   }
@@ -100,26 +106,11 @@ fun CreditsItemCard(
 
 @Preview
 @Composable
-private fun CreditsItemCardPreview() {
+fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) person: Person) {
   Surface {
     AppTheme {
       CreditsItemCard(
-        person = Person(
-          id = 94622,
-          name = "Brian Baumgartner",
-          role = listOf(
-            PersonRole.SeriesActor(
-              "Kevin Malone",
-              totalEpisodes = 217,
-            ),
-            PersonRole.SeriesActor(
-              "Self",
-              totalEpisodes = 10,
-            ),
-          ),
-          knownForDepartment = "Acting",
-          profilePath = "/1O7ECkD4mOKAgMAbQADBpTKBzOP.jpg",
-        ),
+        person = person,
         onPersonClick = {},
       )
     }
