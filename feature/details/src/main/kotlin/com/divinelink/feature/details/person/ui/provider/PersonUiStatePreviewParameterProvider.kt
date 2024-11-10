@@ -34,7 +34,7 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
         name = "Steve carell",
         profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
         gender = Gender.MALE,
-        role = PersonRole.Unknown,
+        role = listOf(PersonRole.Unknown),
         knownForDepartment = "Acting",
       ),
       biography = LoremIpsum(50).values.joinToString(),

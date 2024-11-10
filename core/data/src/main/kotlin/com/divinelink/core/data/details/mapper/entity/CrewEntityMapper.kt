@@ -26,10 +26,12 @@ fun CrewEntity.map() = Person(
   profilePath = profilePath,
   knownForDepartment = knownForDepartment,
   gender = Gender.from(gender.toInt()),
-  role = PersonRole.Crew(
-    job = job,
-    creditId = creditId,
-    totalEpisodes = totalEpisodeCount,
-    department = department,
-  ),
+  role = roles.map {
+    PersonRole.Crew(
+      job = it.job,
+      creditId = it.creditId,
+      totalEpisodes = it.episodeCount,
+      department = department,
+    )
+  },
 )

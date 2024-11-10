@@ -9,7 +9,6 @@ import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
-import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,11 +57,7 @@ class PersonViewModel(
                 }
 
                 is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
-                  uiState.copy(
-                    credits = PersonCreditsUiState.Visible(
-                      knownFor = detailsResult.knownForCredits,
-                    ),
-                  )
+                  uiState.copy(credits = detailsResult.knownForCredits)
                 }
 
                 is PersonDetailsResult.DetailsFailure -> _uiState.update { uiState ->

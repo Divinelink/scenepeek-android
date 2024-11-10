@@ -27,31 +27,8 @@ INSERT OR REPLACE INTO seriesCrew(
 )
 VALUES ?;
 
-CREATE VIEW seriesCrewWithJob AS
-SELECT
-  sc.id AS crewId,
-  sc.name AS crewName,
-  sc.originalName AS crewOriginalName,
-  sc.job AS crewJob,
-  sc.profilePath AS crewProfilePath,
-  sc.department AS crewDepartment,
-  sc.totalEpisodeCount AS crewTotalEpisodeCount,
-  sc.knownForDepartment AS crewKnownForDepartment,
-  sc.gender AS crewGender,
-  sc.aggregateCreditId AS aggregateCreditId,
-  scj.creditId AS jobCreditId,
-  scj.job AS jobTitle,
-  scj.episodeCount AS jobEpisodeCount
-FROM
-  seriesCrew sc
-LEFT JOIN
-  seriesCrewJob scj ON sc.id = scj.crewId AND sc.aggregateCreditId = scj.aggregateCreditId;
-
-fetchSeriesCrewWithJobs:
+fetchSeriesCrew:
 SELECT *
-FROM seriesCrewWithJob
+FROM seriesCrew
 WHERE aggregateCreditId = ?
-AND jobTitle IS NOT NULL
-AND jobCreditId IS NOT NULL
-AND jobEpisodeCount > 0
-ORDER BY crewDepartment ASC, crewName ASC;
+ORDER BY department ASC, name ASC;

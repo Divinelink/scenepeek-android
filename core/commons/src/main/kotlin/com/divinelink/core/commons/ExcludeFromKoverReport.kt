@@ -1,4 +1,4 @@
-package com.andreolas.movierama
+package com.divinelink.core.commons
 
 /**
  * Any time we have a function that we want excluded from our JaCoCo coverage report, we can add this

@@ -47,11 +47,12 @@ fun KnownForSection(
         contentPadding = ListPaddingValues,
       ) {
         items(
-          items = list.map { it.mediaItem },
+          items = list,
           key = { it.id },
-        ) { media ->
+        ) { credit ->
           MediaItem(
-            media = media,
+            media = credit.mediaItem,
+            subtitle = credit.role.title,
             onMediaItemClick = onMediaClick,
             onLikeMediaClick = { /* Do nothing */ },
           )

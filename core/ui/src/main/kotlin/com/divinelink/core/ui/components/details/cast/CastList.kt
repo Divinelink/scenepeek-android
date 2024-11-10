@@ -96,9 +96,11 @@ private fun CastListPreview() {
             name = "John Doe",
             profilePath = null,
             knownForDepartment = "Acting",
-            role = PersonRole.SeriesActor(
-              character = "Character Name",
-              totalEpisodes = 10,
+            role = listOf(
+              PersonRole.SeriesActor(
+                character = "Character Name",
+                totalEpisodes = 10,
+              ),
             ),
           ),
           Person(
@@ -106,9 +108,15 @@ private fun CastListPreview() {
             name = "Jane Doe",
             profilePath = "/profile.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.SeriesActor(
-              character = "Character Name",
-              totalEpisodes = 10,
+            role = listOf(
+              PersonRole.SeriesActor(
+                character = "Character Name",
+                totalEpisodes = 10,
+              ),
+              PersonRole.SeriesActor(
+                character = "Character Name 2",
+                totalEpisodes = 5,
+              ),
             ),
           ),
         ),

@@ -16,7 +16,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
-import com.divinelink.feature.details.person.ui.credits.PersonCreditsUiState
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
 
 @Composable
@@ -44,10 +43,10 @@ fun PersonContent(
       PersonalDetails(uiState.personDetails)
     }
 
-    if (uiState.credits is PersonCreditsUiState.Visible && uiState.credits.knownFor.isNotEmpty()) {
+    if (!uiState.credits.isNullOrEmpty()) {
       item {
         KnownForSection(
-          list = uiState.credits.knownFor,
+          list = uiState.credits,
           onMediaClick = onMediaClick,
         )
       }

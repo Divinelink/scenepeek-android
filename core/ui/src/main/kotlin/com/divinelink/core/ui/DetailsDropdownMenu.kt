@@ -79,7 +79,7 @@ private fun DetailsDropdownMenuPreview() {
             name = "Forest Gump",
             profilePath = "BoxOfChocolates.jpg",
             knownForDepartment = "Acting",
-            role = PersonRole.Director,
+            role = listOf(PersonRole.Director),
           ),
           cast = listOf(),
           genres = listOf("Thriller", "Drama", "Comedy"),

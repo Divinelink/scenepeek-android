@@ -10,3 +10,8 @@ CREATE TABLE seriesCastRole(
 insertRole:
 INSERT OR REPLACE INTO seriesCastRole(creditId, character, episodeCount, castId, aggregateCreditId)
 VALUES ?;
+
+fetchRoles:
+SELECT *
+FROM seriesCastRole
+WHERE aggregateCreditId = :aggregateCreditId;

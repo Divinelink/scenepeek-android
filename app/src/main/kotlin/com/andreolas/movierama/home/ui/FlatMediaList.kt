@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andreolas.movierama.ExcludeFromKoverReport
 import com.andreolas.movierama.R
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.textColorDisabled
@@ -86,7 +86,7 @@ fun FlatMediaList(
             profilePath = search.posterPath,
             gender = search.gender,
             knownForDepartment = search.knownForDepartment,
-            role = PersonRole.Unknown,
+            role = listOf(PersonRole.Unknown),
           ),
           onPersonClick = {
             onItemClick(search)

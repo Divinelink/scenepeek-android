@@ -3,7 +3,10 @@ package com.divinelink.core.database.credits.dao
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.credits.cast.SeriesCast
+import com.divinelink.core.database.credits.cast.SeriesCastRole
 import com.divinelink.core.database.credits.crew.SeriesCrew
+import com.divinelink.core.database.credits.crew.SeriesCrewJob
+import com.divinelink.core.database.credits.model.CrewEntity
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.core.commons.ClockFactory
@@ -279,5 +282,156 @@ class ProdCreditsDaoTest {
     val result = dao.fetchAllCastWithRoles(id = AggregateCreditsFactory.theOffice().id).first()
 
     assertThat(result).isEqualTo(listOf((CastEntityFactory.brianBaumgartner())))
+  }
+
+  @Test
+  fun `test fetchCast for actors with multiple roles`() = runTest {
+    dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
+
+    dao.insertCast(SeriesCastFactory.allCast())
+    dao.insertCastRoles(
+      listOf(
+        SeriesCastRoleFactory.kevinMalone(),
+        SeriesCastRole(
+          creditId = "Some Credit Id",
+          character = "Some Character",
+          episodeCount = 3,
+          castId = 94622,
+          aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+        ),
+      ),
+    )
+
+    val result = dao.fetchAllCastWithRoles(id = AggregateCreditsFactory.theOffice().id).first()
+
+    assertThat(result).isEqualTo(
+      listOf(
+        CastEntityFactory.brianBaumgartner().copy(
+          roles = listOf(
+            SeriesCastRoleFactory.kevinMalone(),
+            SeriesCastRole(
+              creditId = "Some Credit Id",
+              character = "Some Character",
+              episodeCount = 3,
+              castId = 94622,
+              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+            ),
+          ),
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `test fetchCrew for crew with multiple roles in the same department`() = runTest {
+    dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
+
+    dao.insertCrew(SeriesCrewFactory.cameraDepartment())
+    dao.insertCrewJobs(
+      listOf(
+        SeriesCrewJobFactory.daleAlexander(),
+        SeriesCrewJob(
+          creditId = "5bdaa7d90e0a",
+          job = "Key Grip 2",
+          episodeCount = 4,
+          crewId = 1879373,
+          department = "Camera",
+          aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+        ),
+      ),
+    )
+
+    val result = dao.fetchAllCrewJobs(AggregateCreditsFactory.theOffice().id).first()
+
+    assertThat(result).isEqualTo(
+      listOf(
+        CrewEntityFactory.daleAlexander().copy(
+          roles = listOf(
+            SeriesCrewJobFactory.daleAlexander(),
+            SeriesCrewJob(
+              creditId = "5bdaa7d90e0a",
+              job = "Key Grip 2",
+              episodeCount = 4,
+              crewId = 1879373,
+              department = "Camera",
+              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+            ),
+          ),
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `test fetchCrew for crew with multiple roles in the different department`() = runTest {
+    dao.insertAggregateCredits(AggregateCreditsFactory.theOffice().id)
+
+    val daleAlexanderProduction = SeriesCrew(
+      id = 1879373,
+      name = "Dale Alexander",
+      originalName = "Dale Alexander",
+      job = "Writer",
+      profilePath = null,
+      totalEpisodeCount = 3,
+      aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+      knownForDepartment = "Camera",
+      gender = 0,
+      department = "Production",
+    )
+
+    val daleAlexanderWritingJob = SeriesCrewJob(
+      creditId = "5bda7d90e0a56bcas",
+      job = "Writer",
+      episodeCount = 3,
+      crewId = 1879373,
+      department = "Production",
+      aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+    )
+
+    dao.insertCrew(SeriesCrewFactory.cameraDepartment() + daleAlexanderProduction)
+    dao.insertCrewJobs(
+      listOf(
+        SeriesCrewJobFactory.daleAlexander(),
+        SeriesCrewJob(
+          creditId = "5bdaa7d90e0a",
+          job = "Key Grip 2",
+          episodeCount = 4,
+          crewId = 1879373,
+          department = "Camera",
+          aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+        ),
+        daleAlexanderWritingJob,
+      ),
+    )
+
+    val result = dao.fetchAllCrewJobs(AggregateCreditsFactory.theOffice().id).first()
+
+    assertThat(result).isEqualTo(
+      listOf(
+        CrewEntityFactory.daleAlexander().copy(
+          roles = listOf(
+            SeriesCrewJobFactory.daleAlexander(),
+            SeriesCrewJob(
+              creditId = "5bdaa7d90e0a",
+              job = "Key Grip 2",
+              episodeCount = 4,
+              crewId = 1879373,
+              department = "Camera",
+              aggregateCreditId = AggregateCreditsFactory.theOffice().id,
+            ),
+          ),
+        ),
+        CrewEntity(
+          id = 1879373,
+          name = "Dale Alexander",
+          originalName = "Dale Alexander",
+          profilePath = null,
+          department = "Production",
+          knownForDepartment = "Camera",
+          gender = 0,
+          roles = listOf(daleAlexanderWritingJob),
+        ),
+      ),
+    )
   }
 }

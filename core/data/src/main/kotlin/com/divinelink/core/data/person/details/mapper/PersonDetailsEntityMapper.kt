@@ -13,7 +13,7 @@ fun PersonEntity.map() = PersonDetails(
     profilePath = profilePath,
     gender = Gender.from(gender.toInt()),
     knownForDepartment = knownForDepartment,
-    role = PersonRole.Unknown,
+    role = listOf(PersonRole.Unknown),
   ),
   biography = biography,
   birthday = birthday,

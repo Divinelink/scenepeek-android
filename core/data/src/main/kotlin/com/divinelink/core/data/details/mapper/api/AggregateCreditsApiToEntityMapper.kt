@@ -21,14 +21,16 @@ fun AggregateCreditsApi.toSeriesCastEntity() = cast.map { cast ->
 
 fun AggregateCreditsApi.toSeriesCastRoleEntity() = cast
   .filter { it.roles.isNotEmpty() }
-  .map { cast ->
-    SeriesCastRole(
-      aggregateCreditId = id,
-      creditId = cast.roles.first().creditId,
-      character = cast.roles.first().character,
-      episodeCount = cast.totalEpisodeCount.toLong(),
-      castId = cast.id,
-    )
+  .flatMap { cast ->
+    cast.roles.map { role ->
+      SeriesCastRole(
+        aggregateCreditId = id,
+        creditId = role.creditId,
+        character = role.character,
+        episodeCount = role.episodeCount.toLong(),
+        castId = cast.id,
+      )
+    }
   }
 
 fun AggregateCreditsApi.toSeriesCrewEntity(): List<SeriesCrew> = crew
@@ -50,12 +52,15 @@ fun AggregateCreditsApi.toSeriesCrewEntity(): List<SeriesCrew> = crew
 
 fun AggregateCreditsApi.toSeriesCrewJobEntity() = crew
   .filter { it.jobs.isNotEmpty() }
-  .map { crew ->
-    SeriesCrewJob(
-      aggregateCreditId = id,
-      job = crew.jobs.first().job,
-      creditId = crew.jobs.first().creditId,
-      episodeCount = crew.totalEpisodeCount,
-      crewId = crew.id,
-    )
+  .flatMap { crew ->
+    crew.jobs.map { role ->
+      SeriesCrewJob(
+        aggregateCreditId = id,
+        creditId = role.creditId,
+        job = role.job,
+        episodeCount = role.episodeCount.toLong(),
+        crewId = crew.id,
+        department = crew.department,
+      )
+    }
   }

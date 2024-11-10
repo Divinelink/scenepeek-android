@@ -26,5 +26,5 @@ fun PersonNavArguments.map() = Person(
   name = name ?: "",
   profilePath = profilePath,
   gender = gender ?: Gender.NOT_SET,
-  role = PersonRole.Unknown,
+  role = listOf(PersonRole.Unknown),
 )

@@ -38,8 +38,8 @@ kover {
               "*androidx*",
               "*.DebugUtil",
 
-              "*PreviewParameterProvider",
               "*Preview",
+              "*ParameterProvider.kt",
 
               "ConnectivityManagerNetworkMonitor.kt"
           )

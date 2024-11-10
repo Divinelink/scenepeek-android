@@ -14,11 +14,13 @@ object PersonFactory {
       profilePath = null,
       knownForDepartment = "Directing",
       gender = Gender.MALE,
-      role = PersonRole.Crew(
-        job = "Director of Photography",
-        creditId = "5bdaa68f92514153f500859f",
-        totalEpisodes = 3,
-        department = "Camera",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Director of Photography",
+          creditId = "5bdaa68f92514153f500859f",
+          totalEpisodes = 3,
+          department = "Camera",
+        ),
       ),
     )
 
@@ -28,11 +30,13 @@ object PersonFactory {
       profilePath = null,
       knownForDepartment = "Camera",
       gender = Gender.NOT_SET,
-      role = PersonRole.Crew(
-        job = "Key Grip",
-        creditId = "5bdaa7d90e0a2603c60086d9",
-        totalEpisodes = 3,
-        department = "Camera",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Key Grip",
+          creditId = "5bdaa7d90e0a2603c60086d9",
+          totalEpisodes = 3,
+          department = "Camera",
+        ),
       ),
     )
 
@@ -42,11 +46,13 @@ object PersonFactory {
       profilePath = null,
       knownForDepartment = "Camera",
       gender = Gender.NOT_SET,
-      role = PersonRole.Crew(
-        job = "Key Grip",
-        creditId = "5bdaa3e40e0a2603b1008d3f",
-        totalEpisodes = 1,
-        department = "Camera",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Key Grip",
+          creditId = "5bdaa3e40e0a2603b1008d3f",
+          totalEpisodes = 1,
+          department = "Camera",
+        ),
       ),
     )
 
@@ -56,11 +62,13 @@ object PersonFactory {
       profilePath = null,
       gender = Gender.MALE,
       knownForDepartment = "Camera",
-      role = PersonRole.Crew(
-        job = "Director of Photography",
-        creditId = "5bdaa2d4c3a368078f007f5c",
-        totalEpisodes = 1,
-        department = "Camera",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Director of Photography",
+          creditId = "5bdaa2d4c3a368078f007f5c",
+          totalEpisodes = 1,
+          department = "Camera",
+        ),
       ),
     )
   }
@@ -73,11 +81,13 @@ object PersonFactory {
       profilePath = null,
       knownForDepartment = "Art",
       gender = Gender.NOT_SET,
-      role = PersonRole.Crew(
-        job = "Set Decoration",
-        creditId = "5bdaa3990e0a2603b40089a6",
-        totalEpisodes = 4,
-        department = "Art",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Set Decoration",
+          creditId = "5bdaa3990e0a2603b40089a6",
+          totalEpisodes = 4,
+          department = "Art",
+        ),
       ),
     )
 
@@ -87,11 +97,13 @@ object PersonFactory {
       profilePath = null,
       knownForDepartment = "Art",
       gender = Gender.MALE,
-      role = PersonRole.Crew(
-        job = "Property Master",
-        creditId = "5bdaa766c3a36807820082a8",
-        totalEpisodes = 3,
-        department = "Art",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Property Master",
+          creditId = "5bdaa766c3a36807820082a8",
+          totalEpisodes = 3,
+          department = "Art",
+        ),
       ),
     )
 
@@ -100,11 +112,13 @@ object PersonFactory {
       name = "Donald Lee Harris",
       profilePath = null,
       knownForDepartment = "Art",
-      role = PersonRole.Crew(
-        job = "Production Design",
-        creditId = "5bdaafa2c3a368078b008d77",
-        totalEpisodes = 1,
-        department = "Art",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Production Design",
+          creditId = "5bdaafa2c3a368078b008d77",
+          totalEpisodes = 1,
+          department = "Art",
+        ),
       ),
     )
 
@@ -113,11 +127,13 @@ object PersonFactory {
       name = "Melody Melton",
       profilePath = null,
       knownForDepartment = "Art",
-      role = PersonRole.Crew(
-        job = "Property Master",
-        creditId = "5bdaa3a29251415407007e49",
-        totalEpisodes = 1,
-        department = "Art",
+      role = listOf(
+        PersonRole.Crew(
+          job = "Property Master",
+          creditId = "5bdaa3a29251415407007e49",
+          totalEpisodes = 1,
+          department = "Art",
+        ),
       ),
     )
   }

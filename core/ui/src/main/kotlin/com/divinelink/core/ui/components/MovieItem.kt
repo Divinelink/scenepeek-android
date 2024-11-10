@@ -39,6 +39,7 @@ const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
 fun MediaItem(
   modifier: Modifier = Modifier,
   media: MediaItem.Media,
+  subtitle: String? = null,
   onMediaItemClick: (MediaItem.Media) -> Unit,
   onLikeMediaClick: () -> Unit,
 ) {
@@ -91,16 +92,34 @@ fun MediaItem(
         .offset(y = offset)
         .height(MaterialTheme.dimensions.keyline_58),
       text = media.name,
+      maxLines = 3,
       overflow = TextOverflow.Ellipsis,
       style = MaterialTheme.typography.titleSmall,
       color = MaterialTheme.colorScheme.onSurface,
     )
 
+    subtitle?.let {
+      Text(
+        modifier = Modifier
+          .fillMaxWidth()
+          .offset(y = offset)
+          .padding(top = MaterialTheme.dimensions.keyline_4)
+          .padding(horizontal = MaterialTheme.dimensions.keyline_8),
+        text = subtitle,
+        maxLines = 1,
+        style = MaterialTheme.typography.bodySmall,
+        overflow = TextOverflow.Ellipsis,
+        color = MaterialTheme.colorScheme.onSurface,
+      )
+    }
+
     Text(
       modifier = Modifier
         .offset(y = offset)
-        .padding(horizontal = MaterialTheme.dimensions.keyline_8)
-        .padding(vertical = MaterialTheme.dimensions.keyline_4),
+        .padding(
+          vertical = MaterialTheme.dimensions.keyline_4,
+          horizontal = MaterialTheme.dimensions.keyline_8,
+        ),
       text = media.releaseDate,
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
@@ -157,6 +176,7 @@ fun MovieItemPreview() {
           isFavorite = null,
           overview = "",
         ),
+        subtitle = "Matthew Walkers",
         onMediaItemClick = {},
         onLikeMediaClick = {},
       )

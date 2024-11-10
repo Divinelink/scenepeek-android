@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Watchlist/root Navigation Graph</title>
+    <title>Details/root Navigation Graph</title>
 </head>
 <body>
 <pre id='scene' class="mermaid">
 ---
-title: Watchlist/root Navigation Graph
+title: Details/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-watchlist/root(["RootGraph"]) -- "start" --- watchlist/watchlist(["WatchlistGraph"])
-watchlist/watchlist(["WatchlistGraph"]) -- "start" --- watchlist/watchlist_screen("WatchlistScreen")
+details/root(["RootGraph"]) -- "start" --- details/media_details(["MediaDetailsGraph"])
+details/root(["RootGraph"]) --- details/person(["PersonGraph"])
+details/media_details(["MediaDetailsGraph"]) -- "start" --- details/details_screen("DetailsScreen")
+details/person(["PersonGraph"]) -- "start" --- details/person_screen("PersonScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class watchlist/watchlist_screen destination;
+class details/details_screen,details/person_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class watchlist/watchlist,watchlist/root,watchlist/watchlist navgraph;
+class details/media_details,details/person,details/root,details/media_details,details/person navgraph;
 
 </pre>
 <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>

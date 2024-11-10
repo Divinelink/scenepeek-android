@@ -66,7 +66,7 @@ private fun PersonDropdownMenuPreview() {
           name = "Steve Carell",
           profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
           gender = Gender.MALE,
-          role = PersonRole.Unknown,
+          role = listOf(PersonRole.Unknown),
           knownForDepartment = "Acting",
         ),
         expanded = true,

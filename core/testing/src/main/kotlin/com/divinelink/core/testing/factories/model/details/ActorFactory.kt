@@ -10,9 +10,11 @@ object ActorFactory {
     name = "Jack Nicholson",
     profilePath = "jack_nicholson.jpg",
     knownForDepartment = "Acting",
-    role = PersonRole.MovieActor(
-      character = "Here's Johnny!",
-      order = 0,
+    role = listOf(
+      PersonRole.MovieActor(
+        character = "Here's Johnny!",
+        order = 0,
+      ),
     ),
   )
 
@@ -21,9 +23,11 @@ object ActorFactory {
     name = "Aaron Paul",
     profilePath = "Aaron_paul.jpg",
     knownForDepartment = "Acting",
-    role = PersonRole.MovieActor(
-      character = "Jessee Pinkman",
-      order = 1,
+    role = listOf(
+      PersonRole.MovieActor(
+        character = "Jessee Pinkman",
+        order = 1,
+      ),
     ),
   )
 
