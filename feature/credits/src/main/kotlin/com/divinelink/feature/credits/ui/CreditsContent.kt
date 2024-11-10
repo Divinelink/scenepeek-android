@@ -23,15 +23,16 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
-import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.feature.credits.provider.CreditsUiStateParameterProvider
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,7 +42,7 @@ fun CreditsContent(
   onTabSelected: (Int) -> Unit,
   onPersonSelected: (Person) -> Unit,
 ) {
-  var selectedPage by rememberSaveable { mutableIntStateOf(0) }
+  var selectedPage by rememberSaveable { mutableIntStateOf(state.selectedTabIndex) }
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -139,82 +140,13 @@ fun CreditsContent(
 
 @Previews
 @Composable
-private fun CreditsContentPreview() {
+fun CreditsContentPreview(
+  @PreviewParameter(CreditsUiStateParameterProvider::class) uiState: CreditsUiState,
+) {
   AppTheme {
     Surface {
       CreditsContent(
-        state = CreditsUiState(
-          selectedTabIndex = 0,
-          tabs = listOf(
-            CreditsTab.Cast(2),
-            CreditsTab.Crew(1),
-          ),
-          forms = mapOf(
-            CreditsTab.Cast(2) to CreditsUiContent.Cast(
-              cast = listOf(
-                Person(
-                  id = 1,
-                  name = "Person 1",
-                  profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
-                  knownForDepartment = "Acting",
-                  role = listOf(
-                    PersonRole.SeriesActor(
-                      character = "Character 1",
-                    ),
-                    PersonRole.SeriesActor(
-                      character = "Character 2",
-                    ),
-                  ),
-                ),
-                Person(
-                  id = 2,
-                  name = "Person 2",
-                  profilePath = "https://image.tmdb.org/t/p/w185/2.jpg",
-                  knownForDepartment = "Acting",
-                  role = listOf(
-                    PersonRole.SeriesActor(
-                      character = "Character 2",
-                      totalEpisodes = 10,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            CreditsTab.Crew(1) to CreditsUiContent.Crew(
-              crew = listOf(
-                SeriesCrewDepartment(
-                  department = "Department 1",
-                  crewList = listOf(
-                    Person(
-                      id = 3,
-                      name = "Person 3",
-                      profilePath = "https://image.tmdb.org/t/p/w185/3.jpg",
-                      knownForDepartment = "Directing",
-                      role = listOf(
-                        PersonRole.Crew(
-                          job = "Job 3",
-                          creditId = "Credit 3",
-                        ),
-                      ),
-                    ),
-                    Person(
-                      id = 4,
-                      name = "Person 4",
-                      profilePath = "https://image.tmdb.org/t/p/w185/4.jpg",
-                      knownForDepartment = "Directing",
-                      role = listOf(
-                        PersonRole.Crew(
-                          job = "Job 4",
-                          creditId = "Credit 4",
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        state = uiState,
         onTabSelected = { },
         onPersonSelected = { },
       )

@@ -30,12 +30,8 @@ internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*,
       add("implementation", libs.findLibrary("compose-shimmer").get())
     }
 
-    testOptions {
-      unitTests {
-        // For Robolectric
-        isIncludeAndroidResources = true
-      }
-    }
+    testOptions.unitTests.isIncludeAndroidResources = true
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
   }
 
   extensions.configure<ComposeCompilerGradlePluginExtension> {

@@ -11,6 +11,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
         apply("com.android.library")
         apply("org.jetbrains.kotlinx.kover")
         apply("org.jetbrains.kotlin.plugin.compose")
+        apply("com.android.compose.screenshot")
       }
 
       val extension = extensions.getByType<LibraryExtension>()
