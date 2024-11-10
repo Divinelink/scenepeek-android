@@ -10,6 +10,7 @@ object SeriesCrewJobFactory {
     job = "Key Grip",
     episodeCount = 3,
     crewId = 1879373,
+    department = "Camera",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 
@@ -18,6 +19,7 @@ object SeriesCrewJobFactory {
     job = "Director of Photography",
     episodeCount = 3,
     crewId = 1215572,
+    department = "Camera",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 
@@ -26,6 +28,7 @@ object SeriesCrewJobFactory {
     job = "Key Grip",
     episodeCount = 1,
     crewId = 2166021,
+    department = "Camera",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 
@@ -34,6 +37,7 @@ object SeriesCrewJobFactory {
     job = "Director of Photography",
     episodeCount = 1,
     crewId = 67864,
+    department = "Camera",
     aggregateCreditId = AggregateCreditsFactory.theOffice().id,
   )
 

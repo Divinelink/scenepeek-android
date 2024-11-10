@@ -30,4 +30,5 @@ VALUES ?;
 fetchSeriesCrew:
 SELECT *
 FROM seriesCrew
-WHERE aggregateCreditId = ?;
+WHERE aggregateCreditId = ?
+ORDER BY department ASC, name ASC;

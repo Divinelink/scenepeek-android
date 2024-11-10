@@ -91,10 +91,12 @@ class ProdCreditsDao(
         .asFlow()
         .mapToList(dispatcher.io)
         .map { listOfCast ->
-          listOfCast.map { cast ->
-            val roles = rolesByCastId[cast.id] ?: emptyList()
-            cast.toEntity(roles = roles)
-          }
+          listOfCast
+            .map { cast ->
+              val roles = rolesByCastId[cast.id] ?: emptyList()
+              cast.toEntity(roles = roles)
+            }
+            .filter { it.roles.isNotEmpty() }
         }
     }
 
@@ -123,10 +125,12 @@ class ProdCreditsDao(
         .asFlow()
         .mapToList(dispatcher.io)
         .map { listOfCrew ->
-          listOfCrew.map { crew ->
-            val jobs = crewJobs[Pair(crew.id, crew.department)] ?: emptyList()
-            crew.toEntity(roles = jobs)
-          }
+          listOfCrew
+            .map { crew ->
+              val jobs = crewJobs[Pair(crew.id, crew.department)] ?: emptyList()
+              crew.toEntity(roles = jobs)
+            }
+            .filter { it.roles.isNotEmpty() }
         }
     }
 }

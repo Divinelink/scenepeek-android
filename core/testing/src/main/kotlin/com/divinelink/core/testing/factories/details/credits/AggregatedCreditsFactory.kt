@@ -48,10 +48,12 @@ object SeriesCastFactory {
   fun brianBaumgartner() = Person(
     id = 94622,
     name = "Brian Baumgartner",
-    role = PersonRole.SeriesActor(
-      character = "Kevin Malone",
-      totalEpisodes = 217,
-      creditId = "525730a9760ee3776a3447f1",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Kevin Malone",
+        totalEpisodes = 217,
+        creditId = "525730a9760ee3776a3447f1",
+      ),
     ),
     gender = Gender.MALE,
     knownForDepartment = "Acting",
@@ -61,10 +63,12 @@ object SeriesCastFactory {
   fun angelaKinsey() = Person(
     id = 113867,
     name = "Angela Kinsey",
-    role = PersonRole.SeriesActor(
-      character = "Angela Martin",
-      totalEpisodes = 210,
-      creditId = "525730ab760ee3776a344a0b",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Angela Martin",
+        totalEpisodes = 210,
+        creditId = "525730ab760ee3776a344a0b",
+      ),
     ),
     gender = Gender.FEMALE,
     knownForDepartment = "Acting",
@@ -74,10 +78,12 @@ object SeriesCastFactory {
   fun oscarNunez() = Person(
     id = 76094,
     name = "Óscar Núñez",
-    role = PersonRole.SeriesActor(
-      character = "Óscar Martínez",
-      totalEpisodes = 203,
-      creditId = "525730ab760ee3776a3449d5",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Óscar Martínez",
+        totalEpisodes = 203,
+        creditId = "525730ab760ee3776a3449d5",
+      ),
     ),
     gender = Gender.MALE,
     knownForDepartment = "Acting",
@@ -87,10 +93,12 @@ object SeriesCastFactory {
   fun kateFlannery() = Person(
     id = 304282,
     name = "Kate Flannery",
-    role = PersonRole.SeriesActor(
-      character = "Meredith Palmer",
-      totalEpisodes = 202,
-      creditId = "525730ac760ee3776a344bfb",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Meredith Palmer",
+        totalEpisodes = 202,
+        creditId = "525730ac760ee3776a344bfb",
+      ),
     ),
     gender = Gender.FEMALE,
     knownForDepartment = "Acting",
@@ -100,10 +108,12 @@ object SeriesCastFactory {
   fun creedBratton() = Person(
     id = 85177,
     name = "Creed Bratton",
-    role = PersonRole.SeriesActor(
-      character = "Creed Bratton",
-      totalEpisodes = 194,
-      creditId = "525730ac760ee3776a344bc5",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Creed Bratton",
+        totalEpisodes = 194,
+        creditId = "525730ac760ee3776a344bc5",
+      ),
     ),
     gender = Gender.MALE,
     knownForDepartment = "Acting",
@@ -113,10 +123,12 @@ object SeriesCastFactory {
   fun leslieDavidBaker() = Person(
     id = 1230842,
     name = "Leslie David Baker",
-    role = PersonRole.SeriesActor(
-      character = "Stanley Hudson",
-      totalEpisodes = 193,
-      creditId = "525730ab760ee3776a344a87",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Stanley Hudson",
+        totalEpisodes = 193,
+        creditId = "525730ab760ee3776a344a87",
+      ),
     ),
     gender = Gender.MALE,
     knownForDepartment = "Acting",
@@ -126,10 +138,12 @@ object SeriesCastFactory {
   fun phyllisSmith() = Person(
     id = 169200,
     name = "Phyllis Smith",
-    role = PersonRole.SeriesActor(
-      character = "Phyllis Lapin",
-      totalEpisodes = 190,
-      creditId = "525730ab760ee3776a344b03",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Phyllis Lapin",
+        totalEpisodes = 190,
+        creditId = "525730ab760ee3776a344b03",
+      ),
     ),
     gender = Gender.FEMALE,
     knownForDepartment = "Acting",
@@ -139,10 +153,12 @@ object SeriesCastFactory {
   fun rainnWilson() = Person(
     id = 11678,
     name = "Rainn Wilson",
-    role = PersonRole.SeriesActor(
-      character = "Dwight Schrute",
-      totalEpisodes = 188,
-      creditId = "525730a9760ee3776a34474f",
+    role = listOf(
+      PersonRole.SeriesActor(
+        character = "Dwight Schrute",
+        totalEpisodes = 188,
+        creditId = "525730a9760ee3776a34474f",
+      ),
     ),
     gender = Gender.MALE,
     knownForDepartment = "Acting",
@@ -206,11 +222,13 @@ object SeriesCrewListFactory {
         name = "Elinor Bardach",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
-        role = PersonRole.Crew(
-          job = "Costume Supervisor",
-          creditId = "5bdaa36e92514153fb008795",
-          totalEpisodes = 4,
-          department = "Costume & Make-Up",
+        role = listOf(
+          PersonRole.Crew(
+            job = "Costume Supervisor",
+            creditId = "5bdaa36e92514153fb008795",
+            totalEpisodes = 4,
+            department = "Costume & Make-Up",
+          ),
         ),
       ),
       Person(
@@ -218,11 +236,13 @@ object SeriesCrewListFactory {
         name = "Carey Bennett",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
-        role = PersonRole.Crew(
-          job = "Costume Designer",
-          creditId = "5bdaa3650e0a2603bf008174",
-          totalEpisodes = 4,
-          department = "Costume & Make-Up",
+        role = listOf(
+          PersonRole.Crew(
+            job = "Costume Designer",
+            creditId = "5bdaa3650e0a2603bf008174",
+            totalEpisodes = 4,
+            department = "Costume & Make-Up",
+          ),
         ),
       ),
       Person(
@@ -230,11 +250,13 @@ object SeriesCrewListFactory {
         name = "Cyndra Dunn",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
-        role = PersonRole.Crew(
-          job = "Key Hair Stylist",
-          creditId = "5bdaa74d0e0a2603b4008cbf",
-          totalEpisodes = 3,
-          department = "Costume & Make-Up",
+        role = listOf(
+          PersonRole.Crew(
+            job = "Key Hair Stylist",
+            creditId = "5bdaa74d0e0a2603b4008cbf",
+            totalEpisodes = 3,
+            department = "Costume & Make-Up",
+          ),
         ),
       ),
       Person(
@@ -242,11 +264,13 @@ object SeriesCrewListFactory {
         name = "Maria Valdivia",
         profilePath = null,
         knownForDepartment = "Costume & Make-Up",
-        role = PersonRole.Crew(
-          job = "Key Hair Stylist",
-          creditId = "5bdaa38cc3a3680772009017",
-          totalEpisodes = 1,
-          department = "Costume & Make-Up",
+        role = listOf(
+          PersonRole.Crew(
+            job = "Key Hair Stylist",
+            creditId = "5bdaa38cc3a3680772009017",
+            totalEpisodes = 1,
+            department = "Costume & Make-Up",
+          ),
         ),
       ),
     ),

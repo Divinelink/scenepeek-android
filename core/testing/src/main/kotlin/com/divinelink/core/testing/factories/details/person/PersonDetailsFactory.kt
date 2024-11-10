@@ -16,7 +16,7 @@ object PersonDetailsFactory {
       profilePath = "/dzJtsLspH5Bf8Tvw7OQC47ETNfJ.jpg",
       gender = Gender.MALE,
       knownForDepartment = "Acting",
-      role = PersonRole.Unknown,
+      role = listOf(PersonRole.Unknown),
     ),
     biography = BIOGRAPHY,
     birthday = "1962-08-16",
