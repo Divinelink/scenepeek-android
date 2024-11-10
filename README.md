@@ -1,9 +1,9 @@
-[![codecov](https://codecov.io/gh/Divinelink/movierama-android/graph/badge.svg?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/movierama-android)
-<img src="https://github.com/Divinelink/movierama-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
+[![codecov](https://codecov.io/gh/Divinelink/scenepeek-android/graph/badge.svg?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/scenepeek-android)
+<img src="https://github.com/Divinelink/scenepeek-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
 
-# MovieRama
+# ScenePeek
 
-MovieRama is an android application, built
+ScenePeek is an android application, built
 with [Jetpack Compose](https://developer.android.com/compose). The application provides
 information about movies &amp; television shows and other forms of entertainment. It includes
 information such as cast and crew, plot summaries, user reviews, ratings, and more.

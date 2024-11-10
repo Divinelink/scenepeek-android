@@ -20,10 +20,10 @@ apply("../buildscripts/kover.gradle")
 apply("../buildscripts/coveralls.gradle")
 
 android {
-  namespace = "com.andreolas.movierama"
+  namespace = "com.divinelink.scenepeek"
 
   defaultConfig {
-    applicationId = "com.andreolas.movierama"
+    applicationId = "com.divinelink.scenepeek"
     versionCode = libs.versions.version.code.get().toInt()
     versionName = libs.versions.version.name.get()
 

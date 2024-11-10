@@ -1,10 +1,10 @@
 # App Architecture
 
-MovieRama follows a MVVM architecture pattern throughout the project. Below is the architecture diagram for the Login Screen, though every screen in the app should follow the same organization.  
+ScenePeek follows a MVVM architecture pattern throughout the project. Below is the architecture diagram for the Login Screen, though every screen in the app should follow the same organization.  
 
 For the most up to date diagram, check [Miro](https://miro.com/app/board/uXjVPtAQGyM=/).
 
-![Architecture Diagram](assets/MovieRamaFlows.png)
+![Architecture Diagram](assets/ScenePeekFlows.png)
 
 This document is intended to clarify each of the components in the above image and their responsibilities. 
 

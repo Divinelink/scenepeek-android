@@ -26,7 +26,7 @@ class LinkHandlingSettingsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText("Link handling").assertIsDisplayed()
-      onNodeWithText("Allow DebugRama to handle specific URLs?").assertIsDisplayed()
+      onNodeWithText("Allow DebugPeek to handle specific URLs?").assertIsDisplayed()
 
       onNodeWithTag(TestTags.Settings.LinkHandling.DIRECTIONS_TEXT).performScrollTo()
         .assertIsDisplayed()

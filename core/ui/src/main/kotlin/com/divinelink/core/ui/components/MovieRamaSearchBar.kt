@@ -61,7 +61,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieRamaSearchBar(
+fun ScenePeekSearchBar(
   modifier: Modifier = Modifier,
   query: String? = null,
   onClearClicked: () -> Unit,
@@ -289,7 +289,7 @@ enum class ToolbarState {
 private fun SearchBarPreview() {
   AppTheme {
     Surface {
-      MovieRamaSearchBar(
+      ScenePeekSearchBar(
         actions = {},
         onClearClicked = {},
         onSearchFieldChanged = {},
@@ -303,7 +303,7 @@ private fun SearchBarPreview() {
 private fun FocusedSearchBarPreview() {
   AppTheme {
     Surface {
-      MovieRamaSearchBar(
+      ScenePeekSearchBar(
         state = ToolbarState.Focused,
         actions = {},
         onClearClicked = {},
@@ -319,7 +319,7 @@ private fun FocusedSearchBarPreview() {
 private fun FilledSearchBarPreview() {
   AppTheme {
     Surface {
-      MovieRamaSearchBar(
+      ScenePeekSearchBar(
         state = ToolbarState.Focused,
         query = "Flight Club",
         actions = {
