@@ -50,7 +50,6 @@ kover {
           )
         }
         includes {
-          packages("com.andreolas")
           packages("com.divinelink")
         }
       }
