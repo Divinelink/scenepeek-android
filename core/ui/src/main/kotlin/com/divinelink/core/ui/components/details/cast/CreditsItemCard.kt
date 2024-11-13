@@ -1,6 +1,8 @@
 package com.divinelink.core.ui.components.details.cast
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +32,8 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.blurEffect
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.provider.PersonParameterProvider
 
 @Composable
@@ -37,6 +41,7 @@ fun CreditsItemCard(
   modifier: Modifier = Modifier,
   person: Person,
   onPersonClick: (Person) -> Unit,
+  isObfuscated: Boolean = false,
 ) {
   Card(
     shape = PopularMovieItemShape,
@@ -90,7 +95,11 @@ fun CreditsItemCard(
             Text(
               modifier = Modifier
                 .padding(horizontal = MaterialTheme.dimensions.keyline_8)
-                .padding(bottom = MaterialTheme.dimensions.keyline_4),
+                .padding(bottom = MaterialTheme.dimensions.keyline_4)
+                .conditional(
+                  condition = isObfuscated,
+                  ifTrue = { blurEffect() },
+                ),
               text = stringResource(R.string.core_ui_episode_count, episodes),
               maxLines = 1,
               style = MaterialTheme.typography.bodySmall,
@@ -109,10 +118,19 @@ fun CreditsItemCard(
 fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) person: Person) {
   Surface {
     AppTheme {
-      CreditsItemCard(
-        person = person,
-        onPersonClick = {},
-      )
+      Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+        CreditsItemCard(
+          person = person,
+          onPersonClick = {},
+          isObfuscated = false,
+        )
+
+        CreditsItemCard(
+          person = person,
+          onPersonClick = {},
+          isObfuscated = true,
+        )
+      }
     }
   }
 }
