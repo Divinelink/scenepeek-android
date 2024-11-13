@@ -2,6 +2,9 @@ package com.divinelink.feature.credits.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.FlowRowOverflow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,9 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -28,6 +28,8 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.blurEffect
+import com.divinelink.core.ui.conditional
 import com.divinelink.feature.credits.R
 import com.divinelink.core.ui.R as uiR
 
@@ -36,6 +38,7 @@ fun PersonItem(
   modifier: Modifier = Modifier,
   person: Person,
   onClick: (Person) -> Unit,
+  isObfuscated: Boolean,
 ) {
   Card(
     modifier = modifier,
@@ -73,22 +76,12 @@ fun PersonItem(
           is PersonRole.Crew -> Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
-            val jobText = buildPersonSubHeader(person.role)
-
-            Text(
-              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-              text = jobText,
-            )
+            BuildPersonSubHeader(roles = person.role, isObfuscated = isObfuscated)
           }
           is PersonRole.SeriesActor -> Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
-            val characterText = buildPersonSubHeader(person.role)
-
-            Text(
-              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
-              text = characterText,
-            )
+            BuildPersonSubHeader(roles = person.role, isObfuscated = isObfuscated)
           }
           is PersonRole.MovieActor,
           PersonRole.Unknown,
@@ -108,77 +101,132 @@ fun PersonItem(
  * @param roles The role and total episodes.
  * Can be a character if the person is an actor or a job if the person is a crew member.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun buildPersonSubHeader(roles: List<PersonRole>): AnnotatedString = buildAnnotatedString {
-  val baseStyle = MaterialTheme.typography.labelMedium.toSpanStyle()
-  val episodeStyle = baseStyle.copy(
-    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
-  )
+private fun BuildPersonSubHeader(
+  roles: List<PersonRole>,
+  isObfuscated: Boolean,
+) {
+  FlowRow(
+    modifier = Modifier.fillMaxWidth(),
+    overflow = FlowRowOverflow.Visible,
+  ) {
+    roles.forEachIndexed { index, role ->
+      val isLastRole = index == roles.lastIndex
 
-  roles.forEachIndexed { index, role ->
-    val isLastRole = index == roles.lastIndex
-
-    withStyle(baseStyle) {
-      append(
-        when (role) {
-          is PersonRole.SeriesActor -> role.character.ifBlank { "—" }
-          is PersonRole.Crew -> if (role.job.isNullOrBlank()) "—" else role.job
-          else -> ""
-        },
-      )
-    }
-    // Append episode count if available
-    when (role) {
-      is PersonRole.SeriesActor -> role.totalEpisodes
-      is PersonRole.Crew -> role.totalEpisodes
-      else -> null
-    }?.let { episodes ->
-      append(" ")
-      withStyle(episodeStyle) {
-        append(
-          stringResource(
-            R.string.feature_credits_character_total_episodes,
-            episodes,
-          ),
-        )
+      val name = when (role) {
+        is PersonRole.SeriesActor -> role.character
+        is PersonRole.Crew -> role.job
+        else -> ""
       }
-    }
 
-    // Add separator if not the last item
-    if (!isLastRole) {
-      append(", ")
+      CharacterWithBlurredEpisodes(
+        characterName = name ?: "—",
+        episodes = when (role) {
+          is PersonRole.SeriesActor -> role.totalEpisodes ?: 0
+          is PersonRole.Crew -> role.totalEpisodes?.toInt() ?: 0
+          else -> 0
+        },
+        isObfuscated = isObfuscated,
+      )
+
+      if (!isLastRole) {
+        Text(text = ", ", style = MaterialTheme.typography.labelMedium)
+      }
     }
   }
 }
 
+@Composable
+fun CharacterWithBlurredEpisodes(
+  characterName: String,
+  episodes: Int,
+  isObfuscated: Boolean,
+) {
+  val baseStyle = MaterialTheme.typography.labelMedium
+  val episodeStyle = baseStyle.copy(
+    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+  )
+
+  Text(
+    text = characterName,
+    style = baseStyle,
+  )
+
+  Text(
+    text = " ",
+    style = baseStyle,
+  )
+
+  Text(
+    text = stringResource(
+      R.string.feature_credits_character_total_episodes,
+      episodes,
+    ),
+    style = episodeStyle,
+    modifier = Modifier.conditional(
+      condition = isObfuscated,
+      ifTrue = { blurEffect() },
+    ),
+  )
+}
+
 @Previews
 @Composable
-private fun PersonItemPreview() {
+fun PersonItemPreview() {
   AppTheme {
     Surface {
-      PersonItem(
-        person = Person(
-          id = 1,
-          name = "Person 1",
-          profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
-          knownForDepartment = "Acting",
-          role = listOf(
-            PersonRole.SeriesActor(
-              character = "Character 1",
-              totalEpisodes = 10,
-            ),
-            PersonRole.SeriesActor(
-              character = "Character 2",
-              totalEpisodes = 5,
-            ),
-            PersonRole.SeriesActor(
-              character = "Character 3",
-              totalEpisodes = 5,
+      Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+        PersonItem(
+          person = Person(
+            id = 1,
+            name = "Person 1",
+            profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
+            knownForDepartment = "Acting",
+            role = listOf(
+              PersonRole.SeriesActor(
+                character = "Character 1",
+                totalEpisodes = 10,
+              ),
+              PersonRole.SeriesActor(
+                character = "Character 2",
+                totalEpisodes = 5,
+              ),
+              PersonRole.SeriesActor(
+                character = "Character 3",
+                totalEpisodes = 5,
+              ),
             ),
           ),
-        ),
-        onClick = {},
-      )
+          onClick = {},
+          isObfuscated = false,
+        )
+
+        PersonItem(
+          person = Person(
+            id = 1,
+            name = "Person 1",
+            profilePath = "https://image.tmdb.org/t/p/w185/1.jpg",
+            knownForDepartment = "Acting",
+            role = listOf(
+              PersonRole.SeriesActor(
+                character = "Character 1",
+                totalEpisodes = 10,
+              ),
+              PersonRole.SeriesActor(
+                character = "Character 2",
+                totalEpisodes = 5,
+              ),
+              PersonRole.SeriesActor(
+                character = "Character 3",
+                totalEpisodes = 5,
+              ),
+            ),
+          ),
+          onClick = {},
+          isObfuscated = true,
+        )
+      }
     }
   }
 }
