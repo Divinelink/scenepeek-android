@@ -15,10 +15,12 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.designsystem.theme.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
 
 interface PreferenceStorage {
@@ -37,6 +39,9 @@ interface PreferenceStorage {
 
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
+
+  suspend fun setSeriesEpisodeObfuscation(isEnabled: Boolean)
+  val isSeriesEpisodeObfuscationEnabled: Flow<Boolean>
 
   suspend fun clearToken()
   suspend fun setToken(token: String)
@@ -70,6 +75,10 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
     val PREF_MATERIAL_YOU = booleanPreferencesKey("settings.material.you")
     val PREF_BLACK_BACKGROUNDS = booleanPreferencesKey("settings.black.backgrounds")
+
+    val PREF_SERIES_TOTAL_EPISODES_OBFUSCATION = booleanPreferencesKey(
+      "settings.series.episode.obfuscation",
+    )
 
     val PREF_ACCOUNT_ID = stringPreferencesKey("account.id")
 
@@ -120,6 +129,16 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val encryptedPreferences = dataStore.data.map { preferences ->
     preferences[PREF_ENCRYPTED_SHARED_PREFS]
+  }
+
+  override suspend fun setSeriesEpisodeObfuscation(isEnabled: Boolean) {
+    dataStore.edit {
+      it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] = isEnabled
+    }
+  }
+
+  override val isSeriesEpisodeObfuscationEnabled = dataStore.data.mapLatest {
+    it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
   }
 
   override suspend fun clearToken() {

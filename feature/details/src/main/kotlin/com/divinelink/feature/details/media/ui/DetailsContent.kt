@@ -76,6 +76,7 @@ import com.divinelink.core.ui.RatingSize
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.ObfuscateTotalEpisodesButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.components.details.SpannableRating
 import com.divinelink.core.ui.components.details.cast.CastList
@@ -183,6 +184,12 @@ fun DetailsContent(
           }
         },
         actions = {
+          if (viewState.mediaDetails is TV) {
+            ObfuscateTotalEpisodesButton(
+              episodesObfuscated = viewState.seriesCreditsEpisodesObfuscated,
+              onClick = {},
+            )
+          }
           FavoriteButton(
             modifier = Modifier.clip(MaterialTheme.shape.roundedShape),
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,

@@ -69,4 +69,6 @@
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
+  <string name="core_ui_hidden_total_episodes_button">Total episodes are hidden</string>
+  <string name="core_ui_visible_total_episodes_button">Total episodes are visible</string>
 </resources>

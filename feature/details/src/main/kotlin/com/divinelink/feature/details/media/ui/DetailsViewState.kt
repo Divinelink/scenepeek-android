@@ -30,6 +30,7 @@ data class DetailsViewState(
   val navigateToLogin: Boolean? = null,
   val menuOptions: List<DetailsMenuOptions> = emptyList(),
   val actionButtons: List<DetailActionItem> = emptyList(),
+  val seriesCreditsEpisodesObfuscated: Boolean = false,
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(

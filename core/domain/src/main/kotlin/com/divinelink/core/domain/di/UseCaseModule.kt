@@ -3,11 +3,12 @@ package com.divinelink.core.domain.di
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
-import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
+import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.HandleAuthenticationRequestUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
+import com.divinelink.core.domain.credits.EpisodesObfuscationUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
@@ -47,4 +48,6 @@ val useCaseModule = module {
   factoryOf(::GetDetailsActionItemsUseCase)
   factoryOf(::HandleAuthenticationRequestUseCase)
   factoryOf(::MarkAsFavoriteUseCase)
+
+  factoryOf(::EpisodesObfuscationUseCase)
 }
