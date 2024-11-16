@@ -20,14 +20,17 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.shareUrl
+import com.divinelink.core.ui.components.dropdownmenu.ObfuscateSpoilersMenuItem
 import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
 
 @Composable
 fun DetailsDropdownMenu(
   mediaDetails: MediaDetails,
+  spoilersObfuscated: Boolean,
   options: List<DetailsMenuOptions>,
   expanded: Boolean,
   onDismissDropdown: () -> Unit,
+  onObfuscateClick: () -> Unit,
 ) {
   var showShareDialog by remember { mutableStateOf(false) }
 
@@ -54,6 +57,10 @@ fun DetailsDropdownMenu(
             onDismissDropdown()
             showShareDialog = true
           },
+        )
+        DetailsMenuOptions.OBFUSCATE_SPOILERS -> ObfuscateSpoilersMenuItem(
+          obfuscated = spoilersObfuscated,
+          onClick = onObfuscateClick,
         )
       }
     }
@@ -85,9 +92,11 @@ private fun DetailsDropdownMenuPreview() {
           genres = listOf("Thriller", "Drama", "Comedy"),
           runtime = "2h 10m",
         ),
+        spoilersObfuscated = false,
         expanded = true,
         options = DetailsMenuOptions.entries,
         onDismissDropdown = {},
+        onObfuscateClick = {},
       )
     }
   }

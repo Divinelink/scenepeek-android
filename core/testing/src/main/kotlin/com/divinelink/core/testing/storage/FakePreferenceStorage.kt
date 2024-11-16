@@ -47,6 +47,9 @@ class FakePreferenceStorage(
   private val _jellyseerrAuthMethod = MutableStateFlow(jellyseerrSignInMethod)
   override val jellyseerrAuthMethod: Flow<String?> = _jellyseerrAuthMethod
 
+  private val _spoilersObfuscation = MutableStateFlow(false)
+  override val spoilersObfuscation: Flow<Boolean> = _spoilersObfuscation
+
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
   }
@@ -105,5 +108,9 @@ class FakePreferenceStorage(
 
   override suspend fun setJellyseerrAuthMethod(authMethod: String) {
     _jellyseerrAuthMethod.value = authMethod
+  }
+
+  override suspend fun setSpoilersObfuscation(isEnabled: Boolean) {
+    _spoilersObfuscation.value = isEnabled
   }
 }

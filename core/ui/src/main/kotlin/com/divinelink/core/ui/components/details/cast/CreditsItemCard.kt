@@ -41,7 +41,7 @@ fun CreditsItemCard(
   modifier: Modifier = Modifier,
   person: Person,
   onPersonClick: (Person) -> Unit,
-  isObfuscated: Boolean = false,
+  obfuscateEpisodes: Boolean = false,
 ) {
   Card(
     shape = PopularMovieItemShape,
@@ -97,7 +97,7 @@ fun CreditsItemCard(
                 .padding(horizontal = MaterialTheme.dimensions.keyline_8)
                 .padding(bottom = MaterialTheme.dimensions.keyline_4)
                 .conditional(
-                  condition = isObfuscated,
+                  condition = obfuscateEpisodes,
                   ifTrue = { blurEffect() },
                 ),
               text = stringResource(R.string.core_ui_episode_count, episodes),
@@ -122,13 +122,13 @@ fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) per
         CreditsItemCard(
           person = person,
           onPersonClick = {},
-          isObfuscated = false,
+          obfuscateEpisodes = false,
         )
 
         CreditsItemCard(
           person = person,
           onPersonClick = {},
-          isObfuscated = true,
+          obfuscateEpisodes = true,
         )
       }
     }

@@ -6,17 +6,17 @@ import com.divinelink.core.datastore.PreferenceStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
-class EpisodesObfuscationUseCase(
+class SpoilersObfuscationUseCase(
   private val preferenceStorage: PreferenceStorage,
   dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<Unit, Boolean>(dispatcherProvider.io) {
   override fun execute(parameters: Unit): Flow<Result<Boolean>> = preferenceStorage
-    .isSeriesEpisodeObfuscationEnabled
+    .spoilersObfuscation
     .mapLatest { isObfuscated ->
       Result.success(isObfuscated)
     }
 
-  suspend fun setEpisodesObfuscation(isObfuscated: Boolean) {
-    preferenceStorage.setSeriesEpisodeObfuscation(isObfuscated)
+  suspend fun setSpoilersObfuscation(isObfuscated: Boolean) {
+    preferenceStorage.setSpoilersObfuscation(isObfuscated)
   }
 }

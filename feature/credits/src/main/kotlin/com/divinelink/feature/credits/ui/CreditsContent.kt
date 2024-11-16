@@ -89,7 +89,7 @@ fun CreditsContent(
                 PersonItem(
                   person = person,
                   onClick = onPersonSelected,
-                  isObfuscated = state.episodesObfuscated,
+                  isObfuscated = state.obfuscateSpoilers,
                 )
               }
             }
@@ -128,7 +128,7 @@ fun CreditsContent(
                   PersonItem(
                     person = person,
                     onClick = onPersonSelected,
-                    isObfuscated = state.episodesObfuscated,
+                    isObfuscated = state.obfuscateSpoilers,
                   )
                 }
               }

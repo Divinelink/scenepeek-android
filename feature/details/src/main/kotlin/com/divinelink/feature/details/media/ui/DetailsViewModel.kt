@@ -11,6 +11,7 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
@@ -47,6 +48,7 @@ class DetailsViewModel(
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -164,6 +166,14 @@ class DetailsViewModel(
           }
         }
       }.launchIn(viewModelScope)
+
+    viewModelScope.launch {
+      spoilersObfuscationUseCase.invoke(Unit).collect { obfuscatedSpoilers ->
+        _viewState.update { viewState ->
+          viewState.copy(spoilersObfuscated = obfuscatedSpoilers.data)
+        }
+      }
+    }
   }
 
   fun onSubmitRate(rating: Int) {
@@ -385,6 +395,14 @@ class DetailsViewModel(
         }
       }
       .launchIn(viewModelScope)
+  }
+
+  fun onObfuscateSpoilers() {
+    viewModelScope.launch {
+      spoilersObfuscationUseCase.setSpoilersObfuscation(
+        !viewState.value.spoilersObfuscated,
+      )
+    }
   }
 
   fun navigateToLogin(snackbarResult: SnackbarResult) {

@@ -44,7 +44,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           ),
         ),
       ),
-      episodesObfuscated = false,
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 1,
@@ -79,7 +79,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           ),
         ),
       ),
-      episodesObfuscated = false,
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 0,
@@ -95,7 +95,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           crew = listOf(),
         ),
       ),
-      episodesObfuscated = false,
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 1,
@@ -111,7 +111,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           crew = listOf(),
         ),
       ),
-      episodesObfuscated = false,
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 0,
@@ -146,7 +146,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           ),
         ),
       ),
-      episodesObfuscated = true,
+      obfuscateSpoilers = true,
     ),
   )
 }

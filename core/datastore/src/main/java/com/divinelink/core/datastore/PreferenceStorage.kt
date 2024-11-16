@@ -40,8 +40,8 @@ interface PreferenceStorage {
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
 
-  suspend fun setSeriesEpisodeObfuscation(isEnabled: Boolean)
-  val isSeriesEpisodeObfuscationEnabled: Flow<Boolean>
+  suspend fun setSpoilersObfuscation(isEnabled: Boolean)
+  val spoilersObfuscation: Flow<Boolean>
 
   suspend fun clearToken()
   suspend fun setToken(token: String)
@@ -131,13 +131,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     preferences[PREF_ENCRYPTED_SHARED_PREFS]
   }
 
-  override suspend fun setSeriesEpisodeObfuscation(isEnabled: Boolean) {
+  override suspend fun setSpoilersObfuscation(isEnabled: Boolean) {
     dataStore.edit {
       it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] = isEnabled
     }
   }
 
-  override val isSeriesEpisodeObfuscationEnabled = dataStore.data.mapLatest {
+  override val spoilersObfuscation = dataStore.data.mapLatest {
     it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
   }
 

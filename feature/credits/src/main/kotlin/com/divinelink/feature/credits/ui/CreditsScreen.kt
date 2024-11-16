@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
+import com.divinelink.core.ui.components.ObfuscateSpoilersButton
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.credits.R
 import com.divinelink.feature.credits.navigation.CreditsGraph
@@ -49,6 +50,12 @@ fun CreditsScreen(
             maxLines = 2,
             style = MaterialTheme.typography.titleLarge,
             overflow = TextOverflow.Ellipsis,
+          )
+        },
+        actions = {
+          ObfuscateSpoilersButton(
+            obfuscated = uiState.obfuscateSpoilers,
+            onClick = viewModel::onObfuscateSpoilersClick,
           )
         },
         navigationIcon = {
