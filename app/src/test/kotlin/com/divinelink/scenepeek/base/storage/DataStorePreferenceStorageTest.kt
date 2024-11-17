@@ -1,5 +1,6 @@
 package com.divinelink.scenepeek.base.storage
 
+import app.cash.turbine.test
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
@@ -181,7 +182,7 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test testJellyseerrSignInMethod`() = runTest {
+  fun `test setJellyseerrSignInMethod`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
     assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
 
@@ -202,5 +203,32 @@ class DataStorePreferenceStorageTest {
 
     storage.clearJellyseerrSignInMethod()
     assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test spoilersObfuscation value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.spoilersObfuscation.test {
+      assertThat(awaitItem()).isEqualTo(false)
+
+      storage.setSpoilersObfuscation(true)
+
+      assertThat(awaitItem()).isEqualTo(true)
+    }
+  }
+
+  @Test
+  fun `test spoilersObfuscation does not trigger new emissions with the same value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.spoilersObfuscation.test {
+      assertThat(awaitItem()).isEqualTo(false)
+
+      storage.setSpoilersObfuscation(false)
+      storage.setSpoilersObfuscation(false)
+
+      expectNoEvents()
+    }
   }
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -31,6 +30,7 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.conditional
@@ -113,11 +113,11 @@ fun CreditsItemCard(
   }
 }
 
-@Preview
+@Previews
 @Composable
 fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) person: Person) {
-  Surface {
-    AppTheme {
+  AppTheme {
+    Surface {
       Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
         CreditsItemCard(
           person = person,

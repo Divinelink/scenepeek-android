@@ -55,7 +55,7 @@ fun CreditsScreen(
         actions = {
           ObfuscateSpoilersButton(
             obfuscated = uiState.obfuscateSpoilers,
-            onClick = viewModel::onObfuscateSpoilersClick,
+            onClick = viewModel::onObfuscateSpoilers,
           )
         },
         navigationIcon = {

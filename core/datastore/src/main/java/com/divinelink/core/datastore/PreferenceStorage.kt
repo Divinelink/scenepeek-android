@@ -139,7 +139,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val spoilersObfuscation = dataStore.data.mapLatest {
     it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
-  }
+  }.distinctUntilChanged()
 
   override suspend fun clearToken() {
     dataStore.edit {

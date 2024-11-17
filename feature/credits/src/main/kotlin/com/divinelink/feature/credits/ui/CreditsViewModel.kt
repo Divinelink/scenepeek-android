@@ -71,7 +71,7 @@ class CreditsViewModel(
     }
   }
 
-  fun onObfuscateSpoilersClick() {
+  fun onObfuscateSpoilers() {
     viewModelScope.launch {
       spoilersObfuscationUseCase.setSpoilersObfuscation(
         !uiState.value.obfuscateSpoilers,

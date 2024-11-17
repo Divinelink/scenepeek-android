@@ -58,6 +58,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -89,6 +90,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -115,6 +117,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -142,6 +145,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -182,6 +186,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -226,6 +231,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -253,6 +259,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -288,6 +295,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -320,6 +328,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -356,6 +365,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -402,6 +412,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -448,6 +459,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -478,6 +490,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -509,6 +522,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
 
@@ -537,6 +551,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
     composeTestRule
@@ -574,6 +589,7 @@ class DetailsContentTest : ComposeTest() {
         requestMedia = {},
         viewAllCreditsClicked = {},
         onPersonClick = {},
+        onObfuscateSpoilers = {},
       )
     }
     composeTestRule
@@ -590,6 +606,86 @@ class DetailsContentTest : ComposeTest() {
       .performClick()
 
     composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_DIALOG).assertIsDisplayed()
+  }
+
+  @Test
+  fun `test on obfuscate spoilers when initial is shown`() {
+    var hasClickedObfuscateSpoilers = false
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
+          spoilersObfuscated = false,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {
+          hasClickedObfuscateSpoilers = true
+        },
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
+      onNodeWithTag(
+        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_hide_total_episodes_item)),
+      )
+        .assertIsDisplayed()
+        .performClick()
+    }
+
+    assertThat(hasClickedObfuscateSpoilers).isTrue()
+  }
+
+  @Test
+  fun `test on obfuscate spoilers when initially is hidden`() {
+    var hasClickedObfuscateSpoilers = false
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
+          spoilersObfuscated = true,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {
+          hasClickedObfuscateSpoilers = true
+        },
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
+      onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
+      onNodeWithTag(
+        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_show_total_episodes_item)),
+      )
+        .assertIsDisplayed()
+        .performClick()
+    }
+
+    assertThat(hasClickedObfuscateSpoilers).isTrue()
   }
 
   private val reviews = ReviewFactory.ReviewList()
