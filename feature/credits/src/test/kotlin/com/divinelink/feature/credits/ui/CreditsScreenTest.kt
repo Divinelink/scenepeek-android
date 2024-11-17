@@ -2,12 +2,15 @@ package com.divinelink.feature.credits.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -15,6 +18,7 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase
+import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.credits.R
 import kotlinx.coroutines.flow.flowOf
@@ -26,12 +30,14 @@ class CreditsScreenTest : ComposeTest() {
 
   private lateinit var navigator: FakeDestinationsNavigator
   private lateinit var fetchCreditsUseCase: TestFetchCreditsUseCase
+  private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
   private lateinit var savedStateHandle: SavedStateHandle
 
   @BeforeTest
   fun setUp() {
     navigator = FakeDestinationsNavigator()
     fetchCreditsUseCase = TestFetchCreditsUseCase()
+    spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(false)
     savedStateHandle = SavedStateHandle(
       mapOf(
         "id" to 2316L,
@@ -44,6 +50,7 @@ class CreditsScreenTest : ComposeTest() {
   fun `test topAppBar is visible`() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -63,6 +70,7 @@ class CreditsScreenTest : ComposeTest() {
   fun `test back button is visible`() {
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -87,6 +95,7 @@ class CreditsScreenTest : ComposeTest() {
     )
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -120,6 +129,7 @@ class CreditsScreenTest : ComposeTest() {
     )
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -157,6 +167,7 @@ class CreditsScreenTest : ComposeTest() {
     )
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -182,6 +193,7 @@ class CreditsScreenTest : ComposeTest() {
     )
     val viewModel = CreditsViewModel(
       fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = savedStateHandle,
     )
 
@@ -199,6 +211,53 @@ class CreditsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
       onNodeWithText(getString(R.string.feature_credits_crew_missing)).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test obfuscate spoilers button`() {
+    fetchCreditsUseCase.mockSuccess(
+      flowOf(Result.success(AggregatedCreditsFactory.credits())),
+    )
+    val viewModel = CreditsViewModel(
+      fetchCreditsUseCase = fetchCreditsUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      CreditsScreen(
+        navigator = navigator,
+        viewModel = viewModel,
+        onNavigateToPersonDetails = {},
+      )
+    }
+    with(composeTestRule) {
+      onNodeWithContentDescription(getString(uiR.string.core_ui_visible_spoilers_button))
+        .assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Menu.SPOILERS_OBFUSCATION)
+        .assertIsDisplayed()
+        .performTouchInput {
+          longClick()
+        }
+
+      onNodeWithText(getString(uiR.string.core_ui_hide_spoilers_tooltip)).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Menu.SPOILERS_OBFUSCATION)
+        .assertIsDisplayed()
+        .performClick()
+
+      onNodeWithContentDescription(getString(uiR.string.core_ui_hidden_spoilers_button))
+        .assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Menu.SPOILERS_OBFUSCATION)
+        .assertIsDisplayed()
+        .performTouchInput {
+          longClick()
+        }
+
+      onNodeWithText(getString(uiR.string.core_ui_show_spoilers_tooltip)).assertIsDisplayed()
     }
   }
 }

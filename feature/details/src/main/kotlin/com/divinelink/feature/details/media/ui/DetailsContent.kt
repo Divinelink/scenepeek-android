@@ -111,6 +111,7 @@ fun DetailsContent(
   onAddToWatchlistClicked: () -> Unit,
   requestMedia: (List<Int>) -> Unit,
   viewAllCreditsClicked: () -> Unit,
+  onObfuscateSpoilers: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -202,7 +203,9 @@ fun DetailsContent(
               mediaDetails = viewState.mediaDetails,
               expanded = showDropdownMenu,
               options = viewState.menuOptions,
+              spoilersObfuscated = viewState.spoilersObfuscated,
               onDismissDropdown = { showDropdownMenu = false },
+              onObfuscateClick = onObfuscateSpoilers,
             )
           }
         },
@@ -225,6 +228,7 @@ fun DetailsContent(
               onAddToWatchlistClicked = onAddToWatchlistClicked,
               viewAllCreditsClicked = viewAllCreditsClicked,
               onPersonClick = onPersonClick,
+              obfuscateEpisodes = viewState.spoilersObfuscated,
             )
           }
         }
@@ -289,6 +293,7 @@ fun MediaDetailsContent(
   similarMoviesList: List<MediaItem.Media>?,
   reviewsList: List<Review>?,
   trailer: Video?,
+  obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
@@ -297,130 +302,129 @@ fun MediaDetailsContent(
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
-  Surface {
-    LazyColumn(
-      modifier = modifier
-        .testTag(TestTags.Details.CONTENT_LIST)
-        .fillMaxWidth(),
-    ) {
-      item {
-        TitleDetails(mediaDetails)
-      }
-      if (trailer != null) {
-        stickyHeader(key = "trailerSticky") {
-          Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-              .fillMaxWidth()
-              .background(Color.Black),
-          ) {
-            VideoPlayerSection(
-              modifier = Modifier,
-              trailer = trailer,
-              onVideoStateChange = { state ->
-                showStickyPlayer.value = state == VideoState.PLAYING
-              },
-            )
-          }
-        }
-
-        if (!showStickyPlayer.value) {
-          stickyHeader {
-            Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
-          }
-        }
-      }
-
-      item {
-        Row(
+  LazyColumn(
+    modifier = modifier
+      .testTag(TestTags.Details.CONTENT_LIST)
+      .fillMaxWidth(),
+  ) {
+    item {
+      TitleDetails(mediaDetails)
+    }
+    if (trailer != null) {
+      stickyHeader(key = "trailerSticky") {
+        Box(
+          contentAlignment = Alignment.Center,
           modifier = Modifier
             .fillMaxWidth()
-            .padding(paddingValues = ListPaddingValues),
+            .background(Color.Black),
         ) {
-          MovieImage(
-            modifier = Modifier.weight(1f),
-            path = mediaDetails.posterPath,
-          )
-
-          OverviewDetails(
-            modifier = Modifier.weight(OVERVIEW_WEIGHT),
-            movieDetails = mediaDetails,
-            genres = mediaDetails.genres,
-            onGenreClicked = {},
+          VideoPlayerSection(
+            modifier = Modifier,
+            trailer = trailer,
+            onVideoStateChange = { state ->
+              showStickyPlayer.value = state == VideoState.PLAYING
+            },
           )
         }
       }
 
-      item {
-        WatchlistButton(
-          modifier = Modifier.padding(paddingValues = ListPaddingValues),
-          onWatchlist = userDetails?.watchlist == true,
-          onClick = onAddToWatchlistClicked,
+      if (!showStickyPlayer.value) {
+        stickyHeader {
+          Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
+        }
+      }
+    }
+
+    item {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(paddingValues = ListPaddingValues),
+      ) {
+        MovieImage(
+          modifier = Modifier.weight(1f),
+          path = mediaDetails.posterPath,
+        )
+
+        OverviewDetails(
+          modifier = Modifier.weight(OVERVIEW_WEIGHT),
+          movieDetails = mediaDetails,
+          genres = mediaDetails.genres,
+          onGenreClicked = {},
         )
       }
+    }
 
+    item {
+      WatchlistButton(
+        modifier = Modifier.padding(paddingValues = ListPaddingValues),
+        onWatchlist = userDetails?.watchlist == true,
+        onClick = onAddToWatchlistClicked,
+      )
+    }
+
+    item {
+      UserRating(
+        overallUserScore = mediaDetails.rating,
+        userRating = userDetails?.beautifiedRating,
+        onAddRateClicked = onAddRateClicked,
+      )
+    }
+
+    item {
+      if (mediaDetails is TV && tvCredits != null) {
+        HorizontalDivider(
+          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+          thickness = MaterialTheme.dimensions.keyline_1,
+        )
+        CastList(
+          cast = tvCredits.take(30),
+          onViewAllClick = viewAllCreditsClicked,
+          onPersonClick = onPersonClick,
+          obfuscateEpisodes = obfuscateEpisodes,
+        ) // This is temporary
+        CreatorsItem(
+          creators = mediaDetails.creators,
+          onClick = onPersonClick,
+        )
+      } else if (mediaDetails is Movie) {
+        HorizontalDivider(
+          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+          thickness = MaterialTheme.dimensions.keyline_1,
+        )
+        CastList(
+          cast = mediaDetails.cast,
+          onViewAllClick = viewAllCreditsClicked,
+          viewAllVisible = false,
+          onPersonClick = onPersonClick,
+        )
+        mediaDetails.director?.let {
+          DirectorItem(director = it, onClick = onPersonClick)
+        }
+      }
+      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
+    }
+    if (similarMoviesList?.isNotEmpty() == true) {
       item {
-        UserRating(
-          overallUserScore = mediaDetails.rating,
-          userRating = userDetails?.beautifiedRating,
-          onAddRateClicked = onAddRateClicked,
+        HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
+        SimilarMoviesList(
+          movies = similarMoviesList,
+          onSimilarMovieClicked = onSimilarMovieClicked,
         )
       }
+    }
 
+    if (!reviewsList.isNullOrEmpty()) {
       item {
-        if (mediaDetails is TV && tvCredits != null) {
-          HorizontalDivider(
-            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-            thickness = MaterialTheme.dimensions.keyline_1,
-          )
-          CastList(
-            cast = tvCredits.take(30),
-            onViewAllClick = viewAllCreditsClicked,
-            onPersonClick = onPersonClick,
-          ) // This is temporary
-          CreatorsItem(
-            creators = mediaDetails.creators,
-            onClick = onPersonClick,
-          )
-        } else if (mediaDetails is Movie) {
-          HorizontalDivider(
-            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-            thickness = MaterialTheme.dimensions.keyline_1,
-          )
-          CastList(
-            cast = mediaDetails.cast,
-            onViewAllClick = viewAllCreditsClicked,
-            viewAllVisible = false,
-            onPersonClick = onPersonClick,
-          )
-          mediaDetails.director?.let {
-            DirectorItem(director = it, onClick = onPersonClick)
-          }
-        }
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
+        HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
+        ReviewsList(
+          reviews = reviewsList,
+        )
       }
-      if (similarMoviesList?.isNotEmpty() == true) {
-        item {
-          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-          SimilarMoviesList(
-            movies = similarMoviesList,
-            onSimilarMovieClicked = onSimilarMovieClicked,
-          )
-        }
-      }
+    }
 
-      if (!reviewsList.isNullOrEmpty()) {
-        item {
-          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-          ReviewsList(
-            reviews = reviewsList,
-          )
-        }
-      }
-
-      item {
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
-      }
+    item {
+      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
     }
   }
 }
@@ -596,6 +600,7 @@ private fun DetailsContentPreview(
           requestMedia = {},
           onPersonClick = {},
           viewAllCreditsClicked = {},
+          onObfuscateSpoilers = {},
         )
       }
     }

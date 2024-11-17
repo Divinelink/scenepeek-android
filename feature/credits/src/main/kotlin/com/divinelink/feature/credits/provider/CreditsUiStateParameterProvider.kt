@@ -44,6 +44,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           ),
         ),
       ),
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 1,
@@ -78,6 +79,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           ),
         ),
       ),
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 0,
@@ -93,6 +95,7 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           crew = listOf(),
         ),
       ),
+      obfuscateSpoilers = false,
     ),
     CreditsUiState(
       selectedTabIndex = 1,
@@ -108,6 +111,42 @@ class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState>
           crew = listOf(),
         ),
       ),
+      obfuscateSpoilers = false,
+    ),
+    CreditsUiState(
+      selectedTabIndex = 0,
+      tabs = listOf(
+        CreditsTab.Cast(2),
+        CreditsTab.Crew(4),
+      ),
+      forms = mapOf(
+        CreditsTab.Cast(2) to CreditsUiContent.Cast(
+          cast = listOf(
+            CreditsUiStateParameters.actor1,
+            CreditsUiStateParameters.actor2,
+            CreditsUiStateParameters.actor3,
+          ),
+        ),
+        CreditsTab.Crew(4) to CreditsUiContent.Crew(
+          crew = listOf(
+            SeriesCrewDepartment(
+              department = "Department 1",
+              crewList = listOf(
+                CreditsUiStateParameters.crew1,
+                CreditsUiStateParameters.crew2,
+                CreditsUiStateParameters.crew3,
+              ),
+            ),
+            SeriesCrewDepartment(
+              department = "Department 2",
+              crewList = listOf(
+                CreditsUiStateParameters.crew1,
+              ),
+            ),
+          ),
+        ),
+      ),
+      obfuscateSpoilers = true,
     ),
   )
 }

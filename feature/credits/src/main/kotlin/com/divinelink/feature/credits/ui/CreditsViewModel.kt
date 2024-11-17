@@ -3,7 +3,9 @@ package com.divinelink.feature.credits.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,10 +13,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class CreditsViewModel(
   fetchCreditsUseCase: FetchCreditsUseCase,
   savedStateHandle: SavedStateHandle,
+  private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
 ) : ViewModel() {
 
   private val args: CreditsNavArguments = CreditsScreenDestination.argsFrom(savedStateHandle)
@@ -51,11 +55,27 @@ class CreditsViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    viewModelScope.launch {
+      spoilersObfuscationUseCase(Unit).collect { obfuscateSpoilers ->
+        _uiState.update {
+          it.copy(obfuscateSpoilers = obfuscateSpoilers.data)
+        }
+      }
+    }
   }
 
   fun onTabSelected(tabIndex: Int) {
     _uiState.update {
       it.copy(selectedTabIndex = tabIndex)
+    }
+  }
+
+  fun onObfuscateSpoilers() {
+    viewModelScope.launch {
+      spoilersObfuscationUseCase.setSpoilersObfuscation(
+        !uiState.value.obfuscateSpoilers,
+      )
     }
   }
 }

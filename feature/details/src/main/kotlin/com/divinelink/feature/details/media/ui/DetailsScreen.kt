@@ -103,6 +103,7 @@ fun DetailsScreen(
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
     requestMedia = viewModel::onRequestMedia,
+    onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
     viewAllCreditsClicked = {
       onNavigateToCredits(
         CreditsNavArguments(

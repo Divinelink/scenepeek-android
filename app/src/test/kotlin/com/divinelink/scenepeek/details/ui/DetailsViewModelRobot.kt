@@ -2,10 +2,12 @@ package com.divinelink.scenepeek.details.ui
 
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
@@ -32,6 +34,10 @@ class DetailsViewModelRobot {
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
+  private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
+    preferenceStorage = FakePreferenceStorage(),
+    dispatcherProvider = mainDispatcherRule.testDispatcher,
+  )
 
   fun buildViewModel(
     id: Int,
@@ -44,6 +50,7 @@ class DetailsViewModelRobot {
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
       requestMediaUseCase = fakeRequestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,
@@ -102,6 +109,10 @@ class DetailsViewModelRobot {
     viewModel.onRequestMedia(seasons)
   }
 
+  fun onObfuscateSpoilers() = apply {
+    viewModel.onObfuscateSpoilers()
+  }
+
   fun consumeSnackbar() = apply {
     viewModel.consumeSnackbarMessage()
   }
@@ -109,6 +120,8 @@ class DetailsViewModelRobot {
   fun consumeNavigation() = apply {
     viewModel.consumeNavigateToLogin()
   }
+
+  // Mock Functions
 
   fun mockMarkAsFavoriteUseCase(
     media: MediaItem.Media,
@@ -137,4 +150,9 @@ class DetailsViewModelRobot {
       response = response,
     )
   }
+
+  suspend fun mockSpoilersObfuscation(obfuscated: Boolean) = apply {
+    spoilersObfuscationUseCase.setSpoilersObfuscation(obfuscated)
+  }
+  // End Mock Functions
 }

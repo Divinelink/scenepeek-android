@@ -1,6 +1,8 @@
 package com.divinelink.core.ui.components.details.cast
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -29,7 +30,10 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.blurEffect
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.provider.PersonParameterProvider
 
 @Composable
@@ -37,6 +41,7 @@ fun CreditsItemCard(
   modifier: Modifier = Modifier,
   person: Person,
   onPersonClick: (Person) -> Unit,
+  obfuscateEpisodes: Boolean = false,
 ) {
   Card(
     shape = PopularMovieItemShape,
@@ -90,7 +95,11 @@ fun CreditsItemCard(
             Text(
               modifier = Modifier
                 .padding(horizontal = MaterialTheme.dimensions.keyline_8)
-                .padding(bottom = MaterialTheme.dimensions.keyline_4),
+                .padding(bottom = MaterialTheme.dimensions.keyline_4)
+                .conditional(
+                  condition = obfuscateEpisodes,
+                  ifTrue = { blurEffect() },
+                ),
               text = stringResource(R.string.core_ui_episode_count, episodes),
               maxLines = 1,
               style = MaterialTheme.typography.bodySmall,
@@ -104,15 +113,24 @@ fun CreditsItemCard(
   }
 }
 
-@Preview
+@Previews
 @Composable
 fun CreditsItemCardPreview(@PreviewParameter(PersonParameterProvider::class) person: Person) {
-  Surface {
-    AppTheme {
-      CreditsItemCard(
-        person = person,
-        onPersonClick = {},
-      )
+  AppTheme {
+    Surface {
+      Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+        CreditsItemCard(
+          person = person,
+          onPersonClick = {},
+          obfuscateEpisodes = false,
+        )
+
+        CreditsItemCard(
+          person = person,
+          onPersonClick = {},
+          obfuscateEpisodes = true,
+        )
+      }
     }
   }
 }

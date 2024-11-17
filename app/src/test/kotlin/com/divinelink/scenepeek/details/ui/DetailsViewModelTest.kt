@@ -1126,4 +1126,35 @@ class DetailsViewModelTest {
         ),
       )
   }
+
+  @Test
+  fun `test obfuscateSpoilers with initially hidden should show them`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails)),
+      )
+      .mockSpoilersObfuscation(false)
+      .buildViewModel(mediaId, MediaType.TV)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .onObfuscateSpoilers()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = true,
+        ),
+      )
+  }
 }

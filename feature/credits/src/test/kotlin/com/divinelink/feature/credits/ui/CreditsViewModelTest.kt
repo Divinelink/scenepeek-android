@@ -2,11 +2,11 @@ package com.divinelink.feature.credits.ui
 
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -57,6 +57,7 @@ class CreditsViewModelTest {
             CreditsTab.Crew(12),
           ),
           selectedTabIndex = 0,
+          obfuscateSpoilers = false,
         ),
       )
   }
@@ -116,6 +117,7 @@ class CreditsViewModelTest {
               CreditsTab.Crew(12),
             ),
             selectedTabIndex = 0,
+            obfuscateSpoilers = false,
           ),
           CreditsUiState(
             forms = mapOf(
@@ -127,6 +129,7 @@ class CreditsViewModelTest {
               CreditsTab.Crew(12),
             ),
             selectedTabIndex = 0,
+            obfuscateSpoilers = false,
           ),
           CreditsUiState(
             forms = mapOf(
@@ -140,6 +143,7 @@ class CreditsViewModelTest {
               CreditsTab.Crew(12),
             ),
             selectedTabIndex = 0,
+            obfuscateSpoilers = false,
           ),
         ),
       )
@@ -169,6 +173,67 @@ class CreditsViewModelTest {
             CreditsTab.Crew(12),
           ),
           selectedTabIndex = 1,
+          obfuscateSpoilers = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onObfuscateSpoilers with initial hidden`() = runTest {
+    robot
+      .withNavArgs(
+        CreditsNavArguments(
+          id = AggregatedCreditsFactory.credits().id,
+          mediaType = MediaType.TV,
+        ),
+      )
+      .mockFetchCreditsUseCaseSuccess(flowOf(Result.success(AggregatedCreditsFactory.credits())))
+      .buildViewModel()
+      .assertUiState(
+        CreditsUiState(
+          forms = mapOf(
+            CreditsTab.Cast(8) to CreditsUiContent.Cast(AggregatedCreditsFactory.credits().cast),
+            CreditsTab.Crew(12) to
+              CreditsUiContent.Crew(AggregatedCreditsFactory.credits().crewDepartments),
+          ),
+          tabs = listOf(
+            CreditsTab.Cast(8),
+            CreditsTab.Crew(12),
+          ),
+          selectedTabIndex = 0,
+          obfuscateSpoilers = false,
+        ),
+      )
+      .onObfuscateSpoilers()
+      .assertUiState(
+        CreditsUiState(
+          forms = mapOf(
+            CreditsTab.Cast(8) to CreditsUiContent.Cast(AggregatedCreditsFactory.credits().cast),
+            CreditsTab.Crew(12) to
+              CreditsUiContent.Crew(AggregatedCreditsFactory.credits().crewDepartments),
+          ),
+          tabs = listOf(
+            CreditsTab.Cast(8),
+            CreditsTab.Crew(12),
+          ),
+          selectedTabIndex = 0,
+          obfuscateSpoilers = true,
+        ),
+      )
+      .onObfuscateSpoilers()
+      .assertUiState(
+        CreditsUiState(
+          forms = mapOf(
+            CreditsTab.Cast(8) to CreditsUiContent.Cast(AggregatedCreditsFactory.credits().cast),
+            CreditsTab.Crew(12) to
+              CreditsUiContent.Crew(AggregatedCreditsFactory.credits().crewDepartments),
+          ),
+          tabs = listOf(
+            CreditsTab.Cast(8),
+            CreditsTab.Crew(12),
+          ),
+          selectedTabIndex = 0,
+          obfuscateSpoilers = false,
         ),
       )
   }

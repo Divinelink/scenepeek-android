@@ -32,6 +32,7 @@ fun CastList(
   onPersonClick: (Person) -> Unit,
   onViewAllClick: () -> Unit,
   viewAllVisible: Boolean = true,
+  obfuscateEpisodes: Boolean = false,
 ) {
   Column(
     modifier = Modifier
@@ -77,7 +78,11 @@ fun CastList(
           items = cast,
           key = { it.id },
         ) {
-          CreditsItemCard(person = it, onPersonClick = onPersonClick)
+          CreditsItemCard(
+            person = it,
+            onPersonClick = onPersonClick,
+            obfuscateEpisodes = obfuscateEpisodes,
+          )
         }
       }
     }

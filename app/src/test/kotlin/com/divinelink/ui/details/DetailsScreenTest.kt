@@ -22,6 +22,7 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
@@ -45,17 +46,19 @@ import com.divinelink.feature.details.R as detailsR
 
 class DetailsScreenTest : ComposeTest() {
 
+  private val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
+  private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+  private val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
+  private val submitRateUseCase = FakeSubmitRatingUseCase()
+  private val deleteRatingUseCase = FakeDeleteRatingUseCase()
+  private val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
+  private val requestMediaUseCase = FakeRequestMediaUseCase()
+  private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
+
+  private val destinationsNavigator = FakeDestinationsNavigator()
+
   @Test
   fun navigateToAnotherDetailsScreen() {
-    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
-    val submitRateUseCase = FakeSubmitRatingUseCase()
-    val deleteRatingUseCase = FakeDeleteRatingUseCase()
-    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
-    val requestMediaUseCase = FakeRequestMediaUseCase()
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     destinationsNavigator.navigate(
       direction = DetailsScreenDestination(
         DetailsNavArguments(
@@ -99,6 +102,7 @@ class DetailsScreenTest : ComposeTest() {
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
+          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -159,14 +163,6 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog is visible when your rating is clicked`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val submitRateUseCase = FakeSubmitRatingUseCase()
-    val deleteRatingUseCase = FakeDeleteRatingUseCase()
-    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
-    val requestMediaUseCase = FakeRequestMediaUseCase()
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
@@ -180,7 +176,7 @@ class DetailsScreenTest : ComposeTest() {
           ),
         ),
 
-      ),
+        ),
     )
 
     val viewModel = DetailsViewModel(
@@ -190,6 +186,7 @@ class DetailsScreenTest : ComposeTest() {
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -220,15 +217,6 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test rate dialog onSubmitRate`() = runTest {
-    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
-    val submitRateUseCase = FakeSubmitRatingUseCase()
-    val deleteRatingUseCase = FakeDeleteRatingUseCase()
-    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
-    val requestMediaUseCase = FakeRequestMediaUseCase()
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
@@ -254,6 +242,7 @@ class DetailsScreenTest : ComposeTest() {
       deleteRatingUseCase = deleteRatingUseCase.mock,
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -307,14 +296,6 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test navigate to credits screen with tv credits`() {
-    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val submitRateUseCase = FakeSubmitRatingUseCase()
-    val deleteRatingUseCase = FakeDeleteRatingUseCase()
-    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
-    val requestMediaUseCase = FakeRequestMediaUseCase()
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     // Initial navigation to Details screen
     destinationsNavigator.navigate(
       direction = DetailsScreenDestination(
@@ -363,6 +344,7 @@ class DetailsScreenTest : ComposeTest() {
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
+          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -406,14 +388,6 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test viewAll credits does not exist without tv credits`() {
-    val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-    val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
-    val submitRateUseCase = FakeSubmitRatingUseCase()
-    val deleteRatingUseCase = FakeDeleteRatingUseCase()
-    val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
-    val requestMediaUseCase = FakeRequestMediaUseCase()
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     // Initial navigation to Details screen
     destinationsNavigator.navigate(
       direction = DetailsScreenDestination(
@@ -447,6 +421,7 @@ class DetailsScreenTest : ComposeTest() {
           deleteRatingUseCase = deleteRatingUseCase.mock,
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
+          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,

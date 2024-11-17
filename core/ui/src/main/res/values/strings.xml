@@ -7,7 +7,10 @@
   <string name="core_ui_save">Save</string>
 
   <string name="core_ui_share">Share</string>
-  <string name="core_ui_dropdown_menu_request">Request</string>
+  <string name="core_ui_show_total_episodes_item">Show spoilers</string>
+  <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>
+  <string name="core_ui_show_spoilers_tooltip">Show credits\' episode count</string>
+  <string name="core_ui_hide_spoilers_tooltip">Hide credits\' episode count to avoid spoilers</string>
 
   <string name="core_ui_retry">Retry</string>
   <string name="core_ui_login">Login</string>
@@ -69,4 +72,6 @@
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
+  <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>
+  <string name="core_ui_visible_spoilers_button">Spoilers are visible</string>
 </resources>

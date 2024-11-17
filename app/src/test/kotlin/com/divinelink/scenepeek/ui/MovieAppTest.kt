@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
@@ -21,6 +22,7 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -73,6 +75,7 @@ class MovieAppTest : ComposeTest() {
   private lateinit var deleteRatingUseCase: FakeDeleteRatingUseCase
   private lateinit var addToWatchlistUseCase: FakeAddToWatchlistUseCase
   private lateinit var requestMediaUseCase: FakeRequestMediaUseCase
+  private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
 
   @BeforeTest
   fun setUp() {
@@ -92,6 +95,7 @@ class MovieAppTest : ComposeTest() {
     deleteRatingUseCase = FakeDeleteRatingUseCase()
     addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     requestMediaUseCase = FakeRequestMediaUseCase()
+    spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
     startKoin {
       androidContext(composeTestRule.activity)
@@ -265,6 +269,7 @@ class MovieAppTest : ComposeTest() {
         deleteRatingUseCase = deleteRatingUseCase.mock,
         addToWatchlistUseCase = addToWatchlistUseCase.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
+        spoilersObfuscationUseCase = spoilersObfuscationUseCase,
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,

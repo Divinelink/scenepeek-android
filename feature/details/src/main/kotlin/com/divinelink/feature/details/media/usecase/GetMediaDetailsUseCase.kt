@@ -131,7 +131,7 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.io) {
-        getMenuItemsUseCase(Unit)
+        getMenuItemsUseCase(MediaType.from(requestApi.endpoint))
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {

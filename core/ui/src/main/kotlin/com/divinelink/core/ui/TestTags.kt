@@ -97,6 +97,7 @@ object TestTags {
     const val MENU_BUTTON_VERTICAL = "Menu Button Vertical"
     const val DROPDOWN_MENU = "Dropdown Menu"
     const val MENU_ITEM = "Menu Item %s"
+    const val SPOILERS_OBFUSCATION = "Spoilers Obfuscation Button"
   }
 
   object Watchlist {
