@@ -7,6 +7,8 @@ import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
@@ -16,6 +18,7 @@ import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
 import com.divinelink.factories.VideoFactory
@@ -45,6 +48,7 @@ class GetMediaDetailsUseCaseTest {
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
   private lateinit var fakeGetDropdownMenuItemsUseCase: FakeGetDropdownMenuItemsUseCase
   private lateinit var fakeGetDetailsActionItemsUseCase: FakeGetDetailsActionItemsUseCase
+  private lateinit var preferenceStorage: FakePreferenceStorage
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
   private val movieDetails = Movie(
@@ -56,7 +60,7 @@ class GetMediaDetailsUseCaseTest {
     genres = listOf(),
     cast = listOf(),
     releaseDate = "",
-    rating = "",
+    ratingCount = RatingCount.initial(0.0, 0),
     isFavorite = false,
     runtime = "50m",
   )
@@ -76,9 +80,10 @@ class GetMediaDetailsUseCaseTest {
       name = "",
       posterPath = null,
       releaseDate = "",
-      rating = "",
       overview = "",
       isFavorite = null,
+      voteAverage = 0.0,
+      voteCount = 0,
     )
   }.toList()
 
@@ -89,6 +94,7 @@ class GetMediaDetailsUseCaseTest {
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     fakeGetDetailsActionItemsUseCase = FakeGetDetailsActionItemsUseCase()
+    preferenceStorage = FakePreferenceStorage()
   }
 
   @Test
@@ -114,9 +120,10 @@ class GetMediaDetailsUseCaseTest {
     assertThat(result).isEqualTo(
       Result.success(
         MediaDetailsResult.DetailsSuccess(
-          movieDetails.copy(
+          mediaDetails = movieDetails.copy(
             isFavorite = true,
           ),
+          ratingSource = RatingSource.TMDB,
         ),
       ),
     )
@@ -129,7 +136,14 @@ class GetMediaDetailsUseCaseTest {
     val flow = createGetMediaDetailsUseCase()
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(
+      Result.success(
+        MediaDetailsResult.DetailsSuccess(
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      ),
+    )
   }
 
   @Test
@@ -158,7 +172,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.SimilarSuccess(similarList)),
@@ -234,7 +253,14 @@ class GetMediaDetailsUseCaseTest {
 
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(
+      Result.success(
+        MediaDetailsResult.DetailsSuccess(
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      ),
+    )
   }
 
   @Test
@@ -246,7 +272,14 @@ class GetMediaDetailsUseCaseTest {
 
     val result = flow(request).first()
 
-    assertThat(result).isEqualTo(Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)))
+    assertThat(result).isEqualTo(
+      Result.success(
+        MediaDetailsResult.DetailsSuccess(
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      ),
+    )
   }
 
   // Video tests
@@ -305,7 +338,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(videoList.first())),
@@ -325,7 +363,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.CreditsSuccess(AggregatedCreditsFactory.credits())),
@@ -348,7 +391,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(tvRequest).test {
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(trailer = null)),
@@ -366,7 +414,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(MediaDetailsResult.VideosSuccess(null)),
@@ -404,7 +457,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(awaitItem()).isEqualTo(expectedResult)
       awaitComplete()
@@ -423,7 +481,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       awaitComplete()
     }
@@ -445,7 +508,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       assertThat(awaitItem()).isEqualTo(expectedResult)
       awaitComplete()
@@ -462,7 +530,12 @@ class GetMediaDetailsUseCaseTest {
 
     useCase(request).test {
       assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.DetailsSuccess(movieDetails)),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       )
       awaitComplete()
     }
@@ -475,5 +548,6 @@ class GetMediaDetailsUseCaseTest {
     fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
     getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
     getDetailsActionItemsUseCase = fakeGetDetailsActionItemsUseCase.mock,
+    preferenceStorage = preferenceStorage,
   )
 }

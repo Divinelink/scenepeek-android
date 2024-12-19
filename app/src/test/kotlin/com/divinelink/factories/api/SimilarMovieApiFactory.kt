@@ -53,7 +53,7 @@ object SimilarMovieApiFactory {
       title = "Lorem Ipsum title",
       video = false,
       voteAverage = 9.85444334,
-      voteCount = null,
+      voteCount = 12_345 + it,
     )
   }
 }

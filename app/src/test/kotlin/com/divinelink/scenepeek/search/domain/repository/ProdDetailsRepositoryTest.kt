@@ -193,7 +193,7 @@ class ProdDetailsRepositoryTest {
         withPosterPath(posterPath = if (movie.id % 2 == 0) ".jpg" else null)
         withReleaseDate(releaseDate = (2000 + movie.id).toString())
         withName(name = "Lorem Ipsum title")
-        withRating(rating = "9.9")
+        withVoteAverage(rating = 9.9)
         withOverview(overview = "Lorem Ipsum ${movie.id}")
         withFavorite(null)
       }

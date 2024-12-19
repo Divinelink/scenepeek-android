@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -16,6 +17,7 @@ class FakePreferenceStorage(
   jellyseerrAccount: String? = null,
   jellyseerrSignInMethod: String? = null,
   spoilersObfuscation: Boolean = false,
+  ratingSource: RatingSource = RatingSource.TMDB,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -50,6 +52,9 @@ class FakePreferenceStorage(
 
   private val _spoilersObfuscation = MutableStateFlow(spoilersObfuscation)
   override val spoilersObfuscation: Flow<Boolean> = _spoilersObfuscation
+
+  private val _ratingSource = MutableStateFlow(ratingSource)
+  override val ratingSource: Flow<RatingSource> = _ratingSource
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -113,5 +118,9 @@ class FakePreferenceStorage(
 
   override suspend fun setSpoilersObfuscation(isEnabled: Boolean) {
     _spoilersObfuscation.value = isEnabled
+  }
+
+  override suspend fun setRatingSource(ratingSource: String) {
+    _ratingSource.value = RatingSource.from(ratingSource)
   }
 }
