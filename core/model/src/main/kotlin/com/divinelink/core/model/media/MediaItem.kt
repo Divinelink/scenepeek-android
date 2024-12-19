@@ -1,6 +1,5 @@
 package com.divinelink.core.model.media
 
-import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.person.Gender
 
 sealed class MediaItem(
@@ -15,7 +14,8 @@ sealed class MediaItem(
     override val name: String,
     override val posterPath: String?,
     open val releaseDate: String,
-    open val rating: String,
+    open val voteAverage: Double,
+    open val voteCount: Int,
     open val overview: String,
     open val isFavorite: Boolean?,
     override val mediaType: MediaType,
@@ -25,15 +25,14 @@ sealed class MediaItem(
     name = name,
     mediaType = mediaType,
   ) {
-    val decimalRating: String
-      get() = this.rating.toDouble().round(1).toString()
 
     data class TV(
       override val id: Int,
       override val name: String,
       override val posterPath: String?,
       override val releaseDate: String,
-      override val rating: String,
+      override val voteAverage: Double,
+      override val voteCount: Int,
       override val overview: String,
       override val isFavorite: Boolean?,
     ) : Media(
@@ -41,7 +40,8 @@ sealed class MediaItem(
       posterPath = posterPath,
       name = name,
       releaseDate = releaseDate,
-      rating = rating,
+      voteAverage = voteAverage,
+      voteCount = voteCount,
       overview = overview,
       isFavorite = isFavorite,
       mediaType = MediaType.TV,
@@ -52,7 +52,8 @@ sealed class MediaItem(
       override val name: String,
       override val posterPath: String?,
       override val releaseDate: String,
-      override val rating: String,
+      override val voteAverage: Double,
+      override val voteCount: Int,
       override val overview: String,
       override val isFavorite: Boolean?,
     ) : Media(
@@ -60,7 +61,8 @@ sealed class MediaItem(
       posterPath = posterPath,
       name = name,
       releaseDate = releaseDate,
-      rating = rating,
+      voteAverage = voteAverage,
+      voteCount = voteCount,
       overview = overview,
       isFavorite = isFavorite == true,
       mediaType = MediaType.MOVIE,

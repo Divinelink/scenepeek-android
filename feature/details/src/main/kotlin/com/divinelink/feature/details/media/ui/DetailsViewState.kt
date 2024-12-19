@@ -8,6 +8,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -31,6 +32,7 @@ data class DetailsViewState(
   val menuOptions: List<DetailsMenuOptions> = emptyList(),
   val actionButtons: List<DetailActionItem> = emptyList(),
   val spoilersObfuscated: Boolean = false,
+  val ratingSource: RatingSource = RatingSource.TMDB,
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(
@@ -38,7 +40,8 @@ data class DetailsViewState(
       name = mediaDetails.title,
       posterPath = mediaDetails.posterPath,
       releaseDate = mediaDetails.releaseDate,
-      rating = mediaDetails.rating,
+      voteAverage = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage ?: 0.0,
+      voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount ?: 0,
       overview = mediaDetails.overview ?: "",
       isFavorite = mediaDetails.isFavorite,
     )
@@ -47,7 +50,8 @@ data class DetailsViewState(
       name = mediaDetails.title,
       posterPath = mediaDetails.posterPath,
       releaseDate = mediaDetails.releaseDate,
-      rating = mediaDetails.rating,
+      voteAverage = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage ?: 0.0,
+      voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount ?: 0,
       overview = mediaDetails.overview ?: "",
       isFavorite = mediaDetails.isFavorite,
     )

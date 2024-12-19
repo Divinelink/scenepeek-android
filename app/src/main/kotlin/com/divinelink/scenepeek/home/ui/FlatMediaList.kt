@@ -149,7 +149,8 @@ fun MoviesListScreenPreview() {
       releaseDate = (2000 + index).toString(),
       name = "Fight Club $index",
       isFavorite = index % 2 == 0,
-      rating = index.toString(),
+      voteAverage = index.toDouble(),
+      voteCount = index * 1000,
       overview = "",
     )
   }.toMutableList()

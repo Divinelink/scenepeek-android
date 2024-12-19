@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 fun RateModalBottomSheet(
   modifier: Modifier = Modifier,
   sheetState: SheetState,
-  value: String?,
+  value: Int?,
   mediaTitle: String,
   canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,

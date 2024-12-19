@@ -100,7 +100,7 @@ fun MediaDetailsContent(
           horizontalArrangement = Arrangement.Center,
           verticalAlignment = Alignment.CenterVertically,
         ) {
-          MediaRatingItem(rating = media.rating)
+          MediaRatingItem(rating = media.voteAverage, voteCount = media.voteCount)
           Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_16))
           Text(
             text = media.releaseDate,

@@ -24,10 +24,10 @@ import com.divinelink.core.ui.extension.getColorRating
 fun SpannableRating(
   modifier: Modifier = Modifier,
   text: String,
-  rating: String,
+  rating: Int,
   vertical: Boolean = false,
 ) {
-  val color = rating.getColorRating()
+  val color = rating.toDouble().getColorRating()
 
   if (vertical) {
     Column(
@@ -58,7 +58,7 @@ fun SpannableRating(
 @Composable
 private fun SpannableRatingText(
   text: String,
-  rating: String,
+  rating: Int,
   color: Color,
 ) {
   Text(
@@ -73,7 +73,7 @@ private fun SpannableRatingText(
 
   Text(
     modifier = Modifier.testTag(TestTags.Details.YOUR_RATING),
-    text = rating,
+    text = rating.toString(),
     color = color,
     style = MaterialTheme.typography.headlineMedium,
     textAlign = TextAlign.Center,
@@ -90,19 +90,19 @@ fun SpannableRatingPreview() {
       ) {
         SpannableRating(
           text = "Your rating",
-          rating = "0",
+          rating = 0,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "1",
+          rating = 1,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "5",
+          rating = 5,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "8",
+          rating = 8,
         )
       }
     }
@@ -119,22 +119,22 @@ fun SpannableRatingNewLinePreview() {
       ) {
         SpannableRating(
           text = "Your rating",
-          rating = "0",
+          rating = 0,
           vertical = true,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "1",
+          rating = 1,
           vertical = true,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "5",
+          rating = 5,
           vertical = true,
         )
         SpannableRating(
           text = "Your rating",
-          rating = "8",
+          rating = 8,
           vertical = true,
         )
       }

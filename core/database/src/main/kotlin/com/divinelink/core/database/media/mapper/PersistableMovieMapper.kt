@@ -8,7 +8,8 @@ internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie = Persistabl
   title = this.name,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
-  rating = this.rating,
+  voteAverage = this.voteAverage,
+  voteCount = this.voteCount,
   isFavorite = this.isFavorite ?: false,
   overview = this.overview,
 )
@@ -20,7 +21,8 @@ private fun PersistableMovie.toMovie(): MediaItem.Media.Movie = MediaItem.Media.
   posterPath = this.posterPath,
   releaseDate = this.releaseDate,
   name = this.title,
-  rating = this.rating,
+  voteAverage = this.voteAverage,
+  voteCount = this.voteCount,
   overview = this.overview,
   isFavorite = this.isFavorite,
 )

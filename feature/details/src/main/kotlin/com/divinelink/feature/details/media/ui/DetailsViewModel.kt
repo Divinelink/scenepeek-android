@@ -92,12 +92,11 @@ class DetailsViewModel(
         result.onSuccess {
           _viewState.update { viewState ->
             when (result.data) {
-              is MediaDetailsResult.DetailsSuccess -> {
-                viewState.copy(
-                  isLoading = false,
-                  mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
-                )
-              }
+              is MediaDetailsResult.DetailsSuccess -> viewState.copy(
+                isLoading = false,
+                mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
+                ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
+              )
 
               is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
                 reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,

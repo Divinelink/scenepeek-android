@@ -187,7 +187,8 @@ private fun HomeContentPreview() {
                 overview = "Overview 1",
                 releaseDate = "2021-01-01",
                 isFavorite = false,
-                rating = it.toString(),
+                voteAverage = it.toDouble(),
+                voteCount = it * 1000,
               )
             },
             shouldLoadMore = true,
@@ -202,7 +203,8 @@ private fun HomeContentPreview() {
                 overview = "Overview 1",
                 releaseDate = "2021-01-01",
                 isFavorite = false,
-                rating = it.toString(),
+                voteAverage = it.toDouble(),
+                voteCount = it * 1000,
               )
             },
             shouldLoadMore = false,

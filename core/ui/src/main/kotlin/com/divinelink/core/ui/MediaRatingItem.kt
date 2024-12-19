@@ -3,7 +3,9 @@
 package com.divinelink.core.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,7 +22,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.core.ui.extension.isWholeNumber
+import com.divinelink.core.ui.extension.toShortString
 
 @Suppress("MagicNumber")
 enum class RatingSize(
@@ -44,13 +49,19 @@ enum class RatingSize(
 @Composable
 fun MediaRatingItem(
   modifier: Modifier = Modifier,
-  rating: String,
+  rating: Double?,
+  voteCount: Int?,
   size: RatingSize = RatingSize.MEDIUM,
 ) {
-  val sanitizedRating = if (rating.endsWith(".0")) {
-    rating.substring(0, rating.length - 2)
+
+  val sanitizedRating = if (rating == null) {
+    null
   } else {
-    rating
+    if (rating.isWholeNumber()) {
+      rating.toInt()
+    } else {
+      rating
+    }
   }
 
   val color = rating.getColorRating()
@@ -69,7 +80,7 @@ fun MediaRatingItem(
 
   Box(
     contentAlignment = Alignment.Center,
-    modifier = modifier.padding(top = 4.dp, bottom = 4.dp),
+    modifier = modifier.padding(vertical = MaterialTheme.dimensions.keyline_4),
   ) {
     Canvas(modifier = Modifier.size(size.size)) {
       drawArc(
@@ -96,7 +107,7 @@ fun MediaRatingItem(
       drawArc(
         color = color,
         startAngle = 270f,
-        sweepAngle = (100f / 10f * rating.toDouble() * 3.6f).toFloat(),
+        sweepAngle = (100f / 10f * (rating ?: 0.0) * 3.6f).toFloat(),
         useCenter = false,
         style = Stroke(
           width = 4.dp.toPx(),
@@ -112,24 +123,55 @@ fun MediaRatingItem(
       MaterialTheme.colorScheme.surface
     }
 
-    Text(
-      text = sanitizedRating,
-      style = textSize,
-      textAlign = TextAlign.Center,
-      color = textColor,
-    )
+    val votesColor = if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+    } else {
+      MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
+    }
+
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+      Text(
+        text = sanitizedRating?.toString() ?: "-",
+        style = textSize,
+        textAlign = TextAlign.Center,
+        color = textColor,
+      )
+
+      if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
+        Text(
+          text = voteCount.toShortString(),
+          style = MaterialTheme.typography.labelSmall,
+          textAlign = TextAlign.Center,
+          color = votesColor,
+        )
+      }
+    }
   }
 }
 
 @Previews
 @Composable
-private fun MediaRatingItemPreview() {
+fun MediaRatingItemPreview() {
   AppTheme {
     Surface {
-      Row {
-        MediaRatingItem(rating = "5.4", size = RatingSize.SMALL)
-        MediaRatingItem(rating = "5", size = RatingSize.MEDIUM)
-        MediaRatingItem(rating = "5", size = RatingSize.LARGE)
+      Column {
+
+        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+          MediaRatingItem(rating = null, size = RatingSize.SMALL, voteCount = null)
+          MediaRatingItem(rating = null, size = RatingSize.MEDIUM, voteCount = null)
+          MediaRatingItem(rating = null, size = RatingSize.LARGE, voteCount = null)
+          MediaRatingItem(rating = null, size = RatingSize.LARGE, voteCount = 132_000)
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+          MediaRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = null)
+          MediaRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = null)
+          MediaRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = null)
+          MediaRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = 132_583)
+          MediaRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = 132_583)
+          MediaRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = 132_583)
+        }
       }
     }
   }

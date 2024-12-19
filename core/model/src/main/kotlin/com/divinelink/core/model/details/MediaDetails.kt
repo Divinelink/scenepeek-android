@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.media.MediaType
 
 /**
@@ -11,7 +12,7 @@ sealed class MediaDetails {
   abstract val posterPath: String
   abstract val overview: String?
   abstract val releaseDate: String
-  abstract val rating: String
+  abstract val ratingCount: RatingCount
   abstract val genres: List<String>?
   abstract val isFavorite: Boolean
 
@@ -22,8 +23,8 @@ sealed class MediaDetails {
     overview: String? = this.overview,
     releaseDate: String = this.releaseDate,
     genres: List<String>? = this.genres,
-    rating: String = this.rating,
     isFavorite: Boolean = this.isFavorite,
+    ratingCount: RatingCount = this.ratingCount,
   ): MediaDetails = when (this) {
     is Movie -> Movie(
       id = id,
@@ -32,7 +33,7 @@ sealed class MediaDetails {
       overview = overview,
       director = director,
       releaseDate = releaseDate,
-      rating = rating,
+      ratingCount = ratingCount,
       isFavorite = isFavorite,
       genres = genres,
       cast = cast,
@@ -45,7 +46,7 @@ sealed class MediaDetails {
       overview = overview,
       credits = credits,
       releaseDate = releaseDate,
-      rating = rating,
+      ratingCount = ratingCount,
       isFavorite = isFavorite,
       genres = genres,
       seasons = seasons,

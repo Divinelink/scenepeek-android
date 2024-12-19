@@ -105,7 +105,8 @@ private fun WatchlistContentPreview() {
     posterPath = "",
     releaseDate = "2020-07-02",
     name = "Flight Club",
-    rating = "9.4",
+    voteAverage = 9.4,
+    voteCount = 1_333_982,
     overview = LoremIpsum(50).values.joinToString(),
     isFavorite = false,
   )

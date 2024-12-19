@@ -1,5 +1,7 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.rating.RatingCount
+
 /**
  * Represents details of a TV show.
  */
@@ -10,7 +12,7 @@ data class TV(
   override val overview: String?,
   override val genres: List<String>?,
   override val releaseDate: String,
-  override val rating: String,
+  override val ratingCount: RatingCount,
   override val isFavorite: Boolean,
   val creators: List<Person>?,
   val credits: List<Person>,

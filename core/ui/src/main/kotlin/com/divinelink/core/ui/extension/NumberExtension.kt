@@ -5,9 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun String.getColorRating(): Color = when (toDouble()) {
+fun Double?.getColorRating(): Color = when (this) {
+  null -> MaterialTheme.colorScheme.onSurface
   in 0.1..3.5 -> Color(0xFFDB2360)
   in 3.5..6.99 -> Color(0xFFD2D531)
   in 7.0..10.0 -> Color(0xFF21D07A)
   else -> MaterialTheme.colorScheme.onSurface
+}
+
+fun Double.isWholeNumber(): Boolean = this % 1.0 == 0.0
+
+fun Int.toShortString(): String {
+  return when {
+    this >= 1_000_000 -> "${this / 1_000_000}m"
+    this >= 1_000 -> "${this / 1_000}k"
+    else -> this.toString()
+  }
 }

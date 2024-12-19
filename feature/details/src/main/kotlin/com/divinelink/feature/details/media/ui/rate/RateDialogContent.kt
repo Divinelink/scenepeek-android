@@ -51,7 +51,7 @@ fun RateDialogContent(
         .fillMaxWidth()
         .padding(bottom = MaterialTheme.dimensions.keyline_8),
       text = stringResource(id = R.string.details__your_rating),
-      rating = " ${rating.floatValue.roundToInt()}",
+      rating = rating.floatValue.roundToInt(),
     )
 
     RateSlider(

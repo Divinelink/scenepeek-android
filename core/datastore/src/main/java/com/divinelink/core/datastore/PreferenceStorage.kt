@@ -13,10 +13,12 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -61,6 +63,9 @@ interface PreferenceStorage {
   suspend fun clearJellyseerrSignInMethod()
   suspend fun setJellyseerrAuthMethod(authMethod: String)
   val jellyseerrAuthMethod: Flow<String?>
+
+  suspend fun setRatingSource(ratingSource: String)
+  val ratingSource: Flow<RatingSource>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -88,6 +93,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
     val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
     val PREF_JELLYSEERR_AUTH_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
+
+    val PREF_RATING_SOURCE = stringPreferencesKey("rating.source")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -234,5 +241,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val jellyseerrAuthMethod: Flow<String?> = dataStore.data.map {
     it[PREF_JELLYSEERR_AUTH_METHOD]
+  }
+
+  override suspend fun setRatingSource(ratingSource: String) {
+    dataStore.edit { it[PREF_RATING_SOURCE] = ratingSource }
+  }
+
+  override val ratingSource: Flow<RatingSource> = dataStore.data.map { it ->
+    it[PREF_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
   }
 }
