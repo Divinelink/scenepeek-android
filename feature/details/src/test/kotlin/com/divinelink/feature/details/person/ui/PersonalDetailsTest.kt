@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags

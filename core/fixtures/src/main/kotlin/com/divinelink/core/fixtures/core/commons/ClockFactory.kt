@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.core.commons
+package com.divinelink.core.fixtures.core.commons
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

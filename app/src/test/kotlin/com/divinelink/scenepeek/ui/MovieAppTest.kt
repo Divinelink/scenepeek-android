@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
@@ -241,7 +242,10 @@ class MovieAppTest : ComposeTest() {
 
     getMediaDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
-        Result.success(MediaDetailsResult.DetailsSuccess(MediaDetailsFactory.FightClub())),
+        Result.success(MediaDetailsResult.DetailsSuccess(
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          ratingSource = RatingSource.TMDB,
+        )),
       ),
     )
 

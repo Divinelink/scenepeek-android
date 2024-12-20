@@ -72,7 +72,8 @@ fun ReviewItemCard(
         MediaRatingItem(
           modifier = Modifier
             .padding(top = 12.dp, start = 12.dp, end = 12.dp),
-          rating = rating.toString(),
+          rating = rating.toDouble(),
+          voteCount = null,
         )
       }
     }

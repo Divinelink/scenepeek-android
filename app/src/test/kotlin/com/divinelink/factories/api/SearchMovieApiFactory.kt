@@ -36,7 +36,7 @@ object SearchMovieApiFactory {
       title = "movie $it - name",
       video = false,
       voteAverage = it + 0.713,
-      voteCount = null,
+      voteCount = 12_345 + it,
     )
   }
 }

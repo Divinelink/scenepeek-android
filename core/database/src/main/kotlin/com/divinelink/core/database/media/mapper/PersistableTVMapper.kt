@@ -1,14 +1,15 @@
 package com.divinelink.core.database.media.mapper
 
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.database.media.model.PersistableTV
+import com.divinelink.core.model.media.MediaItem
 
 internal fun MediaItem.Media.TV.toPersistableTV() = PersistableTV(
   id = this.id,
   title = this.name,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
-  rating = this.rating,
+  voteAverage = this.voteAverage,
+  voteCount = this.voteCount,
   isFavorite = this.isFavorite ?: false,
   overview = this.overview,
 )
@@ -22,7 +23,8 @@ internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   name = this.title,
   posterPath = this.posterPath,
   releaseDate = this.releaseDate,
-  rating = this.rating,
+  voteAverage = this.voteAverage,
+  voteCount = this.voteCount,
   overview = this.overview,
   isFavorite = this.isFavorite,
 )

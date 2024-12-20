@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
@@ -80,6 +81,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
           ),
         ),
         Result.success(
@@ -173,10 +175,10 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
           ),
         ),
-
-        ),
+      ),
     )
 
     val viewModel = DetailsViewModel(
@@ -230,6 +232,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
           ),
         ),
       ),
@@ -312,6 +315,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.TheOffice(),
+            ratingSource = RatingSource.TMDB,
           ),
         ),
         Result.success(
@@ -404,6 +408,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.TheOffice(),
+            ratingSource = RatingSource.TMDB,
           ),
         ),
       ),

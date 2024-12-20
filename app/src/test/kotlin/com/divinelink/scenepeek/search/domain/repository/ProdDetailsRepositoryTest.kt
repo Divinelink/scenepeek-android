@@ -10,6 +10,7 @@ import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -27,7 +28,6 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
 import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
@@ -193,7 +193,7 @@ class ProdDetailsRepositoryTest {
         withPosterPath(posterPath = if (movie.id % 2 == 0) ".jpg" else null)
         withReleaseDate(releaseDate = (2000 + movie.id).toString())
         withName(name = "Lorem Ipsum title")
-        withRating(rating = "9.9")
+        withVoteAverage(rating = 9.9)
         withOverview(overview = "Lorem Ipsum ${movie.id}")
         withFavorite(null)
       }

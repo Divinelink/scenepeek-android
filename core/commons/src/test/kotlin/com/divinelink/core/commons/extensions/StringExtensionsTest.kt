@@ -1,7 +1,7 @@
 package com.divinelink.core.commons.extensions
 
 import com.divinelink.core.commons.Constants
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

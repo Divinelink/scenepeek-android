@@ -3,9 +3,9 @@ package com.divinelink.core.database.person.dao
 import app.cash.turbine.test
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.person.ProdPersonDao
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCreditEntityFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory

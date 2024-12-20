@@ -18,7 +18,8 @@ private object MediaItemParameterData {
     posterPath = "",
     releaseDate = "2020-07-02",
     name = "Flight Club",
-    rating = "9.4",
+    voteAverage = 9.4,
+    voteCount = 100,
     overview = LoremIpsum(50).values.joinToString(),
     isFavorite = false,
   )

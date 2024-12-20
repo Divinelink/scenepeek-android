@@ -79,7 +79,8 @@ fun MediaItem(
           .align(Alignment.BottomStart)
           .offset(y = offset)
           .padding(start = MaterialTheme.dimensions.keyline_8),
-        rating = media.decimalRating,
+        rating = media.voteAverage,
+        voteCount = media.voteCount,
       )
     }
 
@@ -145,7 +146,8 @@ fun PopularMovieItemPreview() {
           posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
           releaseDate = "2023",
           name = "Fight Club",
-          rating = "8.8",
+          voteAverage = 8.8,
+          voteCount = 1000,
           isFavorite = true,
           overview = "",
         ),
@@ -172,7 +174,8 @@ fun MovieItemPreview() {
           name = "Night of the Day of the Dawn of the Son of the Bride of the " +
             "Return of the Revenge of the Terror of the Attack of the Evil," +
             " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
-          rating = "0.1",
+          voteAverage = 0.1,
+          voteCount = 1000,
           isFavorite = null,
           overview = "",
         ),

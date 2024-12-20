@@ -33,7 +33,8 @@ class ProdMoviesRepositoryTest {
     posterPath = "123456",
     releaseDate = "2022",
     title = "Flight Club",
-    rating = "7.3",
+    voteAverage = 7.3,
+    voteCount = 123_456,
     overview = "This movie is good.",
     isFavorite = true,
   )

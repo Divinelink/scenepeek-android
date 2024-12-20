@@ -43,7 +43,8 @@ private fun SimilarMovieApi.toMediaItem(mediaType: MediaType): MediaItem.Media =
     posterPath = this.posterPath,
     releaseDate = this.releaseDate,
     name = this.title,
-    rating = this.voteAverage.round(1).toString(),
+    voteAverage = this.voteAverage.round(1),
+    voteCount = this.voteCount ?: 0,
     overview = this.overview,
     isFavorite = null,
   )
@@ -52,7 +53,8 @@ private fun SimilarMovieApi.toMediaItem(mediaType: MediaType): MediaItem.Media =
     posterPath = this.posterPath,
     releaseDate = this.releaseDate,
     name = this.title,
-    rating = this.voteAverage.round(1).toString(),
+    voteAverage = this.voteAverage.round(1),
+    voteCount = this.voteCount ?: 0,
     overview = this.overview,
     isFavorite = null,
   )

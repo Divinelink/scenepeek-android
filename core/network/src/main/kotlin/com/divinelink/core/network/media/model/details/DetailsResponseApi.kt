@@ -6,6 +6,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
 import com.divinelink.core.network.media.model.details.credits.CastApi
@@ -99,7 +100,10 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
   title = this.title,
-  rating = this.voteAverage.round(1).toString(),
+  ratingCount = RatingCount.initial(
+    tmdbVoteAverage = this.voteAverage.round(1),
+    tmdbVoteCount = voteCount,
+  ),
   overview = this.overview,
   genres = this.genres.map { it.name },
   director = this.credits.crew.toDirector(),
@@ -114,7 +118,10 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   releaseDate = this.releaseDate,
   title = this.name,
   genres = this.genres.map { it.name },
-  rating = this.voteAverage.round(1).toString(),
+  ratingCount = RatingCount.initial(
+    tmdbVoteAverage = this.voteAverage.round(1),
+    tmdbVoteCount = voteCount,
+  ),
   overview = this.overview,
   isFavorite = false,
   numberOfSeasons = this.numberOfSeasons,

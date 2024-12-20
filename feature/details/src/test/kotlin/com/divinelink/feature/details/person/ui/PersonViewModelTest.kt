@@ -8,9 +8,9 @@ import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest

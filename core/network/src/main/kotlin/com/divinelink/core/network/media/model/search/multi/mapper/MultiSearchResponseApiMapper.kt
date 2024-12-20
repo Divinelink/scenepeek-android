@@ -15,7 +15,8 @@ fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
         posterPath = it.posterPath,
         releaseDate = it.firstAirDate ?: "",
         name = it.name!!,
-        rating = it.voteAverage?.round(1).toString(),
+        voteAverage = it.voteAverage?.round(1) ?: 0.0,
+        voteCount = it.voteCount ?: 0,
         overview = it.overview ?: "",
         isFavorite = false,
       )
@@ -24,7 +25,8 @@ fun MultiSearchResponseApi.map(): MultiSearch = MultiSearch(
         posterPath = it.posterPath,
         releaseDate = it.releaseDate ?: "",
         name = it.title!!,
-        rating = it.voteAverage?.round(1).toString(),
+        voteAverage = it.voteAverage?.round(1) ?: 0.0,
+        voteCount = it.voteCount ?: 0,
         overview = it.overview!!,
         isFavorite = false,
       )

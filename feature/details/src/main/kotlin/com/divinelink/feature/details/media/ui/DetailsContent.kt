@@ -63,6 +63,8 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
@@ -229,6 +231,7 @@ fun DetailsContent(
               viewAllCreditsClicked = viewAllCreditsClicked,
               onPersonClick = onPersonClick,
               obfuscateEpisodes = viewState.spoilersObfuscated,
+              ratingSource = viewState.ratingSource,
             )
           }
         }
@@ -287,6 +290,7 @@ private fun VideoPlayerSection(
 @Composable
 fun MediaDetailsContent(
   modifier: Modifier = Modifier,
+  ratingSource: RatingSource,
   mediaDetails: MediaDetails,
   tvCredits: List<Person>?,
   userDetails: AccountMediaDetails?,
@@ -365,9 +369,11 @@ fun MediaDetailsContent(
 
     item {
       UserRating(
-        overallUserScore = mediaDetails.rating,
-        userRating = userDetails?.beautifiedRating,
+        ratingSource = ratingSource,
+        overallUserScore = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage,
+        accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
+        voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
       )
     }
 
@@ -432,8 +438,10 @@ fun MediaDetailsContent(
 @Composable
 private fun UserRating(
   modifier: Modifier = Modifier,
-  overallUserScore: String,
-  userRating: String?,
+  ratingSource: RatingSource,
+  overallUserScore: Double?,
+  voteCount: Int?,
+  accountRating: Int?,
   onAddRateClicked: () -> Unit,
 ) {
   Row(
@@ -453,6 +461,7 @@ private fun UserRating(
       MediaRatingItem(
         rating = overallUserScore,
         size = RatingSize.LARGE,
+        voteCount = voteCount,
       )
       Text(
         text = stringResource(id = R.string.details__user_score),
@@ -470,11 +479,11 @@ private fun UserRating(
       modifier = Modifier.align(Alignment.CenterVertically),
       onClick = onAddRateClicked,
     ) {
-      if (userRating != null) {
+      if (accountRating != null) {
         SpannableRating(
           modifier = Modifier.align(Alignment.CenterVertically),
           text = stringResource(id = R.string.details__your_rating),
-          rating = userRating,
+          rating = accountRating,
           vertical = true,
         )
       } else {
@@ -634,7 +643,8 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           posterPath = "",
           releaseDate = "",
           name = "Flight Club",
-          rating = "",
+          voteAverage = 7.2,
+          voteCount = 1020,
           overview = "This movie is good.",
           isFavorite = false,
         )
@@ -644,7 +654,8 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         posterPath = "",
         releaseDate = "",
         name = "Flight Club",
-        rating = "",
+        voteAverage = 7.2,
+        voteCount = 1_453_020,
         overview = "This movie is good.",
         isFavorite = false,
       )
@@ -669,7 +680,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           ),
         ),
         releaseDate = "2005-03-24",
-        rating = "9.5",
+        ratingCount = RatingCount.initial(9.5, 100),
         isFavorite = false,
         genres = listOf("Comedy", "Romance"),
         seasons = listOf(),
@@ -689,6 +700,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             role = listOf(PersonRole.Creator),
           ),
         ),
+
         numberOfSeasons = 9,
       )
 
@@ -697,7 +709,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
         releaseDate = "2022",
         title = "Flight Club",
-        rating = "9.5",
+        ratingCount = RatingCount.initial(9.5, 100),
         isFavorite = false,
         overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal" +
           " male aggression into a shocking new form of therapy. Their concept catches on," +

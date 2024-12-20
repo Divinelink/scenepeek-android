@@ -1,7 +1,7 @@
 package com.divinelink.core.data.person.credits.mapper
 
+import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
-import com.divinelink.core.testing.factories.model.person.credit.PersonCrewCreditFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

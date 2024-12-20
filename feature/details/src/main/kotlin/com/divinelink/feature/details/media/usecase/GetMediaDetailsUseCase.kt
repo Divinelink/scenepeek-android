@@ -8,8 +8,10 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
@@ -17,6 +19,7 @@ import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -24,6 +27,7 @@ import timber.log.Timber
 open class GetMediaDetailsUseCase(
   private val repository: DetailsRepository,
   private val mediaRepository: MediaRepository,
+  private val preferenceStorage: PreferenceStorage,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   private val getDetailsActionItemsUseCase: GetDetailsActionItemsUseCase,
@@ -53,6 +57,8 @@ open class GetMediaDetailsUseCase(
         mediaType = MediaType.from(requestApi.endpoint),
       )
 
+      val ratingSource = preferenceStorage.ratingSource.firstOrNull() ?: RatingSource.TMDB
+
       launch(dispatcher.io) {
         repository.fetchMovieDetails(requestApi)
           .catch {
@@ -63,7 +69,11 @@ open class GetMediaDetailsUseCase(
             send(
               Result.success(
                 MediaDetailsResult.DetailsSuccess(
-                  result.data.copy(isFavorite = isFavorite.getOrNull() ?: false),
+                  mediaDetails = result.data.copy(
+                    isFavorite = isFavorite.getOrNull() ?: false,
+                    ratingCount = result.data.ratingCount,
+                  ),
+                  ratingSource = ratingSource,
                 ),
               ),
             )

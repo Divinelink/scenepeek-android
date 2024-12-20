@@ -4,6 +4,7 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingCount
 
 object MediaDetailsFactory {
 
@@ -12,7 +13,7 @@ object MediaDetailsFactory {
     posterPath = "123456",
     releaseDate = "2022",
     title = "Flight Club",
-    rating = "7.3",
+    ratingCount = RatingCount.initial(7.3, 123_456),
     isFavorite = false,
     overview = "This movie is good.",
     director = Person(
@@ -34,7 +35,7 @@ object MediaDetailsFactory {
     overview = "Michael Scarn is the best.",
     credits = ActorFactory.all(),
     releaseDate = "2005-03-24",
-    rating = "9.5",
+    ratingCount = RatingCount.initial(9.5, 12_345),
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
     seasons = listOf(),

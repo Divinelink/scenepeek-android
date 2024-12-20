@@ -27,6 +27,10 @@ object TestTags {
 
   const val LAZY_COLUMN = "Lazy Column"
 
+  object Rating {
+    const val VOTE_COUNT = "Rating Vote Count %s"
+  }
+
   object Details {
     const val CONTENT_LIST = "Details Content Scrollable List"
     const val CONTENT_SCAFFOLD = "Details Content Scaffold"

@@ -6,5 +6,5 @@ data class AccountMediaDetails(
   val rating: Float?,
   val watchlist: Boolean,
 ) {
-  val beautifiedRating: String? = rating?.toInt()?.toString()
+  val beautifiedRating: Int? = rating?.toInt()
 }

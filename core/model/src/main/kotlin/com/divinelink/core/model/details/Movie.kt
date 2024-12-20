@@ -1,5 +1,7 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.rating.RatingCount
+
 /**
  * Represents details of a movie.
  */
@@ -10,7 +12,7 @@ data class Movie(
   override val overview: String?,
   override val genres: List<String>?,
   override val releaseDate: String,
-  override val rating: String,
+  override val ratingCount: RatingCount,
   val runtime: String?,
   val cast: List<Person>,
   val director: Person?,

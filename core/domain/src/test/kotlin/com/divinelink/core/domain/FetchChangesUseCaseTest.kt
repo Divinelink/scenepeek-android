@@ -1,11 +1,11 @@
 package com.divinelink.core.domain
 
 import com.divinelink.core.domain.change.FetchChangesUseCase
+import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.change.StringValue
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.factories.model.change.PersonChangesSample
 import com.divinelink.core.testing.repository.TestPersonRepository

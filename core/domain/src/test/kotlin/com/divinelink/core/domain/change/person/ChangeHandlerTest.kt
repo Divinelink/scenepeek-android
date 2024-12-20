@@ -6,11 +6,11 @@ import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.person.ProdPersonDao
+import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample.toWizard

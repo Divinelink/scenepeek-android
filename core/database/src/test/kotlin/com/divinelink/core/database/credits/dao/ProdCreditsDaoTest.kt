@@ -7,9 +7,9 @@ import com.divinelink.core.database.credits.cast.SeriesCastRole
 import com.divinelink.core.database.credits.crew.SeriesCrew
 import com.divinelink.core.database.credits.crew.SeriesCrewJob
 import com.divinelink.core.database.credits.model.CrewEntity
+import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
-import com.divinelink.core.testing.factories.core.commons.ClockFactory
 import com.divinelink.core.testing.factories.database.credits.AggregateCreditsFactory
 import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastFactory
 import com.divinelink.core.testing.factories.database.credits.cast.SeriesCastRoleFactory

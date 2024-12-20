@@ -43,7 +43,8 @@ private fun TvItemApi.toTv() = MediaItem.Media.TV(
   posterPath = this.posterPath,
   releaseDate = this.firstAirDate,
   name = this.name,
-  rating = this.voteAverage.round(1).toString(),
+  voteAverage = this.voteAverage.round(1),
+  voteCount = this.voteCount ?: 0,
   overview = this.overview,
   isFavorite = false,
 )

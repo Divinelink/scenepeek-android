@@ -165,7 +165,8 @@ private fun HomeContentPreview() {
           posterPath = "",
           releaseDate = "2023",
           name = "Puss in Boots: The Last Wish",
-          rating = "4.6",
+          voteAverage = 4.6,
+          voteCount = 1000,
           isFavorite = true,
           overview = "Puss in Boots discovers that his passion for adventure has taken its toll: " +
             "He has burned through eight of his nine lives, leaving him with only one life left." +

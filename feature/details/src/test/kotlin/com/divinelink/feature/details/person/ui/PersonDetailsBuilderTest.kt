@@ -1,7 +1,7 @@
 package com.divinelink.feature.details.person.ui
 
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory.toWzd
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory.toWzd
 import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
 import com.google.common.truth.Truth.assertThat

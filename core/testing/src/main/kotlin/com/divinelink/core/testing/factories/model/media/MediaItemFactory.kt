@@ -9,7 +9,8 @@ object MediaItemFactory {
     posterPath = "123456",
     releaseDate = "2022",
     name = "Flight Club",
-    rating = "7.3",
+    voteAverage = 7.3,
+    voteCount = 123_456,
     overview = "This movie is good.",
     isFavorite = false,
   )
@@ -19,7 +20,8 @@ object MediaItemFactory {
     posterPath = "tv - posterPath",
     releaseDate = "tv - releaseDate",
     name = "tv - name",
-    rating = "10",
+    voteAverage = 10.0,
+    voteCount = 12_345,
     overview = "overview",
     isFavorite = false,
   )
@@ -30,7 +32,8 @@ object MediaItemFactory {
       posterPath = "movie $it - posterPath",
       releaseDate = "movie $it - releaseDate",
       name = "movie $it - name",
-      rating = "$it.7",
+      voteAverage = it.toDouble() + 0.7,
+      voteCount = 12_345 + it,
       overview = "overview $it",
       isFavorite = false,
     )
@@ -42,7 +45,8 @@ object MediaItemFactory {
       posterPath = "tv $it - posterPath",
       releaseDate = "tv $it - releaseDate",
       name = "tv $it  - name",
-      rating = "$it.0",
+      voteAverage = it.toDouble(),
+      voteCount = 12_345 + it,
       overview = "overview $it",
       isFavorite = false,
     )
@@ -66,8 +70,12 @@ object MediaItemFactory {
       mediaItem = mediaItem.copy(releaseDate = releaseDate)
     }
 
-    fun withRating(rating: String) = apply {
-      mediaItem = mediaItem.copy(rating = rating)
+    fun withVoteAverage(rating: Double) = apply {
+      mediaItem = mediaItem.copy(voteAverage = rating)
+    }
+
+    fun withVoteCount(voteCount: Int) = apply {
+      mediaItem = mediaItem.copy(voteCount = voteCount)
     }
 
     fun withOverview(overview: String) = apply {
@@ -99,8 +107,12 @@ object MediaItemFactory {
       mediaItem = mediaItem.copy(releaseDate = releaseDate)
     }
 
-    fun withRating(rating: String) = apply {
-      mediaItem = mediaItem.copy(rating = rating)
+    fun withVoteAverage(rating: Double) = apply {
+      mediaItem = mediaItem.copy(voteAverage = rating)
+    }
+
+    fun withVoteCount(voteCount: Int) = apply {
+      mediaItem = mediaItem.copy(voteCount = voteCount)
     }
 
     fun withOverview(overview: String) = apply {

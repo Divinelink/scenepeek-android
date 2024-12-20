@@ -60,7 +60,8 @@ fun DetailedMediaItem(
               .align(Alignment.BottomStart)
               .offset(y = offset)
               .padding(start = MaterialTheme.dimensions.keyline_8),
-            rating = mediaItem.rating,
+            rating = mediaItem.voteAverage,
+            voteCount = mediaItem.voteCount,
             size = RatingSize.MEDIUM,
           )
         }
