@@ -14,7 +14,7 @@ object DetailsResponseApiFactory {
     genres = GenreFactory.all(),
     homepage = null,
     id = 1123,
-    imdbId = null,
+    imdbId = "tt0137523",
     originalLanguage = "",
     originalTitle = "",
     overview = "This movie is good.",

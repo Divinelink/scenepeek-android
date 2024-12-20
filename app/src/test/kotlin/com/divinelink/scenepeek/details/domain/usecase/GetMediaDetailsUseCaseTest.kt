@@ -4,10 +4,9 @@ import app.cash.turbine.test
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
-import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
-import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -51,19 +50,7 @@ class GetMediaDetailsUseCaseTest {
   private lateinit var preferenceStorage: FakePreferenceStorage
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
-  private val movieDetails = Movie(
-    id = 0,
-    title = "",
-    posterPath = "",
-    overview = null,
-    director = null,
-    genres = listOf(),
-    cast = listOf(),
-    releaseDate = "",
-    ratingCount = RatingCount.initial(0.0, 0),
-    isFavorite = false,
-    runtime = "50m",
-  )
+  private val movieDetails = MediaDetailsFactory.FightClub()
 
   private val reviewsList = (1..10).map {
     Review(

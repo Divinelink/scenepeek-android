@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.model.details
+package com.divinelink.core.fixtures.model.details
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person

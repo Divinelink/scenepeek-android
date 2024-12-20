@@ -100,7 +100,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
   title = this.title,
-  ratingCount = RatingCount.initial(
+  ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
   ),
@@ -110,6 +110,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   cast = this.credits.cast.toActors(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
+  imdbId = this.imdbId,
 )
 
 private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
@@ -118,7 +119,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   releaseDate = this.releaseDate,
   title = this.name,
   genres = this.genres.map { it.name },
-  ratingCount = RatingCount.initial(
+  ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
   ),
@@ -127,6 +128,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
   credits = this.credits.cast.toActors(),
+  imdbId = null, // TODO Get from API
 )
 
 private fun List<CrewApi>.toDirector(): Person? {

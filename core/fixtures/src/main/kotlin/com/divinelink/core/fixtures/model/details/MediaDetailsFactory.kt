@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.model.details
+package com.divinelink.core.fixtures.model.details
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
@@ -13,7 +13,7 @@ object MediaDetailsFactory {
     posterPath = "123456",
     releaseDate = "2022",
     title = "Flight Club",
-    ratingCount = RatingCount.initial(7.3, 123_456),
+    ratingCount = RatingCount.tmdb(7.3, 123_456),
     isFavorite = false,
     overview = "This movie is good.",
     director = Person(
@@ -26,6 +26,7 @@ object MediaDetailsFactory {
     cast = ActorFactory.all(),
     genres = listOf("Thriller", "Drama", "Comedy"),
     runtime = "2h 10m",
+    imdbId = "tt0137523",
   )
 
   fun TheOffice() = TV(
@@ -35,7 +36,7 @@ object MediaDetailsFactory {
     overview = "Michael Scarn is the best.",
     credits = ActorFactory.all(),
     releaseDate = "2005-03-24",
-    ratingCount = RatingCount.initial(9.5, 12_345),
+    ratingCount = RatingCount.tmdb(9.5, 12_345),
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
     seasons = listOf(),
@@ -56,5 +57,6 @@ object MediaDetailsFactory {
       ),
     ),
     numberOfSeasons = 9,
+    imdbId = "tt0386676",
   )
 }
