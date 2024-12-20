@@ -56,7 +56,7 @@ fun PersonContent(
 
 @Previews
 @Composable
-private fun PersonContentPreview(
+fun PersonContentPreview(
   @PreviewParameter(PersonUiStatePreviewParameterProvider::class)
   uiState: PersonUiState,
 ) {

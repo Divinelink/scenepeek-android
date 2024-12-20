@@ -3,9 +3,9 @@ package com.divinelink.core.network.details.person.mapper
 import JvmUnitTestDemoAssetManager
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test

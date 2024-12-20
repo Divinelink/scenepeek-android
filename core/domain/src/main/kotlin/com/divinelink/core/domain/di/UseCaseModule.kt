@@ -8,8 +8,8 @@ import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.domain.HandleAuthenticationRequestUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
-import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
+import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase

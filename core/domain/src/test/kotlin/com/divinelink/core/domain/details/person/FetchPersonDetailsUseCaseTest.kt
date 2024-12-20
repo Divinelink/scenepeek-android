@@ -2,17 +2,17 @@ package com.divinelink.core.domain.details.person
 
 import app.cash.turbine.test
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory.toWzd
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
+import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory
-import com.divinelink.core.testing.factories.details.person.PersonDetailsFactory.toWzd
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.bruceAlmighty
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.despicableMe
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.littleMissSunshine
-import com.divinelink.core.testing.factories.model.person.credit.PersonCastCreditFactory.theOffice
-import com.divinelink.core.testing.factories.model.person.credit.PersonCombinedCreditsFactory
-import com.divinelink.core.testing.factories.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.testing.repository.TestPersonRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
@@ -60,7 +61,7 @@ fun MediaRatingItem(
     if (rating.isWholeNumber()) {
       rating.toInt()
     } else {
-      rating
+      rating.round(1)
     }
   }
 
@@ -107,7 +108,7 @@ fun MediaRatingItem(
       drawArc(
         color = color,
         startAngle = 270f,
-        sweepAngle = (100f / 10f * (rating ?: 0.0) * 3.6f).toFloat(),
+        sweepAngle = (100f / 10f * (rating?.round(1) ?: 0.0) * 3.6f).toFloat(),
         useCenter = false,
         style = Stroke(
           width = 4.dp.toPx(),

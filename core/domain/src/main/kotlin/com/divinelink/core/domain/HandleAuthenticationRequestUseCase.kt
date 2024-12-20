@@ -1,11 +1,11 @@
 package com.divinelink.core.domain
 
+import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.session.tokenIsApproved
-import com.divinelink.core.commons.domain.DispatcherProvider
 import kotlinx.coroutines.flow.first
 
 /**

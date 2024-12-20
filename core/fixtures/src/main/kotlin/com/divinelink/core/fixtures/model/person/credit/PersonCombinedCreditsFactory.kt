@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.model.person.credit
+package com.divinelink.core.fixtures.model.person.credit
 
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 

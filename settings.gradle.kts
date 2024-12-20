@@ -31,6 +31,7 @@ include(":core:network")
 include(":core:ui")
 
 include(":core:testing")
+include(":core:fixtures")
 
 include(":feature:details")
 include(":feature:settings")

@@ -4,12 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.database.media.mapper.toPersistableMovie
 import com.divinelink.core.database.media.mapper.toPersistableTV
 import com.divinelink.core.database.media.model.PersistableMovie
 import com.divinelink.core.database.media.model.PersistableTV
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

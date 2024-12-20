@@ -1,13 +1,13 @@
 package com.divinelink.core.testing.factories.api.details.person
 
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
-import com.divinelink.core.testing.factories.entity.person.BIOGRAPHY
 
 object PersonDetailsApiFactory {
 
   fun steveCarell() = PersonDetailsApi(
     id = 4495,
-    biography = BIOGRAPHY,
+    biography = PersonDetailsFactory.BIOGRAPHY,
     birthday = "1962-08-16",
     deathday = null,
     gender = 2,

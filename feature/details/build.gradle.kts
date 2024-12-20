@@ -21,5 +21,6 @@ dependencies {
   implementation(projects.core.model)
   implementation(projects.core.navigation)
 
+  implementation(projects.core.fixtures)
   testImplementation(projects.core.testing)
 }

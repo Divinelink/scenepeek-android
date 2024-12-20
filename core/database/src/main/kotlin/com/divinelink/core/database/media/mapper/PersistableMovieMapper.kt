@@ -1,7 +1,7 @@
 package com.divinelink.core.database.media.mapper
 
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.database.media.model.PersistableMovie
+import com.divinelink.core.model.media.MediaItem
 
 internal fun MediaItem.Media.toPersistableMovie(): PersistableMovie = PersistableMovie(
   id = this.id,
