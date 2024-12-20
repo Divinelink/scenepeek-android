@@ -8,6 +8,8 @@ import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.network.jellyseerr.service.ProdJellyseerrService
+import com.divinelink.core.network.omdb.service.OMDbService
+import com.divinelink.core.network.omdb.service.ProdOMDbService
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.android.Android
 import org.koin.core.module.dsl.bind
@@ -25,6 +27,8 @@ val remoteModule = module {
   singleOf(::ProdJellyseerrService) { bind<JellyseerrService>() }
 
   singleOf(::ProdPersonService) { bind<PersonService>() }
+
+  singleOf(::ProdOMDbService) { bind<OMDbService>() }
 
   singleOf(::PersistentCookieStorage) { bind<PersistentCookieStorage>() }
 }

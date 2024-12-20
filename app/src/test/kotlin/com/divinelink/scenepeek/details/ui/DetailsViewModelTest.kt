@@ -7,6 +7,7 @@ import androidx.compose.material3.SnackbarResult
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingSource
@@ -14,7 +15,6 @@ import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.ui.UIText

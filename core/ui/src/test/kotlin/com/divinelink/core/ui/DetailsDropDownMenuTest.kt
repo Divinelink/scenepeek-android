@@ -2,9 +2,9 @@ package com.divinelink.core.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.getString
 import kotlin.test.Test
 

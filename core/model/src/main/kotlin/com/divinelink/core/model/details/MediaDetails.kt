@@ -15,6 +15,7 @@ sealed class MediaDetails {
   abstract val ratingCount: RatingCount
   abstract val genres: List<String>?
   abstract val isFavorite: Boolean
+  abstract val imdbId: String?
 
   fun copy(
     id: Int = this.id,
@@ -25,6 +26,7 @@ sealed class MediaDetails {
     genres: List<String>? = this.genres,
     isFavorite: Boolean = this.isFavorite,
     ratingCount: RatingCount = this.ratingCount,
+    imdbId: String? = this.imdbId,
   ): MediaDetails = when (this) {
     is Movie -> Movie(
       id = id,
@@ -38,6 +40,7 @@ sealed class MediaDetails {
       genres = genres,
       cast = cast,
       runtime = runtime,
+      imdbId = imdbId,
     )
     is TV -> TV(
       id = id,
@@ -52,6 +55,7 @@ sealed class MediaDetails {
       seasons = seasons,
       creators = creators,
       numberOfSeasons = numberOfSeasons,
+      imdbId = imdbId,
     )
   }
 }

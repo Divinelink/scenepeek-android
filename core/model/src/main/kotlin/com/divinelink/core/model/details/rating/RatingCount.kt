@@ -4,7 +4,7 @@ data class RatingCount(
   val ratings: Map<RatingSource, RatingDetails?>,
 ) {
   companion object {
-    fun initial(tmdbVoteAverage: Double, tmdbVoteCount: Int) = RatingCount(
+    fun tmdb(tmdbVoteAverage: Double, tmdbVoteCount: Int) = RatingCount(
       ratings = mapOf(
         RatingSource.TMDB to RatingDetails(
           voteAverage = tmdbVoteAverage,

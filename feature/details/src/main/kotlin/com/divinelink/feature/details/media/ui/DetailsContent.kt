@@ -56,14 +56,13 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -660,122 +659,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         isFavorite = false,
       )
 
-      fun TheOffice() = TV(
-        id = 2316,
-        title = "The Office",
-        posterPath = "the_office.jpg",
-        overview = "Michael Scarn is the best.",
-        credits = listOf(
-          Person(
-            id = 1,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "Here's Johnny!",
-                order = 0,
-              ),
-            ),
-          ),
-        ),
-        releaseDate = "2005-03-24",
-        ratingCount = RatingCount.initial(9.5, 100),
-        isFavorite = false,
-        genres = listOf("Comedy", "Romance"),
-        seasons = listOf(),
-        creators = listOf(
-          Person(
-            id = 1216630,
-            name = "Greg Daniels",
-            profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-          Person(
-            id = 17835,
-            name = "Ricky Gervais",
-            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-        ),
-
-        numberOfSeasons = 9,
-      )
-
-      val movieDetails = Movie(
-        id = 1123,
-        posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
-        releaseDate = "2022",
-        title = "Flight Club",
-        ratingCount = RatingCount.initial(9.5, 100),
-        isFavorite = false,
-        overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal" +
-          " male aggression into a shocking new form of therapy. Their concept catches on," +
-          " with underground fight clubs forming in every town, until an eccentric gets in the" +
-          " way and ignites an out-of-control spiral toward oblivion.",
-        director = Person(
-          id = 123443321,
-          name = "Forest Gump",
-          profilePath = "BoxOfChocolates.jpg",
-          knownForDepartment = "Directing",
-          role = listOf(PersonRole.Director),
-        ),
-        cast = listOf(
-          Person(
-            id = 1,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "Here's Johnny!",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 2,
-            name = "Nicholson",
-            profilePath = "Cuckoo.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "McMurphy",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 3,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "HelloJohnny",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 4,
-            name = "Nicholson",
-            profilePath = "Cuckoo.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "McMurphy",
-                order = 0,
-              ),
-            ),
-          ),
-        ),
-        genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
-        runtime = "2h 10m",
-      )
-
       return sequenceOf(
         DetailsViewState(
           mediaId = popularMovie.id,
@@ -794,13 +677,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           ),
           mediaType = MediaType.MOVIE,
           tvCredits = null,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
         ),
 
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
-          mediaDetails = TheOffice(),
+          mediaDetails = MediaDetailsFactory.TheOffice(),
           tvCredits = null,
           similarMovies = similarMovies,
         ),
@@ -808,7 +691,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
           similarMovies = similarMovies,
           tvCredits = null,
           reviews = reviews,
@@ -817,7 +700,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
           similarMovies = similarMovies,
           userDetails = AccountMediaDetails(
             id = 0,

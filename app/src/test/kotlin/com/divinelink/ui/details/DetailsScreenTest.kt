@@ -11,13 +11,13 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
