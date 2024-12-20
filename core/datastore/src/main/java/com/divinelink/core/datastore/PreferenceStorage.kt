@@ -64,7 +64,7 @@ interface PreferenceStorage {
   suspend fun setJellyseerrAuthMethod(authMethod: String)
   val jellyseerrAuthMethod: Flow<String?>
 
-  suspend fun setRatingSource(ratingSource: String)
+  suspend fun setRatingSource(ratingSource: RatingSource)
   val ratingSource: Flow<RatingSource>
 }
 
@@ -243,11 +243,11 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     it[PREF_JELLYSEERR_AUTH_METHOD]
   }
 
-  override suspend fun setRatingSource(ratingSource: String) {
-    dataStore.edit { it[PREF_RATING_SOURCE] = ratingSource }
+  override suspend fun setRatingSource(ratingSource: RatingSource) {
+    dataStore.edit { it[PREF_RATING_SOURCE] = ratingSource.value }
   }
 
   override val ratingSource: Flow<RatingSource> = dataStore.data.map { it ->
     it[PREF_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
-  }
+  }.distinctUntilChanged()
 }

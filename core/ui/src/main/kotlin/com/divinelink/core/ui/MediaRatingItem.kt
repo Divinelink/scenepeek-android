@@ -17,16 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.extensions.isWholeNumber
 import com.divinelink.core.commons.extensions.round
+import com.divinelink.core.commons.extensions.toShortString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.extension.getColorRating
-import com.divinelink.core.ui.extension.isWholeNumber
-import com.divinelink.core.ui.extension.toShortString
 
 @Suppress("MagicNumber")
 enum class RatingSize(
@@ -141,6 +142,7 @@ fun MediaRatingItem(
 
       if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
         Text(
+          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT.format(voteCount.toShortString())),
           text = voteCount.toShortString(),
           style = MaterialTheme.typography.labelSmall,
           textAlign = TextAlign.Center,
@@ -157,7 +159,6 @@ fun MediaRatingItemPreview() {
   AppTheme {
     Surface {
       Column {
-
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
           MediaRatingItem(rating = null, size = RatingSize.SMALL, voteCount = null)
           MediaRatingItem(rating = null, size = RatingSize.MEDIUM, voteCount = null)
@@ -172,6 +173,16 @@ fun MediaRatingItemPreview() {
           MediaRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = 132_583)
           MediaRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = 132_583)
           MediaRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = 132_583)
+        }
+
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+        ) {
+          MediaRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 932_583)
+          MediaRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 1_432_583)
+          MediaRatingItem(rating = 5.9, size = RatingSize.LARGE, voteCount = 2_992_583)
+          MediaRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_202_583)
+          MediaRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_102_583)
         }
       }
     }

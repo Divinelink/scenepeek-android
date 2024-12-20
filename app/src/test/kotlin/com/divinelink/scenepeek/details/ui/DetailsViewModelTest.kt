@@ -76,6 +76,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
         ),
       )
   }
@@ -99,6 +100,31 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
           mediaDetails = movieDetails,
+          ratingSource = RatingSource.TMDB,
+        ),
+      )
+  }
+
+  @Test
+  fun `given success details response updates rating source`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.IMDB,
+          ),
+        ),
+      )
+      .buildViewModel(mediaId, MediaType.MOVIE)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = mediaId,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          isLoading = false,
+          mediaDetails = movieDetails,
+          ratingSource = RatingSource.IMDB,
         ),
       )
   }

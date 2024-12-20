@@ -275,6 +275,10 @@ class DetailsContentTest : ComposeTest() {
     composeTestRule
       .onNodeWithText(userScore)
       .assertIsDisplayed()
+
+    composeTestRule
+      .onNodeWithTag(TestTags.Rating.VOTE_COUNT.format("123.4k"))
+      .assertIsDisplayed()
   }
 
   @Test

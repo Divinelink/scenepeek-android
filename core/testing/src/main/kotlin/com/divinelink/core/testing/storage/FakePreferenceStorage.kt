@@ -120,7 +120,7 @@ class FakePreferenceStorage(
     _spoilersObfuscation.value = isEnabled
   }
 
-  override suspend fun setRatingSource(ratingSource: String) {
-    _ratingSource.value = RatingSource.from(ratingSource)
+  override suspend fun setRatingSource(ratingSource: RatingSource) {
+    _ratingSource.value = ratingSource
   }
 }

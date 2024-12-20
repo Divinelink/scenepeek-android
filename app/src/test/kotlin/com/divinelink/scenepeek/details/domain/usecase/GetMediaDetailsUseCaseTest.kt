@@ -130,6 +130,28 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
+  fun `successfully get movie details with Trakt rating source`() = runTest {
+    preferenceStorage.setRatingSource(RatingSource.TRAKT)
+
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
+    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    val flow = createGetMediaDetailsUseCase()
+
+    val result = flow(request).first()
+
+    assertThat(result).isEqualTo(
+      Result.success(
+        MediaDetailsResult.DetailsSuccess(
+          mediaDetails = movieDetails.copy(
+            isFavorite = true,
+          ),
+          ratingSource = RatingSource.TRAKT,
+        ),
+      ),
+    )
+  }
+
+  @Test
   fun `successfully get movie details with false favorite status`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))

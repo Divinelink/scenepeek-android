@@ -12,13 +12,3 @@ fun Double?.getColorRating(): Color = when (this) {
   in 7.0..10.0 -> Color(0xFF21D07A)
   else -> MaterialTheme.colorScheme.onSurface
 }
-
-fun Double.isWholeNumber(): Boolean = this % 1.0 == 0.0
-
-fun Int.toShortString(): String {
-  return when {
-    this >= 1_000_000 -> "${this / 1_000_000}m"
-    this >= 1_000 -> "${this / 1_000}k"
-    else -> this.toString()
-  }
-}

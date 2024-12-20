@@ -3,6 +3,7 @@ package com.divinelink.scenepeek.base.storage
 import app.cash.turbine.test
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
@@ -227,6 +228,44 @@ class DataStorePreferenceStorageTest {
 
       storage.setSpoilersObfuscation(false)
       storage.setSpoilersObfuscation(false)
+
+      expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test RatingSource default value is TMDB`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.ratingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+    }
+  }
+
+  @Test
+  fun `test RatingSource value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.ratingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setRatingSource(RatingSource.IMDB)
+      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+
+      storage.setRatingSource(RatingSource.TRAKT)
+      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+    }
+  }
+
+  @Test
+  fun `test RatingSource does not trigger new emissions with the same value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.ratingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setRatingSource(RatingSource.TMDB)
+      storage.setRatingSource(RatingSource.TMDB)
 
       expectNoEvents()
     }
