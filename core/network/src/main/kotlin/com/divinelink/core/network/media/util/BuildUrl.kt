@@ -6,6 +6,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
 import io.ktor.http.encodedPath
 
+// TODO Add unit test
 fun buildFetchDetailsUrl(
   id: Int,
   media: MediaType,

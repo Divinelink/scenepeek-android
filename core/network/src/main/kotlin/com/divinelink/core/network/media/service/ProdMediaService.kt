@@ -1,6 +1,6 @@
 package com.divinelink.core.network.media.service
 
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
@@ -26,7 +26,7 @@ import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdMediaService(private val restClient: RestClient) : MediaService {
+class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/movie/popular?"

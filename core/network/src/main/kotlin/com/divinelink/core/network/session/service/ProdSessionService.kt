@@ -1,6 +1,6 @@
 package com.divinelink.core.network.session.service
 
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.session.model.AccountDetailsResponseApi
 import com.divinelink.core.network.session.model.CreateRequestTokenResponseApi
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
@@ -10,7 +10,7 @@ import com.divinelink.core.network.session.model.DeleteSessionResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdSessionService(private val restClient: RestClient) : SessionService {
+class ProdSessionService(private val restClient: TMDbClient) : SessionService {
 
   override suspend fun createRequestToken(): Result<CreateRequestTokenResponseApi> {
     val url = "${restClient.tmdbUrl}/authentication/token/new"

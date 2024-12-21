@@ -1,14 +1,14 @@
 package com.divinelink.core.network.details.person.service
 
 import com.divinelink.core.network.changes.model.api.ChangesResponseApi
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
 import com.divinelink.core.network.details.person.model.PersonDetailsApi
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdPersonService(private val restClient: RestClient) : PersonService {
+class ProdPersonService(private val restClient: TMDbClient) : PersonService {
 
   override fun fetchPersonDetails(id: Long): Flow<PersonDetailsApi> = flow {
     val url = "${restClient.tmdbUrl}/person/$id"

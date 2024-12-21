@@ -3,7 +3,9 @@ package com.divinelink.core.network.di
 import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.account.ProdAccountService
 import com.divinelink.core.network.client.JellyseerrRestClient
+import com.divinelink.core.network.client.OMDbClient
 import com.divinelink.core.network.client.PersistentCookieStorage
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
@@ -20,7 +22,9 @@ val remoteModule = module {
 
   single<HttpClientEngine> { Android.create() }
 
+  singleOf(::TMDbClient) { bind<TMDbClient>() }
   singleOf(::JellyseerrRestClient) { bind<JellyseerrRestClient>() }
+  singleOf(::OMDbClient) { bind<OMDbClient>() }
 
   singleOf(::ProdAccountService) { bind<AccountService>() }
 

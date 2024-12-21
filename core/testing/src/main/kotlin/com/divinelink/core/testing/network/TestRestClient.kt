@@ -1,11 +1,11 @@
 package com.divinelink.core.testing.network
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 
 class TestRestClient {
 
-  lateinit var restClient: RestClient
+  lateinit var restClient: TMDbClient
 
   /**
    * Mocks the response of a GET request
@@ -20,7 +20,7 @@ class TestRestClient {
       it.readBytes().decodeToString().trimIndent()
     }
 
-    restClient = RestClient(MockEngine(json))
+    restClient = TMDbClient(MockEngine(json))
 
     restClient.get<T>(url = url)
   }

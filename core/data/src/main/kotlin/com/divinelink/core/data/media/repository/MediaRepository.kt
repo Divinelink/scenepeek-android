@@ -1,5 +1,6 @@
 package com.divinelink.core.data.media.repository
 
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -48,6 +49,8 @@ interface MediaRepository {
    * Request movies, tv series and persons through a search query.
    */
   fun fetchMultiInfo(requestApi: MultiSearchRequestApi): Flow<Result<MultiSearch>>
+
+  fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>>
 
   /**
    * Add favorite [media] to local storage.
