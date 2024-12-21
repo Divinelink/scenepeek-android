@@ -1,12 +1,12 @@
 package com.divinelink.core.network.account
 
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdAccountService(private val restClient: RestClient) : AccountService {
+class ProdAccountService(private val restClient: TMDbClient) : AccountService {
 
   override fun fetchMoviesWatchlist(
     page: Int,

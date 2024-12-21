@@ -9,7 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
-class RestClient(engine: HttpClientEngine) {
+class TMDbClient(engine: HttpClientEngine) {
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
   private val authToken = BuildConfig.TMDB_AUTH_TOKEN
 

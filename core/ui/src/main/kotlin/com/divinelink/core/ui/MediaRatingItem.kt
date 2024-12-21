@@ -43,8 +43,8 @@ enum class RatingSize(
     coloredArcSize = 36.dp,
   ),
   LARGE(
-    size = 68.dp,
-    coloredArcSize = 56.dp,
+    size = 72.dp,
+    coloredArcSize = 60.dp,
   ),
 }
 
@@ -55,7 +55,6 @@ fun MediaRatingItem(
   voteCount: Int?,
   size: RatingSize = RatingSize.MEDIUM,
 ) {
-
   val sanitizedRating = if (rating == null) {
     null
   } else {
@@ -130,7 +129,6 @@ fun MediaRatingItem(
     } else {
       MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
     }
-
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
       Text(
