@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class DetailsRequestApi(
   open val id: Int,
-  open val endpoint: String,
+  open val mediaType: MediaType,
 ) {
 
   @Serializable
@@ -16,7 +16,7 @@ sealed class DetailsRequestApi(
     val movieId: Int,
   ) : DetailsRequestApi(
     id = movieId,
-    endpoint = MediaType.MOVIE.value,
+    mediaType = MediaType.MOVIE,
   )
 
   @Serializable
@@ -25,11 +25,11 @@ sealed class DetailsRequestApi(
     val seriesId: Int,
   ) : DetailsRequestApi(
     id = seriesId,
-    endpoint = MediaType.TV.value,
+    mediaType = MediaType.TV,
   )
 
   data object Unknown : DetailsRequestApi(
     id = -1,
-    endpoint = "",
+    mediaType = MediaType.UNKNOWN,
   )
 }

@@ -86,7 +86,6 @@ sealed class DetailsResponseApi {
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
-    val credits: CreditsApi,
   ) : DetailsResponseApi()
 }
 
@@ -127,7 +126,6 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   isFavorite = false,
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
-  credits = this.credits.cast.toActors(),
   imdbId = null, // TODO Get from API
 )
 

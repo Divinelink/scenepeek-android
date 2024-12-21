@@ -12,7 +12,6 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -54,7 +53,7 @@ open class GetMediaDetailsUseCase(
 
       val isFavorite = mediaRepository.checkIfMediaIsFavorite(
         id = requestApi.id,
-        mediaType = MediaType.from(requestApi.endpoint),
+        mediaType = requestApi.mediaType,
       )
 
       val ratingSource = preferenceStorage.ratingSource.firstOrNull() ?: RatingSource.TMDB
@@ -129,7 +128,7 @@ open class GetMediaDetailsUseCase(
         fetchAccountMediaDetailsUseCase(
           MediaDetailsParams(
             id = requestApi.id,
-            mediaType = MediaType.from(requestApi.endpoint),
+            mediaType = requestApi.mediaType,
           ),
         )
           .catch { Timber.e(it) }
@@ -141,7 +140,7 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.io) {
-        getMenuItemsUseCase(MediaType.from(requestApi.endpoint))
+        getMenuItemsUseCase(requestApi.mediaType)
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
