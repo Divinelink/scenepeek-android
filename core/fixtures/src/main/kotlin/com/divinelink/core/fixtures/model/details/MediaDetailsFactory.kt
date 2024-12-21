@@ -34,7 +34,6 @@ object MediaDetailsFactory {
     title = "The Office",
     posterPath = "the_office.jpg",
     overview = "Michael Scarn is the best.",
-    credits = ActorFactory.all(),
     releaseDate = "2005-03-24",
     ratingCount = RatingCount.tmdb(9.5, 12_345),
     isFavorite = false,
