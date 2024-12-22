@@ -10,6 +10,7 @@ import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
@@ -29,6 +30,8 @@ val useCaseModule = module {
 
   // Details - Person
   factoryOf(::FetchPersonDetailsUseCase)
+  // Details - Media
+  factoryOf(::FetchAllRatingsUseCase)
 
   // Jellyseerr
   factoryOf(::GetJellyseerrAccountDetailsUseCase)

@@ -375,7 +375,7 @@ fun MediaDetailsContent(
         accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
         voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
-        onShowAllRatingsClicked = {},
+        onShowAllRatingsClicked = viewAllRatingsClicked,
       )
     }
 

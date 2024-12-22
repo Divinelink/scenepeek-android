@@ -1,6 +1,7 @@
 package com.divinelink.core.fixtures.model.details.rating
 
 import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 
 object RatingCountFactory {
@@ -8,8 +9,8 @@ object RatingCountFactory {
   fun tmdb(): RatingCount = RatingCount(
     ratings = mapOf(
       RatingSource.TMDB to RatingDetailsFactory.tmdb(),
-      RatingSource.IMDB to null,
-      RatingSource.TRAKT to null,
+      RatingSource.IMDB to RatingDetails.Initial,
+      RatingSource.TRAKT to RatingDetails.Initial,
     ),
   )
 
@@ -17,14 +18,14 @@ object RatingCountFactory {
     ratings = mapOf(
       RatingSource.TMDB to RatingDetailsFactory.tmdb(),
       RatingSource.IMDB to RatingDetailsFactory.imdb(),
-      RatingSource.TRAKT to null,
+      RatingSource.TRAKT to RatingDetails.Initial,
     ),
   )
 
   fun trakt(): RatingCount = RatingCount(
     ratings = mapOf(
       RatingSource.TMDB to RatingDetailsFactory.tmdb(),
-      RatingSource.IMDB to null,
+      RatingSource.IMDB to RatingDetails.Initial,
       RatingSource.TRAKT to RatingDetailsFactory.trakt(),
     ),
   )

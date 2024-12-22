@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.commons.extensions.round
@@ -59,7 +58,7 @@ fun AllRatingsContent(
 @Composable
 private fun RatingItem(
   onClick: () -> Unit,
-  item: Pair<RatingSource, RatingDetails?>,
+  item: Pair<RatingSource, RatingDetails>,
 ) {
   Column(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -72,7 +71,6 @@ private fun RatingItem(
         .background(MaterialTheme.colorScheme.surfaceContainer)
         .padding(MaterialTheme.dimensions.keyline_8)
         .size(MaterialTheme.dimensions.keyline_48),
-      contentScale = ContentScale.Fit,
       painter = painterResource(item.first.iconRes),
       contentDescription = item.first.name,
     )
@@ -81,29 +79,37 @@ private fun RatingItem(
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      Text(
-        style = MaterialTheme.typography.titleMedium,
-        text = item.second?.voteAverage?.round(1)?.toString() ?: "-",
-      )
+      when (item.second) {
+        RatingDetails.Initial -> RatingContentShimmer()
+        is RatingDetails.Score -> {
+          val score = item.second as RatingDetails.Score
 
-      item.second?.voteCount?.let { voteCount ->
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-        ) {
           Text(
-            text = voteCount.toShortString(),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            style = MaterialTheme.typography.titleMedium,
+            text = score.voteAverage.round(1).toString(),
           )
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          ) {
+            Text(
+              text = score.voteCount.toShortString(),
+              style = MaterialTheme.typography.titleSmall,
+              color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            )
 
-          Icon(
-            modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
-            imageVector = Icons.Default.PeopleAlt,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-          )
+            Icon(
+              modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
+              imageVector = Icons.Default.PeopleAlt,
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            )
+          }
         }
+        RatingDetails.Unavailable -> Text(
+          style = MaterialTheme.typography.titleMedium,
+          text = "-",
+        )
       }
     }
   }
