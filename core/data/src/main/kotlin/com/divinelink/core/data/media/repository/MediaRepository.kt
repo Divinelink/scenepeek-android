@@ -52,6 +52,11 @@ interface MediaRepository {
 
   fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>>
 
+  fun fetchTraktRating(
+    mediaType: MediaType,
+    imdbId: String,
+  ): Flow<Result<RatingDetails>>
+
   /**
    * Add favorite [media] to local storage.
    */

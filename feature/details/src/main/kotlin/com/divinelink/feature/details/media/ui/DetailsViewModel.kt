@@ -422,11 +422,14 @@ class DetailsViewModel(
       viewState.value.mediaDetails?.let {
         fetchAllRatingsUseCase(it).collect { result ->
           result
-            .onSuccess {
+            .onSuccess { rating ->
               _viewState.update { viewState ->
                 viewState.copy(
                   mediaDetails = viewState.mediaDetails?.copy(
-                    ratingCount = result.data,
+                    ratingCount = viewState.mediaDetails.ratingCount.updateRating(
+                      source = rating.first,
+                      rating = rating.second,
+                    ),
                   ),
                 )
               }

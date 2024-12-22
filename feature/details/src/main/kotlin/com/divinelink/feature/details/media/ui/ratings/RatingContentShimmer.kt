@@ -18,7 +18,7 @@ import com.valentinilk.shimmer.shimmer
 @Composable
 fun RatingContentShimmer() {
   Column(
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(

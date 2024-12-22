@@ -9,4 +9,8 @@ object Routes {
   object OMDb {
     const val HOST = "omdbapi.com/"
   }
+
+  object Trakt {
+    const val HOST = "api.trakt.tv"
+  }
 }
