@@ -113,6 +113,7 @@ fun DetailsContent(
   requestMedia: (List<Int>) -> Unit,
   viewAllCreditsClicked: () -> Unit,
   onObfuscateSpoilers: () -> Unit,
+  viewAllRatingsClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -231,6 +232,7 @@ fun DetailsContent(
               onPersonClick = onPersonClick,
               obfuscateEpisodes = viewState.spoilersObfuscated,
               ratingSource = viewState.ratingSource,
+              viewAllRatingsClicked = viewAllRatingsClicked,
             )
           }
         }
@@ -302,6 +304,7 @@ fun MediaDetailsContent(
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   viewAllCreditsClicked: () -> Unit,
+  viewAllRatingsClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -368,11 +371,11 @@ fun MediaDetailsContent(
 
     item {
       UserRating(
-        ratingSource = ratingSource,
         overallUserScore = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage,
         accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
         voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
+        onShowAllRatingsClicked = {},
       )
     }
 
@@ -437,11 +440,11 @@ fun MediaDetailsContent(
 @Composable
 private fun UserRating(
   modifier: Modifier = Modifier,
-  ratingSource: RatingSource,
   overallUserScore: Double?,
   voteCount: Int?,
   accountRating: Int?,
   onAddRateClicked: () -> Unit,
+  onShowAllRatingsClicked: () -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxSize(),
@@ -450,28 +453,31 @@ private fun UserRating(
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24),
+        .size(MaterialTheme.dimensions.keyline_12),
     )
 
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      MediaRatingItem(
-        rating = overallUserScore,
-        size = RatingSize.LARGE,
-        voteCount = voteCount,
-      )
-      Text(
-        text = stringResource(id = R.string.details__user_score),
-        style = MaterialTheme.typography.titleMedium,
-      )
+    TextButton(onClick = onShowAllRatingsClicked) {
+      Row(
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        MediaRatingItem(
+          rating = overallUserScore,
+          size = RatingSize.LARGE,
+          voteCount = voteCount,
+        )
+        Text(
+          text = stringResource(id = R.string.details__user_score),
+          color = MaterialTheme.colorScheme.onSurface,
+          style = MaterialTheme.typography.titleMedium,
+        )
+      }
     }
 
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24),
+        .size(MaterialTheme.dimensions.keyline_0),
     )
 
     TextButton(
@@ -609,6 +615,7 @@ private fun DetailsContentPreview(
           onPersonClick = {},
           viewAllCreditsClicked = {},
           onObfuscateSpoilers = {},
+          viewAllRatingsClicked = {},
         )
       }
     }

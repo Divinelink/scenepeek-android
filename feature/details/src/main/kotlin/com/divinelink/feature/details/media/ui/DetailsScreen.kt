@@ -112,5 +112,8 @@ fun DetailsScreen(
         ),
       )
     },
+    viewAllRatingsClicked = {
+      // TODO
+    },
   )
 }
