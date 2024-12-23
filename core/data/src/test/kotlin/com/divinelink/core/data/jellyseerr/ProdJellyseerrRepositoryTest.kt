@@ -136,13 +136,13 @@ class ProdJellyseerrRepositoryTest {
         id = domain.id,
         email = domain.email!!,
         displayName = domain.displayName,
-        avatar = domain.avatar,
+        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
         requestCount = domain.requestCount,
         createdAt = domain.createdAt,
       ),
     )
 
-    val result = repository.getRemoteAccountDetails("http://localhost:8096")
+    val result = repository.getRemoteAccountDetails("http://localhost:5000")
 
     assertThat(result.first()).isEqualTo(Result.success(JellyseerrAccountDetailsFactory.jellyfin()))
   }

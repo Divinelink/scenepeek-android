@@ -8,7 +8,7 @@ object JellyseerrAccountDetailsEntityFactory {
     id = 1,
     displayName = "Cup10",
     requestCount = 10,
-    avatar = "http://localhost:5000/avatar",
+    avatar = "http://localhost:5000/avatarproxy/1dde62cf4a2c436d95e17b9",
     email = "cup10@proton.me",
     createdAt = "2023-08-19T00:00:00.000Z",
   )
