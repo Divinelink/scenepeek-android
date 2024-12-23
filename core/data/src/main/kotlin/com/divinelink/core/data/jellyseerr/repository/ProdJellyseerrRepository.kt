@@ -36,7 +36,7 @@ class ProdJellyseerrRepository(
     address: String,
   ): Flow<Result<JellyseerrAccountDetails>> = service
     .fetchAccountDetails(address)
-    .map { Result.success(it.map()) }
+    .map { Result.success(it.map(address)) }
 
   override fun getLocalJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?> = queries
     .selectAll()
