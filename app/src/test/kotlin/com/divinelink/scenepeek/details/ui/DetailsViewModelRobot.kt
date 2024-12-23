@@ -9,6 +9,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -34,6 +35,7 @@ class DetailsViewModelRobot {
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
+  private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
@@ -51,6 +53,7 @@ class DetailsViewModelRobot {
       addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
       requestMediaUseCase = fakeRequestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to id,

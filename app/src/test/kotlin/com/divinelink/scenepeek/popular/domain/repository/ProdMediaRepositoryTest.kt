@@ -22,7 +22,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import kotlin.test.Test
 
-class ProdMoviesRepositoryTest {
+// TODO Restructure to data unit test package
+class ProdMediaRepositoryTest {
 
   private val movie = MediaItemFactory.FightClub().toWizard {
     withFavorite(true)
@@ -54,7 +55,7 @@ class ProdMoviesRepositoryTest {
   )
 
   private var mediaDao = FakeMediaDao()
-  private var mediaRemote = TestMediaService()
+  private var mediaService = TestMediaService()
 
   private lateinit var repository: MediaRepository
 
@@ -62,7 +63,7 @@ class ProdMoviesRepositoryTest {
   fun setUp() {
     repository = ProdMediaRepository(
       mediaDao = mediaDao.mock,
-      mediaRemote = mediaRemote.mock,
+      mediaRemote = mediaService.mock,
     )
   }
 
@@ -77,7 +78,7 @@ class ProdMoviesRepositoryTest {
       mediaDao.mockCheckIfFavorite(movie.id, 0)
     }
 
-    mediaRemote.mockFetchPopularMovies(
+    mediaService.mockFetchPopularMovies(
       request = request,
       result = expectApiPopularResponse,
     )
@@ -97,7 +98,7 @@ class ProdMoviesRepositoryTest {
       expectedResult.forEach { movie ->
         mediaDao.mockCheckIfFavorite(movie.id, 0)
       }
-      mediaRemote.mockFetchSearchMovies(
+      mediaService.mockFetchSearchMovies(
         request = request,
         result = expectedApiSearchResponse,
       )
@@ -114,7 +115,7 @@ class ProdMoviesRepositoryTest {
   //        val request = PopularRequestApi(apiKey = "", page = 1)
   //        val expectedResult = Result.failure(Exception("response is empty"))
   //
-  //        mediaRemote.mockFetchPopularMovies(
+  //        mediaService.mockFetchPopularMovies(
   //            request = request,
   //            result = flowOf(),
   //        )

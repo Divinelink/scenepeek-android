@@ -107,7 +107,7 @@ complexity:
     ignoredLabels: []
   LargeClass:
     active: true
-    excludes: ['**/NoSyncTests.kt']
+    excludes: ['**Test.kt']
     threshold: 600
   LongMethod:
     active: true

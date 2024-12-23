@@ -43,8 +43,8 @@ enum class RatingSize(
     coloredArcSize = 36.dp,
   ),
   LARGE(
-    size = 72.dp,
-    coloredArcSize = 60.dp,
+    size = 68.dp,
+    coloredArcSize = 56.dp,
   ),
 }
 
@@ -140,7 +140,7 @@ fun MediaRatingItem(
 
       if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
         Text(
-          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT.format(voteCount.toShortString())),
+          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT),
           text = voteCount.toShortString(),
           style = MaterialTheme.typography.labelSmall,
           textAlign = TextAlign.Center,

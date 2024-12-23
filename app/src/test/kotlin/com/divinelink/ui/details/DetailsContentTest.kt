@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.DetailActionItem
@@ -59,6 +60,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -91,6 +93,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -118,6 +121,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -146,6 +150,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -187,6 +192,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -232,6 +238,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -260,6 +267,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -274,10 +282,11 @@ class DetailsContentTest : ComposeTest() {
 
     composeTestRule
       .onNodeWithText(userScore)
+      .performScrollTo()
       .assertIsDisplayed()
 
     composeTestRule
-      .onNodeWithTag(TestTags.Rating.VOTE_COUNT.format("123.4k"))
+      .onNodeWithText("123.4k")
       .assertIsDisplayed()
   }
 
@@ -300,6 +309,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -333,6 +343,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -370,6 +381,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -417,6 +429,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -464,6 +477,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -495,6 +509,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -527,6 +542,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -556,6 +572,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
     composeTestRule
@@ -594,6 +611,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
       )
     }
     composeTestRule
@@ -636,6 +654,7 @@ class DetailsContentTest : ComposeTest() {
         onObfuscateSpoilers = {
           hasClickedObfuscateSpoilers = true
         },
+        viewAllRatingsClicked = {},
       )
     }
 
@@ -676,6 +695,7 @@ class DetailsContentTest : ComposeTest() {
         onObfuscateSpoilers = {
           hasClickedObfuscateSpoilers = true
         },
+        viewAllRatingsClicked = {},
       )
     }
 

@@ -6,7 +6,6 @@ import com.divinelink.core.database.media.dao.fetchFavoriteMediaIDs
 import com.divinelink.core.database.media.dao.insertFavoriteMedia
 import com.divinelink.core.database.media.dao.removeFavoriteMedia
 import com.divinelink.core.database.media.mapper.map
-import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -17,18 +16,12 @@ import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.service.MediaService
-import com.divinelink.core.network.omdb.mapper.map
-import com.divinelink.core.network.omdb.service.OMDbService
-import com.divinelink.core.network.trakt.mapper.map
-import com.divinelink.core.network.trakt.service.TraktService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ProdMediaRepository(
   private val mediaDao: MediaDao,
   private val mediaRemote: MediaService,
-  private val omdbService: OMDbService,
-  private val traktService: TraktService,
 ) : MediaRepository {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> = mediaRemote
@@ -68,17 +61,6 @@ class ProdMediaRepository(
       .map { apiResponse ->
         Result.success(apiResponse.map())
       }
-
-  override fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>> = omdbService
-    .fetchImdbDetails(imdbId = imdbId)
-    .map { Result.success(it.map()) }
-
-  override fun fetchTraktRating(
-    mediaType: MediaType,
-    imdbId: String,
-  ): Flow<Result<RatingDetails>> = traktService
-    .fetchRating(mediaType = mediaType, imdbId = imdbId)
-    .map { Result.success(it.map()) }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit> {
     mediaDao

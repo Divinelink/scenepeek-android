@@ -5,6 +5,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -102,6 +103,20 @@ class TestDetailsRepository {
   fun mockAddToWatchlist(response: Result<Unit>) {
     whenever(
       mock.addToWatchlist(any()),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
+
+  fun mockFetchIMDbDetails(response: Result<RatingDetails?>) {
+    whenever(
+      mock.fetchIMDbDetails(any()),
+    ).thenReturn(flowOf(response))
+  }
+
+  fun mockFetchTraktRating(response: Result<RatingDetails>) {
+    whenever(
+      mock.fetchTraktRating(any(), any()),
     ).thenReturn(
       flowOf(response),
     )

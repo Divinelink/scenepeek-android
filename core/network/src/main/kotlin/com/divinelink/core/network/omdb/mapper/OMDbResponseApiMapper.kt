@@ -3,7 +3,6 @@ package com.divinelink.core.network.omdb.mapper
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.network.omdb.model.OMDbResponseApi
 
-// TODO Add tests
 fun OMDbResponseApi.map(): RatingDetails {
   val voteAverage = imdbRating.toDoubleOrNull()
   val voteCount = imdbVotes.replace(",", "").toIntOrNull()

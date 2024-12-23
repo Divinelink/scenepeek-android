@@ -171,7 +171,7 @@ open class GetMediaDetailsUseCase(
 
   private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails =
     details.imdbId?.let { id ->
-      mediaRepository
+      repository
         .fetchIMDbDetails(id)
         .firstOrNull()
         ?.getOrNull()

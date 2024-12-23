@@ -16,6 +16,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -31,6 +32,10 @@ import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.core.network.omdb.mapper.map
+import com.divinelink.core.network.omdb.service.OMDbService
+import com.divinelink.core.network.trakt.mapper.map
+import com.divinelink.core.network.trakt.service.TraktService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -44,6 +49,8 @@ import kotlin.time.measureTime
 class ProdDetailsRepository(
   private val mediaRemote: MediaService,
   private val creditsDao: CreditsDao,
+  private val omdbService: OMDbService,
+  private val traktService: TraktService,
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 
@@ -149,4 +156,15 @@ class ProdDetailsRepository(
       .map { apiResponse ->
         Result.success(apiResponse.map())
       }
+
+  override fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>> = omdbService
+    .fetchImdbDetails(imdbId = imdbId)
+    .map { Result.success(it.map()) }
+
+  override fun fetchTraktRating(
+    mediaType: MediaType,
+    imdbId: String,
+  ): Flow<Result<RatingDetails>> = traktService
+    .fetchRating(mediaType = mediaType, imdbId = imdbId)
+    .map { Result.success(it.map()) }
 }

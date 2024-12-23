@@ -1,5 +1,3 @@
-@file:Suppress("LargeClass")
-
 package com.divinelink.scenepeek.details.ui
 
 import androidx.compose.material3.SnackbarDuration
@@ -459,7 +457,7 @@ class DetailsViewModelTest {
           Result.success(
             MediaDetailsResult.DetailsSuccess(
               mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB
+              ratingSource = RatingSource.TMDB,
             ),
           ),
           Result.success(
