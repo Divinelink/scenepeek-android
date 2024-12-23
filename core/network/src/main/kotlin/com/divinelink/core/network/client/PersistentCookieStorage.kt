@@ -60,7 +60,6 @@ class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
       domain = parts[2],
       path = parts[3],
       expires = expires,
-      maxAge = parts[5].toInt(),
       secure = parts[6].toBoolean(),
       httpOnly = parts[7].toBoolean(),
     )
