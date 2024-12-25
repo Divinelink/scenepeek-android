@@ -28,7 +28,11 @@ object TestTags {
   const val LAZY_COLUMN = "Lazy Column"
 
   object Rating {
+    const val DETAILS_RATING_BUTTON = "User Score Button"
     const val VOTE_COUNT = "Rating Vote Count %s"
+    const val ALL_RATINGS_BOTTOM_SHEET = "All Ratings Bottom Sheet"
+
+    const val RATING_SOURCE_SKELETON = "Rating skeleton for %s"
   }
 
   object Details {

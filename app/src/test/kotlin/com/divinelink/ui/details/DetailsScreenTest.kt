@@ -1,6 +1,7 @@
 package com.divinelink.ui.details
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -11,18 +12,20 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
@@ -39,6 +42,7 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -54,6 +58,7 @@ class DetailsScreenTest : ComposeTest() {
   private val deleteRatingUseCase = FakeDeleteRatingUseCase()
   private val addToWatchlistUseCase = FakeAddToWatchlistUseCase()
   private val requestMediaUseCase = FakeRequestMediaUseCase()
+  private val fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
   private val destinationsNavigator = FakeDestinationsNavigator()
@@ -105,6 +110,7 @@ class DetailsScreenTest : ComposeTest() {
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -189,6 +195,7 @@ class DetailsScreenTest : ComposeTest() {
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -246,6 +253,7 @@ class DetailsScreenTest : ComposeTest() {
       addToWatchlistUseCase = addToWatchlistUseCase.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -349,6 +357,7 @@ class DetailsScreenTest : ComposeTest() {
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -427,6 +436,7 @@ class DetailsScreenTest : ComposeTest() {
           addToWatchlistUseCase = addToWatchlistUseCase.mock,
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -440,6 +450,136 @@ class DetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(getString(R.string.core_ui_view_all)).assertDoesNotExist()
+    }
+  }
+
+  @Test
+  fun `test onViewAllRatingsClick shows AllRatingsModalBottomSheet`() = runTest {
+    fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
+    )
+
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      ),
+    )
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE.value,
+        ),
+      ),
+    )
+
+    setContentWithTheme {
+      DetailsScreen(
+        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Rating.DETAILS_RATING_BUTTON).assertIsDisplayed().performClick()
+
+      onNodeWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test onViewAllRatingsClick `() = runTest {
+    fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
+      response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
+    )
+
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      ),
+    )
+
+    val allRatingsChannel = Channel<Result<Pair<RatingSource, RatingDetails>>>()
+
+    fetchAllRatingsUseCase.mockSuccess(allRatingsChannel)
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE.value,
+        ),
+      ),
+    )
+
+    setContentWithTheme {
+      DetailsScreen(
+        navigator = destinationsNavigator,
+        onNavigateToAccountSettings = {},
+        onNavigateToCredits = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Rating.DETAILS_RATING_BUTTON).assertIsDisplayed().performClick()
+
+      onNodeWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET).assertIsDisplayed()
+
+      onNodeWithTag(
+        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB),
+      ).assertIsDisplayed()
+
+      onNodeWithTag(
+        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT),
+      ).assertIsDisplayed()
+
+      allRatingsChannel.send(
+        Result.success(RatingSource.IMDB to RatingDetails.Score(8.1, 1234)),
+      )
+
+      onNodeWithTag(
+        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB),
+      ).assertIsNotDisplayed()
+
+      allRatingsChannel.send(
+        Result.success(RatingSource.TRAKT to RatingDetails.Score(8.5, 12345)),
+      )
+
+      onNodeWithTag(
+        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT),
+      ).assertIsNotDisplayed()
     }
   }
 }

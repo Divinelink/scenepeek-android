@@ -16,6 +16,7 @@ import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
+import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
 import com.divinelink.feature.details.navigation.details.MediaDetailsGraph
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
@@ -45,6 +46,7 @@ fun DetailsScreen(
 ) {
   val viewState = viewModel.viewState.collectAsState()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+  var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
 
   LaunchedEffect(viewState.value.navigateToLogin) {
     viewState.value.navigateToLogin?.let {
@@ -53,9 +55,8 @@ fun DetailsScreen(
       viewModel.consumeNavigateToLogin()
     }
   }
-  val rateBottomSheetState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = true,
-  )
+  val rateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val allRatingsBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   LaunchedEffect(viewState.value.showRateDialog) {
     if (viewState.value.showRateDialog) {
@@ -65,6 +66,14 @@ fun DetailsScreen(
     } else {
       rateBottomSheetState.hide()
       openBottomSheet = false
+    }
+  }
+
+  LaunchedEffect(showAllRatingBottomSheet) {
+    if (showAllRatingBottomSheet) {
+      allRatingsBottomSheetState.show()
+    } else {
+      allRatingsBottomSheetState.hide()
     }
   }
 
@@ -82,6 +91,19 @@ fun DetailsScreen(
       onDismissRequest = viewModel::onDismissRateDialog,
       canClearRate = viewState.value.userDetails?.rating != null,
     )
+  }
+
+  if (showAllRatingBottomSheet) {
+    viewState.value.mediaDetails?.ratingCount?.let { ratingCount ->
+      AllRatingsModalBottomSheet(
+        sheetState = allRatingsBottomSheetState,
+        onDismissRequest = { showAllRatingBottomSheet = false },
+        ratingCount = ratingCount,
+        onClick = { ratingSource ->
+          // TODO Navigate to corresponding rating source
+        },
+      )
+    }
   }
 
   DetailsContent(
@@ -111,6 +133,10 @@ fun DetailsScreen(
           id = viewState.value.mediaDetails?.id?.toLong()!!,
         ),
       )
+    },
+    viewAllRatingsClicked = {
+      showAllRatingBottomSheet = true
+      viewModel.onFetchAllRating()
     },
   )
 }

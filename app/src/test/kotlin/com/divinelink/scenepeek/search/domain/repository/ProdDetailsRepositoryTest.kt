@@ -11,8 +11,11 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
@@ -25,15 +28,18 @@ import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistR
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.network.omdb.model.OMDbResponseApi
+import com.divinelink.core.network.trakt.model.TraktRatingApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.service.TestMediaService
+import com.divinelink.core.testing.service.TestOMDbService
+import com.divinelink.core.testing.service.TestTraktService
 import com.divinelink.factories.ReviewFactory
 import com.divinelink.factories.api.DetailsResponseApiFactory
 import com.divinelink.factories.api.ReviewsResultsApiFactory
@@ -136,6 +142,8 @@ class ProdDetailsRepositoryTest {
 
   private var mediaRemote = TestMediaService()
   private var creditsDao = TestCreditsDao()
+  private var omdbService = TestOMDbService()
+  private var traktService = TestTraktService()
 
   private lateinit var repository: DetailsRepository
 
@@ -144,6 +152,8 @@ class ProdDetailsRepositoryTest {
     repository = ProdDetailsRepository(
       mediaRemote = mediaRemote.mock,
       creditsDao = creditsDao.mock,
+      omdbService = omdbService.mock,
+      traktService = traktService.mock,
       dispatcher = testDispatcher,
     )
   }
@@ -467,6 +477,8 @@ class ProdDetailsRepositoryTest {
     repository = ProdDetailsRepository(
       mediaRemote = mediaRemote.mock,
       creditsDao = defaultCreditDao,
+      omdbService = omdbService.mock,
+      traktService = traktService.mock,
       dispatcher = testDispatcher,
     )
 
@@ -488,5 +500,55 @@ class ProdDetailsRepositoryTest {
         assertThat(result.data).isEqualTo(AggregatedCreditsFactory.partialCredits())
       }
     }
+  }
+
+  @Test
+  fun `test fetch imdb ratings with success`() = runTest {
+    val imdbId = "tt0401729"
+
+    omdbService.mockFetchImdbDetails(
+      response = OMDbResponseApi(
+        metascore = "51",
+        imdbRating = "6.6",
+        imdbVotes = "289,715",
+      ),
+    )
+
+    val response = repository.fetchIMDbDetails(
+      imdbId = imdbId,
+    ).first()
+
+    assertThat(response).isEqualTo(
+      Result.success(
+        RatingDetails.Score(
+          voteAverage = 6.6,
+          voteCount = 289_715,
+        ),
+      ),
+    )
+  }
+
+  @Test
+  fun `test fetch trakt ratings with success`() = runTest {
+    traktService.mockFetchRating(
+      response = TraktRatingApi(
+        rating = 8.5,
+        votes = 1_000,
+      ),
+    )
+
+    val response = repository.fetchTraktRating(
+      mediaType = MediaType.MOVIE,
+      imdbId = "tt0401729",
+    ).first()
+
+    assertThat(response).isEqualTo(
+      Result.success(
+        RatingDetails.Score(
+          voteAverage = 8.5,
+          voteCount = 1_000,
+        ),
+      ),
+    )
   }
 }

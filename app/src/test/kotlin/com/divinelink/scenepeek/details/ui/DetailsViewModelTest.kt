@@ -1,5 +1,3 @@
-@file:Suppress("LargeClass")
-
 package com.divinelink.scenepeek.details.ui
 
 import androidx.compose.material3.SnackbarDuration
@@ -7,14 +5,18 @@ import androidx.compose.material3.SnackbarResult
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.ui.UIText
@@ -27,7 +29,9 @@ import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -68,7 +72,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -92,7 +97,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -116,7 +122,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -135,7 +142,8 @@ class DetailsViewModelTest {
       .mockFetchMediaDetails(
         response = defaultDetails(MediaDetailsResult.ReviewsSuccess(reviewsList)),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -166,7 +174,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -203,7 +212,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -239,7 +249,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -276,7 +287,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -313,7 +325,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -350,7 +363,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -381,10 +395,11 @@ class DetailsViewModelTest {
         media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
         response = Result.success(Unit),
       )
-      .buildViewModel(
+      .withNavArguments(
         id = mediaId,
         mediaType = MediaType.MOVIE,
       )
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -426,10 +441,11 @@ class DetailsViewModelTest {
           media = MediaItemFactory.FightClub(),
           response = Result.success(Unit),
         )
-        .buildViewModel(
+        .withNavArguments(
           id = mediaId,
           mediaType = MediaType.MOVIE,
         )
+        .buildViewModel()
         .assertViewState(
           DetailsViewState(
             mediaType = MediaType.MOVIE,
@@ -459,7 +475,7 @@ class DetailsViewModelTest {
           Result.success(
             MediaDetailsResult.DetailsSuccess(
               mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB
+              ratingSource = RatingSource.TMDB,
             ),
           ),
           Result.success(
@@ -474,10 +490,11 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(
+      .withNavArguments(
         id = mediaId,
         mediaType = MediaType.MOVIE,
       )
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -508,7 +525,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -531,7 +549,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -557,7 +576,8 @@ class DetailsViewModelTest {
       .mockSubmitRate(
         response = flowOf(Result.success(Unit)),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onAddRateClicked()
       .assertViewState(
         DetailsViewState(
@@ -608,7 +628,8 @@ class DetailsViewModelTest {
       .mockSubmitRate(
         response = flowOf(Result.failure(SessionException.Unauthenticated())),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE).also {
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
         viewModel = it.getViewModel()
       }
       .onSubmitRate(5)
@@ -644,7 +665,8 @@ class DetailsViewModelTest {
       .mockSubmitRate(
         response = flowOf(Result.failure(SessionException.Unauthenticated())),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE).also {
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
         viewModel = it.getViewModel()
       }
       .onSubmitRate(5)
@@ -688,7 +710,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
       .assertViewState(
         DetailsViewState(
@@ -725,7 +748,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onAddRateClicked()
       .assertViewState(
         DetailsViewState(
@@ -786,7 +810,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onAddRateClicked()
       .assertViewState(
         DetailsViewState(
@@ -811,7 +836,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onAddRateClicked()
       .assertViewState(
         DetailsViewState(
@@ -851,7 +877,8 @@ class DetailsViewModelTest {
       .mockDeleteRating(
         response = flowOf(Result.success(Unit)),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -897,7 +924,8 @@ class DetailsViewModelTest {
       .mockAddToWatchlist(
         response = flowOf(Result.failure(SessionException.InvalidAccountId())),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE).also {
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
         viewModel = it.getViewModel()
       }
       .onAddToWatchlist()
@@ -931,7 +959,8 @@ class DetailsViewModelTest {
       .mockAddToWatchlist(
         response = flowOf(Result.failure(Exception())),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onAddToWatchlist()
       .assertViewState(
         DetailsViewState(
@@ -960,7 +989,8 @@ class DetailsViewModelTest {
         ),
       )
       .mockAddToWatchlist(flowOf(Result.success(Unit)))
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -1001,7 +1031,8 @@ class DetailsViewModelTest {
         ),
       )
       .mockAddToWatchlist(flowOf(Result.success(Unit)))
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -1045,7 +1076,8 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -1068,7 +1100,8 @@ class DetailsViewModelTest {
           Result.success(MediaDetailsResult.CreditsSuccess(credits)),
         ),
       )
-      .buildViewModel(mediaId, MediaType.TV)
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.TV,
@@ -1097,7 +1130,8 @@ class DetailsViewModelTest {
       .mockRequestMedia(
         response = flowOf(Result.success(JellyseerrMediaRequest(null))),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onRequestMedia(emptyList())
       .assertViewState(
         DetailsViewState(
@@ -1132,7 +1166,8 @@ class DetailsViewModelTest {
       .mockRequestMedia(
         response = flowOf(Result.success(JellyseerrMediaRequest("Success"))),
       )
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onRequestMedia(emptyList())
       .assertViewState(
         DetailsViewState(
@@ -1163,7 +1198,11 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(403))))
-      .buildViewModel(mediaId, MediaType.MOVIE).also {
+      .withNavArguments(
+        id = mediaId,
+        mediaType = MediaType.MOVIE,
+      )
+      .buildViewModel().also {
         viewModel = it.getViewModel()
       }
       .onRequestMedia(emptyList())
@@ -1199,7 +1238,8 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(401))))
-      .buildViewModel(mediaId, MediaType.MOVIE).also {
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
         viewModel = it.getViewModel()
       }
       .onRequestMedia(emptyList())
@@ -1234,7 +1274,8 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(409))))
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onRequestMedia(emptyList())
       .assertViewState(
         DetailsViewState(
@@ -1264,7 +1305,8 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(500))))
-      .buildViewModel(mediaId, MediaType.MOVIE)
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
       .onRequestMedia(emptyList())
       .assertViewState(
         DetailsViewState(
@@ -1290,7 +1332,8 @@ class DetailsViewModelTest {
         response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
       )
       .mockSpoilersObfuscation(false)
-      .buildViewModel(mediaId, MediaType.TV)
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.TV,
@@ -1310,6 +1353,105 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.NotRated(),
           mediaDetails = tvDetails,
           spoilersObfuscated = true,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onFetchAllRatings updates rating source`() = runTest {
+    val allRatingsChannel = Channel<Result<Pair<RatingSource, RatingDetails>>>()
+
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .mockFetchAllRatingsUseCase(allRatingsChannel)
+      .expectUiStates(
+        action = {
+          onFetchAllRating()
+
+          launch {
+            allRatingsChannel.send(
+              Result.success(RatingSource.TRAKT to RatingDetailsFactory.trakt()),
+            )
+          }
+
+          launch {
+            allRatingsChannel.send(
+              Result.success(RatingSource.IMDB to RatingDetailsFactory.imdb()),
+            )
+          }
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 9.5,
+                    voteCount = 12_345,
+                  ),
+                  RatingSource.IMDB to RatingDetails.Initial,
+                  RatingSource.TRAKT to RatingDetails.Initial,
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 9.5,
+                    voteCount = 12_345,
+                  ),
+                  RatingSource.IMDB to RatingDetails.Initial,
+                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            mediaDetails = tvDetails.copy(
+              ratingCount = RatingCount(
+                ratings = mapOf(
+                  RatingSource.TMDB to RatingDetails.Score(
+                    voteAverage = 9.5,
+                    voteCount = 12_345,
+                  ),
+                  RatingSource.IMDB to RatingDetailsFactory.imdb(),
+                  RatingSource.TRAKT to RatingDetailsFactory.trakt(),
+                ),
+              ),
+            ),
+            spoilersObfuscated = false,
+          ),
         ),
       )
   }

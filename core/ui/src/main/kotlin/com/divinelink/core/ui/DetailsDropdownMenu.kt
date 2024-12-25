@@ -14,12 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.Person
-import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.shareUrl
 import com.divinelink.core.ui.components.dropdownmenu.ObfuscateSpoilersMenuItem
 import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
@@ -74,28 +71,7 @@ private fun DetailsDropdownMenuPreview() {
   AppTheme {
     Surface {
       DetailsDropdownMenu(
-        mediaDetails = Movie(
-          id = 1123,
-          posterPath = "123456",
-          releaseDate = "2022",
-          title = "Flight Club",
-          ratingCount = RatingCount.initial(
-            tmdbVoteAverage = 7.3,
-            tmdbVoteCount = 65332,
-          ),
-          isFavorite = false,
-          overview = "This movie is good.",
-          director = Person(
-            id = 123443321,
-            name = "Forest Gump",
-            profilePath = "BoxOfChocolates.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(PersonRole.Director),
-          ),
-          cast = listOf(),
-          genres = listOf("Thriller", "Drama", "Comedy"),
-          runtime = "2h 10m",
-        ),
+        mediaDetails = MediaDetailsFactory.FightClub(),
         spoilersObfuscated = false,
         expanded = true,
         options = DetailsMenuOptions.entries,

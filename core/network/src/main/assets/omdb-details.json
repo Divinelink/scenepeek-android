@@ -1,0 +1,40 @@
+{
+  "Title": "John Carter",
+  "Year": "2012",
+  "Rated": "PG-13",
+  "Released": "09 Mar 2012",
+  "Runtime": "132 min",
+  "Genre": "Action, Adventure, Sci-Fi",
+  "Director": "Andrew Stanton",
+  "Writer": "Andrew Stanton, Mark Andrews, Michael Chabon",
+  "Actors": "Taylor Kitsch, Lynn Collins, Willem Dafoe",
+  "Plot": "A war-weary former army captain is inexplicably transported to Mars and reluctantly becomes embroiled in a conflict of epic proportions.",
+  "Language": "English",
+  "Country": "United States",
+  "Awards": "2 wins & 8 nominations",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BZWNmZGYzZjUtODRmOS00ODgzLWE4NWQtMDI3MGUwNjRjYjY0XkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "6.6/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "52%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "51/100"
+    }
+  ],
+  "Metascore": "51",
+  "imdbRating": "6.6",
+  "imdbVotes": "289,715",
+  "imdbID": "tt0401729",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "$73,078,100",
+  "Production": "N/A",
+  "Website": "N/A",
+  "Response": "True"
+}

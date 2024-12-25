@@ -55,7 +55,6 @@ fun MediaRatingItem(
   voteCount: Int?,
   size: RatingSize = RatingSize.MEDIUM,
 ) {
-
   val sanitizedRating = if (rating == null) {
     null
   } else {
@@ -131,7 +130,6 @@ fun MediaRatingItem(
       MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
     }
 
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
       Text(
         text = sanitizedRating?.toString() ?: "-",
@@ -142,7 +140,7 @@ fun MediaRatingItem(
 
       if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
         Text(
-          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT.format(voteCount.toShortString())),
+          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT),
           text = voteCount.toShortString(),
           style = MaterialTheme.typography.labelSmall,
           textAlign = TextAlign.Center,

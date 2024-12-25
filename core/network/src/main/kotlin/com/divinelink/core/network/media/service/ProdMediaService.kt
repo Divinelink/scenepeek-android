@@ -1,6 +1,6 @@
 package com.divinelink.core.network.media.service
 
-import com.divinelink.core.network.client.RestClient
+import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
@@ -22,10 +22,11 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestAp
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ProdMediaService(private val restClient: RestClient) : MediaService {
+class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/movie/popular?"
@@ -64,11 +65,7 @@ class ProdMediaService(private val restClient: RestClient) : MediaService {
   }
 
   override fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
-    val url = baseUrl +
-      "${request.id}?" +
-      "&append_to_response=credits" +
-      "&language=en-US"
+    val url = buildFetchDetailsUrl(media = request.mediaType, id = request.id)
 
     val response = restClient.get<DetailsResponseApi>(url = url)
 
@@ -76,7 +73,7 @@ class ProdMediaService(private val restClient: RestClient) : MediaService {
   }
 
   override fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+    val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
     val url = baseUrl +
       "${request.id}" +
       "/reviews?" +
@@ -100,7 +97,7 @@ class ProdMediaService(private val restClient: RestClient) : MediaService {
   }
 
   override fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+    val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
     val url = baseUrl +
       "${request.id}" +
       "/videos?" +

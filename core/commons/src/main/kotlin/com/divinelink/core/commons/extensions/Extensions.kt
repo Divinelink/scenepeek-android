@@ -11,27 +11,24 @@ fun Double.round(decimals: Int): Double {
 
 fun Double.isWholeNumber(): Boolean = this % 1.0 == 0.0
 
-fun Int.toShortString(): String {
-  return when {
-    this >= 1_000_000 -> {
-      val millions = this / 1_000_000
-      val thousands = (this % 1_000_000) / 100_000
-      if (thousands > 0) {
-        "$millions.${thousands}m"
-      } else {
-        "${millions}m"
-      }
+fun Int.toShortString(): String = when {
+  this >= 1_000_000 -> {
+    val millions = this / 1_000_000
+    val thousands = (this % 1_000_000) / 100_000
+    if (thousands > 0) {
+      "$millions.${thousands}m"
+    } else {
+      "${millions}m"
     }
-    this >= 1_000 -> {
-      val thousands = this / 1_000
-      val remainder = (this % 1_000) / 100
-      if (remainder > 0) {
-        "$thousands.${remainder}k"
-      } else {
-        "${thousands}k"
-      }
-    }
-    else -> this.toString()
   }
+  this >= 1_000 -> {
+    val thousands = this / 1_000
+    val remainder = (this % 1_000) / 100
+    if (remainder > 0) {
+      "$thousands.${remainder}k"
+    } else {
+      "${thousands}k"
+    }
+  }
+  else -> this.toString()
 }
-

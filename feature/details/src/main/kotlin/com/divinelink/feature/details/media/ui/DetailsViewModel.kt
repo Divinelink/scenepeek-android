@@ -12,6 +12,7 @@ import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.media.MediaType
@@ -43,6 +44,7 @@ import com.divinelink.core.ui.R as uiR
 
 class DetailsViewModel(
   getMediaDetailsUseCase: GetMediaDetailsUseCase,
+  private val fetchAllRatingsUseCase: FetchAllRatingsUseCase,
   private val onMarkAsFavoriteUseCase: MarkAsFavoriteUseCase,
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
@@ -411,6 +413,30 @@ class DetailsViewModel(
           navigateToLogin = true,
           snackbarMessage = null,
         )
+      }
+    }
+  }
+
+  fun onFetchAllRating() {
+    viewModelScope.launch {
+      viewState.value.mediaDetails?.let {
+        fetchAllRatingsUseCase(it).collect { result ->
+          result
+            .onSuccess { rating ->
+              _viewState.update { viewState ->
+                viewState.copy(
+                  mediaDetails = viewState.mediaDetails?.copy(
+                    ratingCount = viewState.mediaDetails.ratingCount.updateRating(
+                      source = rating.first,
+                      rating = rating.second,
+                    ),
+                  ),
+                )
+              }
+            }.onFailure { error ->
+              Timber.e(error)
+            }
+        }
       }
     }
   }

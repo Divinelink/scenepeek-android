@@ -1,6 +1,13 @@
 package com.divinelink.core.model.details.rating
 
-data class RatingDetails(
-  val voteAverage: Double,
-  val voteCount: Int,
-)
+sealed interface RatingDetails {
+
+  data object Initial : RatingDetails
+
+  data object Unavailable : RatingDetails
+
+  data class Score(
+    val voteAverage: Double,
+    val voteCount: Int,
+  ) : RatingDetails
+}

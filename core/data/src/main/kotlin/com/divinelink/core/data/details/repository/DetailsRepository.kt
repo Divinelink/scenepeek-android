@@ -4,8 +4,10 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
@@ -38,4 +40,11 @@ interface DetailsRepository {
   fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>>
 
   fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
+
+  fun fetchIMDbDetails(imdbId: String): Flow<Result<RatingDetails?>>
+
+  fun fetchTraktRating(
+    mediaType: MediaType,
+    imdbId: String,
+  ): Flow<Result<RatingDetails>>
 }

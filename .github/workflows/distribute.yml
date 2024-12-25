@@ -47,7 +47,12 @@ jobs:
       - name: Auth token to local.properties
         env:
           TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
-        run: echo "TMDB_AUTH_TOKEN=${TMDB_AUTH_TOKEN}" >> local.properties
+          OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+          TRAKT_API_KEY: ${{ secrets.TRAKT_API_KEY }}
+        run:
+          echo "TMDB_AUTH_TOKEN=${TMDB_AUTH_TOKEN}" >> local.properties
+          echo "OMDB_API_KEY=${OMDB_API_KEY}" >> local.properties
+          echo "TRAKT_API_KEY=${TRAKT_API_KEY}" >> local.properties
 
       - name: Decode and create google-services.json
         env:
@@ -63,6 +68,8 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           TMDB_AUTH_TOKEN: ${{ secrets.TMDB_AUTH_TOKEN }}
+          OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+          TRAKT_API_KEY: ${{ secrets.TRAKT_API_KEY }}
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

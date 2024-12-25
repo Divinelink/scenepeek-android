@@ -56,14 +56,13 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -114,6 +113,7 @@ fun DetailsContent(
   requestMedia: (List<Int>) -> Unit,
   viewAllCreditsClicked: () -> Unit,
   onObfuscateSpoilers: () -> Unit,
+  viewAllRatingsClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -232,6 +232,7 @@ fun DetailsContent(
               onPersonClick = onPersonClick,
               obfuscateEpisodes = viewState.spoilersObfuscated,
               ratingSource = viewState.ratingSource,
+              viewAllRatingsClicked = viewAllRatingsClicked,
             )
           }
         }
@@ -303,6 +304,7 @@ fun MediaDetailsContent(
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   viewAllCreditsClicked: () -> Unit,
+  viewAllRatingsClicked: () -> Unit,
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
@@ -369,11 +371,11 @@ fun MediaDetailsContent(
 
     item {
       UserRating(
-        ratingSource = ratingSource,
         overallUserScore = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage,
         accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
         voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
+        onShowAllRatingsClicked = viewAllRatingsClicked,
       )
     }
 
@@ -438,11 +440,11 @@ fun MediaDetailsContent(
 @Composable
 private fun UserRating(
   modifier: Modifier = Modifier,
-  ratingSource: RatingSource,
   overallUserScore: Double?,
   voteCount: Int?,
   accountRating: Int?,
   onAddRateClicked: () -> Unit,
+  onShowAllRatingsClicked: () -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxSize(),
@@ -451,28 +453,34 @@ private fun UserRating(
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24),
+        .size(MaterialTheme.dimensions.keyline_12),
     )
 
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-      verticalAlignment = Alignment.CenterVertically,
+    TextButton(
+      modifier = Modifier.testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
+      onClick = onShowAllRatingsClicked,
     ) {
-      MediaRatingItem(
-        rating = overallUserScore,
-        size = RatingSize.LARGE,
-        voteCount = voteCount,
-      )
-      Text(
-        text = stringResource(id = R.string.details__user_score),
-        style = MaterialTheme.typography.titleMedium,
-      )
+      Row(
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        MediaRatingItem(
+          rating = overallUserScore,
+          size = RatingSize.LARGE,
+          voteCount = voteCount,
+        )
+        Text(
+          text = stringResource(id = R.string.details__user_score),
+          color = MaterialTheme.colorScheme.onSurface,
+          style = MaterialTheme.typography.titleMedium,
+        )
+      }
     }
 
     Spacer(
       modifier = Modifier
         .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24),
+        .size(MaterialTheme.dimensions.keyline_0),
     )
 
     TextButton(
@@ -610,6 +618,7 @@ private fun DetailsContentPreview(
           onPersonClick = {},
           viewAllCreditsClicked = {},
           onObfuscateSpoilers = {},
+          viewAllRatingsClicked = {},
         )
       }
     }
@@ -660,122 +669,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         isFavorite = false,
       )
 
-      fun TheOffice() = TV(
-        id = 2316,
-        title = "The Office",
-        posterPath = "the_office.jpg",
-        overview = "Michael Scarn is the best.",
-        credits = listOf(
-          Person(
-            id = 1,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "Here's Johnny!",
-                order = 0,
-              ),
-            ),
-          ),
-        ),
-        releaseDate = "2005-03-24",
-        ratingCount = RatingCount.initial(9.5, 100),
-        isFavorite = false,
-        genres = listOf("Comedy", "Romance"),
-        seasons = listOf(),
-        creators = listOf(
-          Person(
-            id = 1216630,
-            name = "Greg Daniels",
-            profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-          Person(
-            id = 17835,
-            name = "Ricky Gervais",
-            profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-            knownForDepartment = "Writing",
-            role = listOf(PersonRole.Creator),
-          ),
-        ),
-
-        numberOfSeasons = 9,
-      )
-
-      val movieDetails = Movie(
-        id = 1123,
-        posterPath = "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg",
-        releaseDate = "2022",
-        title = "Flight Club",
-        ratingCount = RatingCount.initial(9.5, 100),
-        isFavorite = false,
-        overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal" +
-          " male aggression into a shocking new form of therapy. Their concept catches on," +
-          " with underground fight clubs forming in every town, until an eccentric gets in the" +
-          " way and ignites an out-of-control spiral toward oblivion.",
-        director = Person(
-          id = 123443321,
-          name = "Forest Gump",
-          profilePath = "BoxOfChocolates.jpg",
-          knownForDepartment = "Directing",
-          role = listOf(PersonRole.Director),
-        ),
-        cast = listOf(
-          Person(
-            id = 1,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "Here's Johnny!",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 2,
-            name = "Nicholson",
-            profilePath = "Cuckoo.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "McMurphy",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 3,
-            name = "Jack",
-            profilePath = "AllWorkAndNoPlay.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "HelloJohnny",
-                order = 0,
-              ),
-            ),
-          ),
-          Person(
-            id = 4,
-            name = "Nicholson",
-            profilePath = "Cuckoo.jpg",
-            knownForDepartment = "Acting",
-            role = listOf(
-              PersonRole.MovieActor(
-                character = "McMurphy",
-                order = 0,
-              ),
-            ),
-          ),
-        ),
-        genres = listOf("Thriller", "Drama", "Comedy", "Mystery", "Fantasy"),
-        runtime = "2h 10m",
-      )
-
       return sequenceOf(
         DetailsViewState(
           mediaId = popularMovie.id,
@@ -794,13 +687,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           ),
           mediaType = MediaType.MOVIE,
           tvCredits = null,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
         ),
 
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
-          mediaDetails = TheOffice(),
+          mediaDetails = MediaDetailsFactory.TheOffice(),
           tvCredits = null,
           similarMovies = similarMovies,
         ),
@@ -808,7 +701,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
           similarMovies = similarMovies,
           tvCredits = null,
           reviews = reviews,
@@ -817,7 +710,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          mediaDetails = movieDetails,
+          mediaDetails = MediaDetailsFactory.FightClub(),
           similarMovies = similarMovies,
           userDetails = AccountMediaDetails(
             id = 0,

@@ -11,8 +11,8 @@ import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
+import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -54,7 +55,7 @@ open class GetMediaDetailsUseCase(
 
       val isFavorite = mediaRepository.checkIfMediaIsFavorite(
         id = requestApi.id,
-        mediaType = MediaType.from(requestApi.endpoint),
+        mediaType = requestApi.mediaType,
       )
 
       val ratingSource = preferenceStorage.ratingSource.firstOrNull() ?: RatingSource.TMDB
@@ -65,19 +66,26 @@ open class GetMediaDetailsUseCase(
             Timber.e(it)
             send(Result.failure(MediaDetailsException()))
           }
-          .collect { result ->
-            send(
-              Result.success(
-                MediaDetailsResult.DetailsSuccess(
-                  mediaDetails = result.data.copy(
-                    isFavorite = isFavorite.getOrNull() ?: false,
-                    ratingCount = result.data.ratingCount,
-                  ),
-                  ratingSource = ratingSource,
+          .map { result ->
+            val details = result.data
+
+            val updatedDetails = when (ratingSource) {
+              RatingSource.TMDB -> details
+              RatingSource.IMDB -> fetchIMDbDetails(details)
+              RatingSource.TRAKT -> details
+            }
+
+            Result.success(
+              MediaDetailsResult.DetailsSuccess(
+                mediaDetails = updatedDetails.copy(
+                  isFavorite = isFavorite.getOrNull() ?: false,
+                  ratingCount = updatedDetails.ratingCount,
                 ),
+                ratingSource = ratingSource,
               ),
             )
           }
+          .collect { send(it) }
       }
 
       launch(dispatcher.io) {
@@ -129,7 +137,7 @@ open class GetMediaDetailsUseCase(
         fetchAccountMediaDetailsUseCase(
           MediaDetailsParams(
             id = requestApi.id,
-            mediaType = MediaType.from(requestApi.endpoint),
+            mediaType = requestApi.mediaType,
           ),
         )
           .catch { Timber.e(it) }
@@ -141,7 +149,7 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.io) {
-        getMenuItemsUseCase(MediaType.from(requestApi.endpoint))
+        getMenuItemsUseCase(requestApi.mediaType)
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
@@ -160,4 +168,15 @@ open class GetMediaDetailsUseCase(
           }
       }
     }
+
+  private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails =
+    details.imdbId?.let { id ->
+      repository
+        .fetchIMDbDetails(id)
+        .firstOrNull()
+        ?.getOrNull()
+        ?.let {
+          details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.IMDB, it))
+        }
+    } ?: details
 }

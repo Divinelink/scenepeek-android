@@ -11,10 +11,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
@@ -23,6 +23,7 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -77,6 +78,7 @@ class MovieAppTest : ComposeTest() {
   private lateinit var addToWatchlistUseCase: FakeAddToWatchlistUseCase
   private lateinit var requestMediaUseCase: FakeRequestMediaUseCase
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
+  private lateinit var fetchAllRatingsUseCase: TestFetchAllRatingsUseCase
 
   @BeforeTest
   fun setUp() {
@@ -96,6 +98,7 @@ class MovieAppTest : ComposeTest() {
     deleteRatingUseCase = FakeDeleteRatingUseCase()
     addToWatchlistUseCase = FakeAddToWatchlistUseCase()
     requestMediaUseCase = FakeRequestMediaUseCase()
+    fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
     spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
     startKoin {
@@ -242,10 +245,12 @@ class MovieAppTest : ComposeTest() {
 
     getMediaDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
-        Result.success(MediaDetailsResult.DetailsSuccess(
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          ratingSource = RatingSource.TMDB,
-        )),
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
       ),
     )
 
@@ -274,6 +279,7 @@ class MovieAppTest : ComposeTest() {
         addToWatchlistUseCase = addToWatchlistUseCase.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+        fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,
