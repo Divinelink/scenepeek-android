@@ -456,7 +456,10 @@ private fun UserRating(
         .size(MaterialTheme.dimensions.keyline_12),
     )
 
-    TextButton(onClick = onShowAllRatingsClicked) {
+    TextButton(
+      modifier = Modifier.testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
+      onClick = onShowAllRatingsClicked,
+    ) {
       Row(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
         verticalAlignment = Alignment.CenterVertically,

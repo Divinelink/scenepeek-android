@@ -6,14 +6,13 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
 import io.ktor.http.encodedPath
 
-// TODO Add unit test
 fun buildFetchDetailsUrl(
   id: Int,
   media: MediaType,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + "/${media.value}/" + "/$id"
+  encodedPath = Routes.TMDb.V3 + "/${media.value}" + "/$id"
 
   parameters.apply {
     append("language", "en-US")

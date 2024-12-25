@@ -712,5 +712,43 @@ class DetailsContentTest : ComposeTest() {
     assertThat(hasClickedObfuscateSpoilers).isTrue()
   }
 
+  @Test
+  fun `test viewAllRatingsClick`() = runTest {
+    var hasClickedViewAllRatings = false
+
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {
+          hasClickedViewAllRatings = true
+        },
+      )
+    }
+    val userScore = composeTestRule.activity.getString(detailsR.string.details__user_score, "7.3")
+
+    with(composeTestRule) {
+      onNodeWithText(userScore)
+        .performScrollTo()
+        .assertIsDisplayed()
+        .performClick()
+    }
+
+    assertThat(hasClickedViewAllRatings).isTrue()
+  }
+
   private val reviews = ReviewFactory.ReviewList()
 }

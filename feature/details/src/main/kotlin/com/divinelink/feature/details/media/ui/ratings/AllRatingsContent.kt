@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.commons.extensions.round
@@ -31,6 +32,7 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.provider.RatingCountParameterProvider
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -80,7 +82,9 @@ private fun RatingItem(
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       when (item.second) {
-        RatingDetails.Initial -> RatingContentShimmer()
+        RatingDetails.Initial -> RatingContentShimmer(
+          modifier = Modifier.testTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(item.first)),
+        )
         is RatingDetails.Score -> {
           val score = item.second as RatingDetails.Score
 

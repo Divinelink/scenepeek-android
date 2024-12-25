@@ -3,10 +3,14 @@ package com.divinelink.scenepeek.details.ui
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -19,12 +23,17 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 
-class DetailsViewModelRobot {
+class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
+  private lateinit var navArgs: DetailsNavArguments
   private lateinit var viewModel: DetailsViewModel
+
+  override val actualUiState: Flow<DetailsViewState>
+    get() = viewModel.viewState
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -41,10 +50,7 @@ class DetailsViewModelRobot {
     dispatcherProvider = mainDispatcherRule.testDispatcher,
   )
 
-  fun buildViewModel(
-    id: Int,
-    mediaType: MediaType,
-  ) = apply {
+  override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
       onMarkAsFavoriteUseCase = fakeMarkAsFavoriteUseCase,
       getMediaDetailsUseCase = fakeGetMovieDetailsUseCase.mock,
@@ -56,8 +62,8 @@ class DetailsViewModelRobot {
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
-          "id" to id,
-          "mediaType" to mediaType.value,
+          "id" to navArgs.id,
+          "mediaType" to navArgs.mediaType,
           "isFavorite" to false,
         ),
       ),
@@ -112,6 +118,10 @@ class DetailsViewModelRobot {
     viewModel.onRequestMedia(seasons)
   }
 
+  fun onFetchAllRating() = apply {
+    viewModel.onFetchAllRating()
+  }
+
   fun onObfuscateSpoilers() = apply {
     viewModel.onObfuscateSpoilers()
   }
@@ -122,6 +132,18 @@ class DetailsViewModelRobot {
 
   fun consumeNavigation() = apply {
     viewModel.consumeNavigateToLogin()
+  }
+
+  fun withNavArguments(
+    id: Int,
+    mediaType: MediaType,
+    isFavorite: Boolean = false,
+  ) = apply {
+    navArgs = DetailsNavArguments(
+      id = id,
+      mediaType = mediaType.value,
+      isFavorite = isFavorite,
+    )
   }
 
   // Mock Functions
@@ -157,5 +179,8 @@ class DetailsViewModelRobot {
   suspend fun mockSpoilersObfuscation(obfuscated: Boolean) = apply {
     spoilersObfuscationUseCase.setSpoilersObfuscation(obfuscated)
   }
+
+  fun mockFetchAllRatingsUseCase(response: Channel<Result<Pair<RatingSource, RatingDetails>>>) =
+    apply { testFetchAllRatingsUseCase.mockSuccess(response) }
   // End Mock Functions
 }

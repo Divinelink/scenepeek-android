@@ -16,8 +16,9 @@ import com.divinelink.core.ui.Previews
 import com.valentinilk.shimmer.shimmer
 
 @Composable
-fun RatingContentShimmer() {
+fun RatingContentShimmer(modifier: Modifier = Modifier) {
   Column(
+    modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
