@@ -118,8 +118,8 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onRequestMedia(seasons)
   }
 
-  fun onFetchAllRating() = apply {
-    viewModel.onFetchAllRating()
+  fun onFetchAllRatings() = apply {
+    viewModel.onFetchAllRatings()
   }
 
   fun onObfuscateSpoilers() = apply {

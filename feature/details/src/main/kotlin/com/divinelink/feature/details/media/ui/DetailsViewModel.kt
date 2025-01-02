@@ -417,7 +417,7 @@ class DetailsViewModel(
     }
   }
 
-  fun onFetchAllRating() {
+  fun onFetchAllRatings() {
     viewModelScope.launch {
       viewState.value.mediaDetails?.let {
         fetchAllRatingsUseCase(it).collect { result ->
@@ -450,7 +450,6 @@ class DetailsViewModel(
   }
 
   // Consumers
-
   fun consumeNavigateToLogin() {
     _viewState.update { viewState ->
       viewState.copy(navigateToLogin = null)

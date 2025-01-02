@@ -136,7 +136,7 @@ fun DetailsScreen(
     },
     viewAllRatingsClicked = {
       showAllRatingBottomSheet = true
-      viewModel.onFetchAllRating()
+      viewModel.onFetchAllRatings()
     },
   )
 }

@@ -1380,7 +1380,7 @@ class DetailsViewModelTest {
       .mockFetchAllRatingsUseCase(allRatingsChannel)
       .expectUiStates(
         action = {
-          onFetchAllRating()
+          onFetchAllRatings()
 
           launch {
             allRatingsChannel.send(
