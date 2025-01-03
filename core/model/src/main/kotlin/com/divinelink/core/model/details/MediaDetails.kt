@@ -1,6 +1,7 @@
 package com.divinelink.core.model.details
 
 import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 
 /**
@@ -59,13 +60,28 @@ sealed class MediaDetails {
   }
 }
 
-fun MediaDetails.shareUrl(): String {
-  val urlTitle = title
-    .lowercase()
-    .replace(":", "")
-    .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
-
+// TODO Add unit tests
+fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? {
   val mediaType = if (this is Movie) MediaType.MOVIE else MediaType.TV
 
-  return "https://www.themoviedb.org/${mediaType.value}/$id-$urlTitle"
+  when (source) {
+    RatingSource.TMDB -> {
+      val urlTitle = title
+        .lowercase()
+        .replace(":", "")
+        .replace(regex = "[\\s|/]".toRegex(), replacement = "-")
+
+      return "${source.url}/${mediaType.value}/$id-$urlTitle"
+    }
+    RatingSource.IMDB -> {
+      val imdbId = imdbId ?: return null
+
+      return "${source.url}/title/$imdbId"
+    }
+    RatingSource.TRAKT -> {
+      val imdbId = imdbId ?: return null
+
+      return source.url + "/${mediaType.traktPath}/" + imdbId
+    }
+  }
 }

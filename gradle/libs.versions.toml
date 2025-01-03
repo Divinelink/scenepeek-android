@@ -15,6 +15,7 @@ coil = "3.0.4"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.2.1"
 androidx-tracing = "1.3.0-alpha02"
+androidx-browser = "1.8.0"
 lifecycle-runtime-ktx = "2.8.6"
 activity-compose = "1.9.2"
 start-up = "1.2.0"
@@ -78,6 +79,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "start-up" }
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidx-tracing" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidx-browser" }
 
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }

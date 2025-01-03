@@ -15,6 +15,8 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -29,8 +31,10 @@ import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -64,6 +68,9 @@ class DetailsViewModel(
     ),
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
+
+  private val _openUrlTab = MutableSharedFlow<String>()
+  val openUrlTab = _openUrlTab.asSharedFlow()
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
@@ -437,6 +444,17 @@ class DetailsViewModel(
               Timber.e(error)
             }
         }
+      }
+    }
+  }
+
+  fun onRatingClick(source: RatingSource) {
+    val mediaDetails = viewState.value.mediaDetails ?: return
+    val url = mediaDetails.externalUrl(source) ?: return
+
+    viewModelScope.launch {
+      if (url.isNotEmpty()) {
+        _openUrlTab.emit(url)
       }
     }
   }

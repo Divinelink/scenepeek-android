@@ -12,7 +12,7 @@ class MediaDetailsTest {
       title = "Godzilla x Kong: The New Empire",
     )
 
-    val shareUrl = mediaDetails.shareUrl()
+    val shareUrl = mediaDetails.externalUrl()
 
     assertThat(
       shareUrl,
@@ -25,7 +25,7 @@ class MediaDetailsTest {
       title = "The Office: The New Empire",
     )
 
-    val shareUrl = mediaDetails.shareUrl()
+    val shareUrl = mediaDetails.externalUrl()
 
     assertThat(shareUrl).isEqualTo("https://themoviedb.org/tv/2316-the-office-the-new-empire")
   }
