@@ -22,6 +22,7 @@ dependencies {
   implementation(libs.timber)
 
   implementation(libs.kotlinx.datetime)
+  implementation(libs.androidx.browser)
 
   testImplementation(projects.core.testing)
 }

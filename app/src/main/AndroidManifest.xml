@@ -29,13 +29,11 @@
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
 
-        <data
-            android:host="www.themoviedb.org"
-            android:scheme="https" />
-
-        <data android:pathPattern="/tv/.*" />
+        <data android:scheme="https" />
+        <data android:host="www.themoviedb.org" />
         <data android:pathPattern="/movie/.*" />
         <data android:pathPattern="/person/.*" />
+        <data android:pathPattern="/tv/.*" />
       </intent-filter>
     </activity>
 
@@ -49,4 +47,11 @@
           android:value="androidx.startup" />
     </provider>
   </application>
+
+  <queries>
+    <intent>
+      <action android:name="android.support.customtabs.action.CustomTabsService" />
+    </intent>
+  </queries>
+
 </manifest>

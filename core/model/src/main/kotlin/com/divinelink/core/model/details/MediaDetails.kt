@@ -67,5 +67,5 @@ fun MediaDetails.shareUrl(): String {
 
   val mediaType = if (this is Movie) MediaType.MOVIE else MediaType.TV
 
-  return "https://themoviedb.org/${mediaType.value}/$id-$urlTitle"
+  return "https://www.themoviedb.org/${mediaType.value}/$id-$urlTitle"
 }
