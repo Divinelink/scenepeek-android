@@ -10,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.commons.util.launchCustomTab
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.map
@@ -47,6 +49,7 @@ fun DetailsScreen(
   val viewState = viewModel.viewState.collectAsState()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
+  val context = LocalContext.current
 
   LaunchedEffect(viewState.value.navigateToLogin) {
     viewState.value.navigateToLogin?.let {
@@ -77,6 +80,12 @@ fun DetailsScreen(
     }
   }
 
+  LaunchedEffect(Unit) {
+    viewModel.openUrlTab.collect { url ->
+      launchCustomTab(context, url)
+    }
+  }
+
   if (openBottomSheet) {
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
@@ -99,9 +108,7 @@ fun DetailsScreen(
         sheetState = allRatingsBottomSheetState,
         onDismissRequest = { showAllRatingBottomSheet = false },
         ratingCount = ratingCount,
-        onClick = { ratingSource ->
-          // TODO Navigate to corresponding rating source
-        },
+        onClick = viewModel::onMediaSourceClick,
       )
     }
   }
@@ -136,7 +143,7 @@ fun DetailsScreen(
     },
     viewAllRatingsClicked = {
       showAllRatingBottomSheet = true
-      viewModel.onFetchAllRating()
+      viewModel.onFetchAllRatings()
     },
   )
 }

@@ -15,6 +15,8 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -29,6 +31,8 @@ import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +41,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -64,6 +69,9 @@ class DetailsViewModel(
     ),
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
+
+  private val _openUrlTab = Channel<String>()
+  val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
@@ -417,7 +425,7 @@ class DetailsViewModel(
     }
   }
 
-  fun onFetchAllRating() {
+  fun onFetchAllRatings() {
     viewModelScope.launch {
       viewState.value.mediaDetails?.let {
         fetchAllRatingsUseCase(it).collect { result ->
@@ -441,6 +449,17 @@ class DetailsViewModel(
     }
   }
 
+  fun onMediaSourceClick(source: RatingSource) {
+    val mediaDetails = viewState.value.mediaDetails ?: return
+    val url = mediaDetails.externalUrl(source) ?: return
+
+    viewModelScope.launch {
+      if (url.isNotEmpty()) {
+        _openUrlTab.send(url)
+      }
+    }
+  }
+
   private fun setSnackbarMessage(snackbarMessage: SnackbarMessage) {
     _viewState.update { viewState ->
       viewState.copy(
@@ -450,7 +469,6 @@ class DetailsViewModel(
   }
 
   // Consumers
-
   fun consumeNavigateToLogin() {
     _viewState.update { viewState ->
       viewState.copy(navigateToLogin = null)

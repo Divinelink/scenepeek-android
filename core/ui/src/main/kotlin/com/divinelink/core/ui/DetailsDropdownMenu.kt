@@ -17,7 +17,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.shareUrl
+import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.ui.components.dropdownmenu.ObfuscateSpoilersMenuItem
 import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
 
@@ -35,7 +35,7 @@ fun DetailsDropdownMenu(
   if (showShareDialog) {
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
       type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, mediaDetails.shareUrl())
+      putExtra(Intent.EXTRA_TEXT, mediaDetails.externalUrl())
     }
     LocalContext.current.startActivity(Intent.createChooser(shareIntent, "Share via"))
     showShareDialog = false

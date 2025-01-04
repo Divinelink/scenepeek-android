@@ -12,10 +12,6 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
-import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
-import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
@@ -23,6 +19,10 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
 import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
@@ -399,6 +399,56 @@ class PersonScreenTest : ComposeTest() {
         onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
       }
     }
+
+  @Test
+  fun `test loading content is gone when details are fetched with initial loading`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to navArgs.id,
+          "knownForDepartment" to null,
+          "name" to null,
+          "profilePath" to null,
+          "gender" to null,
+        ),
+      ),
+    )
+
+    setContentWithTheme {
+      PersonScreen(
+        navigator = navigator,
+        viewModel = viewModel,
+      )
+    }
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = PersonCastCreditFactory.knownFor(),
+            credits = PersonCombinedCreditsFactory.all(),
+          ),
+        ),
+      )
+
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+
+      channel.send(
+        Result.success(
+          PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+        ),
+      )
+
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsNotDisplayed()
+    }
+  }
 
   @Test
   fun `test onMediaClick navigates to detail`() = runTest {

@@ -21,6 +21,8 @@ dependencies {
   implementation(projects.core.model)
   implementation(projects.core.navigation)
 
+  implementation(libs.androidx.browser)
+
   implementation(projects.core.fixtures)
   testImplementation(projects.core.testing)
 }

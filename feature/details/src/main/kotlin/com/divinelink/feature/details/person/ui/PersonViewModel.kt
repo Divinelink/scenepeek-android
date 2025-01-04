@@ -53,6 +53,7 @@ class PersonViewModel(
                     personDetails = PersonDetailsUiState.Data.Visible(
                       detailsResult.personDetails,
                     ),
+                    isLoading = false,
                   )
                 }
 
