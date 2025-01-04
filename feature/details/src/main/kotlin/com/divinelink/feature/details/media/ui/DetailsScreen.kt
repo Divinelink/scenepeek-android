@@ -108,7 +108,7 @@ fun DetailsScreen(
         sheetState = allRatingsBottomSheetState,
         onDismissRequest = { showAllRatingBottomSheet = false },
         ratingCount = ratingCount,
-        onClick = viewModel::onRatingClick,
+        onClick = viewModel::onMediaSourceClick,
       )
     }
   }

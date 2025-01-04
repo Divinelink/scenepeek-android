@@ -31,16 +31,17 @@ import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -69,8 +70,8 @@ class DetailsViewModel(
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
 
-  private val _openUrlTab = MutableSharedFlow<String>()
-  val openUrlTab = _openUrlTab.asSharedFlow()
+  private val _openUrlTab = Channel<String>()
+  val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
@@ -448,13 +449,13 @@ class DetailsViewModel(
     }
   }
 
-  fun onRatingClick(source: RatingSource) {
+  fun onMediaSourceClick(source: RatingSource) {
     val mediaDetails = viewState.value.mediaDetails ?: return
     val url = mediaDetails.externalUrl(source) ?: return
 
     viewModelScope.launch {
       if (url.isNotEmpty()) {
-        _openUrlTab.emit(url)
+        _openUrlTab.send(url)
       }
     }
   }

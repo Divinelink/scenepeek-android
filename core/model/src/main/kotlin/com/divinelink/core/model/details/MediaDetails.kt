@@ -60,7 +60,6 @@ sealed class MediaDetails {
   }
 }
 
-// TODO Add unit tests
 fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? {
   val mediaType = if (this is Movie) MediaType.MOVIE else MediaType.TV
 

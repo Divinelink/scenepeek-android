@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
+import com.divinelink.core.commons.ExcludeFromKoverReport
 
+@ExcludeFromKoverReport
 fun launchCustomTab(
   context: Context,
   url: String,

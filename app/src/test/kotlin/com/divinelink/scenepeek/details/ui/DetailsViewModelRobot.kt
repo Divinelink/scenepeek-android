@@ -2,6 +2,8 @@ package com.divinelink.scenepeek.details.ui
 
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.TurbineTestContext
+import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
@@ -25,6 +27,7 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 
 class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
@@ -74,6 +77,14 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun assertViewState(expectedViewState: DetailsViewState) = apply {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+  }
+
+  fun assertOpenUrlTab(validate: suspend TurbineTestContext<String>.() -> Unit) = apply {
+    runTest {
+      viewModel.openUrlTab.test {
+        validate()
+      }
+    }
   }
 
   fun mockFetchMediaDetails(response: Flow<Result<MediaDetailsResult>>) = apply {
@@ -174,6 +185,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     fakeAddToWatchListUseCase.mockAddToWatchlist(
       response = response,
     )
+  }
+
+  fun onMediaSourceClick(source: RatingSource) = apply {
+    viewModel.onMediaSourceClick(source)
   }
 
   suspend fun mockSpoilersObfuscation(obfuscated: Boolean) = apply {

@@ -29,6 +29,7 @@ import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -1454,5 +1455,113 @@ class DetailsViewModelTest {
           ),
         ),
       )
+  }
+
+  @Test
+  fun `test onMediaSourceClick for TV show emits openUrl`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+      )
+      .withNavArguments(2316, MediaType.TV)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          mediaId = 2316,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = tvDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/tv/2316-the-office",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://www.imdb.com/title/tt0386676")
+      }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://trakt.tv/shows/tt0386676")
+      }
+  }
+
+  @Test
+  fun `test onMediaSourceClick for movie emits openUrl`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails,
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/movie/1123-flight-club",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://www.imdb.com/title/tt0137523")
+      }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo("https://trakt.tv/movies/tt0137523")
+      }
+  }
+
+  @Test
+  fun `test onMediaSourceClick for movie emits openUrls`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = defaultDetails(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(imdbId = null),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .onMediaSourceClick(RatingSource.TMDB)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = AccountMediaDetailsFactory.NotRated(),
+          mediaDetails = movieDetails.copy(imdbId = null),
+          spoilersObfuscated = false,
+        ),
+      )
+      .assertOpenUrlTab {
+        assertThat(awaitItem()).isEqualTo(
+          "https://www.themoviedb.org/movie/1123-flight-club",
+        )
+      }
+      .onMediaSourceClick(RatingSource.IMDB)
+      .assertOpenUrlTab { expectNoEvents() }
+      .onMediaSourceClick(RatingSource.TRAKT)
+      .assertOpenUrlTab { expectNoEvents() }
   }
 }
