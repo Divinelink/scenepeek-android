@@ -23,6 +23,7 @@ The following table outlines the main features of our app:
 | Cast & Crew Information   | Explore the team behind movies and TV shows   | ✅ Implemented       |
 | Jellyseerr Authentication | Log in to your Jellyseerr account             | ✅ Implemented       |
 | Jellyseerr Requests       | Request movies and TV shows via Jellyseerr    | ✅ Implemented       |
+| Additional Rating Sources | View IMDb & Trakt ratings for all content     | ✅ Implemented       |
 | Discover Feed             | Personalized content recommendations          | 🚧 Work in Progress |
 | TV Show Seasons           | Detailed information about individual seasons | 🚧 Work in Progress |
 
