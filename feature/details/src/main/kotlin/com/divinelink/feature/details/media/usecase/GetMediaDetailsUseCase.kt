@@ -12,7 +12,9 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -58,7 +60,14 @@ open class GetMediaDetailsUseCase(
         mediaType = requestApi.mediaType,
       )
 
-      val ratingSource = preferenceStorage.ratingSource.firstOrNull() ?: RatingSource.TMDB
+      val movieRatingSource = preferenceStorage.movieRatingSource.firstOrNull() ?: RatingSource.TMDB
+      val tvRatingSource = preferenceStorage.tvRatingSource.firstOrNull() ?: RatingSource.TMDB
+
+      val ratingSource = when (requestApi) {
+        is DetailsRequestApi.Movie -> movieRatingSource
+        is DetailsRequestApi.TV -> tvRatingSource
+        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
+      }
 
       launch(dispatcher.io) {
         repository.fetchMovieDetails(requestApi)
@@ -72,7 +81,7 @@ open class GetMediaDetailsUseCase(
             val updatedDetails = when (ratingSource) {
               RatingSource.TMDB -> details
               RatingSource.IMDB -> fetchIMDbDetails(details)
-              RatingSource.TRAKT -> details
+              RatingSource.TRAKT -> fetchTraktDetails(details)
             }
 
             Result.success(
@@ -179,4 +188,18 @@ open class GetMediaDetailsUseCase(
           details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.IMDB, it))
         }
     } ?: details
+
+  private suspend fun fetchTraktDetails(details: MediaDetails): MediaDetails {
+    val mediaType = if (details is Movie) MediaType.MOVIE else MediaType.TV
+
+    return details.imdbId?.let { id ->
+      repository
+        .fetchTraktRating(mediaType = mediaType, imdbId = id)
+        .firstOrNull()
+        ?.getOrNull()
+        ?.let {
+          details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, it))
+        }
+    } ?: details
+  }
 }

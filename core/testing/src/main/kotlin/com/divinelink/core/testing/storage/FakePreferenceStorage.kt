@@ -54,7 +54,7 @@ class FakePreferenceStorage(
   override val spoilersObfuscation: Flow<Boolean> = _spoilersObfuscation
 
   private val _ratingSource = MutableStateFlow(ratingSource)
-  override val ratingSource: Flow<RatingSource> = _ratingSource
+  override val movieRatingSource: Flow<RatingSource> = _ratingSource
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -120,7 +120,7 @@ class FakePreferenceStorage(
     _spoilersObfuscation.value = isEnabled
   }
 
-  override suspend fun setRatingSource(ratingSource: RatingSource) {
+  override suspend fun setMovieRatingSource(ratingSource: RatingSource) {
     _ratingSource.value = ratingSource
   }
 }

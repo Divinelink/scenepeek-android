@@ -237,7 +237,7 @@ class DataStorePreferenceStorageTest {
   fun `test RatingSource default value is TMDB`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
-    storage.ratingSource.test {
+    storage.movieRatingSource.test {
       assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
     }
   }
@@ -246,13 +246,13 @@ class DataStorePreferenceStorageTest {
   fun `test RatingSource value`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
-    storage.ratingSource.test {
+    storage.movieRatingSource.test {
       assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
 
-      storage.setRatingSource(RatingSource.IMDB)
+      storage.setMovieRatingSource(RatingSource.IMDB)
       assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
 
-      storage.setRatingSource(RatingSource.TRAKT)
+      storage.setMovieRatingSource(RatingSource.TRAKT)
       assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
     }
   }
@@ -261,11 +261,11 @@ class DataStorePreferenceStorageTest {
   fun `test RatingSource does not trigger new emissions with the same value`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
-    storage.ratingSource.test {
+    storage.movieRatingSource.test {
       assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
 
-      storage.setRatingSource(RatingSource.TMDB)
-      storage.setRatingSource(RatingSource.TMDB)
+      storage.setMovieRatingSource(RatingSource.TMDB)
+      storage.setMovieRatingSource(RatingSource.TMDB)
 
       expectNoEvents()
     }

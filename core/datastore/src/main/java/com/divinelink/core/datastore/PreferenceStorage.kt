@@ -13,10 +13,11 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_RATING_SOURCE
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.model.details.rating.RatingSource
 import kotlinx.coroutines.flow.Flow
@@ -64,8 +65,11 @@ interface PreferenceStorage {
   suspend fun setJellyseerrAuthMethod(authMethod: String)
   val jellyseerrAuthMethod: Flow<String?>
 
-  suspend fun setRatingSource(ratingSource: RatingSource)
-  val ratingSource: Flow<RatingSource>
+  suspend fun setMovieRatingSource(ratingSource: RatingSource)
+  val movieRatingSource: Flow<RatingSource>
+
+  suspend fun setTvRatingSource(ratingSource: RatingSource)
+  val tvRatingSource: Flow<RatingSource>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -94,7 +98,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
     val PREF_JELLYSEERR_AUTH_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
 
-    val PREF_RATING_SOURCE = stringPreferencesKey("rating.source")
+    val PREF_MOVIE_RATING_SOURCE = stringPreferencesKey("movie.rating.source")
+    val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -243,11 +248,19 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     it[PREF_JELLYSEERR_AUTH_METHOD]
   }
 
-  override suspend fun setRatingSource(ratingSource: RatingSource) {
-    dataStore.edit { it[PREF_RATING_SOURCE] = ratingSource.value }
+  override suspend fun setMovieRatingSource(ratingSource: RatingSource) {
+    dataStore.edit { it[PREF_MOVIE_RATING_SOURCE] = ratingSource.value }
   }
 
-  override val ratingSource: Flow<RatingSource> = dataStore.data.map { it ->
-    it[PREF_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  override val movieRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
+    it[PREF_MOVIE_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  }.distinctUntilChanged()
+
+  override suspend fun setTvRatingSource(ratingSource: RatingSource) {
+    dataStore.edit { it[PREF_TV_RATING_SOURCE] = ratingSource.value }
+  }
+
+  override val tvRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
+    it[PREF_TV_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
   }.distinctUntilChanged()
 }

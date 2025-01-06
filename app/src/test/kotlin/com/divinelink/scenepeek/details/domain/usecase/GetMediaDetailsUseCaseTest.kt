@@ -118,7 +118,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `successfully get movie details with Trakt rating source`() = runTest {
-    preferenceStorage.setRatingSource(RatingSource.TRAKT)
+    preferenceStorage.setMovieRatingSource(RatingSource.TRAKT)
 
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
     repository.mockFetchMovieDetails(request, Result.success(movieDetails))
