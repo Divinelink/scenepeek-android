@@ -63,6 +63,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -370,10 +371,9 @@ fun MediaDetailsContent(
 
     item {
       UserRating(
-        overallUserScore = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage,
+        ratingDetails = mediaDetails.ratingCount.getRatingDetails(ratingSource),
         accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
-        voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
         onShowAllRatingsClicked = viewAllRatingsClicked,
         source = ratingSource,
       )
@@ -441,8 +441,7 @@ fun MediaDetailsContent(
 private fun UserRating(
   modifier: Modifier = Modifier,
   source: RatingSource,
-  overallUserScore: Double?,
-  voteCount: Int?,
+  ratingDetails: RatingDetails,
   accountRating: Int?,
   onAddRateClicked: () -> Unit,
   onShowAllRatingsClicked: () -> Unit,
@@ -462,8 +461,7 @@ private fun UserRating(
       onClick = onShowAllRatingsClicked,
     ) {
       MediaRatingItem(
-        rating = overallUserScore,
-        voteCount = voteCount,
+        ratingDetails = ratingDetails,
         source = source,
       )
     }

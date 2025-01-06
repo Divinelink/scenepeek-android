@@ -108,6 +108,12 @@ class DetailsViewModel(
                 ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
               )
 
+              is MediaDetailsResult.RatingSuccess -> viewState.copy(
+                mediaDetails = viewState.mediaDetails?.copy(
+                  ratingCount = (result.data as MediaDetailsResult.RatingSuccess).rating,
+                ),
+              )
+
               is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
                 reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
               )

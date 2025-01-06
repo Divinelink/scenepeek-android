@@ -18,7 +18,11 @@ data class RatingCount(val ratings: Map<RatingSource, RatingDetails>) {
     )
   }
 
-  fun getRating(source: RatingSource): RatingDetails.Score? =
+  // TODO Check if this is correct
+  fun getRatingDetails(source: RatingSource): RatingDetails =
+    ratings[source] ?: RatingDetails.Unavailable
+
+  fun getRating(source: RatingSource): RatingDetails.Score? = // TODO Check if this is needed
     ratings[source] as? RatingDetails.Score
 
   fun updateRating(

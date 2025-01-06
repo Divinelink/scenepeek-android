@@ -78,17 +78,24 @@ open class GetMediaDetailsUseCase(
           .map { result ->
             val details = result.data
 
-            val updatedDetails = when (ratingSource) {
-              RatingSource.TMDB -> details
-              RatingSource.IMDB -> fetchIMDbDetails(details)
-              RatingSource.TRAKT -> fetchTraktDetails(details)
+            launch ratingFetch@{
+              val updatedDetails = when (ratingSource) {
+                RatingSource.TMDB -> return@ratingFetch
+                RatingSource.IMDB -> fetchIMDbDetails(details)
+                RatingSource.TRAKT -> fetchTraktDetails(details)
+              }
+
+              send(
+                Result.success(
+                  MediaDetailsResult.RatingSuccess(rating = updatedDetails.ratingCount),
+                ),
+              )
             }
 
             Result.success(
               MediaDetailsResult.DetailsSuccess(
-                mediaDetails = updatedDetails.copy(
+                mediaDetails = details.copy(
                   isFavorite = isFavorite.getOrNull() ?: false,
-                  ratingCount = updatedDetails.ratingCount,
                 ),
                 ratingSource = ratingSource,
               ),

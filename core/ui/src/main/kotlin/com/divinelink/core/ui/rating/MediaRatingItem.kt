@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
@@ -21,8 +22,7 @@ import com.divinelink.core.ui.R
 @Composable
 fun MediaRatingItem(
   modifier: Modifier = Modifier,
-  rating: Double?,
-  voteCount: Int?,
+  ratingDetails: RatingDetails,
   source: RatingSource,
 ) {
   when (source) {
@@ -32,8 +32,8 @@ fun MediaRatingItem(
     ) {
       TMDBRatingItem(
         modifier = modifier,
-        rating = rating,
-        voteCount = voteCount,
+        rating = (ratingDetails as? RatingDetails.Score)?.voteAverage,
+        voteCount = (ratingDetails as? RatingDetails.Score)?.voteCount,
         size = RatingSize.LARGE,
       )
       Text(
@@ -44,13 +44,11 @@ fun MediaRatingItem(
     }
     RatingSource.IMDB -> IMDbRatingItem(
       modifier = modifier,
-      rating = rating,
-      voteCount = voteCount,
+      ratingDetails = ratingDetails,
     )
     RatingSource.TRAKT -> TraktRatingItem(
       modifier = modifier,
-      rating = rating,
-      voteCount = voteCount,
+      ratingDetails = ratingDetails,
     )
   }
 }
