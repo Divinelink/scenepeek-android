@@ -27,6 +27,8 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.provider.MediaItemPreviewParameterProvider
+import com.divinelink.core.ui.rating.RatingSize
+import com.divinelink.core.ui.rating.TMDBRatingItem
 
 @Composable
 fun DetailedMediaItem(
@@ -55,7 +57,7 @@ fun DetailedMediaItem(
           MovieImage(
             path = mediaItem.posterPath,
           )
-          MediaRatingItem(
+          TMDBRatingItem(
             modifier = Modifier
               .align(Alignment.BottomStart)
               .offset(y = offset)

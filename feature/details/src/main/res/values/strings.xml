@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="feature_details__watchlist">Watchlist</string>
-  <string name="details__user_score">User\nScore</string>
   <string name="details__your_rating">Your rating</string>
   <string name="details__add_rating">Rate this</string>
   <string name="details__add_rating_description">What do you think of %s?</string>

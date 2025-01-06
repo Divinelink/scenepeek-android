@@ -1,10 +1,11 @@
 package com.divinelink.core.ui
 
 import androidx.compose.runtime.Composable
+import com.divinelink.core.ui.rating.TMDBMediaRatingItemPreview
 
 @Previews
 @Composable
-fun MediaRatingItemScreenshot() {
-  MediaRatingItemPreview()
+fun TMDBMediaRatingItemScreenshot() {
+  TMDBMediaRatingItemPreview()
 }
 

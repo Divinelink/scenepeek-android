@@ -31,6 +31,7 @@ import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.rating.TMDBRatingItem
 
 const val BOTTOM_SHEET_MARK_AS_FAVORITE = "MARK_AS_FAVORITE_BUTTON"
 
@@ -100,7 +101,7 @@ fun MediaDetailsContent(
           horizontalArrangement = Arrangement.Center,
           verticalAlignment = Alignment.CenterVertically,
         ) {
-          MediaRatingItem(rating = media.voteAverage, voteCount = media.voteCount)
+          TMDBRatingItem(rating = media.voteAverage, voteCount = media.voteCount)
           Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_16))
           Text(
             text = media.releaseDate,
