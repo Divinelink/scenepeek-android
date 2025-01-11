@@ -271,7 +271,7 @@ class DetailsContentTest : ComposeTest() {
       )
     }
 
-    val userScore = composeTestRule.activity.getString(detailsR.string.details__user_score, "7.3")
+    val userScore = composeTestRule.activity.getString(uiR.string.core_ui_tmdb_user_score, "7.3")
 
     composeTestRule
       .onNodeWithTag(
@@ -738,7 +738,7 @@ class DetailsContentTest : ComposeTest() {
         },
       )
     }
-    val userScore = composeTestRule.activity.getString(detailsR.string.details__user_score, "7.3")
+    val userScore = composeTestRule.activity.getString(uiR.string.core_ui_tmdb_user_score, "7.3")
 
     with(composeTestRule) {
       onNodeWithText(userScore)

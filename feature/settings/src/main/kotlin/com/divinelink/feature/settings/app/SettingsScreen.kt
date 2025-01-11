@@ -9,8 +9,11 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.DisplaySettings
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
@@ -34,6 +37,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
   ) { paddingValues ->
 
     LazyColumn(
+      modifier = Modifier.testTag(TestTags.Settings.SCREEN_CONTENT),
       contentPadding = paddingValues,
     ) {
       item {

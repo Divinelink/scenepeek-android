@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DetailsRepository {
 
-  fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>>
+  fun fetchMediaDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>>
 
   fun fetchMovieReviews(request: DetailsRequestApi): Flow<Result<List<Review>>>
 

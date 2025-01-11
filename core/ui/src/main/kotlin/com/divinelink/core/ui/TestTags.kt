@@ -69,6 +69,8 @@ object TestTags {
   }
 
   object Settings {
+    const val SCREEN_CONTENT = "Settings Screen Content"
+
     const val TOP_APP_BAR = "Settings Top App Bar"
     const val NAVIGATION_ICON = "Settings Navigation Icon"
 

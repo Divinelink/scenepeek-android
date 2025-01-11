@@ -10,6 +10,7 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
@@ -133,5 +134,30 @@ class SettingsScreenTest : ComposeTest() {
     destinationsNavigator.verifyNavigatedToDirection(
       HelpSettingsScreenDestination,
     )
+  }
+
+  @Test
+  fun `test navigate to details preference screen`() {
+    val destinationsNavigator = FakeDestinationsNavigator()
+
+    destinationsNavigator.navigate(
+      direction = SettingsScreenDestination(),
+    )
+
+    composeTestRule.setContent {
+      SettingsScreen(
+        navigator = destinationsNavigator,
+      )
+    }
+
+    val detailsPreferencesString = getString(R.string.feature_settings_details_preferences)
+
+    with(composeTestRule) {
+      onNodeWithText(detailsPreferencesString).assertExists()
+
+      onNodeWithText(detailsPreferencesString).performClick()
+    }
+
+    destinationsNavigator.verifyNavigatedToDirection(DetailPreferencesSettingsScreenDestination)
   }
 }

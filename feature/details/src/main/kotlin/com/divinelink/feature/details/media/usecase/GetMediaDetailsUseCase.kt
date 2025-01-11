@@ -13,6 +13,7 @@ import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
@@ -70,7 +71,7 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.io) {
-        repository.fetchMovieDetails(requestApi)
+        repository.fetchMediaDetails(requestApi)
           .catch {
             Timber.e(it)
             send(Result.failure(MediaDetailsException()))
@@ -189,11 +190,26 @@ open class GetMediaDetailsUseCase(
     details.imdbId?.let { id ->
       repository
         .fetchIMDbDetails(id)
+        .catch { emit(Result.failure(it)) }
         .firstOrNull()
-        ?.getOrNull()
-        ?.let {
-          details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.IMDB, it))
-        }
+        ?.fold(
+          onFailure = {
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                source = RatingSource.IMDB,
+                rating = RatingDetails.Unavailable,
+              ),
+            )
+          },
+          onSuccess = { result ->
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                source = RatingSource.IMDB,
+                rating = result ?: RatingDetails.Unavailable,
+              ),
+            )
+          },
+        )
     } ?: details
 
   private suspend fun fetchTraktDetails(details: MediaDetails): MediaDetails {
@@ -202,11 +218,21 @@ open class GetMediaDetailsUseCase(
     return details.imdbId?.let { id ->
       repository
         .fetchTraktRating(mediaType = mediaType, imdbId = id)
+        .catch { emit(Result.failure(it)) }
         .firstOrNull()
-        ?.getOrNull()
-        ?.let {
-          details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, it))
-        }
+        ?.fold(
+          onFailure = {
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                RatingSource.TRAKT,
+                RatingDetails.Unavailable,
+              ),
+            )
+          },
+          onSuccess = { result ->
+            details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, result))
+          },
+        )
     } ?: details
   }
 }

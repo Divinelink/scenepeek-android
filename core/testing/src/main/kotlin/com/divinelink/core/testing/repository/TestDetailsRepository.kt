@@ -3,7 +3,7 @@ package com.divinelink.core.testing.repository
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
-import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
@@ -20,12 +20,12 @@ class TestDetailsRepository {
 
   val mock: DetailsRepository = mock()
 
-  fun mockFetchMovieDetails(
+  fun mockFetchMediaDetails(
     request: DetailsRequestApi,
-    response: Result<Movie>,
+    response: Result<MediaDetails>,
   ) {
     whenever(
-      mock.fetchMovieDetails(request),
+      mock.fetchMediaDetails(request),
     ).thenReturn(
       flowOf(response),
     )

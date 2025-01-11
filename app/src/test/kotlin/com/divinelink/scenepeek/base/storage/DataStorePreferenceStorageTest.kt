@@ -234,7 +234,7 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test RatingSource default value is TMDB`() = runTest {
+  fun `test MovieRatingSource default value is TMDB`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
@@ -243,7 +243,7 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test RatingSource value`() = runTest {
+  fun `test MovieRatingSource value`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
@@ -258,7 +258,7 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test RatingSource does not trigger new emissions with the same value`() = runTest {
+  fun `test MovieRatingSource does not trigger new emissions with the same value`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 
     storage.movieRatingSource.test {
@@ -266,6 +266,44 @@ class DataStorePreferenceStorageTest {
 
       storage.setMovieRatingSource(RatingSource.TMDB)
       storage.setMovieRatingSource(RatingSource.TMDB)
+
+      expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test TVRatingSource default value is TMDB`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.tvRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+    }
+  }
+
+  @Test
+  fun `test TVRatingSource value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.tvRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setTvRatingSource(RatingSource.IMDB)
+      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+
+      storage.setTvRatingSource(RatingSource.TRAKT)
+      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+    }
+  }
+
+  @Test
+  fun `test TVRatingSource does not trigger new emissions with the same value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.tvRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setTvRatingSource(RatingSource.TMDB)
+      storage.setTvRatingSource(RatingSource.TMDB)
 
       expectNoEvents()
     }
