@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ACCOUNT_ID
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
@@ -15,6 +16,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
@@ -70,6 +72,12 @@ interface PreferenceStorage {
 
   suspend fun setTvRatingSource(ratingSource: RatingSource)
   val tvRatingSource: Flow<RatingSource>
+
+  suspend fun setEpisodesRatingSource(ratingSource: RatingSource)
+  val episodesRatingSource: Flow<RatingSource>
+
+  suspend fun setSeasonsRatingSource(ratingSource: RatingSource)
+  val seasonsRatingSource: Flow<RatingSource>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -100,6 +108,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
     val PREF_MOVIE_RATING_SOURCE = stringPreferencesKey("movie.rating.source")
     val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
+    val PREF_EPISODES_RATING_SOURCE = stringPreferencesKey("episodes.rating.source")
+    val PREF_SEASONS_RATING_SOURCE = stringPreferencesKey("seasons.rating.source")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -262,5 +272,21 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val tvRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
     it[PREF_TV_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  }.distinctUntilChanged()
+
+  override suspend fun setEpisodesRatingSource(ratingSource: RatingSource) {
+    dataStore.edit { it[PREF_EPISODES_RATING_SOURCE] = ratingSource.value }
+  }
+
+  override val episodesRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
+    it[PREF_EPISODES_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  }.distinctUntilChanged()
+
+  override suspend fun setSeasonsRatingSource(ratingSource: RatingSource) {
+    dataStore.edit { it[PREF_SEASONS_RATING_SOURCE] = ratingSource.value }
+  }
+
+  override val seasonsRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
+    it[PREF_SEASONS_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
   }.distinctUntilChanged()
 }

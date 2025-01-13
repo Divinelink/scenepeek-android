@@ -29,9 +29,7 @@ class MediaRatingPreferenceUseCaseTest {
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaRatingSource.Movie to RatingSource.TMDB),
       )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaRatingSource.TVShow to RatingSource.TMDB),
-      )
+      skipItems(3)
 
       useCase.setMediaRatingSource(MediaRatingSource.Movie to RatingSource.IMDB)
 
@@ -49,17 +47,82 @@ class MediaRatingPreferenceUseCaseTest {
     val useCase = MediaRatingPreferenceUseCase(storage, testDispatcher)
 
     useCase(Unit).test {
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(MediaRatingSource.Movie to RatingSource.TMDB),
-      )
+      skipItems(1)
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaRatingSource.TVShow to RatingSource.TMDB),
       )
+      skipItems(2)
 
       useCase.setMediaRatingSource(MediaRatingSource.TVShow to RatingSource.IMDB)
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(MediaRatingSource.TVShow to RatingSource.IMDB),
+      )
+    }
+  }
+
+  @Test
+  fun `test collect and update MediaRatingPreference for Episodes with TMDB initial`() = runTest {
+    storage.setEpisodesRatingSource(RatingSource.TMDB)
+
+    val useCase = MediaRatingPreferenceUseCase(storage, testDispatcher)
+
+    useCase(Unit).test {
+      skipItems(2)
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Episodes to RatingSource.TMDB),
+      )
+      skipItems(1)
+
+      useCase.setMediaRatingSource(MediaRatingSource.Episodes to RatingSource.IMDB)
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Episodes to RatingSource.IMDB),
+      )
+    }
+  }
+
+  @Test
+  fun `test collect and update MediaRatingPreference for Seasons with TMDB initial`() = runTest {
+    storage.setSeasonsRatingSource(RatingSource.TMDB)
+
+    val useCase = MediaRatingPreferenceUseCase(storage, testDispatcher)
+
+    useCase(Unit).test {
+      skipItems(3)
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Seasons to RatingSource.TMDB),
+      )
+
+      useCase.setMediaRatingSource(MediaRatingSource.Seasons to RatingSource.IMDB)
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Seasons to RatingSource.IMDB),
+      )
+    }
+  }
+
+  @Test
+  fun `test collect all sources with various initial sources`() = runTest {
+    storage.setMovieRatingSource(RatingSource.IMDB)
+    storage.setTvRatingSource(RatingSource.TRAKT)
+    storage.setEpisodesRatingSource(RatingSource.TMDB)
+    storage.setSeasonsRatingSource(RatingSource.IMDB)
+
+    val useCase = MediaRatingPreferenceUseCase(storage, testDispatcher)
+
+    useCase(Unit).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Movie to RatingSource.IMDB),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.TVShow to RatingSource.TRAKT),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Episodes to RatingSource.TMDB),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaRatingSource.Seasons to RatingSource.IMDB),
       )
     }
   }

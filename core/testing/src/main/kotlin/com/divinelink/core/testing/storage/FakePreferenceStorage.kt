@@ -19,6 +19,8 @@ class FakePreferenceStorage(
   spoilersObfuscation: Boolean = false,
   movieRatingSource: RatingSource = RatingSource.TMDB,
   tvRatingSource: RatingSource = RatingSource.TMDB,
+  episodesRatingSource: RatingSource = RatingSource.TMDB,
+  seasonsRatingSource: RatingSource = RatingSource.TMDB,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -59,6 +61,12 @@ class FakePreferenceStorage(
 
   private val _tvRatingSource = MutableStateFlow(tvRatingSource)
   override val tvRatingSource: Flow<RatingSource> = _tvRatingSource
+
+  private val _episodesRatingSource = MutableStateFlow(episodesRatingSource)
+  override val episodesRatingSource: Flow<RatingSource> = _episodesRatingSource
+
+  private val _seasonsRatingSource = MutableStateFlow(seasonsRatingSource)
+  override val seasonsRatingSource: Flow<RatingSource> = _seasonsRatingSource
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -130,5 +138,13 @@ class FakePreferenceStorage(
 
   override suspend fun setTvRatingSource(ratingSource: RatingSource) {
     _tvRatingSource.value = ratingSource
+  }
+
+  override suspend fun setEpisodesRatingSource(ratingSource: RatingSource) {
+    _episodesRatingSource.value = ratingSource
+  }
+
+  override suspend fun setSeasonsRatingSource(ratingSource: RatingSource) {
+    _seasonsRatingSource.value = ratingSource
   }
 }

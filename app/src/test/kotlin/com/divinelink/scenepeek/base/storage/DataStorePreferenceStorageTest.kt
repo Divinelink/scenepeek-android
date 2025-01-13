@@ -308,4 +308,80 @@ class DataStorePreferenceStorageTest {
       expectNoEvents()
     }
   }
+
+  @Test
+  fun `test EpisodesRatingSource default value is TMDB`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.episodesRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+    }
+  }
+
+  @Test
+  fun `test EpisodesRatingSource value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.episodesRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setEpisodesRatingSource(RatingSource.IMDB)
+      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+
+      storage.setEpisodesRatingSource(RatingSource.TRAKT)
+      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+    }
+  }
+
+  @Test
+  fun `test EpisodesRatingSource does not trigger new emissions with the same value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.episodesRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setEpisodesRatingSource(RatingSource.TMDB)
+      storage.setEpisodesRatingSource(RatingSource.TMDB)
+
+      expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test SeasonsRatingSource default value is TMDB`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.seasonsRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+    }
+  }
+
+  @Test
+  fun `test SeasonsRatingSource value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.seasonsRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setSeasonsRatingSource(RatingSource.IMDB)
+      assertThat(awaitItem()).isEqualTo(RatingSource.IMDB)
+
+      storage.setSeasonsRatingSource(RatingSource.TRAKT)
+      assertThat(awaitItem()).isEqualTo(RatingSource.TRAKT)
+    }
+  }
+
+  @Test
+  fun `test SeasonsRatingSource does not trigger new emissions with the same value`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.seasonsRatingSource.test {
+      assertThat(awaitItem()).isEqualTo(RatingSource.TMDB)
+
+      storage.setSeasonsRatingSource(RatingSource.TMDB)
+      storage.setSeasonsRatingSource(RatingSource.TMDB)
+
+      expectNoEvents()
+    }
+  }
 }

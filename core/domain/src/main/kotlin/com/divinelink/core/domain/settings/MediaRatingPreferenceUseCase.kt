@@ -30,13 +30,27 @@ class MediaRatingPreferenceUseCase(
           send(Result.success(MediaRatingSource.TVShow to tvSource))
         }
       }
+
+      launch(dispatcher.io) {
+        storage.episodesRatingSource.collect { episodesSource ->
+          Timber.d("Episodes rating source: $episodesSource")
+          send(Result.success(MediaRatingSource.Episodes to episodesSource))
+        }
+      }
+
+      launch(dispatcher.io) {
+        storage.seasonsRatingSource.collect { seasonsSource ->
+          Timber.d("Seasons rating source: $seasonsSource")
+          send(Result.success(MediaRatingSource.Seasons to seasonsSource))
+        }
+      }
     }
 
   suspend fun setMediaRatingSource(source: Pair<MediaRatingSource, RatingSource>) {
     when (source.first) {
-      MediaRatingSource.Episodes -> TODO()
+      MediaRatingSource.Episodes -> storage.setEpisodesRatingSource(source.second)
       MediaRatingSource.Movie -> storage.setMovieRatingSource(source.second)
-      MediaRatingSource.Seasons -> TODO()
+      MediaRatingSource.Seasons -> storage.setSeasonsRatingSource(source.second)
       MediaRatingSource.TVShow -> storage.setTvRatingSource(source.second)
     }
   }
