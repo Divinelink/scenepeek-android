@@ -155,7 +155,7 @@ fun TMDBRatingItem(
 
 @Previews
 @Composable
-fun TMDBMediaRatingItemPreview() {
+fun TMDBRatingItemPreview() {
   AppTheme {
     Surface {
       Column {

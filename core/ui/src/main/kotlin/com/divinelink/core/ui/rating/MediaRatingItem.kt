@@ -3,20 +3,16 @@
 package com.divinelink.core.ui.rating
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 @Composable
@@ -50,16 +46,5 @@ fun MediaRatingItem(
       modifier = modifier,
       ratingDetails = ratingDetails,
     )
-  }
-}
-
-@Previews
-@Composable
-fun MediaRatingItemPreview() {
-  AppTheme {
-    Surface {
-      Column {
-      }
-    }
   }
 }
