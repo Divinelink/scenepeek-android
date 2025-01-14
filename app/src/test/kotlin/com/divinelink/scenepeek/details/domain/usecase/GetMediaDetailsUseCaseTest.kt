@@ -5,8 +5,11 @@ import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -51,6 +54,7 @@ class GetMediaDetailsUseCaseTest {
 
   private val request = DetailsRequestApi.Movie(movieId = 555)
   private val movieDetails = MediaDetailsFactory.FightClub()
+  private val tvDetails = MediaDetailsFactory.TheOffice()
 
   private val reviewsList = (1..10).map {
     Review(
@@ -99,7 +103,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `successfully get movie details`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).first()
@@ -117,31 +121,222 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
-  fun `successfully get movie details with Trakt rating source`() = runTest {
-    preferenceStorage.setRatingSource(RatingSource.TRAKT)
+  fun `test get movie details with Trakt rating source`() = runTest {
+    preferenceStorage.setMovieRatingSource(RatingSource.TRAKT)
 
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-    val flow = createGetMediaDetailsUseCase()
-
-    val result = flow(request).first()
-
-    assertThat(result).isEqualTo(
-      Result.success(
-        MediaDetailsResult.DetailsSuccess(
-          mediaDetails = movieDetails.copy(
-            isFavorite = true,
-          ),
-          ratingSource = RatingSource.TRAKT,
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
+    repository.mockFetchTraktRating(
+      response = Result.success(
+        RatingDetails.Score(
+          voteAverage = 7.3,
+          voteCount = 1_234,
         ),
       ),
     )
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(request).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(isFavorite = true),
+            ratingSource = RatingSource.TRAKT,
+          ),
+        ),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.RatingSuccess(
+            RatingCount(
+              ratings = mapOf(
+                RatingSource.TMDB to RatingDetails.Score(
+                  voteAverage = 7.3,
+                  voteCount = 123_456,
+                ),
+                RatingSource.IMDB to RatingDetails.Initial,
+                RatingSource.TRAKT to RatingDetails.Score(
+                  voteAverage = 7.3,
+                  voteCount = 1_234,
+                ),
+              ),
+            ),
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test get movie details with Trakt rating source with error response`() = runTest {
+    preferenceStorage.setMovieRatingSource(RatingSource.TRAKT)
+
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(request).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(isFavorite = true),
+            ratingSource = RatingSource.TRAKT,
+          ),
+        ),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.RatingSuccess(
+            RatingCount(
+              ratings = mapOf(
+                RatingSource.TMDB to RatingDetails.Score(
+                  voteAverage = 7.3,
+                  voteCount = 123_456,
+                ),
+                RatingSource.IMDB to RatingDetails.Initial,
+                RatingSource.TRAKT to RatingDetails.Unavailable,
+              ),
+            ),
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test get movie details with IMDB rating source`() = runTest {
+    preferenceStorage.setMovieRatingSource(RatingSource.IMDB)
+
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
+    repository.mockFetchIMDbDetails(
+      response = Result.success(
+        RatingDetails.Score(
+          voteAverage = 8.7,
+          voteCount = 4_567,
+        ),
+      ),
+    )
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(request).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(isFavorite = true),
+            ratingSource = RatingSource.IMDB,
+          ),
+        ),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.RatingSuccess(
+            RatingCount(
+              ratings = mapOf(
+                RatingSource.TMDB to RatingDetails.Score(
+                  voteAverage = 7.3,
+                  voteCount = 123_456,
+                ),
+                RatingSource.IMDB to RatingDetails.Score(
+                  voteAverage = 8.7,
+                  voteCount = 4_567,
+                ),
+                RatingSource.TRAKT to RatingDetails.Initial,
+              ),
+            ),
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test get movie details with IMDB rating source with failed response`() = runTest {
+    preferenceStorage.setMovieRatingSource(RatingSource.IMDB)
+
+    moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(true))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(request).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = movieDetails.copy(isFavorite = true),
+            ratingSource = RatingSource.IMDB,
+          ),
+        ),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.RatingSuccess(
+            RatingCount(
+              ratings = mapOf(
+                RatingSource.TMDB to RatingDetails.Score(
+                  voteAverage = 7.3,
+                  voteCount = 123_456,
+                ),
+                RatingSource.IMDB to RatingDetails.Unavailable,
+                RatingSource.TRAKT to RatingDetails.Initial,
+              ),
+            ),
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test get tv details with Trakt rating source with success response`() = runTest {
+    preferenceStorage.setMovieRatingSource(RatingSource.IMDB)
+    preferenceStorage.setTvRatingSource(RatingSource.TRAKT)
+
+    val tvRequest = DetailsRequestApi.TV(555)
+
+    repository.mockFetchMediaDetails(tvRequest, Result.success(tvDetails))
+
+    repository.mockFetchTraktRating(Result.success(RatingDetailsFactory.trakt()))
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(tvRequest).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = tvDetails,
+            ratingSource = RatingSource.TRAKT,
+          ),
+        ),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.RatingSuccess(
+            RatingCount(
+              ratings = mapOf(
+                RatingSource.TMDB to RatingDetails.Score(9.5, 12_345),
+                RatingSource.IMDB to RatingDetails.Initial,
+                RatingSource.TRAKT to RatingDetailsFactory.trakt(),
+              ),
+            ),
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
   }
 
   @Test
   fun `successfully get movie details with false favorite status`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     val flow = createGetMediaDetailsUseCase()
     val result = flow(request).first()
 
@@ -171,7 +366,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `successfully fetch similar movies`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     repository.mockFetchMovieReviews(request, Result.success(reviewsList))
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
@@ -222,7 +417,7 @@ class GetMediaDetailsUseCaseTest {
   fun `given error result, I expect error result`() = runTest {
     val expectedResult = Result.failure<Exception>(Exception("Oops."))
 
-    repository.mockFetchMovieDetails(
+    repository.mockFetchMediaDetails(
       request = request,
       response = Result.failure(Exception("Oops.")),
     )
@@ -253,7 +448,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `successfully get movie details even when similar call fails`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     repository.mockFetchSimilarMovies(
       SimilarRequestApi.Movie(movieId = 555),
       Result.failure(SimilarException()),
@@ -275,7 +470,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `successfully get movie details even when reviews and similar calls fail`() = runTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
 
     val flow = createGetMediaDetailsUseCase()
 
@@ -339,7 +534,7 @@ class GetMediaDetailsUseCaseTest {
     val videoList = VideoFactory.all()
     val tvRequest = DetailsRequestApi.TV(555)
 
-    repository.mockFetchMovieDetails(tvRequest, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
 
     repository.mockFetchMovieVideos(tvRequest, Result.success(videoList))
 
@@ -364,7 +559,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `test aggregate credits are fetched for tv`() = runTest {
     val tvRequest = DetailsRequestApi.TV(555)
-    repository.mockFetchMovieDetails(tvRequest, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.success(AggregatedCreditsFactory.credits()))
 
@@ -392,7 +587,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `test aggregate credits with failure for tv`() = runTest {
     val tvRequest = DetailsRequestApi.TV(555)
-    repository.mockFetchMovieDetails(tvRequest, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.failure(Exception()))
 
@@ -416,7 +611,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `test aggregate credits are not fetched for movie`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     repository.mockFetchMovieVideos(request, Result.success(emptyList()))
 
     val useCase = createGetMediaDetailsUseCase()
@@ -456,7 +651,7 @@ class GetMediaDetailsUseCaseTest {
 
     val expectedResult = Result.success(MediaDetailsResult.AccountDetailsSuccess(accountDetails))
 
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
 
     fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       flowOf(Result.success(accountDetails)),
@@ -480,7 +675,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `test fetchAccountMediaDetails with failure does not emit data`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
 
     fakeFetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       flowOf(Result.failure(Exception("Oops."))),
@@ -509,7 +704,7 @@ class GetMediaDetailsUseCaseTest {
 
     val expectedResult = Result.success(MediaDetailsResult.MenuOptionsSuccess(menuItems))
 
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
 
     fakeGetDropdownMenuItemsUseCase.mockSuccess(flowOf(Result.success(menuItems)))
 
@@ -531,9 +726,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `test getMenuItemsUseCase with failure does not emit data`() = runTest {
-    repository.mockFetchMovieDetails(request, Result.success(movieDetails))
-
-    fakeGetDropdownMenuItemsUseCase
+    repository.mockFetchMediaDetails(request, Result.success(movieDetails))
 
     val useCase = createGetMediaDetailsUseCase()
 

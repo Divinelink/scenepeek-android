@@ -12,7 +12,10 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
@@ -58,10 +61,17 @@ open class GetMediaDetailsUseCase(
         mediaType = requestApi.mediaType,
       )
 
-      val ratingSource = preferenceStorage.ratingSource.firstOrNull() ?: RatingSource.TMDB
+      val movieRatingSource = preferenceStorage.movieRatingSource.firstOrNull() ?: RatingSource.TMDB
+      val tvRatingSource = preferenceStorage.tvRatingSource.firstOrNull() ?: RatingSource.TMDB
+
+      val ratingSource = when (requestApi) {
+        is DetailsRequestApi.Movie -> movieRatingSource
+        is DetailsRequestApi.TV -> tvRatingSource
+        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
+      }
 
       launch(dispatcher.io) {
-        repository.fetchMovieDetails(requestApi)
+        repository.fetchMediaDetails(requestApi)
           .catch {
             Timber.e(it)
             send(Result.failure(MediaDetailsException()))
@@ -69,17 +79,24 @@ open class GetMediaDetailsUseCase(
           .map { result ->
             val details = result.data
 
-            val updatedDetails = when (ratingSource) {
-              RatingSource.TMDB -> details
-              RatingSource.IMDB -> fetchIMDbDetails(details)
-              RatingSource.TRAKT -> details
+            launch ratingFetch@{
+              val updatedDetails = when (ratingSource) {
+                RatingSource.TMDB -> return@ratingFetch
+                RatingSource.IMDB -> fetchIMDbDetails(details)
+                RatingSource.TRAKT -> fetchTraktDetails(details)
+              }
+
+              send(
+                Result.success(
+                  MediaDetailsResult.RatingSuccess(rating = updatedDetails.ratingCount),
+                ),
+              )
             }
 
             Result.success(
               MediaDetailsResult.DetailsSuccess(
-                mediaDetails = updatedDetails.copy(
+                mediaDetails = details.copy(
                   isFavorite = isFavorite.getOrNull() ?: false,
-                  ratingCount = updatedDetails.ratingCount,
                 ),
                 ratingSource = ratingSource,
               ),
@@ -173,10 +190,49 @@ open class GetMediaDetailsUseCase(
     details.imdbId?.let { id ->
       repository
         .fetchIMDbDetails(id)
+        .catch { emit(Result.failure(it)) }
         .firstOrNull()
-        ?.getOrNull()
-        ?.let {
-          details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.IMDB, it))
-        }
+        ?.fold(
+          onFailure = {
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                source = RatingSource.IMDB,
+                rating = RatingDetails.Unavailable,
+              ),
+            )
+          },
+          onSuccess = { result ->
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                source = RatingSource.IMDB,
+                rating = result ?: RatingDetails.Unavailable,
+              ),
+            )
+          },
+        )
     } ?: details
+
+  private suspend fun fetchTraktDetails(details: MediaDetails): MediaDetails {
+    val mediaType = if (details is Movie) MediaType.MOVIE else MediaType.TV
+
+    return details.imdbId?.let { id ->
+      repository
+        .fetchTraktRating(mediaType = mediaType, imdbId = id)
+        .catch { emit(Result.failure(it)) }
+        .firstOrNull()
+        ?.fold(
+          onFailure = {
+            details.copy(
+              ratingCount = details.ratingCount.updateRating(
+                RatingSource.TRAKT,
+                RatingDetails.Unavailable,
+              ),
+            )
+          },
+          onSuccess = { result ->
+            details.copy(ratingCount = details.ratingCount.updateRating(RatingSource.TRAKT, result))
+          },
+        )
+    } ?: details
+  }
 }

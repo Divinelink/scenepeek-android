@@ -33,12 +33,12 @@ class FakeDestinationsNavigator : DestinationsNavigator {
   }
 
   override fun navigateUp(): Boolean {
-    navigatedRoutes.removeLast()
+    navigatedRoutes.removeAt(navigatedRoutes.lastIndex)
     return true
   }
 
   override fun popBackStack(): Boolean {
-    navigatedRoutes.removeLast()
+    navigatedRoutes.removeAt(navigatedRoutes.lastIndex)
     return true
   }
 

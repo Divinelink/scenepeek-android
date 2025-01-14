@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.divinelink.core.ui
+package com.divinelink.core.ui.rating
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,8 @@ import com.divinelink.core.commons.extensions.toShortString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.extension.getColorRating
 
 @Suppress("MagicNumber")
@@ -49,7 +51,7 @@ enum class RatingSize(
 }
 
 @Composable
-fun MediaRatingItem(
+fun TMDBRatingItem(
   modifier: Modifier = Modifier,
   rating: Double?,
   voteCount: Int?,
@@ -81,7 +83,9 @@ fun MediaRatingItem(
 
   Box(
     contentAlignment = Alignment.Center,
-    modifier = modifier.padding(vertical = MaterialTheme.dimensions.keyline_4),
+    modifier = modifier
+      .testTag(TestTags.Rating.TMDB_RATING)
+      .padding(vertical = MaterialTheme.dimensions.keyline_4),
   ) {
     Canvas(modifier = Modifier.size(size.size)) {
       drawArc(
@@ -153,34 +157,34 @@ fun MediaRatingItem(
 
 @Previews
 @Composable
-fun MediaRatingItemPreview() {
+fun TMDBRatingItemPreview() {
   AppTheme {
     Surface {
       Column {
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-          MediaRatingItem(rating = null, size = RatingSize.SMALL, voteCount = null)
-          MediaRatingItem(rating = null, size = RatingSize.MEDIUM, voteCount = null)
-          MediaRatingItem(rating = null, size = RatingSize.LARGE, voteCount = null)
-          MediaRatingItem(rating = null, size = RatingSize.LARGE, voteCount = 132_000)
+          TMDBRatingItem(rating = null, size = RatingSize.SMALL, voteCount = null)
+          TMDBRatingItem(rating = null, size = RatingSize.MEDIUM, voteCount = null)
+          TMDBRatingItem(rating = null, size = RatingSize.LARGE, voteCount = null)
+          TMDBRatingItem(rating = null, size = RatingSize.LARGE, voteCount = 132_000)
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-          MediaRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = null)
-          MediaRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = null)
-          MediaRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = null)
-          MediaRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = 132_583)
-          MediaRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = 132_583)
-          MediaRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = 132_583)
+          TMDBRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = null)
+          TMDBRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = null)
+          TMDBRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = null)
+          TMDBRatingItem(rating = 5.4, size = RatingSize.SMALL, voteCount = 132_583)
+          TMDBRatingItem(rating = 5.0, size = RatingSize.MEDIUM, voteCount = 132_583)
+          TMDBRatingItem(rating = 5.0, size = RatingSize.LARGE, voteCount = 132_583)
         }
 
         Row(
           horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         ) {
-          MediaRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 932_583)
-          MediaRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 1_432_583)
-          MediaRatingItem(rating = 5.9, size = RatingSize.LARGE, voteCount = 2_992_583)
-          MediaRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_202_583)
-          MediaRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_102_583)
+          TMDBRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 932_583)
+          TMDBRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 1_432_583)
+          TMDBRatingItem(rating = 5.9, size = RatingSize.LARGE, voteCount = 2_992_583)
+          TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_202_583)
+          TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_102_583)
         }
       }
     }

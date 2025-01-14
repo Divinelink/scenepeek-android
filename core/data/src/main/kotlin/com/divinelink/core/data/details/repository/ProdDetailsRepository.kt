@@ -54,7 +54,7 @@ class ProdDetailsRepository(
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 
-  override fun fetchMovieDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
+  override fun fetchMediaDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
     mediaRemote
       .fetchDetails(request)
       .map { apiResponse ->

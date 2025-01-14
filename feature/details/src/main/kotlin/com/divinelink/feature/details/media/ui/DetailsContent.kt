@@ -63,6 +63,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -70,10 +71,8 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
-import com.divinelink.core.ui.MediaRatingItem
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.RatingSize
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.LoadingContent
@@ -91,6 +90,7 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.R
@@ -371,11 +371,11 @@ fun MediaDetailsContent(
 
     item {
       UserRating(
-        overallUserScore = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage,
+        ratingDetails = mediaDetails.ratingCount.getRatingDetails(ratingSource),
         accountRating = userDetails?.beautifiedRating,
         onAddRateClicked = onAddRateClicked,
-        voteCount = mediaDetails.ratingCount.getRating(ratingSource)?.voteCount,
         onShowAllRatingsClicked = viewAllRatingsClicked,
+        source = ratingSource,
       )
     }
 
@@ -440,8 +440,8 @@ fun MediaDetailsContent(
 @Composable
 private fun UserRating(
   modifier: Modifier = Modifier,
-  overallUserScore: Double?,
-  voteCount: Int?,
+  source: RatingSource,
+  ratingDetails: RatingDetails,
   accountRating: Int?,
   onAddRateClicked: () -> Unit,
   onShowAllRatingsClicked: () -> Unit,
@@ -460,21 +460,10 @@ private fun UserRating(
       modifier = Modifier.testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
       onClick = onShowAllRatingsClicked,
     ) {
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        MediaRatingItem(
-          rating = overallUserScore,
-          size = RatingSize.LARGE,
-          voteCount = voteCount,
-        )
-        Text(
-          text = stringResource(id = R.string.details__user_score),
-          color = MaterialTheme.colorScheme.onSurface,
-          style = MaterialTheme.typography.titleMedium,
-        )
-      }
+      MediaRatingItem(
+        ratingDetails = ratingDetails,
+        source = source,
+      )
     }
 
     Spacer(

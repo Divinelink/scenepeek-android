@@ -6,10 +6,14 @@ import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.DisplaySettings
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.ui.IconWrapper
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
@@ -17,6 +21,7 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -32,6 +37,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
   ) { paddingValues ->
 
     LazyColumn(
+      modifier = Modifier.testTag(TestTags.Settings.SCREEN_CONTENT),
       contentPadding = paddingValues,
     ) {
       item {
@@ -51,6 +57,18 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
           icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
           text = stringResource(R.string.preferences__appearance),
           onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
+        )
+      }
+
+      item {
+        SettingsDivider()
+      }
+
+      item {
+        SettingsClickItem(
+          icon = IconWrapper.Vector(Icons.Outlined.DisplaySettings),
+          text = stringResource(R.string.feature_settings_details_preferences),
+          onClick = { navigator.navigate(DetailPreferencesSettingsScreenDestination) },
         )
       }
 

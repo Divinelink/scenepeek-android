@@ -6,6 +6,7 @@ import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
@@ -1563,5 +1564,38 @@ class DetailsViewModelTest {
       .assertOpenUrlTab { expectNoEvents() }
       .onMediaSourceClick(RatingSource.TRAKT)
       .assertOpenUrlTab { expectNoEvents() }
+  }
+
+  @Test
+  fun `test getMediaDetails with RatingSuccess updates RatingCount`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.IMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.RatingSuccess(RatingCountFactory.imdb()),
+          ),
+        ),
+      )
+      .withNavArguments(movieDetails.id, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          mediaId = movieDetails.id,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails.copy(
+            ratingCount = RatingCountFactory.imdb(),
+          ),
+          ratingSource = RatingSource.IMDB,
+          spoilersObfuscated = false,
+        ),
+      )
   }
 }

@@ -6,6 +6,7 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
@@ -22,6 +23,8 @@ sealed class MediaDetailsResult {
     val mediaDetails: MediaDetails,
     val ratingSource: RatingSource,
   ) : MediaDetailsResult()
+
+  data class RatingSuccess(val rating: RatingCount) : MediaDetailsResult()
 
   data class ReviewsSuccess(val reviews: List<Review>) : MediaDetailsResult()
 

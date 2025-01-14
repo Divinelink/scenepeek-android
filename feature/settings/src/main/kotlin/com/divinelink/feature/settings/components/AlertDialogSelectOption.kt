@@ -10,13 +10,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +53,7 @@ fun AlertDialogSelectOption(
               verticalAlignment = Alignment.CenterVertically,
               modifier = Modifier
                 .fillMaxWidth()
+                .testTag(TestTags.Settings.RADIO_BUTTON_SELECT_OPTION.format(option))
                 .clickable {
                   onSelected(index)
                 },
@@ -75,12 +79,14 @@ fun AlertDialogSelectOption(
 @Composable
 private fun RadioSelectAlertDialog() {
   AppTheme {
-    AlertDialogSelectOption(
-      title = "Select an Option",
-      listItems = listOf("Option 1", "Option 2", "Option 3"),
-      selectedOption = 0,
-      onSelected = {},
-      onDismissRequest = {},
-    )
+    Surface {
+      AlertDialogSelectOption(
+        title = "Select an Option",
+        listItems = listOf("Option 1", "Option 2", "Option 3"),
+        selectedOption = 0,
+        onSelected = {},
+        onDismissRequest = {},
+      )
+    }
   }
 }

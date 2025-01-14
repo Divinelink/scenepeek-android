@@ -28,6 +28,12 @@ object TestTags {
   const val LAZY_COLUMN = "Lazy Column"
 
   object Rating {
+    const val IMDB_RATING = "IMDb Rating"
+    const val IMDB_RATING_SKELETON = "IMDb Rating Skeleton"
+    const val TRAKT_RATING = "Trakt Rating"
+    const val TRAKT_RATING_SKELETON = "Trakt Rating Skeleton"
+    const val TMDB_RATING = "TMDb Rating"
+
     const val DETAILS_RATING_BUTTON = "User Score Button"
     const val VOTE_COUNT = "Rating Vote Count %s"
     const val ALL_RATINGS_BOTTOM_SHEET = "All Ratings Bottom Sheet"
@@ -69,8 +75,12 @@ object TestTags {
   }
 
   object Settings {
+    const val SCREEN_CONTENT = "Settings Screen Content"
+
     const val TOP_APP_BAR = "Settings Top App Bar"
     const val NAVIGATION_ICON = "Settings Navigation Icon"
+
+    const val RADIO_BUTTON_SELECT_OPTION = "Settings Radio Button Select Option %s"
 
     object Account {
       const val LOGIN_BUTTON = "Account Login Button"

@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
@@ -77,6 +78,8 @@ class HelpSettingsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToIndex(5)
+
       onNodeWithText(getString(R.string.preferences__help)).performClick()
 
       navigator.verifyNavigatedToDirection(HelpSettingsScreenDestination)

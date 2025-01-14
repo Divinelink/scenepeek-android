@@ -19,6 +19,7 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
+import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -53,4 +54,7 @@ val useCaseModule = module {
   factoryOf(::MarkAsFavoriteUseCase)
 
   factoryOf(::SpoilersObfuscationUseCase)
+
+  // Settings
+  factoryOf(::MediaRatingPreferenceUseCase)
 }

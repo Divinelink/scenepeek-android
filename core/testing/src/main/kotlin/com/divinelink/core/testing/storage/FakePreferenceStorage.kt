@@ -17,7 +17,10 @@ class FakePreferenceStorage(
   jellyseerrAccount: String? = null,
   jellyseerrSignInMethod: String? = null,
   spoilersObfuscation: Boolean = false,
-  ratingSource: RatingSource = RatingSource.TMDB,
+  movieRatingSource: RatingSource = RatingSource.TMDB,
+  tvRatingSource: RatingSource = RatingSource.TMDB,
+  episodesRatingSource: RatingSource = RatingSource.TMDB,
+  seasonsRatingSource: RatingSource = RatingSource.TMDB,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -53,8 +56,17 @@ class FakePreferenceStorage(
   private val _spoilersObfuscation = MutableStateFlow(spoilersObfuscation)
   override val spoilersObfuscation: Flow<Boolean> = _spoilersObfuscation
 
-  private val _ratingSource = MutableStateFlow(ratingSource)
-  override val ratingSource: Flow<RatingSource> = _ratingSource
+  private val _movieRatingSource = MutableStateFlow(movieRatingSource)
+  override val movieRatingSource: Flow<RatingSource> = _movieRatingSource
+
+  private val _tvRatingSource = MutableStateFlow(tvRatingSource)
+  override val tvRatingSource: Flow<RatingSource> = _tvRatingSource
+
+  private val _episodesRatingSource = MutableStateFlow(episodesRatingSource)
+  override val episodesRatingSource: Flow<RatingSource> = _episodesRatingSource
+
+  private val _seasonsRatingSource = MutableStateFlow(seasonsRatingSource)
+  override val seasonsRatingSource: Flow<RatingSource> = _seasonsRatingSource
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -120,7 +132,19 @@ class FakePreferenceStorage(
     _spoilersObfuscation.value = isEnabled
   }
 
-  override suspend fun setRatingSource(ratingSource: RatingSource) {
-    _ratingSource.value = ratingSource
+  override suspend fun setMovieRatingSource(ratingSource: RatingSource) {
+    _movieRatingSource.value = ratingSource
+  }
+
+  override suspend fun setTvRatingSource(ratingSource: RatingSource) {
+    _tvRatingSource.value = ratingSource
+  }
+
+  override suspend fun setEpisodesRatingSource(ratingSource: RatingSource) {
+    _episodesRatingSource.value = ratingSource
+  }
+
+  override suspend fun setSeasonsRatingSource(ratingSource: RatingSource) {
+    _seasonsRatingSource.value = ratingSource
   }
 }

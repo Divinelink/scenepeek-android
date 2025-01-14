@@ -169,7 +169,7 @@ class ProdDetailsRepositoryTest {
       response = flowOf(detailsResponseApi),
     )
 
-    val actualResult = repository.fetchMovieDetails(
+    val actualResult = repository.fetchMediaDetails(
       request = DetailsRequestApi.Movie(movieId = 555),
     ).first()
 
@@ -253,7 +253,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = MediaDetailsException()
 
-    repository.fetchMovieDetails(
+    repository.fetchMediaDetails(
       request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
