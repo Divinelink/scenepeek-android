@@ -83,7 +83,9 @@ fun TMDBRatingItem(
 
   Box(
     contentAlignment = Alignment.Center,
-    modifier = modifier.padding(vertical = MaterialTheme.dimensions.keyline_4),
+    modifier = modifier
+      .testTag(TestTags.Rating.TMDB_RATING)
+      .padding(vertical = MaterialTheme.dimensions.keyline_4),
   ) {
     Canvas(modifier = Modifier.size(size.size)) {
       drawArc(

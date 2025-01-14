@@ -12,8 +12,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
@@ -748,6 +750,115 @@ class DetailsContentTest : ComposeTest() {
     }
 
     assertThat(hasClickedViewAllRatings).isTrue()
+  }
+
+  @Test
+  fun `test rating item with IMDB preferences shows IMDB Rating`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub().copy(
+            ratingCount = RatingCountFactory.full(),
+          ),
+          ratingSource = RatingSource.IMDB,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(
+        testTag = TestTags.Rating.IMDB_RATING,
+        useUnmergedTree = true,
+      ).assertIsDisplayed()
+
+      onNodeWithText("8.5").assertIsDisplayed()
+      onNodeWithText(" / 10").assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test rating item with Trakt preferences shows Trakt Rating`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub().copy(
+            ratingCount = RatingCountFactory.full(),
+          ),
+          ratingSource = RatingSource.TRAKT,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(
+        testTag = TestTags.Rating.TRAKT_RATING,
+        useUnmergedTree = true,
+      ).assertIsDisplayed()
+
+      onNodeWithText("95%", useUnmergedTree = true).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test rating item with tmdb preferences shows Trakt Rating`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub().copy(
+            ratingCount = RatingCountFactory.full(),
+          ),
+          ratingSource = RatingSource.TMDB,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(
+        testTag = TestTags.Rating.TMDB_RATING,
+        useUnmergedTree = true,
+      ).assertIsDisplayed()
+
+      onNodeWithText("7.5", useUnmergedTree = true).assertIsDisplayed()
+    }
   }
 
   private val reviews = ReviewFactory.ReviewList()

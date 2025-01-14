@@ -19,11 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.divinelink.core.commons.extensions.toShortString
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.valentinilk.shimmer.shimmer
 
 @Composable
@@ -32,6 +34,7 @@ fun TraktRatingItem(
   ratingDetails: RatingDetails,
 ) {
   Row(
+    modifier = Modifier.testTag(TestTags.Rating.TRAKT_RATING),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
@@ -76,7 +79,7 @@ fun TraktRatingItem(
 @Composable
 private fun TraktRatingContentShimmer(modifier: Modifier = Modifier) {
   Column(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Rating.TRAKT_RATING_SKELETON),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     horizontalAlignment = Alignment.Start,
   ) {
