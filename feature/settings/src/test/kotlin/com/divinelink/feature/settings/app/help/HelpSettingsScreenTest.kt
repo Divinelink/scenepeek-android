@@ -43,11 +43,11 @@ class HelpSettingsScreenTest : ComposeTest() {
     val version = getString(CommonR.string.version_name) + " debug"
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.HelpSettingsFragment__help))
+      onNodeWithText(getString(R.string.feature_settings_help))
         .assertIsDisplayed()
         .assertTextEquals("Help")
 
-      onNodeWithText(getString(R.string.HelpSettingsFragment__version)).assertIsDisplayed()
+      onNodeWithText(getString(R.string.feature_settings_help__version)).assertIsDisplayed()
       onNodeWithText(version).assertIsDisplayed()
     }
   }
@@ -64,8 +64,22 @@ class HelpSettingsScreenTest : ComposeTest() {
     val version = getString(CommonR.string.version_name)
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.HelpSettingsFragment__version)).assertIsDisplayed()
+      onNodeWithText(getString(R.string.feature_settings_help__version)).assertIsDisplayed()
       onNodeWithText(version).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test privacy policy is visible`() {
+    setContentWithTheme {
+      HelpSettingsScreen(
+        navigator = FakeDestinationsNavigator(),
+        buildConfigProvider = releaseBuildConfigProvider,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(getString(R.string.feature_settings_help__privacy_policy)).assertIsDisplayed()
     }
   }
 

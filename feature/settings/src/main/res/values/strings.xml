@@ -57,9 +57,10 @@
   <string name="feature_settings_jellyseerr_joined_on">Joined on %s | User ID: %s</string>
 
   <!-- HelpSettingsScreen -->
-  <string name="HelpSettingsFragment__help">Help</string>
-  <string name="HelpSettingsFragment__terms_amp_privacy_policy">Terms &amp; Privacy Policy</string>
-  <string name="HelpSettingsFragment__version">Version</string>
+  <string name="feature_settings_help">Help</string>
+  <string name="feature_settings_help__privacy_policy">Privacy Policy</string>
+  <string name="feature_settings_help__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
+  <string name="feature_settings_help__version">Version</string>
 
   <!-- DetailPreferencesSettingsScreen -->
   <string name="feature_settings_ratings">Ratings</string>

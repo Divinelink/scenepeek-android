@@ -9,6 +9,7 @@ import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.components.SettingsExternalLinkItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsTextItem
 import com.divinelink.feature.settings.navigation.SettingsGraph
@@ -23,7 +24,7 @@ fun HelpSettingsScreen(
   buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
 ) {
   SettingsScaffold(
-    title = stringResource(id = R.string.HelpSettingsFragment__help),
+    title = stringResource(R.string.feature_settings_help),
     onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
 
@@ -38,8 +39,13 @@ fun HelpSettingsScreen(
     LazyColumn(contentPadding = paddingValues) {
       item {
         SettingsTextItem(
-          title = stringResource(id = R.string.HelpSettingsFragment__version),
+          title = stringResource(R.string.feature_settings_help__version),
           summary = buildVersion.getString(),
+        )
+
+        SettingsExternalLinkItem(
+          text = stringResource(R.string.feature_settings_help__privacy_policy),
+          url = stringResource(R.string.feature_settings_help__privacy_policy_url),
         )
       }
     }
