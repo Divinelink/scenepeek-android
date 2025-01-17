@@ -3,7 +3,6 @@ package com.divinelink.feature.settings.app.links
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import com.divinelink.core.commons.util.AppSettingsUtil
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -61,7 +61,7 @@ fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
     title = stringResource(id = R.string.feature_settings_link_handling),
     onNavigationClick = navigator::navigateUp,
   ) {
-    LazyColumn(
+    ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.LAZY_COLUMN),
       contentPadding = it,
     ) {

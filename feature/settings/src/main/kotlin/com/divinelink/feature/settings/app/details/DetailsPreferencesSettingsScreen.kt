@@ -1,9 +1,9 @@
 package com.divinelink.feature.settings.app.details
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.model.details.rating.MediaRatingSource
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
@@ -27,7 +27,7 @@ fun DetailPreferencesSettingsScreen(
     onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
 
-    LazyColumn(contentPadding = paddingValues) {
+    ScenePeekLazyColumn(contentPadding = paddingValues) {
       item {
         SettingsTextItem(
           title = stringResource(id = R.string.feature_settings_ratings),

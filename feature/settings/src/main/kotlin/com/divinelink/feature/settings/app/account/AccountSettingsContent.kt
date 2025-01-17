@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
@@ -32,7 +32,7 @@ fun SharedTransitionScope.AccountSettingsContent(
   onLoginClick: () -> Unit,
   onNavigateToJellyseerrLogin: () -> Unit,
 ) {
-  LazyColumn(
+  ScenePeekLazyColumn(
     modifier = Modifier.fillMaxSize(),
     contentPadding = paddingValues,
   ) {

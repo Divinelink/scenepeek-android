@@ -11,6 +11,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -63,6 +64,7 @@ fun AppTheme(
 }
 
 val LocalDarkThemeProvider = staticCompositionLocalOf { false }
+val LocalBottomNavigationPadding = compositionLocalOf { 0.dp }
 
 @Composable
 fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)

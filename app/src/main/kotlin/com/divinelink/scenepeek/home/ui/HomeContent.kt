@@ -5,6 +5,7 @@ package com.divinelink.scenepeek.home.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -84,7 +85,11 @@ fun HomeContent(
       )
     },
   ) { paddingValues ->
-    Column(modifier = Modifier.padding(paddingValues)) {
+    Column(
+      modifier = Modifier
+        .consumeWindowInsets(paddingValues)
+        .padding(paddingValues),
+    ) {
       AnimatedVisibility(visible = viewState.query.isEmpty()) {
         FilterBar(
           modifier = modifier

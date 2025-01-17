@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
@@ -15,13 +14,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
@@ -29,6 +28,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
@@ -105,8 +105,6 @@ fun MovieApp(
   ) {
     Scaffold(
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
-      containerColor = Color.Transparent,
-      contentColor = Color.Transparent,
       snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         Column {
@@ -176,19 +174,22 @@ fun MovieApp(
           NetworkStatusIndicator(networkState = networkState)
         }
       },
-    ) {
-      Surface(
-        modifier = Modifier
-          .fillMaxSize()
-          .padding(it)
-          .consumeWindowInsets(it),
+    ) { innerPadding ->
+      CompositionLocalProvider(
+        LocalBottomNavigationPadding provides innerPadding.calculateBottomPadding(),
       ) {
-        when (uiState) {
-          is MainUiState.Completed -> AppNavHost(
-            navController = navController,
-            startRoute = HomeScreenDestination,
-          )
-          MainUiState.Loading -> LoadingContent()
+        Surface(
+          modifier = Modifier
+            .fillMaxSize()
+            .consumeWindowInsets(innerPadding),
+        ) {
+          when (uiState) {
+            is MainUiState.Completed -> AppNavHost(
+              navController = navController,
+              startRoute = HomeScreenDestination,
+            )
+            MainUiState.Loading -> LoadingContent()
+          }
         }
       }
     }

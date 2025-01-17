@@ -1,11 +1,11 @@
 package com.divinelink.feature.settings.app.help
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.commons.BuildConfig
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.commons.DefaultBuildConfigProvider
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
@@ -36,7 +36,7 @@ fun HelpSettingsScreen(
       version
     }
 
-    LazyColumn(contentPadding = paddingValues) {
+    ScenePeekLazyColumn(contentPadding = paddingValues) {
       item {
         SettingsTextItem(
           title = stringResource(R.string.feature_settings_help__version),

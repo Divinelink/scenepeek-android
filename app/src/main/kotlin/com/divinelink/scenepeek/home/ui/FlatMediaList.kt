@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.textColorDisabled
 import com.divinelink.core.model.credits.PersonRole
@@ -58,6 +59,7 @@ fun FlatMediaList(
       start = MaterialTheme.dimensions.keyline_8,
       end = MaterialTheme.dimensions.keyline_8,
       top = MaterialTheme.dimensions.keyline_8,
+      bottom = LocalBottomNavigationPadding.current,
     ),
     columns = GridCells.Adaptive(120.dp),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),

@@ -3,11 +3,8 @@ package com.divinelink.feature.settings.login
 import android.annotation.SuppressLint
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -16,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
@@ -52,12 +50,12 @@ fun LoginWebViewScreen(
   }
 
   SettingsScaffold(
+    modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
     title = stringResource(R.string.login__title),
     onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
     AndroidView(
       modifier = Modifier
-        .windowInsetsPadding(WindowInsets.statusBars)
         .padding(paddingValues)
         .fillMaxSize(),
       factory = { webView },

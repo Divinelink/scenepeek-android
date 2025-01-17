@@ -1,6 +1,5 @@
 package com.divinelink.feature.settings.app
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -36,7 +36,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
     navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
   ) { paddingValues ->
 
-    LazyColumn(
+    ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.Settings.SCREEN_CONTENT),
       contentPadding = paddingValues,
     ) {
