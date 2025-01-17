@@ -80,7 +80,9 @@ fun MovieApp(
     coroutineScope = appState.coroutineScope,
   ) {
     Scaffold(
+      contentWindowInsets = WindowInsets(0, 0, 0, 0),
       containerColor = Color.Transparent,
+      contentColor = Color.Transparent,
       snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         AppNavigationBar {
@@ -142,7 +144,8 @@ fun MovieApp(
       Surface(
         modifier = Modifier
           .fillMaxSize()
-          .padding(it),
+          .padding(it)
+          .consumeWindowInsets(it),
       ) {
         when (uiState) {
           is MainUiState.Completed -> AppNavHost(

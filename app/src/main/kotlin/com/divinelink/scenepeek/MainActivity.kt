@@ -35,6 +35,8 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+
     setContent {
       val darkTheme = shouldUseDarkTheme(
         uiState = viewModel.uiState.collectAsState().value,
