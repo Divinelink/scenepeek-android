@@ -19,7 +19,7 @@ class CreateRequestTokenUseCase(
       .createRequestToken()
       .onSuccess { result ->
         Timber.d("Token created successfully")
-        storage.setToken(token = result.token)
+//        storage.setToken(token = result.token)
 
         result.token
       }

@@ -15,7 +15,6 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_REQUEST_TOKEN
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SERIES_TOTAL_EPISODES_OBFUSCATION
@@ -47,10 +46,6 @@ interface PreferenceStorage {
 
   suspend fun setSpoilersObfuscation(isEnabled: Boolean)
   val spoilersObfuscation: Flow<Boolean>
-
-  suspend fun clearToken()
-  suspend fun setToken(token: String)
-  val token: Flow<String?>
 
   suspend fun setHasSession(hasSession: Boolean)
   val hasSession: Flow<Boolean>
@@ -99,7 +94,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
     val PREF_ACCOUNT_ID = stringPreferencesKey("account.id")
 
-    val PREF_REQUEST_TOKEN = stringPreferencesKey("request.token")
     val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
 
     val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
@@ -162,27 +156,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val spoilersObfuscation = dataStore.data.mapLatest {
     it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
   }.distinctUntilChanged()
-
-  override suspend fun clearToken() {
-    dataStore.edit {
-      it.remove(PREF_REQUEST_TOKEN)
-    }
-  }
-
-  override suspend fun setToken(token: String) {
-    dataStore.edit {
-      it[PREF_REQUEST_TOKEN] = token
-    }
-  }
-
-  override val token = dataStore.data.map {
-    val token = it[PREF_REQUEST_TOKEN]
-    if (token.isNullOrEmpty()) {
-      return@map null
-    } else {
-      token
-    }
-  }
 
   override suspend fun setHasSession(hasSession: Boolean) {
     dataStore.edit {

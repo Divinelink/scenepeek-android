@@ -7,7 +7,6 @@ import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
-import com.divinelink.feature.settings.login.LoginWebViewViewModel
 import com.divinelink.feature.watchlist.WatchlistViewModel
 import com.divinelink.scenepeek.MainViewModel
 import com.divinelink.scenepeek.home.ui.HomeViewModel
@@ -21,7 +20,6 @@ val appViewModelModule = module {
   viewModelOf(::DetailsViewModel)
   viewModelOf(::HomeViewModel)
   viewModelOf(::MainViewModel)
-  viewModelOf(::LoginWebViewViewModel)
   viewModelOf(::PersonViewModel)
   viewModelOf(::JellyseerrSettingsViewModel)
   viewModelOf(::WatchlistViewModel)

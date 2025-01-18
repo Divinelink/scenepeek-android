@@ -13,25 +13,15 @@ class SessionStorage(
   val accountId: Flow<String?>
     get() = storage.accountId
 
-  suspend fun clearToken() {
-    storage.clearToken()
-  }
-
-  suspend fun setToken(token: String) {
-    storage.setToken(token)
-  }
-
   suspend fun setSession(sessionId: String) {
     encryptedStorage.setSessionId(sessionId)
     storage.setHasSession(true)
-    storage.clearToken()
   }
 
   suspend fun clearSession() {
     Timber.d("Cleared session.")
     encryptedStorage.clearSession()
     storage.setHasSession(false)
-    storage.clearToken()
     storage.clearAccountId()
   }
 

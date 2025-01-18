@@ -35,6 +35,18 @@
         <data android:pathPattern="/person/.*" />
         <data android:pathPattern="/tv/.*" />
       </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data android:scheme="scenepeek" />
+        <data android:host="auth" />
+        <data android:pathPattern="/redirect" />
+      </intent-filter>
+
     </activity>
 
     <provider

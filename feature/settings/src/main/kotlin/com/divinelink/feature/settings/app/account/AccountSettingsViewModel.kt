@@ -77,12 +77,10 @@ class AccountSettingsViewModel(
   fun login() {
     viewModelScope.launch {
       createRequestTokenUseCase.invoke(Unit)
-        .onSuccess { response ->
+        .onSuccess { requestToken ->
+          val loginUrl = createLoginUrl(requestToken)
           _viewState.update {
-            it.copy(
-              requestToken = response,
-              navigateToWebView = true,
-            )
+            it.copy(loginUrl = loginUrl)
           }
         }
     }
@@ -121,9 +119,14 @@ class AccountSettingsViewModel(
     }
   }
 
-  fun onWebViewScreenNavigated() {
+  fun onConsumeLoginUrl() {
     _viewState.update {
-      it.copy(navigateToWebView = null)
+      it.copy(loginUrl = null)
     }
+  }
+
+  private fun createLoginUrl(token: String): String {
+    val redirectUrl = "scenepeek://auth/redirect"
+    return "https://www.themoviedb.org/authenticate/$token?redirect_to=$redirectUrl"
   }
 }

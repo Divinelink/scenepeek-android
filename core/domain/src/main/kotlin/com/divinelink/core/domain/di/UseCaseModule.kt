@@ -5,7 +5,6 @@ import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
-import com.divinelink.core.domain.HandleAuthenticationRequestUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
@@ -50,7 +49,6 @@ val useCaseModule = module {
   factoryOf(::GetAccountDetailsUseCase)
   factoryOf(::GetDropdownMenuItemsUseCase)
   factoryOf(::GetDetailsActionItemsUseCase)
-  factoryOf(::HandleAuthenticationRequestUseCase)
   factoryOf(::MarkAsFavoriteUseCase)
 
   factoryOf(::SpoilersObfuscationUseCase)
