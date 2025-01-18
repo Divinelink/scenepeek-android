@@ -10,7 +10,7 @@ object WatchlistResponseFactory {
     page: Int = 1,
     canFetchMore: Boolean = true,
   ) = WatchlistResponse(
-    data = MediaItemFactory.MoviesList((page * 1..page * 20)),
+    data = MediaItemFactory.MoviesList(page * 1..page * 20),
     totalResults = 30,
     type = MediaType.MOVIE,
     canFetchMore = canFetchMore,
@@ -20,7 +20,7 @@ object WatchlistResponseFactory {
     page: Int = 1,
     canFetchMore: Boolean = true,
   ) = WatchlistResponse(
-    data = MediaItemFactory.TVList((page * 10..page * 20)),
+    data = MediaItemFactory.TVList(page * 10..page * 20),
     totalResults = 30,
     type = MediaType.TV,
     canFetchMore = canFetchMore,

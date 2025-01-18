@@ -54,7 +54,7 @@ class MainActivity :
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
         MovieApp(
-          appState = appState,
+          state = appState,
           uiState = viewModel.uiState.collectAsState().value,
           uiEvent = viewModel.uiEvent.collectAsState().value,
           onConsumeEvent = viewModel::consumeUiEvent,

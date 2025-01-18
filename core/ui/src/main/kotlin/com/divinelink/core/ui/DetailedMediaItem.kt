@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.provider.MediaItemPreviewParameterProvider
+import com.divinelink.core.ui.provider.MediaItemParameterProvider
 import com.divinelink.core.ui.rating.RatingSize
 import com.divinelink.core.ui.rating.TMDBRatingItem
 
@@ -103,7 +103,7 @@ fun DetailedMediaItem(
 @Previews
 @Composable
 private fun DetailedMediaItemPreview(
-  @PreviewParameter(MediaItemPreviewParameterProvider::class)
+  @PreviewParameter(MediaItemParameterProvider::class)
   mediaItem: MediaItem.Media,
 ) {
   AppTheme {

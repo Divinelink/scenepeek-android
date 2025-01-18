@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.ui.network
+package com.divinelink.core.ui.network
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -16,14 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.scenepeek.R
+import com.divinelink.core.model.network.NetworkState
+import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.R
+import com.divinelink.core.ui.provider.NetworkStateParameterProvider
 
 @Composable
 fun NetworkStatusIndicator(networkState: NetworkState) {
   val text = when (networkState) {
-    is NetworkState.Offline -> stringResource(R.string.not_connected)
-    else -> stringResource(R.string.connected)
+    is NetworkState.Offline -> stringResource(R.string.core_ui_not_connected)
+    else -> stringResource(R.string.core_ui_connected)
   }
 
   AnimatedVisibility(
@@ -58,11 +63,24 @@ private fun StatusMessage(
     Text(
       text = text,
       color = contentColorFor(containerColor),
-      style = MaterialTheme.typography.labelSmall,
+      style = MaterialTheme.typography.labelMedium,
       textAlign = TextAlign.Center,
       modifier = modifier
-        .padding(top = MaterialTheme.dimensions.keyline_8)
+        .padding(
+          top = MaterialTheme.dimensions.keyline_16,
+          bottom = MaterialTheme.dimensions.keyline_4,
+        )
         .windowInsetsPadding(WindowInsets.navigationBars),
     )
+  }
+}
+
+@Previews
+@Composable
+fun NetworkStatusIndicatorPreview(
+  @PreviewParameter(NetworkStateParameterProvider::class) state: NetworkState,
+) {
+  AppTheme {
+    NetworkStatusIndicator(state)
   }
 }

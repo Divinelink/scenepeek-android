@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.ui.network
+package com.divinelink.core.model.network
 
 sealed interface NetworkState {
   sealed interface Online : NetworkState {

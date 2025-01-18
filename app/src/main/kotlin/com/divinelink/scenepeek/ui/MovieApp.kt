@@ -30,7 +30,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.network.NetworkStatusIndicator
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
@@ -39,18 +41,17 @@ import com.divinelink.scenepeek.MainUiState
 import com.divinelink.scenepeek.R
 import com.divinelink.scenepeek.navigation.AppNavHost
 import com.divinelink.scenepeek.navigation.TopLevelDestination
-import com.divinelink.scenepeek.ui.network.NetworkState
-import com.divinelink.scenepeek.ui.network.NetworkStatusIndicator
 import com.divinelink.ui.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.utils.navGraph
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val NETWORK_STATUS_ANIMATION_DURATION = 4000L
 
 @Composable
 fun MovieApp(
-  appState: MovieAppState,
+  state: MovieAppState,
   uiState: MainUiState,
   uiEvent: MainUiEvent,
   onConsumeEvent: () -> Unit,
@@ -59,24 +60,26 @@ fun MovieApp(
   val navigator = navController.rememberDestinationsNavigator()
 
   val snackbarHostState = remember { SnackbarHostState() }
-  val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+  val isOffline by state.isOffline.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
-    when {
-      isOffline -> {
-        networkState = NetworkState.Offline.Initial
-        delay(NETWORK_STATUS_ANIMATION_DURATION)
-        if (networkState is NetworkState.Offline.Initial) {
-          networkState = NetworkState.Offline.Persistent
-        }
-      }
-      else -> {
-        if (networkState is NetworkState.Offline) {
-          networkState = NetworkState.Online.Initial
+    state.scope.launch {
+      when {
+        isOffline -> {
+          networkState = NetworkState.Offline.Initial
           delay(NETWORK_STATUS_ANIMATION_DURATION)
-          if (networkState is NetworkState.Online.Initial) {
-            networkState = NetworkState.Online.Persistent
+          if (networkState is NetworkState.Offline.Initial) {
+            networkState = NetworkState.Offline.Persistent
+          }
+        }
+        else -> {
+          if (networkState is NetworkState.Offline) {
+            networkState = NetworkState.Online.Initial
+            delay(NETWORK_STATUS_ANIMATION_DURATION)
+            if (networkState is NetworkState.Online.Initial) {
+              networkState = NetworkState.Online.Persistent
+            }
           }
         }
       }
@@ -101,7 +104,7 @@ fun MovieApp(
 
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
-    coroutineScope = appState.coroutineScope,
+    coroutineScope = state.scope,
   ) {
     Scaffold(
       contentWindowInsets = WindowInsets(0, 0, 0, 0),
