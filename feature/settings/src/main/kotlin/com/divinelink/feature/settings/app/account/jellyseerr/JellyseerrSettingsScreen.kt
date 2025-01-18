@@ -63,9 +63,7 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
           jellyseerrState = state,
           animatedVisibilityScope = animatedVisibilityScope,
-          onLogoutClock = {
-            viewModel.onJellyseerrInteraction(it)
-          },
+          onLogoutClock = viewModel::onJellyseerrInteraction,
         )
       }
     }
