@@ -26,7 +26,7 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
     }
     println("namespace: $namespace")
 
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
       minSdk = 26

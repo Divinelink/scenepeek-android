@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -35,6 +36,8 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+
     setContent {
       val darkTheme = shouldUseDarkTheme(
         uiState = viewModel.uiState.collectAsState().value,
@@ -51,7 +54,7 @@ class MainActivity :
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
         MovieApp(
-          appState = appState,
+          state = appState,
           uiState = viewModel.uiState.collectAsState().value,
           uiEvent = viewModel.uiEvent.collectAsState().value,
           onConsumeEvent = viewModel::consumeUiEvent,

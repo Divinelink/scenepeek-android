@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
@@ -50,7 +51,7 @@ fun WatchlistContent(
     onLoadMore = onLoadMore,
   )
   Box(Modifier.fillMaxSize()) {
-    LazyColumn(
+    ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
       state = scrollState,
       contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
@@ -81,7 +82,10 @@ fun WatchlistContent(
     }
     AnimatedContent(
       modifier = Modifier
-        .padding(MaterialTheme.dimensions.keyline_16)
+        .padding(
+          end = MaterialTheme.dimensions.keyline_16,
+          bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16,
+        )
         .align(Alignment.BottomEnd),
       targetState = showScrollToTop.value,
       label = "Show scroll to top button animation",

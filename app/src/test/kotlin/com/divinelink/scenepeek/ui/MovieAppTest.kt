@@ -42,6 +42,7 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinContext
@@ -51,6 +52,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import com.divinelink.core.ui.R as uiR
 
 class MovieAppTest : ComposeTest() {
 
@@ -133,8 +135,8 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
-          appState = MovieAppState(
-            coroutineScope = backgroundScope,
+          state = MovieAppState(
+            scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -188,8 +190,8 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
-          appState = MovieAppState(
-            coroutineScope = backgroundScope,
+          state = MovieAppState(
+            scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -292,8 +294,8 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
-          appState = MovieAppState(
-            coroutineScope = backgroundScope,
+          state = MovieAppState(
+            scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -316,7 +318,7 @@ class MovieAppTest : ComposeTest() {
         hasText(WatchlistResponseFactory.movies().data.last().name),
       )
 
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertDoesNotExist()
+      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
       onNodeWithText(WatchlistResponseFactory.movies().data.last().name)
         .assertIsDisplayed()
         .performClick()
@@ -330,7 +332,7 @@ class MovieAppTest : ComposeTest() {
       onNodeWithTag(TestTags.Details.CONTENT_SCAFFOLD).assertIsNotDisplayed()
 
       // Has navigated back to watchlist while keeping the scroll position
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertDoesNotExist()
+      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertIsNotDisplayed()
       onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
     }
   }
@@ -370,8 +372,8 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
-          appState = MovieAppState(
-            coroutineScope = backgroundScope,
+          state = MovieAppState(
+            scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -395,7 +397,7 @@ class MovieAppTest : ComposeTest() {
         hasText(WatchlistResponseFactory.movies().data.last().name),
       )
 
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertDoesNotExist()
+      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
       onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
 
       onNodeWithText(homeTab).performClick()
@@ -404,7 +406,7 @@ class MovieAppTest : ComposeTest() {
       // Has navigated back to watchlist while keeping the scroll position
       onNodeWithText(watchlistTab).performClick()
       onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsDisplayed()
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertDoesNotExist()
+      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
       onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
     }
   }
@@ -416,8 +418,8 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       KoinContext {
         MovieApp(
-          appState = MovieAppState(
-            coroutineScope = backgroundScope,
+          state = MovieAppState(
+            scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -452,14 +454,14 @@ class MovieAppTest : ComposeTest() {
     setContentWithTheme {
       appState = remember {
         MovieAppState(
-          coroutineScope = backgroundScope,
+          scope = backgroundScope,
           networkMonitor = networkMonitor,
         )
       }
 
       KoinContext {
         MovieApp(
-          appState = appState,
+          state = appState,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -470,11 +472,15 @@ class MovieAppTest : ComposeTest() {
     networkMonitor.setConnected(false)
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.not_connected)).assertIsDisplayed()
+      onNodeWithText(getString(uiR.string.core_ui_not_connected)).assertIsDisplayed()
 
       networkMonitor.setConnected(true)
 
-      onNodeWithText(getString(R.string.not_connected)).assertDoesNotExist()
+      onNodeWithText(getString(uiR.string.core_ui_connected)).assertIsDisplayed()
+      onNodeWithText(getString(uiR.string.core_ui_not_connected)).assertIsNotDisplayed()
+
+      advanceTimeBy(4100)
+      onNodeWithText(getString(uiR.string.core_ui_connected)).assertIsNotDisplayed()
     }
   }
 }

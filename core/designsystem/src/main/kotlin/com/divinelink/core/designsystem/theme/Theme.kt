@@ -11,6 +11,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -41,8 +42,11 @@ fun AppTheme(
   if (!view.isInEditMode) {
     SideEffect {
       val window = (view.context as Activity).window
-      window.statusBarColor = colors.background.toArgb()
-      window.navigationBarColor = colors.background.toArgb()
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        window.isNavigationBarContrastEnforced = false
+      } else {
+        window.navigationBarColor = Color.Transparent.toArgb()
+      }
       WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
       WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !useDarkTheme
     }
@@ -60,6 +64,7 @@ fun AppTheme(
 }
 
 val LocalDarkThemeProvider = staticCompositionLocalOf { false }
+val LocalBottomNavigationPadding = compositionLocalOf { 0.dp }
 
 @Composable
 fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)

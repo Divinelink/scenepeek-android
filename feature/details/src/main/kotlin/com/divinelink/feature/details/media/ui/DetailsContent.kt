@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -52,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
@@ -149,6 +149,7 @@ fun DetailsContent(
   }
 
   Scaffold(
+    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
     modifier = modifier
       .testTag(TestTags.Details.CONTENT_SCAFFOLD)
       .navigationBarsPadding()
@@ -165,7 +166,7 @@ fun DetailsContent(
       TopAppBar(
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
-          scrolledContainerColor = MaterialTheme.colorScheme.surface,
+          scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.66f),
         ),
         title = {
           Text(
@@ -308,7 +309,7 @@ fun MediaDetailsContent(
 ) {
   val showStickyPlayer = remember { mutableStateOf(false) }
 
-  LazyColumn(
+  ScenePeekLazyColumn(
     modifier = modifier
       .testTag(TestTags.Details.CONTENT_LIST)
       .fillMaxWidth(),

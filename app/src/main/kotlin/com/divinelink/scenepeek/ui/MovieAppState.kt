@@ -14,24 +14,24 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 fun rememberMovieAppState(
   networkMonitor: NetworkMonitor,
-  coroutineScope: CoroutineScope = rememberCoroutineScope(),
-): MovieAppState = remember(networkMonitor, coroutineScope) {
+  scope: CoroutineScope = rememberCoroutineScope(),
+): MovieAppState = remember(networkMonitor, scope) {
   MovieAppState(
-    coroutineScope = coroutineScope,
+    scope = scope,
     networkMonitor = networkMonitor,
   )
 }
 
 @Stable
 class MovieAppState(
-  val coroutineScope: CoroutineScope,
+  val scope: CoroutineScope,
   networkMonitor: NetworkMonitor,
 ) {
 
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
     .stateIn(
-      scope = coroutineScope,
+      scope = scope,
       started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
       initialValue = false,
     )

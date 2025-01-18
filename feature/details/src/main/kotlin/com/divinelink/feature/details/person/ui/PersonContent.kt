@@ -2,7 +2,6 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -10,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
@@ -26,7 +26,7 @@ fun PersonContent(
 ) {
   uiState.personDetails as PersonDetailsUiState.Data
 
-  LazyColumn(
+  ScenePeekLazyColumn(
     modifier = modifier
       .fillMaxSize()
       .testTag(TestTags.Person.CONTENT_LIST),

@@ -1,11 +1,11 @@
 package com.divinelink.feature.settings.app.appearance
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
@@ -32,7 +32,7 @@ fun AppearanceSettingsScreen(
     title = stringResource(id = R.string.preferences__appearance),
     onNavigationClick = navigator::navigateUp,
   ) {
-    LazyColumn(contentPadding = it) {
+    ScenePeekLazyColumn(contentPadding = it) {
       item {
         SettingsRadioPrefItem(
           title = stringResource(id = R.string.preferences__theme),

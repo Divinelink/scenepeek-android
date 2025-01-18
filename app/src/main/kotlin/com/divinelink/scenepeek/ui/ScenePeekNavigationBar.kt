@@ -29,7 +29,7 @@ fun AppNavigationBar(
   content: @Composable RowScope.() -> Unit,
 ) {
   Surface(
-    color = containerColor,
+    color = containerColor.copy(alpha = 0.8f),
     contentColor = contentColor,
     modifier = modifier,
   ) {
