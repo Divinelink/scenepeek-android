@@ -4,11 +4,9 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
-import com.divinelink.core.datastore.PreferenceStorage
 import timber.log.Timber
 
 class CreateRequestTokenUseCase(
-  private val storage: PreferenceStorage,
   private val repository: SessionRepository,
   val dispatcher: DispatcherProvider,
 ) : UseCase<Unit, String>(dispatcher.io) {
@@ -19,7 +17,6 @@ class CreateRequestTokenUseCase(
       .createRequestToken()
       .onSuccess { result ->
         Timber.d("Token created successfully")
-        storage.setToken(token = result.token)
 
         result.token
       }

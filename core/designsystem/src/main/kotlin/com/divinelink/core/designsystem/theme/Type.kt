@@ -14,7 +14,7 @@ private val appFontFamily = FontFamily(
     weight = FontWeight.W300, // FontWeight.Light
   ),
   Font(
-    resId = R.font.font_regular,
+    resId = R.font.font_medium,
     weight = FontWeight.W400, // FontWeight.Normal
   ),
   Font(
@@ -47,14 +47,14 @@ val AppTypography = Typography(
   ),
   bodyLarge = TextStyle(
     fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
+    fontWeight = FontWeight.W500,
     letterSpacing = 0.sp,
     lineHeight = 24.sp,
     fontSize = 16.sp,
   ),
   bodyMedium = TextStyle(
     fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
+    fontWeight = FontWeight.W500,
     letterSpacing = 0.sp,
     lineHeight = 20.sp,
     fontSize = 14.sp,

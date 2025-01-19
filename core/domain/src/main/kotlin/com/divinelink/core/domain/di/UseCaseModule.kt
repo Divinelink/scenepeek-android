@@ -5,7 +5,6 @@ import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
-import com.divinelink.core.domain.HandleAuthenticationRequestUseCase
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
@@ -18,6 +17,7 @@ import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
+import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -44,13 +44,13 @@ val useCaseModule = module {
   factoryOf(::CreateSessionUseCase)
   factoryOf(::LogoutUseCase)
   factoryOf(::ObserveSessionUseCase)
+  factoryOf(::ObserveAccountUseCase)
 
   factoryOf(::CreateRequestTokenUseCase)
   factoryOf(::FetchWatchlistUseCase)
   factoryOf(::GetAccountDetailsUseCase)
   factoryOf(::GetDropdownMenuItemsUseCase)
   factoryOf(::GetDetailsActionItemsUseCase)
-  factoryOf(::HandleAuthenticationRequestUseCase)
   factoryOf(::MarkAsFavoriteUseCase)
 
   factoryOf(::SpoilersObfuscationUseCase)

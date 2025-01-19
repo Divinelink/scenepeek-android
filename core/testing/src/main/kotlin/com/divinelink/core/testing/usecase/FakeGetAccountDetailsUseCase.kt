@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.fakes.usecase.settings.app.account
+package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.model.account.AccountDetails

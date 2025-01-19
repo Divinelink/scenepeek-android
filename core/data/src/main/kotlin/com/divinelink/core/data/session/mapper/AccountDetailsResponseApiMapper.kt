@@ -7,4 +7,5 @@ fun AccountDetailsResponseApi.map() = AccountDetails(
   id = id,
   username = username,
   name = name,
+  tmdbAvatarPath = avatar.tmdb.avatarPath,
 )

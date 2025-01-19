@@ -30,7 +30,7 @@ class MainActivity :
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
     if (intent.action == Intent.ACTION_VIEW) {
-      viewModel.handleDeepLink(intent.data?.toString())
+      viewModel.handleDeepLink(intent.data)
     }
   }
 

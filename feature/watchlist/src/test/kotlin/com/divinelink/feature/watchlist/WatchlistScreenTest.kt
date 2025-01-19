@@ -16,7 +16,7 @@ import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFa
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
-import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
+import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
@@ -25,19 +25,19 @@ import com.divinelink.core.ui.R as uiR
 
 class WatchlistScreenTest : ComposeTest() {
 
-  private val observeSessionUseCase = FakeObserveSessionUseCase()
+  private val observeAccountUseCase = TestObserveAccountUseCase()
   private val fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
 
   @Test
   fun `test unknown error`() {
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
 
     setContentWithTheme {
       WatchlistScreen(
         onNavigateToAccountSettings = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -55,7 +55,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test unauthenticated error`() {
     var verifyNavigatedToAccountSettings = false
 
-    observeSessionUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
+    observeAccountUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
 
     setContentWithTheme {
       WatchlistScreen(
@@ -64,7 +64,7 @@ class WatchlistScreenTest : ComposeTest() {
         },
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -89,14 +89,14 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist tabs are visible with movies and tv tabs`() {
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
 
     setContentWithTheme {
       WatchlistScreen(
         onNavigateToAccountSettings = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -119,7 +119,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test watchlist with empty content`() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(WatchlistResponseFactory.emptyMovies()),
@@ -132,7 +132,7 @@ class WatchlistScreenTest : ComposeTest() {
         onNavigateToAccountSettings = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -166,7 +166,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test tv watching is loading`() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(WatchlistResponseFactory.emptyMovies()),
     )
@@ -176,7 +176,7 @@ class WatchlistScreenTest : ComposeTest() {
         onNavigateToAccountSettings = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -206,7 +206,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test watchlist with movies and tv content`() {
     val destinationsNavigator = FakeDestinationsNavigator()
 
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(WatchlistResponseFactory.movies()),
@@ -219,7 +219,7 @@ class WatchlistScreenTest : ComposeTest() {
         onNavigateToAccountSettings = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )
@@ -257,7 +257,7 @@ class WatchlistScreenTest : ComposeTest() {
     var verifyNavigatedToMediaDetails = false
     var navArgs: DetailsNavArguments? = null
 
-    observeSessionUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(WatchlistResponseFactory.movies()),
@@ -273,7 +273,7 @@ class WatchlistScreenTest : ComposeTest() {
           navArgs = it
         },
         viewModel = WatchlistViewModel(
-          observeSessionUseCase = observeSessionUseCase.mock,
+          observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
       )

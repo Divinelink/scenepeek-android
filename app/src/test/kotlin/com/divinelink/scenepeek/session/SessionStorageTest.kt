@@ -49,34 +49,6 @@ class SessionStorageTest {
   }
 
   @Test
-  fun `test clearToken sets token to null`() = runTest {
-    val preferenceStorage = FakePreferenceStorage(token = "token")
-
-    sessionStorage = SessionStorage(
-      storage = preferenceStorage,
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-    )
-
-    sessionStorage.clearToken()
-
-    assertThat(preferenceStorage.token.value).isNull()
-  }
-
-  @Test
-  fun `test setToken sets token`() = runTest {
-    val preferenceStorage = FakePreferenceStorage(token = "")
-
-    sessionStorage = SessionStorage(
-      storage = preferenceStorage,
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-    )
-
-    sessionStorage.setToken("token")
-
-    assertThat(preferenceStorage.token.value).isEqualTo("token")
-  }
-
-  @Test
   fun `test setSession sets session`() = runTest {
     val preferenceStorage = FakePreferenceStorage(hasSession = false)
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
@@ -90,7 +62,6 @@ class SessionStorageTest {
 
     assertThat(encryptedPreferenceStorage.sessionId).isEqualTo("session")
     assertThat(preferenceStorage.hasSession.value).isTrue()
-    assertThat(preferenceStorage.token.value).isNull()
   }
 
   @Test
@@ -110,7 +81,6 @@ class SessionStorageTest {
 
     assertThat(encryptedPreferenceStorage.sessionId).isNull()
     assertThat(preferenceStorage.hasSession.value).isFalse()
-    assertThat(preferenceStorage.token.value).isNull()
     assertThat(preferenceStorage.accountId.value).isNull()
   }
 

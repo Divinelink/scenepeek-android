@@ -1,6 +1,8 @@
 package com.divinelink.scenepeek.main.ui
 
+import android.net.Uri
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
 import com.divinelink.scenepeek.MainViewModel
@@ -16,15 +18,17 @@ class MainViewModelRobot {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val fakeSetRemoteConfigUseCase = FakeSetRemoteConfigUseCase()
-  private val fakeThemedActivityDelegate = FakeThemedActivityDelegate()
+  private val themedActivityDelegate = FakeThemedActivityDelegate()
+  private val createSessionUseCase = TestCreateSessionUseCase()
 
   fun buildViewModel() = apply {
     viewModel = MainViewModel(
-      themedActivityDelegate = fakeThemedActivityDelegate,
+      themedActivityDelegate = themedActivityDelegate,
+      createSessionUseCase = createSessionUseCase.mock,
     )
   }
 
-  fun onHandleDeeplink(uri: String?) = apply {
+  fun onHandleDeeplink(uri: Uri?) = apply {
     viewModel.handleDeepLink(uri)
   }
 
@@ -42,5 +46,13 @@ class MainViewModelRobot {
 
   fun mockSetRemoteConfigResult(result: Unit) = apply {
     fakeSetRemoteConfigUseCase.mockSetRemoteConfigResult(result)
+  }
+
+  suspend fun verifySessionInvoked(requestToken: String) = apply {
+    createSessionUseCase.verifySessionInvoked(requestToken)
+  }
+
+  suspend fun verifyNoSessionInteraction() = apply {
+    createSessionUseCase.verifyNoSessionInteraction()
   }
 }

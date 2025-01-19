@@ -17,5 +17,8 @@ dependencies {
   implementation(projects.core.domain)
   implementation(projects.core.datastore)
 
+  implementation(libs.androidx.browser)
+
+  implementation(projects.core.fixtures)
   testImplementation(projects.core.testing)
 }

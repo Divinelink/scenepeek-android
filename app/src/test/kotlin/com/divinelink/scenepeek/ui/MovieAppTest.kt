@@ -21,9 +21,9 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.network.TestNetworkMonitor
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
-import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
+import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -70,7 +70,7 @@ class MovieAppTest : ComposeTest() {
   private lateinit var getFavoriteMoviesUseCase: FakeGetFavoriteMoviesUseCase
 
   // Watchlist use cases
-  private lateinit var observeSessionUseCase: FakeObserveSessionUseCase
+  private lateinit var observeAccountUseCase: TestObserveAccountUseCase
   private lateinit var fetchWatchlistUseCase: FakeFetchWatchlistUseCase
 
   // Details use cases
@@ -92,7 +92,7 @@ class MovieAppTest : ComposeTest() {
     markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
     getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
-    observeSessionUseCase = FakeObserveSessionUseCase()
+    observeAccountUseCase = TestObserveAccountUseCase()
     fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
 
     getMediaDetailsUseCase = FakeGetMediaDetailsUseCase()
@@ -182,7 +182,7 @@ class MovieAppTest : ComposeTest() {
 
     declare {
       WatchlistViewModel(
-        observeSessionUseCase = observeSessionUseCase.mock,
+        observeAccountUseCase = observeAccountUseCase.mock,
         fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
       )
     }
@@ -238,7 +238,7 @@ class MovieAppTest : ComposeTest() {
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
-    observeSessionUseCase.mockSuccess(Result.success(true))
+    observeAccountUseCase.mockSuccess(Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       Result.success(
         WatchlistResponseFactory.movies().copy(canFetchMore = false),
@@ -267,7 +267,7 @@ class MovieAppTest : ComposeTest() {
 
     declare {
       WatchlistViewModel(
-        observeSessionUseCase = observeSessionUseCase.mock,
+        observeAccountUseCase = observeAccountUseCase.mock,
         fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
       )
     }
@@ -346,7 +346,7 @@ class MovieAppTest : ComposeTest() {
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
-    observeSessionUseCase.mockSuccess(Result.success(true))
+    observeAccountUseCase.mockSuccess(Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       Result.success(
         WatchlistResponseFactory.movies().copy(canFetchMore = false),
@@ -364,7 +364,7 @@ class MovieAppTest : ComposeTest() {
 
     declare {
       WatchlistViewModel(
-        observeSessionUseCase = observeSessionUseCase.mock,
+        observeAccountUseCase = observeAccountUseCase.mock,
         fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
       )
     }

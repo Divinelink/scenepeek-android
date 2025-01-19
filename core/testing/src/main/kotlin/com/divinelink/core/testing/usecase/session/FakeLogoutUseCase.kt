@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.fakes.usecase.session.login
+package com.divinelink.core.testing.usecase.session
 
 import com.divinelink.core.domain.session.LogoutUseCase
 import org.mockito.kotlin.any

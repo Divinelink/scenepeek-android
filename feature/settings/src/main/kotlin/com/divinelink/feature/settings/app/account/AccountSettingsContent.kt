@@ -11,23 +11,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsTextItem
+import com.divinelink.feature.settings.provider.AccountDetailsParameterProvider
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
   animatedVisibilityScope: AnimatedVisibilityScope,
-  accountDetails: AccountDetails?,
-  jellyseerrAccountDetails: JellyseerrAccountDetails?,
+  uiState: AccountSettingsViewState,
   onLogoutClick: () -> Unit,
   onLoginClick: () -> Unit,
   onNavigateToJellyseerrLogin: () -> Unit,
@@ -38,7 +37,7 @@ fun SharedTransitionScope.AccountSettingsContent(
   ) {
     item {
       AccountItem(
-        accountDetails = accountDetails,
+        accountDetails = uiState.accountDetails,
         onLoginClick = onLoginClick,
         onLogoutClick = onLogoutClick,
       )
@@ -58,7 +57,7 @@ fun SharedTransitionScope.AccountSettingsContent(
 
       JellyseerrAccountItem(
         animatedVisibilityScope = animatedVisibilityScope,
-        accountDetails = jellyseerrAccountDetails,
+        accountDetails = uiState.jellyseerrAccountDetails,
         onNavigateToJellyseerrLogin = onNavigateToJellyseerrLogin,
       )
     }
@@ -68,16 +67,13 @@ fun SharedTransitionScope.AccountSettingsContent(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
-private fun AccountSettingsContentPreview() {
+fun AccountSettingsContentPreview(
+  @PreviewParameter(AccountDetailsParameterProvider::class) uiState: AccountSettingsViewState,
+) {
   AnimatedVisibilityScopeProvider {
     AccountSettingsContent(
-      accountDetails = AccountDetails(
-        id = 123,
-        username = "Jessee Pinkman",
-        name = "name",
-      ),
+      uiState = uiState,
       animatedVisibilityScope = it,
-      jellyseerrAccountDetails = null,
       onLogoutClick = {},
       onLoginClick = {},
       onNavigateToJellyseerrLogin = {},

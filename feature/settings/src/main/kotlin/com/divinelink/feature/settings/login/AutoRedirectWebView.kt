@@ -4,7 +4,9 @@ import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.divinelink.core.commons.ExcludeFromKoverReport
 
+@ExcludeFromKoverReport
 class AutoRedirectWebView(
   private val redirectUrl: String,
   private val onCloseWebView: (String) -> Unit,

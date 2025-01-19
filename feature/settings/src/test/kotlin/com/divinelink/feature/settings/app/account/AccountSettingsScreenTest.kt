@@ -1,31 +1,26 @@
-package com.divinelink.scenepeek.settings.app.account
+package com.divinelink.feature.settings.app.account
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setSharedLayoutContent
+import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
+import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
+import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.factories.session.model.AccountDetailsFactory
-import com.divinelink.factories.session.model.RequestTokenFactory
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.app.account.AccountSettingsScreen
-import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
-import com.divinelink.feature.settings.login.LoginScreenArgs
 import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
-import com.divinelink.scenepeek.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
-import com.divinelink.scenepeek.fakes.usecase.session.login.FakeLogoutUseCase
-import com.divinelink.scenepeek.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -42,7 +37,6 @@ class AccountSettingsScreenTest : ComposeTest() {
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
 
-  private val requestTokenResult = Result.success(RequestTokenFactory.full().token)
   private val sessionResult = Result.success(true)
   private val accountDetailsResult = Result.success(AccountDetailsFactory.Pinkman())
 
@@ -84,34 +78,6 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigate to login web view when login clicked and success token`() = runTest {
-    observeSessionUseCase.mockFailure()
-    createRequestTokenUseCase.mockSuccess(requestTokenResult)
-
-    val viewModel = setupViewModel()
-
-    setSharedLayoutContent {
-      AccountSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
-        viewModel = viewModel,
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(tags.LOGIN_BUTTON).assertIsDisplayed().performClick()
-
-      runOnIdle {
-        destinationsNavigator.verifyNavigatedToDirection(
-          LoginWebViewScreenDestination(
-            LoginScreenArgs(requestTokenResult.getOrThrow()),
-          ),
-        )
-      }
-    }
-  }
-
-  @Test
   fun `test account details are visible when user connected`() {
     observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
@@ -126,13 +92,12 @@ class AccountSettingsScreenTest : ComposeTest() {
       )
     }
 
-    val loggedInText = composeTestRule.activity.getString(
-      R.string.AccountSettingsScreen__logged_in_as,
-      accountDetailsResult.getOrThrow().username,
-    )
+    val tmdbAccountText = getString(R.string.feature_settings_tmdb_account)
+    val usernameText = accountDetailsResult.getOrThrow().username
 
     with(composeTestRule) {
-      onNodeWithText(loggedInText).assertIsDisplayed()
+      onNodeWithText(usernameText).assertIsDisplayed()
+      onNodeWithText(tmdbAccountText).assertIsDisplayed()
       onNodeWithTag(tags.LOGOUT_BUTTON).assertIsDisplayed()
     }
   }
@@ -175,10 +140,8 @@ class AccountSettingsScreenTest : ComposeTest() {
       )
     }
 
-    val loggedInText = composeTestRule.activity.getString(
-      R.string.AccountSettingsScreen__logged_in_as,
-      accountDetailsResult.getOrThrow().username,
-    )
+    val tmdbAccountText = getString(R.string.feature_settings_tmdb_account)
+    val usernameText = accountDetailsResult.getOrThrow().username
 
     with(composeTestRule) {
       onNodeWithTag(tags.LOGOUT_BUTTON).performClick()
@@ -186,7 +149,12 @@ class AccountSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Dialogs.CONFIRM_BUTTON).performClick()
 
-      onNodeWithText(loggedInText).assertDoesNotExist()
+      onNodeWithText(usernameText).assertDoesNotExist()
+      onNodeWithText(tmdbAccountText).assertDoesNotExist()
+      onNodeWithText(getString(R.string.feature_settings_not_logged_in)).assertIsDisplayed()
+      onNodeWithText(
+        getString(R.string.feature_settings_sign_in_to_access_features),
+      ).assertIsDisplayed()
       onNodeWithTag(tags.LOGIN_BUTTON).assertIsDisplayed()
     }
   }

@@ -3,10 +3,10 @@ package com.divinelink.scenepeek.base.storage
 import app.cash.turbine.test
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -74,29 +74,6 @@ class DataStorePreferenceStorageTest {
     storage.setEncryptedPreferences("test_encrypted_preferences")
 
     assertThat(storage.encryptedPreferences.first()).isEqualTo("test_encrypted_preferences")
-  }
-
-  @Test
-  fun `test clearToken removes token`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setToken("test_token")
-
-    assertThat(storage.token.first()).isEqualTo("test_token")
-
-    storage.clearToken()
-
-    val token = storage.token.first()
-    assertThat(token).isEqualTo(null)
-  }
-
-  @Test
-  fun `test setToken sets token`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setToken("test_token")
-
-    assertThat(storage.token.first()).isEqualTo("test_token")
   }
 
   @Test

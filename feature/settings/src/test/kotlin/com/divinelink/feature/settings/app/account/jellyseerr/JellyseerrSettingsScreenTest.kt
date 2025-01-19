@@ -14,9 +14,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setSharedLayoutContent

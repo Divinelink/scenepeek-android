@@ -1,14 +1,19 @@
 package com.divinelink.scenepeek.main.ui
 
+import android.net.Uri
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
 
+@RunWith(RobolectricTestRunner::class)
 class MainViewModelTest {
 
   private val robot = MainViewModelRobot()
@@ -28,7 +33,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with movie deeplink`() {
-    val url = "https://www.themoviedb.org/movie/693134-dune-part-two"
+    val url = Uri.parse("https://www.themoviedb.org/movie/693134-dune-part-two")
 
     robot
       .buildViewModel()
@@ -49,7 +54,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with tv deeplink`() {
-    val url = "https://www.themoviedb.org/tv/693134-dune-part-two"
+    val url = Uri.parse("https://www.themoviedb.org/tv/693134-dune-part-two")
 
     robot
       .buildViewModel()
@@ -70,7 +75,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with person deeplink`() {
-    val url = "https://www.themoviedb.org/person/693134-dune-part-two"
+    val url = Uri.parse("https://www.themoviedb.org/person/693134-dune-part-two")
 
     robot
       .buildViewModel()
@@ -93,7 +98,7 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with invalid deeplink`() {
-    val url = "https://www.themoviedb.org/invalid/693134-dune-part-two"
+    val url = Uri.parse("https://www.themoviedb.org/invalid/693134-dune-part-two")
 
     robot
       .buildViewModel()
@@ -102,6 +107,37 @@ class MainViewModelTest {
       .assertUiEvent(MainUiEvent.None)
       .onConsumeUiEvent()
       .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeeplink with null deeplink`() {
+    robot
+      .buildViewModel()
+      .assertUiEvent(MainUiEvent.None)
+      .onHandleDeeplink(null)
+      .assertUiEvent(MainUiEvent.None)
+      .onConsumeUiEvent()
+      .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeepLink with tmdb deeplink with approved redirect`() = runTest {
+    val url = Uri.parse("scenepeek://auth/redirect?request_token=requestToken&approved=true")
+
+    robot
+      .buildViewModel()
+      .onHandleDeeplink(url)
+      .verifySessionInvoked("requestToken")
+  }
+
+  @Test
+  fun `test handleDeepLink with tmdb deeplink with denied redirect`() = runTest {
+    val url = Uri.parse("scenepeek://auth/redirect?request_token=requestToken&denied=true")
+
+    robot
+      .buildViewModel()
+      .onHandleDeeplink(url)
+      .verifyNoSessionInteraction()
   }
 
 //  @Test
