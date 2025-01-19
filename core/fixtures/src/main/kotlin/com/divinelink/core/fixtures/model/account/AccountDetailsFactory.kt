@@ -1,4 +1,4 @@
-package com.divinelink.factories.session.model
+package com.divinelink.core.fixtures.model.account
 
 import com.divinelink.core.model.account.AccountDetails
 
@@ -8,5 +8,6 @@ object AccountDetailsFactory {
     id = 1,
     username = "Jessee_Pinkman",
     name = "Jessee Pinkman",
+    tmdbAvatarPath = "/avatar/pinkman.jpg",
   )
 }

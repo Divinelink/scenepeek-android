@@ -76,7 +76,7 @@ fun PersonalDetails(data: PersonDetailsUiState.Data) {
     Text(
       modifier = Modifier.padding(MaterialTheme.dimensions.keyline_12),
       text = stringResource(id = R.string.feature_details_biography_section),
-      style = MaterialTheme.typography.titleSmall,
+      style = MaterialTheme.typography.titleMedium,
     )
     if (isLoading) {
       Column(
@@ -121,6 +121,7 @@ private fun PersonalInfoSection(
     Text(
       text = section.title.getString(),
       style = MaterialTheme.typography.titleSmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     if (isLoading && section.value.getString() == Constants.String.EMPTY_DASH) {
       ShimmerHalfLine(tag = section.title.getString())

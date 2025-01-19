@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material3.Icon
@@ -39,6 +40,7 @@ fun SettingsClickItem(
     icon?.let {
       when (icon) {
         is IconWrapper.Image -> Image(
+          modifier = Modifier.size(MaterialTheme.dimensions.keyline_36),
           painter = painterResource(id = icon.resourceId),
           contentDescription = null,
         )

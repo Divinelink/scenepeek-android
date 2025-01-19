@@ -12,11 +12,14 @@
   <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app\'s colors to match your wallpaper.</string>
 
   <!-- AccountSettingsScreen -->
-  <string name="AccountSettingsScreen__account">Account</string>
-  <string name="AccountSettingsScreen__login">Login to TMDB</string>
-  <string name="AccountSettingsScreen__logout">Logout</string>
-  <string name="AccountSettingsScreen__logged_in_as">Logged in as %s</string>
+  <string name="feature_settings_account">Account</string>
+  <string name="feature_settings_logout">Logout</string>
   <string name="feature_settings_logged_in">Logged in •\u00A0</string>
+
+
+  <string name="feature_settings_tmdb_account">TMDB account</string>
+  <string name="feature_settings_not_logged_in">Not logged in</string>
+  <string name="feature_settings_sign_in_to_access_features">Sign in to access TMDB features</string>
 
   <string name="feature_settings_currently_login_dialog_summary">You are currently logged in using your %s account. Do you want to logout?</string>
 

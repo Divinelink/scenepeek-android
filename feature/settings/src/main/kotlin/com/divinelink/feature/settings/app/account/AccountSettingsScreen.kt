@@ -46,8 +46,7 @@ fun SharedTransitionScope.AccountSettingsScreen(
     AccountSettingsContent(
       paddingValues = paddingValues,
       onLoginClick = viewModel::login,
-      accountDetails = viewState.value.accountDetails,
-      jellyseerrAccountDetails = viewState.value.jellyseerrAccountDetails,
+      uiState = viewState.value,
       animatedVisibilityScope = animatedVisibilityScope,
       onLogoutClick = viewModel::logoutDialog,
       onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrSettingsScreenDestination()) },
@@ -58,7 +57,7 @@ fun SharedTransitionScope.AccountSettingsScreen(
     SimpleAlertDialog(
       confirmClick = viewModel::confirmLogout,
       dismissClick = viewModel::dismissLogoutDialog,
-      confirmText = UIText.ResourceText(R.string.AccountSettingsScreen__logout),
+      confirmText = UIText.ResourceText(R.string.feature_settings_logout),
       dismissText = UIText.ResourceText(uiR.string.core_ui_cancel),
       uiState = uiState,
     )

@@ -19,5 +19,6 @@ dependencies {
 
   implementation(libs.androidx.browser)
 
+  implementation(projects.core.fixtures)
   testImplementation(projects.core.testing)
 }

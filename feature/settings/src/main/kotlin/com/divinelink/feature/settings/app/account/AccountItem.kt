@@ -1,25 +1,40 @@
 package com.divinelink.feature.settings.app.account
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Login
+import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.components.SettingsClickItem
-import com.divinelink.feature.settings.components.SettingsTextItem
 
 @Composable
 fun AccountItem(
@@ -32,29 +47,129 @@ fun AccountItem(
     label = "Account details animation",
   ) { details ->
     if (details != null) {
-      Column {
-        SettingsTextItem(
-          title = stringResource(
-            id = R.string.AccountSettingsScreen__logged_in_as,
-            details.username,
-          ),
-          summary = null,
-        )
-        Button(
-          modifier = Modifier
-            .testTag(TestTags.Settings.Account.LOGOUT_BUTTON)
-            .padding(start = MaterialTheme.dimensions.keyline_16),
-          onClick = onLogoutClick,
-        ) {
-          Text(text = stringResource(id = R.string.AccountSettingsScreen__logout))
+      LoggedInContent(details = details, onLogoutClick = onLogoutClick)
+    } else {
+      NotLoggedInContent(onLoginClick = onLoginClick)
+    }
+  }
+}
+
+@Composable
+private fun LoggedInContent(
+  details: AccountDetails,
+  onLogoutClick: () -> Unit,
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(MaterialTheme.dimensions.keyline_16),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Box(
+      modifier = Modifier
+        .size(MaterialTheme.dimensions.keyline_48)
+        .clip(CircleShape)
+        .background(MaterialTheme.colorScheme.secondaryContainer),
+      contentAlignment = Alignment.Center,
+    ) {
+      when {
+        details.avatarUrl != null -> {
+          CoilImage(
+            url = details.avatarUrl,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+          )
+        }
+        details.username.isNotEmpty() -> {
+          Text(
+            text = details.username.first().uppercase(),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+          )
         }
       }
-    } else {
-      SettingsClickItem(
-        modifier = Modifier.testTag(TestTags.Settings.Account.LOGIN_BUTTON),
-        text = stringResource(id = R.string.AccountSettingsScreen__login),
-        onClick = onLoginClick,
+    }
+
+    Column(
+      modifier = Modifier.weight(1f),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
+      Text(
+        text = details.username,
+        style = MaterialTheme.typography.titleMedium,
       )
+      Text(
+        text = stringResource(R.string.feature_settings_tmdb_account),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
+
+    // Logout Button
+    FilledTonalButton(
+      onClick = onLogoutClick,
+      colors = ButtonDefaults.filledTonalButtonColors(
+        containerColor = MaterialTheme.colorScheme.errorContainer,
+        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+      ),
+    ) {
+      Icon(
+        imageVector = Icons.AutoMirrored.Rounded.Logout,
+        contentDescription = null,
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
+      )
+      Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
+      Text(stringResource(com.divinelink.core.ui.R.string.core_ui_logout))
+    }
+  }
+}
+
+@Composable
+private fun NotLoggedInContent(onLoginClick: () -> Unit) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(MaterialTheme.dimensions.keyline_16),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Icon(
+      imageVector = Icons.Rounded.Person,
+      contentDescription = null,
+      modifier = Modifier
+        .size(MaterialTheme.dimensions.keyline_48)
+        .clip(CircleShape)
+        .background(MaterialTheme.colorScheme.surfaceVariant)
+        .padding(MaterialTheme.dimensions.keyline_12),
+      tint = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+
+    Column(
+      modifier = Modifier.weight(1f),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
+      Text(
+        text = stringResource(R.string.feature_settings_not_logged_in),
+        style = MaterialTheme.typography.titleMedium,
+      )
+      Text(
+        text = stringResource(R.string.feature_settings_sign_in_to_access_features),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
+
+    FilledTonalButton(
+      onClick = onLoginClick,
+    ) {
+      Icon(
+        imageVector = Icons.AutoMirrored.Rounded.Login,
+        contentDescription = null,
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
+      )
+      Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
+      Text(stringResource(R.string.login))
     }
   }
 }
@@ -76,6 +191,7 @@ private fun AccountItemPreview() {
             id = 123,
             username = "Jessee Pinkman",
             name = "name",
+            tmdbAvatarPath = "https://www.example.com/avatar.jpg",
           ),
           onLoginClick = {},
           onLogoutClick = {},

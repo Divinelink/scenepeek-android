@@ -18,6 +18,8 @@ fun CoilImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.Crop,
   url: String?,
+  error: Int = R.drawable.core_ui_ic_person_placeholder,
+  fallback: Int = R.drawable.core_ui_ic_person_placeholder,
 ) {
   AsyncImage(
     modifier = modifier.clip(CircleShape),
@@ -27,8 +29,8 @@ fun CoilImage(
       .data(url)
       .crossfade(true)
       .build(),
-    error = painterResource(R.drawable.core_ui_ic_person_placeholder),
-    fallback = painterResource(R.drawable.core_ui_ic_person_placeholder),
+    error = painterResource(error),
+    fallback = painterResource(fallback),
     contentDescription = stringResource(id = R.string.core_ui_avatar_image_placeholder),
     contentScale = contentScale,
   )

@@ -90,7 +90,7 @@ class AccountSettingsViewModel(
     _viewState.update {
       it.copy(
         alertDialogUiState = AlertDialogUiState(
-          title = UIText.ResourceText(R.string.AccountSettingsScreen__logout),
+          title = UIText.ResourceText(R.string.feature_settings_logout),
           text = UIText.ResourceText(
             R.string.feature_settings_currently_login_dialog_summary,
             it.accountDetails?.username ?: "",
