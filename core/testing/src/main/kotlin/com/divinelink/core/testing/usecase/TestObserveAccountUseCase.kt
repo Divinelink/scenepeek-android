@@ -1,0 +1,28 @@
+package com.divinelink.core.testing.usecase
+
+import com.divinelink.core.domain.session.ObserveAccountUseCase
+import kotlinx.coroutines.flow.flowOf
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+
+class TestObserveAccountUseCase {
+
+  val mock: ObserveAccountUseCase = mock()
+
+  init {
+    mockFailure()
+  }
+
+  fun mockFailure(exception: Exception = Exception()) {
+    whenever(
+      mock.invoke(any()),
+    ).thenReturn(
+      flowOf(Result.failure(exception)),
+    )
+  }
+
+  fun mockSuccess(response: Result<Boolean>) {
+    whenever(mock.invoke(any())).thenReturn(flowOf(response))
+  }
+}

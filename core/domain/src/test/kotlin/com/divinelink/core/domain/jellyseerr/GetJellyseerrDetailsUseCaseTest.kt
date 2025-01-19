@@ -3,9 +3,9 @@ package com.divinelink.core.domain.jellyseerr
 import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat

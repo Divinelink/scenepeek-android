@@ -4,19 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.FetchWatchlistUseCase
-import com.divinelink.core.domain.session.ObserveSessionUseCase
+import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.watchlist.WatchlistParameters
 import com.divinelink.core.model.watchlist.WatchlistResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class WatchlistViewModel(
-  private val observeSessionUseCase: ObserveSessionUseCase,
+  private val observeAccountUseCase: ObserveAccountUseCase,
   private val fetchWatchlistUseCase: FetchWatchlistUseCase,
 ) : ViewModel() {
 
@@ -42,16 +43,18 @@ class WatchlistViewModel(
 
   init {
     viewModelScope.launch {
-      observeSessionUseCase.invoke(Unit).collectLatest { result ->
-        result.onSuccess {
-          fetchWatchlist(MediaType.TV)
-          fetchWatchlist(MediaType.MOVIE)
-        }.onFailure { throwable ->
-          updateUiOnFailure(MediaType.TV, throwable)
-          updateUiOnFailure(MediaType.MOVIE, throwable)
-          resetPages()
+      observeAccountUseCase.invoke(Unit)
+        .distinctUntilChanged()
+        .collectLatest { result ->
+          result.onSuccess {
+            fetchWatchlist(MediaType.TV)
+            fetchWatchlist(MediaType.MOVIE)
+          }.onFailure { throwable ->
+            updateUiOnFailure(MediaType.TV, throwable)
+            updateUiOnFailure(MediaType.MOVIE, throwable)
+            resetPages()
+          }
         }
-      }
     }
   }
 

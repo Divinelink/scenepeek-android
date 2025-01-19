@@ -1,8 +1,8 @@
 package com.divinelink.core.network.jellyseerr
 
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

@@ -1,13 +1,16 @@
-package com.divinelink.scenepeek.settings.app
+package com.divinelink.feature.settings.app
 
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.app.SettingsScreen
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
@@ -126,6 +129,9 @@ class SettingsScreenTest : ComposeTest() {
     val helpString = composeTestRule.activity.getString(R.string.preferences__help)
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
+        hasText(helpString),
+      )
       onNodeWithText(helpString).assertExists()
 
       onNodeWithText(helpString).performClick()

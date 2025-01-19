@@ -17,6 +17,7 @@ import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
+import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.session.ObserveSessionUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -43,6 +44,7 @@ val useCaseModule = module {
   factoryOf(::CreateSessionUseCase)
   factoryOf(::LogoutUseCase)
   factoryOf(::ObserveSessionUseCase)
+  factoryOf(::ObserveAccountUseCase)
 
   factoryOf(::CreateRequestTokenUseCase)
   factoryOf(::FetchWatchlistUseCase)

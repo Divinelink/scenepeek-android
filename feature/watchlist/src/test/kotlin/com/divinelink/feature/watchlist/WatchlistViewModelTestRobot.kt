@@ -2,19 +2,19 @@ package com.divinelink.feature.watchlist
 
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
-import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
+import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import kotlinx.coroutines.flow.Flow
 
 class WatchlistViewModelTestRobot : ViewModelTestRobot<WatchlistUiState>() {
 
   private lateinit var viewModel: WatchlistViewModel
 
-  private val observeSessionUseCase = FakeObserveSessionUseCase()
+  private val observeAccountUseCase = TestObserveAccountUseCase()
   private val fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
 
   override fun buildViewModel() = apply {
     viewModel = WatchlistViewModel(
-      observeSessionUseCase = observeSessionUseCase.mock,
+      observeAccountUseCase = observeAccountUseCase.mock,
       fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
     )
   }
@@ -22,8 +22,8 @@ class WatchlistViewModelTestRobot : ViewModelTestRobot<WatchlistUiState>() {
   override val actualUiState: Flow<WatchlistUiState>
     get() = viewModel.uiState
 
-  fun mockObserveSession(response: FakeObserveSessionUseCase.() -> Unit) = apply {
-    observeSessionUseCase.response()
+  fun mockObserveAccount(response: TestObserveAccountUseCase.() -> Unit) = apply {
+    observeAccountUseCase.response()
   }
 
   fun mockFetchWatchlist(response: FakeFetchWatchlistUseCase.() -> Unit) = apply {

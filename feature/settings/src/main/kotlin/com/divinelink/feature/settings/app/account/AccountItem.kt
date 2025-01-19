@@ -28,12 +28,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 
 @Composable
@@ -106,8 +108,8 @@ private fun LoggedInContent(
       )
     }
 
-    // Logout Button
     FilledTonalButton(
+      modifier = Modifier.testTag(TestTags.Settings.Account.LOGOUT_BUTTON),
       onClick = onLogoutClick,
       colors = ButtonDefaults.filledTonalButtonColors(
         containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -161,6 +163,7 @@ private fun NotLoggedInContent(onLoginClick: () -> Unit) {
     }
 
     FilledTonalButton(
+      modifier = Modifier.testTag(TestTags.Settings.Account.LOGIN_BUTTON),
       onClick = onLoginClick,
     ) {
       Icon(
@@ -191,7 +194,7 @@ private fun AccountItemPreview() {
             id = 123,
             username = "Jessee Pinkman",
             name = "name",
-            tmdbAvatarPath = "https://www.example.com/avatar.jpg",
+            tmdbAvatarPath = null,
           ),
           onLoginClick = {},
           onLogoutClick = {},

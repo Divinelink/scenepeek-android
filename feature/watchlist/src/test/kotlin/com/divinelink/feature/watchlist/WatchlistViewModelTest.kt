@@ -23,7 +23,7 @@ class WatchlistViewModelTest {
   fun `given user is unauthenticated when view model is created then show unauthenticated error`() =
     runTest {
       testRobot
-        .mockObserveSession {
+        .mockObserveAccount {
           mockFailure(SessionException.Unauthenticated())
         }
         .buildViewModel()
@@ -40,7 +40,7 @@ class WatchlistViewModelTest {
   @Test
   fun `given generic error when view model is created then show generic error`() = runTest {
     testRobot
-      .mockObserveSession {
+      .mockObserveAccount {
         mockFailure(Exception())
       }
       .buildViewModel()
@@ -57,7 +57,7 @@ class WatchlistViewModelTest {
   @Test
   fun `given user is authenticated when view model is created then fetch watchlist`() = runTest {
     testRobot
-      .mockObserveSession {
+      .mockObserveAccount {
         mockSuccess(Result.success(true))
       }
       .mockFetchWatchlist {
@@ -148,7 +148,7 @@ class WatchlistViewModelTest {
     )
 
     testRobot
-      .mockObserveSession {
+      .mockObserveAccount {
         mockSuccess(Result.success(true))
       }
       .mockFetchWatchlist {
@@ -175,7 +175,7 @@ class WatchlistViewModelTest {
   @Test
   fun `test fetchWatchlist with generic error`() = runTest {
     testRobot
-      .mockObserveSession {
+      .mockObserveAccount {
         mockSuccess(Result.success(true))
       }
       .buildViewModel()
@@ -192,7 +192,7 @@ class WatchlistViewModelTest {
   @Test
   fun `test onLoadMore`() = runTest {
     testRobot
-      .mockObserveSession { mockSuccess(Result.success(true)) }
+      .mockObserveAccount { mockSuccess(Result.success(true)) }
       .mockFetchWatchlist { mockSuccess(Result.success(WatchlistResponseFactory.movies())) }
       .buildViewModel()
       .expectUiStates(

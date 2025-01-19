@@ -1,6 +1,6 @@
 package com.divinelink.core.model.jellyseerr
 
-import com.divinelink.core.testing.factories.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

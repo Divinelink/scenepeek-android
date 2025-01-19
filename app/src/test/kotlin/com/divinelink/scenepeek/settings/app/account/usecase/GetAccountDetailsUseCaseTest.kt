@@ -2,7 +2,7 @@ package com.divinelink.scenepeek.settings.app.account.usecase
 
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.GetAccountDetailsUseCase
-import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
@@ -48,11 +48,7 @@ class GetAccountDetailsUseCaseTest {
 
     repository.mockGetAccountDetails(
       Result.success(
-        AccountDetails(
-          id = 1234,
-          username = "username",
-          name = "name",
-        ),
+        AccountDetailsFactory.Pinkman(),
       ),
     )
 
@@ -65,7 +61,7 @@ class GetAccountDetailsUseCaseTest {
     val result = useCase.invoke(Unit)
 
     assertThat(result.first().isSuccess).isTrue()
-    assertThat(sessionStorage.accountId.first()).isEqualTo("1234")
+    assertThat(sessionStorage.accountId.first()).isEqualTo("1")
   }
 
   private fun createSessionStorage(sessionId: String? = null) = SessionStorage(
