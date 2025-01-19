@@ -77,29 +77,6 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test clearToken removes token`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setToken("test_token")
-
-    assertThat(storage.token.first()).isEqualTo("test_token")
-
-    storage.clearToken()
-
-    val token = storage.token.first()
-    assertThat(token).isEqualTo(null)
-  }
-
-  @Test
-  fun `test setToken sets token`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setToken("test_token")
-
-    assertThat(storage.token.first()).isEqualTo("test_token")
-  }
-
-  @Test
   fun `test session`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 

@@ -16,12 +16,10 @@ import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.factories.session.model.AccountDetailsFactory
-import com.divinelink.factories.session.model.RequestTokenFactory
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.LoginWebViewScreenDestination
 import com.divinelink.scenepeek.fakes.usecase.session.login.FakeCreateRequestTokenUseCase
 import com.divinelink.scenepeek.fakes.usecase.session.login.FakeLogoutUseCase
 import com.divinelink.scenepeek.fakes.usecase.settings.app.account.FakeGetAccountDetailsUseCase
@@ -41,7 +39,6 @@ class AccountSettingsScreenTest : ComposeTest() {
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
 
-  private val requestTokenResult = Result.success(RequestTokenFactory.full().token)
   private val sessionResult = Result.success(true)
   private val accountDetailsResult = Result.success(AccountDetailsFactory.Pinkman())
 
@@ -79,34 +76,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(tags.LOGIN_BUTTON).assertExists()
-    }
-  }
-
-  @Test
-  fun `test navigate to login web view when login clicked and success token`() = runTest {
-    observeSessionUseCase.mockFailure()
-    createRequestTokenUseCase.mockSuccess(requestTokenResult)
-
-    val viewModel = setupViewModel()
-
-    setSharedLayoutContent {
-      AccountSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
-        viewModel = viewModel,
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(tags.LOGIN_BUTTON).assertIsDisplayed().performClick()
-
-      runOnIdle {
-        destinationsNavigator.verifyNavigatedToDirection(
-          LoginWebViewScreenDestination(
-            LoginScreenArgs(requestTokenResult.getOrThrow()),
-          ),
-        )
-      }
     }
   }
 

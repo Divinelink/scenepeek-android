@@ -4,9 +4,9 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestSessionRepository
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
-import com.divinelink.scenepeek.fakes.repository.FakeSessionRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -16,7 +16,7 @@ import kotlin.test.Test
 
 class GetAccountDetailsUseCaseTest {
 
-  private lateinit var repository: FakeSessionRepository
+  private lateinit var repository: TestSessionRepository
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -24,7 +24,7 @@ class GetAccountDetailsUseCaseTest {
 
   @Before
   fun setUp() {
-    repository = FakeSessionRepository()
+    repository = TestSessionRepository()
   }
 
   @Test

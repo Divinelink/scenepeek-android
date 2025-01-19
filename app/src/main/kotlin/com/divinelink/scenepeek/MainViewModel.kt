@@ -40,9 +40,9 @@ class MainViewModel(
     when {
       uri.isForTMDB() -> handleSchemeTMDBRedirect(
         uri = uri,
-        onAuthSuccess = {
+        onAuthSuccess = { requestToken ->
           viewModelScope.launch {
-            createSessionUseCase.invoke(it)
+            createSessionUseCase.invoke(requestToken)
           }
         },
       )
@@ -78,20 +78,18 @@ class MainViewModel(
 }
 
 private fun handleSchemeTMDBRedirect(
-  uri: Uri?,
+  uri: Uri,
   onAuthSuccess: (String) -> Unit,
 ) {
-  uri?.let { schemeUri ->
-    if (schemeUri.scheme == "scenepeek" &&
-      schemeUri.host == "auth" &&
-      schemeUri.path == "/redirect"
-    ) {
-      val approved = schemeUri.getQueryParameter("approved")
-      val requestToken = schemeUri.getQueryParameter("request_token")
+  if (uri.scheme == "scenepeek" &&
+    uri.host == "auth" &&
+    uri.path == "/redirect"
+  ) {
+    val approved = uri.getQueryParameter("approved")
+    val requestToken = uri.getQueryParameter("request_token")
 
-      if (approved == "true" && requestToken != null) {
-        onAuthSuccess(requestToken)
-      }
+    if (approved == "true" && requestToken != null) {
+      onAuthSuccess(requestToken)
     }
   }
 }
