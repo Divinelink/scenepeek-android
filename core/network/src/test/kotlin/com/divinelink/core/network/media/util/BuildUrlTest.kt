@@ -29,4 +29,15 @@ class BuildUrlTest {
       "https://api.themoviedb.org/3/movie/1234?language=en-US&append_to_response=credits",
     )
   }
+
+  @Test
+  fun `test buildFindByIdUrl`() {
+    val url = buildFindByIdUrl(
+      externalId = "tt1234",
+    )
+
+    assertThat(url).isEqualTo(
+      "https://api.themoviedb.org/3/find/tt1234?external_source=imdb_id",
+    )
+  }
 }

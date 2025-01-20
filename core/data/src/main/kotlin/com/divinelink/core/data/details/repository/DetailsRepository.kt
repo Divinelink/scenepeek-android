@@ -47,4 +47,6 @@ interface DetailsRepository {
     mediaType: MediaType,
     imdbId: String,
   ): Flow<Result<RatingDetails>>
+
+  fun findById(id: String): Flow<Result<MediaItem>>
 }

@@ -9,6 +9,7 @@ import com.divinelink.core.network.media.model.details.similar.SimilarResponseAp
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -49,4 +50,6 @@ interface MediaService {
   fun deleteRating(request: DeleteRatingRequestApi): Flow<Unit>
 
   fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<AddToWatchlistResponseApi>
+
+  fun findById(externalId: String): Flow<FindByIdResponseApi>
 }

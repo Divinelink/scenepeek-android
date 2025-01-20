@@ -11,6 +11,7 @@ import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -23,6 +24,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseA
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
+import com.divinelink.core.network.media.util.buildFindByIdUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -175,4 +177,10 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
         throw Exception("Failed to add to watchlist")
       }
     }
+
+  override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {
+    val url = buildFindByIdUrl(externalId = externalId)
+
+    emit(restClient.get<FindByIdResponseApi>(url = url))
+  }
 }
