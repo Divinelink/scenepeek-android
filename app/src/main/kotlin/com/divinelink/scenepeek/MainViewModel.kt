@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
-  private val findByExternalIdUseCase: FindByIdUseCase,
+  private val findByIdUseCase: FindByIdUseCase,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
@@ -54,7 +54,7 @@ class MainViewModel(
         uri = uri,
         onHandleDeeplink = { imdbId ->
           viewModelScope.launch {
-            findByExternalIdUseCase
+            findByIdUseCase
               .invoke(imdbId)
               .first()
               .fold(

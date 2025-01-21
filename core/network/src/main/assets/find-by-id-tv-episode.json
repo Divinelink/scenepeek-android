@@ -1,0 +1,24 @@
+{
+  "movie_results": [],
+  "person_results": [],
+  "tv_results": [],
+  "tv_episode_results": [
+    {
+      "id": 5469115,
+      "name": "Goodbye, Mrs. Selvig",
+      "overview": "Outie Mark contemplates the meaning of a message. Lumon grapples with the fallout of the Overtime Contingency.",
+      "media_type": "tv_episode",
+      "vote_average": 0,
+      "vote_count": 0,
+      "air_date": "2025-01-23",
+      "episode_number": 2,
+      "episode_type": "standard",
+      "production_code": "",
+      "runtime": 47,
+      "season_number": 2,
+      "show_id": 95396,
+      "still_path": "/wjlSkqMoLngSO6fv2Ajt2CIeCSi.jpg"
+    }
+  ],
+  "tv_season_results": []
+}

@@ -11,7 +11,7 @@ fun FindByIdResponseApi.map(): MediaItem = when {
   movieResults.isNotEmpty() -> movieResults.first().map()
   tvResults.isNotEmpty() -> tvResults.first().map()
   personResults.isNotEmpty() -> personResults.first().map()
-  tvEpisodeResults.isNotEmpty() -> MediaItem.Unknown // TODO add tv episode
+  tvEpisodeResults.isNotEmpty() -> MediaItem.Unknown
   else -> MediaItem.Unknown
 }
 
