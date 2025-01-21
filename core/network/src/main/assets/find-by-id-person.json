@@ -1,0 +1,20 @@
+{
+  "movie_results": [],
+  "person_results": [
+    {
+      "id": 36801,
+      "name": "Adam Scott",
+      "original_name": "Adam Scott",
+      "media_type": "person",
+      "adult": false,
+      "popularity": 37.874,
+      "gender": 2,
+      "known_for_department": "Acting",
+      "profile_path": "/b82C29R6fGiPoqIglQ4lzS6q2YX.jpg",
+      "known_for": []
+    }
+  ],
+  "tv_results": [],
+  "tv_episode_results": [],
+  "tv_season_results": []
+}

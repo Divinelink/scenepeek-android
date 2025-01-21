@@ -20,6 +20,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.mapper.find.map
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.toDomainReviewsList
@@ -167,4 +168,10 @@ class ProdDetailsRepository(
   ): Flow<Result<RatingDetails>> = traktService
     .fetchRating(mediaType = mediaType, imdbId = imdbId)
     .map { Result.success(it.map()) }
+
+  override fun findById(id: String): Flow<Result<MediaItem>> = mediaRemote
+    .findById(id)
+    .map {
+      Result.success(it.map())
+    }
 }

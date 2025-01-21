@@ -1,10 +1,12 @@
 package com.divinelink.scenepeek.main.ui
 
 import android.net.Uri
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
 import kotlinx.coroutines.test.runTest
@@ -138,6 +140,86 @@ class MainViewModelTest {
       .buildViewModel()
       .onHandleDeeplink(url)
       .verifyNoSessionInteraction()
+  }
+
+  @Test
+  fun `test handleDeepLink with imdb deeplink with title`() = runTest {
+    val url = Uri.parse("https://www.imdb.com/title/tt0044741/")
+
+    robot
+      .buildViewModel()
+      .mockFindById(Result.success(MediaItemFactory.FightClub()))
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = 1123,
+            mediaType = "movie",
+            isFavorite = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test handleDeepLink with imdb deeplink for tv`() = runTest {
+    val url = Uri.parse("https://www.imdb.com/title/tt11280740")
+
+    robot
+      .buildViewModel()
+      .mockFindById(Result.success(MediaItemFactory.TV()))
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToDetails(
+          DetailsNavArguments(
+            id = 1,
+            mediaType = "tv",
+            isFavorite = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test handleDeepLink with imdb deeplink with name`() = runTest {
+    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+
+    robot
+      .buildViewModel()
+      .mockFindById(Result.success(MediaItemFactory.Person()))
+      .onHandleDeeplink(url)
+      .assertUiEvent(
+        MainUiEvent.NavigateToPersonDetails(
+          PersonNavArguments(
+            id = 1215572,
+            name = "Randall Einhorn",
+            profilePath = null,
+            knownForDepartment = "Directing",
+            gender = Gender.MALE,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test handleDeepLink with imdb deeplink and unknown media type`() = runTest {
+    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+
+    robot
+      .buildViewModel()
+      .mockFindById(Result.success(MediaItem.Unknown))
+      .onHandleDeeplink(url)
+      .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test handleDeepLink with imdb and findById failure does not emit anything`() = runTest {
+    val url = Uri.parse("https://www.imdb.com/name/nm0044741/")
+
+    robot
+      .buildViewModel()
+      .onHandleDeeplink(url)
+      .assertUiEvent(MainUiEvent.None)
   }
 
 //  @Test

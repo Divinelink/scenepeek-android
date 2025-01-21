@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.factories.model.media
 
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.person.Gender
 
 object MediaItemFactory {
 
@@ -24,6 +25,14 @@ object MediaItemFactory {
     voteCount = 12_345,
     overview = "overview",
     isFavorite = false,
+  )
+
+  fun Person() = MediaItem.Person(
+    id = 1215572,
+    name = "Randall Einhorn",
+    profilePath = null,
+    knownForDepartment = "Directing",
+    gender = Gender.MALE,
   )
 
   fun MoviesList(range: IntProgression = 1..10): List<MediaItem.Media.Movie> = range.map {

@@ -121,4 +121,8 @@ class TestDetailsRepository {
       flowOf(response),
     )
   }
+
+  fun mockFindById(response: Result<MediaItem>) {
+    whenever(mock.findById(any())).thenReturn(flowOf(response))
+  }
 }

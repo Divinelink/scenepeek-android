@@ -25,3 +25,16 @@ fun buildFetchDetailsUrl(
     }
   }
 }.toString()
+
+fun buildFindByIdUrl(
+  externalId: String,
+  externalSource: String = "imdb_id",
+): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/find" + "/$externalId"
+
+  parameters.apply {
+    append("external_source", externalSource)
+  }
+}.toString()

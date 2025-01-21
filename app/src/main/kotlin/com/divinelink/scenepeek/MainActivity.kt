@@ -29,15 +29,13 @@ class MainActivity :
 
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
-    if (intent.action == Intent.ACTION_VIEW) {
-      viewModel.handleDeepLink(intent.data)
-    }
+    handleIntent(intent)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    handleIntent(intent)
     enableEdgeToEdge()
-
     setContent {
       val darkTheme = shouldUseDarkTheme(
         uiState = viewModel.uiState.collectAsState().value,
@@ -60,6 +58,12 @@ class MainActivity :
           onConsumeEvent = viewModel::consumeUiEvent,
         )
       }
+    }
+  }
+
+  private fun handleIntent(intent: Intent?) {
+    if (intent != null && intent.action == Intent.ACTION_VIEW) {
+      viewModel.handleDeepLink(intent.data)
     }
   }
 }

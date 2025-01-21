@@ -2,6 +2,7 @@ package com.divinelink.core.domain.di
 
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.FetchWatchlistUseCase
+import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
 import com.divinelink.core.domain.GetDropdownMenuItemsUseCase
@@ -25,6 +26,7 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
 
+  factoryOf(::FindByIdUseCase)
   factoryOf(::FetchChangesUseCase)
   // Credits
   factoryOf(::FetchCreditsUseCase)
