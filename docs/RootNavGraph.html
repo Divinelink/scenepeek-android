@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Featurecredits/root Navigation Graph</title>
+    <title>Details/root Navigation Graph</title>
 </head>
 <body>
 <pre id='scene' class="mermaid">
 ---
-title: Featurecredits/root Navigation Graph
+title: Details/root Navigation Graph
 ---
 %%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
 graph TD
-featurecredits/root(["RootGraph"]) -- "start" --- featurecredits/credits(["CreditsGraph"])
-featurecredits/credits(["CreditsGraph"]) -- "start" --- featurecredits/credits_screen("CreditsScreen")
+details/root(["RootGraph"]) -- "start" --- details/media_details(["MediaDetailsGraph"])
+details/root(["RootGraph"]) --- details/person(["PersonGraph"])
+details/media_details(["MediaDetailsGraph"]) -- "start" --- details/details_screen("DetailsScreen")
+details/person(["PersonGraph"]) -- "start" --- details/person_screen("PersonScreen")
 
 
 classDef destination fill:#5383EC,stroke:#ffffff;
-class featurecredits/credits_screen destination;
+class details/details_screen,details/person_screen destination;
 classDef navgraph fill:#63BC76,stroke:#ffffff;
-class featurecredits/credits,featurecredits/root,featurecredits/credits navgraph;
+class details/media_details,details/person,details/root,details/media_details,details/person navgraph;
 
 </pre>
 <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>

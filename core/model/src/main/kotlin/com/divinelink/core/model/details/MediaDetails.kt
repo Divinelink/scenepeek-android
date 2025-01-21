@@ -55,6 +55,7 @@ sealed class MediaDetails {
       seasons = seasons,
       creators = creators,
       numberOfSeasons = numberOfSeasons,
+      status = status,
       imdbId = imdbId,
     )
   }

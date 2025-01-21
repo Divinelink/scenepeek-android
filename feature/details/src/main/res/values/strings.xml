@@ -36,6 +36,11 @@
 
   <string name="feature_details_person_credits_known_for_section">Known For</string>
 
+  <plurals name="feature_details_number_of_seasons">
+    <item quantity="one">%s season</item>
+    <item quantity="other">%s seasons</item>
+  </plurals>
+
   <!-- 1.%s birthday 2. %s current age -->
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>

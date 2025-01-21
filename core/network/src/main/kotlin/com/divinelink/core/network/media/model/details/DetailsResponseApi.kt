@@ -6,6 +6,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
@@ -59,7 +60,6 @@ sealed class DetailsResponseApi {
     val revenue: Long,
     val runtime: Int? = null,
     @SerialName("spoken_languages") val spokenLanguage: List<SpokenLanguage>,
-    val status: String? = null,
     val tagline: String,
     val title: String,
     val video: Boolean,
@@ -82,6 +82,7 @@ sealed class DetailsResponseApi {
     @SerialName("poster_path") override val posterPath: String?,
     @SerialName("first_air_date") override val releaseDate: String,
     val name: String,
+    val status: String? = null,
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
@@ -128,6 +129,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
   imdbId = this.externalIds.imdbId,
+  status = TvStatus.from(this.status),
 )
 
 private fun List<CrewApi>.toDirector(): Person? {

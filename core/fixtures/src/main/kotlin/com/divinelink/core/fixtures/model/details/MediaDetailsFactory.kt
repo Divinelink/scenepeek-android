@@ -4,6 +4,7 @@ import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingCount
 
 object MediaDetailsFactory {
@@ -56,6 +57,7 @@ object MediaDetailsFactory {
       ),
     ),
     numberOfSeasons = 9,
+    status = TvStatus.ENDED,
     imdbId = "tt0386676",
   )
 }

@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -47,10 +48,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
@@ -63,6 +66,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
@@ -500,6 +504,7 @@ private fun UserRating(
   }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TitleDetails(mediaDetails: MediaDetails) {
   Row(
@@ -514,7 +519,7 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
     )
   }
 
-  Row(
+  FlowRow(
     modifier = Modifier
       .padding(
         start = MaterialTheme.dimensions.keyline_16,
@@ -523,17 +528,35 @@ private fun TitleDetails(mediaDetails: MediaDetails) {
       ),
   ) {
     Text(
-      style = MaterialTheme.typography.bodySmall,
+      style = MaterialTheme.typography.labelMedium,
       text = mediaDetails.releaseDate,
     )
-    Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_12))
 
-    if (mediaDetails is Movie) {
-      mediaDetails.runtime?.let { runtime ->
+    when (mediaDetails) {
+      is Movie -> mediaDetails.runtime?.let { runtime ->
         Text(
-          style = MaterialTheme.typography.bodySmall,
-          text = runtime,
+          style = MaterialTheme.typography.labelMedium,
+          text = " • $runtime",
         )
+      }
+      is TV -> {
+        if (mediaDetails.status != TvStatus.UNKNOWN) {
+          Text(
+            style = MaterialTheme.typography.labelMedium,
+            text = " • " + stringResource(mediaDetails.status.resId),
+          )
+        }
+
+        if (mediaDetails.numberOfSeasons > 0) {
+          Text(
+            style = MaterialTheme.typography.labelMedium,
+            text = " • " + pluralStringResource(
+              id = R.plurals.feature_details_number_of_seasons,
+              count = mediaDetails.numberOfSeasons,
+              mediaDetails.numberOfSeasons,
+            ),
+          )
+        }
       }
     }
   }
@@ -582,7 +605,7 @@ private const val OVERVIEW_WEIGHT = 3f
 
 @Previews
 @Composable
-private fun DetailsContentPreview(
+fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class)
   viewState: DetailsViewState,
 ) {
@@ -616,6 +639,7 @@ private fun DetailsContentPreview(
 }
 
 @Suppress("MagicNumber")
+@ExcludeFromKoverReport
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
   override val values: Sequence<DetailsViewState>
     get() {
@@ -666,7 +690,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tvCredits = null,
           isLoading = true,
         ),
-
         DetailsViewState(
           mediaId = popularMovie.id,
           userDetails = AccountMediaDetails(
@@ -679,7 +702,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tvCredits = null,
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
-
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
@@ -687,7 +709,24 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tvCredits = null,
           similarMovies = similarMovies,
         ),
-
+        DetailsViewState(
+          mediaId = popularMovie.id,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice().copy(
+            numberOfSeasons = 0,
+          ),
+          tvCredits = null,
+          similarMovies = similarMovies,
+        ),
+        DetailsViewState(
+          mediaId = popularMovie.id,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice().copy(
+            status = TvStatus.UNKNOWN,
+          ),
+          tvCredits = null,
+          similarMovies = similarMovies,
+        ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
@@ -696,7 +735,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tvCredits = null,
           reviews = reviews,
         ),
-
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
@@ -711,7 +749,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tvCredits = null,
           reviews = reviews,
         ),
-
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
