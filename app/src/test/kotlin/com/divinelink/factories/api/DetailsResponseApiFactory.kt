@@ -26,7 +26,6 @@ object DetailsResponseApiFactory {
     revenue = 0,
     runtime = 130,
     spokenLanguage = listOf(),
-    status = null,
     tagline = "",
     title = "Flight Club",
     video = false,

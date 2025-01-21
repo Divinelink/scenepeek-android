@@ -15,6 +15,7 @@ import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
+import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -858,6 +859,107 @@ class DetailsContentTest : ComposeTest() {
       ).assertIsDisplayed()
 
       onNodeWithText("7.5", useUnmergedTree = true).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test tv status is visible when is not unknown`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice().copy(
+            status = TvStatus.RETURNING_SERIES,
+          ),
+          ratingSource = RatingSource.TMDB,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(
+        testTag = TestTags.Rating.TMDB_RATING,
+        useUnmergedTree = true,
+      ).assertIsDisplayed()
+
+      onNodeWithText(" • Continuing").assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test tv status is not visible when is unknown`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice().copy(
+            status = TvStatus.UNKNOWN,
+          ),
+          ratingSource = RatingSource.TMDB,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(
+        testTag = TestTags.Rating.TMDB_RATING,
+        useUnmergedTree = true,
+      ).assertIsDisplayed()
+
+      onNodeWithText(" • Continuing").assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `test number of seasons is visible when available`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          ratingSource = RatingSource.TMDB,
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClicked = {},
+        onAddToWatchlistClicked = {},
+        requestMedia = {},
+        viewAllCreditsClicked = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        viewAllRatingsClicked = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(" • 9 seasons").assertIsDisplayed()
     }
   }
 
