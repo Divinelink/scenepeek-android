@@ -1,6 +1,9 @@
 package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.navigation.arguments.PersonNavArguments
@@ -8,9 +11,6 @@ import com.divinelink.core.navigation.arguments.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
-import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
-import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -203,7 +203,7 @@ class PersonViewModelTest {
     isLoading = isLoading,
     isError = isError,
     personDetails = personDetails,
-    credits = credits,
+    knownForCredits = credits,
     dropdownMenuItems = dropdownMenuItems,
   )
 }

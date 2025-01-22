@@ -37,6 +37,7 @@ data class Dimensions(
   val keyline_72: Dp = 72.dp,
   val keyline_84: Dp = 84.dp,
   val keyline_96: Dp = 96.dp,
+  val posterSize: Dp = 180.dp,
 )
 
 val MaterialTheme.dimensions: Dimensions

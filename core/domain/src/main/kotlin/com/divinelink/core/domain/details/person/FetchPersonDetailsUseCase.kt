@@ -6,6 +6,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
@@ -94,7 +95,8 @@ class FetchPersonDetailsUseCase(
                 send(
                   Result.success(
                     PersonDetailsResult.CreditsSuccess(
-                      credits = result.data,
+                      movies = result.data.cast.filter { it.mediaItem is MediaItem.Media.Movie },
+                      tvShows = result.data.cast.filter { it.mediaItem is MediaItem.Media.TV },
                       knownForCredits = knownForCredits,
                     ),
                   ),

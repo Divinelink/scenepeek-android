@@ -54,6 +54,7 @@ object TestTags {
   object Person {
     const val PERSONAL_DETAILS = "Person Personal Details"
     const val CONTENT_LIST = "Person Details Lazy List"
+    const val TAB_BAR = "Person Tab Bar $%s"
 
     const val SHIMMERING_BIOGRAPHY_CONTENT = "Shimmering Biography Content"
 
