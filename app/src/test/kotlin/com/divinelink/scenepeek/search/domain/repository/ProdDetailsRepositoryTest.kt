@@ -465,7 +465,7 @@ class ProdDetailsRepositoryTest {
   }
 
   // Use the DefaultCreditDao instead of the TestCreditDao so that we can actually test the insert
-  // of the credits into the database for this use case.
+  // of the knownForCredits into the database for this use case.
   @Test
   fun `test fetchCredits when credits do not exist locally inserts data to database`() = runTest {
     val defaultCreditDao = ProdCreditsDao(

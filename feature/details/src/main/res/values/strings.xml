@@ -36,6 +36,10 @@
 
   <string name="feature_details_person_credits_known_for_section">Known For</string>
 
+  <string name="feature_details_person_tab_about">About</string>
+  <string name="feature_details_person_tab_movies">Movies</string>
+  <string name="feature_details_person_tab_tv_shows">TV Shows</string>
+
   <plurals name="feature_details_number_of_seasons">
     <item quantity="one">%s season</item>
     <item quantity="other">%s seasons</item>
