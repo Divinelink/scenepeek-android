@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,7 +40,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.ui.DetailedMediaItem
+import com.divinelink.core.ui.CreditMediaItem
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
@@ -122,16 +124,24 @@ fun PersonContent(
               is PersonForm.Movies -> LazyColumn(
                 modifier = Modifier.fillParentMaxSize(),
               ) {
-                itemsIndexed(form.data) { index, item ->
-                  DetailedMediaItem(mediaItem = item.mediaItem, onClick = onMediaClick)
+                items(items = form.data, key = { it.id }) { item ->
+                  CreditMediaItem(
+                    mediaItem = item.mediaItem,
+                    subtitle = item.role.title,
+                    onClick = onMediaClick,
+                  )
                 }
               }
 
               is PersonForm.TvShows -> LazyColumn(
                 modifier = Modifier.fillParentMaxSize(),
               ) {
-                itemsIndexed(form.data) { index, item ->
-                  DetailedMediaItem(mediaItem = item.mediaItem, onClick = onMediaClick)
+                items(items = form.data, key = { it.id }) { item ->
+                  CreditMediaItem(
+                    mediaItem = item.mediaItem,
+                    subtitle = item.role.title,
+                    onClick = onMediaClick,
+                  )
                 }
               }
             }
@@ -151,6 +161,7 @@ private fun CollapsiblePersonContent(
   Column(
     modifier = Modifier
       .padding(top = paddingValues.calculateTopPadding())
+      .verticalScroll(state = rememberScrollState())
       .fillMaxWidth()
       .graphicsLayer {
         alpha = (connection.currentSize / connection.maxHeight)

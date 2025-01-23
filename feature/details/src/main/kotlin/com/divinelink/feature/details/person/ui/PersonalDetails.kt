@@ -67,7 +67,7 @@ private fun PersonalInfoSection(
     Text(
       text = section.title.getString(),
       style = MaterialTheme.typography.titleSmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      color = MaterialTheme.colorScheme.tertiary,
     )
     if (isLoading && section.value.getString() == Constants.String.EMPTY_DASH) {
       ShimmerHalfLine(tag = section.title.getString())

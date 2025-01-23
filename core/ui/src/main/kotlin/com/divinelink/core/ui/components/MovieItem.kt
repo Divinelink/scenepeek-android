@@ -40,6 +40,7 @@ fun MediaItem(
   modifier: Modifier = Modifier,
   media: MediaItem.Media,
   subtitle: String? = null,
+  fullDate: Boolean = true,
   onMediaItemClick: (MediaItem.Media) -> Unit,
   onLikeMediaClick: () -> Unit,
 ) {
@@ -110,7 +111,7 @@ fun MediaItem(
         maxLines = 1,
         style = MaterialTheme.typography.bodySmall,
         overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.primary,
       )
     }
 
@@ -121,7 +122,11 @@ fun MediaItem(
           vertical = MaterialTheme.dimensions.keyline_4,
           horizontal = MaterialTheme.dimensions.keyline_8,
         ),
-      text = media.releaseDate,
+      text = if (fullDate) {
+        media.releaseDate
+      } else {
+        media.releaseDate.take(4)
+      },
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
     )
@@ -162,9 +167,7 @@ fun PopularMovieItemPreview() {
 @Previews
 fun MovieItemPreview() {
   AppTheme {
-    Surface(
-      modifier = Modifier,
-    ) {
+    Surface {
       MediaItem(
         modifier = Modifier,
         media = MediaItem.Media.Movie(
