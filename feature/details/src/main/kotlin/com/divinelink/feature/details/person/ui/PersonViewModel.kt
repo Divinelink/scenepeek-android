@@ -7,6 +7,7 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
+import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.feature.details.person.ui.tab.PersonTab
@@ -112,6 +113,17 @@ class PersonViewModel(
   fun onTabSelected(tab: Int) {
     _uiState.update { uiState ->
       uiState.copy(selectedTabIndex = tab)
+    }
+  }
+
+  fun onUpdateLayoutStyle() {
+    val layoutStyle = when (_uiState.value.layoutStyle) {
+      LayoutStyle.GRID -> LayoutStyle.LIST
+      LayoutStyle.LIST -> LayoutStyle.GRID
+    }
+
+    _uiState.update { uiState ->
+      uiState.copy(layoutStyle = layoutStyle)
     }
   }
 }

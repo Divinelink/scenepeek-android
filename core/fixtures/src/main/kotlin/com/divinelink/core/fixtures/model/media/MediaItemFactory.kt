@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.factories.model.media
+package com.divinelink.core.fixtures.model.media
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
@@ -16,14 +16,14 @@ object MediaItemFactory {
     isFavorite = false,
   )
 
-  fun TV(): MediaItem.Media.TV = MediaItem.Media.TV(
-    id = 1,
-    posterPath = "tv - posterPath",
-    releaseDate = "tv - releaseDate",
-    name = "tv - name",
-    voteAverage = 10.0,
+  fun theOffice(): MediaItem.Media.TV = MediaItem.Media.TV(
+    id = 2316,
+    posterPath = "the_office.jpg",
+    releaseDate = "2005-03-24",
+    name = "The Office",
+    voteAverage = 9.5,
     voteCount = 12_345,
-    overview = "overview",
+    overview = "Michael Scarn is thee best.",
     isFavorite = false,
   )
 

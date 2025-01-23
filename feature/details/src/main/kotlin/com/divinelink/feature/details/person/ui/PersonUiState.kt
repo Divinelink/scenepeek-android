@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.person.ui
 
+import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.feature.details.person.ui.tab.PersonTab
@@ -13,6 +14,7 @@ data class PersonUiState(
   val personDetails: PersonDetailsUiState = PersonDetailsUiState.Loading,
   val knownForCredits: List<PersonCredit>? = null,
   val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
+  val layoutStyle: LayoutStyle = LayoutStyle.LIST,
 )
 
 sealed interface PersonForm {

@@ -4,14 +4,14 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
 import com.divinelink.core.database.media.model.PersistableMovie
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.factories.api.SearchMovieApiFactory
 import com.divinelink.scenepeek.fakes.dao.FakeMediaDao

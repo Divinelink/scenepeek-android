@@ -12,10 +12,10 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.network.TestNetworkMonitor

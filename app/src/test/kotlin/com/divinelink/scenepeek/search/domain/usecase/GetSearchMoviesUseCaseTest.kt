@@ -1,10 +1,10 @@
 package com.divinelink.scenepeek.search.domain.usecase
 
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
 import com.divinelink.scenepeek.home.domain.usecase.GetSearchMoviesUseCase
 import com.divinelink.scenepeek.home.domain.usecase.SearchResult

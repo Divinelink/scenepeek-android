@@ -56,5 +56,16 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
       knownForCredits = PersonCastCreditFactory.all(),
     ),
+    PersonUiState(
+      selectedTabIndex = 1,
+      forms = mapOf(
+        0 to PersonForm.About(PersonDetailsUiState.Loading),
+        1 to PersonForm.Movies(PersonCastCreditFactory.all()),
+        2 to PersonForm.TvShows(emptyList()),
+      ),
+      tabs = PersonTab.entries,
+      personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+      knownForCredits = PersonCastCreditFactory.all(),
+    ),
   )
 }

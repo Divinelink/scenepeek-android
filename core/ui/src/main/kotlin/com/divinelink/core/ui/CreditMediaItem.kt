@@ -109,8 +109,7 @@ fun CreditMediaItem(
 @Previews
 @Composable
 private fun DetailedMediaItemPreview(
-  @PreviewParameter(MediaItemParameterProvider::class)
-  mediaItem: MediaItem.Media,
+  @PreviewParameter(MediaItemParameterProvider::class) mediaItem: MediaItem.Media,
 ) {
   AppTheme {
     Surface {

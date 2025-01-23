@@ -45,6 +45,16 @@
     <item quantity="other">%s seasons</item>
   </plurals>
 
+  <plurals name="feature_details_movies">
+    <item quantity="one">%s movie</item>
+    <item quantity="other">%s movies</item>
+  </plurals>
+
+  <plurals name="feature_details_tv_shows">
+    <item quantity="one">%s TV Show</item>
+    <item quantity="other">%s TV Shows</item>
+  </plurals>
+
   <!-- 1.%s birthday 2. %s current age -->
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>

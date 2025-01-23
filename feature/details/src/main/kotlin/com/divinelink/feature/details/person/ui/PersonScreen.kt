@@ -3,24 +3,19 @@
 package com.divinelink.feature.details.person.ui
 
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -52,27 +47,15 @@ fun PersonScreen(
   navigator: DestinationsNavigator,
   viewModel: PersonViewModel = koinViewModel(),
 ) {
-  var selectedPage by rememberSaveable { mutableIntStateOf(0) }
   val uiState = viewModel.uiState.collectAsState().value
   var showDropdownMenu by remember { mutableStateOf(false) }
 
   val scope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
   val connection = rememberCollapsingContentNestedScrollConnection(maxHeight = 256.dp)
-  val pagerState = rememberPagerState(
-    initialPage = selectedPage,
-    pageCount = { uiState.tabs.size },
-  )
 
   val isAppBarVisible = remember {
     derivedStateOf { connection.currentSize == 0.dp }
-  }
-
-  LaunchedEffect(pagerState) {
-    snapshotFlow { pagerState.currentPage }.collect { page ->
-      viewModel.onTabSelected(page)
-      selectedPage = page
-    }
   }
 
   AppScaffold(
@@ -116,9 +99,7 @@ fun PersonScreen(
             paddingValues = paddingValues,
             connection = connection,
             lazyListState = lazyListState,
-            selectedPage = selectedPage,
             scope = scope,
-            pagerState = pagerState,
             onMediaClick = { mediaItem ->
               navigator.navigate(
                 DetailsScreenDestination(
@@ -130,6 +111,8 @@ fun PersonScreen(
                 ),
               )
             },
+            onTabSelected = viewModel::onTabSelected,
+            onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
           )
         }
       }

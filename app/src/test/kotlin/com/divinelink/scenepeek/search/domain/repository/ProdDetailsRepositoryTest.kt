@@ -12,6 +12,8 @@ import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -35,8 +37,6 @@ import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.core.testing.service.TestOMDbService
 import com.divinelink.core.testing.service.TestTraktService

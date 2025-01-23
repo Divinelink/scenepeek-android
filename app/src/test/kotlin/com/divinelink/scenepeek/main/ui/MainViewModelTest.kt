@@ -1,12 +1,12 @@
 package com.divinelink.scenepeek.main.ui
 
 import android.net.Uri
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
 import kotlinx.coroutines.test.runTest
@@ -167,7 +167,7 @@ class MainViewModelTest {
 
     robot
       .buildViewModel()
-      .mockFindById(Result.success(MediaItemFactory.TV()))
+      .mockFindById(Result.success(MediaItemFactory.theOffice()))
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
