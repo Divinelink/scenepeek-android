@@ -6,6 +6,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.credits.PersonRole
+import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
@@ -92,12 +93,26 @@ class FetchPersonDetailsUseCase(
                   result = result,
                 )
 
+                val credits = findCreditsForPerson(
+                  department = knownForDepartment,
+                  result = result,
+                )
+
+                val movies = credits.mapValues { department ->
+                  department.value.filter { it.mediaItem is MediaItem.Media.Movie }
+                }.filter { it.value.isNotEmpty() }
+
+                val tvShows = credits.mapValues { department ->
+                  department.value.filter { it.mediaItem is MediaItem.Media.TV }
+                }.filter { it.value.isNotEmpty() }
+
                 send(
                   Result.success(
                     PersonDetailsResult.CreditsSuccess(
-                      movies = result.data.cast.filter { it.mediaItem is MediaItem.Media.Movie },
-                      tvShows = result.data.cast.filter { it.mediaItem is MediaItem.Media.TV },
                       knownForCredits = knownForCredits,
+                      knownForDepartment = knownForDepartment,
+                      movies = movies,
+                      tvShows = tvShows,
                     ),
                   ),
                 )
@@ -138,5 +153,35 @@ class FetchPersonDetailsUseCase(
       .sortedByDescending { it.popularity }
       .distinctBy { it.id }
       .take(10)
+  }
+
+  private fun findCreditsForPerson(
+    department: String,
+    result: Result<PersonCombinedCredits>,
+  ): GroupedPersonCredits {
+    val map = mutableMapOf<String, List<PersonCredit>>()
+
+    val allCrewDepartments = result
+      .data
+      .crew
+      .mapNotNull { (it.role as? PersonRole.Crew)?.department }
+      .distinct()
+
+    val allDepartments = (allCrewDepartments + KnownForDepartment.Acting.value).distinct()
+    val departmentsToProcess = listOf(department) + (allDepartments - department)
+
+    departmentsToProcess.forEach { dep ->
+      val credits = if (dep == KnownForDepartment.Acting.value) {
+        result.data.cast
+          .distinctBy { it.id }
+      } else {
+        result.data.crew
+          .filter { (it.role as? PersonRole.Crew)?.department == dep }
+          .distinctBy { it.id }
+      }
+      map[dep] = credits
+    }
+
+    return map
   }
 }

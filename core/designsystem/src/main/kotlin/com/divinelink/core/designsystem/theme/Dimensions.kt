@@ -4,11 +4,13 @@ package com.divinelink.core.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 data class Dimensions(
   val keyline_0: Dp = 0.dp,
   val keyline_1: Dp = 1.dp,
@@ -37,6 +39,7 @@ data class Dimensions(
   val keyline_72: Dp = 72.dp,
   val keyline_84: Dp = 84.dp,
   val keyline_96: Dp = 96.dp,
+  val shortMediaCard: Dp = 120.dp,
   val posterSize: Dp = 180.dp,
 )
 

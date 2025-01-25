@@ -10,11 +10,11 @@ import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
+import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,27 +33,21 @@ class PersonViewModel(
       PersonUiState(
         selectedTabIndex = 0,
         isLoading = true,
-        forms = mapOf(
-          0 to PersonForm.About(PersonDetailsUiState.Loading),
-          1 to PersonForm.Movies(emptyList()),
-          2 to PersonForm.TvShows(emptyList()),
-        ),
         tabs = PersonTab.entries,
       )
     } else {
       PersonUiState(
         selectedTabIndex = 0,
-        personDetails = PersonDetailsUiState.Data.Prefetch(args.map()),
         forms = mapOf(
-          0 to PersonForm.About(PersonDetailsUiState.Loading),
-          1 to PersonForm.Movies(emptyList()),
-          2 to PersonForm.TvShows(emptyList()),
+          PersonTab.ABOUT.order to PersonForm.About(PersonDetailsUiState.Data.Prefetch(args.map())),
+          PersonTab.MOVIES.order to PersonForm.Movies(emptyMap()),
+          PersonTab.TV_SHOWS.order to PersonForm.TvShows(emptyMap()),
         ),
         tabs = PersonTab.entries,
       )
     },
   )
-  val uiState: StateFlow<PersonUiState> = _uiState.asStateFlow()
+  val uiState: StateFlow<PersonUiState> = _uiState
 
   init {
     viewModelScope.launch {
@@ -64,26 +58,33 @@ class PersonViewModel(
         ),
       )
         .distinctUntilChanged()
-        .collect { result ->
-          result.fold(
-            onSuccess = { detailsResult ->
-              when (detailsResult) {
+        .collect { personDetailsResult ->
+          personDetailsResult.fold(
+            onSuccess = { result ->
+              when (result) {
                 is PersonDetailsResult.DetailsSuccess -> _uiState.update { uiState ->
                   uiState.copy(
-                    personDetails = PersonDetailsUiState.Data.Visible(
-                      detailsResult.personDetails,
-                    ),
+                    forms = uiState.forms.mapValues { (key, value) ->
+                      when (key) {
+                        PersonTab.ABOUT.order -> PersonForm.About(
+                          personDetails = PersonDetailsUiState.Data.Visible(
+                            result.personDetails,
+                          ),
+                        )
+                        else -> value
+                      }
+                    },
                     isLoading = false,
                   )
                 }
 
                 is PersonDetailsResult.CreditsSuccess -> _uiState.update { uiState ->
                   uiState.copy(
-                    knownForCredits = detailsResult.knownForCredits,
+                    knownForCredits = result.knownForCredits,
                     forms = uiState.forms.mapValues { (key, value) ->
                       when (key) {
-                        1 -> PersonForm.Movies(detailsResult.movies)
-                        2 -> PersonForm.TvShows(detailsResult.tvShows)
+                        1 -> PersonForm.Movies(credits = result.movies)
+                        2 -> PersonForm.TvShows(credits = result.tvShows)
                         else -> value
                       }
                     },
@@ -116,6 +117,7 @@ class PersonViewModel(
     }
   }
 
+  // TODO Add tests for this function
   fun onUpdateLayoutStyle() {
     val layoutStyle = when (_uiState.value.layoutStyle) {
       LayoutStyle.GRID -> LayoutStyle.LIST
@@ -124,6 +126,32 @@ class PersonViewModel(
 
     _uiState.update { uiState ->
       uiState.copy(layoutStyle = layoutStyle)
+    }
+  }
+
+  // TODO Add tests for this function
+  fun onApplyFilter(filter: CreditFilter) {
+    val selectedTab = _uiState.value.selectedTabIndex
+    _uiState.update { uiState ->
+      uiState.copy(
+        filters = if (uiState.filters[selectedTab]?.contains(filter) == true) {
+          uiState.filters.mapValues { (key, value) ->
+            if (key == selectedTab) {
+              value.filter { it != filter }
+            } else {
+              value
+            }
+          }
+        } else {
+          uiState.filters.mapValues { (key, value) ->
+            if (key == selectedTab) {
+              listOf(filter)
+            } else {
+              value
+            }
+          }
+        },
+      )
     }
   }
 }

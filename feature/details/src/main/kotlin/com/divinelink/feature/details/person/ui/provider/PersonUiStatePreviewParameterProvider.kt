@@ -14,57 +14,82 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       selectedTabIndex = 0,
       tabs = PersonTab.entries,
       forms = mapOf(
-        0 to PersonForm.About(PersonDetailsUiState.Loading),
-        1 to PersonForm.Movies(emptyList()),
-        2 to PersonForm.TvShows(emptyList()),
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
       ),
-      personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
+      ),
     ),
     // Sorry for making you dead Steve Carell, it's only for testing purposes!
     PersonUiState(
       selectedTabIndex = 0,
       tabs = PersonTab.entries,
-      forms = mapOf(
-        0 to PersonForm.About(PersonDetailsUiState.Loading),
-        1 to PersonForm.Movies(emptyList()),
-        2 to PersonForm.TvShows(emptyList()),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
       ),
-      personDetails = PersonDetailsUiState.Data.Visible(
-        PersonDetailsFactory.steveCarell().copy(deathday = "2022-05-16"),
+      forms = mapOf(
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(
+            PersonDetailsFactory.steveCarell().copy(deathday = "2022-05-16"),
+          ),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
       ),
     ),
     PersonUiState(
       selectedTabIndex = 0,
       tabs = PersonTab.entries,
       forms = mapOf(
-        0 to PersonForm.About(PersonDetailsUiState.Loading),
-        1 to PersonForm.Movies(emptyList()),
-        2 to PersonForm.TvShows(emptyList()),
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(
+            PersonDetailsFactory.steveCarell().copy(biography = null),
+          ),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
       ),
-      personDetails = PersonDetailsUiState.Data.Visible(
-        PersonDetailsFactory.steveCarell().copy(biography = null),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
       ),
     ),
     PersonUiState(
       selectedTabIndex = 0,
       forms = mapOf(
-        0 to PersonForm.About(PersonDetailsUiState.Loading),
-        1 to PersonForm.Movies(emptyList()),
-        2 to PersonForm.TvShows(emptyList()),
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
       ),
       tabs = PersonTab.entries,
-      personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
       knownForCredits = PersonCastCreditFactory.all(),
     ),
     PersonUiState(
       selectedTabIndex = 1,
       forms = mapOf(
-        0 to PersonForm.About(PersonDetailsUiState.Loading),
-        1 to PersonForm.Movies(PersonCastCreditFactory.all()),
-        2 to PersonForm.TvShows(emptyList()),
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()), // TODO add credits
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
       ),
       tabs = PersonTab.entries,
-      personDetails = PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
       knownForCredits = PersonCastCreditFactory.all(),
     ),
   )

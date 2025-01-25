@@ -58,6 +58,8 @@ object TestTags {
 
     const val SHIMMERING_BIOGRAPHY_CONTENT = "Shimmering Biography Content"
 
+    const val CREDITS_FILTER_BOTTOM_SHEET = "Person Credits Filter Bottom Sheet"
+
     const val KNOWN_FOR_SECTION = "Person Known For Section"
     const val KNOWN_FOR_SECTION_LIST = "Person Known For Section Lazy List"
   }

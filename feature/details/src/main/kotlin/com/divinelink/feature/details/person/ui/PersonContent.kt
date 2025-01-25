@@ -1,7 +1,6 @@
 package com.divinelink.feature.details.person.ui
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,14 +28,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -49,7 +53,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -59,6 +62,7 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.LayoutStyle
+import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.CreditMediaItem
@@ -68,36 +72,82 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
-import com.divinelink.feature.details.R
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
+import com.divinelink.feature.details.person.ui.filter.CreditFilter
+import com.divinelink.feature.details.person.ui.filter.CreditsFilterModalBottomSheet
+import com.divinelink.feature.details.person.ui.filter.FilterButton
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
+import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.person.ui.tab.PersonTabs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 fun PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
   connection: CollapsingContentNestedScrollConnection,
-  paddingValues: PaddingValues,
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
   onUpdateLayoutStyle: () -> Unit,
+  onApplyFilter: (CreditFilter) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(0) }
   val isGrid = uiState.layoutStyle == LayoutStyle.GRID
   val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
-  val grid = if (isGrid) GridCells.Fixed(3) else GridCells.Fixed(1)
-  uiState.personDetails as PersonDetailsUiState.Data
+  val grid = if (isGrid) {
+    GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)
+  } else {
+    GridCells.Fixed(1)
+  }
+  val personDetails by remember(uiState) {
+    derivedStateOf { uiState.personDetails as PersonDetailsUiState.Data }
+  }
+
+  val movies by remember(uiState) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.MOVIES.order] }
+  }
+
+  val tvShows by remember(uiState) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.TV_SHOWS.order] }
+  }
+
+  val movieFilters = uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
+  val tvFilters = uiState.filters[PersonTab.TV_SHOWS.order] ?: emptyList()
 
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
     pageCount = { uiState.tabs.size },
   )
+
+  val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+  LaunchedEffect(showFilterBottomSheet) {
+    if (showFilterBottomSheet) {
+      filterBottomSheetState.show()
+    } else {
+      filterBottomSheetState.hide()
+    }
+  }
+
+  if (showFilterBottomSheet) {
+    CreditsFilterModalBottomSheet(
+      sheetState = filterBottomSheetState,
+      appliedFilters = uiState.filters[selectedPage] ?: emptyList(),
+      filters = uiState.forms.values.elementAt(selectedPage).availableFilters,
+      onClick = { filter ->
+        onApplyFilter(filter)
+        showFilterBottomSheet = false
+      },
+      onDismissRequest = {
+        showFilterBottomSheet = false
+      },
+    )
+  }
 
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -108,18 +158,19 @@ fun PersonContent(
 
   Box(Modifier.nestedScroll(connection)) {
     CollapsiblePersonContent(
-      paddingValues = paddingValues,
       connection = connection,
-      personDetails = uiState.personDetails,
+      personDetails = personDetails,
     )
 
     ScenePeekLazyColumn(
       modifier = Modifier
         .fillMaxSize()
         .offset { IntOffset(0, connection.currentSize.roundToPx()) }
-        .padding(top = paddingValues.calculateTopPadding())
         .testTag(TestTags.Person.CONTENT_LIST),
       state = lazyListState,
+      contentPadding = PaddingValues(
+        top = MaterialTheme.dimensions.keyline_56,
+      ),
     ) {
       stickyHeader {
         PersonTabs(
@@ -147,7 +198,7 @@ fun PersonContent(
                 modifier = Modifier.fillParentMaxSize(),
               ) {
                 item {
-                  PersonalDetails(uiState.personDetails)
+                  PersonalDetails(personDetails)
                 }
 
                 item {
@@ -157,133 +208,125 @@ fun PersonContent(
                   )
                 }
               }
-              is PersonForm.Movies -> LazyVerticalGrid(
-                columns = grid,
+
+              is PersonForm.Movies -> PersonGridContent(
                 modifier = Modifier.fillParentMaxSize(),
-                contentPadding = PaddingValues(
-                  start = MaterialTheme.dimensions.keyline_8,
-                  end = MaterialTheme.dimensions.keyline_8,
-                  top = MaterialTheme.dimensions.keyline_8,
-                  bottom = MaterialTheme.dimensions.keyline_16,
-                ),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-              ) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                  Row {
-                    Text(
-                      modifier = Modifier.padding(
-                        horizontal = MaterialTheme.dimensions.keyline_16,
-                        vertical = MaterialTheme.dimensions.keyline_8,
-                      ),
-                      style = MaterialTheme.typography.titleSmall,
-                      text = pluralStringResource(
-                        id = R.plurals.feature_details_movies,
-                        count = form.data.size,
-                        form.data.size,
-                      ),
-                    )
+                itemModifier = Modifier
+                  .animateItem()
+                  .animateContentSize(),
+                grid = grid,
+                credits = movies ?: emptyMap(),
+                filters = movieFilters,
+                showFilterBottomSheet = showFilterBottomSheet,
+                onUpdateLayoutStyle = onUpdateLayoutStyle,
+                icon = icon,
+                isGrid = isGrid,
+                onMediaClick = onMediaClick,
+                onShowFilterBottomSheet = { showFilterBottomSheet = true },
+              )
 
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    LayoutStyleButton(
-                      onUpdateLayoutStyle = onUpdateLayoutStyle,
-                      icon = icon,
-                    )
-                  }
-                }
-
-                items(
-                  items = form.data,
-                  key = { it.mediaItem.id },
-                ) { item ->
-                  if (isGrid) {
-                    MediaItem(
-                      modifier = Modifier
-                        .animateItem()
-                        .animateContentSize(),
-                      media = item.mediaItem,
-                      subtitle = item.role.title,
-                      fullDate = false,
-                      onMediaItemClick = onMediaClick,
-                    ) { }
-                  } else {
-                    CreditMediaItem(
-                      modifier = Modifier
-                        .animateItem()
-                        .animateContentSize(),
-                      mediaItem = item.mediaItem,
-                      subtitle = item.role.title,
-                      onClick = onMediaClick,
-                    )
-                  }
-                }
-              }
-
-              is PersonForm.TvShows -> LazyVerticalGrid(
-                columns = grid,
+              is PersonForm.TvShows -> PersonGridContent(
                 modifier = Modifier.fillParentMaxSize(),
-                contentPadding = PaddingValues(
-                  start = MaterialTheme.dimensions.keyline_8,
-                  end = MaterialTheme.dimensions.keyline_8,
-                  top = MaterialTheme.dimensions.keyline_8,
-                  bottom = MaterialTheme.dimensions.keyline_16,
-                ),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-              ) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                  Row {
-                    Text(
-                      modifier = Modifier.padding(
-                        horizontal = MaterialTheme.dimensions.keyline_16,
-                        vertical = MaterialTheme.dimensions.keyline_8,
-                      ),
-                      style = MaterialTheme.typography.titleSmall,
-                      text = pluralStringResource(
-                        id = R.plurals.feature_details_tv_shows,
-                        count = form.data.size,
-                        form.data.size,
-                      ),
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    LayoutStyleButton(
-                      onUpdateLayoutStyle = onUpdateLayoutStyle,
-                      icon = icon,
-                    )
-                  }
-                }
-
-                items(
-                  items = form.data,
-                  key = { it.mediaItem.id },
-                ) { item ->
-                  if (isGrid) {
-                    MediaItem(
-                      modifier = Modifier
-                        .animateItem()
-                        .animateContentSize(),
-                      media = item.mediaItem,
-                      subtitle = item.role.title,
-                      fullDate = false,
-                      onMediaItemClick = onMediaClick,
-                    ) { }
-                  } else {
-                    CreditMediaItem(
-                      modifier = Modifier
-                        .animateItem()
-                        .animateContentSize(),
-                      mediaItem = item.mediaItem,
-                      subtitle = item.role.title,
-                      onClick = onMediaClick,
-                    )
-                  }
-                }
-              }
+                itemModifier = Modifier
+                  .animateItem()
+                  .animateContentSize(),
+                grid = grid,
+                credits = tvShows ?: emptyMap(),
+                filters = tvFilters,
+                showFilterBottomSheet = showFilterBottomSheet,
+                onUpdateLayoutStyle = onUpdateLayoutStyle,
+                icon = icon,
+                isGrid = isGrid,
+                onMediaClick = onMediaClick,
+                onShowFilterBottomSheet = { showFilterBottomSheet = true },
+              )
             }
           }
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun PersonGridContent(
+  modifier: Modifier = Modifier,
+  itemModifier: Modifier = Modifier,
+  grid: GridCells,
+  credits: GroupedPersonCredits,
+  filters: List<CreditFilter>,
+  showFilterBottomSheet: Boolean,
+  onUpdateLayoutStyle: () -> Unit,
+  icon: ImageVector,
+  isGrid: Boolean,
+  onMediaClick: (MediaItem) -> Unit,
+  onShowFilterBottomSheet: () -> Unit,
+) {
+  LazyVerticalGrid(
+    columns = grid,
+    modifier = modifier,
+    contentPadding = PaddingValues(
+      start = MaterialTheme.dimensions.keyline_8,
+      end = MaterialTheme.dimensions.keyline_8,
+      top = MaterialTheme.dimensions.keyline_8,
+      bottom = MaterialTheme.dimensions.keyline_16,
+    ),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+  ) {
+    stickyHeader {
+      Row(
+        modifier = Modifier
+          .background(MaterialTheme.colorScheme.surface)
+          .fillMaxWidth(),
+      ) {
+        FilterButton(
+          appliedFilters = filters,
+          onFilterClick = onShowFilterBottomSheet,
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        LayoutStyleButton(
+          onUpdateLayoutStyle = onUpdateLayoutStyle,
+          icon = icon,
+        )
+      }
+    }
+
+    credits.forEach { credit ->
+      if (filters.isEmpty()) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+          Text(
+            modifier = Modifier.padding(
+              horizontal = MaterialTheme.dimensions.keyline_16,
+              vertical = MaterialTheme.dimensions.keyline_8,
+            ),
+            style = MaterialTheme.typography.titleMedium,
+            text = credit.key,
+          )
+        }
+      }
+
+      items(
+        items = credit.value,
+        key = { "${it.mediaItem.id} ${it.role.title}" },
+      ) { item ->
+        if (isGrid) {
+          MediaItem(
+            modifier = itemModifier,
+            media = item.mediaItem,
+            subtitle = item.role.title,
+            fullDate = false,
+            onMediaItemClick = onMediaClick,
+          )
+        } else {
+          CreditMediaItem(
+            modifier = itemModifier,
+            mediaItem = item.mediaItem,
+            subtitle = item.role.title,
+            onClick = onMediaClick,
+          )
         }
       }
     }
@@ -297,15 +340,13 @@ private fun LayoutStyleButton(
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(
-      MaterialTheme.dimensions.keyline_4,
-    ),
+    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     modifier = Modifier
       .clip(shape = MaterialTheme.shapes.large)
       .clickable { onUpdateLayoutStyle() }
       .padding(
-        horizontal = MaterialTheme.dimensions.keyline_8,
-        vertical = MaterialTheme.dimensions.keyline_4,
+        vertical = MaterialTheme.dimensions.keyline_8,
+        horizontal = MaterialTheme.dimensions.keyline_16,
       ),
   ) {
     Text(
@@ -322,13 +363,11 @@ private fun LayoutStyleButton(
 
 @Composable
 private fun CollapsiblePersonContent(
-  paddingValues: PaddingValues,
   connection: CollapsingContentNestedScrollConnection,
   personDetails: PersonDetailsUiState.Data,
 ) {
   Column(
     modifier = Modifier
-      .padding(top = paddingValues.calculateTopPadding())
       .verticalScroll(state = rememberScrollState())
       .fillMaxWidth()
       .graphicsLayer {
@@ -369,12 +408,12 @@ fun PersonContentPreview(
       PersonContent(
         uiState = uiState,
         connection = rememberCollapsingContentNestedScrollConnection(256.dp),
-        paddingValues = PaddingValues(0.dp),
         lazyListState = rememberLazyListState(),
         scope = rememberCoroutineScope(),
         onMediaClick = {},
         onTabSelected = {},
         onUpdateLayoutStyle = {},
+        onApplyFilter = {},
       )
     }
   }

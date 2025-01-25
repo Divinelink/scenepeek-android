@@ -96,7 +96,6 @@ fun PersonScreen(
         } else {
           PersonContent(
             uiState = uiState,
-            paddingValues = paddingValues,
             connection = connection,
             lazyListState = lazyListState,
             scope = scope,
@@ -113,6 +112,7 @@ fun PersonScreen(
             },
             onTabSelected = viewModel::onTabSelected,
             onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
+            onApplyFilter = viewModel::onApplyFilter,
           )
         }
       }

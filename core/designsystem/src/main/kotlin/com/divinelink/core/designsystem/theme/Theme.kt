@@ -70,10 +70,8 @@ val LocalBottomNavigationPadding = compositionLocalOf { 0.dp }
 fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 
 val ListPaddingValues = PaddingValues(
-  top = 16.dp,
-  start = 12.dp,
-  end = 12.dp,
-  bottom = 16.dp,
+  vertical = 16.dp,
+  horizontal = 12.dp,
 )
 
 enum class Theme(val storageKey: String) {

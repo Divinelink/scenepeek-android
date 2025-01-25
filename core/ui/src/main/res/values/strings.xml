@@ -62,6 +62,7 @@
   <string name="core_ui_show_less">Show less</string>
 
   <string name="core_ui_view">View</string>
+  <string name="core_ui_filter">Filter</string>
 
   <string name="core_ui_offline_title">You are offline</string>
   <string name="core_ui_offline_description">Please connect to the internet and try again.</string>

@@ -40,6 +40,8 @@
   <string name="feature_details_person_tab_movies">Movies</string>
   <string name="feature_details_person_tab_tv_shows">TV Shows</string>
 
+  <string name="feature_details_filter_sort_release_date">Release date</string>
+
   <plurals name="feature_details_number_of_seasons">
     <item quantity="one">%s season</item>
     <item quantity="other">%s seasons</item>
