@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.compose.runtime.Immutable
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.DetailActionItem
@@ -15,6 +16,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
+@Immutable
 data class DetailsViewState(
   val isLoading: Boolean = false,
   val mediaType: MediaType,

@@ -174,7 +174,8 @@ private fun Int?.toHourMinuteFormat(): String? {
     val remainingMinutes = minutes % 60
     return when {
       hours > 0 -> "${hours}h ${remainingMinutes}m"
-      else -> "${remainingMinutes}m"
+      remainingMinutes > 0 -> "${remainingMinutes}m"
+      else -> null
     }
   }
 }

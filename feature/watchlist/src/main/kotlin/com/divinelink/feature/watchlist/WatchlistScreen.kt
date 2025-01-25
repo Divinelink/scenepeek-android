@@ -3,12 +3,10 @@ package com.divinelink.feature.watchlist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -70,54 +68,50 @@ fun WatchlistScreen(
         },
       )
     },
-  ) { padding ->
-    Surface(
-      modifier = Modifier.padding(padding),
-    ) {
-      Column {
-        WatchlistTabs(
-          tabs = uiState.value.tabs,
-          selectedIndex = selectedPage,
-          onClick = {
-            viewModel.onTabSelected(it)
-            scope.launch {
-              pagerState.animateScrollToPage(it)
-            }
-          },
-        )
+  ) {
+    Column {
+      WatchlistTabs(
+        tabs = uiState.value.tabs,
+        selectedIndex = selectedPage,
+        onClick = {
+          viewModel.onTabSelected(it)
+          scope.launch {
+            pagerState.animateScrollToPage(it)
+          }
+        },
+      )
 
-        HorizontalPager(
-          modifier = Modifier.fillMaxSize(),
-          state = pagerState,
-        ) { page ->
-          uiState.value.forms.values.elementAt(page).let {
-            when (it) {
-              is WatchlistForm.Loading -> LoadingContent()
-              is WatchlistForm.Error -> WatchlistErrorContent(
-                error = it,
-                onLogin = onNavigateToAccountSettings,
-                onRetry = {
-                },
-              )
-              is WatchlistForm.Data -> {
-                if (it.isEmpty) {
-                  BlankSlate(uiState = BlankSlateState.Custom(title = it.emptyResultsUiText))
-                } else {
-                  WatchlistContent(
-                    list = it.data,
-                    onMediaClick = { media ->
-                      onNavigateToMediaDetails(
-                        DetailsNavArguments(
-                          mediaType = media.mediaType.value,
-                          id = media.id,
-                          isFavorite = media.isFavorite,
-                        ),
-                      )
-                    },
-                    totalResults = it.totalResultsUiText,
-                    onLoadMore = viewModel::onLoadMore,
-                  )
-                }
+      HorizontalPager(
+        modifier = Modifier.fillMaxSize(),
+        state = pagerState,
+      ) { page ->
+        uiState.value.forms.values.elementAt(page).let {
+          when (it) {
+            is WatchlistForm.Loading -> LoadingContent()
+            is WatchlistForm.Error -> WatchlistErrorContent(
+              error = it,
+              onLogin = onNavigateToAccountSettings,
+              onRetry = {
+              },
+            )
+            is WatchlistForm.Data -> {
+              if (it.isEmpty) {
+                BlankSlate(uiState = BlankSlateState.Custom(title = it.emptyResultsUiText))
+              } else {
+                WatchlistContent(
+                  list = it.data,
+                  onMediaClick = { media ->
+                    onNavigateToMediaDetails(
+                      DetailsNavArguments(
+                        mediaType = media.mediaType.value,
+                        id = media.id,
+                        isFavorite = media.isFavorite,
+                      ),
+                    )
+                  },
+                  totalResults = it.totalResultsUiText,
+                  onLoadMore = viewModel::onLoadMore,
+                )
               }
             }
           }

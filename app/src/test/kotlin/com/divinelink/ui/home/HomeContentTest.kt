@@ -29,14 +29,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
@@ -58,14 +55,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
         onRetryClick = { onRetryClicked = true },
-        onNavigateToSettings = {},
       )
     }
 
@@ -90,14 +84,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
@@ -118,14 +109,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
@@ -150,14 +138,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
@@ -190,14 +175,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
@@ -230,14 +212,11 @@ class HomeContentTest : ComposeTest() {
       HomeContent(
         viewState = uiState,
         onMarkAsFavoriteClicked = {},
-        onSearchMovies = {},
-        onClearClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
-        onRetryClick = { },
-        onNavigateToSettings = {},
+        onRetryClick = {},
       )
     }
 
