@@ -1,5 +1,6 @@
 package com.divinelink.scenepeek.home.ui
 
+import androidx.compose.runtime.Immutable
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.ui.UIText
@@ -8,6 +9,7 @@ import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.R
 import com.divinelink.core.ui.R as uiR
 
+@Immutable
 data class HomeViewState(
   val isLoading: Boolean,
   val filters: List<Filter>,

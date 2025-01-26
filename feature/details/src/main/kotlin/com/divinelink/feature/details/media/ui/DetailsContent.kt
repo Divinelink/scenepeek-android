@@ -507,55 +507,48 @@ private fun UserRating(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TitleDetails(mediaDetails: MediaDetails) {
-  Row(
+  Column(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = MaterialTheme.dimensions.keyline_12),
+      .padding(horizontal = MaterialTheme.dimensions.keyline_12)
+      .padding(bottom = MaterialTheme.dimensions.keyline_12),
   ) {
     Text(
-      modifier = Modifier.weight(1f),
       style = MaterialTheme.typography.displaySmall,
       text = mediaDetails.title,
     )
-  }
 
-  FlowRow(
-    modifier = Modifier
-      .padding(
-        start = MaterialTheme.dimensions.keyline_16,
-        end = MaterialTheme.dimensions.keyline_12,
-        bottom = MaterialTheme.dimensions.keyline_16,
-      ),
-  ) {
-    Text(
-      style = MaterialTheme.typography.labelMedium,
-      text = mediaDetails.releaseDate,
-    )
+    FlowRow {
+      Text(
+        style = MaterialTheme.typography.labelMedium,
+        text = mediaDetails.releaseDate,
+      )
 
-    when (mediaDetails) {
-      is Movie -> mediaDetails.runtime?.let { runtime ->
-        Text(
-          style = MaterialTheme.typography.labelMedium,
-          text = " • $runtime",
-        )
-      }
-      is TV -> {
-        if (mediaDetails.status != TvStatus.UNKNOWN) {
+      when (mediaDetails) {
+        is Movie -> mediaDetails.runtime?.let { runtime ->
           Text(
             style = MaterialTheme.typography.labelMedium,
-            text = " • " + stringResource(mediaDetails.status.resId),
+            text = " • $runtime",
           )
         }
+        is TV -> {
+          if (mediaDetails.status != TvStatus.UNKNOWN) {
+            Text(
+              style = MaterialTheme.typography.labelMedium,
+              text = " • " + stringResource(mediaDetails.status.resId),
+            )
+          }
 
-        if (mediaDetails.numberOfSeasons > 0) {
-          Text(
-            style = MaterialTheme.typography.labelMedium,
-            text = " • " + pluralStringResource(
-              id = R.plurals.feature_details_number_of_seasons,
-              count = mediaDetails.numberOfSeasons,
-              mediaDetails.numberOfSeasons,
-            ),
-          )
+          if (mediaDetails.numberOfSeasons > 0) {
+            Text(
+              style = MaterialTheme.typography.labelMedium,
+              text = " • " + pluralStringResource(
+                id = R.plurals.feature_details_number_of_seasons,
+                count = mediaDetails.numberOfSeasons,
+                mediaDetails.numberOfSeasons,
+              ),
+            )
+          }
         }
       }
     }

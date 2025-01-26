@@ -101,11 +101,7 @@ fun FlatMediaList(
       }
     }
 
-    item(
-      span = {
-        GridItemSpan(maxLineSpan)
-      },
-    ) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
       AnimatedVisibility(
         visible = isLoading,
       ) {

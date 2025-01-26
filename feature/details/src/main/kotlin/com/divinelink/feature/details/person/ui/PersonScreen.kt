@@ -2,7 +2,6 @@
 
 package com.divinelink.feature.details.person.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,7 +70,7 @@ fun PersonScreen(
         )
       }
     },
-  ) { paddingValues ->
+  ) {
     when {
       uiState.isError -> {
         // TODO Add error content
@@ -82,7 +81,6 @@ fun PersonScreen(
           LoadingContent()
         } else {
           PersonContent(
-            modifier = Modifier.padding(paddingValues),
             uiState = uiState,
             onMediaClick = {
               navigator.navigate(
