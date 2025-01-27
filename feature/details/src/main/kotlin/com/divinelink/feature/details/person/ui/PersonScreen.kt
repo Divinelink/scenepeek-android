@@ -28,6 +28,7 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.feature.details.navigation.person.PersonGraph
+import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
@@ -55,16 +56,21 @@ fun PersonScreen(
   val connection = rememberCollapsingContentNestedScrollConnection(maxHeight = 256.dp)
 
   val isAppBarVisible = remember {
-    derivedStateOf { connection.currentSize == 0.dp }
+    derivedStateOf { connection.currentSize < 1.dp }
   }
+
+  val aboutForm = remember(uiState) {
+    uiState.forms.getOrElse(PersonTab.ABOUT.order) { null } as? PersonForm.About
+  }
+  val personDetails = aboutForm?.personDetails?.takeIf { it is PersonDetailsUiState.Data }
 
   AppScaffold(
     topBar = { scrollBehavior, topAppBarColors ->
-      if (uiState.personDetails is PersonDetailsUiState.Data) {
+      if (personDetails is PersonDetailsUiState.Data) {
         AppTopAppBar(
           scrollBehavior = scrollBehavior,
           topAppBarColors = topAppBarColors,
-          text = UIText.StringText(uiState.personDetails.personDetails.person.name),
+          text = UIText.StringText(personDetails.personDetails.person.name),
           isVisible = isAppBarVisible.value,
           onNavigateUp = navigator::navigateUp,
           actions = {
@@ -76,7 +82,7 @@ fun PersonScreen(
             }
 
             PersonDropdownMenu(
-              person = uiState.personDetails.personDetails.person,
+              person = personDetails.personDetails.person,
               expanded = showDropdownMenu,
               onDismissDropdown = { showDropdownMenu = false },
             )
@@ -90,32 +96,29 @@ fun PersonScreen(
         // TODO Add error content
       }
       uiState.isLoading -> LoadingContent()
-      else -> {
-        if (uiState.personDetails is PersonDetailsUiState.Loading) {
-          LoadingContent()
-        } else {
-          PersonContent(
-            uiState = uiState,
-            connection = connection,
-            lazyListState = lazyListState,
-            scope = scope,
-            onMediaClick = { mediaItem ->
-              navigator.navigate(
-                DetailsScreenDestination(
-                  DetailsNavArguments(
-                    id = mediaItem.id,
-                    mediaType = mediaItem.mediaType.value,
-                    isFavorite = null,
-                  ),
-                ),
-              )
-            },
-            onTabSelected = viewModel::onTabSelected,
-            onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
-            onApplyFilter = viewModel::onApplyFilter,
+      else -> PersonContent(
+        uiState = uiState,
+        connection = connection,
+        lazyListState = lazyListState,
+        scope = scope,
+        onMediaClick = { mediaItem ->
+          navigator.navigate(
+            DetailsScreenDestination(
+              DetailsNavArguments(
+                id = mediaItem.id,
+                mediaType = mediaItem.mediaType.value,
+                isFavorite = null,
+              ),
+            ),
           )
-        }
-      }
+        },
+        onTabSelected = viewModel::onTabSelected,
+        onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
+        onApplyFilter = viewModel::onApplyFilter,
+        personDetails = personDetails as PersonDetailsUiState.Data,
+        movies = uiState.filteredCredits[PersonTab.MOVIES.order] ?: emptyMap(),
+        tvShows = uiState.filteredCredits[PersonTab.TV_SHOWS.order] ?: emptyMap(),
+      )
     }
   }
 }

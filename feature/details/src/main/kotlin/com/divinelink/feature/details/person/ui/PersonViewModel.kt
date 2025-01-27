@@ -8,6 +8,7 @@ import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.LayoutStyle
+import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.navigation.arguments.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -88,7 +89,13 @@ class PersonViewModel(
                         else -> value
                       }
                     },
-
+                    filteredCredits = uiState.forms.mapValues { (_, form) ->
+                      when (form) {
+                        is PersonForm.Movies -> result.movies
+                        is PersonForm.TvShows -> result.tvShows
+                        is PersonForm.About -> emptyMap()
+                      }
+                    },
                   )
                 }
                 is PersonDetailsResult.DetailsFailure -> _uiState.update { uiState ->
@@ -132,26 +139,56 @@ class PersonViewModel(
   // TODO Add tests for this function
   fun onApplyFilter(filter: CreditFilter) {
     val selectedTab = _uiState.value.selectedTabIndex
-    _uiState.update { uiState ->
-      uiState.copy(
-        filters = if (uiState.filters[selectedTab]?.contains(filter) == true) {
-          uiState.filters.mapValues { (key, value) ->
-            if (key == selectedTab) {
-              value.filter { it != filter }
-            } else {
-              value
-            }
+
+    _uiState.update { oldState ->
+      val newFilters = if (oldState.filters[selectedTab]?.contains(filter) == true) {
+        oldState.filters.mapValues { (key, value) ->
+          if (key == selectedTab) value.filter { it != filter } else value
+        }
+      } else {
+        oldState.filters.mapValues { (key, value) ->
+          if (key == selectedTab) listOf(filter) else value
+        }
+      }
+
+      val newFilteredCredits = oldState.forms.mapValues { (key, form) ->
+        when (key) {
+          PersonTab.MOVIES.order -> if (key == selectedTab) {
+            applyFilters(
+              credits = (form as PersonForm.Movies).credits,
+              filters = newFilters[selectedTab] ?: emptyList(),
+            )
+          } else {
+            oldState.filteredCredits[key] ?: emptyMap()
           }
-        } else {
-          uiState.filters.mapValues { (key, value) ->
-            if (key == selectedTab) {
-              listOf(filter)
-            } else {
-              value
-            }
+          PersonTab.TV_SHOWS.order -> if (key == selectedTab) {
+            applyFilters(
+              credits = (form as PersonForm.TvShows).credits,
+              filters = newFilters[selectedTab] ?: emptyList(),
+            )
+          } else {
+            oldState.filteredCredits[key] ?: emptyMap()
           }
-        },
+          else -> emptyMap()
+        }
+      }
+
+      oldState.copy(
+        filters = newFilters,
+        filteredCredits = newFilteredCredits,
       )
+    }
+  }
+
+  private fun applyFilters(
+    credits: GroupedPersonCredits,
+    filters: List<CreditFilter>,
+  ): GroupedPersonCredits = credits.filterKeys { department ->
+    filters.all { filter ->
+      when (filter) {
+        is CreditFilter.Department -> department == filter.department
+        CreditFilter.SortReleaseDate -> true
+      }
     }
   }
 }

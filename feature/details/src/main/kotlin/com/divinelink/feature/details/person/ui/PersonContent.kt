@@ -1,5 +1,7 @@
 package com.divinelink.feature.details.person.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -61,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
@@ -72,15 +76,19 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
+import com.divinelink.feature.details.R
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import com.divinelink.feature.details.person.ui.filter.CreditsFilterModalBottomSheet
-import com.divinelink.feature.details.person.ui.filter.FilterButton
+import com.divinelink.feature.details.person.ui.filter.CreditFilterButton
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
 import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.person.ui.tab.PersonTabs
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import com.divinelink.core.ui.R as uiR
 
 @Composable
@@ -88,6 +96,9 @@ import com.divinelink.core.ui.R as uiR
 fun PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
+  personDetails: PersonDetailsUiState.Data,
+  movies: GroupedPersonCredits,
+  tvShows: GroupedPersonCredits,
   connection: CollapsingContentNestedScrollConnection,
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
@@ -103,20 +114,17 @@ fun PersonContent(
   } else {
     GridCells.Fixed(1)
   }
-  val personDetails by remember(uiState) {
-    derivedStateOf { uiState.personDetails as PersonDetailsUiState.Data }
-  }
-
-  val movies by remember(uiState) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.MOVIES.order] }
-  }
-
-  val tvShows by remember(uiState) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.TV_SHOWS.order] }
-  }
 
   val movieFilters = uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
   val tvFilters = uiState.filters[PersonTab.TV_SHOWS.order] ?: emptyList()
+
+  val filters = uiState.filters[selectedPage] ?: emptyList()
+
+  val isFiltersTabVisible = remember {
+    derivedStateOf {
+      PersonTab.TV_SHOWS.order == selectedPage || PersonTab.MOVIES.order == selectedPage
+    }
+  }
 
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -125,6 +133,15 @@ fun PersonContent(
 
   val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+  var currentMovieDepartment by rememberSaveable { mutableStateOf("") }
+  var currentTvDepartment by rememberSaveable { mutableStateOf("") }
+
+  val department = when (selectedPage) {
+    PersonTab.MOVIES.order -> currentMovieDepartment
+    PersonTab.TV_SHOWS.order -> currentTvDepartment
+    else -> ""
+  }
 
   LaunchedEffect(showFilterBottomSheet) {
     if (showFilterBottomSheet) {
@@ -150,10 +167,12 @@ fun PersonContent(
   }
 
   LaunchedEffect(pagerState) {
-    snapshotFlow { pagerState.currentPage }.collect { page ->
-      onTabSelected(page)
-      selectedPage = page
-    }
+    snapshotFlow { pagerState.currentPage }
+      .distinctUntilChanged()
+      .collectLatest { page ->
+        selectedPage = page
+        onTabSelected(page)
+      }
   }
 
   Box(Modifier.nestedScroll(connection)) {
@@ -168,21 +187,53 @@ fun PersonContent(
         .offset { IntOffset(0, connection.currentSize.roundToPx()) }
         .testTag(TestTags.Person.CONTENT_LIST),
       state = lazyListState,
-      contentPadding = PaddingValues(
-        top = MaterialTheme.dimensions.keyline_56,
-      ),
     ) {
       stickyHeader {
-        PersonTabs(
-          tabs = uiState.tabs,
-          selectedIndex = selectedPage,
-          onClick = {
-            onTabSelected(it)
-            scope.launch {
-              pagerState.animateScrollToPage(it)
+        Column {
+          PersonTabs(
+            tabs = uiState.tabs,
+            selectedIndex = selectedPage,
+            onClick = {
+              onTabSelected(it)
+              scope.launch {
+                pagerState.animateScrollToPage(it)
+              }
+            },
+          )
+          AnimatedVisibility(visible = isFiltersTabVisible.value) {
+            Row(
+              modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface),
+              verticalAlignment = Alignment.CenterVertically,
+            ) {
+              CreditFilterButton(
+                appliedFilters = filters,
+                onFilterClick = {
+                  showFilterBottomSheet = true
+                },
+              )
+
+              Spacer(modifier = Modifier.weight(1f))
+
+              if (filters.isEmpty()) {
+                AnimatedContent(
+                  targetState = department,
+                  label = "DepartmentTextAnimation",
+                ) { string ->
+                  Text(text = string)
+                }
+              }
+
+              Spacer(modifier = Modifier.weight(1f))
+
+              LayoutStyleButton(
+                onUpdateLayoutStyle = onUpdateLayoutStyle,
+                icon = icon,
+              )
             }
-          },
-        )
+          }
+        }
       }
 
       item {
@@ -215,7 +266,7 @@ fun PersonContent(
                   .animateItem()
                   .animateContentSize(),
                 grid = grid,
-                credits = movies ?: emptyMap(),
+                credits = movies,
                 filters = movieFilters,
                 showFilterBottomSheet = showFilterBottomSheet,
                 onUpdateLayoutStyle = onUpdateLayoutStyle,
@@ -223,6 +274,7 @@ fun PersonContent(
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
                 onShowFilterBottomSheet = { showFilterBottomSheet = true },
+                setCurrentDepartment = { currentMovieDepartment = it },
               )
 
               is PersonForm.TvShows -> PersonGridContent(
@@ -231,7 +283,7 @@ fun PersonContent(
                   .animateItem()
                   .animateContentSize(),
                 grid = grid,
-                credits = tvShows ?: emptyMap(),
+                credits = tvShows,
                 filters = tvFilters,
                 showFilterBottomSheet = showFilterBottomSheet,
                 onUpdateLayoutStyle = onUpdateLayoutStyle,
@@ -239,6 +291,7 @@ fun PersonContent(
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
                 onShowFilterBottomSheet = { showFilterBottomSheet = true },
+                setCurrentDepartment = { currentTvDepartment = it },
               )
             }
           }
@@ -261,9 +314,43 @@ private fun PersonGridContent(
   isGrid: Boolean,
   onMediaClick: (MediaItem) -> Unit,
   onShowFilterBottomSheet: () -> Unit,
+  setCurrentDepartment: (String) -> Unit,
 ) {
+  val lazyGridState = rememberLazyGridState()
+
+  val currentDepartments = credits.keys.toList()
+  val headerPositions = remember(currentDepartments) {
+    val positions = mutableListOf<Int>()
+    var currentIndex = 0
+    currentDepartments.forEach { department ->
+      positions.add(currentIndex)
+      // 1 for the header + the size of the department
+      currentIndex += 1 + (credits[department]?.size ?: 0)
+    }
+    positions
+  }
+
+  val currentDepartment by remember {
+    derivedStateOf {
+      val firstVisibleIndex = lazyGridState.firstVisibleItemIndex
+
+      // Find the last header position <= first visible index
+      headerPositions
+        .lastOrNull { it <= firstVisibleIndex }
+        ?.let { headerIndex ->
+          currentDepartments.getOrNull(headerPositions.indexOf(headerIndex))
+        } ?: ""
+    }
+  }
+
+  LaunchedEffect(currentDepartment) {
+    Timber.d("Current visible department: $currentDepartment")
+    setCurrentDepartment(currentDepartment)
+  }
+
   LazyVerticalGrid(
     columns = grid,
+    state = lazyGridState,
     modifier = modifier,
     contentPadding = PaddingValues(
       start = MaterialTheme.dimensions.keyline_8,
@@ -274,36 +361,22 @@ private fun PersonGridContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
-    stickyHeader {
-      Row(
-        modifier = Modifier
-          .background(MaterialTheme.colorScheme.surface)
-          .fillMaxWidth(),
-      ) {
-        FilterButton(
-          appliedFilters = filters,
-          onFilterClick = onShowFilterBottomSheet,
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        LayoutStyleButton(
-          onUpdateLayoutStyle = onUpdateLayoutStyle,
-          icon = icon,
-        )
-      }
-    }
-
     credits.forEach { credit ->
       if (filters.isEmpty()) {
         item(span = { GridItemSpan(maxLineSpan) }) {
           Text(
-            modifier = Modifier.padding(
-              horizontal = MaterialTheme.dimensions.keyline_16,
-              vertical = MaterialTheme.dimensions.keyline_8,
+            modifier = Modifier
+              .background(MaterialTheme.colorScheme.surface)
+              .padding(
+                horizontal = MaterialTheme.dimensions.keyline_8,
+                vertical = MaterialTheme.dimensions.keyline_8,
+              ),
+            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(
+              R.string.feature_details_person_credits_department_size,
+              credit.key,
+              credit.value.size,
             ),
-            style = MaterialTheme.typography.titleMedium,
-            text = credit.key,
           )
         }
       }
@@ -414,6 +487,11 @@ fun PersonContentPreview(
         onTabSelected = {},
         onUpdateLayoutStyle = {},
         onApplyFilter = {},
+        personDetails = PersonDetailsUiState.Data.Visible(
+          PersonDetailsFactory.steveCarell(),
+        ),
+        movies = emptyMap(),
+        tvShows = emptyMap(),
       )
     }
   }

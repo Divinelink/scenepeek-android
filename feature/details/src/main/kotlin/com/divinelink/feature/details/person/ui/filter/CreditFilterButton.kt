@@ -22,7 +22,7 @@ import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-fun FilterButton(
+fun CreditFilterButton(
   appliedFilters: List<CreditFilter>,
   onFilterClick: () -> Unit,
 ) {
