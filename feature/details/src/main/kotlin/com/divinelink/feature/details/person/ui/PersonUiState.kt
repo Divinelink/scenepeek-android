@@ -25,4 +25,6 @@ data class PersonUiState(
   val knownForCredits: List<PersonCredit>? = null,
   val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
   val layoutStyle: LayoutStyle = LayoutStyle.LIST,
-)
+) {
+  val aboutForm = forms.getOrElse(PersonTab.ABOUT.order) { null } as? PersonForm.About
+}

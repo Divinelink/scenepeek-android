@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -64,23 +59,21 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.ui.CreditMediaItem
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
-import com.divinelink.feature.details.R
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
-import com.divinelink.feature.details.person.ui.filter.CreditsFilterModalBottomSheet
 import com.divinelink.feature.details.person.ui.filter.CreditFilterButton
+import com.divinelink.feature.details.person.ui.filter.CreditsFilterModalBottomSheet
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
 import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.person.ui.tab.PersonTabs
@@ -88,7 +81,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import com.divinelink.core.ui.R as uiR
 
 @Composable
@@ -96,7 +88,6 @@ import com.divinelink.core.ui.R as uiR
 fun PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
-  personDetails: PersonDetailsUiState.Data,
   movies: GroupedPersonCredits,
   tvShows: GroupedPersonCredits,
   connection: CollapsingContentNestedScrollConnection,
@@ -106,7 +97,7 @@ fun PersonContent(
   onUpdateLayoutStyle: () -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
 ) {
-  var selectedPage by rememberSaveable { mutableIntStateOf(0) }
+  var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = uiState.layoutStyle == LayoutStyle.GRID
   val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
   val grid = if (isGrid) {
@@ -115,8 +106,12 @@ fun PersonContent(
     GridCells.Fixed(1)
   }
 
-  val movieFilters = uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
-  val tvFilters = uiState.filters[PersonTab.TV_SHOWS.order] ?: emptyList()
+  val movieFilters = remember(uiState.filters) {
+    uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
+  }
+  val tvFilters = remember(uiState.filters) {
+    uiState.filters[PersonTab.TV_SHOWS.order] ?: emptyList()
+  }
 
   val filters = uiState.filters[selectedPage] ?: emptyList()
 
@@ -136,6 +131,10 @@ fun PersonContent(
 
   var currentMovieDepartment by rememberSaveable { mutableStateOf("") }
   var currentTvDepartment by rememberSaveable { mutableStateOf("") }
+
+  val personDetails = remember(uiState.aboutForm) {
+    uiState.aboutForm?.personDetails
+  }
 
   val department = when (selectedPage) {
     PersonTab.MOVIES.order -> currentMovieDepartment
@@ -178,7 +177,7 @@ fun PersonContent(
   Box(Modifier.nestedScroll(connection)) {
     CollapsiblePersonContent(
       connection = connection,
-      personDetails = personDetails,
+      personDetails = personDetails as PersonDetailsUiState.Data,
     )
 
     ScenePeekLazyColumn(
@@ -302,111 +301,6 @@ fun PersonContent(
 }
 
 @Composable
-private fun PersonGridContent(
-  modifier: Modifier = Modifier,
-  itemModifier: Modifier = Modifier,
-  grid: GridCells,
-  credits: GroupedPersonCredits,
-  filters: List<CreditFilter>,
-  showFilterBottomSheet: Boolean,
-  onUpdateLayoutStyle: () -> Unit,
-  icon: ImageVector,
-  isGrid: Boolean,
-  onMediaClick: (MediaItem) -> Unit,
-  onShowFilterBottomSheet: () -> Unit,
-  setCurrentDepartment: (String) -> Unit,
-) {
-  val lazyGridState = rememberLazyGridState()
-
-  val currentDepartments = credits.keys.toList()
-  val headerPositions = remember(currentDepartments) {
-    val positions = mutableListOf<Int>()
-    var currentIndex = 0
-    currentDepartments.forEach { department ->
-      positions.add(currentIndex)
-      // 1 for the header + the size of the department
-      currentIndex += 1 + (credits[department]?.size ?: 0)
-    }
-    positions
-  }
-
-  val currentDepartment by remember {
-    derivedStateOf {
-      val firstVisibleIndex = lazyGridState.firstVisibleItemIndex
-
-      // Find the last header position <= first visible index
-      headerPositions
-        .lastOrNull { it <= firstVisibleIndex }
-        ?.let { headerIndex ->
-          currentDepartments.getOrNull(headerPositions.indexOf(headerIndex))
-        } ?: ""
-    }
-  }
-
-  LaunchedEffect(currentDepartment) {
-    Timber.d("Current visible department: $currentDepartment")
-    setCurrentDepartment(currentDepartment)
-  }
-
-  LazyVerticalGrid(
-    columns = grid,
-    state = lazyGridState,
-    modifier = modifier,
-    contentPadding = PaddingValues(
-      start = MaterialTheme.dimensions.keyline_8,
-      end = MaterialTheme.dimensions.keyline_8,
-      top = MaterialTheme.dimensions.keyline_8,
-      bottom = MaterialTheme.dimensions.keyline_16,
-    ),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-  ) {
-    credits.forEach { credit ->
-      if (filters.isEmpty()) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-          Text(
-            modifier = Modifier
-              .background(MaterialTheme.colorScheme.surface)
-              .padding(
-                horizontal = MaterialTheme.dimensions.keyline_8,
-                vertical = MaterialTheme.dimensions.keyline_8,
-              ),
-            style = MaterialTheme.typography.titleSmall,
-            text = stringResource(
-              R.string.feature_details_person_credits_department_size,
-              credit.key,
-              credit.value.size,
-            ),
-          )
-        }
-      }
-
-      items(
-        items = credit.value,
-        key = { "${it.mediaItem.id} ${it.role.title}" },
-      ) { item ->
-        if (isGrid) {
-          MediaItem(
-            modifier = itemModifier,
-            media = item.mediaItem,
-            subtitle = item.role.title,
-            fullDate = false,
-            onMediaItemClick = onMediaClick,
-          )
-        } else {
-          CreditMediaItem(
-            modifier = itemModifier,
-            mediaItem = item.mediaItem,
-            subtitle = item.role.title,
-            onClick = onMediaClick,
-          )
-        }
-      }
-    }
-  }
-}
-
-@Composable
 private fun LayoutStyleButton(
   onUpdateLayoutStyle: () -> Unit,
   icon: ImageVector,
@@ -476,22 +370,29 @@ private fun CollapsiblePersonContent(
 fun PersonContentPreview(
   @PreviewParameter(PersonUiStatePreviewParameterProvider::class) uiState: PersonUiState,
 ) {
+  val lazyListState = rememberLazyListState()
+  LaunchedEffect(Unit) {
+    lazyListState.scrollToItem(0)
+  }
   AppTheme {
     Surface {
       PersonContent(
         uiState = uiState,
         connection = rememberCollapsingContentNestedScrollConnection(256.dp),
-        lazyListState = rememberLazyListState(),
+        lazyListState = lazyListState,
         scope = rememberCoroutineScope(),
         onMediaClick = {},
         onTabSelected = {},
         onUpdateLayoutStyle = {},
         onApplyFilter = {},
-        personDetails = PersonDetailsUiState.Data.Visible(
-          PersonDetailsFactory.steveCarell(),
+        movies = mapOf(
+          "Directing" to PersonCrewCreditFactory.all(),
+          "Acting" to PersonCastCreditFactory.all(),
         ),
-        movies = emptyMap(),
-        tvShows = emptyMap(),
+        tvShows = mapOf(
+          "Acting" to PersonCastCreditFactory.all(),
+          "Directing" to PersonCrewCreditFactory.all(),
+        ),
       )
     }
   }

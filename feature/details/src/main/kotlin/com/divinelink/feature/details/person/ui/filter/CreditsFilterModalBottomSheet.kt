@@ -20,20 +20,22 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
+import com.divinelink.feature.details.R
+import com.divinelink.core.ui.R as uiR
 
 @OptIn(
   ExperimentalMaterial3Api::class,
-  ExperimentalLayoutApi::class,
   ExperimentalMaterial3Api::class,
 )
 @Composable
@@ -50,47 +52,57 @@ fun CreditsFilterModalBottomSheet(
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
   ) {
-    Column {
-      Text(
-        text = "Filter",
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium,
-      )
+    CreditsFilterBottomSheetContent(filters, appliedFilters, onClick)
+  }
+}
 
-      Spacer(Modifier.padding(MaterialTheme.dimensions.keyline_8))
-      HorizontalDivider()
-      Spacer(Modifier.padding(MaterialTheme.dimensions.keyline_8))
-      Text(
-        text = "Department",
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(
-            vertical = MaterialTheme.dimensions.keyline_8,
-            horizontal = MaterialTheme.dimensions.keyline_16,
-          ),
-        style = MaterialTheme.typography.titleLarge,
-      )
+@Composable
+@OptIn(ExperimentalLayoutApi::class)
+private fun CreditsFilterBottomSheetContent(
+  filters: List<CreditFilter>,
+  appliedFilters: List<CreditFilter>,
+  onClick: (CreditFilter) -> Unit,
+) {
+  Column {
+    Text(
+      text = stringResource(uiR.string.core_ui_filter),
+      modifier = Modifier.fillMaxWidth(),
+      textAlign = TextAlign.Center,
+      style = MaterialTheme.typography.titleMedium,
+    )
 
-      filters.forEach { filter ->
-        when (filter) {
-          is CreditFilter.Department -> {
-            FilterItem(
-              filter = filter,
-              isApplied = appliedFilters.contains(filter),
-              onClick = { onClick(filter) },
-            )
-          }
-          is CreditFilter.SortReleaseDate -> {
-            FilterItem(
-              filter = filter,
-              isApplied = appliedFilters.contains(filter),
-              onClick = { onClick(filter) },
-            )
-          }
+    Spacer(Modifier.padding(MaterialTheme.dimensions.keyline_8))
+    HorizontalDivider()
+    Spacer(Modifier.padding(MaterialTheme.dimensions.keyline_8))
+    Text(
+      text = stringResource(R.string.feature_details_person_credits_department),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+          vertical = MaterialTheme.dimensions.keyline_8,
+          horizontal = MaterialTheme.dimensions.keyline_16,
+        ),
+      style = MaterialTheme.typography.titleLarge,
+    )
+
+    filters.forEach { filter ->
+      when (filter) {
+        is CreditFilter.Department -> {
+          FilterItem(
+            filter = filter,
+            isApplied = appliedFilters.contains(filter),
+            onClick = { onClick(filter) },
+          )
         }
-        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
+        is CreditFilter.SortReleaseDate -> {
+          FilterItem(
+            filter = filter,
+            isApplied = appliedFilters.contains(filter),
+            onClick = { onClick(filter) },
+          )
+        }
       }
+      Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
     }
   }
 }
@@ -101,13 +113,17 @@ private fun FilterItem(
   isApplied: Boolean,
   onClick: (CreditFilter) -> Unit,
 ) {
-  Row {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable { onClick(filter) },
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
     Text(
       text = filter.title.getString(),
       modifier = Modifier
         .fillMaxWidth()
         .weight(1f)
-        .clickable { onClick(filter) }
         .padding(
           horizontal = MaterialTheme.dimensions.keyline_16,
           vertical = MaterialTheme.dimensions.keyline_12,
@@ -124,14 +140,12 @@ private fun FilterItem(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Previews
-private fun CreditsFilterModalBottomSheetPreview() {
+fun CreditsFilterBottomSheetContentPreview() {
   AppTheme {
     Surface {
-      CreditsFilterModalBottomSheet(
-        sheetState = rememberModalBottomSheetState(),
+      CreditsFilterBottomSheetContent(
         filters = listOf(
           CreditFilter.Department("Acting", 10),
           CreditFilter.Department("Directing", 5),
@@ -139,7 +153,6 @@ private fun CreditsFilterModalBottomSheetPreview() {
         ),
         appliedFilters = listOf(CreditFilter.Department("Acting", 10)),
         onClick = {},
-        onDismissRequest = {},
       )
     }
   }

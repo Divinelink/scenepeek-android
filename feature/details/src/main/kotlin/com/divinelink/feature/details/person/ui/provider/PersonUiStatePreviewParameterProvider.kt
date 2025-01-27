@@ -3,9 +3,11 @@ package com.divinelink.feature.details.person.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
+import com.divinelink.core.model.LayoutStyle
 import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonForm
 import com.divinelink.feature.details.person.ui.PersonUiState
+import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import com.divinelink.feature.details.person.ui.tab.PersonTab
 
 class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState> {
@@ -82,7 +84,7 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
         0 to PersonForm.About(
           PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
         ),
-        1 to PersonForm.Movies(emptyMap()), // TODO add credits
+        1 to PersonForm.Movies(emptyMap()),
         2 to PersonForm.TvShows(emptyMap()),
       ),
       filters = mapOf(
@@ -91,6 +93,86 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       ),
       tabs = PersonTab.entries,
       knownForCredits = PersonCastCreditFactory.all(),
+    ),
+    PersonUiState(
+      selectedTabIndex = 1,
+      forms = mapOf(
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to listOf(
+          CreditFilter.Department(
+            department = "Acting",
+            size = 10,
+          ),
+        ),
+        2 to emptyList(),
+      ),
+      tabs = PersonTab.entries,
+      knownForCredits = PersonCastCreditFactory.all(),
+    ),
+    PersonUiState(
+      selectedTabIndex = 2,
+      forms = mapOf(
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to emptyList(),
+      ),
+      tabs = PersonTab.entries,
+      knownForCredits = PersonCastCreditFactory.all(),
+    ),
+    PersonUiState(
+      selectedTabIndex = 2,
+      forms = mapOf(
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to listOf(
+          CreditFilter.Department(
+            department = "Acting",
+            size = 10,
+          ),
+        ),
+      ),
+      tabs = PersonTab.entries,
+      knownForCredits = PersonCastCreditFactory.all(),
+    ),
+    PersonUiState(
+      selectedTabIndex = 2,
+      forms = mapOf(
+        0 to PersonForm.About(
+          PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+        ),
+        1 to PersonForm.Movies(emptyMap()),
+        2 to PersonForm.TvShows(emptyMap()),
+      ),
+      filters = mapOf(
+        1 to emptyList(),
+        2 to listOf(
+          CreditFilter.Department(
+            department = "Acting",
+            size = 10,
+          ),
+        ),
+      ),
+      tabs = PersonTab.entries,
+      knownForCredits = PersonCastCreditFactory.all(),
+      layoutStyle = LayoutStyle.GRID,
     ),
   )
 }
