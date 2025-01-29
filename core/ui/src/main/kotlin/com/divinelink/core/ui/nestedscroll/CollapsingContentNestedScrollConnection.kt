@@ -6,8 +6,10 @@ import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.splineBasedDecay
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -23,21 +25,30 @@ fun rememberCollapsingContentNestedScrollConnection(
   maxHeight: Dp,
   minHeight: Dp = 0.dp,
   density: Density = LocalDensity.current,
-): CollapsingContentNestedScrollConnection = remember {
-  CollapsingContentNestedScrollConnection(
-    maxHeight = maxHeight,
-    minHeight = minHeight,
-    density = density,
-  )
+): CollapsingContentNestedScrollConnection {
+  val currentSize = rememberSaveable { mutableFloatStateOf(maxHeight.value) }
+
+  return remember {
+    CollapsingContentNestedScrollConnection(
+      maxHeight = maxHeight,
+      minHeight = minHeight,
+      density = density,
+      initialSize = currentSize.floatValue.dp,
+      onSizeChanged = { currentSize.floatValue = it.value },
+    )
+  }
 }
 
 class CollapsingContentNestedScrollConnection(
   val maxHeight: Dp,
   val minHeight: Dp,
   private val density: Density,
+  initialSize: Dp,
+  private val onSizeChanged: (Dp) -> Unit, // Callback to update the saved state
 ) : NestedScrollConnection {
 
-  var currentSize by mutableStateOf(maxHeight)
+  var currentSize by mutableStateOf(initialSize)
+    private set
 
   override fun onPreScroll(
     available: Offset,
@@ -52,10 +63,10 @@ class CollapsingContentNestedScrollConnection(
 
     // Constrain the image size within the allowed bounds
     currentSize = newImageSize.coerceIn(minHeight, maxHeight)
-    val consumed = currentSize - previousImageSize
+    onSizeChanged(currentSize) // Update the saved state
 
     // Return the consumed scroll amount
-    return Offset(0f, consumed.value)
+    return Offset(0f, (currentSize - previousImageSize).value)
   }
 
   override fun onPostScroll(
@@ -72,10 +83,10 @@ class CollapsingContentNestedScrollConnection(
 
     // Constrain the image size within the allowed bounds
     currentSize = newImageSize.coerceIn(minHeight, maxHeight)
-    val consumed = currentSize - previousImageSize
+    onSizeChanged(currentSize) // Update the saved state
 
     // Return the consumed scroll amount
-    return Offset(0f, consumed.value)
+    return Offset(0f, (currentSize - previousImageSize).value)
   }
 
   private var decayAnimation: Animatable<Dp, AnimationVector1D>? = null
@@ -97,6 +108,7 @@ class CollapsingContentNestedScrollConnection(
       animationSpec = splineBasedDecay(density),
     ) {
       currentSize = value.coerceIn(minHeight, maxHeight)
+      onSizeChanged(currentSize) // Update the saved state
     }
 
     return Velocity(0f, velocityY) // Consume the vertical velocity
