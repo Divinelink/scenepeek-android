@@ -17,7 +17,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
@@ -35,12 +34,8 @@ internal fun PersonGridContent(
   grid: GridCells,
   credits: GroupedPersonCredits,
   filters: List<CreditFilter>,
-  showFilterBottomSheet: Boolean,
-  onUpdateLayoutStyle: () -> Unit,
-  icon: ImageVector,
   isGrid: Boolean,
   onMediaClick: (MediaItem) -> Unit,
-  onShowFilterBottomSheet: () -> Unit,
   setCurrentDepartment: (String) -> Unit,
 ) {
   val lazyGridState = rememberLazyGridState()

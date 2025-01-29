@@ -59,10 +59,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.LayoutStyle
-import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
@@ -88,8 +85,6 @@ import com.divinelink.core.ui.R as uiR
 fun PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
-  movies: GroupedPersonCredits,
-  tvShows: GroupedPersonCredits,
   connection: CollapsingContentNestedScrollConnection,
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
@@ -115,10 +110,18 @@ fun PersonContent(
 
   val filters = uiState.filters[selectedPage] ?: emptyList()
 
-  val isFiltersTabVisible = remember {
-    derivedStateOf {
-      PersonTab.TV_SHOWS.order == selectedPage || PersonTab.MOVIES.order == selectedPage
-    }
+  val movies by remember(uiState.filteredCredits[PersonTab.MOVIES.order]) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.MOVIES.order] ?: emptyMap() }
+  }
+
+  val tvShows by remember(uiState.filteredCredits[PersonTab.TV_SHOWS.order]) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.TV_SHOWS.order] ?: emptyMap() }
+  }
+
+  val showFilterTab = when (uiState.forms.values.elementAt(selectedPage)) {
+    is PersonForm.Movies -> movies.isNotEmpty()
+    is PersonForm.TvShows -> tvShows.isNotEmpty()
+    else -> false
   }
 
   val pagerState = rememberPagerState(
@@ -199,7 +202,7 @@ fun PersonContent(
               }
             },
           )
-          AnimatedVisibility(visible = isFiltersTabVisible.value) {
+          AnimatedVisibility(visible = showFilterTab) {
             Row(
               modifier = Modifier
                 .fillMaxWidth()
@@ -267,12 +270,8 @@ fun PersonContent(
                 grid = grid,
                 credits = movies,
                 filters = movieFilters,
-                showFilterBottomSheet = showFilterBottomSheet,
-                onUpdateLayoutStyle = onUpdateLayoutStyle,
-                icon = icon,
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
-                onShowFilterBottomSheet = { showFilterBottomSheet = true },
                 setCurrentDepartment = { currentMovieDepartment = it },
               )
 
@@ -284,12 +283,8 @@ fun PersonContent(
                 grid = grid,
                 credits = tvShows,
                 filters = tvFilters,
-                showFilterBottomSheet = showFilterBottomSheet,
-                onUpdateLayoutStyle = onUpdateLayoutStyle,
-                icon = icon,
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
-                onShowFilterBottomSheet = { showFilterBottomSheet = true },
                 setCurrentDepartment = { currentTvDepartment = it },
               )
             }
@@ -385,14 +380,14 @@ fun PersonContentPreview(
         onTabSelected = {},
         onUpdateLayoutStyle = {},
         onApplyFilter = {},
-        movies = mapOf(
-          "Directing" to PersonCrewCreditFactory.all(),
-          "Acting" to PersonCastCreditFactory.all(),
-        ),
-        tvShows = mapOf(
-          "Acting" to PersonCastCreditFactory.all(),
-          "Directing" to PersonCrewCreditFactory.all(),
-        ),
+//        movies = mapOf(
+//          "Directing" to PersonCrewCreditFactory.all(),
+//          "Acting" to PersonCastCreditFactory.all(),
+//        ),
+//        tvShows = mapOf(
+//          "Acting" to PersonCastCreditFactory.all(),
+//          "Directing" to PersonCrewCreditFactory.all(),
+//        ),
       )
     }
   }

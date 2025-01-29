@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory.toWzd
+import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
@@ -12,6 +13,7 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.details.person.PersonDetails
+import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestPersonRepository
 import com.google.common.truth.Truth.assertThat
@@ -117,7 +119,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -159,7 +163,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCrewCreditFactory.productionSortedByPopularity(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = "Production",
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -186,7 +192,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -224,13 +232,11 @@ class FetchPersonDetailsUseCaseTest {
             despicableMe(),
             bruceAlmighty(),
           ),
-          credits = PersonCombinedCreditsFactory.all().copy(
-            cast = listOf(
-              bruceAlmighty(),
-              littleMissSunshine(),
-              despicableMe(),
-              theOffice().copy(episodeCount = 0),
-            ),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = mapOf(
+            "Acting" to listOf(theOffice().copy(episodeCount = 0)),
+            "Production" to listOf(PersonCrewCreditFactory.riot()),
           ),
         ),
       )
@@ -275,7 +281,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -310,7 +318,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -333,7 +343,9 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = PersonCastCreditFactory.knownFor(),
-          credits = PersonCombinedCreditsFactory.all(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = GroupedPersonCreditsSample.movies(),
+          tvShows = GroupedPersonCreditsSample.tvShows(),
         ),
       )
 
@@ -345,6 +357,43 @@ class FetchPersonDetailsUseCaseTest {
       )
 
       expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test fetchPersonCredits filters out departments without entries`() = runTest {
+    repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
+    repository.mockFetchPersonCredits(
+      Result.success(
+        PersonCombinedCreditsFactory.all()
+          .copy(crew = listOf(PersonCrewCreditFactory.the40YearOldVirgin())),
+      ),
+    )
+
+    useCase.invoke(params).test {
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
+      )
+
+      assertThat(awaitItem().getOrNull()).isEqualTo(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = PersonCastCreditFactory.knownFor(),
+          knownForDepartment = KnownForDepartment.Acting.value,
+          movies = mapOf(
+            "Acting" to listOf(
+              bruceAlmighty(),
+              littleMissSunshine(),
+              despicableMe(),
+            ),
+            "Writing" to listOf(PersonCrewCreditFactory.the40YearOldVirgin()),
+          ),
+          tvShows = mapOf(
+            "Acting" to listOf(theOffice()),
+          ),
+        ),
+      )
+
+      awaitComplete()
     }
   }
 }

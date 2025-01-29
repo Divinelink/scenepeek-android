@@ -13,13 +13,14 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
-import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ComposeTest
@@ -265,7 +266,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -307,7 +310,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -341,7 +346,9 @@ class PersonScreenTest : ComposeTest() {
               despicableMe(),
               bruceAlmighty(),
             ),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -391,7 +398,9 @@ class PersonScreenTest : ComposeTest() {
           Result.success(
             PersonDetailsResult.CreditsSuccess(
               knownForCredits = PersonCastCreditFactory.knownFor(),
-              credits = PersonCombinedCreditsFactory.all(),
+              knownForDepartment = KnownForDepartment.Acting.value,
+              movies = GroupedPersonCreditsSample.movies(),
+              tvShows = GroupedPersonCreditsSample.tvShows(),
             ),
           ),
         )
@@ -433,7 +442,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -480,7 +491,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -576,7 +589,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = emptyList(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )

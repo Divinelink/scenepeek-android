@@ -44,7 +44,7 @@ class CollapsingContentNestedScrollConnection(
   val minHeight: Dp,
   private val density: Density,
   initialSize: Dp,
-  private val onSizeChanged: (Dp) -> Unit, // Callback to update the saved state
+  private val onSizeChanged: (Dp) -> Unit,
 ) : NestedScrollConnection {
 
   var currentSize by mutableStateOf(initialSize)
@@ -83,7 +83,7 @@ class CollapsingContentNestedScrollConnection(
 
     // Constrain the image size within the allowed bounds
     currentSize = newImageSize.coerceIn(minHeight, maxHeight)
-    onSizeChanged(currentSize) // Update the saved state
+    onSizeChanged(currentSize)
 
     // Return the consumed scroll amount
     return Offset(0f, (currentSize - previousImageSize).value)

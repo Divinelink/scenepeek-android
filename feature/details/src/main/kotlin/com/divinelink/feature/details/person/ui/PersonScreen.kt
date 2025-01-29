@@ -28,7 +28,6 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.feature.details.navigation.person.PersonGraph
-import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.parameters.DeepLink
@@ -61,14 +60,6 @@ fun PersonScreen(
 
   val personDetails by remember(uiState.aboutForm) {
     derivedStateOf { uiState.aboutForm?.personDetails }
-  }
-
-  val movies by remember(uiState.filteredCredits[PersonTab.MOVIES.order]) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.MOVIES.order] ?: emptyMap() }
-  }
-
-  val tvShows by remember(uiState.filteredCredits[PersonTab.TV_SHOWS.order]) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.TV_SHOWS.order] ?: emptyMap() }
   }
 
   AppScaffold(
@@ -124,8 +115,6 @@ fun PersonScreen(
         onTabSelected = viewModel::onTabSelected,
         onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
         onApplyFilter = viewModel::onApplyFilter,
-        movies = movies,
-        tvShows = tvShows,
       )
     }
   }

@@ -21,7 +21,10 @@ data class PersonUiState(
     PersonTab.MOVIES.order to emptyList(),
     PersonTab.TV_SHOWS.order to emptyList(),
   ),
-  val filteredCredits: Map<Int, GroupedPersonCredits> = emptyMap(),
+  val filteredCredits: Map<Int, GroupedPersonCredits> = mapOf(
+    PersonTab.MOVIES.order to emptyMap(),
+    PersonTab.TV_SHOWS.order to emptyMap(),
+  ),
   val knownForCredits: List<PersonCredit>? = null,
   val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
   val layoutStyle: LayoutStyle = LayoutStyle.LIST,

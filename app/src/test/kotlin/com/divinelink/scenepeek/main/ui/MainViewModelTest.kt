@@ -172,7 +172,7 @@ class MainViewModelTest {
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
           DetailsNavArguments(
-            id = 1,
+            id = 2316,
             mediaType = "tv",
             isFavorite = false,
           ),

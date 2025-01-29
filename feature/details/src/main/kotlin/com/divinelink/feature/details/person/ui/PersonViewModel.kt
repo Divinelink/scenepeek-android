@@ -84,18 +84,15 @@ class PersonViewModel(
                     knownForCredits = result.knownForCredits,
                     forms = uiState.forms.mapValues { (key, value) ->
                       when (key) {
-                        1 -> PersonForm.Movies(credits = result.movies)
-                        2 -> PersonForm.TvShows(credits = result.tvShows)
+                        PersonTab.MOVIES.order -> PersonForm.Movies(credits = result.movies)
+                        PersonTab.TV_SHOWS.order -> PersonForm.TvShows(credits = result.tvShows)
                         else -> value
                       }
                     },
-                    filteredCredits = uiState.forms.mapValues { (_, form) ->
-                      when (form) {
-                        is PersonForm.Movies -> result.movies
-                        is PersonForm.TvShows -> result.tvShows
-                        is PersonForm.About -> emptyMap()
-                      }
-                    },
+                    filteredCredits = mapOf(
+                      PersonTab.MOVIES.order to result.movies,
+                      PersonTab.TV_SHOWS.order to result.tvShows,
+                    ),
                   )
                 }
                 is PersonDetailsResult.DetailsFailure -> _uiState.update { uiState ->
@@ -124,7 +121,6 @@ class PersonViewModel(
     }
   }
 
-  // TODO Add tests for this function
   fun onUpdateLayoutStyle() {
     val layoutStyle = when (_uiState.value.layoutStyle) {
       LayoutStyle.GRID -> LayoutStyle.LIST
@@ -136,7 +132,6 @@ class PersonViewModel(
     }
   }
 
-  // TODO Add tests for this function
   fun onApplyFilter(filter: CreditFilter) {
     val selectedTab = _uiState.value.selectedTabIndex
 
@@ -151,27 +146,29 @@ class PersonViewModel(
         }
       }
 
-      val newFilteredCredits = oldState.forms.mapValues { (key, form) ->
-        when (key) {
-          PersonTab.MOVIES.order -> if (key == selectedTab) {
-            applyFilters(
-              credits = (form as PersonForm.Movies).credits,
-              filters = newFilters[selectedTab] ?: emptyList(),
-            )
-          } else {
-            oldState.filteredCredits[key] ?: emptyMap()
+      val newFilteredCredits = oldState.forms
+        .filterKeys { it != PersonTab.ABOUT.order }
+        .mapValues { (key, form) ->
+          when (key) {
+            PersonTab.MOVIES.order -> if (key == selectedTab) {
+              applyFilters(
+                credits = (form as PersonForm.Movies).credits,
+                filters = newFilters[selectedTab] ?: emptyList(),
+              )
+            } else {
+              oldState.filteredCredits[key] ?: emptyMap()
+            }
+            PersonTab.TV_SHOWS.order -> if (key == selectedTab) {
+              applyFilters(
+                credits = (form as PersonForm.TvShows).credits,
+                filters = newFilters[selectedTab] ?: emptyList(),
+              )
+            } else {
+              oldState.filteredCredits[key] ?: emptyMap()
+            }
+            else -> emptyMap()
           }
-          PersonTab.TV_SHOWS.order -> if (key == selectedTab) {
-            applyFilters(
-              credits = (form as PersonForm.TvShows).credits,
-              filters = newFilters[selectedTab] ?: emptyList(),
-            )
-          } else {
-            oldState.filteredCredits[key] ?: emptyMap()
-          }
-          else -> emptyMap()
         }
-      }
 
       oldState.copy(
         filters = newFilters,
