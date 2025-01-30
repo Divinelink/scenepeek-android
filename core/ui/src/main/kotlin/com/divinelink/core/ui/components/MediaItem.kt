@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
@@ -23,7 +22,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
@@ -31,6 +30,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.provider.MediaItemParameterProvider
 import com.divinelink.core.ui.rating.TMDBRatingItem
 
 const val MOVIE_CARD_ITEM_TAG = "MOVIE_CARD_ITEM_TAG"
@@ -40,8 +40,9 @@ fun MediaItem(
   modifier: Modifier = Modifier,
   media: MediaItem.Media,
   subtitle: String? = null,
+  fullDate: Boolean = true,
   onMediaItemClick: (MediaItem.Media) -> Unit,
-  onLikeMediaClick: () -> Unit,
+  onLikeMediaClick: () -> Unit = {},
 ) {
   val offset = MaterialTheme.dimensions.keyline_28
 
@@ -49,7 +50,7 @@ fun MediaItem(
     shape = PopularMovieItemShape,
     modifier = modifier
       .testTag(MOVIE_CARD_ITEM_TAG)
-      .widthIn(max = 120.dp)
+      .widthIn(max = MaterialTheme.dimensions.shortMediaCard)
       .clip(PopularMovieItemShape)
       .clipToBounds()
       .clickable {
@@ -110,7 +111,7 @@ fun MediaItem(
         maxLines = 1,
         style = MaterialTheme.typography.bodySmall,
         overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.primary,
       )
     }
 
@@ -121,7 +122,11 @@ fun MediaItem(
           vertical = MaterialTheme.dimensions.keyline_4,
           horizontal = MaterialTheme.dimensions.keyline_8,
         ),
-      text = media.releaseDate,
+      text = if (fullDate) {
+        media.releaseDate
+      } else {
+        media.releaseDate.take(4)
+      },
       style = MaterialTheme.typography.labelMedium,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
     )
@@ -132,25 +137,14 @@ fun MediaItem(
 
 @Composable
 @Previews
-fun PopularMovieItemPreview() {
+fun MediaItemPreview(
+  @PreviewParameter(MediaItemParameterProvider::class) mediaItem: MediaItem.Media,
+) {
   AppTheme {
-    Surface(
-      modifier = Modifier
-        .width(160.dp)
-        .height(340.dp),
-    ) {
+    Surface {
       MediaItem(
         modifier = Modifier,
-        media = MediaItem.Media.TV(
-          id = 0,
-          posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
-          releaseDate = "2023",
-          name = "Fight Club",
-          voteAverage = 8.8,
-          voteCount = 1000,
-          isFavorite = true,
-          overview = "",
-        ),
+        media = mediaItem,
         onMediaItemClick = {},
         onLikeMediaClick = {},
       )
@@ -160,25 +154,14 @@ fun PopularMovieItemPreview() {
 
 @Composable
 @Previews
-fun MovieItemPreview() {
+fun MediaItemWithSubtitlePreview(
+  @PreviewParameter(MediaItemParameterProvider::class) mediaItem: MediaItem.Media,
+) {
   AppTheme {
-    Surface(
-      modifier = Modifier,
-    ) {
+    Surface {
       MediaItem(
         modifier = Modifier,
-        media = MediaItem.Media.Movie(
-          id = 0,
-          posterPath = "/w200/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
-          releaseDate = "2023",
-          name = "Night of the Day of the Dawn of the Son of the Bride of the " +
-            "Return of the Revenge of the Terror of the Attack of the Evil," +
-            " Mutant, Alien, Flesh Eating, Hellbound, Zombified Living Dead",
-          voteAverage = 0.1,
-          voteCount = 1000,
-          isFavorite = null,
-          overview = "",
-        ),
+        media = mediaItem,
         subtitle = "Matthew Walkers",
         onMediaItemClick = {},
         onLikeMediaClick = {},

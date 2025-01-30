@@ -1,8 +1,8 @@
 package com.divinelink.scenepeek.popular.domain.usecase
 
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
 import com.divinelink.scenepeek.home.domain.usecase.RemoveFavoriteUseCase
 import com.google.common.truth.Truth.assertThat

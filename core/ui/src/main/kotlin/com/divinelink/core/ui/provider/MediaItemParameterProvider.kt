@@ -1,28 +1,12 @@
 package com.divinelink.core.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.divinelink.core.commons.ExcludeFromKoverReport
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.provider.MediaItemParameterData.movie
 
 class MediaItemParameterProvider : PreviewParameterProvider<MediaItem.Media> {
   override val values: Sequence<MediaItem.Media> = sequenceOf(
-    movie,
-  )
-}
-
-@ExcludeFromKoverReport
-private object MediaItemParameterData {
-
-  val movie = MediaItem.Media.Movie(
-    id = 0,
-    posterPath = "",
-    releaseDate = "2020-07-02",
-    name = "Flight Club",
-    voteAverage = 9.4,
-    voteCount = 100,
-    overview = LoremIpsum(50).values.joinToString(),
-    isFavorite = false,
+    MediaItemFactory.theOffice(),
+    MediaItemFactory.FightClub(),
   )
 }

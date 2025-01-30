@@ -36,14 +36,39 @@
 
   <string name="feature_details_person_credits_known_for_section">Known For</string>
 
+  <string name="feature_details_person_tab_about">About</string>
+  <string name="feature_details_person_tab_movies">Movies</string>
+  <string name="feature_details_person_tab_tv_shows">TV Shows</string>
+
+  <string name="feature_details_person_credits_department">Department</string>
+  <string name="feature_details_person_credits_department_size">%s (%s)</string>
+
+  <string name="feature_details_filter_sort_release_date">Release date</string>
+
   <plurals name="feature_details_number_of_seasons">
     <item quantity="one">%s season</item>
     <item quantity="other">%s seasons</item>
   </plurals>
 
+  <plurals name="feature_details_movies">
+    <item quantity="one">%s movie</item>
+    <item quantity="other">%s movies</item>
+  </plurals>
+
+  <plurals name="feature_details_tv_shows">
+    <item quantity="one">%s TV Show</item>
+    <item quantity="other">%s TV Shows</item>
+  </plurals>
+
   <!-- 1.%s birthday 2. %s current age -->
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>
+
+  <string name="feature_details_no_movies_available">No Movies Available</string>
+  <string name="feature_details_no_movies_available_desc">%s hasn\'t appeared in any movies yet.</string>
+
+  <string name="feature_details_no_tv_shows_available">No TV Shows Available</string>
+  <string name="feature_details_no_tv_shows_available_desc">%s hasn\'t appeared in any TV shows yet.</string>
 
   <string name="login">Login</string>
 </resources>

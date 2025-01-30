@@ -2,7 +2,6 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -25,34 +24,6 @@ class PersonalDetailsTest : ComposeTest() {
   @BeforeTest
   fun setup() {
     personalDetails = PersonDetailsFactory.steveCarell()
-  }
-
-  @Test
-  fun `test error placeholder on female`() {
-    personalDetails = personalDetails.copy(
-      person = personalDetails.person.copy(gender = Gender.FEMALE),
-    )
-
-    setContentWithTheme {
-      PersonalDetails(PersonDetailsUiState.Data.Visible(personalDetails))
-    }
-    with(composeTestRule) {
-      onNodeWithContentDescription(
-        getString(uiR.string.core_ui_movie_image_placeholder),
-      ).assertIsDisplayed()
-    }
-  }
-
-  @Test
-  fun `test error placeholder on male`() {
-    setContentWithTheme {
-      PersonalDetails(PersonDetailsUiState.Data.Visible(personalDetails))
-    }
-    with(composeTestRule) {
-      onNodeWithContentDescription(
-        getString(uiR.string.core_ui_movie_image_placeholder),
-      ).assertIsDisplayed()
-    }
   }
 
   @Test

@@ -62,7 +62,9 @@ fun SharedTransitionScope.JellyseerrAccountItem(
           CoilImage(
             modifier = Modifier
               .sharedElement(
-                state = rememberSharedContentState(key = SharedElementKeys.JELLYSEERR_AVATAR),
+                sharedContentState = rememberSharedContentState(
+                  key = SharedElementKeys.JELLYSEERR_AVATAR,
+                ),
                 animatedVisibilityScope = animatedVisibilityScope,
               )
               .size(MaterialTheme.dimensions.keyline_36),

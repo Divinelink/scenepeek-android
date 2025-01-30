@@ -1,8 +1,8 @@
 package com.divinelink.core.domain
 
 import app.cash.turbine.test
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest

@@ -1,8 +1,8 @@
 package com.divinelink.core.testing.factories.model.watchlist
 
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.watchlist.WatchlistResponse
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
 
 object WatchlistResponseFactory {
 

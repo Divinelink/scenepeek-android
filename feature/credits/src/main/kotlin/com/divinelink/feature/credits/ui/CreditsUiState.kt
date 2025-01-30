@@ -1,5 +1,8 @@
 package com.divinelink.feature.credits.ui
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class CreditsUiState(
   val selectedTabIndex: Int,
   val tabs: List<CreditsTab>,

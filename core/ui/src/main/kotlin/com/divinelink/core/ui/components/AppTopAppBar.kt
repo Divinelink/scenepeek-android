@@ -1,5 +1,10 @@
 package com.divinelink.core.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -24,24 +29,31 @@ import com.divinelink.core.ui.getString
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopAppBar(
-  scrollBehaviour: TopAppBarScrollBehavior,
+  scrollBehavior: TopAppBarScrollBehavior,
   topAppBarColors: TopAppBarColors,
   text: UIText,
   actions: @Composable RowScope.() -> Unit = {},
+  isVisible: Boolean = true,
   onNavigateUp: () -> Unit,
 ) {
   TopAppBar(
     modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
-    scrollBehavior = scrollBehaviour,
+    scrollBehavior = scrollBehavior,
     colors = topAppBarColors,
     title = {
-      Text(
-        modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE),
-        text = text.getString(),
-        maxLines = 2,
-        style = MaterialTheme.typography.titleLarge,
-        overflow = TextOverflow.Ellipsis,
-      )
+      AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+      ) {
+        Text(
+          modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE),
+          text = text.getString(),
+          maxLines = 2,
+          style = MaterialTheme.typography.titleLarge,
+          overflow = TextOverflow.Ellipsis,
+        )
+      }
     },
     navigationIcon = {
       IconButton(onClick = onNavigateUp) {

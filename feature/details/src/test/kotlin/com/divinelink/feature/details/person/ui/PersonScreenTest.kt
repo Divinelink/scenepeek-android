@@ -2,9 +2,9 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -13,27 +13,31 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
-import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
+import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import com.divinelink.core.ui.R as uiR
 
 class PersonScreenTest : ComposeTest() {
 
@@ -101,7 +105,7 @@ class PersonScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test topAppBar is visible with success`() {
+  fun `test topAppBar is not visible when scrolled on top`() {
     fetchPersonDetailsUseCase.mockSuccess(
       PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
     )
@@ -119,9 +123,9 @@ class PersonScreenTest : ComposeTest() {
     }
     with(composeTestRule) {
       onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE)
-        .assertIsDisplayed()
-        .assertTextEquals("Steve Carell")
+      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Person.COLLAPSIBLE_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.PERSON_NAME).assertIsDisplayed()
     }
   }
 
@@ -265,12 +269,14 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
 
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).performScrollToIndex(2)
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsDisplayed()
@@ -307,12 +313,14 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
 
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).performScrollToNode(
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
         matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
       )
 
@@ -341,7 +349,9 @@ class PersonScreenTest : ComposeTest() {
               despicableMe(),
               bruceAlmighty(),
             ),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -391,7 +401,9 @@ class PersonScreenTest : ComposeTest() {
           Result.success(
             PersonDetailsResult.CreditsSuccess(
               knownForCredits = PersonCastCreditFactory.knownFor(),
-              credits = PersonCombinedCreditsFactory.all(),
+              knownForDepartment = KnownForDepartment.Acting.value,
+              movies = GroupedPersonCreditsSample.movies(),
+              tvShows = GroupedPersonCreditsSample.tvShows(),
             ),
           ),
         )
@@ -433,7 +445,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -480,12 +494,18 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = PersonCastCreditFactory.knownFor(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
 
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).performScrollToNode(
+      onNodeWithContentDescription(
+        getString(uiR.string.core_ui_movie_image_placeholder),
+      ).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
         matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
       )
 
@@ -576,7 +596,9 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = emptyList(),
-            credits = PersonCombinedCreditsFactory.all(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -587,6 +609,279 @@ class PersonScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsNotDisplayed()
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION_LIST).assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `selecting Movies and TV Shows tabs displays correct content`() {
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    fetchPersonDetailsUseCase.mockSuccess(
+      response = channel,
+    )
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(
+        navigator = navigator,
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      // Switch to Movies tab
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+
+      // Switch to TV Shows tab
+      onNodeWithText("TV Shows").performClick()
+      onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false)).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `toggling layout style updates credit display format`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      // Load initial data
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = PersonCastCreditFactory.knownFor(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
+          ),
+        ),
+      )
+
+      // Switch to Movies tab
+      onNodeWithText("Movies").performClick()
+
+      // Verify initial grid layout
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
+
+      onNodeWithTag(TestTags.Person.LAYOUT_SWITCHER).performClick()
+
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `applying department filter updates displayed credits`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = emptyMap(),
+          ),
+        ),
+      )
+      // Switch to Movies tab
+      onNodeWithText("Movies").performClick()
+
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+      onNodeWithText("Acting (3)").assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(1)
+      onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty")).assertIsDisplayed()
+
+      // Open filter dialog
+      onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
+
+      // Select directing filter
+      onNodeWithText("Production (2)").performClick()
+
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER).assertIsNotDisplayed()
+      onNodeWithText("Acting").assertIsNotDisplayed()
+      onNodeWithText(bruceAlmighty().title).assertIsNotDisplayed()
+      onNodeWithText("Writing").assertIsNotDisplayed()
+
+      onNodeWithText("Production (2)").assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.CREDIT_MEDIA_ITEM.format("Bruce Almighty"))
+        .assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `show empty state when no credits available`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      // Send empty credits
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = emptyMap(),
+            tvShows = emptyMap(),
+          ),
+        ),
+      )
+
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+
+      // Verify empty state
+      onNodeWithTag(
+        TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.MOVIE.name),
+      ).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+
+      // Verify empty state
+      onNodeWithTag(
+        TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.TV.name),
+      ).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `display current department in header when no filters applied`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
+          ),
+        ),
+      )
+      // Switch to Movies tab
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+      onNodeWithTag(
+        TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing"),
+      ).assertIsNotDisplayed()
+
+      onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).performScrollToIndex(4)
+
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing")).assertIsDisplayed()
+
+      // Switch to TV Shows tab
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+
+      // Ensuring department is updated when switching tabs
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `filters persist when switching tabs`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      // Load data for both tabs
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
+          ),
+        ),
+      )
+      onNodeWithText("Movies").performClick()
+
+      // Apply filter to Movies tab
+      onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
+      onNodeWithText("Writing (1)").performClick()
+
+      // Switch to TV Shows tab
+      onNodeWithText("TV Shows").performClick()
+
+      // Verify TV Shows tab has no filters
+      onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
+      onNodeWithText(getString(uiR.string.core_ui_filter)).assertIsDisplayed()
+      onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
     }
   }
 }

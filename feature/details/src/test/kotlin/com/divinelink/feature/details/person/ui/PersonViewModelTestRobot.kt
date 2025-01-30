@@ -6,6 +6,8 @@ import com.divinelink.core.navigation.arguments.PersonNavArguments
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
+import com.divinelink.feature.details.person.ui.filter.CreditFilter
+import com.divinelink.feature.details.person.ui.tab.PersonTab
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 
@@ -46,6 +48,18 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
 
   fun setupChannelForUseCase(result: Channel<Result<PersonDetailsResult>>) = apply {
     fetchPersonDetailsUseCase.mockSuccess(result)
+  }
+
+  fun onTabSelected(tab: PersonTab) = apply {
+    viewModel.onTabSelected(tab.order)
+  }
+
+  fun onUpdateLayoutStyle() = apply {
+    viewModel.onUpdateLayoutStyle()
+  }
+
+  fun onApplyFilter(filter: CreditFilter) = apply {
+    viewModel.onApplyFilter(filter)
   }
 
   // Essentially, when this is success the dao should emit new values for a person

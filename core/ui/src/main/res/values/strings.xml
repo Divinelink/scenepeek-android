@@ -18,7 +18,7 @@
   <string name="core_ui_retry">Retry</string>
   <string name="core_ui_login">Login</string>
   <string name="core_ui_logout">Logout</string>
-  <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
+  <string name="core_ui_error_retry">Something when wrong.\nPlease try again.</string>
   <string name="core_ui_password">Password</string>
   <string name="core_ui_view_all">View all</string>
 
@@ -61,6 +61,9 @@
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_less">Show less</string>
 
+  <string name="core_ui_view">View</string>
+  <string name="core_ui_filter">Filter</string>
+
   <string name="core_ui_offline_title">You are offline</string>
   <string name="core_ui_offline_description">Please connect to the internet and try again.</string>
 
@@ -79,4 +82,5 @@
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
   <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>
   <string name="core_ui_visible_spoilers_button">Spoilers are visible</string>
+  <string name="core_ui_change_layout_button">Change layout style</string>
 </resources>

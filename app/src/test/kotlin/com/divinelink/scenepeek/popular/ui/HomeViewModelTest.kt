@@ -1,11 +1,11 @@
 package com.divinelink.scenepeek.popular.ui
 
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.scenepeek.home.domain.usecase.MultiSearchResult
 import com.divinelink.scenepeek.home.ui.HomeFilter

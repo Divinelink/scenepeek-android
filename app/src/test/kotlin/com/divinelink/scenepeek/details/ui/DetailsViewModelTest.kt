@@ -8,6 +8,8 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
@@ -18,8 +20,6 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory
-import com.divinelink.core.testing.factories.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.factories.ReviewFactory

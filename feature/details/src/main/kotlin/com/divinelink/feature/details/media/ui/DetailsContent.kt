@@ -16,10 +16,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -31,7 +32,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -50,7 +50,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
@@ -79,6 +78,7 @@ import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
+import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.components.details.SpannableRating
@@ -120,7 +120,11 @@ fun DetailsContent(
   viewAllRatingsClicked: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val listState = rememberLazyListState()
   var showDropdownMenu by remember { mutableStateOf(false) }
+  val titleIsVisible = remember {
+    derivedStateOf { listState.firstVisibleItemIndex != 0 }
+  }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -167,29 +171,13 @@ fun DetailsContent(
       )
     },
     topBar = {
-      TopAppBar(
+      AppTopAppBar(
         scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-          scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.66f),
+        topAppBarColors = TopAppBarDefaults.topAppBarColors(
+          scrolledContainerColor = MaterialTheme.colorScheme.surface,
         ),
-        title = {
-          Text(
-            text = viewState.mediaDetails?.title ?: "",
-            maxLines = 2,
-            style = MaterialTheme.typography.titleMedium,
-            overflow = TextOverflow.Ellipsis,
-          )
-        },
-        navigationIcon = {
-          IconButton(
-            onClick = onNavigateUp,
-          ) {
-            Icon(
-              Icons.AutoMirrored.Rounded.ArrowBack,
-              stringResource(uiR.string.core_ui_navigate_up_button_content_description),
-            )
-          }
-        },
+        text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
+        isVisible = titleIsVisible.value,
         actions = {
           FavoriteButton(
             modifier = Modifier.clip(MaterialTheme.shape.roundedShape),
@@ -216,6 +204,7 @@ fun DetailsContent(
             )
           }
         },
+        onNavigateUp = onNavigateUp,
       )
     },
     content = { paddingValues ->
@@ -224,6 +213,7 @@ fun DetailsContent(
           is Movie, is TV -> {
             MediaDetailsContent(
               modifier = Modifier.padding(paddingValues = paddingValues),
+              listState = listState,
               mediaDetails = mediaDetails,
               userDetails = viewState.userDetails,
               tvCredits = viewState.tvCredits?.cast,
@@ -296,6 +286,7 @@ private fun VideoPlayerSection(
 @Composable
 fun MediaDetailsContent(
   modifier: Modifier = Modifier,
+  listState: LazyListState,
   ratingSource: RatingSource,
   mediaDetails: MediaDetails,
   tvCredits: List<Person>?,
@@ -317,6 +308,7 @@ fun MediaDetailsContent(
     modifier = modifier
       .testTag(TestTags.Details.CONTENT_LIST)
       .fillMaxWidth(),
+    state = listState,
   ) {
     item {
       TitleDetails(mediaDetails)

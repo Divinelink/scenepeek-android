@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -32,7 +33,8 @@ fun WatchlistErrorContent(
     modifier = Modifier
       .testTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT)
       .fillMaxSize()
-      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+      .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+      .padding(bottom = LocalBottomNavigationPadding.current),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {

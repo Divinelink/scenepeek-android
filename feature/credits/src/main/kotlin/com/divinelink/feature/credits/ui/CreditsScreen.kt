@@ -9,9 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.ui.components.ObfuscateSpoilersButton
@@ -35,7 +35,7 @@ fun CreditsScreen(
   viewModel: CreditsViewModel = koinViewModel(),
   onNavigateToPersonDetails: (Person) -> Unit,
 ) {
-  val uiState = viewModel.uiState.collectAsState().value
+  val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
   AppScaffold(
     topBar = { scrollBehaviour, color ->
