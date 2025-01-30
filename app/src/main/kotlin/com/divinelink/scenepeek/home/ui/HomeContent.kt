@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
@@ -55,6 +56,7 @@ fun HomeContent(
     when (isEmpty) {
       true -> if (viewState.blankSlate != null) {
         BlankSlate(
+          modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
           uiState = viewState.blankSlate,
           onRetry = viewState.retryAction?.let { onRetryClick },
         )
@@ -91,7 +93,7 @@ fun HomeContent(
     }
   }
   if (viewState.initialLoading) {
-    LoadingContent()
+    LoadingContent(modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current))
   }
 }
 

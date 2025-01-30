@@ -64,5 +64,11 @@
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>
 
+  <string name="feature_details_no_movies_available">No Movies Available</string>
+  <string name="feature_details_no_movies_available_desc">%s hasn\'t appeared in any movies yet.</string>
+
+  <string name="feature_details_no_tv_shows_available">No TV Shows Available</string>
+  <string name="feature_details_no_tv_shows_available_desc">%s hasn\'t appeared in any TV shows yet.</string>
+
   <string name="login">Login</string>
 </resources>

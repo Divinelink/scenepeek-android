@@ -3,6 +3,7 @@ package com.divinelink.feature.watchlist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +23,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -74,7 +76,6 @@ fun WatchlistScreen(
         tabs = uiState.value.tabs,
         selectedIndex = selectedPage,
         onClick = {
-          viewModel.onTabSelected(it)
           scope.launch {
             pagerState.animateScrollToPage(it)
           }
@@ -87,7 +88,9 @@ fun WatchlistScreen(
       ) { page ->
         uiState.value.forms.values.elementAt(page).let {
           when (it) {
-            is WatchlistForm.Loading -> LoadingContent()
+            is WatchlistForm.Loading -> LoadingContent(
+              modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+            )
             is WatchlistForm.Error -> WatchlistErrorContent(
               error = it,
               onLogin = onNavigateToAccountSettings,

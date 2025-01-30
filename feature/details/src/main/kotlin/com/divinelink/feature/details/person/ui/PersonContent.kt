@@ -61,6 +61,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
@@ -196,7 +197,6 @@ fun PersonContent(
             tabs = uiState.tabs,
             selectedIndex = selectedPage,
             onClick = {
-              onTabSelected(it)
               scope.launch {
                 pagerState.animateScrollToPage(it)
               }
@@ -220,6 +220,9 @@ fun PersonContent(
 
               if (filters.isEmpty()) {
                 AnimatedContent(
+                  modifier = Modifier.testTag(
+                    TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
+                  ),
                   targetState = department,
                   label = "DepartmentTextAnimation",
                 ) { string ->
@@ -248,7 +251,9 @@ fun PersonContent(
           uiState.forms.values.elementAt(page).let { form ->
             when (form) {
               is PersonForm.About -> LazyColumn(
-                modifier = Modifier.fillParentMaxSize(),
+                modifier = Modifier
+                  .testTag(TestTags.Person.ABOUT_FORM)
+                  .fillParentMaxSize(),
               ) {
                 item {
                   PersonalDetails(personDetails)
@@ -263,7 +268,9 @@ fun PersonContent(
               }
 
               is PersonForm.Movies -> PersonGridContent(
-                modifier = Modifier.fillParentMaxSize(),
+                modifier = Modifier
+                  .fillParentMaxSize()
+                  .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
                 itemModifier = Modifier
                   .animateItem()
                   .animateContentSize(),
@@ -273,10 +280,14 @@ fun PersonContent(
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
                 setCurrentDepartment = { currentMovieDepartment = it },
+                mediaType = MediaType.MOVIE,
+                name = personDetails.personDetails.person.name,
               )
 
               is PersonForm.TvShows -> PersonGridContent(
-                modifier = Modifier.fillParentMaxSize(),
+                modifier = Modifier
+                  .fillParentMaxSize()
+                  .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
                 itemModifier = Modifier
                   .animateItem()
                   .animateContentSize(),
@@ -286,6 +297,8 @@ fun PersonContent(
                 isGrid = isGrid,
                 onMediaClick = onMediaClick,
                 setCurrentDepartment = { currentTvDepartment = it },
+                mediaType = MediaType.TV,
+                name = personDetails.personDetails.person.name,
               )
             }
           }
@@ -305,7 +318,8 @@ private fun LayoutStyleButton(
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     modifier = Modifier
       .clip(shape = MaterialTheme.shapes.large)
-      .clickable { onUpdateLayoutStyle() }
+      .testTag(TestTags.Person.LAYOUT_SWITCHER)
+      .clickable(onClick = onUpdateLayoutStyle)
       .padding(
         vertical = MaterialTheme.dimensions.keyline_8,
         horizontal = MaterialTheme.dimensions.keyline_16,
@@ -331,6 +345,7 @@ private fun CollapsiblePersonContent(
   Column(
     modifier = Modifier
       .verticalScroll(state = rememberScrollState())
+      .testTag(TestTags.Person.COLLAPSIBLE_CONTENT)
       .fillMaxWidth()
       .graphicsLayer {
         alpha = (connection.currentSize / connection.maxHeight)
@@ -339,7 +354,9 @@ private fun CollapsiblePersonContent(
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
-      modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+      modifier = Modifier
+        .testTag(TestTags.Person.PERSON_NAME)
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16),
       style = MaterialTheme.typography.displaySmall,
       text = personDetails.personDetails.person.name,
       textAlign = TextAlign.Center,
@@ -349,9 +366,7 @@ private fun CollapsiblePersonContent(
     MovieImage(
       modifier = Modifier.height(MaterialTheme.dimensions.posterSize),
       path = personDetails.personDetails.person.profilePath,
-      errorPlaceHolder = if (
-        personDetails.personDetails.person.gender == Gender.FEMALE
-      ) {
+      errorPlaceHolder = if (personDetails.personDetails.person.gender == Gender.FEMALE) {
         painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
       } else {
         painterResource(id = uiR.drawable.core_ui_ic_person_placeholder)
@@ -380,14 +395,6 @@ fun PersonContentPreview(
         onTabSelected = {},
         onUpdateLayoutStyle = {},
         onApplyFilter = {},
-//        movies = mapOf(
-//          "Directing" to PersonCrewCreditFactory.all(),
-//          "Acting" to PersonCastCreditFactory.all(),
-//        ),
-//        tvShows = mapOf(
-//          "Acting" to PersonCastCreditFactory.all(),
-//          "Directing" to PersonCrewCreditFactory.all(),
-//        ),
       )
     }
   }

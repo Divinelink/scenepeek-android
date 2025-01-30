@@ -25,11 +25,12 @@ import com.divinelink.core.ui.getString
 
 @Composable
 fun BlankSlate(
+  modifier: Modifier = Modifier,
   uiState: BlankSlateState,
   onRetry: ((() -> Unit))? = null,
 ) {
   Column(
-    modifier = Modifier
+    modifier = modifier
       .testTag(TestTags.BLANK_SLATE)
       .fillMaxSize()
       .padding(horizontal = MaterialTheme.dimensions.keyline_16),

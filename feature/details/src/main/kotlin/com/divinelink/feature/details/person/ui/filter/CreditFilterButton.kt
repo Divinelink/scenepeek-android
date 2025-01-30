@@ -16,8 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
 import com.divinelink.core.ui.R as uiR
 
@@ -33,8 +35,9 @@ fun CreditFilterButton(
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     modifier = Modifier
       .clip(CircleShape)
+      .testTag(TestTags.Components.FILTER_BUTTON)
       .background(MaterialTheme.colorScheme.surface)
-      .clickable { onFilterClick() }
+      .clickable(onClick = onFilterClick)
       .padding(
         vertical = MaterialTheme.dimensions.keyline_8,
         horizontal = MaterialTheme.dimensions.keyline_16,

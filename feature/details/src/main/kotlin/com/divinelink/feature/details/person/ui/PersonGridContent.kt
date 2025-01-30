@@ -21,9 +21,11 @@ import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.CreditMediaItem
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.feature.details.R
+import com.divinelink.feature.details.person.ui.credits.EmptyContentCreditCard
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import timber.log.Timber
 
@@ -37,6 +39,8 @@ internal fun PersonGridContent(
   isGrid: Boolean,
   onMediaClick: (MediaItem) -> Unit,
   setCurrentDepartment: (String) -> Unit,
+  mediaType: MediaType,
+  name: String,
 ) {
   val lazyGridState = rememberLazyGridState()
 
@@ -83,45 +87,54 @@ internal fun PersonGridContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
-    credits.forEach { credit ->
-      if (filters.isEmpty()) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-          Text(
-            modifier = Modifier
-              .background(MaterialTheme.colorScheme.surface)
-              .padding(
-                horizontal = MaterialTheme.dimensions.keyline_8,
-                vertical = MaterialTheme.dimensions.keyline_8,
-              ),
-            style = MaterialTheme.typography.titleSmall,
-            text = stringResource(
-              R.string.feature_details_person_credits_department_size,
-              credit.key,
-              credit.value.size,
-            ),
-          )
-        }
+    if (credits.isEmpty()) {
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        EmptyContentCreditCard(
+          type = mediaType,
+          name = name,
+        )
       }
+    } else {
+      credits.forEach { credit ->
+        if (filters.isEmpty()) {
+          item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+              modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(
+                  horizontal = MaterialTheme.dimensions.keyline_8,
+                  vertical = MaterialTheme.dimensions.keyline_8,
+                ),
+              style = MaterialTheme.typography.titleSmall,
+              text = stringResource(
+                R.string.feature_details_person_credits_department_size,
+                credit.key,
+                credit.value.size,
+              ),
+            )
+          }
+        }
 
-      items(
-        items = credit.value,
-        key = { "${it.mediaItem.id} ${it.role.title}" },
-      ) { item ->
-        if (isGrid) {
-          MediaItem(
-            modifier = itemModifier,
-            media = item.mediaItem,
-            subtitle = item.role.title,
-            fullDate = false,
-            onMediaItemClick = onMediaClick,
-          )
-        } else {
-          CreditMediaItem(
-            modifier = itemModifier,
-            mediaItem = item.mediaItem,
-            subtitle = item.role.title,
-            onClick = onMediaClick,
-          )
+        items(
+          items = credit.value,
+          key = { "${it.mediaItem.id} ${it.role.title}" },
+        ) { item ->
+          if (isGrid) {
+            MediaItem(
+              modifier = itemModifier,
+              media = item.mediaItem,
+              subtitle = item.role.title,
+              fullDate = false,
+              onMediaItemClick = onMediaClick,
+            )
+          } else {
+            CreditMediaItem(
+              modifier = itemModifier,
+              mediaItem = item.mediaItem,
+              subtitle = item.role.title,
+              onClick = onMediaClick,
+            )
+          }
         }
       }
     }

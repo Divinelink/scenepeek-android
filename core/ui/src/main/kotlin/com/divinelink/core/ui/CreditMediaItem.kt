@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,7 @@ fun CreditMediaItem(
 ) {
   val offset = MaterialTheme.dimensions.keyline_28
   Card(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Person.CREDIT_MEDIA_ITEM.format(mediaItem.name)),
     onClick = { onClick(mediaItem) },
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
