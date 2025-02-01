@@ -109,3 +109,15 @@ fun String.isValidEmail(): Boolean {
   val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
   return this.matches(emailRegex.toRegex())
 }
+
+fun String.markdownToHtml(): String = this
+  .replace("&", "&amp;")
+  .replace("<", "&lt;")
+  .replace(">", "&gt;")
+  .replace("\"", "&quot;")
+  .replace("'", "&#39;")
+  .replace("\r\n", "<br>")
+  .replace(Regex("""\*\*(.*?)\*\*"""), "<b>$1</b>")
+  .replace(Regex("""_(.*?)_"""), "<i>$1</i>")
+  .replace(Regex("""\*(.*?)\*"""), "<i>$1</i>")
+  .replace(Regex("""`(.*?)`"""), "<code>$1</code>")

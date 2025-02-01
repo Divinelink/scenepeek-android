@@ -180,7 +180,7 @@ fun DetailsContent(
         isVisible = titleIsVisible.value,
         actions = {
           FavoriteButton(
-            modifier = Modifier.clip(MaterialTheme.shape.roundedShape),
+            modifier = Modifier.clip(MaterialTheme.shape.rounded),
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
             inactiveColor = MaterialTheme.colorScheme.onSurface,

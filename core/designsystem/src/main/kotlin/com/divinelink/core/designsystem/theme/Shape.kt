@@ -8,16 +8,16 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.dp
 
-val MaterialCardShape = RoundedCornerShape(16.dp)
-
 val SearchBarShape = RoundedCornerShape(50.dp)
 
-// Popular Movies
-val PopularMovieItemShape = RoundedCornerShape(8.dp)
-val MovieImageShape = RoundedCornerShape(8.dp)
-
 @Immutable
-data class Shapes(val roundedShape: RoundedCornerShape = RoundedCornerShape(50.dp))
+data class Shapes(
+  val extraSmall: RoundedCornerShape = RoundedCornerShape(2.dp),
+  val small: RoundedCornerShape = RoundedCornerShape(4.dp),
+  val medium: RoundedCornerShape = RoundedCornerShape(8.dp),
+  val large: RoundedCornerShape = RoundedCornerShape(16.dp),
+  val rounded: RoundedCornerShape = RoundedCornerShape(50.dp),
+)
 
 val MaterialTheme.shape: Shapes
   @Composable
