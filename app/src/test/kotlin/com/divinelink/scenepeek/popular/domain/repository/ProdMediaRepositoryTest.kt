@@ -110,21 +110,6 @@ class ProdMediaRepositoryTest {
       assertThat(expectedResult).isEqualTo(actualResult.data)
     }
 
-  //    @Test
-  //    fun testFetchPopularMoviesErrorCase() = runTest {
-  //        val request = PopularRequestApi(apiKey = "", page = 1)
-  //        val expectedResult = Result.failure(Exception("response is empty"))
-  //
-  //        mediaService.mockFetchPopularMovies(
-  //            request = request,
-  //            result = flowOf(),
-  //        )
-  //
-  //        val actualResult = repository.fetchPopularMovies(request)
-  //
-  //        assertThat(expectedResult).isInstanceOf(actualResult::class.java)
-  //    }
-
   @Test
   fun testFetchFavoriteMovies() = runTest {
     val expectedResult = listOf(

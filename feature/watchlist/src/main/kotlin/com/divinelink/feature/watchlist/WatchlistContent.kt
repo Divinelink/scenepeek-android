@@ -1,6 +1,5 @@
 package com.divinelink.feature.watchlist
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,18 +12,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.Previews
@@ -32,6 +28,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
+import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.getString
 import kotlinx.coroutines.launch
 
@@ -44,7 +41,6 @@ fun WatchlistContent(
 ) {
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
-  val showScrollToTop = remember { derivedStateOf { scrollState.firstVisibleItemIndex > 6 } }
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
@@ -80,48 +76,26 @@ fun WatchlistContent(
         )
       }
     }
-    AnimatedContent(
-      modifier = Modifier
-        .padding(
-          end = MaterialTheme.dimensions.keyline_16,
-          bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16,
-        )
-        .align(Alignment.BottomEnd),
-      targetState = showScrollToTop.value,
-      label = "Show scroll to top button animation",
-    ) { isVisible ->
-      if (isVisible) {
-        ScrollToTopButton {
-          scope.launch {
-            scrollState.animateScrollToItem(0)
-          }
+
+    ScrollToTopButton(
+      modifier = Modifier.align(Alignment.BottomCenter),
+      visible = scrollState.canScrollToTop(),
+      onClick = {
+        scope.launch {
+          scrollState.animateScrollToItem(0)
         }
-      }
-    }
+      },
+    )
   }
 }
 
 @Previews
 @Composable
-private fun WatchlistContentPreview() {
-  val movie = MediaItem.Media.Movie(
-    id = 0,
-    posterPath = "",
-    releaseDate = "2020-07-02",
-    name = "Flight Club",
-    voteAverage = 9.4,
-    voteCount = 1_333_982,
-    overview = LoremIpsum(50).values.joinToString(),
-    isFavorite = false,
-  )
-  val list = (1..10).map {
-    movie.copy(id = it)
-  }
-
+fun WatchlistContentPreview() {
   AppTheme {
     Surface {
       WatchlistContent(
-        list = list,
+        list = MediaItemFactory.MoviesList(range = 1..30),
         totalResults = UIText.StringText("You have 264 movies in your watchlist"),
         onMediaClick = {},
         onLoadMore = {},
