@@ -77,3 +77,25 @@ fun LazyListState.EndlessScrollHandler(
       }
   }
 }
+
+@Composable
+fun LazyGridState.canScrollToTop(): Boolean {
+  val scrollToTop = remember {
+    derivedStateOf {
+      this.firstVisibleItemIndex > 3 && this.lastScrolledBackward
+    }
+  }
+
+  return scrollToTop.value
+}
+
+@Composable
+fun LazyListState.canScrollToTop(): Boolean {
+  val scrollToTop = remember {
+    derivedStateOf {
+      this.firstVisibleItemIndex > 3 && this.lastScrolledBackward
+    }
+  }
+
+  return scrollToTop.value
+}

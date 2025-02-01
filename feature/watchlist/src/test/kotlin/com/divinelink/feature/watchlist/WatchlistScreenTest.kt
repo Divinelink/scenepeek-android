@@ -1,6 +1,7 @@
 package com.divinelink.feature.watchlist
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasText
@@ -13,7 +14,6 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
@@ -117,8 +117,6 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with empty content`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -164,8 +162,6 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test tv watching is loading`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(WatchlistResponseFactory.emptyMovies()),
@@ -204,8 +200,6 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with movies and tv content`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
@@ -245,6 +239,14 @@ class WatchlistScreenTest : ComposeTest() {
       )
 
     composeTestRule.onNodeWithText(movieList.last().name).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+
+    // Scroll up to display the ScrollToTopButton
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_CONTENT)
+      .performScrollToNode(
+        matcher = hasText(text = movieList[movieList.lastIndex - 1].name),
+      )
+
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
     // Should be at the top of the list

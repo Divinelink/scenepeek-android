@@ -23,5 +23,6 @@ dependencies {
 
   implementation(libs.timber)
 
+  implementation(projects.core.fixtures)
   testImplementation(projects.core.testing)
 }
