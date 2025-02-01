@@ -1,6 +1,6 @@
 [versions]
-version-name = "0.9.0"
-version-code = "14"
+version-name = "0.10.0"
+version-code = "15"
 
 firebase-appdistribution-gradle = "5.0.0"
 firebase-crashlytics-gradle = "3.0.2"
