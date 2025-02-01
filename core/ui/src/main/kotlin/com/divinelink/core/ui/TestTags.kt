@@ -105,6 +105,11 @@ object TestTags {
       const val LOGOUT_BUTTON = "Account Logout Button"
     }
 
+    object About {
+      const val CARD = "Application About Card"
+      const val SCROLLABLE_CONTENT = "About Lazy List"
+    }
+
     object Jellyseerr {
       const val INITIAL_BOTTOM_SHEET = "Jellyseerr Initial Bottom Sheet"
       const val LOGGED_IN_BOTTOM_SHEET = "Jellyseerr Logged In Bottom Sheet"

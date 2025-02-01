@@ -59,11 +59,22 @@
 
   <string name="feature_settings_jellyseerr_joined_on">Joined on %s | User ID: %s</string>
 
-  <!-- HelpSettingsScreen -->
-  <string name="feature_settings_help">Help</string>
-  <string name="feature_settings_help__privacy_policy">Privacy Policy</string>
-  <string name="feature_settings_help__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
-  <string name="feature_settings_help__version">Version</string>
+  <!-- AboutSettingsScreen -->
+  <string name="feature_settings_about">About</string>
+  <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
+  <string name="feature_settings_about__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
+
+  <string name="feature_settings_about__version">Version %s</string>
+  <string name="feature_settings_about__developer_github_url">https://github.com/%s</string>
+  <string name="feature_settings_about__repository_url">https://github.com/Divinelink/scenepeek-android</string>
+  <string name="feature_settings_about__tmdb_endorsement">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
+
+  <string name="feature_settings_about__ad_free">Ad Free</string>
+  <string name="feature_settings_about__open_source">Open Source</string>
+  <string name="feature_settings_about__no_tracker">No Trackers</string>
+
+  <string name="feature_settings_about__source_code">View source code</string>
+  <string name="feature_settings_about__developed_by">Developed by </string>
 
   <!-- DetailPreferencesSettingsScreen -->
   <string name="feature_settings_ratings">Ratings</string>
@@ -79,7 +90,6 @@
   <string name="preferences__appearance">Appearance</string>
   <string name="feature_settings_details_preferences">Details preferences</string>
   <string name="feature_settings_link_handling">Link handling</string>
-  <string name="preferences__help">Help</string>
   <string name="preferences__theme">Theme</string>
   <string name="preferences__light_theme">Light</string>
   <string name="preferences__dark_theme">Dark</string>

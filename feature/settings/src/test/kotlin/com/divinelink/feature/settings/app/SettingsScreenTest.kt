@@ -11,10 +11,10 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import kotlin.test.Test
@@ -126,19 +126,19 @@ class SettingsScreenTest : ComposeTest() {
       )
     }
 
-    val helpString = composeTestRule.activity.getString(R.string.preferences__help)
+    val aboutString = getString(R.string.feature_settings_about)
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
-        hasText(helpString),
+        hasText(aboutString),
       )
-      onNodeWithText(helpString).assertExists()
+      onNodeWithText(aboutString).assertExists()
 
-      onNodeWithText(helpString).performClick()
+      onNodeWithText(aboutString).performClick()
     }
 
     destinationsNavigator.verifyNavigatedToDirection(
-      HelpSettingsScreenDestination,
+      AboutSettingsScreenDestination,
     )
   }
 

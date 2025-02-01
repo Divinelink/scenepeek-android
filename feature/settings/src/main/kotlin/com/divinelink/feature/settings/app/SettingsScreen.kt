@@ -19,10 +19,10 @@ import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.navigation.SettingsGraph
+import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -91,8 +91,8 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
       item {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
-          text = stringResource(R.string.preferences__help),
-          onClick = { navigator.navigate(HelpSettingsScreenDestination) },
+          text = stringResource(R.string.feature_settings_about),
+          onClick = { navigator.navigate(AboutSettingsScreenDestination) },
         )
       }
     }
