@@ -1,17 +1,22 @@
-package com.divinelink.feature.settings.app.help
+package com.divinelink.feature.settings.app.about
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.commons.BuildConfig
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsExternalLinkItem
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.components.SettingsTextItem
 import com.divinelink.feature.settings.navigation.SettingsGraph
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -19,12 +24,12 @@ import com.divinelink.core.commons.R as commonR
 
 @Composable
 @Destination<SettingsGraph>
-fun HelpSettingsScreen(
+fun AboutSettingsScreen(
   navigator: DestinationsNavigator,
   buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
 ) {
   SettingsScaffold(
-    title = stringResource(R.string.feature_settings_help),
+    title = stringResource(R.string.feature_settings_about),
     onNavigationClick = navigator::navigateUp,
   ) { paddingValues ->
 
@@ -36,16 +41,22 @@ fun HelpSettingsScreen(
       version
     }
 
-    ScenePeekLazyColumn(contentPadding = paddingValues) {
+    ScenePeekLazyColumn(
+      modifier = Modifier.testTag(TestTags.Settings.About.SCROLLABLE_CONTENT),
+      contentPadding = paddingValues,
+    ) {
       item {
-        SettingsTextItem(
-          title = stringResource(R.string.feature_settings_help__version),
-          summary = buildVersion.getString(),
+        AboutCard(
+          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+          name = stringResource(commonR.string.core_commons_app_name),
+          version = buildVersion.getString(),
+          github = "Divinelink",
         )
-
+      }
+      item {
         SettingsExternalLinkItem(
-          text = stringResource(R.string.feature_settings_help__privacy_policy),
-          url = stringResource(R.string.feature_settings_help__privacy_policy_url),
+          text = stringResource(R.string.feature_settings_about__privacy_policy),
+          url = stringResource(R.string.feature_settings_about__privacy_policy_url),
         )
       }
     }

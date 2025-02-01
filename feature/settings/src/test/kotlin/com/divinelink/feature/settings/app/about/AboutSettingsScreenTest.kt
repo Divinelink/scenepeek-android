@@ -1,4 +1,4 @@
-package com.divinelink.feature.settings.app.help
+package com.divinelink.feature.settings.app.about
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -14,12 +14,12 @@ import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
-import com.divinelink.feature.settings.screens.destinations.HelpSettingsScreenDestination
+import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
 import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import kotlin.test.Test
 import com.divinelink.core.commons.R as CommonR
 
-class HelpSettingsScreenTest : ComposeTest() {
+class AboutSettingsScreenTest : ComposeTest() {
 
   private val releaseBuildConfigProvider = object : BuildConfigProvider {
     override val isDebug: Boolean = false
@@ -34,7 +34,7 @@ class HelpSettingsScreenTest : ComposeTest() {
   @Test
   fun `test version with debug build`() {
     setContentWithTheme {
-      HelpSettingsScreen(
+      AboutSettingsScreen(
         navigator = FakeDestinationsNavigator(),
         buildConfigProvider = debugBuildConfigProvider,
       )
@@ -43,19 +43,23 @@ class HelpSettingsScreenTest : ComposeTest() {
     val version = getString(CommonR.string.version_name) + " debug"
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_settings_help))
+      onNodeWithText(getString(R.string.feature_settings_about))
         .assertIsDisplayed()
-        .assertTextEquals("Help")
+        .assertTextEquals("About")
 
-      onNodeWithText(getString(R.string.feature_settings_help__version)).assertIsDisplayed()
-      onNodeWithText(version).assertIsDisplayed()
+      onNodeWithText(
+        getString(
+          R.string.feature_settings_about__version,
+          version,
+        ),
+      ).assertIsDisplayed()
     }
   }
 
   @Test
   fun `test version with release`() {
     setContentWithTheme {
-      HelpSettingsScreen(
+      AboutSettingsScreen(
         navigator = FakeDestinationsNavigator(),
         buildConfigProvider = releaseBuildConfigProvider,
       )
@@ -64,22 +68,41 @@ class HelpSettingsScreenTest : ComposeTest() {
     val version = getString(CommonR.string.version_name)
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_settings_help__version)).assertIsDisplayed()
-      onNodeWithText(version).assertIsDisplayed()
+      onNodeWithText(
+        getString(
+          R.string.feature_settings_about__version,
+          version,
+        ),
+      ).assertIsDisplayed()
     }
   }
 
   @Test
-  fun `test privacy policy is visible`() {
+  fun `test about card is visible`() {
     setContentWithTheme {
-      HelpSettingsScreen(
+      AboutSettingsScreen(
         navigator = FakeDestinationsNavigator(),
         buildConfigProvider = releaseBuildConfigProvider,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithText(getString(R.string.feature_settings_help__privacy_policy)).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.About.CARD).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test privacy policy is visible`() {
+    setContentWithTheme {
+      AboutSettingsScreen(
+        navigator = FakeDestinationsNavigator(),
+        buildConfigProvider = releaseBuildConfigProvider,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Settings.About.SCROLLABLE_CONTENT).performScrollToIndex(1)
+      onNodeWithText(getString(R.string.feature_settings_about__privacy_policy)).assertIsDisplayed()
     }
   }
 
@@ -94,9 +117,9 @@ class HelpSettingsScreenTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToIndex(5)
 
-      onNodeWithText(getString(R.string.preferences__help)).performClick()
+      onNodeWithText(getString(R.string.feature_settings_about)).performClick()
 
-      navigator.verifyNavigatedToDirection(HelpSettingsScreenDestination)
+      navigator.verifyNavigatedToDirection(AboutSettingsScreenDestination)
 
       onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick().assertIsDisplayed()
     }
