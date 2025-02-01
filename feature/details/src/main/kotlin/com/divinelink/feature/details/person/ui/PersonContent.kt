@@ -2,7 +2,6 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -66,6 +66,8 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
@@ -101,6 +103,9 @@ fun PersonContent(
   } else {
     GridCells.Fixed(1)
   }
+
+  val tvLazyGridState = rememberLazyGridState()
+  val movieLazyGridState = rememberLazyGridState()
 
   val movieFilters = remember(uiState.filters) {
     uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
@@ -178,7 +183,11 @@ fun PersonContent(
       }
   }
 
-  Box(Modifier.nestedScroll(connection)) {
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+      .nestedScroll(connection),
+  ) {
     CollapsiblePersonContent(
       connection = connection,
       personDetails = personDetails as PersonDetailsUiState.Data,
@@ -271,9 +280,6 @@ fun PersonContent(
                 modifier = Modifier
                   .fillParentMaxSize()
                   .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
-                itemModifier = Modifier
-                  .animateItem()
-                  .animateContentSize(),
                 grid = grid,
                 credits = movies,
                 filters = movieFilters,
@@ -282,15 +288,13 @@ fun PersonContent(
                 setCurrentDepartment = { currentMovieDepartment = it },
                 mediaType = MediaType.MOVIE,
                 name = personDetails.personDetails.person.name,
+                lazyGridState = movieLazyGridState,
               )
 
               is PersonForm.TvShows -> PersonGridContent(
                 modifier = Modifier
                   .fillParentMaxSize()
                   .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
-                itemModifier = Modifier
-                  .animateItem()
-                  .animateContentSize(),
                 grid = grid,
                 credits = tvShows,
                 filters = tvFilters,
@@ -299,12 +303,39 @@ fun PersonContent(
                 setCurrentDepartment = { currentTvDepartment = it },
                 mediaType = MediaType.TV,
                 name = personDetails.personDetails.person.name,
+                lazyGridState = tvLazyGridState,
               )
             }
           }
         }
       }
     }
+
+    ScrollToTopButton(
+      modifier = Modifier.align(Alignment.BottomCenter),
+      visible = when (selectedPage) {
+        PersonTab.MOVIES.order -> movieLazyGridState.canScrollToTop()
+        PersonTab.TV_SHOWS.order -> tvLazyGridState.canScrollToTop()
+        else -> false
+      },
+      onClick = {
+        scope.launch {
+          when (selectedPage) {
+            PersonTab.MOVIES.order -> {
+              movieLazyGridState.animateScrollToItem(0)
+              lazyListState.animateScrollToItem(0)
+            }
+            PersonTab.TV_SHOWS.order -> {
+              tvLazyGridState.animateScrollToItem(0)
+              lazyListState.animateScrollToItem(0)
+            }
+            else -> {
+              // Do nothing
+            }
+          }
+        }
+      },
+    )
   }
 }
 

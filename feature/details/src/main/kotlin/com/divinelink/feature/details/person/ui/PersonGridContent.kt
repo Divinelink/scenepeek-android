@@ -1,11 +1,13 @@
 package com.divinelink.feature.details.person.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -32,7 +34,6 @@ import timber.log.Timber
 @Composable
 internal fun PersonGridContent(
   modifier: Modifier = Modifier,
-  itemModifier: Modifier = Modifier,
   grid: GridCells,
   credits: GroupedPersonCredits,
   filters: List<CreditFilter>,
@@ -41,9 +42,8 @@ internal fun PersonGridContent(
   setCurrentDepartment: (String) -> Unit,
   mediaType: MediaType,
   name: String,
+  lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
-  val lazyGridState = rememberLazyGridState()
-
   val currentDepartments = credits.keys.toList()
   val headerPositions = remember(currentDepartments) {
     val positions = mutableListOf<Int>()
@@ -121,7 +121,9 @@ internal fun PersonGridContent(
         ) { item ->
           if (isGrid) {
             MediaItem(
-              modifier = itemModifier,
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
               media = item.mediaItem,
               subtitle = item.role.title,
               fullDate = false,
@@ -129,7 +131,9 @@ internal fun PersonGridContent(
             )
           } else {
             CreditMediaItem(
-              modifier = itemModifier,
+              modifier = Modifier
+                .animateItem()
+                .animateContentSize(),
               mediaItem = item.mediaItem,
               subtitle = item.role.title,
               onClick = onMediaClick,

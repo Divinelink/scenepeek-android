@@ -3,6 +3,7 @@ package com.divinelink.feature.details.person.ui
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -10,6 +11,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
@@ -19,6 +22,7 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
+import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.navigation.arguments.DetailsNavArguments
@@ -882,6 +886,127 @@ class PersonScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
       onNodeWithText(getString(uiR.string.core_ui_filter)).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `display scroll to top when scrolling up from bottom of the list on movies tab`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
+          ),
+        ),
+      )
+      // Switch to Movies tab
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+
+      composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
+        .performScrollToNode(
+          matcher = hasText(text = "The Incredible Burt Wonderstone"),
+        )
+      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+
+      composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
+        .performScrollToNode(
+          matcher = hasText(text = "The 40 Year Old Virgin"),
+        )
+
+      onNodeWithText("The 40 Year Old Virgin").assertIsDisplayed()
+
+      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
+
+      onNodeWithText("Bruce Almighty").assertIsDisplayed()
+      onNodeWithText("The 40 Year Old Virgin").assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `display scroll to top when scrolling up from bottom of the list on tv tab`() = runTest {
+    val channel = Channel<Result<PersonDetailsResult>>()
+    fetchPersonDetailsUseCase.mockSuccess(response = channel)
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      PersonScreen(navigator = navigator, viewModel = viewModel)
+    }
+
+    with(composeTestRule) {
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = emptyList(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = emptyMap(),
+            tvShows = mapOf(
+              "Acting" to listOf(theOffice()),
+              "Directing" to listOf(theOffice().copy(character = "Michael Scarn")),
+              "Writing" to listOf(theOffice().copy(character = "Worlds best boss")),
+              "Production" to listOf(PersonCrewCreditFactory.riot()),
+              "Lighting" to listOf(PersonCrewCreditFactory.riot().copy(job = "Lighting")),
+              "Sound" to listOf(PersonCrewCreditFactory.riot().copy(job = "Sound Design")),
+              "Visual Effects" to listOf(
+                PersonCrewCreditFactory.riot().copy(job = "Visual Effects"),
+              ),
+            ),
+          ),
+        ),
+      )
+      // Switch to Movies tab
+      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+
+      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+        .performScrollToNode(
+          matcher = hasText(text = "Sound (1)"),
+        )
+
+      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
+
+      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+        .performScrollToIndex(9)
+
+      composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
+        .performTouchInput {
+          val center = centerY
+
+          swipeDown(
+            startY = center,
+            endY = center + 100,
+          )
+        }
+
+      onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
+
+      onNodeWithText("Acting (1)").assertIsDisplayed()
+      onNodeWithText("Sound (1)").assertIsNotDisplayed()
     }
   }
 }
