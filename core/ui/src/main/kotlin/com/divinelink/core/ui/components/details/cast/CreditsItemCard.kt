@@ -24,8 +24,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
@@ -44,9 +44,9 @@ fun CreditsItemCard(
   obfuscateEpisodes: Boolean = false,
 ) {
   Card(
-    shape = PopularMovieItemShape,
+    shape = MaterialTheme.shape.medium,
     modifier = modifier
-      .clip(PopularMovieItemShape)
+      .clip(MaterialTheme.shape.medium)
       .clipToBounds()
       .widthIn(max = 120.dp),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),

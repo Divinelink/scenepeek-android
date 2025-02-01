@@ -1,5 +1,6 @@
 package com.divinelink.factories.api
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.divinelink.core.network.media.model.search.movie.SearchMovieApi
 
 object SearchMovieApiFactory {
@@ -29,13 +30,13 @@ object SearchMovieApiFactory {
       genreIds = listOf(),
       originalLanguage = "",
       originalTitle = "",
-      overview = "overview $it",
+      overview = LoremIpsum(15).values.joinToString(),
       popularity = 0.0,
       posterPath = "movie $it - posterPath",
-      releaseDate = "movie $it - releaseDate",
-      title = "movie $it - name",
+      releaseDate = "2002-08-22",
+      title = "Fight club $it",
       video = false,
-      voteAverage = it + 0.713,
+      voteAverage = (it + 0.513) % 10,
       voteCount = 12_345 + it,
     )
   }

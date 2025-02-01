@@ -87,7 +87,7 @@ fun MediaDetailsContent(
           FavoriteButton(
             modifier = Modifier
               .testTag(BOTTOM_SHEET_MARK_AS_FAVORITE)
-              .clip(MaterialTheme.shape.roundedShape),
+              .clip(MaterialTheme.shape.rounded),
             isFavorite = it,
             transparentBackground = true,
             onClick = { onMarkAsFavoriteClicked(media) },

@@ -48,7 +48,7 @@ fun FavoriteButton(
   Box(
     modifier = modifier
       .padding(MaterialTheme.dimensions.keyline_4)
-      .clip(MaterialTheme.shape.roundedShape)
+      .clip(MaterialTheme.shape.rounded)
       .background(color = backgroundColor)
       .clickable { onClick() }
       .size(MaterialTheme.dimensions.keyline_40),

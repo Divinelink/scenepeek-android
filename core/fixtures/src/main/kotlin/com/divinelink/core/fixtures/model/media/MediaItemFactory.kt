@@ -1,5 +1,6 @@
 package com.divinelink.core.fixtures.model.media
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
@@ -39,11 +40,11 @@ object MediaItemFactory {
     MediaItem.Media.Movie(
       id = it,
       posterPath = "movie $it - posterPath",
-      releaseDate = "movie $it - releaseDate",
-      name = "movie $it - name",
-      voteAverage = it.toDouble() + 0.7,
+      releaseDate = "2002-08-22",
+      name = "Fight club $it",
+      voteAverage = (it.toDouble() + 0.5) % 10,
       voteCount = 12_345 + it,
-      overview = "overview $it",
+      overview = LoremIpsum(15).values.joinToString(),
       isFavorite = false,
     )
   }

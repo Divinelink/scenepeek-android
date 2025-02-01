@@ -24,8 +24,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MovieImage
@@ -47,11 +47,11 @@ fun MediaItem(
   val offset = MaterialTheme.dimensions.keyline_28
 
   Card(
-    shape = PopularMovieItemShape,
+    shape = MaterialTheme.shape.medium,
     modifier = modifier
       .testTag(MOVIE_CARD_ITEM_TAG)
       .widthIn(max = MaterialTheme.dimensions.shortMediaCard)
-      .clip(PopularMovieItemShape)
+      .clip(MaterialTheme.shape.medium)
       .clipToBounds()
       .clickable {
         onMediaItemClick(media)

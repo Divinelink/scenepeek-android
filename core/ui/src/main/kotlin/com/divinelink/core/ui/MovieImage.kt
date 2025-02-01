@@ -3,6 +3,7 @@
 package com.divinelink.core.ui
 
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,7 +17,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.divinelink.core.commons.ApiConstants
-import com.divinelink.core.designsystem.theme.MovieImageShape
+import com.divinelink.core.designsystem.theme.shape
 
 @Composable
 fun MovieImage(
@@ -27,7 +28,7 @@ fun MovieImage(
 ) {
   AsyncImage(
     modifier = modifier
-      .clip(MovieImageShape)
+      .clip(MaterialTheme.shape.medium)
       .aspectRatio((2f / 3f)),
     model = ImageRequest.Builder(LocalContext.current)
       .memoryCachePolicy(CachePolicy.ENABLED)

@@ -28,8 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.extensions.markdownToHtml
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.PopularMovieItemShape
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
@@ -49,16 +49,15 @@ fun ReviewItemCard(
   val maxWidth = remember { mutableStateOf(MINIMUM_CARD_SIZE) }
 
   Card(
-    shape = PopularMovieItemShape,
-    modifier = Modifier
-      .clip(PopularMovieItemShape)
+    modifier = modifier
+      .clip(MaterialTheme.shape.medium)
+      .widthIn(max = maxWidth.value)
       .animateContentSize(
         animationSpec = spring(
           dampingRatio = Spring.DampingRatioLowBouncy,
           stiffness = Spring.StiffnessLow,
         ),
       )
-      .widthIn(max = maxWidth.value)
       .clipToBounds()
       .clickable(
         indication = null,
@@ -68,6 +67,7 @@ fun ReviewItemCard(
         maxLines.intValue = if (!expanded.value) MINIMUM_MAX_LINES else Int.MAX_VALUE
         maxWidth.value = if (!expanded.value) MINIMUM_CARD_SIZE else MAXIMUM_CARD_SIZE
       },
+    shape = MaterialTheme.shape.medium,
   ) {
     Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_12))
     review.rating?.let { rating ->
