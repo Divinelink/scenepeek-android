@@ -32,6 +32,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.details.R
+import timber.log.Timber
 import com.divinelink.core.ui.R as uiR
 
 @OptIn(
@@ -91,7 +92,10 @@ private fun CreditsFilterBottomSheetContent(
           FilterItem(
             filter = filter,
             isApplied = appliedFilters.contains(filter),
-            onClick = { onClick(filter) },
+            onClick = {
+              Timber.d("Filter clicked: $filter")
+              onClick(filter)
+            },
           )
         }
         is CreditFilter.SortReleaseDate -> {

@@ -10,7 +10,7 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -32,7 +32,7 @@ import org.junit.Rule
 
 class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
-  private lateinit var navArgs: DetailsNavArguments
+  private lateinit var navArgs: DetailsRoute
   private lateinit var viewModel: DetailsViewModel
 
   override val actualUiState: Flow<DetailsViewState>
@@ -150,9 +150,9 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     mediaType: MediaType,
     isFavorite: Boolean = false,
   ) = apply {
-    navArgs = DetailsNavArguments(
+    navArgs = DetailsRoute(
       id = id,
-      mediaType = mediaType.value,
+      mediaType = mediaType,
       isFavorite = isFavorite,
     )
   }

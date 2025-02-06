@@ -22,14 +22,10 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsTextItem
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.divinelink.core.commons.R as CoreR
 
 @Composable
-@Destination<SettingsGraph>
-fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
+fun LinkHandlingSettingsScreen(navigateUp: () -> Unit) {
   val context = LocalContext.current
 
   val directions = buildAnnotatedString {
@@ -59,7 +55,7 @@ fun LinkHandlingSettingsScreen(navigator: DestinationsNavigator) {
 
   SettingsScaffold(
     title = stringResource(id = R.string.feature_settings_link_handling),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = navigateUp,
   ) {
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.LAZY_COLUMN),

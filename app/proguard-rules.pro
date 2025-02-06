@@ -20,6 +20,12 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keep class com.divinelink.core.model.person.Gender { *; }
+-keepclassmembers class com.divinelink.core.model.person.Gender { *; }
+
+-keep class com.divinelink.core.model.media.MediaType { *; }
+-keepclassmembers class com.divinelink.core.model.media.MediaType { *; }
+
 -dontwarn java.lang.StringCoding$Result
 -dontwarn java.lang.StringCoding
 -dontwarn java.lang.StringLatin1$CharsSpliterator

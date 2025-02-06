@@ -1,6 +1,9 @@
 package com.divinelink.scenepeek.ui
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
@@ -10,10 +13,16 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.composable
+import androidx.navigation.createGraph
+import androidx.navigation.testing.TestNavHostController
+import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
@@ -41,6 +50,8 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
+import com.divinelink.scenepeek.navigation.TopLevelDestination
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
@@ -54,14 +65,14 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
-class MovieAppTest : ComposeTest() {
+class ScenePeekAppTest : ComposeTest() {
 
   private lateinit var uiState: MainUiState
   private lateinit var uiEvent: MainUiEvent
 
   private val networkMonitor = TestNetworkMonitor()
 
-  private lateinit var appState: MovieAppState
+  private lateinit var state: ScenePeekAppState
 
   // Home use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
@@ -133,12 +144,11 @@ class MovieAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
+      val state = rememberScenePeekAppState(networkMonitor)
+
       KoinContext {
-        MovieApp(
-          state = MovieAppState(
-            scope = backgroundScope,
-            networkMonitor = networkMonitor,
-          ),
+        ScenePeekApp(
+          state = state,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -188,12 +198,11 @@ class MovieAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
+      val state = rememberScenePeekAppState(networkMonitor)
+
       KoinContext {
-        MovieApp(
-          state = MovieAppState(
-            scope = backgroundScope,
-            networkMonitor = networkMonitor,
-          ),
+        ScenePeekApp(
+          state = state,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -285,19 +294,19 @@ class MovieAppTest : ComposeTest() {
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,
-            "mediaType" to "movie",
+            "isFavorite" to false,
+            "mediaType" to MediaType.MOVIE,
           ),
         ),
       )
     }
 
     setContentWithTheme {
+      val state = rememberScenePeekAppState(networkMonitor)
+
       KoinContext {
-        MovieApp(
-          state = MovieAppState(
-            scope = backgroundScope,
-            networkMonitor = networkMonitor,
-          ),
+        ScenePeekApp(
+          state = state,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -370,12 +379,11 @@ class MovieAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
+      val state = rememberScenePeekAppState(networkMonitor)
+
       KoinContext {
-        MovieApp(
-          state = MovieAppState(
-            scope = backgroundScope,
-            networkMonitor = networkMonitor,
-          ),
+        ScenePeekApp(
+          state = state,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -416,9 +424,12 @@ class MovieAppTest : ComposeTest() {
     uiState = MainUiState.Loading
 
     setContentWithTheme {
+      val navController = rememberTestNavController()
+
       KoinContext {
-        MovieApp(
-          state = MovieAppState(
+        ScenePeekApp(
+          state = ScenePeekAppState(
+            navController = navController,
             scope = backgroundScope,
             networkMonitor = networkMonitor,
           ),
@@ -431,6 +442,28 @@ class MovieAppTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test network monitor emits correct value`() = runTest(
+    MainDispatcherRule().testDispatcher.unconfined,
+  ) {
+    setContentWithTheme {
+      val navController = rememberTestNavController()
+      state = ScenePeekAppState(
+        navController = navController,
+        scope = backgroundScope,
+        networkMonitor = networkMonitor,
+      )
+    }
+
+    state.isOffline.test {
+      assertThat(awaitItem()).isFalse()
+
+      networkMonitor.setConnected(false)
+
+      assertThat(awaitItem()).isTrue()
     }
   }
 
@@ -452,16 +485,14 @@ class MovieAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      appState = remember {
-        MovieAppState(
-          scope = backgroundScope,
-          networkMonitor = networkMonitor,
-        )
-      }
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        scope = backgroundScope,
+      )
 
       KoinContext {
-        MovieApp(
-          state = appState,
+        ScenePeekApp(
+          state = state,
           uiState = uiState,
           uiEvent = uiEvent,
           onConsumeEvent = {},
@@ -479,8 +510,62 @@ class MovieAppTest : ComposeTest() {
       onNodeWithText(getString(uiR.string.core_ui_connected)).assertIsDisplayed()
       onNodeWithText(getString(uiR.string.core_ui_not_connected)).assertIsNotDisplayed()
 
-      advanceTimeBy(4100)
+      advanceTimeBy(5000)
+
       onNodeWithText(getString(uiR.string.core_ui_connected)).assertIsNotDisplayed()
+    }
+  }
+
+  fun `test currentDestination`() = runTest {
+    var currentDestination: String? = null
+
+    setContentWithTheme {
+      val navController = rememberTestNavController()
+      state = remember(navController) {
+        ScenePeekAppState(
+          navController = navController,
+          scope = backgroundScope,
+          networkMonitor = networkMonitor,
+        )
+      }
+
+      currentDestination = state.currentDestination?.route
+
+      LaunchedEffect(Unit) {
+        navController.setCurrentDestination("Screen B")
+      }
+    }
+
+    assertThat(currentDestination).isEqualTo("Screen B")
+  }
+
+  @Test
+  fun `test TopLevelDestinations`() = runTest {
+    lateinit var state: ScenePeekAppState
+
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+      )
+    }
+
+    assertThat(state.topLevelDestinations.size).isEqualTo(2)
+    assertThat(state.topLevelDestinations[0].name).contains(TopLevelDestination.HOME.name)
+    assertThat(state.topLevelDestinations[1].name).contains(TopLevelDestination.WATCHLIST.name)
+  }
+}
+
+@Composable
+private fun rememberTestNavController(): TestNavHostController {
+  val context = LocalContext.current
+  return remember {
+    TestNavHostController(context).apply {
+      navigatorProvider.addNavigator(ComposeNavigator())
+      graph = createGraph(startDestination = "Screen A") {
+        composable("Screen A") { }
+        composable("Screen B") { }
+        composable("Screen C") { }
+      }
     }
   }
 }

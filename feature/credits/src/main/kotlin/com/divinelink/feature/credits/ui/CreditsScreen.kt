@@ -13,27 +13,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.details.Person
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
 import com.divinelink.core.ui.components.ObfuscateSpoilersButton
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.feature.credits.R
-import com.divinelink.feature.credits.navigation.CreditsGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 import com.divinelink.core.ui.R as uiR
 
-// TODO Check we could add deep link
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Destination<CreditsGraph>(
-  start = true,
-  navArgs = CreditsNavArguments::class,
-)
 fun CreditsScreen(
-  navigator: DestinationsNavigator,
-  viewModel: CreditsViewModel = koinViewModel(),
+  onNavigateUp: () -> Unit,
   onNavigateToPersonDetails: (Person) -> Unit,
+  viewModel: CreditsViewModel = koinViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -57,9 +48,7 @@ fun CreditsScreen(
           )
         },
         navigationIcon = {
-          IconButton(
-            onClick = navigator::navigateUp,
-          ) {
+          IconButton(onClick = onNavigateUp) {
             Icon(
               Icons.AutoMirrored.Rounded.ArrowBack,
               stringResource(uiR.string.core_ui_navigate_up_button_content_description),
@@ -72,7 +61,7 @@ fun CreditsScreen(
     CreditsContent(
       state = uiState,
       onTabSelected = viewModel::onTabSelected,
-      onPersonSelected = { onNavigateToPersonDetails(it) },
+      onPersonSelected = onNavigateToPersonDetails,
     )
   }
 }

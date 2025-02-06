@@ -26,7 +26,8 @@ fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun ComposeTest.setSharedLayoutContent(
-  content: @Composable SharedTransitionScope.(
+  content: @Composable (
+    sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
   ) -> Unit,
 ) {
@@ -35,8 +36,8 @@ fun ComposeTest.setSharedLayoutContent(
     val coroutineScope = rememberCoroutineScope()
 
     ProvideSnackbarController(snackbarHostState, coroutineScope) {
-      AnimatedVisibilityScopeProvider {
-        content(it)
+      AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+        content(transitionScope, visibilityScope)
       }
     }
   }

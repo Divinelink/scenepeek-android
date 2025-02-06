@@ -15,7 +15,6 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
@@ -28,14 +27,12 @@ import com.divinelink.core.ui.R as uiR
 
 class CreditsScreenTest : ComposeTest() {
 
-  private lateinit var navigator: FakeDestinationsNavigator
   private lateinit var fetchCreditsUseCase: TestFetchCreditsUseCase
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
   private lateinit var savedStateHandle: SavedStateHandle
 
   @BeforeTest
   fun setUp() {
-    navigator = FakeDestinationsNavigator()
     fetchCreditsUseCase = TestFetchCreditsUseCase()
     spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase(false)
     savedStateHandle = SavedStateHandle(
@@ -56,9 +53,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {
@@ -76,9 +73,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {
@@ -101,7 +98,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
+        onNavigateUp = {},
         viewModel = viewModel,
         onNavigateToPersonDetails = {},
       )
@@ -135,9 +132,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {
@@ -173,9 +170,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {
@@ -199,9 +196,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {
@@ -227,9 +224,9 @@ class CreditsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       CreditsScreen(
-        navigator = navigator,
-        viewModel = viewModel,
+        onNavigateUp = {},
         onNavigateToPersonDetails = {},
+        viewModel = viewModel,
       )
     }
     with(composeTestRule) {

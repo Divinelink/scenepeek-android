@@ -17,12 +17,10 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -30,18 +28,16 @@ import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
-import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -61,19 +57,9 @@ class DetailsScreenTest : ComposeTest() {
   private val fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
-  private val destinationsNavigator = FakeDestinationsNavigator()
-
   @Test
   fun navigateToAnotherDetailsScreen() {
-    destinationsNavigator.navigate(
-      direction = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 0,
-          mediaType = MediaType.MOVIE.name,
-          isFavorite = false,
-        ),
-      ),
-    )
+    var navigatedToDetails = false
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(
@@ -99,7 +85,6 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = DetailsViewModel(
@@ -115,10 +100,15 @@ class DetailsScreenTest : ComposeTest() {
             mapOf(
               "id" to 0,
               "isFavorite" to false,
-              "mediaType" to MediaType.MOVIE.value,
+              "mediaType" to MediaType.MOVIE,
             ),
           ),
         ),
+        onNavigateUp = {},
+        onNavigateToDetails = {
+          navigatedToDetails = true
+        },
+        onNavigateToPerson = {},
       )
     }
 
@@ -141,16 +131,6 @@ class DetailsScreenTest : ComposeTest() {
       .assertIsDisplayed()
       .performClick()
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      expectedDirection = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 0,
-          isFavorite = false,
-          mediaType = MediaType.MOVIE.name,
-        ),
-      ),
-    )
-
     val navigateUpContentDescription = composeTestRule.activity
       .getString(uiR.string.core_ui_navigate_up_button_content_description)
 
@@ -158,15 +138,7 @@ class DetailsScreenTest : ComposeTest() {
       .onNodeWithContentDescription(navigateUpContentDescription)
       .performClick()
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      expectedDirection = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 0,
-          isFavorite = false,
-          mediaType = MediaType.MOVIE.name,
-        ),
-      ),
-    )
+    assertThat(navigatedToDetails).isTrue()
   }
 
   @Test
@@ -200,17 +172,19 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
+          "mediaType" to MediaType.MOVIE,
         ),
       ),
     )
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
       )
     }
 
@@ -258,17 +232,19 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
+          "mediaType" to MediaType.MOVIE,
         ),
       ),
     )
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
       )
     }
 
@@ -308,15 +284,8 @@ class DetailsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to credits screen with tv credits`() {
     // Initial navigation to Details screen
-    destinationsNavigator.navigate(
-      direction = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 2316,
-          mediaType = MediaType.TV.name,
-          isFavorite = false,
-        ),
-      ),
-    )
+    var navigatedToCredits = false
+    var route: CreditsRoute? = null
 
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
@@ -336,18 +305,10 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
-        onNavigateToAccountSettings = {
-          destinationsNavigator.navigate(
-            direction = AccountSettingsScreenDestination(),
-          )
-        },
+        onNavigateToAccountSettings = {},
         onNavigateToCredits = {
-          destinationsNavigator.navigate(
-            direction = CreditsScreenDestination(
-              CreditsNavArguments(id = it.id, mediaType = it.mediaType),
-            ),
-          )
+          route = it
+          navigatedToCredits = true
         },
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -362,10 +323,13 @@ class DetailsScreenTest : ComposeTest() {
             mapOf(
               "id" to 2316,
               "isFavorite" to false,
-              "mediaType" to MediaType.TV.value,
+              "mediaType" to MediaType.TV,
             ),
           ),
         ),
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
       )
     }
 
@@ -376,9 +340,11 @@ class DetailsScreenTest : ComposeTest() {
         .assertIsDisplayed()
         .performClick()
 
-      destinationsNavigator.verifyNavigatedToDirection(
-        expectedDirection = CreditsScreenDestination(
-          CreditsNavArguments(id = 2316, mediaType = MediaType.TV),
+      assertThat(navigatedToCredits).isTrue()
+      assertThat(route).isEqualTo(
+        CreditsRoute(
+          id = 2316,
+          mediaType = MediaType.TV,
         ),
       )
 
@@ -386,32 +352,11 @@ class DetailsScreenTest : ComposeTest() {
       onNodeWithContentDescription(
         getString(uiR.string.core_ui_navigate_up_button_content_description),
       ).assertIsDisplayed().performClick()
-
-      destinationsNavigator.verifyNavigatedToDirection(
-        expectedDirection = DetailsScreenDestination(
-          DetailsNavArguments(
-            id = 2316,
-            isFavorite = false,
-            mediaType = MediaType.TV.name,
-          ),
-        ),
-      )
     }
   }
 
   @Test
   fun `test viewAll credits does not exist without tv credits`() {
-    // Initial navigation to Details screen
-    destinationsNavigator.navigate(
-      direction = DetailsScreenDestination(
-        DetailsNavArguments(
-          id = 2316,
-          mediaType = MediaType.TV.name,
-          isFavorite = false,
-        ),
-      ),
-    )
-
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
         Result.success(
@@ -425,7 +370,6 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = DetailsViewModel(
@@ -441,10 +385,13 @@ class DetailsScreenTest : ComposeTest() {
             mapOf(
               "id" to 2316,
               "isFavorite" to false,
-              "mediaType" to MediaType.TV.value,
+              "mediaType" to MediaType.TV,
             ),
           ),
         ),
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
       )
     }
 
@@ -483,17 +430,19 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
+          "mediaType" to MediaType.MOVIE,
         ),
       ),
     )
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
       )
     }
 
@@ -538,14 +487,16 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE.value,
+          "mediaType" to MediaType.MOVIE,
         ),
       ),
     )
 
     setContentWithTheme {
       DetailsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
         onNavigateToAccountSettings = {},
         onNavigateToCredits = {},
         viewModel = viewModel,

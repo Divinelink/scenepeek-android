@@ -4,15 +4,6 @@ plugins {
   alias(libs.plugins.ksp)
 }
 
-ksp {
-  arg("compose-destinations.moduleName", "watchlist")
-
-  arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
-  arg("compose-destinations.mermaidGraph", "$rootDir/docs")
-
-  arg("compose-destinations.codeGenPackageName", "com.divinelink.ui.screens")
-}
-
 dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.data)

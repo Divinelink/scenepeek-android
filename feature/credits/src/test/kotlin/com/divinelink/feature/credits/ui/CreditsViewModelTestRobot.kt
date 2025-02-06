@@ -2,7 +2,7 @@ package com.divinelink.feature.credits.ui
 
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.credits.AggregateCredits
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
+import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase
@@ -20,7 +20,7 @@ class CreditsViewModelTestRobot : ViewModelTestRobot<CreditsUiState>() {
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
   private lateinit var viewModel: CreditsViewModel
-  private lateinit var navArgs: CreditsNavArguments
+  private lateinit var navArgs: CreditsRoute
 
   override val actualUiState: Flow<CreditsUiState>
     get() = viewModel.uiState
@@ -38,7 +38,7 @@ class CreditsViewModelTestRobot : ViewModelTestRobot<CreditsUiState>() {
     )
   }
 
-  fun withNavArgs(navArgs: CreditsNavArguments) = apply {
+  fun withNavArgs(navArgs: CreditsRoute) = apply {
     this.navArgs = navArgs
   }
 

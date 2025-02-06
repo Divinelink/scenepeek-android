@@ -17,20 +17,16 @@ import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsExternalLinkItem
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.divinelink.core.commons.R as commonR
 
 @Composable
-@Destination<SettingsGraph>
 fun AboutSettingsScreen(
-  navigator: DestinationsNavigator,
+  onNavigateUp: () -> Unit,
   buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
 ) {
   SettingsScaffold(
     title = stringResource(R.string.feature_settings_about),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = onNavigateUp,
   ) { paddingValues ->
 
     val version = UIText.ResourceText(commonR.string.version_name)

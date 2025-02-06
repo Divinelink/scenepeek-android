@@ -23,8 +23,9 @@ import com.divinelink.feature.settings.provider.AccountDetailsParameterProvider
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.AccountSettingsContent(
+fun AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
+  transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   uiState: AccountSettingsViewState,
   onLogoutClick: () -> Unit,
@@ -56,6 +57,7 @@ fun SharedTransitionScope.AccountSettingsContent(
       )
 
       JellyseerrAccountItem(
+        transitionScope = transitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         accountDetails = uiState.jellyseerrAccountDetails,
         onNavigateToJellyseerrLogin = onNavigateToJellyseerrLogin,
@@ -70,10 +72,11 @@ fun SharedTransitionScope.AccountSettingsContent(
 fun AccountSettingsContentPreview(
   @PreviewParameter(AccountDetailsParameterProvider::class) uiState: AccountSettingsViewState,
 ) {
-  AnimatedVisibilityScopeProvider {
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
     AccountSettingsContent(
       uiState = uiState,
-      animatedVisibilityScope = it,
+      transitionScope = transitionScope,
+      animatedVisibilityScope = visibilityScope,
       onLogoutClick = {},
       onLoginClick = {},
       onNavigateToJellyseerrLogin = {},

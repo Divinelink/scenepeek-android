@@ -6,8 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
-import com.divinelink.feature.credits.screens.destinations.CreditsScreenDestination
+import com.divinelink.core.navigation.route.CreditsRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -21,7 +20,10 @@ class CreditsViewModel(
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
 ) : ViewModel() {
 
-  private val args: CreditsNavArguments = CreditsScreenDestination.argsFrom(savedStateHandle)
+  private val route: CreditsRoute = CreditsRoute(
+    id = savedStateHandle.get<Long>("id")!!,
+    mediaType = savedStateHandle["mediaType"],
+  )
 
   private val _uiState: MutableStateFlow<CreditsUiState> = MutableStateFlow(
     CreditsUiState.initial(),
@@ -30,7 +32,7 @@ class CreditsViewModel(
   val uiState: StateFlow<CreditsUiState> = _uiState
 
   init {
-    fetchCreditsUseCase(args.id)
+    fetchCreditsUseCase(route.id)
       .onEach { result ->
         result.onSuccess { credits ->
           _uiState.update {

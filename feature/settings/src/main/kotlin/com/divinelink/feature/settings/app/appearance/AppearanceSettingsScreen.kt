@@ -11,15 +11,11 @@ import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsRadioPrefItem
 import com.divinelink.feature.settings.components.SettingsScaffold
 import com.divinelink.feature.settings.components.SettingsSwitchItem
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-@Destination<SettingsGraph>
 fun AppearanceSettingsScreen(
-  navigator: DestinationsNavigator,
+  onNavigateUp: () -> Unit,
   viewModel: AppearanceSettingsViewModel = koinViewModel(),
 ) {
   val viewState by viewModel.uiState.collectAsState()
@@ -30,7 +26,7 @@ fun AppearanceSettingsScreen(
 
   SettingsScaffold(
     title = stringResource(id = R.string.preferences__appearance),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = onNavigateUp,
   ) {
     ScenePeekLazyColumn(contentPadding = it) {
       item {

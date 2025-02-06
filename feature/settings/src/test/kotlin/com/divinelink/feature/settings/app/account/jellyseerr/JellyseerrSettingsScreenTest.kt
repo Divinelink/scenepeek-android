@@ -18,7 +18,6 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFac
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setSharedLayoutContent
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
@@ -34,8 +33,6 @@ import kotlin.test.Test
 @OptIn(ExperimentalSharedTransitionApi::class)
 class JellyseerrSettingsScreenTest : ComposeTest() {
 
-  private lateinit var destinationsNavigator: FakeDestinationsNavigator
-
   private lateinit var logoutJellyseerrUseCase: FakeLogoutJellyseerrUseCase
   private lateinit var loginJellyseerrUseCase: FakeLoginJellyseerrUseCase
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
@@ -45,8 +42,6 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Before
   fun setUp() {
-    destinationsNavigator = FakeDestinationsNavigator()
-
     logoutJellyseerrUseCase = FakeLogoutJellyseerrUseCase()
     loginJellyseerrUseCase = FakeLoginJellyseerrUseCase()
     getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
@@ -58,11 +53,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -79,11 +75,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -99,11 +96,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -179,11 +177,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -264,11 +263,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -294,11 +294,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent {
+    setSharedLayoutContent { transitionScope, visibilityScope ->
       JellyseerrSettingsScreen(
-        navigator = destinationsNavigator,
-        animatedVisibilityScope = it,
         viewModel = viewModel,
+        sharedTransitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
+        onNavigateUp = {},
       )
     }
 
@@ -341,11 +342,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       val viewModel = setupViewModel()
 
-      setSharedLayoutContent {
+      setSharedLayoutContent { transitionScope, visibilityScope ->
         JellyseerrSettingsScreen(
-          navigator = destinationsNavigator,
-          animatedVisibilityScope = it,
           viewModel = viewModel,
+          sharedTransitionScope = transitionScope,
+          animatedVisibilityScope = visibilityScope,
+          onNavigateUp = {},
         )
       }
 

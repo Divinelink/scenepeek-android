@@ -13,38 +13,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.commons.util.launchCustomTab
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.map
+import com.divinelink.core.navigation.route.CreditsRoute
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.map
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
-import com.divinelink.feature.details.navigation.details.MediaDetailsGraph
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.parameters.DeepLink
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 private const val BOTTOM_SHEET_DELAY = 200L
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination<MediaDetailsGraph>(
-  start = true,
-  navArgs = DetailsNavArguments::class,
-  deepLinks = [
-    DeepLink(uriPattern = "https://www.themoviedb.org/{mediaType}/{id}-.*"),
-    DeepLink(uriPattern = "https://www.themoviedb.org/{mediaType}/{id}"),
-  ],
-)
 @Composable
 fun DetailsScreen(
-  navigator: DestinationsNavigator,
-  viewModel: DetailsViewModel = koinViewModel(),
-  onNavigateToCredits: (CreditsNavArguments) -> Unit,
+  onNavigateUp: () -> Unit,
+  onNavigateToDetails: (DetailsRoute) -> Unit,
+  onNavigateToCredits: (CreditsRoute) -> Unit,
+  onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToAccountSettings: () -> Unit,
+  viewModel: DetailsViewModel = koinViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -115,31 +104,31 @@ fun DetailsScreen(
 
   DetailsContent(
     viewState = viewState.value,
-    onNavigateUp = navigator::popBackStack,
+    onNavigateUp = onNavigateUp,
     onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
     onSimilarMovieClicked = { movie ->
-      val navArgs = DetailsNavArguments(
+      val navArgs = DetailsRoute(
         id = movie.id,
-        mediaType = movie.mediaType.value,
+        mediaType = movie.mediaType,
         isFavorite = movie.isFavorite ?: false,
       )
-      val destination = DetailsScreenDestination(navArgs = navArgs)
-
-      navigator.navigate(destination)
+      onNavigateToDetails(navArgs)
     },
-    onPersonClick = { person -> navigator.navigate(PersonScreenDestination(person.map())) },
+    onPersonClick = { person -> onNavigateToPerson(person.map()) },
     onConsumeSnackbar = viewModel::consumeSnackbarMessage,
     onAddRateClicked = viewModel::onAddRateClicked,
     onAddToWatchlistClicked = viewModel::onAddToWatchlist,
     requestMedia = viewModel::onRequestMedia,
     onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
     viewAllCreditsClicked = {
-      onNavigateToCredits(
-        CreditsNavArguments(
-          mediaType = viewState.value.mediaType,
-          id = viewState.value.mediaDetails?.id?.toLong()!!,
-        ),
-      )
+      viewState.value.mediaDetails?.id?.let { id ->
+        onNavigateToCredits(
+          CreditsRoute(
+            mediaType = viewState.value.mediaType,
+            id = id.toLong(),
+          ),
+        )
+      }
     },
     viewAllRatingsClicked = {
       showAllRatingBottomSheet = true

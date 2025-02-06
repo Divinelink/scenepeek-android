@@ -7,8 +7,7 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,7 +46,6 @@ import com.divinelink.core.ui.R
 
 const val FILTER_BAR_TEST_TAG = "FILTER_BAR"
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FilterBar(
   modifier: Modifier = Modifier,
@@ -56,7 +54,7 @@ fun FilterBar(
   onClearClick: () -> Unit,
 ) {
   CompositionLocalProvider(
-    LocalOverscrollConfiguration provides null,
+    LocalOverscrollFactory provides null,
   ) {
     LazyRow(
       modifier = modifier

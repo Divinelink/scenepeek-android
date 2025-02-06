@@ -9,8 +9,8 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCredit
-import com.divinelink.core.navigation.arguments.PersonNavArguments
-import com.divinelink.core.navigation.arguments.map
+import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
@@ -33,7 +33,7 @@ class PersonViewModelTest {
   fun `test initialise viewModel with error`() = runTest {
     robot
       .withNavArgs(
-        PersonNavArguments(
+        PersonRoute(
           id = PersonDetailsFactory.steveCarell().person.id,
           knownForDepartment = null,
           name = null,

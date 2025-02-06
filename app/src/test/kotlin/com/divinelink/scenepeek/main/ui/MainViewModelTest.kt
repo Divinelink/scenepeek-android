@@ -3,9 +3,10 @@ package com.divinelink.scenepeek.main.ui
 import android.net.Uri
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
@@ -43,9 +44,9 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
-          DetailsNavArguments(
+          DetailsRoute(
             id = 693134,
-            mediaType = "movie",
+            mediaType = MediaType.MOVIE,
             isFavorite = false,
           ),
         ),
@@ -64,9 +65,9 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
-          DetailsNavArguments(
+          DetailsRoute(
             id = 693134,
-            mediaType = "tv",
+            mediaType = MediaType.TV,
             isFavorite = false,
           ),
         ),
@@ -85,7 +86,7 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToPersonDetails(
-          PersonNavArguments(
+          PersonRoute(
             id = 693134,
             knownForDepartment = null,
             name = null,
@@ -152,9 +153,9 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
-          DetailsNavArguments(
+          DetailsRoute(
             id = 1123,
-            mediaType = "movie",
+            mediaType = MediaType.MOVIE,
             isFavorite = false,
           ),
         ),
@@ -171,9 +172,9 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
-          DetailsNavArguments(
+          DetailsRoute(
             id = 2316,
-            mediaType = "tv",
+            mediaType = MediaType.TV,
             isFavorite = false,
           ),
         ),
@@ -190,7 +191,7 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(
         MainUiEvent.NavigateToPersonDetails(
-          PersonNavArguments(
+          PersonRoute(
             id = 1215572,
             name = "Randall Einhorn",
             profilePath = null,

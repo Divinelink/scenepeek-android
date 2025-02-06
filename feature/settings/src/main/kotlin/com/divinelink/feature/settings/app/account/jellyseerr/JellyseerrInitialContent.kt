@@ -32,7 +32,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.draw.alpha
@@ -49,13 +48,9 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.autofill
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.ramcosta.composedestinations.annotation.Destination
 import com.divinelink.core.ui.R as uiR
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-@Destination<SettingsGraph>
 fun JellyseerrInitialContent(
   modifier: Modifier = Modifier,
   jellyseerrState: JellyseerrState.Initial,

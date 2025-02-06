@@ -24,8 +24,6 @@ kover {
           packages(
               "com.divinelink.core.ui.provider",
               ".provider",
-              // Destinations auto-generated classes
-              "*.screens",
           )
           classes(
               "*ComposableSingletons*",

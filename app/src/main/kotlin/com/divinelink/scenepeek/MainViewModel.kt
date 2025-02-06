@@ -9,8 +9,8 @@ import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.scenepeek.ui.ThemedActivityDelegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -62,7 +62,7 @@ class MainViewModel(
                   when (mediaItem) {
                     is MediaItem.Media.Movie,
                     is MediaItem.Media.TV,
-                    -> navigateToMediaDetails(mediaItem.id, mediaItem.mediaType.value)
+                    -> navigateToMediaDetails(mediaItem.id, mediaItem.mediaType)
                     is MediaItem.Person -> navigateToPersonDetails(mediaItem)
                     MediaItem.Unknown -> updateUiEvent(MainUiEvent.None)
                   }
@@ -73,9 +73,9 @@ class MainViewModel(
         },
       )
       else -> {
-        val (id, mediaType) = uri.toString().extractDetailsFromDeepLink() ?: return
+        val (id, type) = uri.toString().extractDetailsFromDeepLink() ?: return
 
-        when (MediaType.from(mediaType)) {
+        when (val mediaType = MediaType.from(type)) {
           MediaType.TV, MediaType.MOVIE -> navigateToMediaDetails(id, mediaType)
           MediaType.PERSON -> navigateToPersonDetails(id)
           MediaType.UNKNOWN -> updateUiEvent(MainUiEvent.None)
@@ -87,7 +87,7 @@ class MainViewModel(
   private fun navigateToPersonDetails(it: MediaItem.Person) {
     updateUiEvent(
       MainUiEvent.NavigateToPersonDetails(
-        PersonNavArguments(
+        PersonRoute(
           id = it.id.toLong(),
           knownForDepartment = it.knownForDepartment,
           name = it.name,
@@ -101,7 +101,7 @@ class MainViewModel(
   private fun navigateToPersonDetails(id: Int) {
     updateUiEvent(
       MainUiEvent.NavigateToPersonDetails(
-        PersonNavArguments(
+        PersonRoute(
           id = id.toLong(),
           knownForDepartment = null,
           name = null,
@@ -114,11 +114,11 @@ class MainViewModel(
 
   private fun navigateToMediaDetails(
     id: Int,
-    mediaType: String,
+    mediaType: MediaType,
   ) {
     updateUiEvent(
       MainUiEvent.NavigateToDetails(
-        DetailsNavArguments(
+        DetailsRoute(
           id = id,
           mediaType = mediaType,
           isFavorite = false,

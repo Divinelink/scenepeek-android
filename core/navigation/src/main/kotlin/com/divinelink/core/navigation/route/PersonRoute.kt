@@ -1,10 +1,12 @@
-package com.divinelink.core.navigation.arguments
+package com.divinelink.core.navigation.route
 
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
+import kotlinx.serialization.Serializable
 
-data class PersonNavArguments(
+@Serializable
+data class PersonRoute(
   val id: Long,
   val knownForDepartment: String?,
   val name: String?,
@@ -12,7 +14,7 @@ data class PersonNavArguments(
   val gender: Gender?,
 )
 
-fun Person.map() = PersonNavArguments(
+fun Person.map() = PersonRoute(
   id = id,
   knownForDepartment = knownForDepartment,
   name = name,
@@ -20,7 +22,7 @@ fun Person.map() = PersonNavArguments(
   gender = gender,
 )
 
-fun PersonNavArguments.map() = Person(
+fun PersonRoute.map() = Person(
   id = id,
   knownForDepartment = knownForDepartment,
   name = name ?: "",

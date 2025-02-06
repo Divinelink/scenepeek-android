@@ -3,15 +3,6 @@ plugins {
   alias(libs.plugins.divinelink.android.library.compose)
 }
 
-ksp {
-  arg("compose-destinations.moduleName", "settings")
-
-  arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
-  arg("compose-destinations.mermaidGraph", "$rootDir/docs")
-
-  arg("compose-destinations.codeGenPackageName", "com.divinelink.feature.settings.screens")
-}
-
 dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.domain)

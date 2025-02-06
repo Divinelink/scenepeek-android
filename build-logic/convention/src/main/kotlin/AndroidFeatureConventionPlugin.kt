@@ -27,7 +27,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       pluginManager.apply {
         apply("divinelink.android.library")
         apply("divinelink.android.koin")
-        apply("com.google.devtools.ksp")
+        apply("org.jetbrains.kotlin.plugin.serialization")
       }
       extensions.configure<LibraryExtension> {
         defaultConfig {
@@ -43,18 +43,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("implementation", libs.findLibrary("koin.android.compose").get())
         add("implementation", libs.findLibrary("compose-runtime").get())
 
-        add("implementation", libs.findLibrary("compose.destinations.core").get())
-        add("implementation", libs.findLibrary("compose.destinations.bottom.sheet").get())
+        add("implementation", libs.findLibrary("androidx.navigation.compose").get())
+        add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
 
-        "ksp"(libs.findLibrary("compose.destinations.ksp").get())
-
-        // add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
         add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
-
-//        add(
-//          "androidTestImplementation",
-//          libs.findLibrary("androidx.lifecycle.runtimeTesting").get()
-//        )
       }
     }
   }
