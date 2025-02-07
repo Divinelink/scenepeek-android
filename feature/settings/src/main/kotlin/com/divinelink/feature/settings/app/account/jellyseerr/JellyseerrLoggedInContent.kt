@@ -38,8 +38,9 @@ import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.JellyseerrLoggedInContent(
+fun JellyseerrLoggedInContent(
   modifier: Modifier = Modifier,
+  transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   jellyseerrState: JellyseerrState.LoggedIn,
   onLogoutClock: (JellyseerrInteraction.OnLogoutClick) -> Unit,
@@ -51,67 +52,69 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     item {
-      Row {
-        CoilImage(
-          modifier = Modifier
-            .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_AVATAR)
-            .sharedElement(
-              sharedContentState = rememberSharedContentState(
-                key = SharedElementKeys.JELLYSEERR_AVATAR,
-              ),
-              animatedVisibilityScope = animatedVisibilityScope,
-            )
-            .size(MaterialTheme.dimensions.keyline_96),
-          url = jellyseerrState.accountDetails.avatar,
-        )
-
-        Column {
-          Text(
+      with(transitionScope) {
+        Row {
+          CoilImage(
             modifier = Modifier
-              .sharedBounds(
+              .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_AVATAR)
+              .sharedElement(
                 sharedContentState = rememberSharedContentState(
-                  key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+                  key = SharedElementKeys.JELLYSEERR_AVATAR,
                 ),
                 animatedVisibilityScope = animatedVisibilityScope,
               )
-              .padding(
-                start = MaterialTheme.dimensions.keyline_16,
-                top = MaterialTheme.dimensions.keyline_24,
-              ),
-            text = jellyseerrState.accountDetails.displayName,
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleMedium,
+              .size(MaterialTheme.dimensions.keyline_96),
+            url = jellyseerrState.accountDetails.avatar,
           )
 
-          jellyseerrState.accountDetails.email?.let { email ->
+          Column {
+            Text(
+              modifier = Modifier
+                .sharedBounds(
+                  sharedContentState = rememberSharedContentState(
+                    key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+                  ),
+                  animatedVisibilityScope = animatedVisibilityScope,
+                )
+                .padding(
+                  start = MaterialTheme.dimensions.keyline_16,
+                  top = MaterialTheme.dimensions.keyline_24,
+                ),
+              text = jellyseerrState.accountDetails.displayName,
+              color = MaterialTheme.colorScheme.primary,
+              style = MaterialTheme.typography.titleMedium,
+            )
+
+            jellyseerrState.accountDetails.email?.let { email ->
+              Text(
+                modifier = Modifier
+                  .padding(
+                    start = MaterialTheme.dimensions.keyline_16,
+                    top = MaterialTheme.dimensions.keyline_8,
+                  ),
+                text = email,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+              )
+            }
+
             Text(
               modifier = Modifier
                 .padding(
                   start = MaterialTheme.dimensions.keyline_16,
                   top = MaterialTheme.dimensions.keyline_8,
                 ),
-              text = email,
+              text = UIText.ResourceText(
+                R.string.feature_settings_jellyseerr_joined_on,
+                jellyseerrState.accountDetails.formattedCreatedAt,
+                jellyseerrState.accountDetails.id,
+              ).getString(),
               color = MaterialTheme.colorScheme.onSurface,
+              fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
               style = MaterialTheme.typography.bodySmall,
-              fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
             )
           }
-
-          Text(
-            modifier = Modifier
-              .padding(
-                start = MaterialTheme.dimensions.keyline_16,
-                top = MaterialTheme.dimensions.keyline_8,
-              ),
-            text = UIText.ResourceText(
-              R.string.feature_settings_jellyseerr_joined_on,
-              jellyseerrState.accountDetails.formattedCreatedAt,
-              jellyseerrState.accountDetails.id,
-            ).getString(),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-            style = MaterialTheme.typography.bodySmall,
-          )
         }
       }
     }
@@ -172,9 +175,10 @@ fun SharedTransitionScope.JellyseerrLoggedInContent(
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentPreview() {
-  AnimatedVisibilityScopeProvider {
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
     JellyseerrLoggedInContent(
-      animatedVisibilityScope = it,
+      transitionScope = transitionScope,
+      animatedVisibilityScope = visibilityScope,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = false,
         accountDetails = JellyseerrAccountDetails(
@@ -195,9 +199,10 @@ private fun JellyseerrLoggedInContentPreview() {
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentLoadingPreview() {
-  AnimatedVisibilityScopeProvider {
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
     JellyseerrLoggedInContent(
-      animatedVisibilityScope = it,
+      transitionScope = transitionScope,
+      animatedVisibilityScope = visibilityScope,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = true,
         accountDetails = JellyseerrAccountDetails(

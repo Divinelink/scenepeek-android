@@ -8,15 +8,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
-import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
+import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
@@ -24,27 +18,29 @@ class SettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test navigate to account screen and navigate up`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
-    destinationsNavigator.navigate(
-      direction = SettingsScreenDestination(),
-    )
-
+    var navigatedToAccountSettings = false
+    var navigatedUp = false
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {
+          navigatedUp = true
+        },
+        onNavigateToAccountSettings = {
+          navigatedToAccountSettings = true
+        },
+        onNavigateToAppearanceSettings = { },
+        onNavigateToDetailPreferencesSettings = { },
+        onNavigateToLinkHandling = { },
+        onNavigateToAboutSettings = { },
       )
     }
 
     with(composeTestRule) {
       onNodeWithText("Account").assertExists()
-
       onNodeWithText("Account").performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      AccountSettingsScreenDestination,
-    )
+    assertThat(navigatedToAccountSettings).isTrue()
 
     val navigateUpContentDescription = composeTestRule.activity
       .getString(uiR.string.core_ui_navigate_up_button_content_description)
@@ -53,22 +49,22 @@ class SettingsScreenTest : ComposeTest() {
       onNodeWithContentDescription(navigateUpContentDescription).performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      SettingsScreenDestination,
-    )
+    assertThat(navigatedUp).isTrue()
   }
 
   @Test
   fun `test navigate to appearance screen`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
-    destinationsNavigator.navigate(
-      direction = SettingsScreenDestination(),
-    )
-
+    var navigatedToAppearanceSettings = false
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {},
+        onNavigateToAccountSettings = {},
+        onNavigateToAppearanceSettings = {
+          navigatedToAppearanceSettings = true
+        },
+        onNavigateToDetailPreferencesSettings = {},
+        onNavigateToLinkHandling = {},
+        onNavigateToAboutSettings = {},
       )
     }
 
@@ -76,26 +72,25 @@ class SettingsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(appearanceString).assertExists()
-
       onNodeWithText(appearanceString).performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      AppearanceSettingsScreenDestination,
-    )
+    assertThat(navigatedToAppearanceSettings).isTrue()
   }
 
   @Test
   fun `test navigate to link handling screen`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
-    destinationsNavigator.navigate(
-      direction = SettingsScreenDestination(),
-    )
-
+    var navigatedToLinkHandling = false
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {},
+        onNavigateToAccountSettings = {},
+        onNavigateToAppearanceSettings = {},
+        onNavigateToDetailPreferencesSettings = {},
+        onNavigateToLinkHandling = {
+          navigatedToLinkHandling = true
+        },
+        onNavigateToAboutSettings = {},
       )
     }
 
@@ -103,26 +98,25 @@ class SettingsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(linkHandlingSetting).assertExists()
-
       onNodeWithText(linkHandlingSetting).performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      LinkHandlingSettingsScreenDestination,
-    )
+    assertThat(navigatedToLinkHandling).isTrue()
   }
 
   @Test
-  fun `test navigate to help screen`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
-    destinationsNavigator.navigate(
-      direction = SettingsScreenDestination(),
-    )
-
+  fun `test navigate to about screen`() {
+    var navigatedToAbout = false
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {},
+        onNavigateToAccountSettings = {},
+        onNavigateToAppearanceSettings = {},
+        onNavigateToDetailPreferencesSettings = {},
+        onNavigateToLinkHandling = {},
+        onNavigateToAboutSettings = {
+          navigatedToAbout = true
+        },
       )
     }
 
@@ -137,22 +131,22 @@ class SettingsScreenTest : ComposeTest() {
       onNodeWithText(aboutString).performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(
-      AboutSettingsScreenDestination,
-    )
+    assertThat(navigatedToAbout).isTrue()
   }
 
   @Test
   fun `test navigate to details preference screen`() {
-    val destinationsNavigator = FakeDestinationsNavigator()
-
-    destinationsNavigator.navigate(
-      direction = SettingsScreenDestination(),
-    )
-
+    var navigatedToDetailPreferencesSettings = false
     composeTestRule.setContent {
       SettingsScreen(
-        navigator = destinationsNavigator,
+        onNavigateUp = {},
+        onNavigateToAccountSettings = {},
+        onNavigateToAppearanceSettings = {},
+        onNavigateToDetailPreferencesSettings = {
+          navigatedToDetailPreferencesSettings = true
+        },
+        onNavigateToLinkHandling = {},
+        onNavigateToAboutSettings = {},
       )
     }
 
@@ -164,6 +158,6 @@ class SettingsScreenTest : ComposeTest() {
       onNodeWithText(detailsPreferencesString).performClick()
     }
 
-    destinationsNavigator.verifyNavigatedToDirection(DetailPreferencesSettingsScreenDestination)
+    assertThat(navigatedToDetailPreferencesSettings).isTrue()
   }
 }

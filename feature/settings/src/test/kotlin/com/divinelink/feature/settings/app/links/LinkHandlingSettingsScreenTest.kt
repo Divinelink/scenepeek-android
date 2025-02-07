@@ -7,7 +7,6 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -17,10 +16,9 @@ class LinkHandlingSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test LinkHandlingSettingsScreen`() {
-    val navigator = FakeDestinationsNavigator()
     setContentWithTheme {
       LinkHandlingSettingsScreen(
-        navigator = navigator,
+        navigateUp = {},
       )
     }
 

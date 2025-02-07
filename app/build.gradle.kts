@@ -81,14 +81,6 @@ android {
   buildFeatures {
     buildConfig = true
   }
-
-  ksp {
-    arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
-    arg("compose-destinations.mermaidGraph", "$rootDir/docs")
-
-    // To change the package name where the generated files will be placed
-    arg("compose-destinations.codeGenPackageName", "com.divinelink.ui.screens")
-  }
 }
 
 dependencies {
@@ -131,9 +123,10 @@ dependencies {
 
   // Misc
   implementation(libs.timber)
-  implementation(libs.compose.destinations.core)
-  implementation(libs.compose.destinations.bottom.sheet)
-  ksp(libs.compose.destinations.ksp)
+
+  // Navigation
+  implementation(libs.androidx.navigation.runtime.ktx)
+  implementation(libs.androidx.navigation.compose)
 
   // Network & Serialization
   implementation(libs.ktor.client.core)

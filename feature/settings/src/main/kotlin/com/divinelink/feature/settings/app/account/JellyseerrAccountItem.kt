@@ -33,81 +33,84 @@ import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.JellyseerrAccountItem(
+fun JellyseerrAccountItem(
   accountDetails: JellyseerrAccountDetails?,
+  transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateToJellyseerrLogin: () -> Unit,
 ) {
-  AnimatedContent(
-    targetState = accountDetails,
-    label = "Account details animation",
-  ) { details ->
-    Column(
-      Modifier.clickable { onNavigateToJellyseerrLogin() },
-    ) {
-      if (details == null) {
-        SettingsClickItem(
-          icon = IconWrapper.Image(uiR.drawable.core_ui_ic_jellyseerr),
-          text = stringResource(R.string.feature_settings_jellyseerr_integration),
-          onClick = onNavigateToJellyseerrLogin,
-        )
-      } else {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-          modifier = Modifier
-            .padding(MaterialTheme.dimensions.keyline_16)
-            .fillMaxWidth(),
-        ) {
-          CoilImage(
-            modifier = Modifier
-              .sharedElement(
-                sharedContentState = rememberSharedContentState(
-                  key = SharedElementKeys.JELLYSEERR_AVATAR,
-                ),
-                animatedVisibilityScope = animatedVisibilityScope,
-              )
-              .size(MaterialTheme.dimensions.keyline_36),
-            url = details.avatar,
+  with(transitionScope) {
+    AnimatedContent(
+      targetState = accountDetails,
+      label = "Account details animation",
+    ) { details ->
+      Column(
+        Modifier.clickable { onNavigateToJellyseerrLogin() },
+      ) {
+        if (details == null) {
+          SettingsClickItem(
+            icon = IconWrapper.Image(uiR.drawable.core_ui_ic_jellyseerr),
+            text = stringResource(R.string.feature_settings_jellyseerr_integration),
+            onClick = onNavigateToJellyseerrLogin,
           )
-
-          Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+        } else {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+            modifier = Modifier
+              .padding(MaterialTheme.dimensions.keyline_16)
+              .fillMaxWidth(),
           ) {
-            Text(
-              text = stringResource(R.string.feature_settings_jellyseerr_integration),
-              style = MaterialTheme.typography.bodyLarge,
-            )
-            Row(modifier = Modifier.fillMaxWidth()) {
-              Canvas(
-                modifier = Modifier
-                  .align(Alignment.CenterVertically)
-                  .padding(MaterialTheme.dimensions.keyline_4)
-                  .size(MaterialTheme.dimensions.keyline_8),
-              ) {
-                drawCircle(
-                  color = Color.Green,
-                  radius = 4.dp.toPx(),
-                )
-              }
-
-              Text(
-                text = stringResource(R.string.feature_settings_logged_in),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary,
-              )
-
-              Text(
-                modifier = Modifier.sharedBounds(
+            CoilImage(
+              modifier = Modifier
+                .sharedElement(
                   sharedContentState = rememberSharedContentState(
-                    key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+                    key = SharedElementKeys.JELLYSEERR_AVATAR,
                   ),
                   animatedVisibilityScope = animatedVisibilityScope,
-                ),
-                text = details.displayName,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
+                )
+                .size(MaterialTheme.dimensions.keyline_36),
+              url = details.avatar,
+            )
+
+            Column(
+              verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+            ) {
+              Text(
+                text = stringResource(R.string.feature_settings_jellyseerr_integration),
+                style = MaterialTheme.typography.bodyLarge,
               )
+              Row(modifier = Modifier.fillMaxWidth()) {
+                Canvas(
+                  modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(MaterialTheme.dimensions.keyline_4)
+                    .size(MaterialTheme.dimensions.keyline_8),
+                ) {
+                  drawCircle(
+                    color = Color.Green,
+                    radius = 4.dp.toPx(),
+                  )
+                }
+
+                Text(
+                  text = stringResource(R.string.feature_settings_logged_in),
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.secondary,
+                )
+
+                Text(
+                  modifier = Modifier.sharedBounds(
+                    sharedContentState = rememberSharedContentState(
+                      key = SharedElementKeys.JELLYSEERR_DISPLAY_NAME,
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                  ),
+                  text = details.displayName,
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.primary,
+                )
+              }
             }
           }
         }
@@ -120,11 +123,12 @@ fun SharedTransitionScope.JellyseerrAccountItem(
 @Previews
 @Composable
 private fun AccountItemPreview() {
-  AnimatedVisibilityScopeProvider {
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
       JellyseerrAccountItem(
         accountDetails = null,
-        animatedVisibilityScope = it,
+        transitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
         onNavigateToJellyseerrLogin = {},
       )
 
@@ -137,7 +141,8 @@ private fun AccountItemPreview() {
           email = null,
           createdAt = "August 9th, 2021",
         ),
-        animatedVisibilityScope = it,
+        transitionScope = transitionScope,
+        animatedVisibilityScope = visibilityScope,
         onNavigateToJellyseerrLogin = {},
       )
     }

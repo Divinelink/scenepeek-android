@@ -18,7 +18,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -30,7 +30,6 @@ import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,12 +58,16 @@ class DetailsViewModel(
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-  private val args: DetailsNavArguments = DetailsScreenDestination.argsFrom(savedStateHandle)
+  private val route: DetailsRoute = DetailsRoute(
+    id = savedStateHandle.get<Int>("id") ?: -1,
+    mediaType = savedStateHandle.get<MediaType>("mediaType") ?: MediaType.UNKNOWN,
+    isFavorite = savedStateHandle.get<Boolean>("isFavorite") ?: false,
+  )
 
   private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
     value = DetailsViewState(
-      mediaId = args.id,
-      mediaType = MediaType.from(args.mediaType),
+      mediaId = route.id,
+      mediaType = route.mediaType,
       isLoading = true,
     ),
   )
@@ -91,8 +94,8 @@ class DetailsViewModel(
 
   init {
     val requestApi = when (viewState.value.mediaType) {
-      MediaType.TV -> DetailsRequestApi.TV(args.id)
-      MediaType.MOVIE -> DetailsRequestApi.Movie(args.id)
+      MediaType.TV -> DetailsRequestApi.TV(route.id)
+      MediaType.MOVIE -> DetailsRequestApi.Movie(route.id)
       MediaType.PERSON -> DetailsRequestApi.Unknown
       MediaType.UNKNOWN -> DetailsRequestApi.Unknown
     }

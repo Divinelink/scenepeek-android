@@ -12,8 +12,8 @@ import androidx.compose.runtime.collectAsState
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.scenepeek.ui.MovieApp
-import com.divinelink.scenepeek.ui.rememberMovieAppState
+import com.divinelink.scenepeek.ui.ScenePeekApp
+import com.divinelink.scenepeek.ui.rememberScenePeekAppState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -42,7 +42,7 @@ class MainActivity :
         selectedTheme = viewModel.theme.collectAsState().value,
       )
 
-      val appState = rememberMovieAppState(
+      val appState = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
       )
 
@@ -51,7 +51,7 @@ class MainActivity :
         dynamicColor = viewModel.materialYou.collectAsState().value,
         blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
-        MovieApp(
+        ScenePeekApp(
           state = appState,
           uiState = viewModel.uiState.collectAsState().value,
           uiEvent = viewModel.uiEvent.collectAsState().value,

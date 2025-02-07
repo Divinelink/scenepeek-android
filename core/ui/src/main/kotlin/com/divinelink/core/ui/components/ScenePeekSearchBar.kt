@@ -104,7 +104,7 @@ fun ScenePeekSearchBar(
     scrollBehavior = scrollBehavior,
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = Color.Transparent,
-      scrolledContainerColor = MaterialTheme.colorScheme.surface,
+      scrolledContainerColor = Color.Transparent,
     ),
     title = {
       // Add offset to center the title in the app bar

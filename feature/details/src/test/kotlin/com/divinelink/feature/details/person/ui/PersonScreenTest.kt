@@ -25,18 +25,17 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.KnownForDepartment
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.feature.details.person.ui.tab.PersonTab
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -45,23 +44,21 @@ import com.divinelink.core.ui.R as uiR
 
 class PersonScreenTest : ComposeTest() {
 
-  private lateinit var navigator: FakeDestinationsNavigator
   private lateinit var fetchPersonDetailsUseCase: TestFetchPersonDetailsUseCase
   private lateinit var fetchChangesUseCase: TestFetchChangesUseCase
   private lateinit var savedStateHandle: SavedStateHandle
 
-  private lateinit var navArgs: PersonNavArguments
+  private lateinit var navArgs: PersonRoute
 
   @BeforeTest
   fun setUp() {
-    navArgs = PersonNavArguments(
+    navArgs = PersonRoute(
       id = PersonDetailsFactory.steveCarell().person.id,
       knownForDepartment = null,
       name = PersonDetailsFactory.steveCarell().person.name,
       profilePath = null,
       gender = null,
     )
-    navigator = FakeDestinationsNavigator()
     fetchPersonDetailsUseCase = TestFetchPersonDetailsUseCase()
     fetchChangesUseCase = TestFetchChangesUseCase()
     savedStateHandle = SavedStateHandle(
@@ -99,7 +96,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -121,7 +119,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -151,7 +150,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -174,7 +174,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -199,7 +200,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -226,7 +228,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -259,7 +262,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -303,7 +307,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -394,7 +399,8 @@ class PersonScreenTest : ComposeTest() {
 
       setContentWithTheme {
         PersonScreen(
-          navigator = navigator,
+          onNavigateUp = {},
+          onNavigateToDetails = {},
           viewModel = viewModel,
         )
       }
@@ -438,7 +444,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -470,6 +477,7 @@ class PersonScreenTest : ComposeTest() {
 
   @Test
   fun `test onMediaClick navigates to detail`() = runTest {
+    var detailsRoute: DetailsRoute? = null
     val channel = Channel<Result<PersonDetailsResult>>()
 
     fetchPersonDetailsUseCase.mockSuccess(
@@ -484,7 +492,10 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {
+          detailsRoute = it
+        },
         viewModel = viewModel,
       )
     }
@@ -519,17 +530,13 @@ class PersonScreenTest : ComposeTest() {
         .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
         .performClick()
 
-      composeTestRule.runOnIdle {
-        navigator.verifyNavigatedToDirection(
-          expectedDirection = DetailsScreenDestination(
-            DetailsNavArguments(
-              id = 2316,
-              mediaType = MediaType.TV.value,
-              isFavorite = null,
-            ),
-          ),
-        )
-      }
+      assertThat(detailsRoute).isEqualTo(
+        DetailsRoute(
+          id = 2316,
+          isFavorite = null,
+          mediaType = MediaType.TV,
+        ),
+      )
     }
   }
 
@@ -549,7 +556,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -585,7 +593,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -632,7 +641,8 @@ class PersonScreenTest : ComposeTest() {
 
     setContentWithTheme {
       PersonScreen(
-        navigator = navigator,
+        onNavigateUp = {},
+        onNavigateToDetails = {},
         viewModel = viewModel,
       )
     }
@@ -660,7 +670,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -705,7 +719,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -759,7 +777,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -806,7 +828,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -855,7 +881,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -901,7 +931,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {
@@ -953,7 +987,11 @@ class PersonScreenTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      PersonScreen(navigator = navigator, viewModel = viewModel)
+      PersonScreen(
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        viewModel = viewModel,
+      )
     }
 
     with(composeTestRule) {

@@ -19,32 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
-import com.divinelink.feature.details.navigation.person.PersonGraph
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.parameters.DeepLink
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-@Destination<PersonGraph>(
-  start = true,
-  navArgs = PersonNavArguments::class,
-  deepLinks = [
-    DeepLink(uriPattern = "https://www.themoviedb.org/person/{id}-.*"),
-    DeepLink(uriPattern = "https://www.themoviedb.org/person/{id}"),
-  ],
-)
 fun PersonScreen(
-  navigator: DestinationsNavigator,
+  onNavigateUp: () -> Unit,
+  onNavigateToDetails: (DetailsRoute) -> Unit,
   viewModel: PersonViewModel = koinViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -72,7 +59,7 @@ fun PersonScreen(
             (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
           ),
           isVisible = isAppBarVisible.value,
-          onNavigateUp = navigator::navigateUp,
+          onNavigateUp = onNavigateUp,
           actions = {
             IconButton(
               modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
@@ -102,13 +89,11 @@ fun PersonScreen(
         lazyListState = lazyListState,
         scope = scope,
         onMediaClick = { mediaItem ->
-          navigator.navigate(
-            DetailsScreenDestination(
-              DetailsNavArguments(
-                id = mediaItem.id,
-                mediaType = mediaItem.mediaType.value,
-                isFavorite = null,
-              ),
+          onNavigateToDetails(
+            DetailsRoute(
+              id = mediaItem.id,
+              mediaType = mediaItem.mediaType,
+              isFavorite = null,
             ),
           )
         },

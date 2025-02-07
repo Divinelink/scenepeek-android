@@ -8,23 +8,19 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.TestMediaRatingPreferenceUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class DetailsPreferencesSettingsScreenTest : ComposeTest() {
 
-  private lateinit var navigator: DestinationsNavigator
   private lateinit var mediaRatingPreferenceUseCase: TestMediaRatingPreferenceUseCase
 
   @BeforeTest
   fun setUp() {
-    navigator = FakeDestinationsNavigator()
     mediaRatingPreferenceUseCase = TestMediaRatingPreferenceUseCase()
   }
 
@@ -40,7 +36,7 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailPreferencesSettingsScreen(
         viewModel = viewModel,
-        navigator = navigator,
+        onNavigateUp = {},
       )
     }
 
@@ -72,7 +68,7 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
     setContentWithTheme {
       DetailPreferencesSettingsScreen(
         viewModel = viewModel,
-        navigator = navigator,
+        onNavigateUp = {},
       )
     }
 

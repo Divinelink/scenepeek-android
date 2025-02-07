@@ -9,11 +9,10 @@ import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.person.GroupedPersonCredits
-import com.divinelink.core.navigation.arguments.PersonNavArguments
-import com.divinelink.core.navigation.arguments.map
+import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import com.divinelink.feature.details.person.ui.tab.PersonTab
-import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -27,10 +26,16 @@ class PersonViewModel(
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-  private val args: PersonNavArguments = PersonScreenDestination.argsFrom(savedStateHandle)
+  private val route: PersonRoute = PersonRoute(
+    id = savedStateHandle.get<Long>("id") ?: -1,
+    knownForDepartment = savedStateHandle["knownForDepartment"],
+    name = savedStateHandle["name"],
+    profilePath = savedStateHandle["profilePath"],
+    gender = savedStateHandle["gender"],
+  )
 
   private val _uiState: MutableStateFlow<PersonUiState> = MutableStateFlow(
-    if (args.name == null) {
+    if (route.name == null) {
       PersonUiState(
         selectedTabIndex = 0,
         isLoading = true,
@@ -40,7 +45,9 @@ class PersonViewModel(
       PersonUiState(
         selectedTabIndex = 0,
         forms = mapOf(
-          PersonTab.ABOUT.order to PersonForm.About(PersonDetailsUiState.Data.Prefetch(args.map())),
+          PersonTab.ABOUT.order to PersonForm.About(
+            PersonDetailsUiState.Data.Prefetch(route.map()),
+          ),
           PersonTab.MOVIES.order to PersonForm.Movies(emptyMap()),
           PersonTab.TV_SHOWS.order to PersonForm.TvShows(emptyMap()),
         ),
@@ -54,8 +61,8 @@ class PersonViewModel(
     viewModelScope.launch {
       fetchPersonDetailsUseCase(
         PersonDetailsParams(
-          id = args.id,
-          knownForDepartment = args.knownForDepartment,
+          id = route.id,
+          knownForDepartment = route.knownForDepartment,
         ),
       )
         .distinctUntilChanged()
@@ -111,7 +118,7 @@ class PersonViewModel(
     }
 
     viewModelScope.launch {
-      fetchChangesUseCase(args.id)
+      fetchChangesUseCase(route.id)
     }
   }
 

@@ -13,18 +13,15 @@ import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.divinelink.feature.settings.screens.destinations.JellyseerrSettingsScreenDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Destination<SettingsGraph>
-fun SharedTransitionScope.AccountSettingsScreen(
-  navigator: DestinationsNavigator,
+fun AccountSettingsScreen(
+  onNavigateUp: () -> Unit,
+  onNavigateToJellyseerrSettingsScreen: () -> Unit,
+  sharedTransitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: AccountSettingsViewModel = koinViewModel(),
 ) {
@@ -41,15 +38,16 @@ fun SharedTransitionScope.AccountSettingsScreen(
 
   SettingsScaffold(
     title = stringResource(id = R.string.preferences__account),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = onNavigateUp,
   ) { paddingValues ->
     AccountSettingsContent(
+      transitionScope = sharedTransitionScope,
+      animatedVisibilityScope = animatedVisibilityScope,
       paddingValues = paddingValues,
       onLoginClick = viewModel::login,
       uiState = viewState.value,
-      animatedVisibilityScope = animatedVisibilityScope,
       onLogoutClick = viewModel::logoutDialog,
-      onNavigateToJellyseerrLogin = { navigator.navigate(JellyseerrSettingsScreenDestination()) },
+      onNavigateToJellyseerrLogin = onNavigateToJellyseerrSettingsScreen,
     )
   }
 

@@ -12,7 +12,8 @@ import com.divinelink.core.designsystem.theme.AppTheme
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AnimatedVisibilityScopeProvider(
-  content: @Composable SharedTransitionScope.(
+  content: @Composable (
+    sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
   ) -> Unit,
 ) {
@@ -20,7 +21,10 @@ fun AnimatedVisibilityScopeProvider(
     Surface {
       SharedTransitionLayout {
         AnimatedVisibility(visible = true) {
-          content(this)
+          content(
+            this@SharedTransitionLayout,
+            this,
+          )
         }
       }
     }

@@ -2,7 +2,7 @@ package com.divinelink.feature.credits.ui
 
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.CreditsNavArguments
+import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
@@ -25,7 +25,7 @@ class CreditsViewModelTest {
   fun `test initialise viewModel`() = runTest {
     robot
       .withNavArgs(
-        CreditsNavArguments(
+        CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
           mediaType = MediaType.TV,
         ),
@@ -38,7 +38,7 @@ class CreditsViewModelTest {
   fun `test fetchCredits from useCase`() = runTest {
     robot
       .withNavArgs(
-        CreditsNavArguments(
+        CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
           mediaType = MediaType.TV,
         ),
@@ -72,7 +72,7 @@ class CreditsViewModelTest {
 
     robot
       .withNavArgs(
-        CreditsNavArguments(
+        CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
           mediaType = MediaType.TV,
         ),
@@ -153,7 +153,7 @@ class CreditsViewModelTest {
   fun `test onTabSelected`() = runTest {
     robot
       .withNavArgs(
-        CreditsNavArguments(
+        CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
           mediaType = MediaType.TV,
         ),
@@ -182,7 +182,7 @@ class CreditsViewModelTest {
   fun `test onObfuscateSpoilers with initial hidden`() = runTest {
     robot
       .withNavArgs(
-        CreditsNavArguments(
+        CreditsRoute(
           id = AggregatedCreditsFactory.credits().id,
           mediaType = MediaType.TV,
         ),

@@ -15,16 +15,13 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-@Destination<SettingsGraph>
-fun SharedTransitionScope.JellyseerrSettingsScreen(
-  navigator: DestinationsNavigator,
+fun JellyseerrSettingsScreen(
+  sharedTransitionScope: SharedTransitionScope,
+  onNavigateUp: () -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: JellyseerrSettingsViewModel = koinViewModel(),
 ) {
@@ -37,7 +34,7 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
 
   SettingsScaffold(
     title = stringResource(R.string.feature_settings_jellyseerr_account),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = onNavigateUp,
   ) { paddingValues ->
     AnimatedContent(
       targetState = uiState.jellyseerrState,
@@ -63,6 +60,7 @@ fun SharedTransitionScope.JellyseerrSettingsScreen(
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
           jellyseerrState = state,
           animatedVisibilityScope = animatedVisibilityScope,
+          transitionScope = sharedTransitionScope,
           onLogoutClock = viewModel::onJellyseerrInteraction,
         )
       }

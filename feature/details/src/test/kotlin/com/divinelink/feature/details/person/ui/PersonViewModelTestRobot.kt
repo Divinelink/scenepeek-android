@@ -2,7 +2,7 @@ package com.divinelink.feature.details.person.ui
 
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
@@ -17,7 +17,7 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
   private val fetchChangesUseCase = TestFetchChangesUseCase()
 
   private lateinit var viewModel: PersonViewModel
-  private lateinit var navArgs: PersonNavArguments
+  private lateinit var navArgs: PersonRoute
 
   override val actualUiState: Flow<PersonUiState>
     get() = viewModel.uiState
@@ -38,7 +38,7 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
     )
   }
 
-  fun withNavArgs(navArgs: PersonNavArguments) = apply {
+  fun withNavArgs(navArgs: PersonRoute) = apply {
     this.navArgs = navArgs
   }
 

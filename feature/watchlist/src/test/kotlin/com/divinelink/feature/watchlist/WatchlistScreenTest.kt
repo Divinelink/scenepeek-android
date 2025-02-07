@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.setContentWithTheme
@@ -257,7 +257,7 @@ class WatchlistScreenTest : ComposeTest() {
   @Test
   fun `test nagivate to details from tv content`() {
     var verifyNavigatedToMediaDetails = false
-    var navArgs: DetailsNavArguments? = null
+    var navArgs: DetailsRoute? = null
 
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
@@ -300,8 +300,8 @@ class WatchlistScreenTest : ComposeTest() {
 
     assertThat(verifyNavigatedToMediaDetails).isTrue()
     assertThat(navArgs).isEqualTo(
-      DetailsNavArguments(
-        mediaType = MediaType.TV.value,
+      DetailsRoute(
+        mediaType = MediaType.TV,
         id = tvList.first().id,
         isFavorite = tvList.first().isFavorite,
       ),

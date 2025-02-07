@@ -12,24 +12,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.navigation.arguments.DetailsNavArguments
-import com.divinelink.core.navigation.arguments.PersonNavArguments
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.scaffold.AppScaffold
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
-import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
 import com.divinelink.scenepeek.R
-import com.divinelink.scenepeek.navigation.MainGraph
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination<MainGraph>(start = true)
 @Composable
 fun HomeScreen(
-  navigator: DestinationsNavigator,
+  onNavigateToSettings: () -> Unit,
+  onNavigateToDetails: (DetailsRoute) -> Unit,
+  onNavigateToPerson: (PersonRoute) -> Unit,
   viewModel: HomeViewModel = koinViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsStateWithLifecycle().value
@@ -40,11 +35,7 @@ fun HomeScreen(
         scrollBehavior = scrollBehavior,
         modifier = Modifier.clip(SearchBarShape),
         actions = {
-          IconButton(
-            onClick = {
-              navigator.navigate(SettingsScreenDestination())
-            },
-          ) {
+          IconButton(onClick = onNavigateToSettings) {
             Icon(
               imageVector = Icons.Filled.Settings,
               contentDescription = stringResource(R.string.settings_button_content_description),
@@ -64,31 +55,29 @@ fun HomeScreen(
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
       onLoadNextPage = viewModel::onLoadNextPage,
       onNavigateToDetails = { media ->
-        val destination = when (media) {
+        when (media) {
           is MediaItem.Media -> {
-            val navArgs = DetailsNavArguments(
+            val route = DetailsRoute(
               id = media.id,
-              mediaType = media.mediaType.value,
+              mediaType = media.mediaType,
               isFavorite = media.isFavorite,
             )
-            DetailsScreenDestination(navArgs = navArgs)
+            onNavigateToDetails(route)
           }
           is MediaItem.Person -> {
-            PersonScreenDestination(
-              navArgs = PersonNavArguments(
-                id = media.id.toLong(),
-                knownForDepartment = media.knownForDepartment,
-                name = media.name,
-                profilePath = media.profilePath,
-                gender = media.gender,
-              ),
+            val route = PersonRoute(
+              id = media.id.toLong(),
+              knownForDepartment = media.knownForDepartment,
+              name = media.name,
+              profilePath = media.profilePath,
+              gender = media.gender,
             )
+            onNavigateToPerson(route)
           }
           else -> {
             return@HomeContent
           }
         }
-        navigator.navigate(destination)
       },
       onFilterClick = viewModel::onFilterClick,
       onClearFiltersClick = viewModel::onClearFiltersClicked,

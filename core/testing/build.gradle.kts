@@ -14,6 +14,8 @@ dependencies {
   api(libs.truth)
   api(libs.turbine)
 
+  api(libs.androidx.navigation.testing)
+
   debugApi(libs.compose.ui.test.manifest)
 
   implementation(projects.core.ui)
@@ -22,8 +24,6 @@ dependencies {
   implementation(projects.core.commons)
   implementation(projects.core.domain)
   implementation(projects.core.datastore)
-
-  implementation(libs.compose.destinations.core)
 
   implementation(libs.junit)
   implementation(libs.mockito)

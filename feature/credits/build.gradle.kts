@@ -5,15 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.serialization)
 }
 
-ksp {
-  arg("compose-destinations.moduleName", "feature:credits")
-
-  arg("compose-destinations.htmlMermaidGraph", "$rootDir/docs")
-  arg("compose-destinations.mermaidGraph", "$rootDir/docs")
-
-  arg("compose-destinations.codeGenPackageName", "com.divinelink.feature.credits.screens")
-}
-
 dependencies {
   implementation(libs.kotlinx.serialization.json)
 

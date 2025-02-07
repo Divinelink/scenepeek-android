@@ -18,21 +18,19 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsScaffold
-import com.divinelink.feature.settings.navigation.SettingsGraph
-import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AccountSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.AppearanceSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.DetailPreferencesSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.LinkHandlingSettingsScreenDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Destination<SettingsGraph>(start = true)
 @Composable
-fun SettingsScreen(navigator: DestinationsNavigator) {
+fun SettingsScreen(
+  onNavigateUp: () -> Unit,
+  onNavigateToAccountSettings: () -> Unit,
+  onNavigateToAppearanceSettings: () -> Unit,
+  onNavigateToDetailPreferencesSettings: () -> Unit,
+  onNavigateToLinkHandling: () -> Unit,
+  onNavigateToAboutSettings: () -> Unit,
+) {
   SettingsScaffold(
     title = stringResource(R.string.settings),
-    onNavigationClick = navigator::navigateUp,
+    onNavigationClick = onNavigateUp,
     navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
   ) { paddingValues ->
 
@@ -44,7 +42,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.AccountCircle),
           text = stringResource(R.string.preferences__account),
-          onClick = { navigator.navigate(AccountSettingsScreenDestination) },
+          onClick = onNavigateToAccountSettings,
         )
       }
 
@@ -56,7 +54,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
           text = stringResource(R.string.preferences__appearance),
-          onClick = { navigator.navigate(AppearanceSettingsScreenDestination) },
+          onClick = onNavigateToAppearanceSettings,
         )
       }
 
@@ -68,7 +66,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.DisplaySettings),
           text = stringResource(R.string.feature_settings_details_preferences),
-          onClick = { navigator.navigate(DetailPreferencesSettingsScreenDestination) },
+          onClick = onNavigateToDetailPreferencesSettings,
         )
       }
 
@@ -80,7 +78,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.Link),
           text = stringResource(R.string.feature_settings_link_handling),
-          onClick = { navigator.navigate(LinkHandlingSettingsScreenDestination) },
+          onClick = onNavigateToLinkHandling,
         )
       }
 
@@ -92,7 +90,7 @@ fun SettingsScreen(navigator: DestinationsNavigator) {
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
           text = stringResource(R.string.feature_settings_about),
-          onClick = { navigator.navigate(AboutSettingsScreenDestination) },
+          onClick = onNavigateToAboutSettings,
         )
       }
     }

@@ -24,41 +24,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.network.NetworkStatusIndicator
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
-import com.divinelink.feature.details.screens.destinations.DetailsScreenDestination
-import com.divinelink.feature.details.screens.destinations.PersonScreenDestination
+import com.divinelink.feature.details.navigation.navigateToDetails
+import com.divinelink.feature.details.navigation.navigateToPerson
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
 import com.divinelink.scenepeek.R
-import com.divinelink.scenepeek.navigation.AppNavHost
+import com.divinelink.scenepeek.navigation.ScenePeekNavHost
 import com.divinelink.scenepeek.navigation.TopLevelDestination
-import com.divinelink.ui.screens.destinations.HomeScreenDestination
-import com.ramcosta.composedestinations.utils.navGraph
-import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 private const val NETWORK_STATUS_ANIMATION_DURATION = 4000L
 
 @Composable
-fun MovieApp(
-  state: MovieAppState,
+fun ScenePeekApp(
+  state: ScenePeekAppState,
   uiState: MainUiState,
   uiEvent: MainUiEvent,
   onConsumeEvent: () -> Unit,
 ) {
-  val navController: NavHostController = rememberNavController()
-  val navigator = navController.rememberDestinationsNavigator()
-
   val snackbarHostState = remember { SnackbarHostState() }
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
@@ -89,11 +82,11 @@ fun MovieApp(
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
       is MainUiEvent.NavigateToDetails -> {
-        navigator.navigate(direction = DetailsScreenDestination(uiEvent.navArgs))
+        state.navController.navigateToDetails(uiEvent.route)
         onConsumeEvent()
       }
       is MainUiEvent.NavigateToPersonDetails -> {
-        navigator.navigate(direction = PersonScreenDestination(uiEvent.navArgs))
+        state.navController.navigateToPerson(uiEvent.route)
         onConsumeEvent()
       }
       MainUiEvent.None -> {
@@ -120,34 +113,12 @@ fun MovieApp(
               NavigationBarDefaults.windowInsets
             },
           ) {
-            val currentDestination: NavDestination? =
-              navController.currentBackStackEntryAsState().value?.destination
-
             TopLevelDestination.entries.forEach { destination ->
-              val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
+              val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
 
               NavigationBarItem(
                 selected = selected,
-                onClick = {
-                  navigator.navigate(
-                    direction = destination.direction,
-                    builder = {
-                      // Pop up to the start destination of the nav graph when navigating up.
-                      // This is to avoid building up a large stack of destinations.
-                      popUpTo(navController.navGraph.startRoute) {
-                        saveState = true
-                      }
-                      // Avoid multiple copies of the same destination when re-selecting the same item
-                      launchSingleTop = true
-                      // Restore state when re-selecting a previously selected item
-                      restoreState = true
-                    },
-                  )
-                  navigator.popBackStack(
-                    route = destination.direction,
-                    inclusive = false,
-                  )
-                },
+                onClick = { state.navigateToTopLevelDestination(destination) },
                 label = {
                   Text(text = stringResource(id = destination.titleTextId))
                 },
@@ -187,9 +158,8 @@ fun MovieApp(
             .consumeWindowInsets(innerPadding),
         ) {
           when (uiState) {
-            is MainUiState.Completed -> AppNavHost(
-              navController = navController,
-              startRoute = HomeScreenDestination,
+            is MainUiState.Completed -> ScenePeekNavHost(
+              state = state,
             )
             MainUiState.Loading -> LoadingContent()
           }
@@ -199,7 +169,6 @@ fun MovieApp(
   }
 }
 
-fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
-  this?.hierarchy?.any {
-    it.route?.contains(destination.direction.route, true) ?: false
-  } ?: false
+private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) = this?.hierarchy?.any {
+  it.hasRoute(route)
+} ?: false

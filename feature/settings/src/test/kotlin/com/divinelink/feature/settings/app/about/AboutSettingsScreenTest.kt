@@ -9,13 +9,11 @@ import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.navigator.FakeDestinationsNavigator
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
-import com.divinelink.feature.settings.screens.destinations.AboutSettingsScreenDestination
-import com.divinelink.feature.settings.screens.destinations.SettingsScreenDestination
+import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 import com.divinelink.core.commons.R as CommonR
 
@@ -35,8 +33,8 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test version with debug build`() {
     setContentWithTheme {
       AboutSettingsScreen(
-        navigator = FakeDestinationsNavigator(),
         buildConfigProvider = debugBuildConfigProvider,
+        onNavigateUp = {},
       )
     }
 
@@ -60,7 +58,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test version with release`() {
     setContentWithTheme {
       AboutSettingsScreen(
-        navigator = FakeDestinationsNavigator(),
+        onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
       )
     }
@@ -81,7 +79,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test about card is visible`() {
     setContentWithTheme {
       AboutSettingsScreen(
-        navigator = FakeDestinationsNavigator(),
+        onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
       )
     }
@@ -95,7 +93,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test privacy policy is visible`() {
     setContentWithTheme {
       AboutSettingsScreen(
-        navigator = FakeDestinationsNavigator(),
+        onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
       )
     }
@@ -108,10 +106,17 @@ class AboutSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test navigateUp`() {
-    val navigator = FakeDestinationsNavigator()
-    navigator.navigate(SettingsScreenDestination)
+    var navigatedUp = false
+    var navigatedToAbout = false
     setContentWithTheme {
-      SettingsScreen(navigator = navigator)
+      SettingsScreen(
+        onNavigateUp = { navigatedUp = true },
+        onNavigateToAccountSettings = {},
+        onNavigateToAppearanceSettings = {},
+        onNavigateToDetailPreferencesSettings = {},
+        onNavigateToLinkHandling = {},
+        onNavigateToAboutSettings = { navigatedToAbout = true },
+      )
     }
 
     with(composeTestRule) {
@@ -119,11 +124,10 @@ class AboutSettingsScreenTest : ComposeTest() {
 
       onNodeWithText(getString(R.string.feature_settings_about)).performClick()
 
-      navigator.verifyNavigatedToDirection(AboutSettingsScreenDestination)
-
       onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick().assertIsDisplayed()
     }
 
-    navigator.verifyNavigatedToDirection(SettingsScreenDestination)
+    assertThat(navigatedUp).isTrue()
+    assertThat(navigatedToAbout).isTrue()
   }
 }
