@@ -57,7 +57,7 @@ fun AppTheme(
   ) {
     MaterialTheme(
       colorScheme = colors,
-      typography = AppTypography,
+      typography = ScenePeekTypography,
       content = content,
     )
   }
