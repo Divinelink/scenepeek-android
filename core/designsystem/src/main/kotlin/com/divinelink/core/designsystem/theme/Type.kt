@@ -8,125 +8,118 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.divinelink.core.designsystem.R
 
-private val appFontFamily = FontFamily(
-  Font(
-    resId = R.font.font_light,
-    weight = FontWeight.W300, // FontWeight.Light
-  ),
-  Font(
-    resId = R.font.font_medium,
-    weight = FontWeight.W400, // FontWeight.Normal
-  ),
-  Font(
-    resId = R.font.font_medium,
-    weight = FontWeight.W500, // FontWeight.Medium
-  ),
+private val fontFamily = FontFamily(
+  Font(R.font.font_medium),
 )
 
-val AppTypography = Typography(
-  labelLarge = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.sp,
-    lineHeight = 20.sp,
-    fontSize = 14.sp,
-  ),
-  labelMedium = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.10000000149011612.sp,
-    lineHeight = 16.sp,
-    fontSize = 12.sp,
-  ),
-  labelSmall = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.10000000149011612.sp,
-    lineHeight = 16.sp,
-    fontSize = 11.sp,
-  ),
-  bodyLarge = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W500,
-    letterSpacing = 0.sp,
-    lineHeight = 24.sp,
-    fontSize = 16.sp,
-  ),
-  bodyMedium = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W500,
-    letterSpacing = 0.sp,
-    lineHeight = 20.sp,
-    fontSize = 14.sp,
-  ),
-  bodySmall = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.10000000149011612.sp,
-    lineHeight = 16.sp,
-    fontSize = 12.sp,
-  ),
-  headlineLarge = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 40.sp,
-    fontSize = 32.sp,
-  ),
-  headlineMedium = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 36.sp,
-    fontSize = 28.sp,
-  ),
-  headlineSmall = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 32.sp,
-    fontSize = 24.sp,
-  ),
+internal val ScenePeekTypography = Typography(
   displayLarge = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 64.sp,
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
     fontSize = 57.sp,
+    lineHeight = 64.sp,
+    letterSpacing = (-0.25).sp,
   ),
   displayMedium = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 52.sp,
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
     fontSize = 45.sp,
+    lineHeight = 52.sp,
+    letterSpacing = 0.sp,
   ),
   displaySmall = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 44.sp,
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
     fontSize = 36.sp,
+    lineHeight = 44.sp,
+    letterSpacing = 0.sp,
+  ),
+  headlineLarge = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 32.sp,
+    lineHeight = 40.sp,
+    letterSpacing = 0.sp,
+  ),
+  headlineMedium = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 28.sp,
+    lineHeight = 36.sp,
+    letterSpacing = 0.sp,
+  ),
+  headlineSmall = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 24.sp,
+    lineHeight = 32.sp,
+    letterSpacing = 0.sp,
   ),
   titleLarge = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.W400,
-    letterSpacing = 0.sp,
-    lineHeight = 28.sp,
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
     fontSize = 22.sp,
+    lineHeight = 28.sp,
+    letterSpacing = 0.sp,
   ),
   titleMedium = TextStyle(
-    fontFamily = appFontFamily,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.sp,
-    lineHeight = 24.sp,
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
     fontSize = 18.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.1.sp,
   ),
   titleSmall = TextStyle(
-    fontFamily = appFontFamily,
+    fontFamily = fontFamily,
     fontWeight = FontWeight.Medium,
-    letterSpacing = 0.sp,
-    lineHeight = 20.sp,
     fontSize = 14.sp,
+    lineHeight = 20.sp,
+    letterSpacing = 0.1.sp,
+  ),
+  // Default text style
+  bodyLarge = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 16.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.5.sp,
+  ),
+  bodyMedium = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 14.sp,
+    lineHeight = 20.sp,
+    letterSpacing = 0.25.sp,
+  ),
+  bodySmall = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
+    lineHeight = 16.sp,
+    letterSpacing = 0.4.sp,
+  ),
+  // Used for Button
+  labelLarge = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Medium,
+    fontSize = 14.sp,
+    lineHeight = 20.sp,
+    letterSpacing = 0.1.sp,
+  ),
+  // Used for Navigation items
+  labelMedium = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Medium,
+    fontSize = 12.sp,
+    lineHeight = 16.sp,
+    letterSpacing = 0.5.sp,
+  ),
+  // Used for Tag
+  labelSmall = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Medium,
+    fontSize = 10.sp,
+    lineHeight = 14.sp,
+    letterSpacing = 0.sp,
   ),
 )
