@@ -1,6 +1,8 @@
 [![codecov](https://codecov.io/gh/Divinelink/scenepeek-android/graph/badge.svg?token=FPANRF2HZ5)](https://codecov.io/gh/Divinelink/scenepeek-android)
 <img src="https://github.com/Divinelink/scenepeek-android/actions/workflows/coverage_static_analysis.yml/badge.svg" alt="CI">
 
+[<img alt='Get it on Google Play' target='_blank' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80'/>](https://play.google.com/store/apps/details?id=com.divinelink.scenepeek)
+
 # ScenePeek
 
 ScenePeek is an android application, built
