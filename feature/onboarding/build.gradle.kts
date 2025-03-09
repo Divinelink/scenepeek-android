@@ -8,6 +8,7 @@ plugins {
 dependencies {
   implementation(libs.kotlinx.serialization.json)
 
+  implementation(projects.core.datastore)
   implementation(projects.core.domain)
   implementation(projects.core.navigation)
 

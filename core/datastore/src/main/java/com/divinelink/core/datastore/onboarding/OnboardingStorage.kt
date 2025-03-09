@@ -7,10 +7,13 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.divinelink.core.commons.BuildConfig
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface OnboardingStorage {
+  val isFirstLaunch: Flow<Boolean>
+  val lastSeenVersion: Flow<Int>
   suspend fun setOnboardingCompleted()
-  val onboardingCompleted: Flow<Boolean>
+  suspend fun updateLastSeenVersion(version: Int)
 }
 
 class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) :
@@ -25,6 +28,12 @@ class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) 
     val LAST_SEEN_VERSION = intPreferencesKey("last_seen_version")
   }
 
+  override val isFirstLaunch: Flow<Boolean> = dataStore.data
+    .map { preferences -> preferences[PreferencesKeys.IS_FIRST_LAUNCH] ?: true }
+
+  override val lastSeenVersion: Flow<Int> = dataStore.data
+    .map { preferences -> preferences[PreferencesKeys.LAST_SEEN_VERSION] ?: 0 }
+
   override suspend fun setOnboardingCompleted() {
     dataStore.edit { preferences ->
       preferences[PreferencesKeys.IS_FIRST_LAUNCH] = false
@@ -32,6 +41,9 @@ class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) 
     }
   }
 
-  override val onboardingCompleted: Flow<Boolean>
-    get() = TODO("Not yet implemented")
+  override suspend fun updateLastSeenVersion(version: Int) {
+    dataStore.edit { preferences ->
+      preferences[PreferencesKeys.LAST_SEEN_VERSION] = version
+    }
+  }
 }

@@ -54,6 +54,7 @@ fun ScenePeekApp(
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
+  val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
