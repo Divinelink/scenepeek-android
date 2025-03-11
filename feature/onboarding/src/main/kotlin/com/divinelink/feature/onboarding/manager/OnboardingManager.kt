@@ -1,7 +1,10 @@
-package com.divinelink.feature.onboarding
+package com.divinelink.feature.onboarding.manager
 
 import com.divinelink.core.commons.BuildConfig
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
+import com.divinelink.feature.onboarding.OnboardingAction
+import com.divinelink.feature.onboarding.OnboardingPage
+import com.divinelink.feature.onboarding.OnboardingPages
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -49,8 +52,7 @@ class ProdOnboardingManager(
     TODO("Not yet implemented")
   }
 
-  private fun hasNewPagesForUpdate(lastSeenVersion: Int): Boolean = OnboardingPages
-    .newFeaturePages
+  private fun hasNewPagesForUpdate(lastSeenVersion: Int): Boolean = OnboardingPages.newFeaturePages
     .any { (version, _) ->
       version > lastSeenVersion
     }

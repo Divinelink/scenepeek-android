@@ -11,7 +11,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
-import com.divinelink.feature.onboarding.OnboardingManager
+import com.divinelink.feature.onboarding.manager.OnboardingManager
 import com.divinelink.feature.watchlist.navigation.navigateToWatchlist
 import com.divinelink.scenepeek.home.navigation.navigateToHome
 import com.divinelink.scenepeek.navigation.TopLevelDestination
