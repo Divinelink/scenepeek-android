@@ -3,6 +3,7 @@ package com.divinelink.scenepeek.base.di
 import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
+import com.divinelink.feature.onboarding.ui.OnboardingViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
@@ -26,4 +27,5 @@ val appViewModelModule = module {
   viewModelOf(::WatchlistViewModel)
   viewModelOf(::DetailsPreferencesViewModel)
   viewModelOf(::TMDBAuthViewModel)
+  viewModelOf(::OnboardingViewModel)
 }

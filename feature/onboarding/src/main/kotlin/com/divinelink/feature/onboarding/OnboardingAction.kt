@@ -8,7 +8,7 @@ sealed class OnboardingAction(val actionText: UIText?) {
   )
 
   data object NavigateToJellyseerrLogin : OnboardingAction(
-    UIText.ResourceText(R.string.feature_onboarding_tmdb_page_action),
+    UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_action),
   )
 
   data object CompleteOnboarding : OnboardingAction(null)
