@@ -40,7 +40,7 @@ class ProdOnboardingManager(
         .filter { (version, _) -> version > lastSeenVersion }
         .flatMap { (_, pages) -> pages }
 
-      OnboardingPages.initialPages + newPages
+      newPages
     }
   }
 
