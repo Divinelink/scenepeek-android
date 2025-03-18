@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.coil.BackdropImage
+import com.divinelink.feature.onboarding.OnboardingAction
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
@@ -52,7 +53,14 @@ fun OnboardingScreen(
     }
   }
 
-  Scaffold {
+  Scaffold(
+    modifier = Modifier.fillMaxSize(),
+    topBar = {
+      if (uiState.pages[pagerState.currentPage].showSkipButton) {
+        OnboardingSkipButton(viewModel::onboardingComplete)
+      }
+    },
+  ) {
     Box(modifier = Modifier.consumeWindowInsets(it)) {
       BackdropImage(
         modifier = Modifier
@@ -70,8 +78,13 @@ fun OnboardingScreen(
       ) { page ->
         OnboardingItem(
           page = uiState.pages[page],
-          onActionClick = {
-            //
+          onCompleteOnboarding = viewModel::onboardingComplete,
+          isLast = page == uiState.pages.size - 1,
+          onActionClick = { action ->
+            when (action) {
+              is OnboardingAction.NavigateToJellyseerrLogin -> onNavigateToJellyseerrSettings()
+              is OnboardingAction.NavigateToTMDBLogin -> onNavigateToTMDBLogin()
+            }
           },
         )
       }

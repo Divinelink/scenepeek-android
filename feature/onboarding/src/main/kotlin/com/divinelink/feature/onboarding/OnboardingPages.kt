@@ -9,7 +9,7 @@ object OnboardingPages {
       title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
       description = UIText.ResourceText(R.string.feature_onboarding_welcome_page_description),
       image = null,
-      showSkipButton = false,
+      showSkipButton = true,
     ),
     OnboardingPage(
       title = UIText.ResourceText(R.string.feature_onboarding_tmdb_page_title),
@@ -22,7 +22,7 @@ object OnboardingPages {
       title = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_title),
       description = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_description),
       image = com.divinelink.core.ui.R.drawable.core_ui_ic_jellyseerr,
-      showSkipButton = true,
+      showSkipButton = false,
       action = OnboardingAction.NavigateToJellyseerrLogin,
     ),
   )

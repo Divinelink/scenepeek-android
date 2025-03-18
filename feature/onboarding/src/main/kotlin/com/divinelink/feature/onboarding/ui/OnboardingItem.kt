@@ -11,25 +11,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.onboarding.OnboardingAction
 import com.divinelink.feature.onboarding.OnboardingPage
 import com.divinelink.feature.onboarding.OnboardingPages
+import com.divinelink.feature.onboarding.R
 
 @Composable
 fun OnboardingItem(
   page: OnboardingPage,
   onActionClick: (OnboardingAction) -> Unit,
+  isLast: Boolean,
+  onCompleteOnboarding: () -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -68,15 +74,34 @@ fun OnboardingItem(
 
     Spacer(modifier = Modifier.weight(1f))
 
-    if (page.action?.actionText?.getString() != null) {
-      Button(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-          .padding(bottom = MaterialTheme.dimensions.keyline_64),
-        onClick = { onActionClick.invoke(page.action) },
-      ) {
-        Text(text = page.action.actionText.getString())
+    Column(
+      modifier = Modifier
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+        .padding(
+          bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_64,
+        ),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    ) {
+      if (isLast) {
+        OutlinedButton(
+          modifier = Modifier.fillMaxWidth(),
+          onClick = onCompleteOnboarding,
+        ) {
+          Text(text = stringResource(R.string.feature_onboarding_get_started))
+        }
+      }
+
+      page.action?.let { action ->
+        if (action.isComplete) {
+          SuccessText(action.completedActionText)
+        } else {
+          Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onActionClick.invoke(action) },
+          ) {
+            Text(text = action.actionText.getString())
+          }
+        }
       }
     }
   }
@@ -90,6 +115,8 @@ fun OnboardingItemPreview() {
       OnboardingItem(
         page = OnboardingPages.initialPages.last(),
         onActionClick = {},
+        onCompleteOnboarding = {},
+        isLast = true,
       )
     }
   }
