@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
  */
 internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
   commonExtension.apply {
-    val moduleName = path.split(":").drop(1).joinToString(".")
+    val moduleName = path.split(":").drop(1).joinToString(".") { it.replace("-", ".") }
     namespace = if (moduleName.isNotEmpty()) {
       "com.divinelink.$moduleName"
     } else {

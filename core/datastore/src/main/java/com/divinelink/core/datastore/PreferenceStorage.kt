@@ -5,11 +5,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ACCOUNT_ID
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_HAS_SESSION
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
@@ -37,18 +35,11 @@ interface PreferenceStorage {
   suspend fun setBlackBackgrounds(isEnabled: Boolean)
   val isBlackBackgroundsEnabled: Flow<Boolean>
 
-  suspend fun clearAccountId()
-  suspend fun setAccountId(accountId: String)
-  val accountId: Flow<String?>
-
   suspend fun setEncryptedPreferences(value: String)
   val encryptedPreferences: Flow<String?>
 
   suspend fun setSpoilersObfuscation(isEnabled: Boolean)
   val spoilersObfuscation: Flow<Boolean>
-
-  suspend fun setHasSession(hasSession: Boolean)
-  val hasSession: Flow<Boolean>
 
   suspend fun clearJellyseerrAddress()
   suspend fun setJellyseerrAddress(address: String)
@@ -91,10 +82,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_SERIES_TOTAL_EPISODES_OBFUSCATION = booleanPreferencesKey(
       "settings.series.episode.obfuscation",
     )
-
-    val PREF_ACCOUNT_ID = stringPreferencesKey("account.id")
-
-    val PREF_HAS_SESSION = booleanPreferencesKey("user.has.valid.session")
 
     val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
     val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
@@ -156,32 +143,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val spoilersObfuscation = dataStore.data.mapLatest {
     it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
   }.distinctUntilChanged()
-
-  override suspend fun setHasSession(hasSession: Boolean) {
-    dataStore.edit {
-      it[PREF_HAS_SESSION] = hasSession
-    }
-  }
-
-  override val hasSession: Flow<Boolean> = dataStore.data.map {
-    it[PREF_HAS_SESSION] ?: false
-  }.distinctUntilChanged()
-
-  override suspend fun clearAccountId() {
-    dataStore.edit {
-      it.remove(PREF_ACCOUNT_ID)
-    }
-  }
-
-  override suspend fun setAccountId(accountId: String) {
-    dataStore.edit {
-      it[PREF_ACCOUNT_ID] = accountId
-    }
-  }
-
-  override val accountId: Flow<String?> = dataStore.data.map {
-    it[PREF_ACCOUNT_ID]
-  }
 
   override suspend fun clearJellyseerrAddress() {
     dataStore.edit {

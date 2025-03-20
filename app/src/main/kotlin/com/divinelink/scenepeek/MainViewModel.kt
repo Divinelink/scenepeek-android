@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
   private val findByIdUseCase: FindByIdUseCase,
+  private val storage: SessionStorage,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
@@ -47,6 +49,11 @@ class MainViewModel(
         onAuthSuccess = { requestToken ->
           viewModelScope.launch {
             createSessionUseCase.invoke(requestToken)
+          }
+        },
+        onAuthFailure = {
+          viewModelScope.launch {
+            storage.clearSession()
           }
         },
       )
@@ -154,6 +161,7 @@ private fun handleSchemeIMDB(
 private fun handleSchemeTMDBRedirect(
   uri: Uri,
   onAuthSuccess: (String) -> Unit,
+  onAuthFailure: () -> Unit,
 ) {
   if (uri.scheme == "scenepeek" &&
     uri.host == "auth" &&
@@ -164,6 +172,8 @@ private fun handleSchemeTMDBRedirect(
 
     if (approved == "true" && requestToken != null) {
       onAuthSuccess(requestToken)
+    } else {
+      onAuthFailure()
     }
   }
 }

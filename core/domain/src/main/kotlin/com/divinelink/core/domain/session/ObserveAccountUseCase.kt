@@ -3,23 +3,22 @@ package com.divinelink.core.domain.session
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.session.model.SessionException
-import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.datastore.account.AccountStorage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 
 class ObserveAccountUseCase(
-  private val storage: PreferenceStorage,
+  private val accountStorage: AccountStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, Boolean>(dispatcher.io) {
 
-  override fun execute(parameters: Unit): Flow<Result<Boolean>> = combine(
-    storage.hasSession,
-    storage.accountId,
-  ) { hasSession, accountId ->
-    if (hasSession && accountId != null) {
-      Result.success(true)
-    } else {
-      Result.failure(SessionException.Unauthenticated())
+  override fun execute(parameters: Unit): Flow<Result<Boolean>> = flow {
+    accountStorage.accountId.collect { accountId ->
+      if (accountId == null) {
+        emit(Result.failure(SessionException.Unauthenticated()))
+      } else {
+        emit(Result.success(true))
+      }
     }
   }
 }
