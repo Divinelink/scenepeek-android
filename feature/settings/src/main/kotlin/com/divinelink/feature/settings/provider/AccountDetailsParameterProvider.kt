@@ -11,31 +11,26 @@ class AccountDetailsParameterProvider : PreviewParameterProvider<AccountSettings
   override val values: Sequence<AccountSettingsViewState?> = sequenceOf(
     AccountSettingsViewState(
       accountDetails = AccountDetailsFactory.Pinkman(),
-      loginUrl = null,
       alertDialogUiState = null,
       jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
     ),
     AccountSettingsViewState(
       accountDetails = AccountDetailsFactory.Pinkman().copy(tmdbAvatarPath = null),
-      loginUrl = null,
       alertDialogUiState = null,
       jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
     ),
     AccountSettingsViewState(
       accountDetails = null,
-      loginUrl = null,
       alertDialogUiState = null,
       jellyseerrAccountDetails = null,
     ),
     AccountSettingsViewState(
       accountDetails = null,
-      loginUrl = null,
       alertDialogUiState = null,
       jellyseerrAccountDetails = null,
     ),
     AccountSettingsViewState(
       accountDetails = null,
-      loginUrl = null,
       alertDialogUiState = null,
       jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyfin(),
     ),

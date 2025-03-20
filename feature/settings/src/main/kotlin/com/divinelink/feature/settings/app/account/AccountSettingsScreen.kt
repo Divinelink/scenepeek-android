@@ -21,6 +21,7 @@ import com.divinelink.core.ui.R as uiR
 fun AccountSettingsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToJellyseerrSettingsScreen: () -> Unit,
+  onNavigateToTMDBAuth: () -> Unit,
   sharedTransitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: AccountSettingsViewModel = koinViewModel(),
@@ -28,11 +29,15 @@ fun AccountSettingsScreen(
   val viewState = viewModel.viewState.collectAsState()
   val context = LocalContext.current
 
-  LaunchedEffect(viewState.value.loginUrl) {
-    viewState.value.loginUrl?.let { loginUrl ->
-      launchCustomTab(context, loginUrl)
+  LaunchedEffect(Unit) {
+    viewModel.openUrlTab.collect { url ->
+      launchCustomTab(context = context, url = url)
+    }
+  }
 
-      viewModel.onConsumeLoginUrl()
+  LaunchedEffect(Unit) {
+    viewModel.navigateToTMDBAuth.collect {
+      onNavigateToTMDBAuth()
     }
   }
 

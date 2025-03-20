@@ -17,12 +17,14 @@ fun NavController.navigateToAccountSettings() = navigate(route = AccountSettings
 fun NavGraphBuilder.accountSettingsScreen(
   sharedTransitionScope: SharedTransitionScope,
   onNavigateUp: () -> Unit,
+  onNavigateToTMDBAuth: () -> Unit,
   onNavigateToJellyseerrSettings: () -> Unit,
 ) {
   composable<AccountSettingsRoute> {
     AccountSettingsScreen(
       onNavigateUp = onNavigateUp,
       onNavigateToJellyseerrSettingsScreen = onNavigateToJellyseerrSettings,
+      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
       sharedTransitionScope = sharedTransitionScope,
       animatedVisibilityScope = this@composable,
     )

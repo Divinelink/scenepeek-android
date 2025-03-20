@@ -7,6 +7,7 @@ import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
+import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.feature.watchlist.WatchlistViewModel
 import com.divinelink.scenepeek.MainViewModel
 import com.divinelink.scenepeek.home.ui.HomeViewModel
@@ -24,4 +25,5 @@ val appViewModelModule = module {
   viewModelOf(::JellyseerrSettingsViewModel)
   viewModelOf(::WatchlistViewModel)
   viewModelOf(::DetailsPreferencesViewModel)
+  viewModelOf(::TMDBAuthViewModel)
 }

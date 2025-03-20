@@ -6,30 +6,40 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.datastore.account.AccountStorage
 import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
   private val sessionStorage: SessionStorage,
+  private val accountStorage: AccountStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Unit, AccountDetails>(dispatcher.io) {
+) : FlowUseCase<Unit, AccountDetails>(dispatcher.default) {
 
-  override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = flow {
+  override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = channelFlow {
     val sessionId = sessionStorage.sessionId
 
-    if (sessionId == null) {
-      emit(Result.failure(SessionException.Unauthenticated()))
-      return@flow
+    launch(dispatcher.default) {
+      accountStorage.accountDetails.collect { accountDetails ->
+        Timber.i("Details updated: $accountDetails")
+        if (accountDetails != null) {
+          send(Result.success(accountDetails))
+        }
+      }
     }
 
-    val response = repository.getAccountDetails(sessionId)
-    val data = response.first().data
-
-    sessionStorage.setAccountId(data.id.toString())
-
-    emit(Result.success(data))
+    launch(dispatcher.default) {
+      if (sessionId == null) {
+        send(Result.failure(SessionException.Unauthenticated()))
+      } else {
+        val details = repository.getAccountDetails(sessionId).first().data
+        accountStorage.setAccountDetails(details)
+      }
+    }
   }
 }

@@ -6,10 +6,6 @@ plugins {
   alias(libs.plugins.sqldelight)
 }
 
-android {
-  namespace = "com.divinelink.core.database"
-}
-
 dependencies {
   api(projects.core.model)
   implementation(projects.core.commons)

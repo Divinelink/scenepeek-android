@@ -99,6 +99,7 @@ dependencies {
   implementation(projects.feature.details)
   implementation(projects.feature.settings)
   implementation(projects.feature.credits)
+  implementation(projects.feature.tmdbAuth)
 
   // Firebase
   implementation(platform(libs.firebase.bom))

@@ -15,6 +15,7 @@ dependencies {
   kover(projects.feature.credits)
   kover(projects.feature.details)
   kover(projects.feature.settings)
+  kover(projects.feature.tmdbAuth)
   kover(projects.feature.watchlist)
 }
 
