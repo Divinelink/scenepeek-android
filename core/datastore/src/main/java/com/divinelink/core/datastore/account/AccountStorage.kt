@@ -29,9 +29,7 @@ class AccountPreferenceStorage(private val dataStore: DataStore<AccountDetailsPr
         id = accountDetails.id
         name = accountDetails.name
         username = accountDetails.username
-        accountDetails.tmdbAvatarPath?.let { avatar ->
-          this.avatar = avatar
-        }
+        avatar = accountDetails.tmdbAvatarPath.takeIf { it != null } ?: ""
       }
     }
   }

@@ -1,13 +1,14 @@
 package com.divinelink.core.datastore
 
 import com.divinelink.core.datastore.account.AccountStorage
+import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 class SessionStorage(
   val storage: PreferenceStorage,
   val encryptedStorage: EncryptedStorage,
-  private val accountStorage: AccountStorage,
+  val accountStorage: AccountStorage,
 ) {
   val sessionId: String?
     get() = encryptedStorage.sessionId
@@ -17,6 +18,10 @@ class SessionStorage(
 
   suspend fun setSession(sessionId: String) {
     encryptedStorage.setSessionId(sessionId)
+  }
+
+  suspend fun setTMDbAccountDetails(accountDetails: AccountDetails) {
+    accountStorage.setAccountDetails(accountDetails)
   }
 
   suspend fun clearSession() {

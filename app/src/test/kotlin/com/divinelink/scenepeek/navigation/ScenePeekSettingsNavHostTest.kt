@@ -20,7 +20,6 @@ import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
-import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.TestTags
@@ -43,6 +42,8 @@ import com.divinelink.feature.settings.navigation.appearance.AppearanceSettingsR
 import com.divinelink.feature.settings.navigation.details.DetailsPreferencesSettingsRoute
 import com.divinelink.feature.settings.navigation.links.LinkHandlingSettingsRoute
 import com.divinelink.feature.settings.navigation.settings.SettingsRoute
+import com.divinelink.feature.tmdb.auth.TMDBAuthRoute
+import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
@@ -123,14 +124,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun `test navigate to AccountSettingsScreen`() = runTest {
     navController.navigate(SettingsRoute)
 
-    val createRequestTokenUseCase = FakeCreateRequestTokenUseCase().apply {
-      mockSuccess(Result.success("requestToken"))
-    }
-
     declare {
       AccountSettingsViewModel(
-        createRequestTokenUseCase = createRequestTokenUseCase.mock,
-        observeSessionUseCase = FakeObserveSessionUseCase().mock,
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
         getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         logoutUseCase = FakeLogoutUseCase().mock,
@@ -158,14 +153,8 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     navController.navigate(SettingsRoute)
     navController.navigate(AccountSettingsRoute)
 
-    val createRequestTokenUseCase = FakeCreateRequestTokenUseCase().apply {
-      mockSuccess(Result.success("requestToken"))
-    }
-
     declare {
       AccountSettingsViewModel(
-        createRequestTokenUseCase = createRequestTokenUseCase.mock,
-        observeSessionUseCase = FakeObserveSessionUseCase().mock,
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
         getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         logoutUseCase = FakeLogoutUseCase().mock,
@@ -341,6 +330,35 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
       onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
       assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
+    }
+  }
+
+  @Test
+  fun `test navigate to TMDBAuthScreen`() {
+    declare {
+      AccountSettingsViewModel(
+        getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
+        getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
+        logoutUseCase = FakeLogoutUseCase().mock,
+      )
+    }
+
+    declare {
+      TMDBAuthViewModel(
+        createRequestTokenUseCase = FakeCreateRequestTokenUseCase().mock,
+      )
+    }
+
+    navController.navigate(AccountSettingsRoute)
+
+    with(composeTestRule) {
+      assertThat(navController.currentDestination?.hasRoute(AccountSettingsRoute::class)).isTrue()
+      assertThat(navController.currentDestination?.hasRoute(TMDBAuthRoute::class)).isFalse()
+
+      onNodeWithText(getString(R.string.login)).assertExists().performClick()
+
+      onNodeWithText(getString(R.string.settings)).assertDoesNotExist()
+      assertThat(navController.currentDestination?.hasRoute(TMDBAuthRoute::class)).isTrue()
     }
   }
 }

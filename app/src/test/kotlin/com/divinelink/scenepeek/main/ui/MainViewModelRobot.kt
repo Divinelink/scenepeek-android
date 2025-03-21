@@ -1,8 +1,12 @@
 package com.divinelink.scenepeek.main.ui
 
 import android.net.Uri
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.storage.FakeAccountStorage
+import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestFindByIdUseCase
 import com.divinelink.scenepeek.MainUiEvent
@@ -29,6 +33,11 @@ class MainViewModelRobot {
       themedActivityDelegate = themedActivityDelegate,
       createSessionUseCase = createSessionUseCase.mock,
       findByIdUseCase = findByIdUseCase.mock,
+      storage = SessionStorage(
+        storage = FakePreferenceStorage(),
+        encryptedStorage = FakeEncryptedPreferenceStorage(),
+        accountStorage = FakeAccountStorage(),
+      ),
     )
   }
 

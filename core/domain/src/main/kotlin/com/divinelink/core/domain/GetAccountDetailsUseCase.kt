@@ -6,7 +6,6 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.datastore.account.AccountStorage
 import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -16,16 +15,15 @@ import timber.log.Timber
 
 class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
-  private val sessionStorage: SessionStorage,
-  private val accountStorage: AccountStorage,
+  private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, AccountDetails>(dispatcher.default) {
 
   override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = channelFlow {
-    val sessionId = sessionStorage.sessionId
+    val sessionId = storage.sessionId
 
     launch(dispatcher.default) {
-      accountStorage.accountDetails.collect { accountDetails ->
+      storage.accountStorage.accountDetails.collect { accountDetails ->
         Timber.i("Details updated: $accountDetails")
         if (accountDetails != null) {
           send(Result.success(accountDetails))
@@ -38,7 +36,7 @@ class GetAccountDetailsUseCase(
         send(Result.failure(SessionException.Unauthenticated()))
       } else {
         val details = repository.getAccountDetails(sessionId).first().data
-        accountStorage.setAccountDetails(details)
+        storage.accountStorage.setAccountDetails(details)
       }
     }
   }

@@ -59,6 +59,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -80,6 +81,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -106,6 +108,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -129,6 +132,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -164,6 +168,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -189,6 +194,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {
           navigatedToJellyseerrSettingsScreen = true
         },
@@ -217,6 +223,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }

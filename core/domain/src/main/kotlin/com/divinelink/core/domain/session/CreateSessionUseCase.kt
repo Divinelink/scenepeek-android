@@ -5,13 +5,11 @@ import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.datastore.account.AccountStorage
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
 
 class CreateSessionUseCase(
   private val repository: SessionRepository,
   private val storage: SessionStorage,
-  private val accountStorage: AccountStorage,
   val dispatcher: DispatcherProvider,
 ) : UseCase<String, Unit>(dispatcher.io) {
 
@@ -24,7 +22,7 @@ class CreateSessionUseCase(
 
         // Fetch account details
         repository.getAccountDetails(it.id).collect { accountDetailsResult ->
-          accountStorage.setAccountDetails(accountDetailsResult.data)
+          storage.setTMDbAccountDetails(accountDetailsResult.data)
         }
       }
       .onFailure {

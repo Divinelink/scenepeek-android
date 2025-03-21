@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ObserveAccountUseCase(
-  private val accountStorage: AccountStorage,
+  private val storage: AccountStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, Boolean>(dispatcher.io) {
 
   override fun execute(parameters: Unit): Flow<Result<Boolean>> = flow {
-    accountStorage.accountId.collect { accountId ->
+    storage.accountId.collect { accountId ->
       if (accountId == null) {
         emit(Result.failure(SessionException.Unauthenticated()))
       } else {

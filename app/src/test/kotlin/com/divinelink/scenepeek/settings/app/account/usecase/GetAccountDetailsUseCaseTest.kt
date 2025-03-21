@@ -5,6 +5,7 @@ import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
@@ -32,9 +33,10 @@ class GetAccountDetailsUseCaseTest {
     val sessionStorage = createSessionStorage()
 
     val useCase = GetAccountDetailsUseCase(
-      sessionStorage = sessionStorage,
+      storage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
+
     )
 
     val result = useCase.invoke(Unit)
@@ -53,7 +55,7 @@ class GetAccountDetailsUseCaseTest {
     )
 
     val useCase = GetAccountDetailsUseCase(
-      sessionStorage = sessionStorage,
+      storage = sessionStorage,
       repository = repository.mock,
       dispatcher = testDispatcher,
     )
@@ -67,5 +69,6 @@ class GetAccountDetailsUseCaseTest {
   private fun createSessionStorage(sessionId: String? = null) = SessionStorage(
     storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+    accountStorage = FakeAccountStorage(),
   )
 }
