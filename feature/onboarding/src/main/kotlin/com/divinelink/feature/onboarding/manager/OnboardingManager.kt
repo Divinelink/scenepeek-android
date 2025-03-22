@@ -25,7 +25,6 @@ class ProdOnboardingManager(
   ) { isFirstLaunch, lastSeenVersion ->
 
     isFirstLaunch || (lastSeenVersion != currentVersion && hasNewPagesForUpdate(lastSeenVersion))
-    true
   }
 
   override val onboardingPages: Flow<List<OnboardingPage>> = combine(

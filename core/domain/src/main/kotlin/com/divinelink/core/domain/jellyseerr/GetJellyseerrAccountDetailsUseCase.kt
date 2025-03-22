@@ -14,7 +14,7 @@ class GetJellyseerrAccountDetailsUseCase(
   private val storage: PreferenceStorage,
   private val repository: JellyseerrRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Boolean, JellyseerrAccountDetails?>(dispatcher.io) {
+) : FlowUseCase<Boolean, JellyseerrAccountDetails?>(dispatcher.default) {
 
   /**
    * @param parameters: If true, fetch from remote

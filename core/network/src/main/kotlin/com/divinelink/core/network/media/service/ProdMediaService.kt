@@ -84,7 +84,8 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val url = baseUrl +
       "${request.id}" +
       "/reviews?" +
-      "&language=en-US"
+      "&language=en-US" +
+      "&include_adult=false"
 
     val response = restClient.get<ReviewsResponseApi>(url = url)
 

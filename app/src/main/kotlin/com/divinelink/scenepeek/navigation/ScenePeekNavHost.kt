@@ -122,7 +122,8 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
 
       onboardingScreen(
         onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
-        onNavigateToTMDBLogin = navController::navigateToAccountSettings,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigateUp = navController::navigateUp,
       )
 
       tmdbAuthScreen(navController::navigateUp)

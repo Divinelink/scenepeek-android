@@ -25,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 fun OnboardingScreen(
   onNavigateToJellyseerrSettings: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  onNavigateUp: () -> Unit,
   viewModel: OnboardingViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,10 +54,16 @@ fun OnboardingScreen(
     }
   }
 
+  LaunchedEffect(Unit) {
+    viewModel.onNavigateUp.collect {
+      onNavigateUp()
+    }
+  }
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
-      if (uiState.pages[pagerState.currentPage].showSkipButton) {
+      if (uiState.pages.isNotEmpty() && uiState.pages[pagerState.currentPage].showSkipButton) {
         OnboardingSkipButton(viewModel::onboardingComplete)
       }
     },

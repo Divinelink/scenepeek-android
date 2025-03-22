@@ -34,6 +34,7 @@ import com.divinelink.core.ui.network.NetworkStatusIndicator
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.details.navigation.navigateToDetails
 import com.divinelink.feature.details.navigation.navigateToPerson
+import com.divinelink.feature.onboarding.navigation.navigateToOnboarding
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
 import com.divinelink.scenepeek.R
@@ -96,6 +97,12 @@ fun ScenePeekApp(
     }
   }
 
+  LaunchedEffect(showOnboarding) {
+    if (showOnboarding) {
+      state.navController.navigateToOnboarding()
+    }
+  }
+
   ProvideSnackbarController(
     snackbarHostState = snackbarHostState,
     coroutineScope = state.scope,
@@ -105,44 +112,46 @@ fun ScenePeekApp(
       snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         Column {
-          AppNavigationBar(
-            windowInsets = if (
-              networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
+          if (!showOnboarding) {
+            AppNavigationBar(
+              windowInsets = if (
+                networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
+              ) {
+                WindowInsets(bottom = MaterialTheme.dimensions.keyline_8)
+              } else {
+                NavigationBarDefaults.windowInsets
+              },
             ) {
-              WindowInsets(bottom = MaterialTheme.dimensions.keyline_8)
-            } else {
-              NavigationBarDefaults.windowInsets
-            },
-          ) {
-            TopLevelDestination.entries.forEach { destination ->
-              val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
+              TopLevelDestination.entries.forEach { destination ->
+                val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
 
-              NavigationBarItem(
-                selected = selected,
-                onClick = { state.navigateToTopLevelDestination(destination) },
-                label = {
-                  Text(text = stringResource(id = destination.titleTextId))
-                },
-                icon = {
-                  if (selected) {
-                    Icon(
-                      imageVector = destination.selectedIcon,
-                      contentDescription = stringResource(
-                        id = R.string.top_level_navigation_content_description_selected,
-                        stringResource(id = destination.titleTextId),
-                      ),
-                    )
-                  } else {
-                    Icon(
-                      imageVector = destination.unselectedIcon,
-                      contentDescription = stringResource(
-                        id = R.string.top_level_navigation_content_description_unselected,
-                        stringResource(id = destination.titleTextId),
-                      ),
-                    )
-                  }
-                },
-              )
+                NavigationBarItem(
+                  selected = selected,
+                  onClick = { state.navigateToTopLevelDestination(destination) },
+                  label = {
+                    Text(text = stringResource(id = destination.titleTextId))
+                  },
+                  icon = {
+                    if (selected) {
+                      Icon(
+                        imageVector = destination.selectedIcon,
+                        contentDescription = stringResource(
+                          id = R.string.top_level_navigation_content_description_selected,
+                          stringResource(id = destination.titleTextId),
+                        ),
+                      )
+                    } else {
+                      Icon(
+                        imageVector = destination.unselectedIcon,
+                        contentDescription = stringResource(
+                          id = R.string.top_level_navigation_content_description_unselected,
+                          stringResource(id = destination.titleTextId),
+                        ),
+                      )
+                    }
+                  },
+                )
+              }
             }
           }
 
