@@ -3,22 +3,31 @@ package com.divinelink.feature.onboarding.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.coil.BackdropImage
+import com.divinelink.core.ui.conditional
 import com.divinelink.feature.onboarding.OnboardingAction
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -30,8 +39,9 @@ fun OnboardingScreen(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+  var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedPageIndex) }
   val pagerState = rememberPagerState(
-    initialPage = 0,
+    initialPage = selectedPage,
     pageCount = { uiState.pages.size },
   )
 
@@ -60,6 +70,15 @@ fun OnboardingScreen(
     }
   }
 
+  LaunchedEffect(pagerState) {
+    snapshotFlow { pagerState.currentPage }
+      .distinctUntilChanged()
+      .collectLatest { page ->
+        selectedPage = page
+        viewModel.onPageScroll(page)
+      }
+  }
+
   Scaffold(
     modifier = Modifier.fillMaxSize(),
     topBar = {
@@ -84,6 +103,23 @@ fun OnboardingScreen(
         state = pagerState,
       ) { page ->
         OnboardingItem(
+          modifier = Modifier
+            .fillMaxSize()
+            .conditional(
+              condition = uiState.pages.size > 1,
+              ifTrue = {
+                padding(
+                  bottom = LocalBottomNavigationPadding.current +
+                    MaterialTheme.dimensions.keyline_64,
+                )
+              },
+              ifFalse = {
+                padding(
+                  bottom = LocalBottomNavigationPadding.current +
+                    MaterialTheme.dimensions.keyline_16,
+                )
+              },
+            ),
           page = uiState.pages[page],
           onCompleteOnboarding = viewModel::onboardingComplete,
           isLast = page == uiState.pages.size - 1,

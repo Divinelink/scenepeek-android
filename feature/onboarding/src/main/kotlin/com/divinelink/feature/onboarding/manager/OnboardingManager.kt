@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 interface OnboardingManager {
   val shouldShowOnboarding: Flow<Boolean>
   val onboardingPages: Flow<List<OnboardingPage>>
+  val isInitialOnboarding: Flow<Boolean>
   suspend fun onOnboardingComplete()
   suspend fun handleOnboardingAction(action: OnboardingAction)
 }
@@ -26,6 +27,8 @@ class ProdOnboardingManager(
 
     isFirstLaunch || (lastSeenVersion != currentVersion && hasNewPagesForUpdate(lastSeenVersion))
   }
+
+  override val isInitialOnboarding: Flow<Boolean> = onboardingStorage.isFirstLaunch
 
   override val onboardingPages: Flow<List<OnboardingPage>> = combine(
     onboardingStorage.isFirstLaunch,
