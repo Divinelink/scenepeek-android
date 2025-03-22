@@ -26,7 +26,7 @@
 
   <string name="core_ui_review_author">A review by: %s, %s</string>
   <string name="details__reviews">Reviews</string>
-  <string name="details__more_like_this">More like this</string>
+  <string name="details__more_like_this">Recommendations</string>
 
   <string name="details__director_title">Director</string>
   <string name="details__cast_title">Cast</string>

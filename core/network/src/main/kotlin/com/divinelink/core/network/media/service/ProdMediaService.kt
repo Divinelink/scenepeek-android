@@ -95,8 +95,9 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
       "${request.id}" +
-      "/similar?" +
-      "&language=en-US"
+      "/recommendations?" +
+      "&language=en-US" +
+      "&include_adult=false"
 
     val response = restClient.get<SimilarResponseApi>(url = url)
 
