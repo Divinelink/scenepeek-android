@@ -14,7 +14,6 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setSharedLayoutContent
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
-import com.divinelink.core.testing.usecase.FakeObserveSessionUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.TestTags
@@ -30,7 +29,6 @@ import kotlin.test.Test
 class AccountSettingsScreenTest : ComposeTest() {
 
   private lateinit var createRequestTokenUseCase: FakeCreateRequestTokenUseCase
-  private lateinit var observeSessionUseCase: FakeObserveSessionUseCase
   private lateinit var getAccountDetailsUseCase: FakeGetAccountDetailsUseCase
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
@@ -43,7 +41,6 @@ class AccountSettingsScreenTest : ComposeTest() {
   @Before
   fun setUp() {
     createRequestTokenUseCase = FakeCreateRequestTokenUseCase()
-    observeSessionUseCase = FakeObserveSessionUseCase()
     getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
     getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
     logoutUseCase = FakeLogoutUseCase()
@@ -54,8 +51,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test login is visible when user not connected`() {
-    observeSessionUseCase.mockFailure()
-
     val viewModel = setupViewModel()
 
     setSharedLayoutContent { transitionScope, visibilityScope ->
@@ -64,6 +59,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -75,7 +71,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test account details are visible when user connected`() {
-    observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
     val viewModel = setupViewModel()
@@ -86,6 +81,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -102,7 +98,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test logout dialog is shown when logout clicked`() {
-    observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
     val viewModel = setupViewModel()
@@ -113,6 +108,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -124,7 +120,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test user logs out when confirm button pressed and success logout response`() = runTest {
-    observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
     logoutUseCase.mockSuccess(Result.success(Unit))
@@ -137,6 +132,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -162,7 +158,6 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test dismiss dialog when cancel button pressed`() {
-    observeSessionUseCase.mockSuccess(sessionResult)
     getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
 
     val viewModel = setupViewModel()
@@ -173,6 +168,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -198,6 +194,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {
           navigatedToJellyseerrSettingsScreen = true
         },
@@ -226,6 +223,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         animatedVisibilityScope = visibilityScope,
         viewModel = viewModel,
         onNavigateUp = {},
+        onNavigateToTMDBAuth = {},
         onNavigateToJellyseerrSettingsScreen = {},
       )
     }
@@ -248,8 +246,6 @@ class AccountSettingsScreenTest : ComposeTest() {
   }
 
   private fun setupViewModel(): AccountSettingsViewModel = AccountSettingsViewModel(
-    createRequestTokenUseCase = createRequestTokenUseCase.mock,
-    observeSessionUseCase = observeSessionUseCase.mock,
     getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
     getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
     logoutUseCase = logoutUseCase.mock,

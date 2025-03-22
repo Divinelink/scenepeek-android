@@ -7,6 +7,7 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
@@ -130,5 +131,6 @@ class FetchAccountMediaDetailsUseCaseTest {
   private fun createSessionStorage(sessionId: String?) = SessionStorage(
     storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+    accountStorage = FakeAccountStorage(),
   )
 }

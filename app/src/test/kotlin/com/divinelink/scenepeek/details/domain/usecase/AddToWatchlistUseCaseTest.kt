@@ -2,9 +2,11 @@ package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
@@ -155,9 +157,12 @@ class AddToWatchlistUseCaseTest {
     accountId: String?,
     sessionId: String?,
   ) = SessionStorage(
-    storage = FakePreferenceStorage(
-      accountId = accountId,
-    ),
+    storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+    accountStorage = FakeAccountStorage(
+      accountDetails = accountId?.let {
+        AccountDetailsFactory.Pinkman().copy(id = it.toInt())
+      },
+    ),
   )
 }

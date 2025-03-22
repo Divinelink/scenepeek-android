@@ -2,6 +2,7 @@ package com.divinelink.core.domain.session
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
@@ -18,9 +19,14 @@ class CreateSessionUseCase(
       .createSession(CreateSessionRequestApi(parameters))
       .onSuccess {
         storage.setSession(it.id)
+
+        // Fetch account details
+        repository.getAccountDetails(it.id).collect { accountDetailsResult ->
+          storage.setTMDbAccountDetails(accountDetailsResult.data)
+        }
       }
       .onFailure {
-        // Do nothing
+        storage.clearSession()
       }
   }
 }

@@ -10,8 +10,6 @@ class FakePreferenceStorage(
   encryptedPreferences: String = "secret.preferences",
   isMaterialYouEnabled: Boolean = false,
   isBlackBackgroundsEnabled: Boolean = false,
-  hasSession: Boolean = false,
-  accountId: String? = null,
   jellyseerrAddress: String? = null,
   jellyseerrAccount: String? = null,
   jellyseerrSignInMethod: String? = null,
@@ -33,12 +31,6 @@ class FakePreferenceStorage(
 
   private val _isBlackBackgroundsEnabled = MutableStateFlow(isBlackBackgroundsEnabled)
   override val isBlackBackgroundsEnabled = _isBlackBackgroundsEnabled
-
-  private val _hasSession = MutableStateFlow(hasSession)
-  override val hasSession = _hasSession
-
-  private val _accountId = MutableStateFlow(accountId)
-  override val accountId = _accountId
 
   private val _jellyseerrAddress = MutableStateFlow(jellyseerrAddress)
   override val jellyseerrAddress: Flow<String?> = _jellyseerrAddress
@@ -78,18 +70,6 @@ class FakePreferenceStorage(
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {
     _isBlackBackgroundsEnabled.value = isEnabled
-  }
-
-  override suspend fun setHasSession(hasSession: Boolean) {
-    _hasSession.value = hasSession
-  }
-
-  override suspend fun clearAccountId() {
-    _accountId.value = null
-  }
-
-  override suspend fun setAccountId(accountId: String) {
-    _accountId.value = accountId
   }
 
   override suspend fun clearJellyseerrAddress() {

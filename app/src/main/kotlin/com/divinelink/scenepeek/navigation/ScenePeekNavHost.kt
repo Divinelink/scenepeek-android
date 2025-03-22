@@ -28,6 +28,8 @@ import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScre
 import com.divinelink.feature.settings.navigation.links.navigateToLinkHandlingSettings
 import com.divinelink.feature.settings.navigation.settings.navigateToSettings
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
+import com.divinelink.feature.tmdb.auth.navigateToTMDBAuth
+import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.watchlist.navigation.watchlistScreen
 import com.divinelink.scenepeek.home.navigation.HomeRoute
 import com.divinelink.scenepeek.home.navigation.homeScreen
@@ -73,6 +75,7 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
       accountSettingsScreen(
         sharedTransitionScope = this@SharedTransitionLayout,
         onNavigateUp = navController::navigateUp,
+        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
         onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
       )
 
@@ -115,6 +118,8 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
         onNavigateToAccountSettings = navController::navigateToAccountSettings,
         onNavigateToDetails = navController::navigateToDetails,
       )
+
+      tmdbAuthScreen(navController::navigateUp)
     }
   }
 }

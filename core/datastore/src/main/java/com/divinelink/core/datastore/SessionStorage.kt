@@ -1,32 +1,33 @@
 package com.divinelink.core.datastore
 
+import com.divinelink.core.datastore.account.AccountStorage
+import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 class SessionStorage(
   val storage: PreferenceStorage,
   val encryptedStorage: EncryptedStorage,
+  val accountStorage: AccountStorage,
 ) {
   val sessionId: String?
     get() = encryptedStorage.sessionId
 
   val accountId: Flow<String?>
-    get() = storage.accountId
+    get() = accountStorage.accountId
 
   suspend fun setSession(sessionId: String) {
     encryptedStorage.setSessionId(sessionId)
-    storage.setHasSession(true)
+  }
+
+  suspend fun setTMDbAccountDetails(accountDetails: AccountDetails) {
+    accountStorage.setAccountDetails(accountDetails)
   }
 
   suspend fun clearSession() {
     Timber.d("Cleared session.")
     encryptedStorage.clearSession()
-    storage.setHasSession(false)
-    storage.clearAccountId()
-  }
-
-  suspend fun setAccountId(accountId: String) {
-    storage.setAccountId(accountId)
+    accountStorage.clearAccountDetails()
   }
 
   suspend fun setJellyseerrSession(

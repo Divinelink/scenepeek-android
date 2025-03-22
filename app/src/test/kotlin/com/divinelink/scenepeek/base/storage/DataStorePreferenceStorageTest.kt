@@ -77,45 +77,6 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test session`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setHasSession(true)
-    storage.hasSession.first().also {
-      assertThat(it).isTrue()
-    }
-
-    storage.setHasSession(false)
-    storage.hasSession.first().also {
-      assertThat(it).isFalse()
-    }
-  }
-
-  @Test
-  fun `test setAccountId sets accountId`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    assertThat(storage.accountId.first()).isNull()
-
-    storage.setAccountId("test_account_id")
-
-    assertThat(storage.accountId.first()).isEqualTo("test_account_id")
-  }
-
-  @Test
-  fun `test clearAccountId removes accountId`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setAccountId("test_account_id")
-
-    assertThat(storage.accountId.first()).isEqualTo("test_account_id")
-
-    storage.clearAccountId()
-
-    assertThat(storage.accountId.first()).isNull()
-  }
-
-  @Test
   fun `test setJellyseerrAddress`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 

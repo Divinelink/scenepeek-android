@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
@@ -23,6 +24,7 @@ class CreateSessionUseCaseTest {
     val storage = SessionStorage(
       storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(),
+      accountStorage = FakeAccountStorage(),
     )
 
     repository.mockCreateSession(
@@ -48,6 +50,7 @@ class CreateSessionUseCaseTest {
     val storage = SessionStorage(
       storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(),
+      accountStorage = FakeAccountStorage(),
     )
 
     repository.mockCreateSession(

@@ -1,7 +1,10 @@
 package com.divinelink.scenepeek.session
 
+import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
@@ -19,6 +22,7 @@ class SessionStorageTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(),
+      accountStorage = FakeAccountStorage(),
     )
   }
 
@@ -26,10 +30,12 @@ class SessionStorageTest {
   fun `test non null sessionId returns sessionId`() = runTest {
     val preferenceStorage = FakePreferenceStorage()
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(sessionId = "session")
+    val accountStorage = FakeAccountStorage()
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
       encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = accountStorage,
     )
 
     assertThat(sessionStorage.sessionId).isEqualTo("session")
@@ -39,10 +45,12 @@ class SessionStorageTest {
   fun `test null sessionId returns null`() = runTest {
     val preferenceStorage = FakePreferenceStorage()
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(sessionId = null)
+    val accountStorage = FakeAccountStorage()
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
       encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = accountStorage,
     )
 
     assertThat(sessionStorage.sessionId).isNull()
@@ -50,52 +58,74 @@ class SessionStorageTest {
 
   @Test
   fun `test setSession sets session`() = runTest {
-    val preferenceStorage = FakePreferenceStorage(hasSession = false)
+    val preferenceStorage = FakePreferenceStorage()
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
       encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = FakeAccountStorage(),
     )
 
     sessionStorage.setSession("session")
 
     assertThat(encryptedPreferenceStorage.sessionId).isEqualTo("session")
-    assertThat(preferenceStorage.hasSession.value).isTrue()
   }
 
   @Test
-  fun `test clearSession clears session and accountId`() = runTest {
-    val preferenceStorage = FakePreferenceStorage(
-      hasSession = true,
-      accountId = "account_id",
-    )
+  fun `test clearSession clears session and accountId and details`() = runTest {
+    val preferenceStorage = FakePreferenceStorage()
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage(sessionId = "session")
+    val accountStorage = FakeAccountStorage(
+      accountDetails = AccountDetailsFactory.Pinkman(),
+    )
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
       encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = accountStorage,
     )
 
     sessionStorage.clearSession()
 
     assertThat(encryptedPreferenceStorage.sessionId).isNull()
-    assertThat(preferenceStorage.hasSession.value).isFalse()
-    assertThat(preferenceStorage.accountId.value).isNull()
+
+    sessionStorage.accountId.test {
+      assertThat(awaitItem()).isNull()
+    }
+    sessionStorage.accountStorage.accountDetails.test {
+      assertThat(awaitItem()).isNull()
+    }
   }
 
   @Test
   fun `test setAccountId sets accountId`() = runTest {
-    val preferenceStorage = FakePreferenceStorage(accountId = "")
+    val preferenceStorage = FakePreferenceStorage()
+    val accountStorage = FakeAccountStorage()
 
     sessionStorage = SessionStorage(
       storage = preferenceStorage,
       encryptedStorage = FakeEncryptedPreferenceStorage(),
+      accountStorage = accountStorage,
     )
 
-    sessionStorage.setAccountId("account_id")
+    sessionStorage.accountStorage.accountId.test {
+      assertThat(awaitItem()).isNull()
+    }
 
-    assertThat(preferenceStorage.accountId.value).isEqualTo("account_id")
+    sessionStorage.accountStorage.accountDetails.test {
+      assertThat(awaitItem()).isNull()
+    }
+
+    sessionStorage.setTMDbAccountDetails(AccountDetailsFactory.Pinkman())
+
+    sessionStorage.accountId.test {
+      assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman().id.toString())
+    }
+
+    sessionStorage.accountStorage.accountDetails.test {
+      assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman())
+    }
   }
 
   @Test
@@ -111,8 +141,9 @@ class SessionStorageTest {
     )
 
     val sessionStorage = SessionStorage(
-      preferenceStorage,
-      encryptedPreferenceStorage,
+      storage = preferenceStorage,
+      encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = FakeAccountStorage(),
     )
 
     assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("Zabaob")

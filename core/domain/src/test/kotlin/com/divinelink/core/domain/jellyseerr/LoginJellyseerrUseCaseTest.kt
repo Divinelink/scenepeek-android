@@ -3,6 +3,7 @@ package com.divinelink.core.domain.jellyseerr
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.datastore.account.AccountStorage
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
@@ -10,24 +11,32 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
+import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class LoginJellyseerrUseCaseTest {
 
   private lateinit var preferenceStorage: PreferenceStorage
   private lateinit var encryptedStorage: EncryptedStorage
+  private lateinit var accountStorage: AccountStorage
 
   private val repository = TestJellyseerrRepository()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
+
+  @BeforeTest
+  fun setup() {
+    accountStorage = FakeAccountStorage()
+  }
 
   @Test
   fun `test loginJellyseerr with null parameters throws exception`() = runTest {
@@ -39,6 +48,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -64,6 +74,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -104,6 +115,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -144,6 +156,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -182,6 +195,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -217,6 +231,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
@@ -245,6 +260,7 @@ class LoginJellyseerrUseCaseTest {
       storage = SessionStorage(
         storage = preferenceStorage,
         encryptedStorage = encryptedStorage,
+        accountStorage = accountStorage,
       ),
       dispatcher = testDispatcher,
     )
