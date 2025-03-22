@@ -31,8 +31,13 @@ import kotlinx.coroutines.flow.flow
 class ProdMediaService(private val restClient: TMDbClient) : MediaService {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/movie/popular?"
-    val url = baseUrl + "&language=en-US&page=${request.page}"
+    val baseUrl = "${restClient.tmdbUrl}/discover/movie?"
+    val url = baseUrl +
+      "&include_adult=false" +
+      "&language=en-US" +
+      "&page=${request.page}" +
+      "&sort_by=popularity.desc" +
+      "&vote_count.gte=50"
 
     val response = restClient.get<MoviesResponseApi>(url = url)
 
@@ -90,8 +95,9 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
       "${request.id}" +
-      "/similar?" +
-      "&language=en-US"
+      "/recommendations?" +
+      "&language=en-US" +
+      "&include_adult=false"
 
     val response = restClient.get<SimilarResponseApi>(url = url)
 
