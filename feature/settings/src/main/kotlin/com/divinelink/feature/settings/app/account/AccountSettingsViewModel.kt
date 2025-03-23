@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.channels.Channel

@@ -1,8 +1,8 @@
 package com.divinelink.feature.watchlist
 
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.ui.UIText
 
 sealed interface WatchlistForm<out T : MediaItem.Media> {
   data object Loading : WatchlistForm<Nothing>

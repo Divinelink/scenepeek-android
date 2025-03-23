@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.commons.util.launchCustomTab
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold

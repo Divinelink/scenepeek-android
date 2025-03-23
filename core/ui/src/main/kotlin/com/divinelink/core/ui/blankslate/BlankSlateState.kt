@@ -1,7 +1,7 @@
 package com.divinelink.core.ui.blankslate
 
+import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.R
-import com.divinelink.core.ui.UIText
 
 sealed class BlankSlateState(
   open val icon: Int? = null,

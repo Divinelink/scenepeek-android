@@ -11,8 +11,8 @@ import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsExternalLinkItem

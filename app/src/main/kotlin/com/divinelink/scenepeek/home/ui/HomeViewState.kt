@@ -1,9 +1,9 @@
 package com.divinelink.scenepeek.home.ui
 
 import androidx.compose.runtime.Immutable
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.R

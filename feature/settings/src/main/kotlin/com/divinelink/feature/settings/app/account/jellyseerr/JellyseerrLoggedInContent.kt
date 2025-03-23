@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
@@ -31,7 +32,6 @@ import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR

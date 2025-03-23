@@ -1,6 +1,6 @@
 package com.divinelink.feature.details.person.ui.filter
 
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
 import com.divinelink.feature.details.R
 
 sealed class CreditFilter(val title: UIText) {

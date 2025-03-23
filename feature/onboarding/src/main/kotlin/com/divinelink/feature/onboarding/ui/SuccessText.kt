@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.R
+import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.onboarding.R
 
 @Composable
 fun SuccessText(text: UIText) {
@@ -53,7 +53,7 @@ fun SuccessText(text: UIText) {
 fun SuccessTextPreview() {
   AppTheme {
     SuccessText(
-      text = UIText.ResourceText(R.string.feature_onboarding_successfully_connected),
+      text = UIText.ResourceText(R.string.core_model_onboarding_successfully_connected),
     )
   }
 }

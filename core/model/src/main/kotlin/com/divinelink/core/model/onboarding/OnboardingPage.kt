@@ -1,7 +1,6 @@
 package com.divinelink.feature.onboarding
 
-import androidx.annotation.DrawableRes
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
 
 data class OnboardingPage(
   val tag: String,

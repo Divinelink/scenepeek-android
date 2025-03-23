@@ -7,9 +7,9 @@ import androidx.compose.material.icons.rounded.WatchLater
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.ui.IconWrapper
-import com.divinelink.core.ui.UIText
 import com.divinelink.core.ui.components.expandablefab.ExpandableFloatActionButton
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.feature.details.R

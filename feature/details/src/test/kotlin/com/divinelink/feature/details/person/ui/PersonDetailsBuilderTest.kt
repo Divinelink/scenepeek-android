@@ -2,7 +2,7 @@ package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory.toWzd
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
 import com.divinelink.feature.details.R
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test

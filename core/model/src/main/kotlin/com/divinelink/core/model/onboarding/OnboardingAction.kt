@@ -1,6 +1,7 @@
 package com.divinelink.feature.onboarding
 
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.R
+import com.divinelink.core.model.UIText
 
 sealed class OnboardingAction(
   val actionText: UIText,
