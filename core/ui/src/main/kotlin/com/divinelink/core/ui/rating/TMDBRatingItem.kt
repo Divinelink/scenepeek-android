@@ -13,12 +13,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.extensions.isWholeNumber
@@ -135,21 +138,28 @@ fun TMDBRatingItem(
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-      Text(
-        text = sanitizedRating?.toString() ?: "-",
-        style = textSize,
-        textAlign = TextAlign.Center,
-        color = textColor,
-      )
-
-      if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
+      CompositionLocalProvider(
+        LocalDensity provides Density(
+          density = LocalDensity.current.density,
+          fontScale = LocalDensity.current.fontScale.coerceIn(1f, 1.35f),
+        ),
+      ) {
         Text(
-          modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT),
-          text = voteCount.toShortString(),
-          style = MaterialTheme.typography.labelSmall,
+          text = sanitizedRating?.toString() ?: "-",
+          style = textSize,
           textAlign = TextAlign.Center,
-          color = votesColor,
+          color = textColor,
         )
+
+        if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
+          Text(
+            modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT),
+            text = voteCount.toShortString(),
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center,
+            color = votesColor,
+          )
+        }
       }
     }
   }
@@ -183,6 +193,10 @@ fun TMDBRatingItemPreview() {
           TMDBRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 932_583)
           TMDBRatingItem(rating = 1.1, size = RatingSize.LARGE, voteCount = 1_432_583)
           TMDBRatingItem(rating = 5.9, size = RatingSize.LARGE, voteCount = 2_992_583)
+        }
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+        ) {
           TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_202_583)
           TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_102_583)
         }

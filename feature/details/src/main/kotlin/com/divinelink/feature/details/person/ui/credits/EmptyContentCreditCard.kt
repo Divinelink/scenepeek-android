@@ -24,11 +24,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.provider.MediaTypeParameterProvider
 import com.divinelink.feature.details.R
 
 @Composable
@@ -37,6 +39,8 @@ fun EmptyContentCreditCard(
   type: MediaType,
   name: String,
 ) {
+  if (type == MediaType.UNKNOWN || type == MediaType.PERSON) return
+
   Card(
     modifier = modifier
       .testTag(TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(type.name))
@@ -74,6 +78,7 @@ fun EmptyContentCreditCard(
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.onSurface,
+        textAlign = TextAlign.Center,
       )
 
       Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_8))
@@ -93,14 +98,12 @@ fun EmptyContentCreditCard(
 
 @Previews
 @Composable
-fun NoContentPreviewExample() {
+fun EmptyContentCreditCardPreview(
+  @PreviewParameter(MediaTypeParameterProvider::class) type: MediaType,
+) {
   AppTheme {
     Surface {
-      Column {
-        EmptyContentCreditCard(type = MediaType.MOVIE, name = "Steve Carell")
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
-        EmptyContentCreditCard(type = MediaType.TV, name = "Steve Carell")
-      }
+      EmptyContentCreditCard(type = type, name = "Steve Carell")
     }
   }
 }
