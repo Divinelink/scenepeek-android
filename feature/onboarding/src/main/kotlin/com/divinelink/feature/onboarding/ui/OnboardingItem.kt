@@ -27,7 +27,6 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.model.onboarding.OnboardingPage
-import com.divinelink.core.ui.DevicePreviews
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
@@ -100,9 +99,7 @@ fun OnboardingItem(
           SuccessText(action.completedActionText)
         } else {
           Button(
-            modifier = Modifier
-              .testTag("Action")
-              .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             onClick = { onActionClick.invoke(action) },
           ) {
             Text(

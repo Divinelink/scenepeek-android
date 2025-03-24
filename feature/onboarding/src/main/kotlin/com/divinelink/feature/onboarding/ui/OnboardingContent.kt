@@ -2,11 +2,13 @@ package com.divinelink.feature.onboarding.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +21,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -91,11 +94,16 @@ fun BoxScope.OnboardingContent(
       modifier = Modifier
         .fillMaxSize()
         .conditional(
-          condition = uiState.pages.size > 1,
+          condition = uiState.pages.size > 1, // Only add padding if there are pager dots
           ifTrue = {
-            padding(
-              bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_64,
-            )
+            val bottomPadding = if (LocalBottomNavigationPadding.current > 0.dp) {
+              LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_36
+            } else {
+              NavigationBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding() +
+                MaterialTheme.dimensions.keyline_24
+            }
+
+            padding(bottom = bottomPadding)
           },
           ifFalse = {
             padding(
