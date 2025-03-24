@@ -12,7 +12,7 @@ import androidx.compose.runtime.collectAsState
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.feature.onboarding.manager.OnboardingManager
+import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.scenepeek.ui.ScenePeekApp
 import com.divinelink.scenepeek.ui.rememberScenePeekAppState
 import org.koin.androidx.viewmodel.ext.android.viewModel

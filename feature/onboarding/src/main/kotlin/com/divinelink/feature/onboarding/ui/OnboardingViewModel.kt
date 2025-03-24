@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
-import com.divinelink.feature.onboarding.OnboardingAction
-import com.divinelink.feature.onboarding.OnboardingPages
-import com.divinelink.feature.onboarding.OnboardingPages.jellyseerrPage
-import com.divinelink.feature.onboarding.OnboardingPages.tmdbPage
-import com.divinelink.feature.onboarding.manager.OnboardingManager
+import com.divinelink.core.domain.onboarding.OnboardingManager
+import com.divinelink.core.model.onboarding.OnboardingAction
+import com.divinelink.feature.onboarding.manager.OnboardingPages
+import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
+import com.divinelink.feature.onboarding.manager.OnboardingPages.tmdbPage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -32,8 +32,6 @@ class OnboardingViewModel(
 
   private val _onNavigateUp = Channel<Unit>()
   val onNavigateUp: Flow<Unit> = _onNavigateUp.receiveAsFlow()
-
-  private val startedJobs = mutableSetOf<String>()
 
   init {
     viewModelScope.launch {
@@ -62,12 +60,18 @@ class OnboardingViewModel(
         val tmdbIndex = OnboardingPages.initialPages.indexOf(tmdbPage)
         val jellyseerrIndex = OnboardingPages.initialPages.indexOf(jellyseerrPage)
 
-        if (index == tmdbIndex && !startedJobs.contains(tmdbPage.tag)) {
+        if (index == tmdbIndex && !uiState.value.startedJobs.contains(tmdbPage.tag)) {
+          _uiState.update { uiState ->
+            uiState.copy(startedJobs = uiState.startedJobs + tmdbPage.tag)
+          }
           fetchAccountJob.invoke()
-          startedJobs.add(tmdbPage.tag)
-        } else if (index == jellyseerrIndex && !startedJobs.contains(jellyseerrPage.tag)) {
+        } else if (
+          index == jellyseerrIndex && !uiState.value.startedJobs.contains(jellyseerrPage.tag)
+        ) {
+          _uiState.update { uiState ->
+            uiState.copy(startedJobs = uiState.startedJobs + jellyseerrPage.tag)
+          }
           fetchJellyseerrAccountJob.invoke()
-          startedJobs.add(jellyseerrPage.tag)
         }
       }
     }

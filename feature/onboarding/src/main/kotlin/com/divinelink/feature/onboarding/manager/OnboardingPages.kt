@@ -1,6 +1,9 @@
-package com.divinelink.feature.onboarding
+package com.divinelink.feature.onboarding.manager
 
-import com.divinelink.core.ui.UIText
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.onboarding.OnboardingAction
+import com.divinelink.core.model.onboarding.OnboardingPage
+import com.divinelink.feature.onboarding.R
 
 object OnboardingPages {
 
@@ -34,7 +37,5 @@ object OnboardingPages {
     jellyseerrPage,
   )
 
-  val newFeaturePages = mapOf(
-    16 to emptyList<OnboardingPage>(),
-  )
+  val newFeaturePages = emptyMap<Int, List<OnboardingPage>>()
 }

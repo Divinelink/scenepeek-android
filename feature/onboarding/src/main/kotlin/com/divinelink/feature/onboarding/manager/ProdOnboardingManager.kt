@@ -2,19 +2,10 @@ package com.divinelink.feature.onboarding.manager
 
 import com.divinelink.core.commons.BuildConfig
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
-import com.divinelink.feature.onboarding.OnboardingAction
-import com.divinelink.feature.onboarding.OnboardingPage
-import com.divinelink.feature.onboarding.OnboardingPages
+import com.divinelink.core.domain.onboarding.OnboardingManager
+import com.divinelink.core.model.onboarding.OnboardingPage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-
-interface OnboardingManager {
-  val shouldShowOnboarding: Flow<Boolean>
-  val onboardingPages: Flow<List<OnboardingPage>>
-  val isInitialOnboarding: Flow<Boolean>
-  suspend fun onOnboardingComplete()
-  suspend fun handleOnboardingAction(action: OnboardingAction)
-}
 
 class ProdOnboardingManager(
   private val onboardingStorage: OnboardingStorage,
@@ -48,10 +39,6 @@ class ProdOnboardingManager(
 
   override suspend fun onOnboardingComplete() {
     onboardingStorage.setOnboardingCompleted()
-  }
-
-  override suspend fun handleOnboardingAction(action: OnboardingAction) {
-    TODO("Not yet implemented")
   }
 
   private fun hasNewPagesForUpdate(lastSeenVersion: Int): Boolean = OnboardingPages.newFeaturePages

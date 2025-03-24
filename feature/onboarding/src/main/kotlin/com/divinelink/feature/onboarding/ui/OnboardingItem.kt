@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -16,18 +18,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.onboarding.OnboardingAction
+import com.divinelink.core.model.onboarding.OnboardingPage
+import com.divinelink.core.ui.DevicePreviews
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
-import com.divinelink.feature.onboarding.OnboardingAction
-import com.divinelink.feature.onboarding.OnboardingPage
-import com.divinelink.feature.onboarding.OnboardingPages
 import com.divinelink.feature.onboarding.R
+import com.divinelink.feature.onboarding.manager.OnboardingPages
 
 @Composable
 fun OnboardingItem(
@@ -38,10 +43,13 @@ fun OnboardingItem(
   onCompleteOnboarding: () -> Unit,
 ) {
   Column(
-    modifier = modifier.fillMaxSize(),
+    modifier = modifier
+      .testTag(TestTags.Onboarding.ONBOARDING_PAGE.format(page.tag))
+      .verticalScroll(rememberScrollState())
+      .fillMaxSize(),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
-    Spacer(modifier = Modifier.height(64.dp))
+    Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_72))
     page.image?.let {
       Image(
         modifier = Modifier
@@ -52,7 +60,7 @@ fun OnboardingItem(
       )
     }
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_32))
 
     Text(
       modifier = Modifier
@@ -92,10 +100,15 @@ fun OnboardingItem(
           SuccessText(action.completedActionText)
         } else {
           Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+              .testTag("Action")
+              .fillMaxWidth(),
             onClick = { onActionClick.invoke(action) },
           ) {
-            Text(text = action.actionText.getString())
+            Text(
+              text = action.actionText.getString(),
+              textAlign = TextAlign.Center,
+            )
           }
         }
       }

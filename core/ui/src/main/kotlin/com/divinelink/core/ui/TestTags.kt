@@ -19,6 +19,8 @@ object TestTags {
     }
 
     const val FILTER_BUTTON = "Filter Button"
+
+    const val NAVIGATION_BAR = "App Navigation Bar"
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
@@ -152,6 +154,11 @@ object TestTags {
     const val TAB_BAR = "Credits Tab Bar $%s"
     const val CAST_CREDITS_CONTENT = "Credits Content with cast"
     const val CREW_CREDITS_CONTENT = "Credits Content with crew"
+  }
+
+  object Onboarding {
+    const val SCREEN = "Onboarding Screen"
+    const val ONBOARDING_PAGE = "Onboarding Page %s"
   }
 
   object Shimmer {

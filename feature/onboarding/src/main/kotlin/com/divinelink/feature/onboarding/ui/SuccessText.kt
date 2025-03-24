@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.R
@@ -44,6 +45,7 @@ fun SuccessText(text: UIText) {
       text = text.getString(),
       color = Color.White,
       style = MaterialTheme.typography.bodyMedium,
+      textAlign = TextAlign.Center,
     )
   }
 }
