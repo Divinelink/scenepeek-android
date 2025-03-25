@@ -1,8 +1,8 @@
 package com.divinelink.feature.details.person.ui
 
 import com.divinelink.core.commons.Constants
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.person.PersonDetails
-import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
 
 fun PersonDetails.toUiSections() = buildList {

@@ -7,12 +7,12 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.model.UIText
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UIText
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

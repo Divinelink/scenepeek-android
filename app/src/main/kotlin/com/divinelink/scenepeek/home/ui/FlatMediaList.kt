@@ -1,6 +1,5 @@
 package com.divinelink.scenepeek.home.ui
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -31,6 +29,7 @@ import com.divinelink.core.designsystem.theme.textColorDisabled
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.DevicePreviews
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
@@ -133,10 +132,7 @@ private fun LoadMoreContent(modifier: Modifier = Modifier) {
 
 @Composable
 @ExcludeFromKoverReport
-@Preview(
-  uiMode = Configuration.UI_MODE_NIGHT_YES,
-  device = "spec:width=1080px,height=2340px,dpi=640",
-)
+@DevicePreviews
 @Previews
 fun MoviesListScreenPreview() {
   @Suppress("MagicNumber")

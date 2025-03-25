@@ -8,6 +8,7 @@ import com.divinelink.core.database.di.databaseModule
 import com.divinelink.core.datastore.di.storageModule
 import com.divinelink.core.domain.di.useCaseModule
 import com.divinelink.core.network.di.remoteModule
+import com.divinelink.feature.onboarding.di.onboardingModule
 import com.divinelink.feature.settings.di.settingsUseCaseModule
 import com.divinelink.scenepeek.base.di.appModule
 import com.divinelink.scenepeek.base.di.appRemoteModule
@@ -32,6 +33,7 @@ class Application : Application() {
         dataModule,
         databaseModule,
         dispatcherModule,
+        onboardingModule,
         remoteModule,
         useCaseModule,
         storageModule,

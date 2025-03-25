@@ -27,16 +27,21 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.manager.TestOnboardingManager
 import com.divinelink.core.testing.network.TestNetworkMonitor
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
+import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
+import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
+import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.divinelink.feature.onboarding.ui.OnboardingViewModel
 import com.divinelink.feature.watchlist.WatchlistViewModel
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
@@ -71,6 +76,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var uiEvent: MainUiEvent
 
   private val networkMonitor = TestNetworkMonitor()
+  private val onboardingManager = TestOnboardingManager()
 
   private lateinit var state: ScenePeekAppState
 
@@ -92,6 +98,11 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var requestMediaUseCase: FakeRequestMediaUseCase
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
   private lateinit var fetchAllRatingsUseCase: TestFetchAllRatingsUseCase
+
+  // Onboarding use cases
+  private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
+  private val getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
+  private val getJellyseerrAccountDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
 
   @BeforeTest
   fun setUp() {
@@ -144,7 +155,10 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      val state = rememberScenePeekAppState(networkMonitor)
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+      )
 
       KoinContext {
         ScenePeekApp(
@@ -198,7 +212,10 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      val state = rememberScenePeekAppState(networkMonitor)
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+      )
 
       KoinContext {
         ScenePeekApp(
@@ -302,7 +319,10 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      val state = rememberScenePeekAppState(networkMonitor)
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+      )
 
       KoinContext {
         ScenePeekApp(
@@ -379,7 +399,10 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      val state = rememberScenePeekAppState(networkMonitor)
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+      )
 
       KoinContext {
         ScenePeekApp(
@@ -431,6 +454,7 @@ class ScenePeekAppTest : ComposeTest() {
           state = ScenePeekAppState(
             navController = navController,
             scope = backgroundScope,
+            onboardingManager = onboardingManager,
             networkMonitor = networkMonitor,
           ),
           uiState = uiState,
@@ -455,6 +479,7 @@ class ScenePeekAppTest : ComposeTest() {
         navController = navController,
         scope = backgroundScope,
         networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
       )
     }
 
@@ -488,6 +513,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         scope = backgroundScope,
+        onboardingManager = onboardingManager,
       )
 
       KoinContext {
@@ -526,6 +552,7 @@ class ScenePeekAppTest : ComposeTest() {
           navController = navController,
           scope = backgroundScope,
           networkMonitor = networkMonitor,
+          onboardingManager = onboardingManager,
         )
       }
 
@@ -546,12 +573,61 @@ class ScenePeekAppTest : ComposeTest() {
     setContentWithTheme {
       state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
       )
     }
 
     assertThat(state.topLevelDestinations.size).isEqualTo(2)
     assertThat(state.topLevelDestinations[0].name).contains(TopLevelDestination.HOME.name)
     assertThat(state.topLevelDestinations[1].name).contains(TopLevelDestination.WATCHLIST.name)
+  }
+
+  @Test
+  fun `test when onboarding is visible navigation bar is hidden`() = runTest {
+    popularMoviesUseCase.mockFetchPopularMovies(
+      response = Result.success(MediaItemFactory.MoviesList()),
+    )
+
+    declare {
+      HomeViewModel(
+        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+      )
+    }
+
+    declare {
+      OnboardingViewModel(
+        markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
+        getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+        getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+        onboardingManager = onboardingManager,
+      )
+    }
+
+    onboardingManager.setShouldShowOnboarding(true)
+
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+      )
+
+      KoinContext {
+        ScenePeekApp(
+          state = state,
+          uiState = uiState,
+          uiEvent = uiEvent,
+          onConsumeEvent = {},
+        )
+      }
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Onboarding.SCREEN).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
+    }
   }
 }
 

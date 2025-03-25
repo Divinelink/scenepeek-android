@@ -11,6 +11,8 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.account.AccountDetailsSerializer
 import com.divinelink.core.datastore.account.AccountPreferenceStorage
 import com.divinelink.core.datastore.account.AccountStorage
+import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
+import com.divinelink.core.datastore.onboarding.OnboardingStorage
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -21,6 +23,9 @@ val Context.accountDetailsDataStore by dataStore(
 )
 
 private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
+private val Context.onboardingDataStore by preferencesDataStore(
+  DataStoreOnboardingStorage.PREFS_NAME,
+)
 
 val storageModule = module {
 
@@ -32,6 +37,11 @@ val storageModule = module {
   single<PreferenceStorage> {
     val context: Context = get()
     DataStorePreferenceStorage(context.dataStore)
+  }
+
+  single<OnboardingStorage> {
+    val context: Context = get()
+    DataStoreOnboardingStorage(context.onboardingDataStore)
   }
 
   singleOf(::EncryptedPreferenceStorage) { bind<EncryptedStorage>() }

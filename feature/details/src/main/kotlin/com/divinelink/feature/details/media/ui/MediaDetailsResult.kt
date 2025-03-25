@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.DetailActionItem
@@ -10,7 +11,6 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.UIText
 import com.divinelink.feature.details.R
 
 /**

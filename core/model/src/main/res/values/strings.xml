@@ -9,4 +9,9 @@
   <string name="core_model_tv_status_canceled">Canceled</string>
   <string name="core_model_tv_status_continuing">Continuing</string>
   <string name="core_model_tv_status_unknown">Unknown</string>
+
+  <string name="core_model_onboarding_tmdb_page_action">Connect TMDB Account</string>
+  <string name="core_model_onboarding_jellyseerr_page_action">Link Jellyseerr Account</string>
+
+  <string name="core_model_onboarding_successfully_connected">Connected successfully</string>
 </resources>

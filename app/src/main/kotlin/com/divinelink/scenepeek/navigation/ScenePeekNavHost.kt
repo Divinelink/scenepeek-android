@@ -14,6 +14,7 @@ import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.navigateToDetails
 import com.divinelink.feature.details.navigation.navigateToPerson
 import com.divinelink.feature.details.navigation.personScreen
+import com.divinelink.feature.onboarding.navigation.onboardingScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
@@ -117,6 +118,12 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
       watchlistScreen(
         onNavigateToAccountSettings = navController::navigateToAccountSettings,
         onNavigateToDetails = navController::navigateToDetails,
+      )
+
+      onboardingScreen(
+        onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigateUp = navController::navigateUp,
       )
 
       tmdbAuthScreen(navController::navigateUp)

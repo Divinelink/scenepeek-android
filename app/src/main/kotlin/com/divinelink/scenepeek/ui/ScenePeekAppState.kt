@@ -11,6 +11,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
+import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.feature.watchlist.navigation.navigateToWatchlist
 import com.divinelink.scenepeek.home.navigation.navigateToHome
 import com.divinelink.scenepeek.navigation.TopLevelDestination
@@ -23,6 +24,7 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 fun rememberScenePeekAppState(
   networkMonitor: NetworkMonitor,
+  onboardingManager: OnboardingManager,
   scope: CoroutineScope = rememberCoroutineScope(),
   navController: NavHostController = rememberNavController(),
 ): ScenePeekAppState = remember(networkMonitor, scope) {
@@ -30,6 +32,7 @@ fun rememberScenePeekAppState(
     scope = scope,
     navController = navController,
     networkMonitor = networkMonitor,
+    onboardingManager = onboardingManager,
   )
 }
 
@@ -38,12 +41,20 @@ class ScenePeekAppState(
   val navController: NavHostController,
   val scope: CoroutineScope,
   networkMonitor: NetworkMonitor,
+  onboardingManager: OnboardingManager,
 ) {
   val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
+    .stateIn(
+      scope = scope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+      initialValue = false,
+    )
+
+  val shouldShowOnboarding = onboardingManager.shouldShowOnboarding
     .stateIn(
       scope = scope,
       started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),

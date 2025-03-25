@@ -13,6 +13,7 @@ import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.manager.TestOnboardingManager
 import com.divinelink.core.testing.network.TestNetworkMonitor
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -109,6 +110,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         state = ScenePeekAppState(
           navController = navController,
           scope = rememberCoroutineScope(),
+          onboardingManager = TestOnboardingManager(),
           networkMonitor = TestNetworkMonitor(),
         ),
       )

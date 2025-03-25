@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="feature_onboarding_get_started">Get started</string>
+  <string name="feature_onboarding_skip">Skip</string>
+
+  <string name="feature_onboarding_welcome_page_title">Welcome to ScenePeek</string>
+  <string name="feature_onboarding_welcome_page_description">Your ultimate destination for discovering movies, TV shows, and more.</string>
+
+  <string name="feature_onboarding_tmdb_page_title">Sync with TMDB</string>
+  <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlists and ratings.</string>
+
+  <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr Integration</string>
+  <string name="feature_onboarding_jellyseerr_page_description">If you have access to a Jellyseerr server, connect your account to request movies and TV shows instantly.</string>
+</resources>

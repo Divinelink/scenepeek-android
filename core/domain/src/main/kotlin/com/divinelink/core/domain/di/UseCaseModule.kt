@@ -16,6 +16,7 @@ import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
+import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
@@ -57,4 +58,7 @@ val useCaseModule = module {
 
   // Settings
   factoryOf(::MediaRatingPreferenceUseCase)
+
+  // Onboarding
+  factoryOf(::MarkOnboardingCompleteUseCase)
 }

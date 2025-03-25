@@ -1,8 +1,8 @@
 package com.divinelink.feature.credits.ui
 
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.credits.SeriesCrewDepartment
 import com.divinelink.core.model.details.Person
-import com.divinelink.core.ui.UIText
 import com.divinelink.feature.credits.R
 
 sealed interface CreditsUiContent {

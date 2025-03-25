@@ -18,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.ui.TestTags
 
 @Composable
 fun AppNavigationBar(
@@ -35,6 +37,7 @@ fun AppNavigationBar(
   ) {
     Row(
       modifier = Modifier
+        .testTag(TestTags.Components.NAVIGATION_BAR)
         .fillMaxWidth()
         .windowInsetsPadding(windowInsets)
         .heightIn(max = 60.dp)
