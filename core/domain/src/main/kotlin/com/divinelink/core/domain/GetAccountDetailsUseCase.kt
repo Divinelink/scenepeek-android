@@ -9,7 +9,6 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.AccountDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -35,8 +34,9 @@ class GetAccountDetailsUseCase(
       if (sessionId == null) {
         send(Result.failure(SessionException.Unauthenticated()))
       } else {
-        val details = repository.getAccountDetails(sessionId).first().data
-        storage.accountStorage.setAccountDetails(details)
+        repository.getAccountDetails(sessionId).collect { details ->
+          storage.accountStorage.setAccountDetails(details.data)
+        }
       }
     }
   }
