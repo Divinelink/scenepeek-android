@@ -3,6 +3,12 @@ plugins {
   alias(libs.plugins.divinelink.android.koin)
 }
 
+android {
+  defaultConfig {
+    consumerProguardFiles("consumer-proguard-rules.pro")
+  }
+}
+
 dependencies {
   implementation(libs.datastore)
   implementation(libs.datastore.core)
@@ -18,6 +24,5 @@ dependencies {
 
   implementation(libs.timber)
 
-//  testImplementation(projects.core.datastoreTest)
   testImplementation(libs.kotlinx.coroutines.test)
 }
