@@ -18,12 +18,12 @@ fun NavController.navigateToWatchlist(navOptions: NavOptions) = navigate(
 
 fun NavGraphBuilder.watchlistScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToAccountSettings: () -> Unit,
+  onNavigateToTMDBLogin: () -> Unit,
 ) {
   composable<WatchlistRoute> {
     WatchlistScreen(
       onNavigateToMediaDetails = onNavigateToDetails,
-      onNavigateToAccountSettings = onNavigateToAccountSettings,
+      onNavigateToTMDBLogin = onNavigateToTMDBLogin,
     )
   }
 }

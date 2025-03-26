@@ -34,7 +34,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -53,14 +53,14 @@ class WatchlistScreenTest : ComposeTest() {
 
   @Test
   fun `test unauthenticated error`() {
-    var verifyNavigatedToAccountSettings = false
+    var verifyNavigatedToTMDBLogin = false
 
     observeAccountUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {
-          verifyNavigatedToAccountSettings = true
+        onNavigateToTMDBLogin = {
+          verifyNavigatedToTMDBLogin = true
         },
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
@@ -84,7 +84,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     // Navigate to Login
     composeTestRule.onNodeWithText(loginButton).performClick()
-    assertThat(verifyNavigatedToAccountSettings).isTrue()
+    assertThat(verifyNavigatedToTMDBLogin).isTrue()
   }
 
   @Test
@@ -93,7 +93,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -127,7 +127,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -169,7 +169,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -210,7 +210,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -269,7 +269,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setContentWithTheme {
       WatchlistScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {
           verifyNavigatedToMediaDetails = true
           navArgs = it

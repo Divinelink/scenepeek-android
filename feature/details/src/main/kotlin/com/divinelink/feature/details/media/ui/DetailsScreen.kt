@@ -32,7 +32,7 @@ fun DetailsScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
-  onNavigateToAccountSettings: () -> Unit,
+  onNavigateToTMDBLogin: () -> Unit,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
   val viewState = viewModel.viewState.collectAsState()
@@ -42,7 +42,7 @@ fun DetailsScreen(
 
   LaunchedEffect(viewState.value.navigateToLogin) {
     viewState.value.navigateToLogin?.let {
-      onNavigateToAccountSettings()
+      onNavigateToTMDBLogin()
 
       viewModel.consumeNavigateToLogin()
     }
