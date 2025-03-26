@@ -9,6 +9,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.feature.onboarding.manager.OnboardingPages
 import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
+import com.divinelink.feature.onboarding.manager.OnboardingPages.linkHandlingPage
 import com.divinelink.feature.onboarding.manager.OnboardingPages.tmdbPage
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
 import kotlinx.coroutines.test.runTest
@@ -137,6 +138,7 @@ class OnboardingViewModelTest {
             ),
             tmdbPage.copy(action = OnboardingAction.NavigateToTMDBLogin(isComplete = true)),
             jellyseerrPage,
+            linkHandlingPage,
           ),
           startedJobs = listOf("tmdb"),
         ),
@@ -168,6 +170,7 @@ class OnboardingViewModelTest {
             jellyseerrPage.copy(
               action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = true),
             ),
+            linkHandlingPage,
           ),
           startedJobs = listOf("jellyseerr"),
         ),

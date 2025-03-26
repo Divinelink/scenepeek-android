@@ -11,4 +11,18 @@
 
   <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr Integration</string>
   <string name="feature_onboarding_jellyseerr_page_description">If you have access to a Jellyseerr server, connect your account to request movies and TV shows instantly.</string>
+
+  <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
+  <string name="feature_onboarding_link_handling_page_description">
+    <![CDATA[
+    ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> &amp; <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and person directly in the app.
+    <br><br>
+    To enable this, follow these steps:<br>
+    1. Open the settings by pressing the button below.<br>
+    2. <strong>Open by default</strong> or <strong>Set as default section</strong>.<br>
+    3. Choose <strong>Open supported links</strong> for ScenePeek<br>
+    <br><br>
+    (some devices have this listed under <strong>Default Apps</strong> in the main settings followed by selecting ScenePeek for relevant categories)
+    ]]>
+  </string>
 </resources>
