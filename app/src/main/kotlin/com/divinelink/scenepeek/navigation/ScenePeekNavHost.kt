@@ -107,7 +107,7 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
-        onNavigateToAccountSettings = navController::navigateToAccountSettings,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )
 
       creditsScreen(
@@ -116,8 +116,8 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
       )
 
       watchlistScreen(
-        onNavigateToAccountSettings = navController::navigateToAccountSettings,
         onNavigateToDetails = navController::navigateToDetails,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )
 
       onboardingScreen(

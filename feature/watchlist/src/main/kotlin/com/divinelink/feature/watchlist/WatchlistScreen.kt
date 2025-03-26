@@ -36,7 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistScreen(
-  onNavigateToAccountSettings: () -> Unit,
+  onNavigateToTMDBLogin: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   viewModel: WatchlistViewModel = koinViewModel(),
 ) {
@@ -90,7 +90,7 @@ fun WatchlistScreen(
             )
             is WatchlistForm.Error -> WatchlistErrorContent(
               error = it,
-              onLogin = onNavigateToAccountSettings,
+              onLogin = onNavigateToTMDBLogin,
               onRetry = {
               },
             )

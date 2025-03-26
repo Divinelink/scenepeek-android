@@ -85,7 +85,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -179,7 +179,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
         onNavigateUp = {},
@@ -239,7 +239,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
         onNavigateUp = {},
@@ -305,7 +305,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {
           route = it
           navigatedToCredits = true
@@ -370,7 +370,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -437,7 +437,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
         onNavigateUp = {},
@@ -497,7 +497,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToAccountSettings = {},
+        onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         viewModel = viewModel,
       )
