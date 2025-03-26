@@ -8,8 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.ui.TestTags
 import org.koin.androidx.compose.koinViewModel
@@ -22,6 +24,7 @@ fun OnboardingScreen(
   viewModel: OnboardingViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
   LaunchedEffect(Unit) {
     viewModel.onNavigateUp.collect {
@@ -50,6 +53,7 @@ fun OnboardingScreen(
           when (action) {
             is OnboardingAction.NavigateToJellyseerrLogin -> onNavigateToJellyseerrSettings()
             is OnboardingAction.NavigateToTMDBLogin -> onNavigateToTMDBLogin()
+            is OnboardingAction.NavigateToLinkHandling -> AppSettingsUtil.openAppDetails(context)
           }
         },
       )

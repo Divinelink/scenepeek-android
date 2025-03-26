@@ -12,7 +12,7 @@ object OnboardingPages {
     title = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_title),
     description = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_description),
     image = com.divinelink.core.ui.R.drawable.core_ui_ic_jellyseerr,
-    showSkipButton = false,
+    showSkipButton = true,
     action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = false),
   )
 
@@ -25,6 +25,15 @@ object OnboardingPages {
     action = OnboardingAction.NavigateToTMDBLogin(isComplete = false),
   )
 
+  val linkHandlingPage = OnboardingPage(
+    tag = "link_handling",
+    title = UIText.ResourceText(R.string.feature_onboarding_link_handling_page_title),
+    description = UIText.ResourceText(R.string.feature_onboarding_link_handling_page_description),
+    image = null,
+    showSkipButton = false,
+    action = OnboardingAction.NavigateToLinkHandling,
+  )
+
   val initialPages = listOf(
     OnboardingPage(
       tag = "welcome",
@@ -35,6 +44,7 @@ object OnboardingPages {
     ),
     tmdbPage,
     jellyseerrPage,
+    linkHandlingPage,
   )
 
   val newFeaturePages = emptyMap<Int, List<OnboardingPage>>()

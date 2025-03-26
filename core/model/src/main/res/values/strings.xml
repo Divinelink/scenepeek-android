@@ -10,6 +10,7 @@
   <string name="core_model_tv_status_continuing">Continuing</string>
   <string name="core_model_tv_status_unknown">Unknown</string>
 
+  <string name="core_model_onboarding_link_handling_action">Open settings</string>
   <string name="core_model_onboarding_tmdb_page_action">Connect TMDB Account</string>
   <string name="core_model_onboarding_jellyseerr_page_action">Link Jellyseerr Account</string>
 
