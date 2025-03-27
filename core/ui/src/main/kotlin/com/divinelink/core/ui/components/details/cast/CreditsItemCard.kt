@@ -1,5 +1,6 @@
 package com.divinelink.core.ui.components.details.cast
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -100,7 +101,11 @@ fun CreditsItemCard(
                   condition = obfuscateEpisodes,
                   ifTrue = { blurEffect() },
                 ),
-              text = stringResource(R.string.core_ui_episode_count, episodes),
+              text = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S && obfuscateEpisodes) {
+                ""
+              } else {
+                stringResource(R.string.core_ui_episode_count, episodes)
+              },
               maxLines = 1,
               style = MaterialTheme.typography.bodySmall,
               overflow = TextOverflow.Ellipsis,
