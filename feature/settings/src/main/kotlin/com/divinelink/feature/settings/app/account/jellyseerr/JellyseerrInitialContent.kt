@@ -33,11 +33,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -46,7 +48,6 @@ import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.autofill
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
@@ -98,10 +99,9 @@ fun JellyseerrInitialContent(
       content = {
         OutlinedTextField(
           modifier = Modifier
-            .autofill(
-              autofillTypes = listOf(AutofillType.Username),
-              onFill = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
-            )
+            .semantics {
+              contentType = ContentType.Username
+            }
             .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyfinLogin.username.value,
@@ -112,10 +112,9 @@ fun JellyseerrInitialContent(
 
         PasswordOutlinedTextField(
           modifier = Modifier
-            .autofill(
-              autofillTypes = listOf(AutofillType.Password),
-              onFill = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-            )
+            .semantics {
+              contentType = ContentType.Password
+            }
             .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_PASSWORD_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyfinLogin.password.value,
@@ -139,10 +138,9 @@ fun JellyseerrInitialContent(
       content = {
         OutlinedTextField(
           modifier = Modifier
-            .autofill(
-              autofillTypes = listOf(AutofillType.EmailAddress),
-              onFill = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
-            )
+            .semantics {
+              contentType = ContentType.EmailAddress
+            }
             .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyseerrLogin.username.value,
@@ -153,10 +151,9 @@ fun JellyseerrInitialContent(
 
         PasswordOutlinedTextField(
           modifier = Modifier
-            .autofill(
-              autofillTypes = listOf(AutofillType.Password),
-              onFill = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-            )
+            .semantics {
+              contentType = ContentType.Password
+            }
             .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyseerrLogin.password.value,

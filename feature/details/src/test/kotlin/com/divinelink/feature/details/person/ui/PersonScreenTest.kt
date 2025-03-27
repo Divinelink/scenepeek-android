@@ -906,8 +906,11 @@ class PersonScreenTest : ComposeTest() {
       onNodeWithText("Movies").performClick()
 
       // Apply filter to Movies tab
+      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
       onNodeWithTag(TestTags.Components.FILTER_BUTTON).performClick()
+      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsDisplayed()
       onNodeWithText("Writing (1)").performClick()
+      onNodeWithTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET).assertIsNotDisplayed()
 
       // Switch to TV Shows tab
       onNodeWithText("TV Shows").performClick()
