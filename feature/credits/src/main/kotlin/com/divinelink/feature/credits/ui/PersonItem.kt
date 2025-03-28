@@ -1,5 +1,6 @@
 package com.divinelink.feature.credits.ui
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -153,16 +154,21 @@ fun CharacterWithBlurredEpisodes(
     style = baseStyle,
   )
 
-  Text(
-    text = " ",
-    style = baseStyle,
-  )
-
-  Text(
-    text = stringResource(
+  val episodesCount = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S && isObfuscated) {
+    ""
+  } else {
+    Text(
+      text = " ",
+      style = baseStyle,
+    )
+    stringResource(
       R.string.feature_credits_character_total_episodes,
       episodes,
-    ),
+    )
+  }
+
+  Text(
+    text = episodesCount,
     style = episodeStyle,
     modifier = Modifier.conditional(
       condition = isObfuscated,
