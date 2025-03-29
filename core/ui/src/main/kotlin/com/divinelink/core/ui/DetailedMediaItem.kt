@@ -102,9 +102,8 @@ fun DetailedMediaItem(
 
 @Previews
 @Composable
-private fun DetailedMediaItemPreview(
-  @PreviewParameter(MediaItemParameterProvider::class)
-  mediaItem: MediaItem.Media,
+fun DetailedMediaItemPreview(
+  @PreviewParameter(MediaItemParameterProvider::class) mediaItem: MediaItem.Media,
 ) {
   AppTheme {
     Surface {

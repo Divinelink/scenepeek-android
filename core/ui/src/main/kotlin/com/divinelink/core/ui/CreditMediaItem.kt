@@ -109,7 +109,7 @@ fun CreditMediaItem(
 
 @Previews
 @Composable
-private fun DetailedMediaItemPreview(
+fun CreditMediaItemPreview(
   @PreviewParameter(MediaItemParameterProvider::class) mediaItem: MediaItem.Media,
 ) {
   AppTheme {
