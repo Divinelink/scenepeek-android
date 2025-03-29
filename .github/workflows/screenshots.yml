@@ -2,7 +2,7 @@ name: Screenshot tests
 
 on:
   workflow_dispatch:
-  pull_request:
+#  pull_request:
 
 jobs:
   screenshots:
