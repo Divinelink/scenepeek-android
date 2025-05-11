@@ -4,7 +4,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -12,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.launchCustomTab
 import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.navigation.route.DetailsRoute
@@ -35,13 +35,13 @@ fun DetailsScreen(
   onNavigateToTMDBLogin: () -> Unit,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
-  val viewState = viewModel.viewState.collectAsState()
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
   val context = LocalContext.current
 
-  LaunchedEffect(viewState.value.navigateToLogin) {
-    viewState.value.navigateToLogin?.let {
+  LaunchedEffect(viewState.navigateToLogin) {
+    viewState.navigateToLogin?.let {
       onNavigateToTMDBLogin()
 
       viewModel.consumeNavigateToLogin()
@@ -50,8 +50,8 @@ fun DetailsScreen(
   val rateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val allRatingsBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  LaunchedEffect(viewState.value.showRateDialog) {
-    if (viewState.value.showRateDialog) {
+  LaunchedEffect(viewState.showRateDialog) {
+    if (viewState.showRateDialog) {
       openBottomSheet = true
       delay(BOTTOM_SHEET_DELAY)
       rateBottomSheetState.show()
@@ -79,20 +79,20 @@ fun DetailsScreen(
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
-      value = viewState.value.userDetails?.beautifiedRating,
-      mediaTitle = viewState.value.mediaDetails?.title ?: "",
+      value = viewState.userDetails?.beautifiedRating,
+      mediaTitle = viewState.mediaDetails?.title ?: "",
       onSubmitRate = viewModel::onSubmitRate,
       onClearRate = viewModel::onClearRating,
       onRateChanged = {
         // TODO implement
       },
       onDismissRequest = viewModel::onDismissRateDialog,
-      canClearRate = viewState.value.userDetails?.rating != null,
+      canClearRate = viewState.userDetails?.rating != null,
     )
   }
 
   if (showAllRatingBottomSheet) {
-    viewState.value.mediaDetails?.ratingCount?.let { ratingCount ->
+    viewState.mediaDetails?.ratingCount?.let { ratingCount ->
       AllRatingsModalBottomSheet(
         sheetState = allRatingsBottomSheetState,
         onDismissRequest = { showAllRatingBottomSheet = false },
@@ -103,7 +103,7 @@ fun DetailsScreen(
   }
 
   DetailsContent(
-    viewState = viewState.value,
+    viewState = viewState,
     onNavigateUp = onNavigateUp,
     onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
     onSimilarMovieClicked = { movie ->
@@ -121,10 +121,10 @@ fun DetailsScreen(
     requestMedia = viewModel::onRequestMedia,
     onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
     viewAllCreditsClicked = {
-      viewState.value.mediaDetails?.id?.let { id ->
+      viewState.mediaDetails?.id?.let { id ->
         onNavigateToCredits(
           CreditsRoute(
-            mediaType = viewState.value.mediaType,
+            mediaType = viewState.mediaType,
             id = id.toLong(),
           ),
         )

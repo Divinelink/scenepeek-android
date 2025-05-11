@@ -1,24 +1,14 @@
 package com.divinelink.feature.details.media.ui
 
-import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
@@ -30,8 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -46,19 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
-import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
@@ -66,13 +48,9 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
-import com.divinelink.core.model.details.TvStatus
-import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.MovieImage
@@ -81,26 +59,24 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.WatchlistButton
-import com.divinelink.core.ui.components.details.SpannableRating
 import com.divinelink.core.ui.components.details.cast.CastList
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
 import com.divinelink.core.ui.components.details.cast.DirectorItem
-import com.divinelink.core.ui.components.details.genres.GenreLabel
 import com.divinelink.core.ui.components.details.reviews.ReviewsList
 import com.divinelink.core.ui.components.details.similar.SimilarMoviesList
 import com.divinelink.core.ui.components.details.videos.VideoState
-import com.divinelink.core.ui.components.details.videos.YoutubePlayer
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
-import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
-import com.divinelink.feature.details.R
+import com.divinelink.feature.details.media.ui.components.OverviewDetails
+import com.divinelink.feature.details.media.ui.components.TitleDetails
+import com.divinelink.feature.details.media.ui.components.VideoPlayerSection
+import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
+import com.divinelink.feature.details.media.ui.rate.UserRating
 import com.divinelink.core.ui.R as uiR
-
-private const val MAX_WIDTH_FOR_LANDSCAPE_PLAYER = 0.55f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -208,35 +184,32 @@ fun DetailsContent(
       )
     },
     content = { paddingValues ->
-      viewState.mediaDetails?.let { mediaDetails ->
-        when (mediaDetails) {
-          is Movie, is TV -> {
-            MediaDetailsContent(
-              modifier = Modifier.padding(paddingValues = paddingValues),
-              listState = listState,
-              mediaDetails = mediaDetails,
-              userDetails = viewState.userDetails,
-              tvCredits = viewState.tvCredits?.cast,
-              similarMoviesList = viewState.similarMovies,
-              reviewsList = viewState.reviews,
-              trailer = viewState.trailer,
-              onSimilarMovieClicked = onSimilarMovieClicked,
-              onAddRateClicked = onAddRateClicked,
-              onAddToWatchlistClicked = onAddToWatchlistClicked,
-              viewAllCreditsClicked = viewAllCreditsClicked,
-              onPersonClick = onPersonClick,
-              obfuscateEpisodes = viewState.spoilersObfuscated,
-              ratingSource = viewState.ratingSource,
-              viewAllRatingsClicked = viewAllRatingsClicked,
-            )
-          }
+      when (viewState.mediaDetails) {
+        is Movie, is TV -> MediaDetailsContent(
+          modifier = Modifier.padding(paddingValues = paddingValues),
+          listState = listState,
+          mediaDetails = viewState.mediaDetails,
+          userDetails = viewState.userDetails,
+          tvCredits = viewState.tvCredits?.cast,
+          similarMoviesList = viewState.similarMovies,
+          reviewsList = viewState.reviews,
+          trailer = viewState.trailer,
+          onSimilarMovieClicked = onSimilarMovieClicked,
+          onAddRateClicked = onAddRateClicked,
+          onAddToWatchlistClicked = onAddToWatchlistClicked,
+          viewAllCreditsClicked = viewAllCreditsClicked,
+          onPersonClick = onPersonClick,
+          obfuscateEpisodes = viewState.spoilersObfuscated,
+          ratingSource = viewState.ratingSource,
+          viewAllRatingsClicked = viewAllRatingsClicked,
+        )
+        null -> {
+          // Do nothing
         }
       }
       if (viewState.error != null) {
         SimpleAlertDialog(
-          confirmClick = {
-            onNavigateUp()
-          },
+          confirmClick = onNavigateUp,
           confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
           uiState = AlertDialogUiState(text = viewState.error),
         )
@@ -249,42 +222,7 @@ fun DetailsContent(
 }
 
 @Composable
-private fun VideoPlayerSection(
-  modifier: Modifier = Modifier,
-  trailer: Video,
-  onVideoStateChange: (VideoState) -> Unit,
-) {
-  val orientation = LocalConfiguration.current.orientation
-  val playerWidth = remember {
-    derivedStateOf {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        MAX_WIDTH_FOR_LANDSCAPE_PLAYER
-      } else {
-        1f
-      }
-    }
-  }
-
-  when (trailer.site) {
-    VideoSite.YouTube ->
-      YoutubePlayer(
-        modifier = modifier
-          .fillMaxWidth(playerWidth.value),
-        video = trailer,
-        onStateChange = { state ->
-          onVideoStateChange(state)
-        },
-      )
-
-    else -> {
-      return
-    }
-  }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun MediaDetailsContent(
+private fun MediaDetailsContent(
   modifier: Modifier = Modifier,
   listState: LazyListState,
   ratingSource: RatingSource,
@@ -434,165 +372,12 @@ fun MediaDetailsContent(
   }
 }
 
-@Composable
-private fun UserRating(
-  modifier: Modifier = Modifier,
-  source: RatingSource,
-  ratingDetails: RatingDetails,
-  accountRating: Int?,
-  onAddRateClicked: () -> Unit,
-  onShowAllRatingsClicked: () -> Unit,
-) {
-  Row(
-    modifier = modifier.fillMaxSize(),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    Spacer(
-      modifier = Modifier
-        .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_12),
-    )
-
-    TextButton(
-      modifier = Modifier.testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
-      onClick = onShowAllRatingsClicked,
-    ) {
-      MediaRatingItem(
-        ratingDetails = ratingDetails,
-        source = source,
-      )
-    }
-
-    Spacer(
-      modifier = Modifier
-        .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_0),
-    )
-
-    TextButton(
-      modifier = Modifier.align(Alignment.CenterVertically),
-      onClick = onAddRateClicked,
-    ) {
-      if (accountRating != null) {
-        SpannableRating(
-          modifier = Modifier.align(Alignment.CenterVertically),
-          text = stringResource(id = R.string.details__your_rating),
-          rating = accountRating,
-          vertical = true,
-        )
-      } else {
-        Text(
-          text = stringResource(id = R.string.details__add_rating),
-          style = MaterialTheme.typography.titleMedium,
-        )
-      }
-    }
-
-    Spacer(
-      modifier = Modifier
-        .weight(1f)
-        .size(MaterialTheme.dimensions.keyline_24),
-    )
-  }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun TitleDetails(mediaDetails: MediaDetails) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = MaterialTheme.dimensions.keyline_12)
-      .padding(bottom = MaterialTheme.dimensions.keyline_12),
-  ) {
-    Text(
-      style = MaterialTheme.typography.displaySmall,
-      text = mediaDetails.title,
-    )
-
-    FlowRow {
-      Text(
-        style = MaterialTheme.typography.labelMedium,
-        text = mediaDetails.releaseDate,
-      )
-
-      when (mediaDetails) {
-        is Movie -> mediaDetails.runtime?.let { runtime ->
-          Text(
-            style = MaterialTheme.typography.labelMedium,
-            text = " • $runtime",
-          )
-        }
-        is TV -> {
-          if (mediaDetails.status != TvStatus.UNKNOWN) {
-            Text(
-              style = MaterialTheme.typography.labelMedium,
-              text = " • " + stringResource(mediaDetails.status.resId),
-            )
-          }
-
-          if (mediaDetails.numberOfSeasons > 0) {
-            Text(
-              style = MaterialTheme.typography.labelMedium,
-              text = " • " + pluralStringResource(
-                id = R.plurals.feature_details_number_of_seasons,
-                count = mediaDetails.numberOfSeasons,
-                mediaDetails.numberOfSeasons,
-              ),
-            )
-          }
-        }
-      }
-    }
-  }
-}
-
-@Composable
-private fun OverviewDetails(
-  modifier: Modifier = Modifier,
-  movieDetails: MediaDetails,
-  genres: List<String>?,
-  onGenreClicked: (String) -> Unit,
-) {
-  Column(
-    modifier = modifier
-      .padding(start = MaterialTheme.dimensions.keyline_12)
-      .fillMaxWidth(),
-  ) {
-    if (movieDetails.genres?.isNotEmpty() == true) {
-      genres?.let {
-        LazyRow(
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-        ) {
-          items(genres) { genre ->
-            GenreLabel(
-              genre = genre,
-              onGenreClicked = { onGenreClicked(genre) },
-            )
-          }
-        }
-      }
-    }
-    if (!movieDetails.overview.isNullOrEmpty()) {
-      Text(
-        modifier = Modifier.padding(
-          top = MaterialTheme.dimensions.keyline_16,
-          bottom = MaterialTheme.dimensions.keyline_8,
-        ),
-        text = movieDetails.overview!!,
-        style = MaterialTheme.typography.bodyMedium,
-      )
-    }
-  }
-}
-
 private const val OVERVIEW_WEIGHT = 3f
 
 @Previews
 @Composable
 fun DetailsContentPreview(
-  @PreviewParameter(DetailsViewStateProvider::class)
-  viewState: DetailsViewState,
+  @PreviewParameter(DetailsViewStateProvider::class) viewState: DetailsViewState,
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
@@ -621,125 +406,4 @@ fun DetailsContentPreview(
       }
     }
   }
-}
-
-@Suppress("MagicNumber")
-@ExcludeFromKoverReport
-class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
-  override val values: Sequence<DetailsViewState>
-    get() {
-      val reviews = (1..2).map {
-        Review(
-          authorName = "Author name $it",
-          rating = 10,
-          content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sodales " +
-            "laoreet commodo. Phasellus a purus eu risus elementum consequat. Aenean eu" +
-            "elit ut nunc convallis laoreet non ut libero. Suspendisse interdum placerat" +
-            "risus vel ornare. Donec vehicula, turpis sed consectetur ullamcorper, ante" +
-            "nunc egestas quam, ultricies adipiscing velit enim at nunc. Aenean id diam" +
-            "neque. Praesent ut lacus sed justo viverra fermentum et ut sem. \n Fusce" +
-            "convallis gravida lacinia. Integer semper dolor ut elit sagittis lacinia." +
-            "Praesent sodales scelerisque eros at rhoncus. Duis posuere sapien vel ipsum" +
-            "ornare interdum at eu quam. Vestibulum vel massa erat. Aenean quis sagittis" +
-            "purus. Phasellus arcu purus, rutrum id consectetur non, bibendum at nibh.",
-          date = "2022-10-22",
-        )
-      }
-      val similarMovies = (1..10).map {
-        MediaItem.Media.Movie(
-          id = it,
-          posterPath = "",
-          releaseDate = "",
-          name = "Flight Club",
-          voteAverage = 7.2,
-          voteCount = 1020,
-          overview = "This movie is good.",
-          isFavorite = false,
-        )
-      }.toList()
-      val popularMovie = MediaItem.Media.Movie(
-        id = 0,
-        posterPath = "",
-        releaseDate = "",
-        name = "Flight Club",
-        voteAverage = 7.2,
-        voteCount = 1_453_020,
-        overview = "This movie is good.",
-        isFavorite = false,
-      )
-
-      return sequenceOf(
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.MOVIE,
-          tvCredits = null,
-          isLoading = true,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          userDetails = AccountMediaDetails(
-            id = 8679,
-            favorite = false,
-            rating = 9.0f,
-            watchlist = false,
-          ),
-          mediaType = MediaType.MOVIE,
-          tvCredits = null,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.TV,
-          mediaDetails = MediaDetailsFactory.TheOffice(),
-          tvCredits = null,
-          similarMovies = similarMovies,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.TV,
-          mediaDetails = MediaDetailsFactory.TheOffice().copy(
-            numberOfSeasons = 0,
-          ),
-          tvCredits = null,
-          similarMovies = similarMovies,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.TV,
-          mediaDetails = MediaDetailsFactory.TheOffice().copy(
-            status = TvStatus.UNKNOWN,
-          ),
-          tvCredits = null,
-          similarMovies = similarMovies,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.MOVIE,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          similarMovies = similarMovies,
-          tvCredits = null,
-          reviews = reviews,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.MOVIE,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          similarMovies = similarMovies,
-          userDetails = AccountMediaDetails(
-            id = 0,
-            favorite = false,
-            rating = 9.0f,
-            watchlist = true,
-          ),
-          tvCredits = null,
-          reviews = reviews,
-        ),
-        DetailsViewState(
-          mediaId = popularMovie.id,
-          mediaType = MediaType.MOVIE,
-          tvCredits = null,
-          error = UIText.StringText("Something went wrong."),
-        ),
-      )
-    }
 }
