@@ -50,6 +50,8 @@ object TestTags {
     const val CONTENT_SCAFFOLD = "Details Content Scaffold"
     const val SIMILAR_MOVIES_LIST = "Details Similar Movies Lazy List"
 
+    const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"
+
     const val YOUR_RATING = "Details Your Rating"
     const val RATE_DIALOG = "Details Rate Dialog"
     const val RATE_SLIDER = "Details Rate Slider"

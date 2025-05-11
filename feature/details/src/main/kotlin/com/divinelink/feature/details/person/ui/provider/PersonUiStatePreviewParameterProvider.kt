@@ -6,11 +6,11 @@ import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.LayoutStyle
+import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonForm
 import com.divinelink.feature.details.person.ui.PersonUiState
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
-import com.divinelink.feature.details.person.ui.tab.PersonTab
 
 @ExcludeFromKoverReport
 class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiState> {

@@ -9,10 +9,10 @@ import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.person.GroupedPersonCredits
+import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
-import com.divinelink.feature.details.person.ui.tab.PersonTab
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -45,11 +45,11 @@ class PersonViewModel(
       PersonUiState(
         selectedTabIndex = 0,
         forms = mapOf(
-          PersonTab.ABOUT.order to PersonForm.About(
+          PersonTab.About.order to PersonForm.About(
             PersonDetailsUiState.Data.Prefetch(route.map()),
           ),
-          PersonTab.MOVIES.order to PersonForm.Movies(emptyMap()),
-          PersonTab.TV_SHOWS.order to PersonForm.TvShows(emptyMap()),
+          PersonTab.Movies.order to PersonForm.Movies(emptyMap()),
+          PersonTab.TVShows.order to PersonForm.TvShows(emptyMap()),
         ),
         tabs = PersonTab.entries,
       )
@@ -74,7 +74,7 @@ class PersonViewModel(
                   uiState.copy(
                     forms = uiState.forms.mapValues { (key, value) ->
                       when (key) {
-                        PersonTab.ABOUT.order -> PersonForm.About(
+                        PersonTab.About.order -> PersonForm.About(
                           personDetails = PersonDetailsUiState.Data.Visible(
                             result.personDetails,
                           ),
@@ -91,14 +91,14 @@ class PersonViewModel(
                     knownForCredits = result.knownForCredits,
                     forms = uiState.forms.mapValues { (key, value) ->
                       when (key) {
-                        PersonTab.MOVIES.order -> PersonForm.Movies(credits = result.movies)
-                        PersonTab.TV_SHOWS.order -> PersonForm.TvShows(credits = result.tvShows)
+                        PersonTab.Movies.order -> PersonForm.Movies(credits = result.movies)
+                        PersonTab.TVShows.order -> PersonForm.TvShows(credits = result.tvShows)
                         else -> value
                       }
                     },
                     filteredCredits = mapOf(
-                      PersonTab.MOVIES.order to result.movies,
-                      PersonTab.TV_SHOWS.order to result.tvShows,
+                      PersonTab.Movies.order to result.movies,
+                      PersonTab.TVShows.order to result.tvShows,
                     ),
                   )
                 }
@@ -154,10 +154,10 @@ class PersonViewModel(
       }
 
       val newFilteredCredits = oldState.forms
-        .filterKeys { it != PersonTab.ABOUT.order }
+        .filterKeys { it != PersonTab.About.order }
         .mapValues { (key, form) ->
           when (key) {
-            PersonTab.MOVIES.order -> if (key == selectedTab) {
+            PersonTab.Movies.order -> if (key == selectedTab) {
               applyFilters(
                 credits = (form as PersonForm.Movies).credits,
                 filters = newFilters[selectedTab] ?: emptyList(),
@@ -165,7 +165,7 @@ class PersonViewModel(
             } else {
               oldState.filteredCredits[key] ?: emptyMap()
             }
-            PersonTab.TV_SHOWS.order -> if (key == selectedTab) {
+            PersonTab.TVShows.order -> if (key == selectedTab) {
               applyFilters(
                 credits = (form as PersonForm.TvShows).credits,
                 filters = newFilters[selectedTab] ?: emptyList(),

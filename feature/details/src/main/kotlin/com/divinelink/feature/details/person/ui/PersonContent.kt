@@ -63,6 +63,7 @@ import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
+import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -70,13 +71,12 @@ import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
+import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import com.divinelink.feature.details.person.ui.filter.CreditFilterButton
 import com.divinelink.feature.details.person.ui.filter.CreditsFilterModalBottomSheet
 import com.divinelink.feature.details.person.ui.provider.PersonUiStatePreviewParameterProvider
-import com.divinelink.feature.details.person.ui.tab.PersonTab
-import com.divinelink.feature.details.person.ui.tab.PersonTabs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -108,20 +108,20 @@ fun PersonContent(
   val movieLazyGridState = rememberLazyGridState()
 
   val movieFilters = remember(uiState.filters) {
-    uiState.filters[PersonTab.MOVIES.order] ?: emptyList()
+    uiState.filters[PersonTab.Movies.order] ?: emptyList()
   }
   val tvFilters = remember(uiState.filters) {
-    uiState.filters[PersonTab.TV_SHOWS.order] ?: emptyList()
+    uiState.filters[PersonTab.TVShows.order] ?: emptyList()
   }
 
   val filters = uiState.filters[selectedPage] ?: emptyList()
 
-  val movies by remember(uiState.filteredCredits[PersonTab.MOVIES.order]) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.MOVIES.order] ?: emptyMap() }
+  val movies by remember(uiState.filteredCredits[PersonTab.Movies.order]) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.Movies.order] ?: emptyMap() }
   }
 
-  val tvShows by remember(uiState.filteredCredits[PersonTab.TV_SHOWS.order]) {
-    derivedStateOf { uiState.filteredCredits[PersonTab.TV_SHOWS.order] ?: emptyMap() }
+  val tvShows by remember(uiState.filteredCredits[PersonTab.TVShows.order]) {
+    derivedStateOf { uiState.filteredCredits[PersonTab.TVShows.order] ?: emptyMap() }
   }
 
   val showFilterTab = when (uiState.forms.values.elementAt(selectedPage)) {
@@ -146,8 +146,8 @@ fun PersonContent(
   }
 
   val department = when (selectedPage) {
-    PersonTab.MOVIES.order -> currentMovieDepartment
-    PersonTab.TV_SHOWS.order -> currentTvDepartment
+    PersonTab.Movies.order -> currentMovieDepartment
+    PersonTab.TVShows.order -> currentTvDepartment
     else -> ""
   }
 
@@ -202,7 +202,7 @@ fun PersonContent(
     ) {
       stickyHeader {
         Column {
-          PersonTabs(
+          ScenePeekTabs(
             tabs = uiState.tabs,
             selectedIndex = selectedPage,
             onClick = {
@@ -314,18 +314,18 @@ fun PersonContent(
     ScrollToTopButton(
       modifier = Modifier.align(Alignment.BottomCenter),
       visible = when (selectedPage) {
-        PersonTab.MOVIES.order -> movieLazyGridState.canScrollToTop()
-        PersonTab.TV_SHOWS.order -> tvLazyGridState.canScrollToTop()
+        PersonTab.Movies.order -> movieLazyGridState.canScrollToTop()
+        PersonTab.TVShows.order -> tvLazyGridState.canScrollToTop()
         else -> false
       },
       onClick = {
         scope.launch {
           when (selectedPage) {
-            PersonTab.MOVIES.order -> {
+            PersonTab.Movies.order -> {
               movieLazyGridState.animateScrollToItem(0)
               lazyListState.animateScrollToItem(0)
             }
-            PersonTab.TV_SHOWS.order -> {
+            PersonTab.TVShows.order -> {
               tvLazyGridState.animateScrollToItem(0)
               lazyListState.animateScrollToItem(0)
             }
