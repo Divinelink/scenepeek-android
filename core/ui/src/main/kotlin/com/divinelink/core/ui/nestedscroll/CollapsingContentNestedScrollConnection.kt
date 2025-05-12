@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun rememberCollapsingContentNestedScrollConnection(
-  maxHeight: Dp,
+  maxHeight: Dp = 0.dp,
   minHeight: Dp = 0.dp,
   density: Density = LocalDensity.current,
 ): CollapsingContentNestedScrollConnection {
@@ -40,7 +40,7 @@ fun rememberCollapsingContentNestedScrollConnection(
 }
 
 class CollapsingContentNestedScrollConnection(
-  val maxHeight: Dp,
+  var maxHeight: Dp,
   val minHeight: Dp,
   private val density: Density,
   initialSize: Dp,
@@ -49,6 +49,13 @@ class CollapsingContentNestedScrollConnection(
 
   var currentSize by mutableStateOf(initialSize)
     private set
+
+  // Updated updateMaxHeight function
+  fun setMaxHeight(height: Float) {
+    maxHeight = height.toDp(density)
+    currentSize = height.toDp(density)
+    onSizeChanged(currentSize) // Update the saved state and trigger recompositions
+  }
 
   override fun onPreScroll(
     available: Offset,

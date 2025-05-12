@@ -19,10 +19,13 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
+import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
@@ -69,6 +72,31 @@ class DetailsViewModel(
       mediaId = route.id,
       mediaType = route.mediaType,
       isLoading = true,
+      tabs = when (route.mediaType) {
+        MediaType.TV -> TvTab.entries
+        MediaType.MOVIE -> MovieTab.entries
+        else -> emptyList()
+      },
+      forms = when (route.mediaType) {
+        MediaType.TV -> TvTab.entries.associate { tab ->
+          tab.order to when (tab) {
+            TvTab.About -> DetailsForm.Loading
+            TvTab.Seasons -> DetailsForm.Loading
+            TvTab.Cast -> DetailsForm.Loading
+            TvTab.Recommendations -> DetailsForm.Loading
+            TvTab.Reviews -> DetailsForm.Loading
+          }
+        }
+        MediaType.MOVIE -> MovieTab.entries.associate { tab ->
+          tab.order to when (tab) {
+            MovieTab.About -> DetailsForm.Loading
+            MovieTab.Cast -> DetailsForm.Loading
+            MovieTab.Recommendations -> DetailsForm.Loading
+            MovieTab.Reviews -> DetailsForm.Loading
+          }
+        }
+        else -> emptyMap()
+      },
     ),
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
@@ -455,6 +483,12 @@ class DetailsViewModel(
             }
         }
       }
+    }
+  }
+
+  fun onTabSelected(tab: Int) {
+    _viewState.update { uiState ->
+      uiState.copy(selectedTabIndex = tab)
     }
   }
 

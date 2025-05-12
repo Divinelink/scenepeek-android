@@ -370,11 +370,12 @@ private fun LayoutStyleButton(
 
 @Composable
 private fun CollapsiblePersonContent(
+  modifier: Modifier = Modifier,
   connection: CollapsingContentNestedScrollConnection,
   personDetails: PersonDetailsUiState.Data,
 ) {
   Column(
-    modifier = Modifier
+    modifier = modifier
       .verticalScroll(state = rememberScrollState())
       .testTag(TestTags.Person.COLLAPSIBLE_CONTENT)
       .fillMaxWidth()

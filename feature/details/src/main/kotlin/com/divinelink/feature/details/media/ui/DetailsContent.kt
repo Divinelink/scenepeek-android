@@ -2,18 +2,21 @@ package com.divinelink.feature.details.media.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,22 +26,27 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.UIText
@@ -53,29 +61,26 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
-import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.components.WatchlistButton
-import com.divinelink.core.ui.components.details.cast.CastList
-import com.divinelink.core.ui.components.details.cast.CreatorsItem
-import com.divinelink.core.ui.components.details.cast.DirectorItem
-import com.divinelink.core.ui.components.details.reviews.ReviewsList
-import com.divinelink.core.ui.components.details.similar.SimilarMoviesList
-import com.divinelink.core.ui.components.details.videos.VideoState
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
+import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
-import com.divinelink.feature.details.media.ui.components.OverviewDetails
-import com.divinelink.feature.details.media.ui.components.TitleDetails
-import com.divinelink.feature.details.media.ui.components.VideoPlayerSection
+import com.divinelink.core.ui.tab.ScenePeekTabs
+import com.divinelink.feature.details.media.DetailsData
+import com.divinelink.feature.details.media.DetailsForm
+import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
-import com.divinelink.feature.details.media.ui.rate.UserRating
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,12 +99,15 @@ fun DetailsContent(
   viewAllCreditsClicked: () -> Unit,
   onObfuscateSpoilers: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
+  onTabSelected: (Int) -> Unit,
 ) {
+  val connection = rememberCollapsingContentNestedScrollConnection()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val listState = rememberLazyListState()
   var showDropdownMenu by remember { mutableStateOf(false) }
-  val titleIsVisible = remember {
-    derivedStateOf { listState.firstVisibleItemIndex != 0 }
+
+  val isAppBarVisible by remember {
+    derivedStateOf { connection.currentSize < 152.dp }
   }
 
   SnackbarMessageHandler(
@@ -153,7 +161,7 @@ fun DetailsContent(
           scrolledContainerColor = MaterialTheme.colorScheme.surface,
         ),
         text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
-        isVisible = titleIsVisible.value,
+        isVisible = isAppBarVisible,
         actions = {
           FavoriteButton(
             modifier = Modifier.clip(MaterialTheme.shape.rounded),
@@ -184,35 +192,42 @@ fun DetailsContent(
       )
     },
     content = { paddingValues ->
-      when (viewState.mediaDetails) {
-        is Movie, is TV -> MediaDetailsContent(
-          modifier = Modifier.padding(paddingValues = paddingValues),
-          listState = listState,
-          mediaDetails = viewState.mediaDetails,
-          userDetails = viewState.userDetails,
-          tvCredits = viewState.tvCredits?.cast,
-          similarMoviesList = viewState.similarMovies,
-          reviewsList = viewState.reviews,
-          trailer = viewState.trailer,
-          onSimilarMovieClicked = onSimilarMovieClicked,
-          onAddRateClicked = onAddRateClicked,
-          onAddToWatchlistClicked = onAddToWatchlistClicked,
-          viewAllCreditsClicked = viewAllCreditsClicked,
-          onPersonClick = onPersonClick,
-          obfuscateEpisodes = viewState.spoilersObfuscated,
-          ratingSource = viewState.ratingSource,
-          viewAllRatingsClicked = viewAllRatingsClicked,
-        )
-        null -> {
-          // Do nothing
+      Column {
+        Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+
+        when (viewState.mediaDetails) {
+          is Movie, is TV -> MediaDetailsContent(
+            connection = connection,
+            listState = listState,
+            uiState = viewState,
+            mediaDetails = viewState.mediaDetails,
+            userDetails = viewState.userDetails,
+            tvCredits = viewState.tvCredits?.cast,
+            similarMoviesList = viewState.similarMovies,
+            reviewsList = viewState.reviews,
+            trailer = viewState.trailer,
+            onSimilarMovieClicked = onSimilarMovieClicked,
+            onAddRateClicked = onAddRateClicked,
+            onAddToWatchlistClicked = onAddToWatchlistClicked,
+            viewAllCreditsClicked = viewAllCreditsClicked,
+            onPersonClick = onPersonClick,
+            obfuscateEpisodes = viewState.spoilersObfuscated,
+            ratingSource = viewState.ratingSource,
+            viewAllRatingsClicked = viewAllRatingsClicked,
+            onSizeChange = { connection.setMaxHeight(it.toFloat()) },
+            onTabSelected = onTabSelected,
+          )
+          null -> {
+            // Do nothing
+          }
         }
-      }
-      if (viewState.error != null) {
-        SimpleAlertDialog(
-          confirmClick = onNavigateUp,
-          confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
-          uiState = AlertDialogUiState(text = viewState.error),
-        )
+        if (viewState.error != null) {
+          SimpleAlertDialog(
+            confirmClick = onNavigateUp,
+            confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
+            uiState = AlertDialogUiState(text = viewState.error),
+          )
+        }
       }
     },
   )
@@ -225,6 +240,8 @@ fun DetailsContent(
 private fun MediaDetailsContent(
   modifier: Modifier = Modifier,
   listState: LazyListState,
+  uiState: DetailsViewState,
+  connection: CollapsingContentNestedScrollConnection,
   ratingSource: RatingSource,
   mediaDetails: MediaDetails,
   tvCredits: List<Person>?,
@@ -239,140 +256,175 @@ private fun MediaDetailsContent(
   onAddToWatchlistClicked: () -> Unit,
   viewAllCreditsClicked: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
+  onSizeChange: (Int) -> Unit,
+  onTabSelected: (Int) -> Unit,
 ) {
+  val scope = rememberCoroutineScope()
   val showStickyPlayer = remember { mutableStateOf(false) }
 
-  ScenePeekLazyColumn(
+  var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
+  val pagerState = rememberPagerState(
+    initialPage = selectedPage,
+    pageCount = { uiState.tabs.size },
+  )
+
+  LaunchedEffect(pagerState) {
+    snapshotFlow { pagerState.currentPage }
+      .distinctUntilChanged()
+      .collectLatest { page ->
+        selectedPage = page
+        onTabSelected(page)
+      }
+  }
+
+  Box(
     modifier = modifier
-      .testTag(TestTags.Details.CONTENT_LIST)
-      .fillMaxWidth(),
-    state = listState,
+      .fillMaxSize()
+      .nestedScroll(connection),
   ) {
-    item {
-      TitleDetails(mediaDetails)
-    }
-    if (trailer != null) {
-      stickyHeader(key = "trailerSticky") {
-        Box(
-          contentAlignment = Alignment.Center,
+    CollapsibleDetailsContent(
+      modifier = Modifier
+        .fillMaxWidth()
+        .onSizeChanged { onSizeChange(it.height) },
+      connection = connection,
+      mediaDetails = mediaDetails,
+      isOnWatchlist = userDetails?.watchlist == true,
+      userDetails = userDetails,
+      onAddToWatchListClick = onAddToWatchlistClicked,
+      ratingSource = ratingSource,
+      onAddRateClick = onAddRateClicked,
+      onViewAllRatingsClick = viewAllRatingsClicked,
+    )
+
+    ScenePeekLazyColumn(
+      modifier = modifier
+        .fillMaxSize()
+        .offset { IntOffset(0, connection.currentSize.roundToPx()) }
+        .testTag(TestTags.Details.CONTENT_LIST),
+      state = listState,
+    ) {
+//      if (trailer != null) {
+//        stickyHeader(key = "trailerSticky") {
+//          Box(
+//            contentAlignment = Alignment.Center,
+//            modifier = Modifier
+//              .fillMaxWidth()
+//              .background(Color.Black),
+//          ) {
+//            VideoPlayerSection(
+//              modifier = Modifier,
+//              trailer = trailer,
+//              onVideoStateChange = { state ->
+//                showStickyPlayer.value = state == VideoState.PLAYING
+//              },
+//            )
+//          }
+//        }
+//
+//        if (!showStickyPlayer.value) {
+//          stickyHeader {
+//            Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
+//          }
+//        }
+//      }
+
+      stickyHeader {
+        ScenePeekTabs(
+          tabs = uiState.tabs,
+          selectedIndex = selectedPage,
+          onClick = {
+            scope.launch {
+              pagerState.animateScrollToPage(it)
+            }
+          },
+        )
+      }
+
+      item {
+        HorizontalPager(
           modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Black),
-        ) {
-          VideoPlayerSection(
-            modifier = Modifier,
-            trailer = trailer,
-            onVideoStateChange = { state ->
-              showStickyPlayer.value = state == VideoState.PLAYING
-            },
-          )
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+          state = pagerState,
+        ) { page ->
+          uiState.forms.values.elementAt(page).let { form ->
+            when (form) {
+              DetailsForm.Error -> {
+                // TODO("Handle error state")
+              }
+              DetailsForm.Loading -> LoadingContent(
+                modifier = Modifier
+                  .fillParentMaxWidth()
+                  .fillParentMaxHeight(0.3f)
+                  .align(Alignment.Center),
+              )
+              is DetailsForm.Content<*> -> when (form.data) {
+                is DetailsData.MovieAbout -> TODO()
+                is DetailsData.TVAbout -> TODO()
+              }
+            }
+          }
         }
       }
 
-      if (!showStickyPlayer.value) {
-        stickyHeader {
-          Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
-        }
-      }
-    }
+//      item {
+//        if (mediaDetails is TV && tvCredits != null) {
+//          HorizontalDivider(
+//            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+//            thickness = MaterialTheme.dimensions.keyline_1,
+//          )
+//          CastList(
+//            cast = tvCredits.take(30),
+//            onViewAllClick = viewAllCreditsClicked,
+//            onPersonClick = onPersonClick,
+//            obfuscateEpisodes = obfuscateEpisodes,
+//          ) // This is temporary
+//          CreatorsItem(
+//            creators = mediaDetails.creators,
+//            onClick = onPersonClick,
+//          )
+//        } else if (mediaDetails is Movie) {
+//          HorizontalDivider(
+//            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
+//            thickness = MaterialTheme.dimensions.keyline_1,
+//          )
+//          CastList(
+//            cast = mediaDetails.cast,
+//            onViewAllClick = viewAllCreditsClicked,
+//            viewAllVisible = false,
+//            onPersonClick = onPersonClick,
+//          )
+//          mediaDetails.director?.let {
+//            DirectorItem(director = it, onClick = onPersonClick)
+//          }
+//        }
+//        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
+//      }
+//      if (similarMoviesList?.isNotEmpty() == true) {
+//        item {
+//          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
+//          SimilarMoviesList(
+//            movies = similarMoviesList,
+//            onSimilarMovieClicked = onSimilarMovieClicked,
+//          )
+//        }
+//      }
 
-    item {
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(paddingValues = ListPaddingValues),
-      ) {
-        MovieImage(
-          modifier = Modifier.weight(1f),
-          path = mediaDetails.posterPath,
-        )
+//      if (!reviewsList.isNullOrEmpty()) {
+//        item {
+//          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
+//          ReviewsList(
+//            reviews = reviewsList,
+//          )
+//        }
+//      }
 
-        OverviewDetails(
-          modifier = Modifier.weight(OVERVIEW_WEIGHT),
-          movieDetails = mediaDetails,
-          genres = mediaDetails.genres,
-          onGenreClicked = {},
-        )
-      }
-    }
-
-    item {
-      WatchlistButton(
-        modifier = Modifier.padding(paddingValues = ListPaddingValues),
-        onWatchlist = userDetails?.watchlist == true,
-        onClick = onAddToWatchlistClicked,
-      )
-    }
-
-    item {
-      UserRating(
-        ratingDetails = mediaDetails.ratingCount.getRatingDetails(ratingSource),
-        accountRating = userDetails?.beautifiedRating,
-        onAddRateClicked = onAddRateClicked,
-        onShowAllRatingsClicked = viewAllRatingsClicked,
-        source = ratingSource,
-      )
-    }
-
-    item {
-      if (mediaDetails is TV && tvCredits != null) {
-        HorizontalDivider(
-          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-          thickness = MaterialTheme.dimensions.keyline_1,
-        )
-        CastList(
-          cast = tvCredits.take(30),
-          onViewAllClick = viewAllCreditsClicked,
-          onPersonClick = onPersonClick,
-          obfuscateEpisodes = obfuscateEpisodes,
-        ) // This is temporary
-        CreatorsItem(
-          creators = mediaDetails.creators,
-          onClick = onPersonClick,
-        )
-      } else if (mediaDetails is Movie) {
-        HorizontalDivider(
-          modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-          thickness = MaterialTheme.dimensions.keyline_1,
-        )
-        CastList(
-          cast = mediaDetails.cast,
-          onViewAllClick = viewAllCreditsClicked,
-          viewAllVisible = false,
-          onPersonClick = onPersonClick,
-        )
-        mediaDetails.director?.let {
-          DirectorItem(director = it, onClick = onPersonClick)
-        }
-      }
-      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
-    }
-    if (similarMoviesList?.isNotEmpty() == true) {
       item {
-        HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-        SimilarMoviesList(
-          movies = similarMoviesList,
-          onSimilarMovieClicked = onSimilarMovieClicked,
-        )
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
       }
-    }
-
-    if (!reviewsList.isNullOrEmpty()) {
-      item {
-        HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-        ReviewsList(
-          reviews = reviewsList,
-        )
-      }
-    }
-
-    item {
-      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
     }
   }
 }
-
-private const val OVERVIEW_WEIGHT = 3f
 
 @Previews
 @Composable
@@ -402,6 +454,7 @@ fun DetailsContentPreview(
           viewAllCreditsClicked = {},
           onObfuscateSpoilers = {},
           viewAllRatingsClicked = {},
+          onTabSelected = {},
         )
       }
     }

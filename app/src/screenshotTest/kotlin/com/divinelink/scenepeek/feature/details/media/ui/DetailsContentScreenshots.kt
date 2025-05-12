@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.details.media.ui.DetailsContentPreview
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.feature.details.media.ui.DetailsViewStateProvider
+import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 
 @Composable
 @Previews

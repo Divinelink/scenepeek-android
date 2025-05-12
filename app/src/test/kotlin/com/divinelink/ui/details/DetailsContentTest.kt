@@ -64,6 +64,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -97,6 +98,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -125,6 +127,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -154,6 +157,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -196,6 +200,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -242,6 +247,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -271,6 +277,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -313,6 +320,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -347,6 +355,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -385,6 +394,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -433,6 +443,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -481,6 +492,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -513,6 +525,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -546,6 +559,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -576,6 +590,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
     composeTestRule
@@ -615,6 +630,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
     composeTestRule
@@ -658,6 +674,7 @@ class DetailsContentTest : ComposeTest() {
           hasClickedObfuscateSpoilers = true
         },
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -699,6 +716,7 @@ class DetailsContentTest : ComposeTest() {
           hasClickedObfuscateSpoilers = true
         },
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -736,6 +754,7 @@ class DetailsContentTest : ComposeTest() {
         viewAllCreditsClicked = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
+        onTabSelected = {},
         viewAllRatingsClicked = {
           hasClickedViewAllRatings = true
         },
@@ -776,6 +795,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -813,6 +833,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -849,6 +870,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -885,6 +907,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -921,6 +944,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 
@@ -955,6 +979,7 @@ class DetailsContentTest : ComposeTest() {
         onPersonClick = {},
         onObfuscateSpoilers = {},
         viewAllRatingsClicked = {},
+        onTabSelected = {},
       )
     }
 

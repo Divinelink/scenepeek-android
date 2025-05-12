@@ -14,7 +14,9 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.details.media.DetailsForm
 
 @Immutable
 data class DetailsViewState(
@@ -35,6 +37,9 @@ data class DetailsViewState(
   val actionButtons: List<DetailActionItem> = emptyList(),
   val spoilersObfuscated: Boolean = false,
   val ratingSource: RatingSource = RatingSource.TMDB,
+  val selectedTabIndex: Int = 0,
+  val tabs: List<Tab> = emptyList(),
+  val forms: Map<Int, DetailsForm<*>> = emptyMap(),
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(

@@ -134,5 +134,6 @@ fun DetailsScreen(
       showAllRatingBottomSheet = true
       viewModel.onFetchAllRatings()
     },
+    onTabSelected = viewModel::onTabSelected,
   )
 }
