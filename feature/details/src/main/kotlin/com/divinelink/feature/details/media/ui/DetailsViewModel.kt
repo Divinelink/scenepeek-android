@@ -16,6 +16,7 @@ import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
@@ -25,6 +26,7 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
+import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
@@ -133,11 +135,21 @@ class DetailsViewModel(
         result.onSuccess {
           _viewState.update { viewState ->
             when (result.data) {
-              is MediaDetailsResult.DetailsSuccess -> viewState.copy(
-                isLoading = false,
-                mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
-                ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
-              )
+              is MediaDetailsResult.DetailsSuccess -> {
+                val aboutOrder = MovieTab.About.order
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[aboutOrder] = DetailsForm.Content(
+                    getAboutDetailsData(result.data as MediaDetailsResult.DetailsSuccess),
+                  )
+                }
+
+                viewState.copy(
+                  isLoading = false,
+                  forms = updatedForms,
+                  mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
+                  ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
+                )
+              }
 
               is MediaDetailsResult.RatingSuccess -> viewState.copy(
                 mediaDetails = viewState.mediaDetails?.copy(
@@ -529,4 +541,14 @@ class DetailsViewModel(
       viewState.copy(showRateDialog = false)
     }
   }
+
+  private fun getAboutDetailsData(result: MediaDetailsResult.DetailsSuccess): DetailsData.About =
+    DetailsData.About(
+      overview = result.mediaDetails.overview,
+      tagline = null,
+      genres = result.mediaDetails.genres,
+      ratingCount = result.mediaDetails.ratingCount,
+      director = (result.mediaDetails as? Movie)?.director,
+      ratingSource = result.ratingSource,
+    )
 }

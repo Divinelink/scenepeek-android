@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package com.divinelink.core.ui.rating
 
 import androidx.compose.foundation.layout.Arrangement

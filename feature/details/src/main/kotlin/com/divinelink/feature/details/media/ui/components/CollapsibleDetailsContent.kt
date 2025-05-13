@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -13,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,11 +29,14 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.extension.getColorRating
 import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
+import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.feature.details.R
 
 @Composable
@@ -39,8 +46,11 @@ fun CollapsibleDetailsContent(
   mediaDetails: MediaDetails,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
+  ratingCount: RatingCount,
+  ratingSource: RatingSource,
   onAddToWatchListClick: () -> Unit,
   onAddRateClick: () -> Unit,
+  onShowAllRatingsClick: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -57,18 +67,33 @@ fun CollapsibleDetailsContent(
     Row(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       MovieImage(
         modifier = Modifier.weight(1.35f),
         path = mediaDetails.posterPath,
       )
 
-      TitleDetails(
+      Column(
         modifier = Modifier
-          .weight(3f)
-          .padding(top = MaterialTheme.dimensions.keyline_56),
-        mediaDetails = mediaDetails,
-      )
+          .fillMaxSize()
+          .weight(3f),
+        verticalArrangement = Arrangement.SpaceEvenly,
+      ) {
+        TitleDetails(mediaDetails = mediaDetails)
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
+        TextButton(
+          modifier = Modifier
+            .offset(x = -MaterialTheme.dimensions.keyline_12)
+            .testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
+          onClick = onShowAllRatingsClick,
+        ) {
+          MediaRatingItem(
+            ratingDetails = ratingCount.getRatingDetails(ratingSource),
+            source = ratingSource,
+          )
+        }
+      }
     }
 
     Row(

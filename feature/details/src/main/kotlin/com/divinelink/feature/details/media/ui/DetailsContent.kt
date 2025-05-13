@@ -77,6 +77,7 @@ import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
+import com.divinelink.feature.details.media.ui.forms.AboutFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -290,10 +291,11 @@ private fun MediaDetailsContent(
       mediaDetails = mediaDetails,
       isOnWatchlist = userDetails?.watchlist == true,
       userDetails = userDetails,
-      onAddToWatchListClick = onAddToWatchlistClicked,
       ratingSource = ratingSource,
+      ratingCount = mediaDetails.ratingCount,
+      onAddToWatchListClick = onAddToWatchlistClicked,
       onAddRateClick = onAddRateClicked,
-      onViewAllRatingsClick = viewAllRatingsClicked,
+      onShowAllRatingsClick = viewAllRatingsClicked,
     )
 
     ScenePeekLazyColumn(
@@ -359,8 +361,14 @@ private fun MediaDetailsContent(
                   .align(Alignment.Center),
               )
               is DetailsForm.Content<*> -> when (form.data) {
-                is DetailsData.MovieAbout -> TODO()
-                is DetailsData.TVAbout -> TODO()
+                is DetailsData.About -> AboutFormContent(
+                  modifier = Modifier,
+                  aboutData = form.data,
+                  onPersonClick = onPersonClick,
+                  onGenreClick = {},
+                )
+                is DetailsData.TVAbout -> {
+                }
               }
             }
           }
