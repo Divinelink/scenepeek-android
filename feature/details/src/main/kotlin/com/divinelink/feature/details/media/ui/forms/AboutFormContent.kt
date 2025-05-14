@@ -35,9 +35,9 @@ fun AboutFormContent(
       )
     }
 
-    aboutData.overview?.let {
+    if (!aboutData.overview.isNullOrEmpty()) {
       Text(
-        text = it,
+        text = aboutData.overview,
         style = MaterialTheme.typography.bodyMedium,
       )
       HorizontalDivider()

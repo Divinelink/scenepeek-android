@@ -25,7 +25,7 @@ data class TvItemApi(
   @SerialName("original_name") val originalName: String,
   @SerialName("overview") val overview: String,
   @SerialName("popularity") val popularity: Double,
-  @SerialName("poster_path") val posterPath: String,
+  @SerialName("poster_path") val posterPath: String? = null,
   @SerialName("first_air_date") val firstAirDate: String,
   @SerialName("name") val name: String,
   @SerialName("vote_average") val voteAverage: Double,

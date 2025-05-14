@@ -77,8 +77,8 @@ import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 import com.divinelink.feature.details.media.ui.forms.AboutFormContent
-import com.divinelink.feature.details.media.ui.forms.CastFormContent
-import com.divinelink.feature.details.media.ui.forms.RecommendationsFormContent
+import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
+import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -211,7 +211,7 @@ fun DetailsContent(
             onMediaItemClick = onSimilarMovieClicked,
             onAddRateClicked = onAddRateClicked,
             onAddToWatchlistClicked = onAddToWatchlistClicked,
-            viewAllCreditsClicked = viewAllCreditsClicked,
+            viewAllCreditsClick = viewAllCreditsClicked,
             onPersonClick = onPersonClick,
             obfuscateEpisodes = viewState.spoilersObfuscated,
             ratingSource = viewState.ratingSource,
@@ -256,7 +256,7 @@ private fun MediaDetailsContent(
   onMediaItemClick: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
-  viewAllCreditsClicked: () -> Unit,
+  viewAllCreditsClick: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
   onSizeChange: (Int) -> Unit,
   onTabSelected: (Int) -> Unit,
@@ -376,12 +376,15 @@ private fun MediaDetailsContent(
                 is DetailsData.Cast -> CastFormContent(
                   modifier = Modifier.fillParentMaxSize(),
                   cast = form.data,
+                  title = mediaDetails.title,
                   onPersonClick = onPersonClick,
                   obfuscateSpoilers = obfuscateEpisodes,
+                  onViewAllClick = viewAllCreditsClick,
                 )
                 is DetailsData.Recommendations -> RecommendationsFormContent(
                   modifier = Modifier.fillParentMaxSize(),
                   recommendations = form.data,
+                  title = mediaDetails.title,
                   onItemClick = onMediaItemClick,
                 )
               }
@@ -398,7 +401,7 @@ private fun MediaDetailsContent(
 //          )
 //          CastList(
 //            cast = tvCredits.take(30),
-//            onViewAllClick = viewAllCreditsClicked,
+//            onViewAllClick = viewAllCreditsClick,
 //            onPersonClick = onPersonClick,
 //            obfuscateEpisodes = obfuscateEpisodes,
 //          ) // This is temporary
@@ -413,7 +416,7 @@ private fun MediaDetailsContent(
 //          )
 //          CastList(
 //            cast = mediaDetails.cast,
-//            onViewAllClick = viewAllCreditsClicked,
+//            onViewAllClick = viewAllCreditsClick,
 //            viewAllVisible = false,
 //            onPersonClick = onPersonClick,
 //          )

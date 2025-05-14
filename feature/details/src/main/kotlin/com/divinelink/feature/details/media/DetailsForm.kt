@@ -23,7 +23,10 @@ sealed interface DetailsData {
     val ratingSource: RatingSource,
   ) : DetailsData
 
-  data class Cast(val items: List<Person>) : DetailsData
+  data class Cast(
+    val isTv: Boolean,
+    val items: List<Person>,
+  ) : DetailsData
 
   data class Recommendations(val items: List<MediaItem.Media>) : DetailsData
 }

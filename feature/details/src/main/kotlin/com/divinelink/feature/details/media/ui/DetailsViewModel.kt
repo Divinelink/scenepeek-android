@@ -144,7 +144,12 @@ class DetailsViewModel(
                   val castOrder = MovieTab.Cast.order
                   val updatedForms = viewState.forms.toMutableMap().apply {
                     this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
-                    this[castOrder] = DetailsForm.Content(DetailsData.Cast(data.mediaDetails.cast))
+                    this[castOrder] = DetailsForm.Content(
+                      DetailsData.Cast(
+                        isTv = false,
+                        items = data.mediaDetails.cast,
+                      ),
+                    )
                   }
 
                   viewState.copy(
@@ -202,7 +207,12 @@ class DetailsViewModel(
 
                 val castOrder = TvTab.Cast.order
                 val updatedForms = viewState.forms.toMutableMap().apply {
-                  this[castOrder] = DetailsForm.Content(DetailsData.Cast(credits.cast))
+                  this[castOrder] = DetailsForm.Content(
+                    DetailsData.Cast(
+                      isTv = true,
+                      items = credits.cast,
+                    ),
+                  )
                 }
 
                 viewState.copy(

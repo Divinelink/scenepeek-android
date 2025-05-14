@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.media.ui.forms
+package com.divinelink.feature.details.media.ui.forms.recommendation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,23 +9,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.credit.PersonItem
+import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.DetailsData
+import com.divinelink.feature.details.media.ui.forms.FormEmptyContent
 
 @Composable
-fun CastFormContent(
+fun RecommendationsFormContent(
   modifier: Modifier = Modifier,
-  cast: DetailsData.Cast,
-  obfuscateSpoilers: Boolean,
-  onPersonClick: (Person) -> Unit,
+  title: String,
+  recommendations: DetailsData.Recommendations,
+  onItemClick: (MediaItem.Media) -> Unit,
 ) {
-  if (cast.items.isEmpty()) {
-//    BlankSlate(uiState = BlankSlateState.Custom(title = )) // TODO
+  if (recommendations.items.isEmpty()) {
+    FormEmptyContent(
+      modifier = modifier,
+      title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
+      description = UIText.ResourceText(
+        R.string.feature_details_no_recommendations_available_desc,
+        title,
+      ),
+    )
   } else {
     ScenePeekLazyColumn(
-      modifier = modifier.testTag(TestTags.Credits.CAST_CREDITS_CONTENT),
+      modifier = modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
       contentPadding = PaddingValues(
         top = MaterialTheme.dimensions.keyline_16,
         start = MaterialTheme.dimensions.keyline_16,
@@ -34,13 +44,12 @@ fun CastFormContent(
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
       items(
-        items = cast.items,
+        items = recommendations.items,
         key = { it.id },
-      ) { person ->
-        PersonItem(
-          person = person,
-          onClick = onPersonClick,
-          isObfuscated = obfuscateSpoilers,
+      ) { media ->
+        DetailedMediaItem(
+          mediaItem = media,
+          onClick = onItemClick,
         )
       }
     }
