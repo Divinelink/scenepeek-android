@@ -8,8 +8,8 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.PaginationData
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
@@ -21,13 +21,19 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DetailsRepository {
 
-  fun fetchMediaDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>>
+  fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>>
 
-  fun fetchMovieReviews(request: DetailsRequestApi): Flow<Result<List<Review>>>
+  fun fetchMovieReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
 
-  fun fetchSimilarMovies(request: SimilarRequestApi): Flow<Result<List<MediaItem.Media>>>
+  fun fetchRecommendedMovies(
+    request: MediaRequestApi.Movie,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
 
-  fun fetchVideos(request: DetailsRequestApi): Flow<Result<List<Video>>>
+  fun fetchRecommendedTv(
+    request: MediaRequestApi.TV,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  fun fetchVideos(request: MediaRequestApi): Flow<Result<List<Video>>>
 
   fun fetchAccountMediaDetails(
     request: AccountMediaDetailsRequestApi,

@@ -9,13 +9,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MoviesResponseApi(
   val page: Int,
-  val results: List<MovieApi>,
+  val results: List<MovieResponseApi>,
   @SerialName("total_pages") val totalPages: Int,
   @SerialName("total_results") val totalResults: Int,
 )
 
 @Serializable
-data class MovieApi(
+data class MovieResponseApi(
   val adult: Boolean,
   @SerialName("backdrop_path") val backdropPath: String?,
   @SerialName("genre_ids") val genreIds: List<Int>,
@@ -35,13 +35,13 @@ data class MovieApi(
 fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
   totalPages = totalPages,
   totalResults = totalResults,
-  list = this.results.map(MovieApi::toMovie),
+  list = this.results.map(MovieResponseApi::toMovie),
 )
 
 fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> =
-  this.results.map(MovieApi::toMovie)
+  this.results.map(MovieResponseApi::toMovie)
 
-private fun MovieApi.toMovie() = MediaItem.Media.Movie(
+private fun MovieResponseApi.toMovie() = MediaItem.Media.Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,

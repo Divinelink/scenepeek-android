@@ -19,9 +19,7 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
@@ -214,7 +212,7 @@ class ProdDetailsRepositoryTest {
       response = flowOf(similarResponseApi),
     )
 
-    val actualResult = repository.fetchSimilarMovies(
+    val actualResult = repository.fetchRecommendedMovies(
       request = request,
     ).first()
 
@@ -227,7 +225,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = SimilarException()
 
-    repository.fetchSimilarMovies(
+    repository.fetchRecommendedMovies(
       request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)

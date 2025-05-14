@@ -20,18 +20,19 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.media.mapper.find.map
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.reviews.toDomainReviewsList
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.similar.toDomainMoviesList
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.toDomainVideosList
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
+import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
+import com.divinelink.core.network.media.model.tv.map
 import com.divinelink.core.network.media.service.MediaService
 import com.divinelink.core.network.omdb.mapper.map
 import com.divinelink.core.network.omdb.service.OMDbService
@@ -55,35 +56,43 @@ class ProdDetailsRepository(
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 
-  override fun fetchMediaDetails(request: DetailsRequestApi): Flow<Result<MediaDetails>> =
-    mediaRemote
-      .fetchDetails(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toDomainMedia())
-      }.catch {
-        throw MediaDetailsException()
-      }
-
-  override fun fetchMovieReviews(request: DetailsRequestApi): Flow<Result<List<Review>>> =
-    mediaRemote
-      .fetchReviews(request)
-      .map { apiResponse ->
-        Result.success(apiResponse.toDomainReviewsList())
-      }.catch {
-        throw ReviewsException()
-      }
-
-  override fun fetchSimilarMovies(
-    request: SimilarRequestApi,
-  ): Flow<Result<List<MediaItem.Media>>> = mediaRemote
-    .fetchSimilarMovies(request)
+  override fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>> = mediaRemote
+    .fetchDetails(request)
     .map { apiResponse ->
-      Result.success(apiResponse.toDomainMoviesList(MediaType.from(request.endpoint)))
+      Result.success(apiResponse.toDomainMedia())
+    }.catch {
+      throw MediaDetailsException()
+    }
+
+  override fun fetchMovieReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
+    .fetchReviews(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.toDomainReviewsList())
+    }.catch {
+      throw ReviewsException()
+    }
+
+  override fun fetchRecommendedMovies(
+    request: MediaRequestApi.Movie,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = mediaRemote
+    .fetchRecommendedMovies(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.map())
     }.catch {
       throw SimilarException()
     }
 
-  override fun fetchVideos(request: DetailsRequestApi): Flow<Result<List<Video>>> = mediaRemote
+  override fun fetchRecommendedTv(
+    request: MediaRequestApi.TV,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = mediaRemote
+    .fetchRecommendedTv(request)
+    .map { apiResponse ->
+      Result.success(apiResponse.map())
+    }.catch {
+      throw SimilarException()
+    }
+
+  override fun fetchVideos(request: MediaRequestApi): Flow<Result<List<Video>>> = mediaRemote
     .fetchVideos(request)
     .map { apiResponse ->
       Result.success(apiResponse.toDomainVideosList())

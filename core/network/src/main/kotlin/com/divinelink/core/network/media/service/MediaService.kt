@@ -1,11 +1,9 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
@@ -20,6 +18,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestAp
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
 
 interface MediaService {
@@ -31,13 +30,14 @@ interface MediaService {
   @Deprecated("Use fetchMultiInfo instead")
   fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi>
 
-  fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi>
+  fun fetchDetails(request: MediaRequestApi): Flow<DetailsResponseApi>
 
-  fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi>
+  fun fetchReviews(request: MediaRequestApi): Flow<ReviewsResponseApi>
 
-  fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi>
+  fun fetchRecommendedMovies(request: MediaRequestApi.Movie): Flow<MoviesResponseApi>
+  fun fetchRecommendedTv(request: MediaRequestApi.TV): Flow<TvResponseApi>
 
-  fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi>
+  fun fetchVideos(request: MediaRequestApi): Flow<VideosResponseApi>
 
   fun fetchAggregatedCredits(id: Long): Flow<AggregateCreditsApi>
 

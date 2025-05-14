@@ -1,14 +1,12 @@
 package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.movie.MovieResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -73,10 +71,10 @@ class TestMediaService {
 
   fun mockFetchSimilarMovies(
     request: SimilarRequestApi,
-    response: Flow<SimilarResponseApi>,
+    response: Flow<MovieResponseApi>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request),
+      mock.fetchRecommendedMovies(request),
     ).thenReturn(
       response,
     )

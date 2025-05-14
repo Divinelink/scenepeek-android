@@ -15,8 +15,6 @@ import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository

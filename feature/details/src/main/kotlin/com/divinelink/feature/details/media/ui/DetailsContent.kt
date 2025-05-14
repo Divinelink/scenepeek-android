@@ -36,7 +36,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -78,6 +77,8 @@ import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 import com.divinelink.feature.details.media.ui.forms.AboutFormContent
+import com.divinelink.feature.details.media.ui.forms.CastFormContent
+import com.divinelink.feature.details.media.ui.forms.RecommendationsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -207,7 +208,7 @@ fun DetailsContent(
             similarMoviesList = viewState.similarMovies,
             reviewsList = viewState.reviews,
             trailer = viewState.trailer,
-            onSimilarMovieClicked = onSimilarMovieClicked,
+            onMediaItemClick = onSimilarMovieClicked,
             onAddRateClicked = onAddRateClicked,
             onAddToWatchlistClicked = onAddToWatchlistClicked,
             viewAllCreditsClicked = viewAllCreditsClicked,
@@ -252,7 +253,7 @@ private fun MediaDetailsContent(
   trailer: Video?,
   obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
-  onSimilarMovieClicked: (MediaItem.Media) -> Unit,
+  onMediaItemClick: (MediaItem.Media) -> Unit,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
   viewAllCreditsClicked: () -> Unit,
@@ -354,21 +355,35 @@ private fun MediaDetailsContent(
               DetailsForm.Error -> {
                 // TODO("Handle error state")
               }
-              DetailsForm.Loading -> LoadingContent(
-                modifier = Modifier
-                  .fillParentMaxWidth()
-                  .fillParentMaxHeight(0.3f)
-                  .align(Alignment.Center),
-              )
+              DetailsForm.Loading -> Column(modifier = Modifier.fillParentMaxSize()) {
+                LoadingContent(
+                  modifier = Modifier
+                    .weight(1.35f)
+                    .padding(top = MaterialTheme.dimensions.keyline_24),
+                )
+
+                Spacer(modifier = Modifier.weight(5f))
+              }
               is DetailsForm.Content<*> -> when (form.data) {
                 is DetailsData.About -> AboutFormContent(
-                  modifier = Modifier,
+                  modifier = Modifier.fillParentMaxSize(),
                   aboutData = form.data,
                   onPersonClick = onPersonClick,
                   onGenreClick = {},
                 )
                 is DetailsData.TVAbout -> {
                 }
+                is DetailsData.Cast -> CastFormContent(
+                  modifier = Modifier.fillParentMaxSize(),
+                  cast = form.data,
+                  onPersonClick = onPersonClick,
+                  obfuscateSpoilers = obfuscateEpisodes,
+                )
+                is DetailsData.Recommendations -> RecommendationsFormContent(
+                  modifier = Modifier.fillParentMaxSize(),
+                  recommendations = form.data,
+                  onItemClick = onMediaItemClick,
+                )
               }
             }
           }
@@ -413,7 +428,7 @@ private fun MediaDetailsContent(
 //          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
 //          SimilarMoviesList(
 //            movies = similarMoviesList,
-//            onSimilarMovieClicked = onSimilarMovieClicked,
+//            onMediaItemClick = onMediaItemClick,
 //          )
 //        }
 //      }

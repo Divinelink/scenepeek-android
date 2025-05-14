@@ -17,13 +17,14 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.DetailsData
@@ -124,10 +125,10 @@ class DetailsViewModel(
 
   init {
     val requestApi = when (viewState.value.mediaType) {
-      MediaType.TV -> DetailsRequestApi.TV(route.id)
-      MediaType.MOVIE -> DetailsRequestApi.Movie(route.id)
-      MediaType.PERSON -> DetailsRequestApi.Unknown
-      MediaType.UNKNOWN -> DetailsRequestApi.Unknown
+      MediaType.TV -> MediaRequestApi.TV(route.id)
+      MediaType.MOVIE -> MediaRequestApi.Movie(route.id)
+      MediaType.PERSON -> MediaRequestApi.Unknown
+      MediaType.UNKNOWN -> MediaRequestApi.Unknown
     }
 
     getMediaDetailsUseCase(parameters = requestApi)
@@ -136,19 +137,36 @@ class DetailsViewModel(
           _viewState.update { viewState ->
             when (result.data) {
               is MediaDetailsResult.DetailsSuccess -> {
-                val aboutOrder = MovieTab.About.order
-                val updatedForms = viewState.forms.toMutableMap().apply {
-                  this[aboutOrder] = DetailsForm.Content(
-                    getAboutDetailsData(result.data as MediaDetailsResult.DetailsSuccess),
+                val data = result.data as MediaDetailsResult.DetailsSuccess
+
+                if (data.mediaDetails is Movie) {
+                  val aboutOrder = MovieTab.About.order
+                  val castOrder = MovieTab.Cast.order
+                  val updatedForms = viewState.forms.toMutableMap().apply {
+                    this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
+                    this[castOrder] = DetailsForm.Content(DetailsData.Cast(data.mediaDetails.cast))
+                  }
+
+                  viewState.copy(
+                    isLoading = false,
+                    forms = updatedForms,
+                    mediaDetails = data.mediaDetails,
+                    ratingSource = data.ratingSource,
+                  )
+                } else {
+                  data.mediaDetails as TV
+                  val aboutOrder = TvTab.About.order
+                  val updatedForms = viewState.forms.toMutableMap().apply {
+                    this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
+                  }
+
+                  viewState.copy(
+                    isLoading = false,
+                    forms = updatedForms,
+                    mediaDetails = data.mediaDetails,
+                    ratingSource = data.ratingSource,
                   )
                 }
-
-                viewState.copy(
-                  isLoading = false,
-                  forms = updatedForms,
-                  mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
-                  ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
-                )
               }
 
               is MediaDetailsResult.RatingSuccess -> viewState.copy(
@@ -161,9 +179,19 @@ class DetailsViewModel(
                 reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
               )
 
-              is MediaDetailsResult.SimilarSuccess -> viewState.copy(
-                similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
-              )
+              is MediaDetailsResult.SimilarSuccess -> {
+                val data = result.data as MediaDetailsResult.SimilarSuccess
+
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[data.formOrder] = DetailsForm.Content(
+                    DetailsData.Recommendations(data.similar),
+                  )
+                }
+                viewState.copy(
+                  forms = updatedForms,
+                  similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
+                )
+              }
 
               is MediaDetailsResult.VideosSuccess -> viewState.copy(
                 trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,
@@ -171,7 +199,17 @@ class DetailsViewModel(
 
               is MediaDetailsResult.CreditsSuccess -> {
                 val credits = (result.data as MediaDetailsResult.CreditsSuccess).aggregateCredits
-                viewState.copy(tvCredits = credits)
+
+                val castOrder = TvTab.Cast.order
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[castOrder] = DetailsForm.Content(DetailsData.Cast(credits.cast))
+                }
+
+                viewState.copy(
+                  isLoading = false,
+                  tvCredits = credits,
+                  forms = updatedForms,
+                )
               }
 
               is MediaDetailsResult.AccountDetailsSuccess -> {

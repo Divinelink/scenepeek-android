@@ -1,11 +1,11 @@
-package com.divinelink.core.network.media.model.details
+package com.divinelink.core.network.media.model
 
 import com.divinelink.core.model.media.MediaType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class DetailsRequestApi(
+sealed class MediaRequestApi(
   open val id: Int,
   open val mediaType: MediaType,
 ) {
@@ -14,7 +14,7 @@ sealed class DetailsRequestApi(
   data class Movie(
     @SerialName("movie_id")
     val movieId: Int,
-  ) : DetailsRequestApi(
+  ) : MediaRequestApi(
     id = movieId,
     mediaType = MediaType.MOVIE,
   )
@@ -23,12 +23,12 @@ sealed class DetailsRequestApi(
   data class TV(
     @SerialName("series_id")
     val seriesId: Int,
-  ) : DetailsRequestApi(
+  ) : MediaRequestApi(
     id = seriesId,
     mediaType = MediaType.TV,
   )
 
-  data object Unknown : DetailsRequestApi(
+  data object Unknown : MediaRequestApi(
     id = -1,
     mediaType = MediaType.UNKNOWN,
   )

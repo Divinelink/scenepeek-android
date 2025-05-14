@@ -16,8 +16,9 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -36,24 +37,18 @@ open class GetMediaDetailsUseCase(
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   private val getDetailsActionItemsUseCase: GetDetailsActionItemsUseCase,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<DetailsRequestApi, MediaDetailsResult>(dispatcher.io) {
-  override fun execute(parameters: DetailsRequestApi): Flow<Result<MediaDetailsResult>> =
+) : FlowUseCase<MediaRequestApi, MediaDetailsResult>(dispatcher.default) {
+  override fun execute(parameters: MediaRequestApi): Flow<Result<MediaDetailsResult>> =
     channelFlow {
-      if (parameters == DetailsRequestApi.Unknown) {
+      if (parameters == MediaRequestApi.Unknown) {
         send(Result.failure(MediaDetailsException()))
         return@channelFlow
       }
 
       val requestApi = when (parameters) {
-        is DetailsRequestApi.Movie -> parameters
-        is DetailsRequestApi.TV -> parameters
-        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
-      }
-
-      val similarApi = when (parameters) {
-        is DetailsRequestApi.Movie -> SimilarRequestApi.Movie(parameters.id)
-        is DetailsRequestApi.TV -> SimilarRequestApi.TV(parameters.id)
-        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
+        is MediaRequestApi.Movie -> parameters
+        is MediaRequestApi.TV -> parameters
+        MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
       }
 
       val isFavorite = mediaRepository.checkIfMediaIsFavorite(
@@ -65,12 +60,12 @@ open class GetMediaDetailsUseCase(
       val tvRatingSource = preferenceStorage.tvRatingSource.firstOrNull() ?: RatingSource.TMDB
 
       val ratingSource = when (requestApi) {
-        is DetailsRequestApi.Movie -> movieRatingSource
-        is DetailsRequestApi.TV -> tvRatingSource
-        DetailsRequestApi.Unknown -> throw InvalidMediaTypeException()
+        is MediaRequestApi.Movie -> movieRatingSource
+        is MediaRequestApi.TV -> tvRatingSource
+        MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         repository.fetchMediaDetails(requestApi)
           .catch {
             Timber.e(it)
@@ -105,17 +100,41 @@ open class GetMediaDetailsUseCase(
           .collect { send(it) }
       }
 
-      launch(dispatcher.io) {
-        repository.fetchSimilarMovies(similarApi)
-          .catch { Timber.e(it) }
-          .collect { result ->
-            result.onSuccess {
-              send(Result.success(MediaDetailsResult.SimilarSuccess(result.data)))
+      launch(dispatcher.default) {
+        when (parameters) {
+          is MediaRequestApi.Movie -> repository.fetchRecommendedMovies(parameters)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              result.onSuccess {
+                send(
+                  Result.success(
+                    MediaDetailsResult.SimilarSuccess(
+                      formOrder = MovieTab.Recommendations.order,
+                      similar = result.data.list,
+                    ),
+                  ),
+                )
+              }
             }
-          }
+          is MediaRequestApi.TV -> repository.fetchRecommendedTv(parameters)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              result.onSuccess {
+                send(
+                  Result.success(
+                    MediaDetailsResult.SimilarSuccess(
+                      formOrder = TvTab.Recommendations.order,
+                      similar = result.data.list,
+                    ),
+                  ),
+                )
+              }
+            }
+          MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
+        }
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         repository.fetchMovieReviews(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
@@ -125,8 +144,8 @@ open class GetMediaDetailsUseCase(
           }
       }
 
-      if (parameters is DetailsRequestApi.TV) {
-        launch(dispatcher.io) {
+      if (parameters is MediaRequestApi.TV) {
+        launch(dispatcher.default) {
           repository.fetchAggregateCredits(parameters.id.toLong())
             .catch { Timber.e(it) }
             .collect { result ->
@@ -137,11 +156,11 @@ open class GetMediaDetailsUseCase(
         }
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         repository.fetchVideos(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
-            val video = if (parameters is DetailsRequestApi.TV) {
+            val video = if (parameters is MediaRequestApi.TV) {
               result.data.firstOrNull()
             } else {
               result.data.firstOrNull { it.officialTrailer }
@@ -150,7 +169,7 @@ open class GetMediaDetailsUseCase(
           }
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         fetchAccountMediaDetailsUseCase(
           MediaDetailsParams(
             id = requestApi.id,
@@ -165,7 +184,7 @@ open class GetMediaDetailsUseCase(
           }
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         getMenuItemsUseCase(requestApi.mediaType)
           .catch { Timber.e(it) }
           .collect { result ->
@@ -175,7 +194,7 @@ open class GetMediaDetailsUseCase(
           }
       }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         getDetailsActionItemsUseCase(Unit)
           .catch { Timber.e(it) }
           .collect { result ->

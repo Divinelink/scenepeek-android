@@ -1,4 +1,4 @@
-package com.divinelink.feature.credits.ui
+package com.divinelink.core.ui.credit
 
 import android.content.res.Configuration
 import android.os.Build
@@ -31,10 +31,9 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.R
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.conditional
-import com.divinelink.feature.credits.R
-import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun PersonItem(
@@ -58,9 +57,9 @@ fun PersonItem(
         path = person.profilePath,
         modifier = Modifier.height(120.dp),
         errorPlaceHolder = if (person.gender == Gender.FEMALE) {
-          painterResource(id = uiR.drawable.core_ui_ic_female_person_placeholder)
+          painterResource(id = R.drawable.core_ui_ic_female_person_placeholder)
         } else {
-          painterResource(id = uiR.drawable.core_ui_ic_person_placeholder)
+          painterResource(id = R.drawable.core_ui_ic_person_placeholder)
         },
       )
 
@@ -86,7 +85,18 @@ fun PersonItem(
           ) {
             BuildPersonSubHeader(roles = person.role, isObfuscated = isObfuscated)
           }
-          is PersonRole.MovieActor,
+          is PersonRole.MovieActor -> {
+            Text(
+              text = buildString {
+                append(
+                  person.role
+                    .filter { it.title != null }
+                    .joinToString(", ") { it.title ?: "" },
+                )
+              },
+              style = MaterialTheme.typography.labelMedium,
+            )
+          }
           PersonRole.Unknown,
           PersonRole.Director,
           PersonRole.Creator,
@@ -164,7 +174,7 @@ fun CharacterWithBlurredEpisodes(
       style = baseStyle,
     )
     stringResource(
-      R.string.feature_credits_character_total_episodes,
+      R.string.core_ui_character_total_episodes,
       episodes,
     )
   }

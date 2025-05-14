@@ -3,6 +3,7 @@ package com.divinelink.feature.details.media
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaItem
 
 sealed interface DetailsData {
   data class TVAbout(
@@ -21,6 +22,10 @@ sealed interface DetailsData {
     val ratingCount: RatingCount,
     val ratingSource: RatingSource,
   ) : DetailsData
+
+  data class Cast(val items: List<Person>) : DetailsData
+
+  data class Recommendations(val items: List<MediaItem.Media>) : DetailsData
 }
 
 sealed interface DetailsForm<T : DetailsData> {

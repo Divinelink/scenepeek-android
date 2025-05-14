@@ -1,11 +1,11 @@
 package com.divinelink.core.testing.factories.api.movie
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.divinelink.core.network.media.model.movie.MovieApi
+import com.divinelink.core.network.media.model.movie.MovieResponseApi
 
 object MovieApiFactory {
 
-  fun Empty() = MovieApi(
+  fun Empty() = MovieResponseApi(
     adult = false,
     backdropPath = null,
     genreIds = listOf(),
@@ -22,7 +22,7 @@ object MovieApiFactory {
     voteCount = null,
   )
 
-  fun Full() = MovieApi(
+  fun Full() = MovieResponseApi(
     id = 1,
     adult = false,
     backdropPath = "",
@@ -39,8 +39,8 @@ object MovieApiFactory {
     voteCount = 0,
   )
 
-  fun EmptyList(range: IntProgression = 1..10): List<MovieApi> = (range).map {
-    MovieApi(
+  fun EmptyList(range: IntProgression = 1..10): List<MovieResponseApi> = (range).map {
+    MovieResponseApi(
       id = it,
       adult = false,
       backdropPath = null,

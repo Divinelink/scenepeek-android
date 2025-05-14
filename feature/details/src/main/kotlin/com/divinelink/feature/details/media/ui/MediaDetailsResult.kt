@@ -28,7 +28,10 @@ sealed class MediaDetailsResult {
 
   data class ReviewsSuccess(val reviews: List<Review>) : MediaDetailsResult()
 
-  data class SimilarSuccess(val similar: List<MediaItem.Media>) : MediaDetailsResult()
+  data class SimilarSuccess(
+    val formOrder: Int,
+    val similar: List<MediaItem.Media>,
+  ) : MediaDetailsResult()
 
   data class VideosSuccess(val trailer: Video?) : MediaDetailsResult()
 

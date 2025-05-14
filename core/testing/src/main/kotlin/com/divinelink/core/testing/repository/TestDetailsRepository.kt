@@ -8,8 +8,6 @@ import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -47,7 +45,7 @@ class TestDetailsRepository {
     response: Result<List<MediaItem.Media>>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request),
+      mock.fetchRecommendedMovies(request),
     ).thenReturn(
       flowOf(response),
     )

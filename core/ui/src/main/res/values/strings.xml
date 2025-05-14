@@ -22,6 +22,8 @@
   <string name="core_ui_password">Password</string>
   <string name="core_ui_view_all">View all</string>
 
+  <string name="core_ui_character_total_episodes">(%s Episodes)</string>
+
   <string name="general_error_title">An error occurred</string>
 
   <string name="core_ui_review_author">A review by: %s, %s</string>
