@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.BookmarkAdded
+import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -35,9 +35,9 @@ fun WatchlistButton(
     Icon(
       modifier = Modifier.size(MaterialTheme.dimensions.keyline_24),
       imageVector = if (onWatchlist) {
-        Icons.Filled.Bookmark
+        Icons.Filled.BookmarkAdded
       } else {
-        Icons.Filled.BookmarkBorder
+        Icons.Outlined.BookmarkAdd
       },
       tint = MaterialTheme.colorScheme.primary,
       contentDescription = null,
