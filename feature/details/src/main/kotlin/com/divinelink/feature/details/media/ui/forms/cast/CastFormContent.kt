@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
@@ -87,7 +88,11 @@ private fun TotalTvCastRow(
     Text(
       modifier = Modifier.align(alignment = Alignment.CenterVertically),
       style = MaterialTheme.typography.bodyMedium,
-      text = stringResource(id = uiR.string.core_ui_total_cast, cast.items.size),
+      text = pluralStringResource(
+        id = uiR.plurals.core_ui_cast_count,
+        cast.items.size,
+        cast.items.size,
+      ),
     )
     Spacer(modifier = Modifier.weight(1f))
     TextButton(

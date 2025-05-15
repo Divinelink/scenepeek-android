@@ -106,7 +106,7 @@ fun MediaDetailsContent(
           Text(
             text = media.releaseDate,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
 

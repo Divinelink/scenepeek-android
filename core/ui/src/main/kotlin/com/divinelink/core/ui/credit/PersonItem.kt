@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -95,6 +95,7 @@ fun PersonItem(
                 )
               },
               style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
           PersonRole.Unknown,
@@ -158,7 +159,7 @@ fun CharacterWithBlurredEpisodes(
 ) {
   val baseStyle = MaterialTheme.typography.labelMedium
   val episodeStyle = baseStyle.copy(
-    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
   )
 
   Text(
@@ -173,8 +174,9 @@ fun CharacterWithBlurredEpisodes(
       text = " ",
       style = baseStyle,
     )
-    stringResource(
-      R.string.core_ui_character_total_episodes,
+    pluralStringResource(
+      R.plurals.core_ui_character_episode_episodes,
+      episodes,
       episodes,
     )
   }
@@ -182,6 +184,7 @@ fun CharacterWithBlurredEpisodes(
   Text(
     text = episodesCount,
     style = episodeStyle,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier = Modifier.conditional(
       condition = isObfuscated,
       ifTrue = { blurEffect() },

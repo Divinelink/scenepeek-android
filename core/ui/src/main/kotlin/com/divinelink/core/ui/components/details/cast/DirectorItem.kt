@@ -33,7 +33,7 @@ fun DirectorItem(
       Text(
         text = director.name,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
     }
   }

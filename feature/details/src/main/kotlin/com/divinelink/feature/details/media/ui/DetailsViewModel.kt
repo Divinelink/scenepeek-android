@@ -161,8 +161,12 @@ class DetailsViewModel(
                 } else {
                   data.mediaDetails as TV
                   val aboutOrder = TvTab.About.order
+                  val seasonsTabOrder = TvTab.Seasons.order
                   val updatedForms = viewState.forms.toMutableMap().apply {
                     this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
+                    this[seasonsTabOrder] = DetailsForm.Content(
+                      DetailsData.Seasons(data.mediaDetails.seasons),
+                    )
                   }
 
                   viewState.copy(
