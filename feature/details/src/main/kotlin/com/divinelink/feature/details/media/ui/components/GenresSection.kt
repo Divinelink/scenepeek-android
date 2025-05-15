@@ -2,9 +2,9 @@ package com.divinelink.feature.details.media.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +14,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.components.details.genres.GenreLabel
 import com.divinelink.feature.details.R
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GenresSection(
   genres: List<String>,
@@ -25,10 +26,11 @@ fun GenresSection(
       text = stringResource(R.string.feature_details_genres),
       style = MaterialTheme.typography.titleMedium,
     )
-    LazyRow(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+    FlowRow(
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     ) {
-      items(genres) { genre ->
+      genres.forEach { genre ->
         GenreLabel(
           genre = genre,
           onGenreClick = onGenreClick,
