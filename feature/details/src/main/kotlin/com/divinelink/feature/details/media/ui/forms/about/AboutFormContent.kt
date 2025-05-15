@@ -1,4 +1,4 @@
-package com.divinelink.feature.details.media.ui.forms
+package com.divinelink.feature.details.media.ui.forms.about
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

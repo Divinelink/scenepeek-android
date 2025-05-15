@@ -64,7 +64,7 @@ class ProdDetailsRepository(
       throw MediaDetailsException()
     }
 
-  override fun fetchMovieReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
+  override fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
     .fetchReviews(request)
     .map { apiResponse ->
       Result.success(apiResponse.toDomainReviewsList())

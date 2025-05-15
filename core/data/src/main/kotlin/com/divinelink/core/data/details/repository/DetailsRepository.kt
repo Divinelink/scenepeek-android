@@ -23,7 +23,7 @@ interface DetailsRepository {
 
   fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>>
 
-  fun fetchMovieReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
+  fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
 
   fun fetchRecommendedMovies(
     request: MediaRequestApi.Movie,

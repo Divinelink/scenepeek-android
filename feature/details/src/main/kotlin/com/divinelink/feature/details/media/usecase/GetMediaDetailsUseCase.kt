@@ -135,11 +135,22 @@ open class GetMediaDetailsUseCase(
       }
 
       launch(dispatcher.default) {
-        repository.fetchMovieReviews(requestApi)
+        repository.fetchMediaReviews(requestApi)
           .catch { Timber.e(it) }
           .collect { result ->
             result.onSuccess {
-              send(Result.success(MediaDetailsResult.ReviewsSuccess(result.data)))
+              send(
+                Result.success(
+                  MediaDetailsResult.ReviewsSuccess(
+                    formOrder = if (parameters is MediaRequestApi.Movie) {
+                      MovieTab.Reviews.order
+                    } else {
+                      TvTab.Reviews.order
+                    },
+                    reviews = result.data,
+                  ),
+                ),
+              )
             }
           }
       }

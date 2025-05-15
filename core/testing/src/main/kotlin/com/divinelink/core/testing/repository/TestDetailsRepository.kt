@@ -34,7 +34,7 @@ class TestDetailsRepository {
     response: Result<List<Review>>,
   ) {
     whenever(
-      mock.fetchMovieReviews(request),
+      mock.fetchMediaReviews(request),
     ).thenReturn(
       flowOf(response),
     )

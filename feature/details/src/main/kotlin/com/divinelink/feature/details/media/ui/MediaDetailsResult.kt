@@ -26,7 +26,10 @@ sealed class MediaDetailsResult {
 
   data class RatingSuccess(val rating: RatingCount) : MediaDetailsResult()
 
-  data class ReviewsSuccess(val reviews: List<Review>) : MediaDetailsResult()
+  data class ReviewsSuccess(
+    val formOrder: Int,
+    val reviews: List<Review>,
+  ) : MediaDetailsResult()
 
   data class SimilarSuccess(
     val formOrder: Int,

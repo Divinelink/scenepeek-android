@@ -74,5 +74,8 @@
   <string name="feature_details_no_recommendation_available">No recommendations available</string>
   <string name="feature_details_no_recommendations_available_desc">We don\'t have any recommendations for %s.</string>
 
+  <string name="feature_details_no_reviews_available">No reviews available</string>
+  <string name="feature_details_no_reviews_available_desc">We don\'t have any reviews for %s.</string>
+
   <string name="login">Login</string>
 </resources>

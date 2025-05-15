@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.media
 
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaItem
@@ -29,6 +30,8 @@ sealed interface DetailsData {
   ) : DetailsData
 
   data class Recommendations(val items: List<MediaItem.Media>) : DetailsData
+
+  data class Reviews(val items: List<Review>) : DetailsData
 }
 
 sealed interface DetailsForm<T : DetailsData> {

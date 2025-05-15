@@ -53,7 +53,6 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
@@ -76,9 +75,10 @@ import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
-import com.divinelink.feature.details.media.ui.forms.AboutFormContent
+import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
 import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
+import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -204,9 +204,6 @@ fun DetailsContent(
             uiState = viewState,
             mediaDetails = viewState.mediaDetails,
             userDetails = viewState.userDetails,
-            tvCredits = viewState.tvCredits?.cast,
-            similarMoviesList = viewState.similarMovies,
-            reviewsList = viewState.reviews,
             trailer = viewState.trailer,
             onMediaItemClick = onSimilarMovieClicked,
             onAddRateClicked = onAddRateClicked,
@@ -246,10 +243,7 @@ private fun MediaDetailsContent(
   connection: CollapsingContentNestedScrollConnection,
   ratingSource: RatingSource,
   mediaDetails: MediaDetails,
-  tvCredits: List<Person>?,
   userDetails: AccountMediaDetails?,
-  similarMoviesList: List<MediaItem.Media>?,
-  reviewsList: List<Review>?,
   trailer: Video?,
   obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
@@ -386,6 +380,11 @@ private fun MediaDetailsContent(
                   recommendations = form.data,
                   title = mediaDetails.title,
                   onItemClick = onMediaItemClick,
+                )
+                is DetailsData.Reviews -> ReviewsFormContent(
+                  modifier = Modifier.fillParentMaxSize(),
+                  title = mediaDetails.title,
+                  reviews = form.data,
                 )
               }
             }

@@ -180,9 +180,15 @@ class DetailsViewModel(
                 ),
               )
 
-              is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
-                reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
-              )
+              is MediaDetailsResult.ReviewsSuccess -> {
+                val data = result.data as MediaDetailsResult.ReviewsSuccess
+
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[data.formOrder] = DetailsForm.Content(DetailsData.Reviews(data.reviews))
+                }
+
+                viewState.copy(forms = updatedForms)
+              }
 
               is MediaDetailsResult.SimilarSuccess -> {
                 val data = result.data as MediaDetailsResult.SimilarSuccess
@@ -192,10 +198,7 @@ class DetailsViewModel(
                     DetailsData.Recommendations(data.similar),
                   )
                 }
-                viewState.copy(
-                  forms = updatedForms,
-                  similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
-                )
+                viewState.copy(forms = updatedForms)
               }
 
               is MediaDetailsResult.VideosSuccess -> viewState.copy(

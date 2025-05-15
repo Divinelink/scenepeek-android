@@ -175,7 +175,7 @@ class ProdDetailsRepositoryTest {
   }
 
   @Test
-  fun testFetchMovieReviewsSuccessfully() = runTest {
+  fun testFetchMediaReviewsSuccessfully() = runTest {
     val request = DetailsRequestApi.Movie(movieId = 555)
 
     val expectedResult = expectedReviews
@@ -185,7 +185,7 @@ class ProdDetailsRepositoryTest {
       response = flowOf(reviewsResponseApi),
     )
 
-    val actualResult = repository.fetchMovieReviews(
+    val actualResult = repository.fetchMediaReviews(
       request = request,
     ).first()
 
@@ -238,7 +238,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = ReviewsException()
 
-    repository.fetchMovieReviews(
+    repository.fetchMediaReviews(
       request = request,
     ).test {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
