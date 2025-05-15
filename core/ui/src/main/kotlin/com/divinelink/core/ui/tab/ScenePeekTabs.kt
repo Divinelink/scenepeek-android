@@ -39,6 +39,11 @@ fun ScenePeekTabs(
             text = stringResource(tab.titleRes),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+            color = if (index == selectedIndex) {
+              MaterialTheme.colorScheme.primary
+            } else {
+              MaterialTheme.colorScheme.onSurfaceVariant
+            },
           )
         },
         selected = index == selectedIndex,
