@@ -4,7 +4,7 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem

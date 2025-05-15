@@ -63,6 +63,7 @@
   <string name="core_ui_request_confirmation_text">Are you sure you want to request %s?</string>
 
   <string name="core_ui_read_more">Read more</string>
+  <string name="core_ui_show_more">Show more</string>
   <string name="core_ui_show_less">Show less</string>
 
   <string name="core_ui_view">View</string>

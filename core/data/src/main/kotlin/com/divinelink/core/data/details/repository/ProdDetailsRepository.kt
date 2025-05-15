@@ -2,6 +2,7 @@ package com.divinelink.core.data.details.repository
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.details.mapper.api.map
+import com.divinelink.core.data.details.mapper.api.reviews.map
 import com.divinelink.core.data.details.mapper.api.toSeriesCastEntity
 import com.divinelink.core.data.details.mapper.api.toSeriesCastRoleEntity
 import com.divinelink.core.data.details.mapper.api.toSeriesCrewEntity
@@ -15,8 +16,8 @@ import com.divinelink.core.database.credits.dao.CreditsDao
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -24,7 +25,6 @@ import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.media.mapper.find.map
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.reviews.toDomainReviewsList
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.toDomainVideosList
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
@@ -67,7 +67,7 @@ class ProdDetailsRepository(
   override fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
     .fetchReviews(request)
     .map { apiResponse ->
-      Result.success(apiResponse.toDomainReviewsList())
+      Result.success(apiResponse.map())
     }.catch {
       throw ReviewsException()
     }

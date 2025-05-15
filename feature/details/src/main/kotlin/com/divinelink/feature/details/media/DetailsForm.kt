@@ -1,9 +1,9 @@
 package com.divinelink.feature.details.media
 
 import com.divinelink.core.model.details.Person
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.media.MediaItem
 
 sealed interface DetailsData {

@@ -30,12 +30,19 @@ import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 object AvatarImage {
+
+  fun buildTMDBAvatarUrl(avatarPath: String?): String? = if (avatarPath != null) {
+    ApiConstants.TMDB_IMAGE_URL + avatarPath
+  } else {
+    null
+  }
 
   @Composable
   fun Small(
@@ -119,7 +126,7 @@ private fun CoilImage(
   url: String?,
   fallbackSize: Dp,
   fallbackImage: ImageVector = Icons.Outlined.Person,
-  color: Color = MaterialTheme.colorScheme.primary,
+  color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
 ) {
   var useFallback by remember { mutableStateOf(false) }
 

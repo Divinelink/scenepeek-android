@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.ListPaddingValues
-import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.ui.R
 
 const val REVIEWS_LIST = "REVIEWS_LIST"

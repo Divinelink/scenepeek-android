@@ -11,6 +11,7 @@ import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
@@ -18,13 +19,14 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -38,10 +40,8 @@ import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEnti
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.core.testing.service.TestOMDbService
 import com.divinelink.core.testing.service.TestTraktService
-import com.divinelink.factories.ReviewFactory
 import com.divinelink.factories.api.DetailsResponseApiFactory
 import com.divinelink.factories.api.ReviewsResultsApiFactory
-import com.divinelink.factories.api.SimilarMovieApiFactory
 import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.google.common.truth.Truth.assertThat
@@ -75,7 +75,7 @@ class ProdDetailsRepositoryTest {
 
   private val similarMovieApiList = SimilarMovieApiFactory.SimilarMovieApiList()
 
-  private val similarResponseApi = SimilarResponseApi(
+  private val similarResponseApi = MoviesResponseApi(
     page = 1,
     results = similarMovieApiList,
     totalPages = 0,
@@ -158,7 +158,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testFetchMovieDetailsSuccessfully() = runTest {
-    val request = DetailsRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = movieDetails
 
@@ -168,7 +168,7 @@ class ProdDetailsRepositoryTest {
     )
 
     val actualResult = repository.fetchMediaDetails(
-      request = DetailsRequestApi.Movie(movieId = 555),
+      request = MediaRequestApi.Movie(movieId = 555)
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
@@ -176,7 +176,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testFetchMediaReviewsSuccessfully() = runTest {
-    val request = DetailsRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = expectedReviews
 
@@ -194,7 +194,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testFetchSimilarMoviesSuccessfully() = runTest {
-    val request = SimilarRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = MediaItemFactory.MoviesList().map { movie ->
       movie.toWizard {
@@ -221,7 +221,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testSimilarMoviesError() = runTest {
-    val request = SimilarRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = SimilarException()
 
@@ -234,7 +234,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testMovieReviewsError() = runTest {
-    val request = DetailsRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = ReviewsException()
 
@@ -247,7 +247,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testMovieDetailsError() = runTest {
-    val request = DetailsRequestApi.Movie(movieId = 555)
+    val request = MediaRequestApi.Movie(movieId = 555)
 
     val expectedResult = MediaDetailsException()
 
@@ -261,9 +261,8 @@ class ProdDetailsRepositoryTest {
   // Movie Videos success
   @Test
   fun testFetchMovieVideosSuccessfully() = runTest {
-    val request = DetailsRequestApi.Movie(
-      movieId = 555,
-    )
+    val request = MediaRequestApi.Movie(movieId = 555)
+
     val expectedResult = listOf(
       Video(
         id = "123",
@@ -302,7 +301,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun testMovieVideosError() = runTest {
-    val request = DetailsRequestApi.Movie(
+    val request = MediaRequestApi.Movie(
       movieId = 555,
     )
 

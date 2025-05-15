@@ -8,7 +8,7 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video

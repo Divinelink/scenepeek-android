@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
+import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.model.UIText
@@ -28,7 +29,6 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
 import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
-import com.divinelink.factories.ReviewFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent

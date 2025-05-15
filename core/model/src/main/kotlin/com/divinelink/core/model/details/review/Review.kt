@@ -1,7 +1,7 @@
-package com.divinelink.core.model.details
+package com.divinelink.core.model.details.review
 
 data class Review(
-  val authorName: String,
+  val author: Author,
   val rating: Int?,
   val content: String,
   val date: String?,

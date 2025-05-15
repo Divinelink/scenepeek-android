@@ -22,7 +22,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.factories.ReviewFactory
 import com.divinelink.factories.VideoFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard

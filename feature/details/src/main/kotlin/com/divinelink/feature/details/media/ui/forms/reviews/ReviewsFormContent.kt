@@ -36,7 +36,7 @@ fun ReviewsFormContent(
         start = MaterialTheme.dimensions.keyline_16,
         end = MaterialTheme.dimensions.keyline_16,
       ),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     ) {
       items(items = reviews.items) { item ->
         ReviewItemCard(

@@ -1,7 +1,7 @@
 package com.divinelink.core.network
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.data.details.mapper.api.map
+import com.divinelink.core.data.details.mapper.api.reviews.map
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.details.credits.SeriesCrewListFactory

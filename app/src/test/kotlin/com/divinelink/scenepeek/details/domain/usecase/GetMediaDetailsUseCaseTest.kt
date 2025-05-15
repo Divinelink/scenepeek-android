@@ -7,10 +7,10 @@ import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaItem
