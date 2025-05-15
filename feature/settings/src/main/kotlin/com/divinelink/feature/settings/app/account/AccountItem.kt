@@ -3,11 +3,9 @@ package com.divinelink.feature.settings.app.account
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,15 +25,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.AccountDetails
-import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.feature.settings.R
 
 @Composable
@@ -68,31 +65,10 @@ private fun LoggedInContent(
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    Box(
-      modifier = Modifier
-        .size(MaterialTheme.dimensions.keyline_48)
-        .clip(CircleShape)
-        .background(MaterialTheme.colorScheme.secondaryContainer),
-      contentAlignment = Alignment.Center,
-    ) {
-      when {
-        details.avatarUrl != null -> {
-          CoilImage(
-            url = details.avatarUrl,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
-          )
-        }
-        details.username.isNotEmpty() -> {
-          Text(
-            text = details.username.first().uppercase(),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-          )
-        }
-      }
-    }
-
+    AvatarImage.Small(
+      avatarUrl = details.avatarUrl,
+      username = details.username,
+    )
     Column(
       modifier = Modifier.weight(1f),
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),

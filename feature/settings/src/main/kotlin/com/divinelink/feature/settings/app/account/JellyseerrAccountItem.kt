@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
-import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
+import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.core.ui.R as uiR
@@ -61,16 +61,16 @@ fun JellyseerrAccountItem(
               .padding(MaterialTheme.dimensions.keyline_16)
               .fillMaxWidth(),
           ) {
-            CoilImage(
+            AvatarImage.Small(
               modifier = Modifier
                 .sharedElement(
                   sharedContentState = rememberSharedContentState(
                     key = SharedElementKeys.JELLYSEERR_AVATAR,
                   ),
                   animatedVisibilityScope = animatedVisibilityScope,
-                )
-                .size(MaterialTheme.dimensions.keyline_36),
-              url = details.avatar,
+                ),
+              avatarUrl = details.avatar,
+              username = details.displayName,
             )
 
             Column(
@@ -80,7 +80,10 @@ fun JellyseerrAccountItem(
                 text = stringResource(R.string.feature_settings_jellyseerr_integration),
                 style = MaterialTheme.typography.bodyLarge,
               )
-              Row(modifier = Modifier.fillMaxWidth()) {
+              Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+              ) {
                 Canvas(
                   modifier = Modifier
                     .align(Alignment.CenterVertically)
