@@ -10,9 +10,11 @@ import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
+import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
+import com.divinelink.core.network.media.model.details.season.SeasonResponseApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -86,6 +88,7 @@ sealed class DetailsResponseApi {
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
+    @SerialName("seasons") val seasons: List<SeasonResponseApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
     @SerialName("external_ids") val externalIds: ExternalIdsApi,
   ) : DetailsResponseApi()
@@ -128,6 +131,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   isFavorite = false,
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
+  seasons = this.seasons.map(),
   imdbId = this.externalIds.imdbId,
   status = TvStatus.from(this.status),
 )

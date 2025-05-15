@@ -17,6 +17,6 @@ data class TV(
   override val imdbId: String?,
   val status: TvStatus,
   val creators: List<Person>?,
-  val seasons: List<Nothing>? = null, // TODO
+  val seasons: List<Season>,
   val numberOfSeasons: Int,
 ) : MediaDetails()
