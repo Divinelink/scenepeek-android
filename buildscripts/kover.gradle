@@ -27,6 +27,8 @@ kover {
         excludes {
           packages(
               "com.divinelink.core.ui.provider",
+              "com.divinelink.core.ui.tab.custom",
+
               ".provider",
           )
           classes(
@@ -44,7 +46,7 @@ kover {
               "*Preview",
               "*ParameterProvider.kt",
 
-              "ConnectivityManagerNetworkMonitor.kt"
+              "ConnectivityManagerNetworkMonitor.kt",
           )
           annotatedBy(
               "androidx.compose.ui.tooling.preview.Preview",

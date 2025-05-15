@@ -3,7 +3,6 @@ package com.divinelink.core.ui.tab
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -17,18 +16,20 @@ import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.tab.custom.CustomPrimaryScrollableTabRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScenePeekTabs(
+  modifier: Modifier = Modifier,
   tabs: List<Tab>,
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
-  PrimaryScrollableTabRow(
-    modifier = Modifier.fillMaxWidth(),
-    selectedTabIndex = selectedIndex,
+  CustomPrimaryScrollableTabRow(
     edgePadding = MaterialTheme.dimensions.keyline_0,
+    modifier = modifier.fillMaxWidth(),
+    selectedTabIndex = selectedIndex,
   ) {
     tabs.forEachIndexed { index, tab ->
       Tab(
