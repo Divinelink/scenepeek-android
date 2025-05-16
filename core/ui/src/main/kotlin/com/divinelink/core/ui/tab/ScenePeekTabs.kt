@@ -26,29 +26,31 @@ fun ScenePeekTabs(
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
-  CustomPrimaryScrollableTabRow(
-    edgePadding = MaterialTheme.dimensions.keyline_0,
-    modifier = modifier.fillMaxWidth(),
-    selectedTabIndex = selectedIndex,
-  ) {
-    tabs.forEachIndexed { index, tab ->
-      Tab(
-        modifier = Modifier.testTag(TestTags.Person.TAB_BAR.format(tab.value)),
-        text = {
-          Text(
-            text = stringResource(tab.titleRes),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-            color = if (index == selectedIndex) {
-              MaterialTheme.colorScheme.primary
-            } else {
-              MaterialTheme.colorScheme.onSurfaceVariant
-            },
-          )
-        },
-        selected = index == selectedIndex,
-        onClick = { onClick(index) },
-      )
+  Surface(modifier = Modifier.fillMaxWidth()) {
+    CustomPrimaryScrollableTabRow(
+      edgePadding = MaterialTheme.dimensions.keyline_0,
+      modifier = modifier.fillMaxWidth(),
+      selectedTabIndex = selectedIndex,
+    ) {
+      tabs.forEachIndexed { index, tab ->
+        Tab(
+          modifier = Modifier.testTag(TestTags.Person.TAB_BAR.format(tab.value)),
+          text = {
+            Text(
+              text = stringResource(tab.titleRes),
+              style = MaterialTheme.typography.bodyMedium,
+              fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+              color = if (index == selectedIndex) {
+                MaterialTheme.colorScheme.primary
+              } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+              },
+            )
+          },
+          selected = index == selectedIndex,
+          onClick = { onClick(index) },
+        )
+      }
     }
   }
 }
