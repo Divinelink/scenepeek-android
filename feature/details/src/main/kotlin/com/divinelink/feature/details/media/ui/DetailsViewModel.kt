@@ -605,5 +605,6 @@ class DetailsViewModel(
       ratingCount = result.mediaDetails.ratingCount,
       director = (result.mediaDetails as? Movie)?.director,
       ratingSource = result.ratingSource,
+      creators = (result.mediaDetails as? TV)?.creators,
     )
 }

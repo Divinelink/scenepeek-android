@@ -2,22 +2,17 @@ package com.divinelink.core.ui.components.details.cast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.pluralStringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
@@ -25,7 +20,7 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
-// TODO Add UI Tests
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreatorsItem(
   creators: List<Person>?,
@@ -36,33 +31,26 @@ fun CreatorsItem(
   Column(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_0),
   ) {
-    val creatorSectionTitle = if (creators.size == 1) {
-      stringResource(id = R.string.core_ui_series_creator)
-    } else {
-      stringResource(id = R.string.core_ui_series_creators)
-    }
-
     Text(
-      modifier = Modifier.padding(
-        start = MaterialTheme.dimensions.keyline_12,
+      text = pluralStringResource(
+        id = R.plurals.core_ui_series_creator,
+        creators.size,
+        creators.size,
       ),
-      text = creatorSectionTitle,
-      style = MaterialTheme.typography.bodyLarge,
-      fontWeight = FontWeight.Bold,
+      style = MaterialTheme.typography.titleMedium,
       color = MaterialTheme.colorScheme.onSurface,
     )
 
-    LazyVerticalGrid(
-      modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 56.dp, max = 120.dp),
-      columns = GridCells.Adaptive(100.dp),
+    FlowRow(
+      modifier = Modifier.fillMaxWidth(),
     ) {
-      items(creators, key = { it.id }) { creator ->
-        TextButton(onClick = { onClick(creator) }) {
+      creators.forEach {
+        TextButton(
+          modifier = Modifier.offset(x = -MaterialTheme.dimensions.keyline_12),
+          onClick = { onClick(it) },
+        ) {
           Text(
-            text = creator.name,
-            textAlign = TextAlign.Center,
+            text = it.name,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
           )

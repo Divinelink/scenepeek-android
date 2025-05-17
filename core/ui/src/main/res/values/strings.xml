@@ -35,9 +35,12 @@
 
   <string name="details__director_title">Director</string>
   <string name="details__cast_title">Cast</string>
-  <string name="core_ui_series_creator">Creator</string>
-  <string name="core_ui_series_creators">Creators</string>
   <string name="core_ui_series_cast_title">Series Cast</string>
+
+  <plurals name="core_ui_series_creator">
+    <item quantity="one">Creator</item>
+    <item quantity="other">Creators</item>
+  </plurals>
 
   <plurals name="core_ui_cast_count">
     <item quantity="one">%s person</item>

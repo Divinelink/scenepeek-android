@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.ui.components.details.cast.CreatorsItem
 import com.divinelink.core.ui.components.details.cast.DirectorItem
 import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.ui.components.GenresSection
@@ -49,6 +50,10 @@ fun AboutFormContent(
 
     aboutData.director?.let {
       DirectorItem(director = it, onClick = onPersonClick)
+    }
+
+    aboutData.creators?.let {
+      CreatorsItem(it, onPersonClick)
     }
   }
 }

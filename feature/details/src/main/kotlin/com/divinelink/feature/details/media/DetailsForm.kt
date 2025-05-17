@@ -8,14 +8,6 @@ import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.media.MediaItem
 
 sealed interface DetailsData {
-  data class TVAbout(
-    val overview: String,
-    val tagline: String,
-    val genres: List<String>,
-    val ratingCount: RatingCount,
-    val ratingSource: RatingSource,
-  ) : DetailsData
-
   data class About(
     val overview: String?,
     val tagline: String?,
@@ -23,6 +15,7 @@ sealed interface DetailsData {
     val director: Person?,
     val ratingCount: RatingCount,
     val ratingSource: RatingSource,
+    val creators: List<Person>?,
   ) : DetailsData
 
   data class Cast(

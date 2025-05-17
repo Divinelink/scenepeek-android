@@ -314,8 +314,6 @@ private fun MediaDetailsContent(
                   onPersonClick = onPersonClick,
                   onGenreClick = {},
                 )
-                is DetailsData.TVAbout -> {
-                }
                 is DetailsData.Cast -> CastFormContent(
                   modifier = Modifier.fillParentMaxSize(),
                   cast = form.data,
