@@ -17,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.DetailsRoute
@@ -25,7 +24,6 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.scaffold.AppScaffold
-import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -39,11 +37,8 @@ fun PersonScreen(
 
   val scope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
-  val connection = rememberCollapsingContentNestedScrollConnection(maxHeight = 256.dp)
 
-  val isAppBarVisible = remember {
-    derivedStateOf { connection.currentSize < 1.dp }
-  }
+  var isAppBarVisible by remember { mutableStateOf(false) }
 
   val personDetails by remember(uiState.aboutForm) {
     derivedStateOf { uiState.aboutForm?.personDetails }
@@ -58,7 +53,7 @@ fun PersonScreen(
           text = UIText.StringText(
             (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
           ),
-          isVisible = isAppBarVisible.value,
+          isVisible = isAppBarVisible,
           onNavigateUp = onNavigateUp,
           actions = {
             IconButton(
@@ -85,7 +80,6 @@ fun PersonScreen(
       uiState.isLoading -> LoadingContent()
       else -> PersonContent(
         uiState = uiState,
-        connection = connection,
         lazyListState = lazyListState,
         scope = scope,
         onMediaClick = { mediaItem ->
@@ -100,6 +94,7 @@ fun PersonScreen(
         onTabSelected = viewModel::onTabSelected,
         onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
         onApplyFilter = viewModel::onApplyFilter,
+        onShowTitle = { isAppBarVisible = it },
       )
     }
   }

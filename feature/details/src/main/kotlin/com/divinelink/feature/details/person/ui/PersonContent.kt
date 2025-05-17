@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -46,15 +46,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -67,10 +64,10 @@ import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
+import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
-import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
-import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -88,12 +85,12 @@ import com.divinelink.core.ui.R as uiR
 fun PersonContent(
   scope: CoroutineScope,
   uiState: PersonUiState,
-  connection: CollapsingContentNestedScrollConnection,
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
   onUpdateLayoutStyle: () -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
+  onShowTitle: (Boolean) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = uiState.layoutStyle == LayoutStyle.GRID
@@ -183,133 +180,146 @@ fun PersonContent(
       }
   }
 
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .nestedScroll(connection),
-  ) {
-    CollapsiblePersonContent(
-      connection = connection,
-      personDetails = personDetails as PersonDetailsUiState.Data,
-    )
+  val state = rememberCollapsingToolBarState(toolBarMaxHeight = 262.dp)
 
-    ScenePeekLazyColumn(
+  LaunchedEffect(state.progress) {
+    onShowTitle(state.progress > 0.20f)
+  }
+  Box {
+    CollapsingToolBarLayout(
+      state = state,
       modifier = Modifier
-        .fillMaxSize()
-        .offset { IntOffset(0, connection.currentSize.roundToPx()) }
-        .testTag(TestTags.Person.CONTENT_LIST),
-      state = lazyListState,
-    ) {
-      stickyHeader {
-        Column {
-          ScenePeekTabs(
-            tabs = uiState.tabs,
-            selectedIndex = selectedPage,
-            onClick = {
-              scope.launch {
-                pagerState.animateScrollToPage(it)
-              }
-            },
-          )
-          AnimatedVisibility(visible = showFilterTab) {
-            Row(
-              modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface),
-              verticalAlignment = Alignment.CenterVertically,
-            ) {
-              CreditFilterButton(
-                appliedFilters = filters,
-                onFilterClick = {
-                  showFilterBottomSheet = true
-                },
-              )
-
-              Spacer(modifier = Modifier.weight(1f))
-
-              if (filters.isEmpty()) {
-                AnimatedContent(
-                  modifier = Modifier.testTag(
-                    TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
-                  ),
-                  targetState = department,
-                  label = "DepartmentTextAnimation",
-                ) { string ->
-                  Text(text = string)
-                }
-              }
-
-              Spacer(modifier = Modifier.weight(1f))
-
-              LayoutStyleButton(
-                onUpdateLayoutStyle = onUpdateLayoutStyle,
-                icon = icon,
-              )
-            }
-          }
-        }
-      }
-
-      item {
-        HorizontalPager(
+        .testTag(TestTags.Details.CONTENT_SCAFFOLD)
+        .navigationBarsPadding(),
+      toolbar = {
+        CollapsiblePersonContent(
+          modifier = Modifier
+            .requiredToolBarMaxHeight()
+            .fillMaxWidth(),
+          personDetails = personDetails as PersonDetailsUiState.Data,
+        )
+      },
+      content = {
+        ScenePeekLazyColumn(
           modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-          state = pagerState,
-        ) { page ->
-          uiState.forms.values.elementAt(page).let { form ->
-            when (form) {
-              is PersonForm.About -> LazyColumn(
-                modifier = Modifier
-                  .testTag(TestTags.Person.ABOUT_FORM)
-                  .fillParentMaxSize(),
-              ) {
-                item {
-                  PersonalDetails(personDetails)
-                }
+            .testTag(TestTags.Person.CONTENT_LIST),
+          state = lazyListState,
+        ) {
+          stickyHeader {
+            Column {
+              ScenePeekTabs(
+                tabs = uiState.tabs,
+                selectedIndex = selectedPage,
+                onClick = {
+                  scope.launch {
+                    pagerState.animateScrollToPage(it)
+                  }
+                },
+              )
+              AnimatedVisibility(visible = showFilterTab) {
+                Row(
+                  modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface),
+                  verticalAlignment = Alignment.CenterVertically,
+                ) {
+                  CreditFilterButton(
+                    appliedFilters = filters,
+                    onFilterClick = {
+                      showFilterBottomSheet = true
+                    },
+                  )
 
-                item {
-                  KnownForSection(
-                    list = uiState.knownForCredits ?: emptyList(),
-                    onMediaClick = onMediaClick,
+                  Spacer(modifier = Modifier.weight(1f))
+
+                  if (filters.isEmpty()) {
+                    AnimatedContent(
+                      modifier = Modifier.testTag(
+                        TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
+                      ),
+                      targetState = department,
+                      label = "DepartmentTextAnimation",
+                    ) { string ->
+                      Text(text = string)
+                    }
+                  }
+
+                  Spacer(modifier = Modifier.weight(1f))
+
+                  LayoutStyleButton(
+                    onUpdateLayoutStyle = onUpdateLayoutStyle,
+                    icon = icon,
                   )
                 }
               }
+            }
+          }
 
-              is PersonForm.Movies -> PersonGridContent(
-                modifier = Modifier
-                  .fillParentMaxSize()
-                  .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
-                grid = grid,
-                credits = movies,
-                filters = movieFilters,
-                isGrid = isGrid,
-                onMediaClick = onMediaClick,
-                setCurrentDepartment = { currentMovieDepartment = it },
-                mediaType = MediaType.MOVIE,
-                name = personDetails.personDetails.person.name,
-                lazyGridState = movieLazyGridState,
-              )
+          item {
+            HorizontalPager(
+              modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+              state = pagerState,
+            ) { page ->
+              personDetails as PersonDetailsUiState.Data
 
-              is PersonForm.TvShows -> PersonGridContent(
-                modifier = Modifier
-                  .fillParentMaxSize()
-                  .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
-                grid = grid,
-                credits = tvShows,
-                filters = tvFilters,
-                isGrid = isGrid,
-                onMediaClick = onMediaClick,
-                setCurrentDepartment = { currentTvDepartment = it },
-                mediaType = MediaType.TV,
-                name = personDetails.personDetails.person.name,
-                lazyGridState = tvLazyGridState,
-              )
+              uiState.forms.values.elementAt(page).let { form ->
+                when (form) {
+                  is PersonForm.About -> LazyColumn(
+                    modifier = Modifier
+                      .testTag(TestTags.Person.ABOUT_FORM)
+                      .fillParentMaxSize(),
+                  ) {
+                    item {
+                      PersonalDetails(personDetails)
+                    }
+
+                    item {
+                      KnownForSection(
+                        list = uiState.knownForCredits ?: emptyList(),
+                        onMediaClick = onMediaClick,
+                      )
+                    }
+                  }
+
+                  is PersonForm.Movies -> PersonGridContent(
+                    modifier = Modifier
+                      .fillParentMaxSize()
+                      .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
+                    grid = grid,
+                    credits = movies,
+                    filters = movieFilters,
+                    isGrid = isGrid,
+                    onMediaClick = onMediaClick,
+                    setCurrentDepartment = { currentMovieDepartment = it },
+                    mediaType = MediaType.MOVIE,
+                    name = personDetails.personDetails.person.name,
+                    lazyGridState = movieLazyGridState,
+                  )
+
+                  is PersonForm.TvShows -> PersonGridContent(
+                    modifier = Modifier
+                      .fillParentMaxSize()
+                      .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
+                    grid = grid,
+                    credits = tvShows,
+                    filters = tvFilters,
+                    isGrid = isGrid,
+                    onMediaClick = onMediaClick,
+                    setCurrentDepartment = { currentTvDepartment = it },
+                    mediaType = MediaType.TV,
+                    name = personDetails.personDetails.person.name,
+                    lazyGridState = tvLazyGridState,
+                  )
+                }
+              }
             }
           }
         }
-      }
-    }
+      },
+    )
 
     ScrollToTopButton(
       modifier = Modifier.align(Alignment.BottomCenter),
@@ -371,18 +381,13 @@ private fun LayoutStyleButton(
 @Composable
 private fun CollapsiblePersonContent(
   modifier: Modifier = Modifier,
-  connection: CollapsingContentNestedScrollConnection,
   personDetails: PersonDetailsUiState.Data,
 ) {
   Column(
     modifier = modifier
       .verticalScroll(state = rememberScrollState())
       .testTag(TestTags.Person.COLLAPSIBLE_CONTENT)
-      .fillMaxWidth()
-      .graphicsLayer {
-        alpha = (connection.currentSize / connection.maxHeight)
-        translationY = -(connection.maxHeight.toPx() - connection.currentSize.toPx())
-      },
+      .fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
@@ -420,13 +425,13 @@ fun PersonContentPreview(
     Surface {
       PersonContent(
         uiState = uiState,
-        connection = rememberCollapsingContentNestedScrollConnection(256.dp),
         lazyListState = lazyListState,
         scope = rememberCoroutineScope(),
         onMediaClick = {},
         onTabSelected = {},
         onUpdateLayoutStyle = {},
         onApplyFilter = {},
+        onShowTitle = {},
       )
     }
   }

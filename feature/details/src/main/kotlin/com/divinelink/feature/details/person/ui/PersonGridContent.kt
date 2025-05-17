@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +41,7 @@ internal fun PersonGridContent(
   setCurrentDepartment: (String) -> Unit,
   mediaType: MediaType,
   name: String,
-  lazyGridState: LazyGridState = rememberLazyGridState(),
+  lazyGridState: LazyGridState,
 ) {
   val currentDepartments = credits.keys.toList()
   val headerPositions = remember(currentDepartments) {
