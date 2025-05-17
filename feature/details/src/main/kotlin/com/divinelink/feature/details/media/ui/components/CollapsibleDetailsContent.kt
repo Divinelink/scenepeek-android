@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -35,14 +34,12 @@ import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.extension.getColorRating
-import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.feature.details.R
 
 @Composable
 fun CollapsibleDetailsContent(
   modifier: Modifier = Modifier,
-  connection: CollapsingContentNestedScrollConnection,
   mediaDetails: MediaDetails,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
@@ -57,10 +54,7 @@ fun CollapsibleDetailsContent(
       .verticalScroll(state = rememberScrollState())
       .testTag(TestTags.Details.COLLAPSIBLE_CONTENT)
       .padding(MaterialTheme.dimensions.keyline_16)
-      .fillMaxWidth()
-      .graphicsLayer {
-        translationY = -(connection.maxHeight.toPx() - connection.currentSize.toPx())
-      },
+      .fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {

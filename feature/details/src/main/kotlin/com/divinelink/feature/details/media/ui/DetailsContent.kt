@@ -1,14 +1,11 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,7 +24,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,11 +35,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -67,14 +60,12 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
-import com.divinelink.core.ui.nestedscroll.CollapsingContentNestedScrollConnection
-import com.divinelink.core.ui.nestedscroll.rememberCollapsingContentNestedScrollConnection
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.DetailsForm
-import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
+import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
 import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
@@ -104,14 +95,10 @@ fun DetailsContent(
   viewAllRatingsClicked: () -> Unit,
   onTabSelected: (Int) -> Unit,
 ) {
-  val connection = rememberCollapsingContentNestedScrollConnection()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val listState = rememberLazyListState()
   var showDropdownMenu by remember { mutableStateOf(false) }
-
-  val isAppBarVisible by remember {
-    derivedStateOf { connection.currentSize < 152.dp }
-  }
+  var isAppBarVisible by remember { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -200,7 +187,6 @@ fun DetailsContent(
 
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(
-            connection = connection,
             listState = listState,
             uiState = viewState,
             mediaDetails = viewState.mediaDetails,
@@ -214,8 +200,10 @@ fun DetailsContent(
             obfuscateEpisodes = viewState.spoilersObfuscated,
             ratingSource = viewState.ratingSource,
             viewAllRatingsClicked = viewAllRatingsClicked,
-            onSizeChange = { connection.setMaxHeight(it.toFloat()) },
             onTabSelected = onTabSelected,
+            onShowTitle = { showTitle ->
+              isAppBarVisible = showTitle
+            },
           )
           null -> {
             // Do nothing
@@ -238,10 +226,8 @@ fun DetailsContent(
 
 @Composable
 private fun MediaDetailsContent(
-  modifier: Modifier = Modifier,
   listState: LazyListState,
   uiState: DetailsViewState,
-  connection: CollapsingContentNestedScrollConnection,
   ratingSource: RatingSource,
   mediaDetails: MediaDetails,
   userDetails: AccountMediaDetails?,
@@ -253,11 +239,10 @@ private fun MediaDetailsContent(
   onAddToWatchlistClicked: () -> Unit,
   viewAllCreditsClick: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
-  onSizeChange: (Int) -> Unit,
   onTabSelected: (Int) -> Unit,
+  onShowTitle: (Boolean) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
-  val showStickyPlayer = remember { mutableStateOf(false) }
 
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
@@ -274,58 +259,21 @@ private fun MediaDetailsContent(
       }
   }
 
-  Box(
-    modifier = modifier
-      .fillMaxSize()
-      .nestedScroll(connection),
+  DynamicDetailsCollapsingToolbar(
+    mediaDetails = mediaDetails,
+    ratingSource = ratingSource,
+    onAddToWatchlistClicked = onAddToWatchlistClicked,
+    onAddRateClicked = onAddRateClicked,
+    viewAllRatingsClicked = viewAllRatingsClicked,
+    userDetails = userDetails,
+    onShowTitle = onShowTitle,
   ) {
-    CollapsibleDetailsContent(
-      modifier = Modifier
-        .fillMaxWidth()
-        .onSizeChanged { onSizeChange(it.height) },
-      connection = connection,
-      mediaDetails = mediaDetails,
-      isOnWatchlist = userDetails?.watchlist == true,
-      userDetails = userDetails,
-      ratingSource = ratingSource,
-      ratingCount = mediaDetails.ratingCount,
-      onAddToWatchListClick = onAddToWatchlistClicked,
-      onAddRateClick = onAddRateClicked,
-      onShowAllRatingsClick = viewAllRatingsClicked,
-    )
-
     ScenePeekLazyColumn(
-      modifier = modifier
+      modifier = Modifier
         .fillMaxSize()
-        .offset { IntOffset(0, connection.currentSize.roundToPx()) }
         .testTag(TestTags.Details.CONTENT_LIST),
       state = listState,
     ) {
-//      if (trailer != null) {
-//        stickyHeader(key = "trailerSticky") {
-//          Box(
-//            contentAlignment = Alignment.Center,
-//            modifier = Modifier
-//              .fillMaxWidth()
-//              .background(Color.Black),
-//          ) {
-//            VideoPlayerSection(
-//              modifier = Modifier,
-//              trailer = trailer,
-//              onVideoStateChange = { state ->
-//                showStickyPlayer.value = state == VideoState.PLAYING
-//              },
-//            )
-//          }
-//        }
-//
-//        if (!showStickyPlayer.value) {
-//          stickyHeader {
-//            Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_0))
-//          }
-//        }
-//      }
-
       stickyHeader {
         ScenePeekTabs(
           tabs = uiState.tabs,
@@ -397,58 +345,6 @@ private fun MediaDetailsContent(
           }
         }
       }
-
-//      item {
-//        if (mediaDetails is TV && tvCredits != null) {
-//          HorizontalDivider(
-//            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-//            thickness = MaterialTheme.dimensions.keyline_1,
-//          )
-//          CastList(
-//            cast = tvCredits.take(30),
-//            onViewAllClick = viewAllCreditsClick,
-//            onPersonClick = onPersonClick,
-//            obfuscateEpisodes = obfuscateEpisodes,
-//          ) // This is temporary
-//          CreatorsItem(
-//            creators = mediaDetails.creators,
-//            onClick = onPersonClick,
-//          )
-//        } else if (mediaDetails is Movie) {
-//          HorizontalDivider(
-//            modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
-//            thickness = MaterialTheme.dimensions.keyline_1,
-//          )
-//          CastList(
-//            cast = mediaDetails.cast,
-//            onViewAllClick = viewAllCreditsClick,
-//            viewAllVisible = false,
-//            onPersonClick = onPersonClick,
-//          )
-//          mediaDetails.director?.let {
-//            DirectorItem(director = it, onClick = onPersonClick)
-//          }
-//        }
-//        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
-//      }
-//      if (similarMoviesList?.isNotEmpty() == true) {
-//        item {
-//          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-//          SimilarMoviesList(
-//            movies = similarMoviesList,
-//            onMediaItemClick = onMediaItemClick,
-//          )
-//        }
-//      }
-
-//      if (!reviewsList.isNullOrEmpty()) {
-//        item {
-//          HorizontalDivider(thickness = MaterialTheme.dimensions.keyline_1)
-//          ReviewsList(
-//            reviews = reviewsList,
-//          )
-//        }
-//      }
 
       item {
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
