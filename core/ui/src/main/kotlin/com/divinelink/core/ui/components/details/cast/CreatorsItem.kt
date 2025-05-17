@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
@@ -23,46 +22,67 @@ import com.divinelink.core.ui.R
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreatorsItem(
-  creators: List<Person>?,
+  creators: List<Person>,
   onClick: (Person) -> Unit,
 ) {
-  if (creators.isNullOrEmpty()) return
-
-  Column(
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_0),
+  FlowRow(
+    modifier = Modifier.offset(x = -MaterialTheme.dimensions.keyline_12),
   ) {
-    Text(
-      text = pluralStringResource(
-        id = R.plurals.core_ui_series_creator,
-        creators.size,
-        creators.size,
-      ),
-      style = MaterialTheme.typography.titleMedium,
-      color = MaterialTheme.colorScheme.onSurface,
-    )
+    creators.forEach { person ->
+      CreatorItem(
+        person = person,
+        onClick = onClick,
+      )
+    }
+  }
+}
 
-    FlowRow(
-      modifier = Modifier.fillMaxWidth(),
+@Composable
+private fun CreatorItem(
+  person: Person,
+  onClick: (Person) -> Unit,
+) {
+  val director = stringResource(id = R.string.core_ui_director)
+  val screenplay = stringResource(id = R.string.core_ui_screenplay)
+  val novel = stringResource(id = R.string.core_ui_novel)
+  val creator = stringResource(id = R.string.core_ui_creator)
+
+  TextButton(
+    onClick = { onClick(person) },
+  ) {
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
-      creators.forEach {
-        TextButton(
-          modifier = Modifier.offset(x = -MaterialTheme.dimensions.keyline_12),
-          onClick = { onClick(it) },
-        ) {
-          Text(
-            text = it.name,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-          )
+      Text(
+        text = person.name,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurface,
+      )
+
+      val roles = person
+        .role
+        .joinToString {
+          when (it) {
+            PersonRole.Director -> director
+            PersonRole.Screenplay -> screenplay
+            PersonRole.Novel -> novel
+            PersonRole.Creator -> creator
+            else -> ""
+          }
         }
-      }
+
+      Text(
+        text = roles,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary,
+      )
     }
   }
 }
 
 @Previews
 @Composable
-private fun CreatorsItemPreview() {
+private fun TvCreatorsItemPreview() {
   AppTheme {
     Surface {
       CreatorsItem(

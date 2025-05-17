@@ -12,7 +12,6 @@ sealed interface DetailsData {
     val overview: String?,
     val tagline: String?,
     val genres: List<String>?,
-    val director: Person?,
     val ratingCount: RatingCount,
     val ratingSource: RatingSource,
     val creators: List<Person>?,

@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontStyle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
-import com.divinelink.core.ui.components.details.cast.DirectorItem
 import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.ui.components.GenresSection
 
@@ -51,12 +50,11 @@ fun AboutFormContent(
       GenresSection(genres, onGenreClick)
     }
 
-    aboutData.director?.let {
-      DirectorItem(director = it, onClick = onPersonClick)
-    }
-
-    aboutData.creators?.let {
-      CreatorsItem(it, onPersonClick)
+    aboutData.creators?.let { creators ->
+      CreatorsItem(
+        creators = creators,
+        onClick = onPersonClick,
+      )
     }
   }
 }

@@ -37,6 +37,11 @@
   <string name="details__cast_title">Cast</string>
   <string name="core_ui_series_cast_title">Series Cast</string>
 
+  <string name="core_ui_director">Director</string>
+  <string name="core_ui_screenplay">Screenplay</string>
+  <string name="core_ui_novel">Novel</string>
+  <string name="core_ui_creator">Creator</string>
+
   <plurals name="core_ui_series_creator">
     <item quantity="one">Creator</item>
     <item quantity="other">Creators</item>

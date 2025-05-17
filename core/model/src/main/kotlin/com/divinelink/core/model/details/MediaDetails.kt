@@ -37,7 +37,7 @@ sealed class MediaDetails {
       posterPath = posterPath,
       tagline = tagline,
       overview = overview,
-      director = director,
+      creators = creators,
       releaseDate = releaseDate,
       ratingCount = ratingCount,
       isFavorite = isFavorite,

@@ -603,8 +603,11 @@ class DetailsViewModel(
       tagline = result.mediaDetails.tagline,
       genres = result.mediaDetails.genres,
       ratingCount = result.mediaDetails.ratingCount,
-      director = (result.mediaDetails as? Movie)?.director,
       ratingSource = result.ratingSource,
-      creators = (result.mediaDetails as? TV)?.creators,
+      creators = when (result.mediaDetails) {
+        is TV -> result.mediaDetails.creators
+        is Movie -> result.mediaDetails.creators
+        else -> null
+      },
     )
 }

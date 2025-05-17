@@ -112,7 +112,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
   genres = this.genres.map { it.name },
-  director = this.credits.crew.toDirector(),
+  creators = this.credits.crew.map(),
   cast = this.credits.cast.toActors(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
@@ -138,20 +138,6 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   imdbId = this.externalIds.imdbId,
   status = TvStatus.from(this.status),
 )
-
-private fun List<CrewApi>.toDirector(): Person? {
-  val director = this.find { it.job == "Director" }
-  return director?.let {
-    Person(
-      id = director.id,
-      name = director.name,
-      profilePath = director.profilePath,
-      gender = Gender.from(director.gender),
-      knownForDepartment = director.knownForDepartment,
-      role = listOf(PersonRole.Director),
-    )
-  }
-}
 
 private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
 

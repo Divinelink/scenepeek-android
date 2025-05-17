@@ -101,6 +101,8 @@ fun PersonItem(
           PersonRole.Unknown,
           PersonRole.Director,
           PersonRole.Creator,
+          PersonRole.Novel,
+          PersonRole.Screenplay,
           -> {
             // Do nothing
           }
