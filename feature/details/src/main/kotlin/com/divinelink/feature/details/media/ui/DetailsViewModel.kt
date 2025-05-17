@@ -600,7 +600,7 @@ class DetailsViewModel(
   private fun getAboutDetailsData(result: MediaDetailsResult.DetailsSuccess): DetailsData.About =
     DetailsData.About(
       overview = result.mediaDetails.overview,
-      tagline = null,
+      tagline = result.mediaDetails.tagline,
       genres = result.mediaDetails.genres,
       ratingCount = result.mediaDetails.ratingCount,
       director = (result.mediaDetails as? Movie)?.director,

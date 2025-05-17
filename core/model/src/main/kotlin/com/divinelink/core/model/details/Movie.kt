@@ -13,6 +13,7 @@ data class Movie(
   override val genres: List<String>?,
   override val releaseDate: String,
   override val ratingCount: RatingCount,
+  override val tagline: String?,
   val runtime: String?,
   val cast: List<Person>,
   val director: Person?,

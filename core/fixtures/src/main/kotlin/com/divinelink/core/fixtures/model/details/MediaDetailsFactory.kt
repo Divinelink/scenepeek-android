@@ -17,17 +17,20 @@ object MediaDetailsFactory {
     ratingCount = RatingCount.tmdb(7.3, 123_456),
     isFavorite = false,
     overview = "This movie is good.",
-    director = Person(
-      id = 123443321,
-      name = "Forest Gump",
-      profilePath = "BoxOfChocolates.jpg",
-      knownForDepartment = "Directing",
-      role = listOf(PersonRole.Director),
+    creators = listOf(
+      Person(
+        id = 123443321,
+        name = "Forest Gump",
+        profilePath = "BoxOfChocolates.jpg",
+        knownForDepartment = "Directing",
+        role = listOf(PersonRole.Director),
+      ),
     ),
     cast = ActorFactory.all(),
     genres = listOf("Thriller", "Drama", "Comedy"),
     runtime = "2h 10m",
     imdbId = "tt0137523",
+    tagline = "You don't talk about Fight Club.",
   )
 
   fun TheOffice() = TV(
@@ -59,5 +62,6 @@ object MediaDetailsFactory {
     numberOfSeasons = 9,
     status = TvStatus.ENDED,
     imdbId = "tt0386676",
+    tagline = "You don't talk about The Office.",
   )
 }
