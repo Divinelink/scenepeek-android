@@ -28,6 +28,7 @@ kover {
           packages(
               "com.divinelink.core.ui.provider",
               "com.divinelink.core.ui.tab.custom",
+              "com.divinelink.core.ui.collapsing",
 
               ".provider",
           )
