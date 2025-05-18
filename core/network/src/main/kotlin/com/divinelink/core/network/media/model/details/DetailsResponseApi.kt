@@ -111,7 +111,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   ),
   tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
-  genres = this.genres.map { it.name },
+  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
   creators = this.credits.crew.map(),
   cast = this.credits.cast.toActors(),
   runtime = this.runtime.toHourMinuteFormat(),
@@ -124,7 +124,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
   title = this.name,
-  genres = this.genres.map { it.name },
+  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
   ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
