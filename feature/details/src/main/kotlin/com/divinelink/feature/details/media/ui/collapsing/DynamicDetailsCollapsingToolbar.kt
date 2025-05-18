@@ -19,13 +19,16 @@ import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsCont
 
 @Composable
 fun DynamicDetailsCollapsingToolbar(
+  modifier: Modifier = Modifier,
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
-  onAddToWatchlistClicked: () -> Unit,
   userDetails: AccountMediaDetails?,
+  hasTrailer: Boolean,
+  onAddToWatchlistClicked: () -> Unit,
   onAddRateClicked: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
   onShowTitle: (Boolean) -> Unit,
+  onPlayTrailerClick: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   SubcomposeLayout { constraints ->
@@ -35,12 +38,14 @@ fun DynamicDetailsCollapsingToolbar(
         modifier = Modifier.fillMaxWidth(),
         mediaDetails = mediaDetails,
         isOnWatchlist = userDetails?.watchlist == true,
+        hasTrailer = hasTrailer,
         userDetails = userDetails,
         ratingSource = ratingSource,
         ratingCount = mediaDetails.ratingCount,
         onAddToWatchListClick = onAddToWatchlistClicked,
         onAddRateClick = onAddRateClicked,
         onShowAllRatingsClick = viewAllRatingsClicked,
+        onPlayTrailerClick = {},
       )
     }.first().measure(constraints)
 
@@ -59,7 +64,7 @@ fun DynamicDetailsCollapsingToolbar(
 
       CollapsingToolBarLayout(
         state = state,
-        modifier = Modifier
+        modifier = modifier
           .testTag(TestTags.Details.CONTENT_SCAFFOLD)
           .navigationBarsPadding(),
         toolbar = {
@@ -69,12 +74,14 @@ fun DynamicDetailsCollapsingToolbar(
               .fillMaxWidth(),
             mediaDetails = mediaDetails,
             isOnWatchlist = userDetails?.watchlist == true,
+            hasTrailer = hasTrailer,
             userDetails = userDetails,
             ratingSource = ratingSource,
             ratingCount = mediaDetails.ratingCount,
             onAddToWatchListClick = onAddToWatchlistClicked,
             onAddRateClick = onAddRateClicked,
             onShowAllRatingsClick = viewAllRatingsClicked,
+            onPlayTrailerClick = onPlayTrailerClick,
           )
         },
         content = { content() },

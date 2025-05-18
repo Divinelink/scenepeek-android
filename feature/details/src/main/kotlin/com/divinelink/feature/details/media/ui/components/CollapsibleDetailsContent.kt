@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -32,6 +31,7 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.PlayTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.extension.getColorRating
 import com.divinelink.core.ui.rating.MediaRatingItem
@@ -45,9 +45,11 @@ fun CollapsibleDetailsContent(
   userDetails: AccountMediaDetails?,
   ratingCount: RatingCount,
   ratingSource: RatingSource,
+  hasTrailer: Boolean,
   onAddToWatchListClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
+  onPlayTrailerClick: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -75,10 +77,20 @@ fun CollapsibleDetailsContent(
         verticalArrangement = Arrangement.SpaceEvenly,
       ) {
         TitleDetails(mediaDetails = mediaDetails)
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_4))
+        if (hasTrailer) {
+          PlayTrailerButton(
+            modifier = Modifier
+              .padding(top = MaterialTheme.dimensions.keyline_8)
+              .offset(x = -MaterialTheme.dimensions.keyline_12),
+            onClick = onPlayTrailerClick,
+          )
+        }
         TextButton(
           modifier = Modifier
-            .offset(x = -MaterialTheme.dimensions.keyline_12)
+            .offset(
+              y = -MaterialTheme.dimensions.keyline_4,
+              x = -MaterialTheme.dimensions.keyline_12,
+            )
             .testTag(TestTags.Rating.DETAILS_RATING_BUTTON),
           onClick = onShowAllRatingsClick,
         ) {

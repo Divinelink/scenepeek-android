@@ -94,6 +94,7 @@ fun DetailsContent(
   onObfuscateSpoilers: () -> Unit,
   viewAllRatingsClicked: () -> Unit,
   onTabSelected: (Int) -> Unit,
+  onPlayTrailerClick: (String) -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
   val listState = rememberLazyListState()
@@ -201,6 +202,7 @@ fun DetailsContent(
             ratingSource = viewState.ratingSource,
             viewAllRatingsClicked = viewAllRatingsClicked,
             onTabSelected = onTabSelected,
+            onPlayTrailerClick = onPlayTrailerClick,
             onShowTitle = { showTitle ->
               isAppBarVisible = showTitle
             },
@@ -241,6 +243,7 @@ private fun MediaDetailsContent(
   viewAllRatingsClicked: () -> Unit,
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
+  onPlayTrailerClick: (String) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
 
@@ -262,11 +265,13 @@ private fun MediaDetailsContent(
   DynamicDetailsCollapsingToolbar(
     mediaDetails = mediaDetails,
     ratingSource = ratingSource,
+    hasTrailer = trailer?.key != null,
     onAddToWatchlistClicked = onAddToWatchlistClicked,
     onAddRateClicked = onAddRateClicked,
     viewAllRatingsClicked = viewAllRatingsClicked,
     userDetails = userDetails,
     onShowTitle = onShowTitle,
+    onPlayTrailerClick = { trailer?.key?.let { onPlayTrailerClick(it) } },
   ) {
     ScenePeekLazyColumn(
       modifier = Modifier
@@ -380,6 +385,7 @@ fun DetailsContentPreview(
           onObfuscateSpoilers = {},
           viewAllRatingsClicked = {},
           onTabSelected = {},
+          onPlayTrailerClick = {},
         )
       }
     }

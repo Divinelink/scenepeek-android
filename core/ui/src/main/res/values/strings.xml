@@ -5,6 +5,7 @@
   <string name="core_ui_confirm">Confirm</string>
 
   <string name="core_ui_save">Save</string>
+  <string name="core_ui_play_trailer">Play Trailer</string>
 
   <string name="core_ui_connected">You\'re back online</string>
   <string name="core_ui_not_connected">You\'re offline</string>
