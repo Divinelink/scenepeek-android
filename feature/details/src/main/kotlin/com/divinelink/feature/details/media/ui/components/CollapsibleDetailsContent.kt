@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -76,7 +77,7 @@ fun CollapsibleDetailsContent(
         verticalArrangement = Arrangement.SpaceEvenly,
       ) {
         TitleDetails(mediaDetails = mediaDetails)
-        if (hasTrailer) {
+        AnimatedVisibility(hasTrailer) {
           PlayTrailerButton(
             modifier = Modifier
               .padding(top = MaterialTheme.dimensions.keyline_8)

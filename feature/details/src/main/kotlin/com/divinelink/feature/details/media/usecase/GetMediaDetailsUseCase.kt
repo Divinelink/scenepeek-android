@@ -172,7 +172,7 @@ open class GetMediaDetailsUseCase(
           .catch { Timber.e(it) }
           .collect { result ->
             val video = if (parameters is MediaRequestApi.TV) {
-              result.data.firstOrNull()
+              result.data.firstOrNull { it.officialTrailer } ?: result.data.firstOrNull()
             } else {
               result.data.firstOrNull { it.officialTrailer }
             }

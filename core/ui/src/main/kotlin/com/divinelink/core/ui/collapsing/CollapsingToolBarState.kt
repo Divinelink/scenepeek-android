@@ -9,6 +9,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,27 +27,43 @@ fun rememberCollapsingToolBarState(
   collapsingOption: CollapsingOption = CollapsingOption.EnterAlwaysCollapsed,
 ): CollapsingToolBarState {
   val density = LocalDensity.current
-
   return rememberSaveable(saver = CollapsingToolBarState.Saver) {
     CollapsingToolBarState(density, toolBarMaxHeight, toolBarMinHeight, collapsingOption)
+  }.apply {
+    if (this.toolBarMaxHeight != toolBarMaxHeight) {
+      this.updateMaxHeight(toolBarMaxHeight)
+    }
   }
 }
 
 @Stable
 class CollapsingToolBarState(
   private val density: Density,
-  val toolBarMaxHeight: Dp,
+  initialMaxHeight: Dp,
   val toolBarMinHeight: Dp,
   val collapsingOption: CollapsingOption,
 ) {
+  var toolBarMaxHeight: Dp by mutableStateOf(initialMaxHeight)
+    private set
+
+  internal val toolBarMaxHeightPx by derivedStateOf {
+    with(density) { toolBarMaxHeight.roundToPx() }
+  }
+  internal val toolBarMinHeightPx by derivedStateOf {
+    with(density) { toolBarMinHeight.roundToPx() }
+  }
+
+  fun updateMaxHeight(newHeight: Dp) {
+    toolBarMaxHeight = newHeight
+    toolbarOffsetHeightPx = toolbarOffsetHeightPx.coerceAtMost(toolBarMaxHeightPx.toFloat())
+  }
+
   var progress: Float by mutableFloatStateOf(0f)
     internal set
   var contentOffset: Float by mutableFloatStateOf(0f)
     internal set
   internal var toolbarOffsetHeightPx: Float by mutableFloatStateOf(0f)
 
-  internal val toolBarMaxHeightPx: Int = with(density) { toolBarMaxHeight.roundToPx() }
-  internal val toolBarMinHeightPx: Int = with(density) { toolBarMinHeight.roundToPx() }
   val toolBarHeight by derivedStateOf {
     toolBarMaxHeight - ((toolBarMaxHeight - toolBarMinHeight) * progress)
   }
