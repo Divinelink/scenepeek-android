@@ -35,6 +35,7 @@ import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.PlayTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.extension.getColorRating
 import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.feature.details.R
@@ -58,6 +59,10 @@ fun CollapsibleDetailsContent(
       .verticalScroll(state = rememberScrollState())
       .testTag(TestTags.Details.COLLAPSIBLE_CONTENT)
       .padding(MaterialTheme.dimensions.keyline_16)
+      .conditional(
+        mediaDetails.backdropPath.isNotBlank(),
+        ifTrue = { padding(top = MaterialTheme.dimensions.keyline_56) },
+      )
       .fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),

@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,13 +36,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
@@ -96,10 +102,14 @@ fun DetailsContent(
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
 ) {
-  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+  val view = LocalView.current
+  val isDarkTheme = LocalDarkThemeProvider.current
+
   val listState = rememberLazyListState()
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
   var isAppBarVisible by remember { mutableStateOf(false) }
+  var onBackdropLoaded by remember { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -131,6 +141,44 @@ fun DetailsContent(
     }
   }
 
+  val containerColor by animateColorAsState(
+    targetValue = when (isAppBarVisible) {
+      true -> MaterialTheme.colorScheme.surface
+      false -> Color.Transparent
+    },
+    label = "TopAppBar Container Color",
+  )
+
+  val textColor = when {
+    // When app bar is visible, we want to contrast against the app bar background
+    isAppBarVisible -> MaterialTheme.colorScheme.onSurface
+
+    // When backdrop has loaded, determine color based on theme
+    onBackdropLoaded -> if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurface
+    } else {
+      MaterialTheme.colorScheme.surface
+    }
+
+    // When backdrop hasn't loaded yet, use default text colors
+    else -> if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurface
+    } else {
+      MaterialTheme.colorScheme.onSurface // Changed this to onSurface to ensure contrast
+    }
+  }
+
+  val surfaceColor = MaterialTheme.colorScheme.surface
+  DisposableEffect(textColor) {
+    val isLight = textColor == surfaceColor
+    updateStatusBarColor(view = view, setLight = !isLight && !isDarkTheme)
+
+    onDispose {
+      // Reset the status bar color when the composable is disposed
+      updateStatusBarColor(view = view, setLight = !isDarkTheme)
+    }
+  }
+
   Scaffold(
     containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
     modifier = modifier
@@ -149,8 +197,10 @@ fun DetailsContent(
       AppTopAppBar(
         scrollBehavior = scrollBehavior,
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
-          scrolledContainerColor = MaterialTheme.colorScheme.surface,
+          scrolledContainerColor = containerColor,
+          containerColor = containerColor,
         ),
+        contentColor = textColor,
         text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
         isVisible = isAppBarVisible,
         actions = {
@@ -158,14 +208,19 @@ fun DetailsContent(
             modifier = Modifier.clip(MaterialTheme.shape.rounded),
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
-            inactiveColor = MaterialTheme.colorScheme.onSurface,
+            inactiveColor = textColor,
+            transparentBackground = true,
           )
 
           IconButton(
             modifier = Modifier.testTag(TestTags.Menu.MENU_BUTTON_VERTICAL),
             onClick = { showDropdownMenu = !showDropdownMenu },
           ) {
-            Icon(Icons.Outlined.MoreVert, "More")
+            Icon(
+              imageVector = Icons.Outlined.MoreVert,
+              contentDescription = "More",
+              tint = textColor,
+            )
           }
 
           viewState.mediaDetails?.let {
@@ -206,6 +261,7 @@ fun DetailsContent(
             onShowTitle = { showTitle ->
               isAppBarVisible = showTitle
             },
+            onBackdropLoaded = { onBackdropLoaded = true },
           )
           null -> {
             // Do nothing
@@ -244,6 +300,7 @@ private fun MediaDetailsContent(
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
+  onBackdropLoaded: () -> Unit,
 ) {
   val scope = rememberCoroutineScope()
 
@@ -272,6 +329,7 @@ private fun MediaDetailsContent(
     userDetails = userDetails,
     onShowTitle = onShowTitle,
     onPlayTrailerClick = { trailer?.key?.let { onPlayTrailerClick(it) } },
+    onBackdropLoaded = onBackdropLoaded,
   ) {
     ScenePeekLazyColumn(
       modifier = Modifier

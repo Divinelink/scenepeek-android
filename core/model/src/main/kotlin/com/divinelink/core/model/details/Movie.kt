@@ -9,6 +9,7 @@ data class Movie(
   override val id: Int,
   override val title: String,
   override val posterPath: String,
+  override val backdropPath: String,
   override val overview: String?,
   override val genres: List<String>?,
   override val releaseDate: String,

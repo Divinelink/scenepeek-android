@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui.collapsing
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
@@ -15,11 +16,11 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.collapsing.CollapsingOption
 import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
+import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsContent
 
 @Composable
 fun DynamicDetailsCollapsingToolbar(
-  modifier: Modifier = Modifier,
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
   userDetails: AccountMediaDetails?,
@@ -29,6 +30,7 @@ fun DynamicDetailsCollapsingToolbar(
   viewAllRatingsClicked: () -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onPlayTrailerClick: () -> Unit,
+  onBackdropLoaded: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   SubcomposeLayout { constraints ->
@@ -64,25 +66,31 @@ fun DynamicDetailsCollapsingToolbar(
 
       CollapsingToolBarLayout(
         state = state,
-        modifier = modifier
+        modifier = Modifier
           .testTag(TestTags.Details.CONTENT_SCAFFOLD)
           .navigationBarsPadding(),
         toolbar = {
-          CollapsibleDetailsContent(
-            modifier = Modifier
-              .requiredToolBarMaxHeight()
-              .fillMaxWidth(),
-            mediaDetails = mediaDetails,
-            isOnWatchlist = userDetails?.watchlist == true,
-            hasTrailer = hasTrailer,
-            userDetails = userDetails,
-            ratingSource = ratingSource,
-            ratingCount = mediaDetails.ratingCount,
-            onAddToWatchListClick = onAddToWatchlistClicked,
-            onAddRateClick = onAddRateClicked,
-            onShowAllRatingsClick = viewAllRatingsClicked,
-            onPlayTrailerClick = onPlayTrailerClick,
-          )
+          Box {
+            BackdropImage(
+              path = mediaDetails.backdropPath,
+              onBackdropLoaded = onBackdropLoaded,
+            )
+            CollapsibleDetailsContent(
+              modifier = Modifier
+                .requiredToolBarMaxHeight()
+                .fillMaxWidth(),
+              mediaDetails = mediaDetails,
+              isOnWatchlist = userDetails?.watchlist == true,
+              hasTrailer = hasTrailer,
+              userDetails = userDetails,
+              ratingSource = ratingSource,
+              ratingCount = mediaDetails.ratingCount,
+              onAddToWatchListClick = onAddToWatchlistClicked,
+              onAddRateClick = onAddRateClicked,
+              onShowAllRatingsClick = viewAllRatingsClicked,
+              onPlayTrailerClick = onPlayTrailerClick,
+            )
+          }
         },
         content = { content() },
       )

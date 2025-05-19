@@ -1,6 +1,5 @@
 package com.divinelink.core.designsystem.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,11 +13,9 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 
 @Composable
 fun AppTheme(
@@ -41,14 +38,7 @@ fun AppTheme(
   val view = LocalView.current
   if (!view.isInEditMode) {
     SideEffect {
-      val window = (view.context as Activity).window
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        window.isNavigationBarContrastEnforced = false
-      } else {
-        window.navigationBarColor = Color.Transparent.toArgb()
-      }
-      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
-      WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !useDarkTheme
+      updateStatusBarColor(view, !useDarkTheme)
     }
   }
 

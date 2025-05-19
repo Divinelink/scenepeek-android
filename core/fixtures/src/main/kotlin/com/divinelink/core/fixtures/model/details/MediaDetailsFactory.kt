@@ -12,6 +12,7 @@ object MediaDetailsFactory {
   fun FightClub() = Movie(
     id = 1123,
     posterPath = "123456",
+    backdropPath = "123456",
     releaseDate = "2022",
     title = "Flight Club",
     ratingCount = RatingCount.tmdb(7.3, 123_456),
@@ -37,6 +38,7 @@ object MediaDetailsFactory {
     id = 2316,
     title = "The Office",
     posterPath = "the_office.jpg",
+    backdropPath = "the_office_backdrop.jpg",
     overview = "Michael Scarn is the best.",
     releaseDate = "2005-03-24",
     ratingCount = RatingCount.tmdb(9.5, 12_345),

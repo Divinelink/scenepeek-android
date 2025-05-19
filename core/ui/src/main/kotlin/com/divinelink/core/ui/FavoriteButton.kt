@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.coreGrey55
 import com.divinelink.core.designsystem.theme.coreRedHighlight
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
@@ -29,7 +28,7 @@ fun FavoriteButton(
   modifier: Modifier = Modifier,
   isFavorite: Boolean,
   transparentBackground: Boolean = false,
-  inactiveColor: Color = coreGrey55,
+  inactiveColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
   onClick: () -> Unit,
 ) {
   val color by animateColorAsState(
