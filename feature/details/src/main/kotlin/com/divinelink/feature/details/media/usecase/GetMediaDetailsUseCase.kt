@@ -216,8 +216,18 @@ open class GetMediaDetailsUseCase(
       }
     }
 
-  private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails =
-    details.imdbId?.let { id ->
+  private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails {
+    if (details.imdbId == null) {
+      // Fallback to TMDB rating
+      return details.copy(
+        ratingCount = details.ratingCount.updateRating(
+          source = RatingSource.IMDB,
+          rating = RatingDetails.Unavailable,
+        ),
+      )
+    }
+
+    return details.imdbId?.let { id ->
       repository
         .fetchIMDbDetails(id)
         .catch { emit(Result.failure(it)) }
@@ -241,9 +251,18 @@ open class GetMediaDetailsUseCase(
           },
         )
     } ?: details
+  }
 
   private suspend fun fetchTraktDetails(details: MediaDetails): MediaDetails {
     val mediaType = if (details is Movie) MediaType.MOVIE else MediaType.TV
+    if (details.imdbId == null) {
+      return details.copy(
+        ratingCount = details.ratingCount.updateRating(
+          source = RatingSource.TRAKT,
+          rating = RatingDetails.Unavailable,
+        ),
+      )
+    }
 
     return details.imdbId?.let { id ->
       repository

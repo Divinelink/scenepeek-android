@@ -68,7 +68,7 @@ fun CollapsibleDetailsContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       MovieImage(
-        modifier = Modifier.height(MaterialTheme.dimensions.posterSize),
+        modifier = Modifier.height(MaterialTheme.dimensions.posterSizeSmall),
         path = mediaDetails.posterPath,
       )
 
