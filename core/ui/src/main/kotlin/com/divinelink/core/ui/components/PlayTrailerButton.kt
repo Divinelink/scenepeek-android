@@ -3,7 +3,7 @@ package com.divinelink.core.ui.components
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.SmartDisplay
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +23,7 @@ fun PlayTrailerButton(
     modifier = modifier,
     onClick = onClick,
   ) {
-    Icon(Icons.Default.PlayArrow, null)
+    Icon(Icons.Default.SmartDisplay, null)
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_4))
     Text(text = stringResource(R.string.core_ui_play_trailer))
   }

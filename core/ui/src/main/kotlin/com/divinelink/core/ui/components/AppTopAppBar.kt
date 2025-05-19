@@ -30,6 +30,7 @@ import com.divinelink.core.ui.getString
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopAppBar(
+  modifier: Modifier = Modifier,
   scrollBehavior: TopAppBarScrollBehavior,
   topAppBarColors: TopAppBarColors,
   text: UIText,
@@ -39,7 +40,7 @@ fun AppTopAppBar(
   onNavigateUp: () -> Unit,
 ) {
   TopAppBar(
-    modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
+    modifier = modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehavior,
     colors = topAppBarColors,
     title = {

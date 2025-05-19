@@ -2,6 +2,8 @@ package com.divinelink.feature.details.media.ui.forms.about
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontStyle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.TestTags
@@ -69,6 +72,10 @@ fun AboutFormContent(
           onClick = onPersonClick,
         )
       }
+    }
+
+    item {
+      Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
     }
   }
 }

@@ -53,8 +53,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.media.MediaItem
@@ -200,120 +200,119 @@ fun PersonContent(
         )
       },
       content = {
-        ScenePeekLazyColumn(
+        Column(
           modifier = Modifier
             .fillMaxSize()
             .testTag(TestTags.Person.CONTENT_LIST),
-          state = lazyListState,
         ) {
-          stickyHeader {
-            Column {
-              ScenePeekTabs(
-                tabs = uiState.tabs,
-                selectedIndex = selectedPage,
-                onClick = {
-                  scope.launch {
-                    pagerState.animateScrollToPage(it)
-                  }
-                },
-              )
-              AnimatedVisibility(visible = showFilterTab) {
-                Row(
-                  modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface),
-                  verticalAlignment = Alignment.CenterVertically,
-                ) {
-                  CreditFilterButton(
-                    appliedFilters = filters,
-                    onFilterClick = {
-                      showFilterBottomSheet = true
-                    },
-                  )
-
-                  Spacer(modifier = Modifier.weight(1f))
-
-                  if (filters.isEmpty()) {
-                    AnimatedContent(
-                      modifier = Modifier.testTag(
-                        TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
-                      ),
-                      targetState = department,
-                      label = "DepartmentTextAnimation",
-                    ) { string ->
-                      Text(text = string)
-                    }
-                  }
-
-                  Spacer(modifier = Modifier.weight(1f))
-
-                  LayoutStyleButton(
-                    onUpdateLayoutStyle = onUpdateLayoutStyle,
-                    icon = icon,
-                  )
+          Column {
+            ScenePeekTabs(
+              tabs = uiState.tabs,
+              selectedIndex = selectedPage,
+              onClick = {
+                scope.launch {
+                  pagerState.animateScrollToPage(it)
                 }
+              },
+            )
+            AnimatedVisibility(visible = showFilterTab) {
+              Row(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .background(MaterialTheme.colorScheme.surface),
+                verticalAlignment = Alignment.CenterVertically,
+              ) {
+                CreditFilterButton(
+                  appliedFilters = filters,
+                  onFilterClick = {
+                    showFilterBottomSheet = true
+                  },
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                if (filters.isEmpty()) {
+                  AnimatedContent(
+                    modifier = Modifier.testTag(
+                      TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
+                    ),
+                    targetState = department,
+                    label = "DepartmentTextAnimation",
+                  ) { string ->
+                    Text(text = string)
+                  }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                LayoutStyleButton(
+                  onUpdateLayoutStyle = onUpdateLayoutStyle,
+                  icon = icon,
+                )
               }
             }
           }
 
-          item {
-            HorizontalPager(
-              modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-              state = pagerState,
-            ) { page ->
-              personDetails as PersonDetailsUiState.Data
+          HorizontalPager(
+            modifier = Modifier
+              .fillMaxSize()
+              .background(MaterialTheme.colorScheme.background),
+            state = pagerState,
+          ) { page ->
+            personDetails as PersonDetailsUiState.Data
 
-              uiState.forms.values.elementAt(page).let { form ->
-                when (form) {
-                  is PersonForm.About -> LazyColumn(
-                    modifier = Modifier
-                      .testTag(TestTags.Person.ABOUT_FORM)
-                      .fillParentMaxSize(),
-                  ) {
-                    item {
-                      PersonalDetails(personDetails)
-                    }
-
-                    item {
-                      KnownForSection(
-                        list = uiState.knownForCredits ?: emptyList(),
-                        onMediaClick = onMediaClick,
-                      )
-                    }
+            uiState.forms.values.elementAt(page).let { form ->
+              when (form) {
+                is PersonForm.About -> LazyColumn(
+                  modifier = Modifier
+                    .testTag(TestTags.Person.ABOUT_FORM)
+                    .fillMaxSize(),
+                ) {
+                  item {
+                    PersonalDetails(personDetails)
                   }
 
-                  is PersonForm.Movies -> PersonGridContent(
-                    modifier = Modifier
-                      .fillParentMaxSize()
-                      .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
-                    grid = grid,
-                    credits = movies,
-                    filters = movieFilters,
-                    isGrid = isGrid,
-                    onMediaClick = onMediaClick,
-                    setCurrentDepartment = { currentMovieDepartment = it },
-                    mediaType = MediaType.MOVIE,
-                    name = personDetails.personDetails.person.name,
-                    lazyGridState = movieLazyGridState,
-                  )
+                  item {
+                    KnownForSection(
+                      list = uiState.knownForCredits ?: emptyList(),
+                      onMediaClick = onMediaClick,
+                    )
+                  }
 
-                  is PersonForm.TvShows -> PersonGridContent(
-                    modifier = Modifier
-                      .fillParentMaxSize()
-                      .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
-                    grid = grid,
-                    credits = tvShows,
-                    filters = tvFilters,
-                    isGrid = isGrid,
-                    onMediaClick = onMediaClick,
-                    setCurrentDepartment = { currentTvDepartment = it },
-                    mediaType = MediaType.TV,
-                    name = personDetails.personDetails.person.name,
-                    lazyGridState = tvLazyGridState,
-                  )
+                  item {
+                    Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
+                  }
                 }
+
+                is PersonForm.Movies -> PersonGridContent(
+                  modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(TestTags.Person.MOVIES_FORM.format(isGrid)),
+                  grid = grid,
+                  credits = movies,
+                  filters = movieFilters,
+                  isGrid = isGrid,
+                  onMediaClick = onMediaClick,
+                  setCurrentDepartment = { currentMovieDepartment = it },
+                  mediaType = MediaType.MOVIE,
+                  name = personDetails.personDetails.person.name,
+                  lazyGridState = movieLazyGridState,
+                )
+
+                is PersonForm.TvShows -> PersonGridContent(
+                  modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(TestTags.Person.TV_SHOWS_FORM.format(isGrid)),
+                  grid = grid,
+                  credits = tvShows,
+                  filters = tvFilters,
+                  isGrid = isGrid,
+                  onMediaClick = onMediaClick,
+                  setCurrentDepartment = { currentTvDepartment = it },
+                  mediaType = MediaType.TV,
+                  name = personDetails.personDetails.person.name,
+                  lazyGridState = tvLazyGridState,
+                )
               }
             }
           }

@@ -2,20 +2,24 @@ package com.divinelink.feature.details.media.ui.forms.recommendation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.DetailsData
-import com.divinelink.feature.details.media.ui.forms.FormEmptyContent
 
 @Composable
 fun RecommendationsFormContent(
@@ -24,25 +28,28 @@ fun RecommendationsFormContent(
   recommendations: DetailsData.Recommendations,
   onItemClick: (MediaItem.Media) -> Unit,
 ) {
-  if (recommendations.items.isEmpty()) {
-    FormEmptyContent(
-      modifier = modifier,
-      title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
-      description = UIText.ResourceText(
-        R.string.feature_details_no_recommendations_available_desc,
-        title,
-      ),
-    )
-  } else {
-    ScenePeekLazyColumn(
-      modifier = modifier.testTag(TestTags.Details.RECOMMENDATIONS_FORM),
-      contentPadding = PaddingValues(
-        top = MaterialTheme.dimensions.keyline_16,
-        start = MaterialTheme.dimensions.keyline_16,
-        end = MaterialTheme.dimensions.keyline_16,
-      ),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-    ) {
+  ScenePeekLazyColumn(
+    modifier = modifier.testTag(TestTags.Details.RECOMMENDATIONS_FORM),
+    contentPadding = PaddingValues(
+      top = MaterialTheme.dimensions.keyline_16,
+      start = MaterialTheme.dimensions.keyline_16,
+      end = MaterialTheme.dimensions.keyline_16,
+    ),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+  ) {
+    if (recommendations.items.isEmpty()) {
+      item {
+        BlankSlate(
+          uiState = BlankSlateState.Custom(
+            title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
+            description = UIText.ResourceText(
+              R.string.feature_details_no_recommendations_available_desc,
+              title,
+            ),
+          ),
+        )
+      }
+    } else {
       items(
         items = recommendations.items,
         key = { it.id },
@@ -51,6 +58,10 @@ fun RecommendationsFormContent(
           mediaItem = media,
           onClick = onItemClick,
         )
+      }
+
+      item {
+        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
       }
     }
   }

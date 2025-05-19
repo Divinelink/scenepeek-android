@@ -1,15 +1,13 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -41,7 +39,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
@@ -105,7 +102,6 @@ fun DetailsContent(
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
 
-  val listState = rememberLazyListState()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
   var isAppBarVisible by remember { mutableStateOf(false) }
@@ -146,6 +142,7 @@ fun DetailsContent(
       true -> MaterialTheme.colorScheme.surface
       false -> Color.Transparent
     },
+    animationSpec = tween(durationMillis = 0),
     label = "TopAppBar Container Color",
   )
 
@@ -195,10 +192,11 @@ fun DetailsContent(
     },
     topBar = {
       AppTopAppBar(
+        modifier = Modifier.background(containerColor),
         scrollBehavior = scrollBehavior,
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
-          scrolledContainerColor = containerColor,
-          containerColor = containerColor,
+          scrolledContainerColor = Color.Transparent,
+          containerColor = Color.Transparent,
         ),
         contentColor = textColor,
         text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
@@ -243,7 +241,6 @@ fun DetailsContent(
 
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(
-            listState = listState,
             uiState = viewState,
             mediaDetails = viewState.mediaDetails,
             userDetails = viewState.userDetails,
@@ -284,7 +281,6 @@ fun DetailsContent(
 
 @Composable
 private fun MediaDetailsContent(
-  listState: LazyListState,
   uiState: DetailsViewState,
   ratingSource: RatingSource,
   mediaDetails: MediaDetails,
@@ -331,84 +327,76 @@ private fun MediaDetailsContent(
     onPlayTrailerClick = { trailer?.key?.let { onPlayTrailerClick(it) } },
     onBackdropLoaded = onBackdropLoaded,
   ) {
-    ScenePeekLazyColumn(
+    Column(
       modifier = Modifier
         .fillMaxSize()
-        .testTag(TestTags.Details.CONTENT_LIST),
-      state = listState,
+        .testTag(TestTags.Details.CONTENT_LIST)
+        .background(MaterialTheme.colorScheme.background),
     ) {
-      stickyHeader {
-        ScenePeekTabs(
-          tabs = uiState.tabs,
-          selectedIndex = selectedPage,
-          onClick = {
-            scope.launch {
-              pagerState.animateScrollToPage(it)
+      ScenePeekTabs(
+        tabs = uiState.tabs,
+        selectedIndex = selectedPage,
+        onClick = {
+          scope.launch {
+            pagerState.animateScrollToPage(it)
+          }
+        },
+      )
+
+      HorizontalPager(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background),
+        state = pagerState,
+      ) { page ->
+        uiState.forms.values.elementAt(page).let { form ->
+          when (form) {
+            DetailsForm.Error -> {
+              // TODO("Handle error state")
             }
-          },
-        )
-      }
+            DetailsForm.Loading -> Column(modifier = Modifier.fillMaxSize()) {
+              LoadingContent(
+                modifier = Modifier
+                  .weight(1.35f)
+                  .padding(top = MaterialTheme.dimensions.keyline_24),
+              )
 
-      item {
-        HorizontalPager(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-          state = pagerState,
-        ) { page ->
-          uiState.forms.values.elementAt(page).let { form ->
-            when (form) {
-              DetailsForm.Error -> {
-                // TODO("Handle error state")
-              }
-              DetailsForm.Loading -> Column(modifier = Modifier.fillParentMaxSize()) {
-                LoadingContent(
-                  modifier = Modifier
-                    .weight(1.35f)
-                    .padding(top = MaterialTheme.dimensions.keyline_24),
-                )
-
-                Spacer(modifier = Modifier.weight(5f))
-              }
-              is DetailsForm.Content<*> -> when (form.data) {
-                is DetailsData.About -> AboutFormContent(
-                  modifier = Modifier.fillParentMaxSize(),
-                  aboutData = form.data,
-                  onPersonClick = onPersonClick,
-                  onGenreClick = {},
-                )
-                is DetailsData.Cast -> CastFormContent(
-                  modifier = Modifier.fillParentMaxSize(),
-                  cast = form.data,
-                  title = mediaDetails.title,
-                  onPersonClick = onPersonClick,
-                  obfuscateSpoilers = obfuscateEpisodes,
-                  onViewAllClick = viewAllCreditsClick,
-                )
-                is DetailsData.Recommendations -> RecommendationsFormContent(
-                  modifier = Modifier.fillParentMaxSize(),
-                  recommendations = form.data,
-                  title = mediaDetails.title,
-                  onItemClick = onMediaItemClick,
-                )
-                is DetailsData.Reviews -> ReviewsFormContent(
-                  modifier = Modifier.fillParentMaxSize(),
-                  title = mediaDetails.title,
-                  reviews = form.data,
-                )
-                is DetailsData.Seasons -> SeasonsFormContent(
-                  modifier = Modifier.fillParentMaxSize(),
-                  title = mediaDetails.title,
-                  reviews = form.data,
-                )
-              }
+              Spacer(modifier = Modifier.weight(5f))
+            }
+            is DetailsForm.Content<*> -> when (form.data) {
+              is DetailsData.About -> AboutFormContent(
+                modifier = Modifier.fillMaxSize(),
+                aboutData = form.data,
+                onPersonClick = onPersonClick,
+                onGenreClick = {},
+              )
+              is DetailsData.Cast -> CastFormContent(
+                modifier = Modifier.fillMaxSize(),
+                cast = form.data,
+                title = mediaDetails.title,
+                onPersonClick = onPersonClick,
+                obfuscateSpoilers = obfuscateEpisodes,
+                onViewAllClick = viewAllCreditsClick,
+              )
+              is DetailsData.Recommendations -> RecommendationsFormContent(
+                modifier = Modifier.fillMaxSize(),
+                recommendations = form.data,
+                title = mediaDetails.title,
+                onItemClick = onMediaItemClick,
+              )
+              is DetailsData.Reviews -> ReviewsFormContent(
+                modifier = Modifier.fillMaxSize(),
+                title = mediaDetails.title,
+                reviews = form.data,
+              )
+              is DetailsData.Seasons -> SeasonsFormContent(
+                modifier = Modifier.fillMaxSize(),
+                title = mediaDetails.title,
+                reviews = form.data,
+              )
             }
           }
         }
-      }
-
-      item {
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
       }
     }
   }

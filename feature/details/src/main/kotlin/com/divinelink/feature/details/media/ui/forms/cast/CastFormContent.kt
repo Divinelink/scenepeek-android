@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -17,14 +18,16 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.credit.PersonItem
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.DetailsData
-import com.divinelink.feature.details.media.ui.forms.FormEmptyContent
 import com.divinelink.core.ui.R as uiR
 
 @Composable
@@ -36,18 +39,25 @@ fun CastFormContent(
   onPersonClick: (Person) -> Unit,
   onViewAllClick: () -> Unit,
 ) {
-  if (cast.items.isEmpty()) {
-    FormEmptyContent(
-      modifier = modifier,
-      title = UIText.ResourceText(R.string.feature_details_no_cast_available),
-      description = UIText.ResourceText(R.string.feature_details_no_cast_available_desc, title),
-    )
-  } else {
-    ScenePeekLazyColumn(
-      modifier = modifier.testTag(TestTags.Details.CAST_FORM),
-      contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_16),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-    ) {
+  ScenePeekLazyColumn(
+    modifier = modifier.testTag(TestTags.Details.CAST_FORM),
+    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_16),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+  ) {
+    if (cast.items.isEmpty()) {
+      item {
+        BlankSlate(
+          modifier = Modifier,
+          uiState = BlankSlateState.Custom(
+            title = UIText.ResourceText(R.string.feature_details_no_cast_available),
+            description = UIText.ResourceText(
+              R.string.feature_details_no_cast_available_desc,
+              title,
+            ),
+          ),
+        )
+      }
+    } else {
       if (cast.isTv) {
         item {
           TotalTvCastRow(cast, onViewAllClick)
@@ -71,6 +81,10 @@ fun CastFormContent(
           onClick = onPersonClick,
           isObfuscated = obfuscateSpoilers,
         )
+      }
+
+      item {
+        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
       }
     }
   }
