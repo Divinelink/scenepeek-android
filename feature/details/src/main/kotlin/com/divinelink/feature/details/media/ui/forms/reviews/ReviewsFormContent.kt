@@ -30,7 +30,7 @@ fun ReviewsFormContent(
     )
   } else {
     ScenePeekLazyColumn(
-      modifier = modifier.testTag(TestTags.Watchlist.WATCHLIST_CONTENT),
+      modifier = modifier.testTag(TestTags.Details.REVIEWS_FORM),
       contentPadding = PaddingValues(
         top = MaterialTheme.dimensions.keyline_16,
         start = MaterialTheme.dimensions.keyline_16,

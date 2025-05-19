@@ -218,7 +218,6 @@ open class GetMediaDetailsUseCase(
 
   private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails {
     if (details.imdbId == null) {
-      // Fallback to TMDB rating
       return details.copy(
         ratingCount = details.ratingCount.updateRating(
           source = RatingSource.IMDB,

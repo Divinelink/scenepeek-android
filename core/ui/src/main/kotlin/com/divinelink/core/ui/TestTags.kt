@@ -55,6 +55,12 @@ object TestTags {
     const val YOUR_RATING = "Details Your Rating"
     const val RATE_DIALOG = "Details Rate Dialog"
     const val RATE_SLIDER = "Details Rate Slider"
+
+    const val ABOUT_FORM = "Details About Form"
+    const val RECOMMENDATIONS_FORM = "Details Recommendations Form"
+    const val CAST_FORM = "Details Cast Form"
+    const val SEASONS_FORM = "Details Seasons Form"
+    const val REVIEWS_FORM = "Details Reviews Form"
   }
 
   object Person {
