@@ -16,6 +16,7 @@ import com.divinelink.feature.watchlist.navigation.navigateToWatchlist
 import com.divinelink.scenepeek.home.navigation.navigateToHome
 import com.divinelink.scenepeek.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -46,6 +47,8 @@ class ScenePeekAppState(
   val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
+  val showBottomNavigation = MutableStateFlow(true)
+
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
     .stateIn(
@@ -62,6 +65,10 @@ class ScenePeekAppState(
     )
 
   val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
+
+  fun setBottomNavigationVisibility(visible: Boolean) {
+    showBottomNavigation.value = visible
+  }
 
   fun navigateToTopLevelDestination(destination: TopLevelDestination) {
     val topLevelNavOptions = navOptions {

@@ -108,6 +108,7 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        setBottomNavigationVisibility = state::setBottomNavigationVisibility,
       )
 
       creditsScreen(

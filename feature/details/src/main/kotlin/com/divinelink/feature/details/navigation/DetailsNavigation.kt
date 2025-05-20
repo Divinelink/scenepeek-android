@@ -16,6 +16,7 @@ fun NavGraphBuilder.detailsScreen(
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  setBottomNavigationVisibility: (show: Boolean) -> Unit,
 ) {
   composable<DetailsRoute> {
     DetailsScreen(
@@ -24,6 +25,7 @@ fun NavGraphBuilder.detailsScreen(
       onNavigateToCredits = onNavigateToCredits,
       onNavigateToPerson = onNavigateToPerson,
       onNavigateToTMDBLogin = onNavigateToTMDBLogin,
+      setBottomNavigationVisible = setBottomNavigationVisibility,
     )
   }
 }

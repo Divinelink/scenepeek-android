@@ -41,7 +41,11 @@ fun CastFormContent(
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.testTag(TestTags.Details.CAST_FORM),
-    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_16),
+    contentPadding = PaddingValues(
+      top = MaterialTheme.dimensions.keyline_16,
+      start = MaterialTheme.dimensions.keyline_16,
+      end = MaterialTheme.dimensions.keyline_16,
+    ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
   ) {
     if (cast.items.isEmpty()) {

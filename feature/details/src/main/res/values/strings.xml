@@ -69,7 +69,7 @@
   <string name="feature_details_no_tv_shows_available_desc">%s hasn\'t appeared in any TV shows yet.</string>
 
   <string name="feature_details_no_cast_available">No cast available</string>
-  <string name="feature_details_no_cast_available_desc">Unfortunately we don\'t have any cast information for %s yet.</string>
+  <string name="feature_details_no_cast_available_desc">We don\'t have any cast information for %s.</string>
 
   <string name="feature_details_no_recommendation_available">No recommendations available</string>
   <string name="feature_details_no_recommendations_available_desc">We don\'t have any recommendations for %s.</string>

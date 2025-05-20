@@ -39,6 +39,7 @@ fun DetailsScreen(
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  setBottomNavigationVisible: (show: Boolean) -> Unit,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
   var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }
@@ -53,6 +54,14 @@ fun DetailsScreen(
       onNavigateUp()
     } else {
       videoUrl = null
+    }
+  }
+
+  LaunchedEffect(videoUrl) {
+    if (videoUrl.isNullOrEmpty()) {
+      setBottomNavigationVisible(true)
+    } else {
+      setBottomNavigationVisible(false)
     }
   }
 
