@@ -1,7 +1,7 @@
 package com.divinelink.core.data.account
 
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map

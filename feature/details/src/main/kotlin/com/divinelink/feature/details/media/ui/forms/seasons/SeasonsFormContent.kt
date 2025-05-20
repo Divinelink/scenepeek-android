@@ -19,12 +19,12 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.media.DetailsData
 
 @Composable
 fun SeasonsFormContent(
@@ -33,7 +33,7 @@ fun SeasonsFormContent(
   reviews: DetailsData.Seasons,
 ) {
   ScenePeekLazyColumn(
-    modifier = modifier.testTag(TestTags.Details.SEASONS_FORM),
+    modifier = modifier.testTag(TestTags.Details.Seasons.FORM),
     contentPadding = PaddingValues(
       top = MaterialTheme.dimensions.keyline_16,
       start = MaterialTheme.dimensions.keyline_16,
@@ -44,6 +44,7 @@ fun SeasonsFormContent(
     if (reviews.items.isEmpty()) {
       item {
         BlankSlate(
+          modifier = Modifier.testTag(TestTags.Details.Seasons.EMPTY),
           uiState = BlankSlateState.Custom(
             title = UIText.ResourceText(R.string.feature_details_no_seasons_available),
             description = UIText.ResourceText(

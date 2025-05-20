@@ -1,8 +1,8 @@
 package com.divinelink.core.network.media.model.movie
 
 import com.divinelink.core.commons.extensions.round
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.PaginationData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -38,7 +38,7 @@ fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
   list = this.results.map(MovieResponseApi::toMovie),
 )
 
-fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media.Movie> =
+fun MoviesResponseApi.toMoviesList(): List<MediaItem.Media> =
   this.results.map(MovieResponseApi::toMovie)
 
 private fun MovieResponseApi.toMovie() = MediaItem.Media.Movie(

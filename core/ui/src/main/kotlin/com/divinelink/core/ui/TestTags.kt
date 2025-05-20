@@ -46,21 +46,45 @@ object TestTags {
   }
 
   object Details {
-    const val CONTENT_LIST = "Details Content Scrollable List"
     const val CONTENT_SCAFFOLD = "Details Content Scaffold"
     const val SIMILAR_MOVIES_LIST = "Details Similar Movies Lazy List"
 
     const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"
 
-    const val YOUR_RATING = "Details Your Rating"
+    const val YOUR_RATING = "Details Your Rating %s"
     const val RATE_DIALOG = "Details Rate Dialog"
     const val RATE_SLIDER = "Details Rate Slider"
 
-    const val ABOUT_FORM = "Details About Form"
-    const val RECOMMENDATIONS_FORM = "Details Recommendations Form"
-    const val CAST_FORM = "Details Cast Form"
-    const val SEASONS_FORM = "Details Seasons Form"
-    const val REVIEWS_FORM = "Details Reviews Form"
+    const val WATCH_TRAILER = "Details Watch Trailer Button"
+
+    object About {
+      const val FORM = "Details About Form"
+    }
+
+    object Recommendations {
+      const val EMPTY = "Details Recommendations Empty"
+      const val FORM = "Details Recommendations Form"
+    }
+
+    object Cast {
+      const val FORM = "Details Cast Form"
+      const val EMPTY = "Details Cast Empty"
+    }
+
+    object Reviews {
+      const val FORM = "Details Reviews Form"
+      const val REVIEW_CARD = "Details Reviews Card - %s"
+      const val EMPTY = "Details Reviews Empty"
+    }
+
+    object Seasons {
+      const val FORM = "Details Seasons Form"
+      const val EMPTY = "Details Seasons Empty"
+    }
+  }
+
+  object Tabs {
+    const val TAB_ITEM = "Tab Item %s"
   }
 
   object Person {

@@ -19,6 +19,8 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.media.DetailsData
+import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
@@ -27,8 +29,6 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.media.DetailsData
-import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
@@ -224,7 +224,6 @@ class DetailsViewModel(
 
                 viewState.copy(
                   isLoading = false,
-                  tvCredits = credits,
                   forms = updatedForms,
                 )
               }
@@ -602,8 +601,6 @@ class DetailsViewModel(
       overview = result.mediaDetails.overview,
       tagline = result.mediaDetails.tagline,
       genres = result.mediaDetails.genres,
-      ratingCount = result.mediaDetails.ratingCount,
-      ratingSource = result.ratingSource,
       creators = when (result.mediaDetails) {
         is TV -> result.mediaDetails.creators
         is Movie -> result.mediaDetails.creators

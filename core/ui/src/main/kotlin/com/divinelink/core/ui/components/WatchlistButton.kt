@@ -13,10 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.R
 
 @Composable
 fun WatchlistButton(
@@ -40,7 +42,11 @@ fun WatchlistButton(
         Icons.Outlined.BookmarkAdd
       },
       tint = MaterialTheme.colorScheme.primary,
-      contentDescription = null,
+      contentDescription = if (onWatchlist) {
+        stringResource(R.string.core_ui_remove_from_watchlist_content_desc)
+      } else {
+        stringResource(R.string.core_ui_add_to_watchlist_content_desc)
+      },
     )
   }
 }

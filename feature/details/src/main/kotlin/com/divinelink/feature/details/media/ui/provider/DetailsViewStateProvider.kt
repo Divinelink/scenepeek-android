@@ -42,7 +42,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          tvCredits = null,
           isLoading = true,
         ),
         DetailsViewState(
@@ -54,15 +53,12 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             watchlist = false,
           ),
           mediaType = MediaType.MOVIE,
-          tvCredits = null,
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
-          tvCredits = null,
-          similarMovies = similarMovies,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
@@ -70,8 +66,6 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             numberOfSeasons = 0,
           ),
-          tvCredits = null,
-          similarMovies = similarMovies,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
@@ -79,33 +73,26 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             status = TvStatus.UNKNOWN,
           ),
-          tvCredits = null,
-          similarMovies = similarMovies,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          similarMovies = similarMovies,
-          tvCredits = null,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          similarMovies = similarMovies,
           userDetails = AccountMediaDetails(
             id = 0,
             favorite = false,
             rating = 9.0f,
             watchlist = true,
           ),
-          tvCredits = null,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
-          tvCredits = null,
           error = UIText.StringText("Something went wrong."),
         ),
       )

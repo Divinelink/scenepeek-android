@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +43,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
@@ -50,6 +51,8 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.media.DetailsData
+import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
@@ -66,8 +69,6 @@ import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
-import com.divinelink.feature.details.media.DetailsData
-import com.divinelink.feature.details.media.DetailsForm
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
@@ -90,12 +91,12 @@ fun DetailsContent(
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onPersonClick: (Person) -> Unit,
   onConsumeSnackbar: () -> Unit,
-  onAddRateClicked: () -> Unit,
-  onAddToWatchlistClicked: () -> Unit,
+  onAddRateClick: () -> Unit,
+  onAddToWatchlistClick: () -> Unit,
   requestMedia: (List<Int>) -> Unit,
-  viewAllCreditsClicked: () -> Unit,
+  onViewAllCreditsClick: () -> Unit,
   onObfuscateSpoilers: () -> Unit,
-  viewAllRatingsClicked: () -> Unit,
+  onShowAllRatingsClick: () -> Unit,
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
 ) {
@@ -185,8 +186,8 @@ fun DetailsContent(
     floatingActionButton = {
       DetailsExpandableFloatingActionButton(
         actionButtons = viewState.actionButtons,
-        onAddRateClicked = onAddRateClicked,
-        onAddToWatchlistClicked = onAddToWatchlistClicked,
+        onAddRateClicked = onAddRateClick,
+        onAddToWatchlistClicked = onAddToWatchlistClick,
         onRequestClicked = { showRequestDialog = true },
       )
     },
@@ -246,15 +247,15 @@ fun DetailsContent(
             userDetails = viewState.userDetails,
             trailer = viewState.trailer,
             onMediaItemClick = onSimilarMovieClicked,
-            onAddRateClicked = onAddRateClicked,
-            onAddToWatchlistClicked = onAddToWatchlistClicked,
-            viewAllCreditsClick = viewAllCreditsClicked,
+            onAddRateClick = onAddRateClick,
+            onAddToWatchlistClick = onAddToWatchlistClick,
+            viewAllCreditsClick = onViewAllCreditsClick,
             onPersonClick = onPersonClick,
             obfuscateEpisodes = viewState.spoilersObfuscated,
             ratingSource = viewState.ratingSource,
-            viewAllRatingsClicked = viewAllRatingsClicked,
+            viewAllRatingsClick = onShowAllRatingsClick,
             onTabSelected = onTabSelected,
-            onPlayTrailerClick = onPlayTrailerClick,
+            onWatchTrailer = onPlayTrailerClick,
             onShowTitle = { showTitle ->
               isAppBarVisible = showTitle
             },
@@ -289,13 +290,13 @@ private fun MediaDetailsContent(
   obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
   onMediaItemClick: (MediaItem.Media) -> Unit,
-  onAddRateClicked: () -> Unit,
-  onAddToWatchlistClicked: () -> Unit,
+  onAddRateClick: () -> Unit,
+  onAddToWatchlistClick: () -> Unit,
   viewAllCreditsClick: () -> Unit,
-  viewAllRatingsClicked: () -> Unit,
+  viewAllRatingsClick: () -> Unit,
+  onWatchTrailer: (String) -> Unit,
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
-  onPlayTrailerClick: (String) -> Unit,
   onBackdropLoaded: () -> Unit,
 ) {
   val scope = rememberCoroutineScope()
@@ -319,18 +320,17 @@ private fun MediaDetailsContent(
     mediaDetails = mediaDetails,
     ratingSource = ratingSource,
     hasTrailer = trailer?.key != null,
-    onAddToWatchlistClicked = onAddToWatchlistClicked,
-    onAddRateClicked = onAddRateClicked,
-    viewAllRatingsClicked = viewAllRatingsClicked,
+    onAddToWatchlistClick = onAddToWatchlistClick,
+    onAddRateClick = onAddRateClick,
+    onShowAllRatingsClick = viewAllRatingsClick,
     userDetails = userDetails,
     onShowTitle = onShowTitle,
-    onPlayTrailerClick = { trailer?.key?.let { onPlayTrailerClick(it) } },
+    onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
   ) {
     Column(
       modifier = Modifier
         .fillMaxSize()
-        .testTag(TestTags.Details.CONTENT_LIST)
         .background(MaterialTheme.colorScheme.background),
     ) {
       ScenePeekTabs(
@@ -354,25 +354,22 @@ private fun MediaDetailsContent(
             DetailsForm.Error -> {
               // TODO("Handle error state")
             }
-            DetailsForm.Loading -> Column(modifier = Modifier.fillMaxSize()) {
-              LoadingContent(
-                modifier = Modifier
-                  .weight(1.35f)
-                  .padding(top = MaterialTheme.dimensions.keyline_24),
-              )
+            DetailsForm.Loading -> LoadingContent(
+              modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            )
 
-              Spacer(modifier = Modifier.weight(5f))
-            }
             is DetailsForm.Content<*> -> when (form.data) {
               is DetailsData.About -> AboutFormContent(
                 modifier = Modifier.fillMaxSize(),
-                aboutData = form.data,
+                aboutData = form.data as DetailsData.About,
                 onPersonClick = onPersonClick,
                 onGenreClick = {},
               )
               is DetailsData.Cast -> CastFormContent(
                 modifier = Modifier.fillMaxSize(),
-                cast = form.data,
+                cast = form.data as DetailsData.Cast,
                 title = mediaDetails.title,
                 onPersonClick = onPersonClick,
                 obfuscateSpoilers = obfuscateEpisodes,
@@ -380,19 +377,19 @@ private fun MediaDetailsContent(
               )
               is DetailsData.Recommendations -> RecommendationsFormContent(
                 modifier = Modifier.fillMaxSize(),
-                recommendations = form.data,
+                recommendations = form.data as DetailsData.Recommendations,
                 title = mediaDetails.title,
                 onItemClick = onMediaItemClick,
               )
               is DetailsData.Reviews -> ReviewsFormContent(
                 modifier = Modifier.fillMaxSize(),
                 title = mediaDetails.title,
-                reviews = form.data,
+                reviews = form.data as DetailsData.Reviews,
               )
               is DetailsData.Seasons -> SeasonsFormContent(
                 modifier = Modifier.fillMaxSize(),
                 title = mediaDetails.title,
-                reviews = form.data,
+                reviews = form.data as DetailsData.Seasons,
               )
             }
           }
@@ -423,13 +420,13 @@ fun DetailsContentPreview(
           onMarkAsFavoriteClicked = {},
           onSimilarMovieClicked = {},
           onConsumeSnackbar = {},
-          onAddRateClicked = {},
-          onAddToWatchlistClicked = {},
+          onAddRateClick = {},
+          onAddToWatchlistClick = {},
           requestMedia = {},
           onPersonClick = {},
-          viewAllCreditsClicked = {},
+          onViewAllCreditsClick = {},
           onObfuscateSpoilers = {},
-          viewAllRatingsClicked = {},
+          onShowAllRatingsClick = {},
           onTabSelected = {},
           onPlayTrailerClick = {},
         )

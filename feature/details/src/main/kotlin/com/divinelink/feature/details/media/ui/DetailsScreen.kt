@@ -145,11 +145,11 @@ fun DetailsScreen(
       },
       onPersonClick = { person -> onNavigateToPerson(person.map()) },
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
-      onAddRateClicked = viewModel::onAddRateClicked,
-      onAddToWatchlistClicked = viewModel::onAddToWatchlist,
+      onAddRateClick = viewModel::onAddRateClicked,
+      onAddToWatchlistClick = viewModel::onAddToWatchlist,
       requestMedia = viewModel::onRequestMedia,
       onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
-      viewAllCreditsClicked = {
+      onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
           onNavigateToCredits(
             CreditsRoute(
@@ -159,7 +159,7 @@ fun DetailsScreen(
           )
         }
       },
-      viewAllRatingsClicked = {
+      onShowAllRatingsClick = {
         showAllRatingBottomSheet = true
         viewModel.onFetchAllRatings()
       },

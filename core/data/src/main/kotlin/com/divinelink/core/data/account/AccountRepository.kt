@@ -1,7 +1,7 @@
 package com.divinelink.core.data.account
 
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.PaginationData
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {

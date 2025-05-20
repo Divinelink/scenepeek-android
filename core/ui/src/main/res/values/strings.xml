@@ -68,9 +68,6 @@
 
   <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
-  <string name="details__add_to_watchlist_button">Add to Watchlist</string>
-  <string name="details__added_to_watchlist_button">Added to watchlist</string>
-
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>
     <item quantity="other">Request %d seasons</item>
@@ -106,6 +103,8 @@
   <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
+  <string name="core_ui_add_to_watchlist_content_desc">Add to watchlist</string>
+  <string name="core_ui_remove_from_watchlist_content_desc">Remove from watchlist</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
   <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>

@@ -3,7 +3,6 @@ package com.divinelink.core.designsystem.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -55,9 +54,6 @@ fun AppTheme(
 
 val LocalDarkThemeProvider = staticCompositionLocalOf { false }
 val LocalBottomNavigationPadding = compositionLocalOf { 0.dp }
-
-@Composable
-fun ColorScheme.textColorDisabled(): Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
 
 val ListPaddingValues = PaddingValues(
   vertical = 16.dp,

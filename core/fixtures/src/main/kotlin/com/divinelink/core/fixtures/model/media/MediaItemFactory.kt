@@ -1,6 +1,7 @@
 package com.divinelink.core.fixtures.model.media
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.Gender
 
@@ -61,6 +62,12 @@ object MediaItemFactory {
       isFavorite = false,
     )
   }
+
+  fun moviesPagination() = PaginationData<MediaItem.Media>(
+    totalPages = 1,
+    totalResults = 10,
+    list = MoviesList(),
+  )
 
   class MovieMediaItemFactoryWizard(private var mediaItem: MediaItem.Media.Movie) {
 

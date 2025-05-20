@@ -1,8 +1,8 @@
 package com.divinelink.core.network.media.model.tv
 
 import com.divinelink.core.commons.extensions.round
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.PaginationData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

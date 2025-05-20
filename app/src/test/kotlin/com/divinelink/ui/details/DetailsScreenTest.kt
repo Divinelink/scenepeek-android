@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
@@ -17,6 +16,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -78,6 +78,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
+            formOrder = MovieTab.Recommendations.order,
           ),
         ),
       ),
@@ -109,16 +110,9 @@ class DetailsScreenTest : ComposeTest() {
           navigatedToDetails = true
         },
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
-
-    composeTestRule
-      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
-      .performScrollToNode(
-        matcher = hasText(
-          MediaItemFactory.MoviesList()[0].name,
-        ),
-      )
 
     composeTestRule
       .onNodeWithTag(TestTags.Details.SIMILAR_MOVIES_LIST)
@@ -185,6 +179,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
@@ -245,6 +240,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
@@ -330,12 +326,11 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Details.CONTENT_LIST).performScrollToIndex(2)
-
       onNodeWithText(getString(R.string.core_ui_view_all))
         .assertIsDisplayed()
         .performClick()
@@ -392,6 +387,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
@@ -443,6 +439,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
@@ -494,12 +491,13 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
+        viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
-        viewModel = viewModel,
+        setBottomNavigationVisible = {},
       )
     }
 

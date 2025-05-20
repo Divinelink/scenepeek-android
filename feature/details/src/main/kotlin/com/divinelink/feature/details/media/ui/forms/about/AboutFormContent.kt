@@ -15,9 +15,9 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Person
+import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
-import com.divinelink.feature.details.media.DetailsData
 import com.divinelink.feature.details.media.ui.components.GenresSection
 
 @Composable
@@ -28,7 +28,7 @@ fun AboutFormContent(
   onPersonClick: (Person) -> Unit,
 ) {
   ScenePeekLazyColumn(
-    modifier = modifier.testTag(TestTags.Details.ABOUT_FORM),
+    modifier = modifier.testTag(TestTags.Details.About.FORM),
     contentPadding = PaddingValues(
       top = MaterialTheme.dimensions.keyline_16,
       start = MaterialTheme.dimensions.keyline_16,
@@ -50,7 +50,7 @@ fun AboutFormContent(
     if (!aboutData.overview.isNullOrEmpty()) {
       item {
         Text(
-          text = aboutData.overview,
+          text = aboutData.overview!!,
           style = MaterialTheme.typography.bodyMedium,
         )
       }

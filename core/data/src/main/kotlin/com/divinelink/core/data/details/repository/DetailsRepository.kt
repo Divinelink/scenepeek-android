@@ -1,14 +1,14 @@
 package com.divinelink.core.data.details.repository
 
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.PaginationData
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi

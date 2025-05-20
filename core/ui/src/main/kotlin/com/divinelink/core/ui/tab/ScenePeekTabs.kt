@@ -34,7 +34,7 @@ fun ScenePeekTabs(
     ) {
       tabs.forEachIndexed { index, tab ->
         Tab(
-          modifier = Modifier.testTag(TestTags.Person.TAB_BAR.format(tab.value)),
+          modifier = Modifier.testTag(TestTags.Tabs.TAB_ITEM.format(tab.value)),
           text = {
             Text(
               text = stringResource(tab.titleRes),

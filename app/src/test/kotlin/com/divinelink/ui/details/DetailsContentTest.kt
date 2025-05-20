@@ -4,31 +4,38 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
+import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
+import com.divinelink.core.fixtures.details.media.DetailsDataFactory
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
-import com.divinelink.core.ui.components.details.reviews.REVIEWS_LIST
-import com.divinelink.core.ui.components.details.videos.VIDEO_PLAYER_TAG
+import com.divinelink.factories.VideoFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
@@ -57,14 +64,15 @@ class DetailsContentTest : ComposeTest() {
         },
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -91,14 +99,15 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -108,76 +117,72 @@ class DetailsContentTest : ComposeTest() {
   }
 
   @Test
-  fun renderReviewsWithoutMovieDetailsTest() {
-    setContentWithTheme {
-      DetailsContent(
-        viewState = DetailsViewState(
-          mediaId = 0,
-          mediaType = MediaType.MOVIE,
-          reviews = reviews,
-        ),
-        onNavigateUp = {},
-        onMarkAsFavoriteClicked = {},
-        onSimilarMovieClicked = {},
-        onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
-        requestMedia = {},
-        viewAllCreditsClicked = {},
-        onPersonClick = {},
-        onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
-        onTabSelected = {},
-      )
-    }
-
-    composeTestRule
-      .onNodeWithTag(REVIEWS_LIST)
-      .assertDoesNotExist()
-  }
-
-  @Test
-  fun renderReviewsTest() = runTest {
+  fun `test reviews form is empty when reviews are empty`() = runTest {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          reviews = reviews,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
+          selectedTabIndex = MovieTab.Reviews.order,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
-
-    val reviewsTitle = composeTestRule.activity.getString(uiR.string.details__reviews)
-
-    composeTestRule
-      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
-      .performScrollToNode(
-        hasText(reviewsTitle),
-      )
-      .assertIsDisplayed()
 
     with(composeTestRule) {
-      onNodeWithTag(REVIEWS_LIST).assertIsDisplayed()
+      onNodeWithTag(TestTags.Details.Reviews.FORM).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test render movie reviews`() = runTest {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.Reviews.order,
+          forms = DetailsFormFactory.Movie.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
     }
 
-    composeTestRule
-      .onAllNodesWithText(reviews[0].content)[0]
-      .performClick()
-      .assertIsDisplayed()
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Reviews.FORM).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Details.Reviews.REVIEW_CARD.format(reviews.first().content))
+        .assertIsDisplayed()
+    }
   }
 
   @Test
@@ -193,14 +198,15 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -220,44 +226,43 @@ class DetailsContentTest : ComposeTest() {
   }
 
   @Test
-  fun renderTrailerTest() {
-    val youtubeTrailer = Video(
-      id = "123",
-      key = "123",
-      name = "Trailer",
-      site = VideoSite.YouTube,
-      officialTrailer = true,
-    )
+  fun `test render watch trailer button with trailer is available`() = runTest {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
-          trailer = youtubeTrailer,
+          tabs = MovieTab.entries,
+          trailer = VideoFactory.Youtube(),
+          forms = DetailsFormFactory.Movie.empty(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
-    composeTestRule
-      .onNodeWithTag(VIDEO_PLAYER_TAG)
-      .assertIsDisplayed()
+    with(composeTestRule) {
+      // It finds two elements with the same tag, because we are using a SubcomposeLayout that
+      // measures the content size.
+
+      onAllNodesWithTag(TestTags.Details.WATCH_TRAILER).onLast().assertExists()
+    }
   }
 
   @Test
-  fun `given user rating rating score is displayed`() {
+  fun `given user rating score is displayed`() {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
@@ -265,39 +270,43 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.MOVIE,
           userDetails = AccountMediaDetailsFactory.Rated(),
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.full(),
+          tabs = MovieTab.entries,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
-    val userScore = composeTestRule.activity.getString(uiR.string.core_ui_tmdb_user_score, "7.3")
+    with(composeTestRule) {
+      val userScore = getString(uiR.string.core_ui_tmdb_user_score)
 
-    composeTestRule
-      .onNodeWithTag(
-        testTag = TestTags.Details.YOUR_RATING,
+      onAllNodesWithText(userScore)
+        .onLast()
+        .assertExists()
+
+      onAllNodesWithText("123.4k")
+        .onLast()
+        .assertExists()
+
+      onAllNodesWithTag(
+        testTag = TestTags.Details.YOUR_RATING.format("8"),
         useUnmergedTree = true,
       )
-      .assertIsDisplayed()
-
-    composeTestRule
-      .onNodeWithText(userScore)
-      .performScrollTo()
-      .assertIsDisplayed()
-
-    composeTestRule
-      .onNodeWithText("123.4k")
-      .assertIsDisplayed()
+        .onLast()
+        .assertExists()
+    }
   }
 
   @Test
@@ -308,30 +317,34 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.empty(),
+          tabs = MovieTab.entries,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     val addYourRate = composeTestRule.activity.getString(detailsR.string.details__add_rating)
 
     composeTestRule
-      .onNodeWithText(
+      .onAllNodesWithText(
         text = addYourRate,
         useUnmergedTree = true,
       )
-      .assertIsDisplayed()
+      .onLast()
+      .assertExists()
   }
 
   @Test
@@ -342,33 +355,32 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           userDetails = AccountMediaDetailsFactory.NotRated(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
-    val addToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__add_to_watchlist_button,
-    )
-
     composeTestRule
-      .onNodeWithText(
-        text = addToWatchlist,
-        useUnmergedTree = true,
+      .onAllNodesWithContentDescription(
+        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
       )
-      .assertIsDisplayed()
+      .onLast()
+      .assertExists()
   }
 
   @Test
@@ -379,6 +391,8 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withWatchlist(true)
           },
@@ -387,27 +401,24 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
-    val addedToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__added_to_watchlist_button,
-    )
-
     composeTestRule
-      .onNodeWithText(
-        text = addedToWatchlist,
-        useUnmergedTree = true,
+      .onAllNodesWithContentDescription(
+        label = getString(uiR.string.core_ui_remove_from_watchlist_content_desc),
       )
-      .assertIsDisplayed()
+      .onLast()
+      .assertExists()
   }
 
   @Test
@@ -418,6 +429,8 @@ class DetailsContentTest : ComposeTest() {
         mediaId = 0,
         mediaType = MediaType.MOVIE,
         mediaDetails = MediaDetailsFactory.FightClub(),
+        tabs = MovieTab.entries,
+        forms = DetailsFormFactory.Movie.empty(),
         userDetails = AccountMediaDetailsFactory.NotRated(),
       ),
     )
@@ -429,8 +442,8 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {
+        onAddRateClick = {},
+        onAddToWatchlistClick = {
           hasClickedAddToWatchlist = true
           viewState.value = viewState.value.copy(
             userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
@@ -439,35 +452,34 @@ class DetailsContentTest : ComposeTest() {
           )
         },
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
-    val addToWatchlist = composeTestRule.activity.getString(
-      uiR.string.details__add_to_watchlist_button,
-    )
-
     with(composeTestRule) {
-      onNodeWithText(
-        text = addToWatchlist,
-        useUnmergedTree = true,
-      ).performClick()
+      onAllNodesWithContentDescription(
+        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
+      )
+        .onFirst()
+        .assertIsDisplayed()
+        .performClick()
 
-      onNodeWithText(
-        text = addToWatchlist,
-        useUnmergedTree = true,
-      ).assertDoesNotExist()
+      onAllNodesWithContentDescription(
+        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
+      )
+        .onFirst()
+        .assertIsNotDisplayed()
 
-      onNodeWithText(
-        text = composeTestRule.activity.getString(
-          uiR.string.details__added_to_watchlist_button,
-        ),
-        useUnmergedTree = true,
-      ).assertIsDisplayed()
+      onAllNodesWithContentDescription(
+        label = getString(uiR.string.core_ui_remove_from_watchlist_content_desc),
+      )
+        .onFirst()
+        .assertIsDisplayed()
     }
     assertThat(hasClickedAddToWatchlist).isTrue()
   }
@@ -480,19 +492,22 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -512,28 +527,29 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           menuOptions = listOf(DetailsMenuOptions.SHARE),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
-      onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_share)),
-      )
+      onNodeWithTag(TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_share)))
         .assertIsDisplayed()
         .performClick()
     }
@@ -552,14 +568,15 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -578,19 +595,22 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.TV,
           actionButtons = DetailActionItem.entries,
           mediaDetails = MediaDetailsFactory.TheOffice(),
+          forms = DetailsFormFactory.Tv.empty(),
+          tabs = TvTab.entries,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
     composeTestRule
@@ -618,19 +638,22 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.MOVIE,
           actionButtons = DetailActionItem.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.empty(),
+          tabs = MovieTab.entries,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
     composeTestRule
@@ -658,6 +681,8 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
           spoilersObfuscated = false,
         ),
@@ -665,16 +690,17 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {
           hasClickedObfuscateSpoilers = true
         },
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -700,6 +726,8 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
           spoilersObfuscated = true,
         ),
@@ -707,16 +735,17 @@ class DetailsContentTest : ComposeTest() {
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {
           hasClickedObfuscateSpoilers = true
         },
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
@@ -743,29 +772,30 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.empty(),
+          tabs = MovieTab.entries,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
         onTabSelected = {},
-        viewAllRatingsClicked = {
+        onPlayTrailerClick = {},
+        onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
         },
       )
     }
-    val userScore = composeTestRule.activity.getString(uiR.string.core_ui_tmdb_user_score, "7.3")
 
     with(composeTestRule) {
-      onNodeWithText(userScore)
-        .performScrollTo()
-        .assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Rating.DETAILS_RATING_BUTTON)
+        .onFirst()
         .performClick()
     }
 
@@ -782,31 +812,36 @@ class DetailsContentTest : ComposeTest() {
           mediaDetails = MediaDetailsFactory.FightClub().copy(
             ratingCount = RatingCountFactory.full(),
           ),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           ratingSource = RatingSource.IMDB,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
+      onAllNodesWithTag(
         testTag = TestTags.Rating.IMDB_RATING,
         useUnmergedTree = true,
-      ).assertIsDisplayed()
+      )
+        .onFirst()
+        .assertExists()
 
-      onNodeWithText("8.5").assertIsDisplayed()
-      onNodeWithText(" / 10").assertIsDisplayed()
+      onAllNodesWithText("8.5").onFirst().assertIsDisplayed()
+      onAllNodesWithText(" / 10").onFirst().assertIsDisplayed()
     }
   }
 
@@ -821,34 +856,39 @@ class DetailsContentTest : ComposeTest() {
             ratingCount = RatingCountFactory.full(),
           ),
           ratingSource = RatingSource.TRAKT,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
+      onAllNodesWithTag(
         testTag = TestTags.Rating.TRAKT_RATING,
         useUnmergedTree = true,
-      ).assertIsDisplayed()
+      )
+        .onFirst()
+        .assertExists()
 
-      onNodeWithText("95%", useUnmergedTree = true).assertIsDisplayed()
+      onAllNodesWithText("95%", useUnmergedTree = true).onFirst().assertIsDisplayed()
     }
   }
 
   @Test
-  fun `test rating item with tmdb preferences shows Trakt Rating`() = runTest {
+  fun `test rating item with tmdb preferences shows tmdb Rating`() = runTest {
     setContentWithTheme {
       DetailsContent(
         viewState = DetailsViewState(
@@ -857,30 +897,35 @@ class DetailsContentTest : ComposeTest() {
           mediaDetails = MediaDetailsFactory.FightClub().copy(
             ratingCount = RatingCountFactory.full(),
           ),
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.empty(),
           ratingSource = RatingSource.TMDB,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
+      onAllNodesWithTag(
         testTag = TestTags.Rating.TMDB_RATING,
         useUnmergedTree = true,
-      ).assertIsDisplayed()
+      )
+        .onFirst()
+        .assertIsDisplayed()
 
-      onNodeWithText("7.5", useUnmergedTree = true).assertIsDisplayed()
+      onAllNodesWithText("7.5", useUnmergedTree = true).onFirst().assertIsDisplayed()
     }
   }
 
@@ -894,30 +939,37 @@ class DetailsContentTest : ComposeTest() {
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             status = TvStatus.RETURNING_SERIES,
           ),
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
+      onAllNodesWithTag(
         testTag = TestTags.Rating.TMDB_RATING,
         useUnmergedTree = true,
-      ).assertIsDisplayed()
+      )
+        .onLast()
+        .assertExists()
 
-      onNodeWithText(" • Continuing").assertIsDisplayed()
+      onAllNodesWithText(" • Continuing")
+        .onLast()
+        .assertExists()
     }
   }
 
@@ -931,30 +983,35 @@ class DetailsContentTest : ComposeTest() {
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             status = TvStatus.UNKNOWN,
           ),
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
+      onAllNodesWithTag(
         testTag = TestTags.Rating.TMDB_RATING,
         useUnmergedTree = true,
-      ).assertIsDisplayed()
+      )
+        .onFirst()
+        .assertIsDisplayed()
 
-      onNodeWithText(" • Continuing").assertIsNotDisplayed()
+      onAllNodesWithText(" • Continuing").onFirst().assertIsNotDisplayed()
     }
   }
 
@@ -966,25 +1023,410 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
         onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
-        onAddRateClicked = {},
-        onAddToWatchlistClicked = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
         requestMedia = {},
-        viewAllCreditsClicked = {},
+        onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
-        viewAllRatingsClicked = {},
+        onShowAllRatingsClick = {},
         onTabSelected = {},
+        onPlayTrailerClick = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithText(" • 9 seasons").assertIsDisplayed()
+      onAllNodesWithText(" • 9 seasons").onFirst().assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test about form for movies with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.About.order,
+          forms = DetailsFormFactory.Movie.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.About.FORM).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test about form for tv shows with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.About.order,
+          forms = DetailsFormFactory.Tv.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.About.FORM).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test cast form for movies with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.Cast.order,
+          forms = DetailsFormFactory.Movie.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Cast.FORM)
+        .assertIsDisplayed()
+        .performScrollToNode(
+          hasText(DetailsDataFactory.Movie.cast().items.first().name),
+        )
+
+      onNodeWithText(DetailsDataFactory.Movie.cast().items.first().name).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test cast form for tv with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Cast.order,
+          forms = DetailsFormFactory.Tv.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Cast.FORM)
+        .assertIsDisplayed()
+        .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
+      onNodeWithText(SeriesCastFactory.cast().first().name).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test cast form for tv with empty data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Cast.order,
+          forms = DetailsFormFactory.Tv.empty(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Cast.EMPTY).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test recommendations form for movies with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.MOVIE,
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.Recommendations.order,
+          forms = DetailsFormFactory.Movie.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+      onNodeWithText(MediaItemFactory.MoviesList().first().overview).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test recommendations form for tv with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Recommendations.order,
+          forms = DetailsFormFactory.Tv.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+      onNodeWithText(MediaItemFactory.TVList().first().overview).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test recommendations form for tv with empty data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Recommendations.order,
+          forms = DetailsFormFactory.Tv.empty(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Recommendations.EMPTY).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test seasons form for tv with data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Seasons.order,
+          forms = DetailsFormFactory.Tv.full(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Seasons.FORM)
+        .assertIsDisplayed()
+        .performScrollToNode(
+          matcher = hasText(SeasonFactory.season1().overview),
+        )
+
+      onNodeWithText(SeasonFactory.season1().overview)
+        .assertIsDisplayed()
+        .performClick()
+    }
+  }
+
+  @Test
+  fun `test seasons form for tv with empty data`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Seasons.order,
+          forms = DetailsFormFactory.Tv.empty(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.Seasons.EMPTY).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test loading forms for shows loading indicator`() {
+    setContentWithTheme {
+      DetailsContent(
+        viewState = DetailsViewState(
+          mediaId = 0,
+          mediaType = MediaType.TV,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
+          selectedTabIndex = TvTab.Seasons.order,
+          forms = DetailsFormFactory.Tv.loading(),
+        ),
+        onNavigateUp = {},
+        onMarkAsFavoriteClicked = {},
+        onSimilarMovieClicked = {},
+        onConsumeSnackbar = {},
+        onAddRateClick = {},
+        onAddToWatchlistClick = {},
+        requestMedia = {},
+        onViewAllCreditsClick = {},
+        onPersonClick = {},
+        onObfuscateSpoilers = {},
+        onShowAllRatingsClick = {},
+        onTabSelected = {},
+        onPlayTrailerClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(LOADING_CONTENT).assertIsDisplayed()
     }
   }
 

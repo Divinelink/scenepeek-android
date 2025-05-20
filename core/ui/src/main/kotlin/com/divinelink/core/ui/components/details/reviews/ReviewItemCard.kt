@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.extension.getColorRating
 import com.divinelink.core.ui.text.SimpleExpandingText
@@ -38,7 +40,11 @@ fun ReviewItemCard(
   modifier: Modifier = Modifier,
   review: Review,
 ) {
-  Card(modifier = modifier.fillMaxWidth()) {
+  Card(
+    modifier = modifier
+      .testTag(TestTags.Details.Reviews.REVIEW_CARD.format(review.content))
+      .fillMaxWidth(),
+  ) {
     Row(
       modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
@@ -105,7 +111,7 @@ fun ReviewItemCard(
 
 @Composable
 @Previews
-private fun ReviewItemCardPreview() {
+fun ReviewItemCardPreview() {
   AppTheme {
     Surface {
       ReviewItemCard(review = ReviewFactory.full())

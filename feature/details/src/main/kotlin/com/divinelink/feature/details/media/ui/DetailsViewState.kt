@@ -3,20 +3,18 @@ package com.divinelink.feature.details.media.ui
 import androidx.compose.runtime.Immutable
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
-import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.details.media.DetailsForm
 
 @Immutable
 data class DetailsViewState(
@@ -25,9 +23,6 @@ data class DetailsViewState(
   val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
   val userDetails: AccountMediaDetails? = null,
-  val tvCredits: AggregateCredits? = null,
-  val reviews: List<Review>? = null,
-  val similarMovies: List<MediaItem.Media>? = null,
   val trailer: Video? = null,
   val error: UIText? = null,
   val snackbarMessage: SnackbarMessage? = null,
@@ -39,7 +34,7 @@ data class DetailsViewState(
   val ratingSource: RatingSource = RatingSource.TMDB,
   val selectedTabIndex: Int = 0,
   val tabs: List<Tab> = emptyList(),
-  val forms: Map<Int, DetailsForm<*>> = emptyMap(),
+  val forms: DetailsForms = emptyMap(),
 ) {
   val mediaItem = when (mediaDetails) {
     is Movie -> MediaItem.Media.Movie(

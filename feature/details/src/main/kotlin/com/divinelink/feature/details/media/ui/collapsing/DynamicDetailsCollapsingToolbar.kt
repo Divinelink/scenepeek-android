@@ -25,11 +25,11 @@ fun DynamicDetailsCollapsingToolbar(
   ratingSource: RatingSource,
   userDetails: AccountMediaDetails?,
   hasTrailer: Boolean,
-  onAddToWatchlistClicked: () -> Unit,
-  onAddRateClicked: () -> Unit,
-  viewAllRatingsClicked: () -> Unit,
+  onAddToWatchlistClick: () -> Unit,
+  onAddRateClick: () -> Unit,
+  onShowAllRatingsClick: () -> Unit,
   onShowTitle: (Boolean) -> Unit,
-  onPlayTrailerClick: () -> Unit,
+  onWatchTrailerClick: () -> Unit,
   onBackdropLoaded: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -44,10 +44,10 @@ fun DynamicDetailsCollapsingToolbar(
         userDetails = userDetails,
         ratingSource = ratingSource,
         ratingCount = mediaDetails.ratingCount,
-        onAddToWatchListClick = onAddToWatchlistClicked,
-        onAddRateClick = onAddRateClicked,
-        onShowAllRatingsClick = viewAllRatingsClicked,
-        onPlayTrailerClick = {},
+        onAddToWatchListClick = onAddToWatchlistClick,
+        onAddRateClick = onAddRateClick,
+        onShowAllRatingsClick = onShowAllRatingsClick,
+        onWatchTrailerClick = onWatchTrailerClick,
       )
     }.first().measure(constraints)
 
@@ -85,10 +85,10 @@ fun DynamicDetailsCollapsingToolbar(
               userDetails = userDetails,
               ratingSource = ratingSource,
               ratingCount = mediaDetails.ratingCount,
-              onAddToWatchListClick = onAddToWatchlistClicked,
-              onAddRateClick = onAddRateClicked,
-              onShowAllRatingsClick = viewAllRatingsClicked,
-              onPlayTrailerClick = onPlayTrailerClick,
+              onAddToWatchListClick = onAddToWatchlistClick,
+              onAddRateClick = onAddRateClick,
+              onShowAllRatingsClick = onShowAllRatingsClick,
+              onWatchTrailerClick = onWatchTrailerClick,
             )
           }
         },

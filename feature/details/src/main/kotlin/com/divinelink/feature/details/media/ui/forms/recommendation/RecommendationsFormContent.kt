@@ -13,13 +13,13 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.details.R
-import com.divinelink.feature.details.media.DetailsData
 
 @Composable
 fun RecommendationsFormContent(
@@ -29,7 +29,7 @@ fun RecommendationsFormContent(
   onItemClick: (MediaItem.Media) -> Unit,
 ) {
   ScenePeekLazyColumn(
-    modifier = modifier.testTag(TestTags.Details.RECOMMENDATIONS_FORM),
+    modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
     contentPadding = PaddingValues(
       top = MaterialTheme.dimensions.keyline_16,
       start = MaterialTheme.dimensions.keyline_16,
@@ -40,6 +40,7 @@ fun RecommendationsFormContent(
     if (recommendations.items.isEmpty()) {
       item {
         BlankSlate(
+          modifier = Modifier.testTag(TestTags.Details.Recommendations.EMPTY),
           uiState = BlankSlateState.Custom(
             title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
             description = UIText.ResourceText(

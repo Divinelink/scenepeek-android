@@ -25,7 +25,6 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.designsystem.theme.textColorDisabled
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
@@ -124,7 +123,7 @@ private fun LoadMoreContent(modifier: Modifier = Modifier) {
     )
 
     Text(
-      color = MaterialTheme.colorScheme.textColorDisabled(),
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
       text = stringResource(id = R.string.load_more),
     )
   }

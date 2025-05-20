@@ -1,10 +1,10 @@
 package com.divinelink.core.network
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.data.details.mapper.api.reviews.map
+import com.divinelink.core.data.details.mapper.api.map
+import com.divinelink.core.fixtures.details.credits.SeriesCrewListFactory
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
-import com.divinelink.core.testing.factories.details.credits.SeriesCrewListFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json

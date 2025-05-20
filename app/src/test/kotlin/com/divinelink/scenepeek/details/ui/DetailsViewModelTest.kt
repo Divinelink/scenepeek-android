@@ -5,6 +5,7 @@ import androidx.compose.material3.SnackbarResult
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
@@ -18,6 +19,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -141,7 +143,12 @@ class DetailsViewModelTest {
   fun `given success reviews response then I expect ReviewsList`() = runTest {
     testRobot
       .mockFetchMediaDetails(
-        response = defaultDetails(MediaDetailsResult.ReviewsSuccess(reviewsList)),
+        response = defaultDetails(
+          MediaDetailsResult.ReviewsSuccess(
+            formOrder = MovieTab.Reviews.order,
+            reviews = reviewsList,
+          ),
+        ),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
@@ -151,7 +158,7 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = true,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          reviews = reviewsList,
+//          reviews = reviewsList,
         ),
       )
   }
@@ -167,7 +174,12 @@ class DetailsViewModelTest {
               ratingSource = RatingSource.TMDB,
             ),
           ),
-          Result.success(MediaDetailsResult.ReviewsSuccess(reviewsList)),
+          Result.success(
+            MediaDetailsResult.ReviewsSuccess(
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
+            ),
+          ),
           Result.success(
             MediaDetailsResult.AccountDetailsSuccess(
               AccountMediaDetailsFactory.NotRated(),
@@ -182,7 +194,7 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           mediaId = mediaId,
           isLoading = false,
-          reviews = reviewsList,
+//          reviews = reviewsList,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
           },
@@ -198,7 +210,8 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(
             MediaDetailsResult.ReviewsSuccess(
-              reviewsList,
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
             ),
           ),
           Result.success(
@@ -208,7 +221,8 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.SimilarSuccess(
-              similarMovies,
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
             ),
           ),
         ),
@@ -221,8 +235,8 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = true,
-          reviews = reviewsList,
-          similarMovies = similarMovies,
+//          reviews = reviewsList,
+//          similarMovies = similarMovies,
         ),
       )
   }
@@ -235,7 +249,8 @@ class DetailsViewModelTest {
           Result.success(MediaDetailsResult.Failure.FatalError()),
           Result.success(
             MediaDetailsResult.SimilarSuccess(
-              similarMovies,
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
             ),
           ),
           Result.success(
@@ -245,7 +260,8 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.ReviewsSuccess(
-              reviewsList,
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
             ),
           ),
         ),
@@ -257,8 +273,8 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           mediaId = mediaId,
           isLoading = false,
-          reviews = reviewsList,
-          similarMovies = similarMovies,
+//          reviews = reviewsList,
+//          similarMovies = similarMovies,
           error = MediaDetailsResult.Failure.FatalError().message,
           userDetails = AccountMediaDetailsFactory.NotRated(),
         ),
@@ -278,12 +294,14 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.SimilarSuccess(
-              similarMovies,
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
             ),
           ),
           Result.success(
             MediaDetailsResult.ReviewsSuccess(
-              reviewsList,
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
             ),
           ),
         ),
@@ -295,9 +313,9 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           mediaId = mediaId,
           isLoading = false,
-          reviews = reviewsList,
           userDetails = AccountMediaDetailsFactory.NotRated(),
-          similarMovies = similarMovies,
+//          reviews = reviewsList,
+//          similarMovies = similarMovies,
           error = MediaDetailsResult.Failure.Unknown.message,
         ),
       )
@@ -311,7 +329,8 @@ class DetailsViewModelTest {
           Result.failure(MediaDetailsException()),
           Result.success(
             MediaDetailsResult.SimilarSuccess(
-              similarMovies,
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
             ),
           ),
           Result.success(
@@ -321,7 +340,8 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.ReviewsSuccess(
-              reviewsList,
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
             ),
           ),
         ),
@@ -334,8 +354,8 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           userDetails = AccountMediaDetailsFactory.NotRated(),
           isLoading = false,
-          reviews = reviewsList,
-          similarMovies = similarMovies,
+//          reviews = reviewsList,
+//          similarMovies = similarMovies,
           error = MediaDetailsResult.Failure.FatalError().message,
         ),
       )
@@ -354,12 +374,14 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.SimilarSuccess(
-              similarMovies,
+              formOrder = MovieTab.Recommendations.order,
+              similar = similarMovies,
             ),
           ),
           Result.success(
             MediaDetailsResult.ReviewsSuccess(
-              reviewsList,
+              formOrder = MovieTab.Reviews.order,
+              reviews = reviewsList,
             ),
           ),
         ),
@@ -371,8 +393,8 @@ class DetailsViewModelTest {
           mediaType = MediaType.MOVIE,
           mediaId = mediaId,
           isLoading = false,
-          reviews = reviewsList,
-          similarMovies = similarMovies,
+//          reviews = reviewsList,
+//          similarMovies = similarMovies,
           userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
             withId(mediaId)
           },
@@ -1110,7 +1132,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails,
-          tvCredits = credits,
+//          tvCredits = credits,
         ),
       )
   }

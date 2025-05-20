@@ -10,17 +10,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 
 @Composable
-fun PlayTrailerButton(
+fun WatchTrailerButton(
   modifier: Modifier = Modifier,
   onClick: () -> Unit,
 ) {
   TextButton(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Details.WATCH_TRAILER),
     onClick = onClick,
   ) {
     Icon(Icons.Default.SmartDisplay, null)

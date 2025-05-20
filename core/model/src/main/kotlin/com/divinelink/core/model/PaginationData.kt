@@ -1,4 +1,4 @@
-package com.divinelink.core.network
+package com.divinelink.core.model
 
 data class PaginationData<T>(
   val totalPages: Int,

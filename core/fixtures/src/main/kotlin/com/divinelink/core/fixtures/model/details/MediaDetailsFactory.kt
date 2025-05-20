@@ -1,5 +1,6 @@
 package com.divinelink.core.fixtures.model.details
 
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
@@ -44,7 +45,7 @@ object MediaDetailsFactory {
     ratingCount = RatingCount.tmdb(9.5, 12_345),
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
-    seasons = listOf(),
+    seasons = SeasonFactory.all(),
     creators = listOf(
       Person(
         id = 1216630,

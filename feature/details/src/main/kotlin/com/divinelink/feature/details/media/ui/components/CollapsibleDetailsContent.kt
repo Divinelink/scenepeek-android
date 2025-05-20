@@ -33,7 +33,7 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.PlayTrailerButton
+import com.divinelink.core.ui.components.WatchTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.extension.getColorRating
@@ -52,7 +52,7 @@ fun CollapsibleDetailsContent(
   onAddToWatchListClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
-  onPlayTrailerClick: () -> Unit,
+  onWatchTrailerClick: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -83,11 +83,11 @@ fun CollapsibleDetailsContent(
       ) {
         TitleDetails(mediaDetails = mediaDetails)
         AnimatedVisibility(hasTrailer) {
-          PlayTrailerButton(
+          WatchTrailerButton(
             modifier = Modifier
               .padding(top = MaterialTheme.dimensions.keyline_8)
               .offset(x = -MaterialTheme.dimensions.keyline_12),
-            onClick = onPlayTrailerClick,
+            onClick = onWatchTrailerClick,
           )
         }
         TextButton(
@@ -174,7 +174,7 @@ private fun DetailsRatingText(
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
 
     Text(
-      modifier = Modifier.testTag(TestTags.Details.YOUR_RATING),
+      modifier = Modifier.testTag(TestTags.Details.YOUR_RATING.format(accountRating)),
       text = accountRating.toString(),
       color = color,
       style = MaterialTheme.typography.titleMedium,
