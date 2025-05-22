@@ -22,10 +22,11 @@ sealed class PersonTab {
   )
 
   companion object {
-    val entries: List<Tab> = listOf(
-      About,
-      Movies,
-      TVShows,
-    )
+    val entries: List<Tab>
+      get() = listOf(
+        About,
+        Movies,
+        TVShows,
+      )
   }
 }

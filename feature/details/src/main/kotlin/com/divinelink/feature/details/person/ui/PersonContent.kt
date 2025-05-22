@@ -272,11 +272,13 @@ fun PersonContent(
                     PersonalDetails(personDetails)
                   }
 
-                  item {
-                    KnownForSection(
-                      list = uiState.knownForCredits ?: emptyList(),
-                      onMediaClick = onMediaClick,
-                    )
+                  if (!uiState.knownForCredits.isNullOrEmpty()) {
+                    item {
+                      KnownForSection(
+                        list = uiState.knownForCredits,
+                        onMediaClick = onMediaClick,
+                      )
+                    }
                   }
 
                   item {

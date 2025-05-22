@@ -93,7 +93,6 @@ object TestTags {
   object Person {
     const val PERSONAL_DETAILS = "Person Personal Details"
     const val CONTENT_LIST = "Person Details Lazy List"
-    const val TAB_BAR = "Person Tab Bar %s"
     const val DEPARTMENT_STICKY_HEADER = "Person Department Sticky - %s"
 
     const val PERSON_NAME = "Person Name on Collapsible Content"

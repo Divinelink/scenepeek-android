@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -25,6 +26,7 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.KnownForDepartment
+import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.ComposeTest
@@ -34,7 +36,6 @@ import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
-import com.divinelink.feature.details.person.ui.tab.PersonTab
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.test.runTest
@@ -127,8 +128,8 @@ class PersonScreenTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsDisplayed()
       onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Person.COLLAPSIBLE_CONTENT).assertIsDisplayed()
-      onNodeWithTag(TestTags.Person.PERSON_NAME).assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Person.COLLAPSIBLE_CONTENT).onFirst().assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Person.PERSON_NAME).onFirst().assertIsDisplayed()
     }
   }
 
@@ -568,7 +569,7 @@ class PersonScreenTest : ComposeTest() {
         Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
       )
 
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).performScrollToIndex(1)
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
 
@@ -616,7 +617,7 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
 
-      onNodeWithTag(TestTags.Person.CONTENT_LIST).performScrollToIndex(1)
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToIndex(1)
 
       onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertDoesNotExist()
 
@@ -649,7 +650,7 @@ class PersonScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       // Switch to Movies tab
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
       onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
 
       // Switch to TV Shows tab
@@ -800,14 +801,14 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
 
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
 
       // Verify empty state
       onNodeWithTag(
         TestTags.Person.EMPTY_CONTENT_CREDIT_CARD.format(MediaType.MOVIE.name),
       ).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
       // Verify empty state
       onNodeWithTag(
@@ -850,7 +851,7 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
       // Switch to Movies tab
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
 
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
       onNodeWithTag(
@@ -862,7 +863,7 @@ class PersonScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Writing")).assertIsDisplayed()
 
       // Switch to TV Shows tab
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
       // Ensuring department is updated when switching tabs
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
@@ -956,7 +957,7 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
       // Switch to Movies tab
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.MOVIES.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.Movies.value)).performClick()
 
       composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
         .performScrollToNode(
@@ -966,15 +967,15 @@ class PersonScreenTest : ComposeTest() {
 
       composeTestRule.onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false))
         .performScrollToNode(
-          matcher = hasText(text = "The 40 Year Old Virgin"),
+          matcher = hasText(text = "Get Smart"),
         )
 
-      onNodeWithText("The 40 Year Old Virgin").assertIsDisplayed()
+      onNodeWithText("Get Smart").assertIsDisplayed()
 
       onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
       onNodeWithText("Bruce Almighty").assertIsDisplayed()
-      onNodeWithText("The 40 Year Old Virgin").assertIsNotDisplayed()
+      onNodeWithText("Get Smart").assertIsNotDisplayed()
     }
   }
 
@@ -1022,7 +1023,7 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
       // Switch to Movies tab
-      onNodeWithTag(TestTags.Person.TAB_BAR.format(PersonTab.TV_SHOWS.value)).performClick()
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(PersonTab.TVShows.value)).performClick()
 
       composeTestRule.onNodeWithTag(TestTags.Person.TV_SHOWS_FORM.format(false))
         .performScrollToNode(
