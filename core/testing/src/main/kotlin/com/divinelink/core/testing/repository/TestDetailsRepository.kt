@@ -1,15 +1,15 @@
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.network.media.model.MediaRequestApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -21,7 +21,7 @@ class TestDetailsRepository {
   val mock: DetailsRepository = mock()
 
   fun mockFetchMediaDetails(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Result<MediaDetails>,
   ) {
     whenever(
@@ -32,29 +32,29 @@ class TestDetailsRepository {
   }
 
   fun mockFetchMovieReviews(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Result<List<Review>>,
   ) {
     whenever(
-      mock.fetchMovieReviews(request),
+      mock.fetchMediaReviews(request),
     ).thenReturn(
       flowOf(response),
     )
   }
 
   fun mockFetchSimilarMovies(
-    request: SimilarRequestApi,
-    response: Result<List<MediaItem.Media>>,
+    request: MediaRequestApi.Movie,
+    response: Result<PaginationData<MediaItem.Media>>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request),
+      mock.fetchRecommendedMovies(request),
     ).thenReturn(
       flowOf(response),
     )
   }
 
   fun mockFetchMovieVideos(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Result<List<Video>>,
   ) {
     whenever(

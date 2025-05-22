@@ -9,13 +9,14 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCredit
+import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
-import com.divinelink.feature.details.person.ui.tab.PersonTab
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -153,8 +154,8 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -229,16 +230,16 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           credits = PersonCastCreditFactory.knownFor(),
         ),
       )
-      .onTabSelected(PersonTab.TV_SHOWS)
+      .onTabSelected(PersonTab.TVShows)
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -246,8 +247,8 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
         ),
       )
@@ -274,18 +275,18 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           credits = PersonCastCreditFactory.knownFor(),
           layoutStyle = LayoutStyle.LIST,
         ),
       )
-      .onTabSelected(PersonTab.TV_SHOWS)
+      .onTabSelected(PersonTab.TVShows)
       .onUpdateLayoutStyle()
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -293,8 +294,8 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           layoutStyle = LayoutStyle.GRID,
         ),
@@ -302,7 +303,7 @@ class PersonViewModelTest {
       .onUpdateLayoutStyle()
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -310,8 +311,8 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           layoutStyle = LayoutStyle.LIST,
         ),
@@ -339,17 +340,17 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           credits = PersonCastCreditFactory.knownFor(),
         ),
       )
-      .onTabSelected(PersonTab.TV_SHOWS)
+      .onTabSelected(PersonTab.TVShows)
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -357,13 +358,13 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows()
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows()
               .filterKeys { it == "Directing" },
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to emptyList(),
-            PersonTab.TV_SHOWS.order to listOf(CreditFilter.Department("Directing", 4)),
+            PersonTab.Movies.order to emptyList(),
+            PersonTab.TVShows.order to listOf(CreditFilter.Department("Directing", 4)),
           ),
         ),
       )
@@ -382,11 +383,11 @@ class PersonViewModelTest {
         ),
       )
       .buildViewModel()
-      .onTabSelected(PersonTab.TV_SHOWS)
+      .onTabSelected(PersonTab.TVShows)
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -394,20 +395,20 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows()
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows()
               .filterKeys { it == "Directing" },
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to emptyList(),
-            PersonTab.TV_SHOWS.order to listOf(CreditFilter.Department("Directing", 4)),
+            PersonTab.Movies.order to emptyList(),
+            PersonTab.TVShows.order to listOf(CreditFilter.Department("Directing", 4)),
           ),
         ),
       )
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.TV_SHOWS.order,
+          selectedTabIndex = PersonTab.TVShows.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -415,12 +416,12 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to emptyList(),
-            PersonTab.TV_SHOWS.order to emptyList(),
+            PersonTab.Movies.order to emptyList(),
+            PersonTab.TVShows.order to emptyList(),
           ),
         ),
       )
@@ -439,11 +440,11 @@ class PersonViewModelTest {
         ),
       )
       .buildViewModel()
-      .onTabSelected(PersonTab.MOVIES)
+      .onTabSelected(PersonTab.Movies)
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.MOVIES.order,
+          selectedTabIndex = PersonTab.Movies.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -451,20 +452,20 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies()
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies()
               .filterKeys { it == "Directing" },
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to listOf(CreditFilter.Department("Directing", 4)),
-            PersonTab.TV_SHOWS.order to emptyList(),
+            PersonTab.Movies.order to listOf(CreditFilter.Department("Directing", 4)),
+            PersonTab.TVShows.order to emptyList(),
           ),
         ),
       )
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.MOVIES.order,
+          selectedTabIndex = PersonTab.Movies.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -472,12 +473,12 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to emptyList(),
-            PersonTab.TV_SHOWS.order to emptyList(),
+            PersonTab.Movies.order to emptyList(),
+            PersonTab.TVShows.order to emptyList(),
           ),
         ),
       )
@@ -500,7 +501,7 @@ class PersonViewModelTest {
       .onApplyFilter(CreditFilter.Department("Directing", 4))
       .assertUiState(
         createState(
-          selectedTabIndex = PersonTab.ABOUT.order,
+          selectedTabIndex = PersonTab.About.order,
           personDetails = PersonDetailsUiState.Data.Prefetch(
             PersonDetailsFactory.steveCarell().person,
           ),
@@ -508,12 +509,12 @@ class PersonViewModelTest {
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = GroupedPersonCreditsSample.tvShows(),
           filteredCredits = mapOf(
-            PersonTab.MOVIES.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TV_SHOWS.order to GroupedPersonCreditsSample.tvShows(),
+            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
+            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           filters = mapOf(
-            PersonTab.MOVIES.order to emptyList(),
-            PersonTab.TV_SHOWS.order to emptyList(),
+            PersonTab.Movies.order to emptyList(),
+            PersonTab.TVShows.order to emptyList(),
           ),
         ),
       )
@@ -528,21 +529,21 @@ class PersonViewModelTest {
     tvShows: GroupedPersonCredits = emptyMap(),
     credits: List<PersonCredit>? = null,
     dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
-    tabs: List<PersonTab> = PersonTab.entries,
+    tabs: List<Tab> = PersonTab.entries,
     filters: Map<Int, List<CreditFilter>> = mapOf(
-      PersonTab.MOVIES.order to emptyList(),
-      PersonTab.TV_SHOWS.order to emptyList(),
+      PersonTab.Movies.order to emptyList(),
+      PersonTab.TVShows.order to emptyList(),
     ),
     filteredCredits: Map<Int, GroupedPersonCredits> = mapOf(
-      PersonTab.MOVIES.order to emptyMap(),
-      PersonTab.TV_SHOWS.order to emptyMap(),
+      PersonTab.Movies.order to emptyMap(),
+      PersonTab.TVShows.order to emptyMap(),
     ),
     layoutStyle: LayoutStyle = LayoutStyle.LIST,
   ): PersonUiState {
     val forms = mapOf(
-      PersonTab.ABOUT.order to PersonForm.About(personDetails),
-      PersonTab.MOVIES.order to PersonForm.Movies(movies),
-      PersonTab.TV_SHOWS.order to PersonForm.TvShows(tvShows),
+      PersonTab.About.order to PersonForm.About(personDetails),
+      PersonTab.Movies.order to PersonForm.Movies(movies),
+      PersonTab.TVShows.order to PersonForm.TvShows(tvShows),
     )
 
     return PersonUiState(

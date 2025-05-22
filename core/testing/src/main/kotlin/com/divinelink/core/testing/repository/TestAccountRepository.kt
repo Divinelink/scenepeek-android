@@ -1,8 +1,8 @@
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.account.AccountRepository
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.PaginationData
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

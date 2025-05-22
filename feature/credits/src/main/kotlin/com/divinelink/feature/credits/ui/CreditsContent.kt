@@ -32,6 +32,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.credit.PersonItem
 import com.divinelink.feature.credits.provider.CreditsUiStateParameterProvider
 import kotlinx.coroutines.launch
 

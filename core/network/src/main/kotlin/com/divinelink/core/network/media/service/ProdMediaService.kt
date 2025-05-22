@@ -1,12 +1,10 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.network.client.TMDbClient
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
@@ -23,6 +21,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestAp
 import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
 import kotlinx.coroutines.flow.Flow
@@ -71,7 +70,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun fetchDetails(request: DetailsRequestApi): Flow<DetailsResponseApi> = flow {
+  override fun fetchDetails(request: MediaRequestApi): Flow<DetailsResponseApi> = flow {
     val url = buildFetchDetailsUrl(media = request.mediaType, id = request.id)
 
     val response = restClient.get<DetailsResponseApi>(url = url)
@@ -79,7 +78,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun fetchReviews(request: DetailsRequestApi): Flow<ReviewsResponseApi> = flow {
+  override fun fetchReviews(request: MediaRequestApi): Flow<ReviewsResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
     val url = baseUrl +
       "${request.id}" +
@@ -92,20 +91,34 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun fetchSimilarMovies(request: SimilarRequestApi): Flow<SimilarResponseApi> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+  override fun fetchRecommendedMovies(request: MediaRequestApi.Movie): Flow<MoviesResponseApi> =
+    flow {
+      val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
+      val url = baseUrl +
+        "${request.id}" +
+        "/recommendations?" +
+        "&language=en-US" +
+        "&include_adult=false"
+
+      val response = restClient.get<MoviesResponseApi>(url = url)
+
+      emit(response)
+    }
+
+  override fun fetchRecommendedTv(request: MediaRequestApi.TV): Flow<TvResponseApi> = flow {
+    val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
     val url = baseUrl +
       "${request.id}" +
       "/recommendations?" +
       "&language=en-US" +
       "&include_adult=false"
 
-    val response = restClient.get<SimilarResponseApi>(url = url)
+    val response = restClient.get<TvResponseApi>(url = url)
 
     emit(response)
   }
 
-  override fun fetchVideos(request: DetailsRequestApi): Flow<VideosResponseApi> = flow {
+  override fun fetchVideos(request: MediaRequestApi): Flow<VideosResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/${request.mediaType.value}/"
     val url = baseUrl +
       "${request.id}" +

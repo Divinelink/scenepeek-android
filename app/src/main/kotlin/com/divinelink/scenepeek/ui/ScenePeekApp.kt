@@ -1,5 +1,6 @@
 package com.divinelink.scenepeek.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -56,6 +57,7 @@ fun ScenePeekApp(
   val snackbarHostState = remember { SnackbarHostState() }
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
+  val showBottomNavigation by state.showBottomNavigation.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
@@ -112,7 +114,7 @@ fun ScenePeekApp(
       snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
       bottomBar = {
         Column {
-          if (!showOnboarding) {
+          AnimatedVisibility(!showOnboarding && showBottomNavigation) {
             AppNavigationBar(
               windowInsets = if (
                 networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial

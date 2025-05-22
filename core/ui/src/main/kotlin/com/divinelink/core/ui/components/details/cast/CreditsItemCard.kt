@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -104,7 +104,11 @@ fun CreditsItemCard(
               text = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S && obfuscateEpisodes) {
                 ""
               } else {
-                stringResource(R.string.core_ui_episode_count, episodes)
+                pluralStringResource(
+                  id = R.plurals.core_ui_episode_count,
+                  count = episodes,
+                  episodes,
+                )
               },
               maxLines = 1,
               style = MaterialTheme.typography.bodySmall,

@@ -16,11 +16,17 @@ import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.media.DetailsData
+import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
@@ -69,6 +75,31 @@ class DetailsViewModel(
       mediaId = route.id,
       mediaType = route.mediaType,
       isLoading = true,
+      tabs = when (route.mediaType) {
+        MediaType.TV -> TvTab.entries
+        MediaType.MOVIE -> MovieTab.entries
+        else -> emptyList()
+      },
+      forms = when (route.mediaType) {
+        MediaType.TV -> TvTab.entries.associate { tab ->
+          tab.order to when (tab) {
+            TvTab.About -> DetailsForm.Loading
+            TvTab.Seasons -> DetailsForm.Loading
+            TvTab.Cast -> DetailsForm.Loading
+            TvTab.Recommendations -> DetailsForm.Loading
+            TvTab.Reviews -> DetailsForm.Loading
+          }
+        }
+        MediaType.MOVIE -> MovieTab.entries.associate { tab ->
+          tab.order to when (tab) {
+            MovieTab.About -> DetailsForm.Loading
+            MovieTab.Cast -> DetailsForm.Loading
+            MovieTab.Recommendations -> DetailsForm.Loading
+            MovieTab.Reviews -> DetailsForm.Loading
+          }
+        }
+        else -> emptyMap()
+      },
     ),
   )
   val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
@@ -94,10 +125,10 @@ class DetailsViewModel(
 
   init {
     val requestApi = when (viewState.value.mediaType) {
-      MediaType.TV -> DetailsRequestApi.TV(route.id)
-      MediaType.MOVIE -> DetailsRequestApi.Movie(route.id)
-      MediaType.PERSON -> DetailsRequestApi.Unknown
-      MediaType.UNKNOWN -> DetailsRequestApi.Unknown
+      MediaType.TV -> MediaRequestApi.TV(route.id)
+      MediaType.MOVIE -> MediaRequestApi.Movie(route.id)
+      MediaType.PERSON -> MediaRequestApi.Unknown
+      MediaType.UNKNOWN -> MediaRequestApi.Unknown
     }
 
     getMediaDetailsUseCase(parameters = requestApi)
@@ -105,11 +136,47 @@ class DetailsViewModel(
         result.onSuccess {
           _viewState.update { viewState ->
             when (result.data) {
-              is MediaDetailsResult.DetailsSuccess -> viewState.copy(
-                isLoading = false,
-                mediaDetails = (result.data as MediaDetailsResult.DetailsSuccess).mediaDetails,
-                ratingSource = (result.data as MediaDetailsResult.DetailsSuccess).ratingSource,
-              )
+              is MediaDetailsResult.DetailsSuccess -> {
+                val data = result.data as MediaDetailsResult.DetailsSuccess
+
+                if (data.mediaDetails is Movie) {
+                  val aboutOrder = MovieTab.About.order
+                  val castOrder = MovieTab.Cast.order
+                  val updatedForms = viewState.forms.toMutableMap().apply {
+                    this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
+                    this[castOrder] = DetailsForm.Content(
+                      DetailsData.Cast(
+                        isTv = false,
+                        items = data.mediaDetails.cast,
+                      ),
+                    )
+                  }
+
+                  viewState.copy(
+                    isLoading = false,
+                    forms = updatedForms,
+                    mediaDetails = data.mediaDetails,
+                    ratingSource = data.ratingSource,
+                  )
+                } else {
+                  data.mediaDetails as TV
+                  val aboutOrder = TvTab.About.order
+                  val seasonsTabOrder = TvTab.Seasons.order
+                  val updatedForms = viewState.forms.toMutableMap().apply {
+                    this[aboutOrder] = DetailsForm.Content(getAboutDetailsData(data))
+                    this[seasonsTabOrder] = DetailsForm.Content(
+                      DetailsData.Seasons(data.mediaDetails.seasons),
+                    )
+                  }
+
+                  viewState.copy(
+                    isLoading = false,
+                    forms = updatedForms,
+                    mediaDetails = data.mediaDetails,
+                    ratingSource = data.ratingSource,
+                  )
+                }
+              }
 
               is MediaDetailsResult.RatingSuccess -> viewState.copy(
                 mediaDetails = viewState.mediaDetails?.copy(
@@ -117,13 +184,26 @@ class DetailsViewModel(
                 ),
               )
 
-              is MediaDetailsResult.ReviewsSuccess -> viewState.copy(
-                reviews = (result.data as MediaDetailsResult.ReviewsSuccess).reviews,
-              )
+              is MediaDetailsResult.ReviewsSuccess -> {
+                val data = result.data as MediaDetailsResult.ReviewsSuccess
 
-              is MediaDetailsResult.SimilarSuccess -> viewState.copy(
-                similarMovies = (result.data as MediaDetailsResult.SimilarSuccess).similar,
-              )
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[data.formOrder] = DetailsForm.Content(DetailsData.Reviews(data.reviews))
+                }
+
+                viewState.copy(forms = updatedForms)
+              }
+
+              is MediaDetailsResult.SimilarSuccess -> {
+                val data = result.data as MediaDetailsResult.SimilarSuccess
+
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[data.formOrder] = DetailsForm.Content(
+                    DetailsData.Recommendations(data.similar),
+                  )
+                }
+                viewState.copy(forms = updatedForms)
+              }
 
               is MediaDetailsResult.VideosSuccess -> viewState.copy(
                 trailer = (result.data as MediaDetailsResult.VideosSuccess).trailer,
@@ -131,7 +211,21 @@ class DetailsViewModel(
 
               is MediaDetailsResult.CreditsSuccess -> {
                 val credits = (result.data as MediaDetailsResult.CreditsSuccess).aggregateCredits
-                viewState.copy(tvCredits = credits)
+
+                val castOrder = TvTab.Cast.order
+                val updatedForms = viewState.forms.toMutableMap().apply {
+                  this[castOrder] = DetailsForm.Content(
+                    DetailsData.Cast(
+                      isTv = true,
+                      items = credits.cast,
+                    ),
+                  )
+                }
+
+                viewState.copy(
+                  isLoading = false,
+                  forms = updatedForms,
+                )
               }
 
               is MediaDetailsResult.AccountDetailsSuccess -> {
@@ -458,6 +552,12 @@ class DetailsViewModel(
     }
   }
 
+  fun onTabSelected(tab: Int) {
+    _viewState.update { uiState ->
+      uiState.copy(selectedTabIndex = tab)
+    }
+  }
+
   fun onMediaSourceClick(source: RatingSource) {
     val mediaDetails = viewState.value.mediaDetails ?: return
     val url = mediaDetails.externalUrl(source) ?: return
@@ -495,4 +595,16 @@ class DetailsViewModel(
       viewState.copy(showRateDialog = false)
     }
   }
+
+  private fun getAboutDetailsData(result: MediaDetailsResult.DetailsSuccess): DetailsData.About =
+    DetailsData.About(
+      overview = result.mediaDetails.overview,
+      tagline = result.mediaDetails.tagline,
+      genres = result.mediaDetails.genres,
+      creators = when (result.mediaDetails) {
+        is TV -> result.mediaDetails.creators
+        is Movie -> result.mediaDetails.creators
+        else -> null
+      },
+    )
 }

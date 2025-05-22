@@ -84,7 +84,7 @@ fun DetailedMediaItem(
             modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),
             text = mediaItem.releaseDate,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
 

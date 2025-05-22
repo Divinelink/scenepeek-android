@@ -4,20 +4,21 @@ import app.cash.turbine.test
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
+import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
-import com.divinelink.core.model.details.Review
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -52,31 +53,9 @@ class GetMediaDetailsUseCaseTest {
   private lateinit var fakeGetDetailsActionItemsUseCase: FakeGetDetailsActionItemsUseCase
   private lateinit var preferenceStorage: FakePreferenceStorage
 
-  private val request = DetailsRequestApi.Movie(movieId = 555)
+  private val request = MediaRequestApiFactory.movie()
   private val movieDetails = MediaDetailsFactory.FightClub()
   private val tvDetails = MediaDetailsFactory.TheOffice()
-
-  private val reviewsList = (1..10).map {
-    Review(
-      authorName = "Lorem Ipsum name $it",
-      rating = it,
-      content = "Lorame Ipsum content $it",
-      date = "2022-10-10",
-    )
-  }.toList()
-
-  private val similarList = (1..10).map {
-    MediaItem.Media.Movie(
-      id = it,
-      name = "",
-      posterPath = null,
-      releaseDate = "",
-      overview = "",
-      isFavorite = null,
-      voteAverage = 0.0,
-      voteCount = 0,
-    )
-  }.toList()
 
   @Before
   fun setUp() {
@@ -94,7 +73,7 @@ class GetMediaDetailsUseCaseTest {
 
     val useCase = createGetMediaDetailsUseCase()
 
-    useCase(DetailsRequestApi.Unknown).test {
+    useCase(MediaRequestApi.Unknown).test {
       assertThat(this.awaitItem().toString()).isEqualTo(expectedResult.toString())
       this.awaitComplete()
     }
@@ -299,7 +278,7 @@ class GetMediaDetailsUseCaseTest {
     preferenceStorage.setMovieRatingSource(RatingSource.IMDB)
     preferenceStorage.setTvRatingSource(RatingSource.TRAKT)
 
-    val tvRequest = DetailsRequestApi.TV(555)
+    val tvRequest = MediaRequestApi.TV(555)
 
     repository.mockFetchMediaDetails(tvRequest, Result.success(tvDetails))
 
@@ -353,24 +332,33 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `successfully fetch movie reviews`() = runTest {
     repository.mockFetchMovieReviews(
-      DetailsRequestApi.Movie(movieId = 555),
-      Result.success(reviewsList),
+      request = MediaRequestApiFactory.movie(),
+      response = Result.success(ReviewFactory.ReviewList()),
     )
 
     val flow = createGetMediaDetailsUseCase()
 
     val result = flow(request).last()
 
-    assertThat(result).isEqualTo(Result.success(MediaDetailsResult.ReviewsSuccess(reviewsList)))
+    assertThat(
+      result,
+    ).isEqualTo(
+      Result.success(
+        MediaDetailsResult.ReviewsSuccess(
+          formOrder = MovieTab.Reviews.order,
+          reviews = ReviewFactory.ReviewList(),
+        ),
+      ),
+    )
   }
 
   @Test
   fun `successfully fetch similar movies`() = runTest {
     repository.mockFetchMediaDetails(request, Result.success(movieDetails))
-    repository.mockFetchMovieReviews(request, Result.success(reviewsList))
+    repository.mockFetchMovieReviews(request, Result.success(ReviewFactory.ReviewList()))
     repository.mockFetchSimilarMovies(
-      SimilarRequestApi.Movie(movieId = 555),
-      Result.success(similarList),
+      MediaRequestApiFactory.movie(),
+      Result.success(MediaItemFactory.moviesPagination()),
     )
     val useCase = createGetMediaDetailsUseCase()
 
@@ -384,10 +372,20 @@ class GetMediaDetailsUseCaseTest {
         ),
       )
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.SimilarSuccess(similarList)),
+        Result.success(
+          MediaDetailsResult.SimilarSuccess(
+            formOrder = MovieTab.Recommendations.order,
+            similar = MediaItemFactory.moviesPagination().list,
+          ),
+        ),
       )
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.ReviewsSuccess(reviewsList)),
+        Result.success(
+          MediaDetailsResult.ReviewsSuccess(
+            formOrder = MovieTab.Reviews.order,
+            reviews = ReviewFactory.ReviewList(),
+          ),
+        ),
       )
       this.awaitComplete()
     }
@@ -396,12 +394,12 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `test similar movies are not fetched if details has error`() = runTest {
     repository.mockFetchMovieReviews(
-      DetailsRequestApi.Movie(movieId = 555),
-      Result.success(reviewsList),
+      MediaRequestApiFactory.movie(),
+      Result.success(ReviewFactory.ReviewList()),
     )
     repository.mockFetchSimilarMovies(
-      SimilarRequestApi.Movie(movieId = 555),
-      Result.success(similarList),
+      MediaRequestApiFactory.movie(),
+      Result.success(MediaItemFactory.moviesPagination()),
     )
 
     val flow = createGetMediaDetailsUseCase()
@@ -434,7 +432,7 @@ class GetMediaDetailsUseCaseTest {
     val expectedResult = Result.failure<Exception>(MediaDetailsException())
 
     repository.mockFetchSimilarMovies(
-      SimilarRequestApi.Movie(movieId = 555),
+      MediaRequestApiFactory.movie(),
       Result.failure(SimilarException()),
     )
 
@@ -450,7 +448,7 @@ class GetMediaDetailsUseCaseTest {
     moviesRepository.mockCheckFavorite(555, MediaType.MOVIE, Result.success(false))
     repository.mockFetchMediaDetails(request, Result.success(movieDetails))
     repository.mockFetchSimilarMovies(
-      SimilarRequestApi.Movie(movieId = 555),
+      MediaRequestApiFactory.movie(),
       Result.failure(SimilarException()),
     )
     val flow = createGetMediaDetailsUseCase()
@@ -498,7 +496,7 @@ class GetMediaDetailsUseCaseTest {
         key = "type",
       ),
     )
-    repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.success(videoList))
+    repository.mockFetchMovieVideos(MediaRequestApiFactory.movie(), Result.success(videoList))
 
     val useCase = createGetMediaDetailsUseCase()
 
@@ -520,7 +518,7 @@ class GetMediaDetailsUseCaseTest {
         key = "type",
       ),
     )
-    repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.success(videoList))
+    repository.mockFetchMovieVideos(MediaRequestApiFactory.movie(), Result.success(videoList))
 
     val useCase = createGetMediaDetailsUseCase()
 
@@ -532,7 +530,7 @@ class GetMediaDetailsUseCaseTest {
   @Test
   fun `test fetch video for tv with success`() = runTest {
     val videoList = VideoFactory.all()
-    val tvRequest = DetailsRequestApi.TV(555)
+    val tvRequest = MediaRequestApiFactory.tv()
 
     repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
 
@@ -550,7 +548,7 @@ class GetMediaDetailsUseCaseTest {
         ),
       )
       assertThat(this.awaitItem()).isEqualTo(
-        Result.success(MediaDetailsResult.VideosSuccess(videoList.first())),
+        Result.success(MediaDetailsResult.VideosSuccess(VideoFactory.Youtube())),
       )
       this.awaitComplete()
     }
@@ -558,7 +556,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `test aggregate credits are fetched for tv`() = runTest {
-    val tvRequest = DetailsRequestApi.TV(555)
+    val tvRequest = MediaRequestApiFactory.tv()
     repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.success(AggregatedCreditsFactory.credits()))
@@ -586,7 +584,7 @@ class GetMediaDetailsUseCaseTest {
 
   @Test
   fun `test aggregate credits with failure for tv`() = runTest {
-    val tvRequest = DetailsRequestApi.TV(555)
+    val tvRequest = MediaRequestApiFactory.tv()
     repository.mockFetchMediaDetails(tvRequest, Result.success(movieDetails))
     repository.mockFetchMovieVideos(tvRequest, Result.success(emptyList()))
     repository.mockFetchAggregateCredits(Result.failure(Exception()))
@@ -636,7 +634,10 @@ class GetMediaDetailsUseCaseTest {
   fun `catch error case in videos`() = runTest {
     val expectedResult = Result.failure<Exception>(Exception("Oops."))
 
-    repository.mockFetchMovieVideos(DetailsRequestApi.Movie(555), Result.failure(VideosException()))
+    repository.mockFetchMovieVideos(
+      MediaRequestApiFactory.movie(),
+      Result.failure(VideosException()),
+    )
 
     val useCase = createGetMediaDetailsUseCase()
 

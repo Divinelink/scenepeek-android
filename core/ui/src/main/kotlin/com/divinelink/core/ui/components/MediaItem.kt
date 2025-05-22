@@ -128,7 +128,7 @@ fun MediaItem(
         media.releaseDate.take(4)
       },
       style = MaterialTheme.typography.labelMedium,
-      color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 
     Spacer(modifier = Modifier.height(offset))

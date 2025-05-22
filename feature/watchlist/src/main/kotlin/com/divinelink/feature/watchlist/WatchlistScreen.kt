@@ -1,12 +1,12 @@
 package com.divinelink.feature.watchlist
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -128,16 +128,23 @@ private fun WatchlistTabs(
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
-  Row {
-    SecondaryTabRow(selectedTabIndex = selectedIndex) {
-      tabs.forEachIndexed { index, tab ->
-        Tab(
-          modifier = Modifier.testTag(TestTags.Watchlist.TAB_BAR.format(tab.value)),
-          text = { Text(stringResource(tab.titleRes)) },
-          selected = index == selectedIndex,
-          onClick = { onClick(index) },
-        )
-      }
+  SecondaryTabRow(selectedTabIndex = selectedIndex) {
+    tabs.forEachIndexed { index, tab ->
+      Tab(
+        modifier = Modifier.testTag(TestTags.Watchlist.TAB_BAR.format(tab.value)),
+        text = {
+          Text(
+            text = stringResource(tab.titleRes),
+            color = if (index == selectedIndex) {
+              MaterialTheme.colorScheme.primary
+            } else {
+              MaterialTheme.colorScheme.onSurfaceVariant
+            },
+          )
+        },
+        selected = index == selectedIndex,
+        onClick = { onClick(index) },
+      )
     }
   }
 }

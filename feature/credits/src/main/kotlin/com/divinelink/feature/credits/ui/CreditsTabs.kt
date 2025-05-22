@@ -1,7 +1,7 @@
 package com.divinelink.feature.credits.ui
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -18,16 +18,23 @@ fun CreditsTabs(
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
-  Row {
-    SecondaryTabRow(selectedTabIndex = selectedIndex) {
-      tabs.forEachIndexed { index, tab ->
-        Tab(
-          modifier = Modifier.testTag(TestTags.Credits.TAB_BAR.format(tab)),
-          text = { Text(stringResource(tab.titleRes, tab.size)) },
-          selected = index == selectedIndex,
-          onClick = { onClick(index) },
-        )
-      }
+  SecondaryTabRow(selectedTabIndex = selectedIndex) {
+    tabs.forEachIndexed { index, tab ->
+      Tab(
+        modifier = Modifier.testTag(TestTags.Credits.TAB_BAR.format(tab)),
+        text = {
+          Text(
+            text = stringResource(tab.titleRes, tab.size),
+            color = if (index == selectedIndex) {
+              MaterialTheme.colorScheme.primary
+            } else {
+              MaterialTheme.colorScheme.onSurfaceVariant
+            },
+          )
+        },
+        selected = index == selectedIndex,
+        onClick = { onClick(index) },
+      )
     }
   }
 }

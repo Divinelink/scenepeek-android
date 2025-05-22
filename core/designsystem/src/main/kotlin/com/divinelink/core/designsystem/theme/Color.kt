@@ -156,5 +156,4 @@ internal val darkScheme = darkColorScheme(
   surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-val coreGrey55 = Color(0xFF6A6A6A)
 val coreRedHighlight = Color(0xFFEF5350)

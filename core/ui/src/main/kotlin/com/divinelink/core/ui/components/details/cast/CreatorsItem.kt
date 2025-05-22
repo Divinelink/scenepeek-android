@@ -2,12 +2,9 @@ package com.divinelink.core.ui.components.details.cast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -15,9 +12,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
@@ -25,56 +19,70 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
-// TODO Add UI Tests
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreatorsItem(
-  creators: List<Person>?,
+  creators: List<Person>,
   onClick: (Person) -> Unit,
 ) {
-  if (creators.isNullOrEmpty()) return
-
-  Column(
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_0),
+  FlowRow(
+    modifier = Modifier.offset(x = -MaterialTheme.dimensions.keyline_12),
   ) {
-    val creatorSectionTitle = if (creators.size == 1) {
-      stringResource(id = R.string.core_ui_series_creator)
-    } else {
-      stringResource(id = R.string.core_ui_series_creators)
+    creators.forEach { person ->
+      CreatorItem(
+        person = person,
+        onClick = onClick,
+      )
     }
+  }
+}
 
-    Text(
-      modifier = Modifier.padding(
-        start = MaterialTheme.dimensions.keyline_12,
-      ),
-      text = creatorSectionTitle,
-      style = MaterialTheme.typography.bodyLarge,
-      fontWeight = FontWeight.Bold,
-      color = MaterialTheme.colorScheme.onSurface,
-    )
+@Composable
+private fun CreatorItem(
+  person: Person,
+  onClick: (Person) -> Unit,
+) {
+  val director = stringResource(id = R.string.core_ui_director)
+  val screenplay = stringResource(id = R.string.core_ui_screenplay)
+  val novel = stringResource(id = R.string.core_ui_novel)
+  val creator = stringResource(id = R.string.core_ui_creator)
 
-    LazyVerticalGrid(
-      modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 56.dp, max = 120.dp),
-      columns = GridCells.Adaptive(100.dp),
+  TextButton(
+    onClick = { onClick(person) },
+  ) {
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
-      items(creators, key = { it.id }) { creator ->
-        TextButton(onClick = { onClick(creator) }) {
-          Text(
-            text = creator.name,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.80f),
-          )
+      Text(
+        text = person.name,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurface,
+      )
+
+      val roles = person
+        .role
+        .joinToString {
+          when (it) {
+            PersonRole.Director -> director
+            PersonRole.Screenplay -> screenplay
+            PersonRole.Novel -> novel
+            PersonRole.Creator -> creator
+            else -> ""
+          }
         }
-      }
+
+      Text(
+        text = roles,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary,
+      )
     }
   }
 }
 
 @Previews
 @Composable
-private fun CreatorsItemPreview() {
+private fun TvCreatorsItemPreview() {
   AppTheme {
     Surface {
       CreatorsItem(

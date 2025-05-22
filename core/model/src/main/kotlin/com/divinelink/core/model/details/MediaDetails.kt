@@ -11,6 +11,8 @@ sealed class MediaDetails {
   abstract val id: Int
   abstract val title: String
   abstract val posterPath: String
+  abstract val backdropPath: String
+  abstract val tagline: String?
   abstract val overview: String?
   abstract val releaseDate: String
   abstract val ratingCount: RatingCount
@@ -22,6 +24,8 @@ sealed class MediaDetails {
     id: Int = this.id,
     title: String = this.title,
     posterPath: String = this.posterPath,
+    backdropPath: String = this.backdropPath,
+    tagline: String? = this.tagline,
     overview: String? = this.overview,
     releaseDate: String = this.releaseDate,
     genres: List<String>? = this.genres,
@@ -33,8 +37,10 @@ sealed class MediaDetails {
       id = id,
       title = title,
       posterPath = posterPath,
+      backdropPath = backdropPath,
+      tagline = tagline,
       overview = overview,
-      director = director,
+      creators = creators,
       releaseDate = releaseDate,
       ratingCount = ratingCount,
       isFavorite = isFavorite,
@@ -47,6 +53,8 @@ sealed class MediaDetails {
       id = id,
       title = title,
       posterPath = posterPath,
+      backdropPath = backdropPath,
+      tagline = tagline,
       overview = overview,
       releaseDate = releaseDate,
       ratingCount = ratingCount,

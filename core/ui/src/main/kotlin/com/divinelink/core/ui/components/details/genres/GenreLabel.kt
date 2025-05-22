@@ -1,7 +1,6 @@
 package com.divinelink.core.ui.components.details.genres
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -24,17 +23,17 @@ import com.divinelink.core.ui.Previews
 fun GenreLabel(
   modifier: Modifier = Modifier,
   genre: String,
-  onGenreClicked: () -> Unit,
+  onGenreClick: (String) -> Unit,
 ) {
   Surface(
     shape = RoundedCornerShape(4.dp),
     modifier = modifier
       .wrapContentSize(Alignment.Center)
       .wrapContentHeight()
-      .clip(RoundedCornerShape(4.dp))
-      .clickable {
-        onGenreClicked()
-      },
+      .clip(RoundedCornerShape(4.dp)),
+//      .clickable {
+//        onGenreClick(genre)
+//      },
     border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onBackground),
   ) {
     Box {
@@ -58,7 +57,7 @@ private fun GenreLabelPreview() {
     Surface {
       GenreLabel(
         genre = "Documentary",
-        onGenreClicked = {},
+        onGenreClick = {},
       )
     }
   }

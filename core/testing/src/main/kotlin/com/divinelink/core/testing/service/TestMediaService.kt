@@ -1,11 +1,9 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
-import com.divinelink.core.network.media.model.details.DetailsRequestApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
-import com.divinelink.core.network.media.model.details.similar.SimilarRequestApi
-import com.divinelink.core.network.media.model.details.similar.SimilarResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
@@ -17,6 +15,7 @@ import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
@@ -50,7 +49,7 @@ class TestMediaService {
   }
 
   fun mockFetchMovieDetails(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Flow<DetailsResponseApi>,
   ) {
     whenever(
@@ -61,7 +60,7 @@ class TestMediaService {
   }
 
   fun mockFetchMovieReviews(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Flow<ReviewsResponseApi>,
   ) {
     whenever(
@@ -71,19 +70,30 @@ class TestMediaService {
     )
   }
 
-  fun mockFetchSimilarMovies(
-    request: SimilarRequestApi,
-    response: Flow<SimilarResponseApi>,
+  fun mockFetchRecommendedMovies(
+    request: MediaRequestApi.Movie,
+    response: Flow<MoviesResponseApi>,
   ) {
     whenever(
-      mock.fetchSimilarMovies(request),
+      mock.fetchRecommendedMovies(request),
+    ).thenReturn(
+      response,
+    )
+  }
+
+  fun mockFetchRecommendedTv(
+    request: MediaRequestApi.TV,
+    response: Flow<TvResponseApi>,
+  ) {
+    whenever(
+      mock.fetchRecommendedTv(request),
     ).thenReturn(
       response,
     )
   }
 
   fun mockFetchMovieVideos(
-    request: DetailsRequestApi,
+    request: MediaRequestApi,
     response: Flow<VideosResponseApi>,
   ) {
     whenever(

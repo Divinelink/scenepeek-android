@@ -10,7 +10,7 @@ ksp = "2.1.20-1.0.32"
 android-tools = "31.7.2"
 # android-tools and agp should be updated together
 agp = "8.7.2"
-core-ktx = "1.15.0"
+core-ktx = "1.16.0"
 coil = "3.0.4"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.2.1"

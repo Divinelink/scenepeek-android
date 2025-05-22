@@ -19,6 +19,8 @@
 
   <string name="general_error_message">Something when wrong.</string>
 
+  <string name="feature_details_genres">Genres</string>
+
   <string name="feature_details_jellyseerr_success_media_request">%s requested successfully</string>
   <string name="feature_details_jellyseerr_request_exists">Request for this media already exists.</string>
   <string name="feature_details_jellyseerr_request_failed">Failed to request %s</string>
@@ -35,10 +37,6 @@
   <string name="feature_details_place_of_birth_section">Place of Birth</string>
 
   <string name="feature_details_person_credits_known_for_section">Known For</string>
-
-  <string name="feature_details_person_tab_about">About</string>
-  <string name="feature_details_person_tab_movies">Movies</string>
-  <string name="feature_details_person_tab_tv_shows">TV Shows</string>
 
   <string name="feature_details_person_credits_department">Department</string>
   <string name="feature_details_person_credits_department_size">%s (%s)</string>
@@ -64,11 +62,23 @@
   <string name="feature_details_person_birthday">%s (%s years old)</string>
   <string name="feature_details_person_blank_biography">We don\'t have a biography for %s.</string>
 
-  <string name="feature_details_no_movies_available">No Movies Available</string>
+  <string name="feature_details_no_movies_available">No movies available</string>
   <string name="feature_details_no_movies_available_desc">%s hasn\'t appeared in any movies yet.</string>
 
-  <string name="feature_details_no_tv_shows_available">No TV Shows Available</string>
+  <string name="feature_details_no_tv_shows_available">No TV shows available</string>
   <string name="feature_details_no_tv_shows_available_desc">%s hasn\'t appeared in any TV shows yet.</string>
+
+  <string name="feature_details_no_cast_available">No cast available</string>
+  <string name="feature_details_no_cast_available_desc">We don\'t have any cast information for %s.</string>
+
+  <string name="feature_details_no_recommendation_available">No recommendations available</string>
+  <string name="feature_details_no_recommendations_available_desc">We don\'t have any recommendations for %s.</string>
+
+  <string name="feature_details_no_reviews_available">No reviews available</string>
+  <string name="feature_details_no_reviews_available_desc">We don\'t have any reviews for %s.</string>
+
+  <string name="feature_details_no_seasons_available">No seasons available</string>
+  <string name="feature_details_no_seasons_available_desc">We don\'t have any seasons for %s.</string>
 
   <string name="login">Login</string>
 </resources>

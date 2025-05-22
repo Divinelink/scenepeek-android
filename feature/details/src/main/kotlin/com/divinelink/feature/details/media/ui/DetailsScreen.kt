@@ -1,23 +1,29 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.launchCustomTab
 import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.OverlayScreen
+import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
 import kotlinx.coroutines.delay
@@ -33,15 +39,34 @@ fun DetailsScreen(
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  setBottomNavigationVisible: (show: Boolean) -> Unit,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
-  val viewState = viewModel.viewState.collectAsState()
+  var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }
+
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
   var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
   val context = LocalContext.current
 
-  LaunchedEffect(viewState.value.navigateToLogin) {
-    viewState.value.navigateToLogin?.let {
+  BackHandler {
+    if (videoUrl.isNullOrEmpty()) {
+      onNavigateUp()
+    } else {
+      videoUrl = null
+    }
+  }
+
+  LaunchedEffect(videoUrl) {
+    if (videoUrl.isNullOrEmpty()) {
+      setBottomNavigationVisible(true)
+    } else {
+      setBottomNavigationVisible(false)
+    }
+  }
+
+  LaunchedEffect(viewState.navigateToLogin) {
+    viewState.navigateToLogin?.let {
       onNavigateToTMDBLogin()
 
       viewModel.consumeNavigateToLogin()
@@ -50,8 +75,8 @@ fun DetailsScreen(
   val rateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val allRatingsBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  LaunchedEffect(viewState.value.showRateDialog) {
-    if (viewState.value.showRateDialog) {
+  LaunchedEffect(viewState.showRateDialog) {
+    if (viewState.showRateDialog) {
       openBottomSheet = true
       delay(BOTTOM_SHEET_DELAY)
       rateBottomSheetState.show()
@@ -79,20 +104,20 @@ fun DetailsScreen(
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
-      value = viewState.value.userDetails?.beautifiedRating,
-      mediaTitle = viewState.value.mediaDetails?.title ?: "",
+      value = viewState.userDetails?.beautifiedRating,
+      mediaTitle = viewState.mediaDetails?.title ?: "",
       onSubmitRate = viewModel::onSubmitRate,
       onClearRate = viewModel::onClearRating,
       onRateChanged = {
         // TODO implement
       },
       onDismissRequest = viewModel::onDismissRateDialog,
-      canClearRate = viewState.value.userDetails?.rating != null,
+      canClearRate = viewState.userDetails?.rating != null,
     )
   }
 
   if (showAllRatingBottomSheet) {
-    viewState.value.mediaDetails?.ratingCount?.let { ratingCount ->
+    viewState.mediaDetails?.ratingCount?.let { ratingCount ->
       AllRatingsModalBottomSheet(
         sheetState = allRatingsBottomSheetState,
         onDismissRequest = { showAllRatingBottomSheet = false },
@@ -102,37 +127,57 @@ fun DetailsScreen(
     }
   }
 
-  DetailsContent(
-    viewState = viewState.value,
-    onNavigateUp = onNavigateUp,
-    onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
-    onSimilarMovieClicked = { movie ->
-      val navArgs = DetailsRoute(
-        id = movie.id,
-        mediaType = movie.mediaType,
-        isFavorite = movie.isFavorite ?: false,
-      )
-      onNavigateToDetails(navArgs)
-    },
-    onPersonClick = { person -> onNavigateToPerson(person.map()) },
-    onConsumeSnackbar = viewModel::consumeSnackbarMessage,
-    onAddRateClicked = viewModel::onAddRateClicked,
-    onAddToWatchlistClicked = viewModel::onAddToWatchlist,
-    requestMedia = viewModel::onRequestMedia,
-    onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
-    viewAllCreditsClicked = {
-      viewState.value.mediaDetails?.id?.let { id ->
-        onNavigateToCredits(
-          CreditsRoute(
-            mediaType = viewState.value.mediaType,
-            id = id.toLong(),
-          ),
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = Modifier.fillMaxSize(),
+  ) {
+    DetailsContent(
+      viewState = viewState,
+      onNavigateUp = onNavigateUp,
+      onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
+      onSimilarMovieClicked = { movie ->
+        val navArgs = DetailsRoute(
+          id = movie.id,
+          mediaType = movie.mediaType,
+          isFavorite = movie.isFavorite ?: false,
         )
-      }
-    },
-    viewAllRatingsClicked = {
-      showAllRatingBottomSheet = true
-      viewModel.onFetchAllRatings()
-    },
-  )
+        onNavigateToDetails(navArgs)
+      },
+      onPersonClick = { person -> onNavigateToPerson(person.map()) },
+      onConsumeSnackbar = viewModel::consumeSnackbarMessage,
+      onAddRateClick = viewModel::onAddRateClicked,
+      onAddToWatchlistClick = viewModel::onAddToWatchlist,
+      requestMedia = viewModel::onRequestMedia,
+      onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
+      onViewAllCreditsClick = {
+        viewState.mediaDetails?.id?.let { id ->
+          onNavigateToCredits(
+            CreditsRoute(
+              mediaType = viewState.mediaType,
+              id = id.toLong(),
+            ),
+          )
+        }
+      },
+      onShowAllRatingsClick = {
+        showAllRatingBottomSheet = true
+        viewModel.onFetchAllRatings()
+      },
+      onTabSelected = viewModel::onTabSelected,
+      onPlayTrailerClick = { videoUrl = it },
+    )
+
+    OverlayScreen(
+      isVisible = !videoUrl.isNullOrEmpty(),
+      onDismiss = { videoUrl = null },
+      content = {
+        videoUrl?.let {
+          YouTubePlayerScreen(
+            videoId = it,
+            onBack = { videoUrl = null },
+          )
+        }
+      },
+    )
+  }
 }

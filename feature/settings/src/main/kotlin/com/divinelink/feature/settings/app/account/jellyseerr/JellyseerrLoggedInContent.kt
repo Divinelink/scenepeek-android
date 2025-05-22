@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,10 +27,10 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
-import com.divinelink.core.ui.CoilImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
@@ -54,7 +53,7 @@ fun JellyseerrLoggedInContent(
     item {
       with(transitionScope) {
         Row {
-          CoilImage(
+          AvatarImage.Large(
             modifier = Modifier
               .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_AVATAR)
               .sharedElement(
@@ -62,9 +61,9 @@ fun JellyseerrLoggedInContent(
                   key = SharedElementKeys.JELLYSEERR_AVATAR,
                 ),
                 animatedVisibilityScope = animatedVisibilityScope,
-              )
-              .size(MaterialTheme.dimensions.keyline_96),
-            url = jellyseerrState.accountDetails.avatar,
+              ),
+            avatarUrl = jellyseerrState.accountDetails.avatar,
+            username = jellyseerrState.accountDetails.displayName,
           )
 
           Column {

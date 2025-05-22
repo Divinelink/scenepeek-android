@@ -18,6 +18,7 @@ dependencies {
   implementation(libs.coil)
   implementation(libs.coil.ktor)
 
+  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.youtube.player)
 

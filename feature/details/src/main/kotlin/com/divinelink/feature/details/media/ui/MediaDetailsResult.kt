@@ -6,7 +6,7 @@ import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
-import com.divinelink.core.model.details.Review
+import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
@@ -26,9 +26,15 @@ sealed class MediaDetailsResult {
 
   data class RatingSuccess(val rating: RatingCount) : MediaDetailsResult()
 
-  data class ReviewsSuccess(val reviews: List<Review>) : MediaDetailsResult()
+  data class ReviewsSuccess(
+    val formOrder: Int,
+    val reviews: List<Review>,
+  ) : MediaDetailsResult()
 
-  data class SimilarSuccess(val similar: List<MediaItem.Media>) : MediaDetailsResult()
+  data class SimilarSuccess(
+    val formOrder: Int,
+    val similar: List<MediaItem.Media>,
+  ) : MediaDetailsResult()
 
   data class VideosSuccess(val trailer: Video?) : MediaDetailsResult()
 

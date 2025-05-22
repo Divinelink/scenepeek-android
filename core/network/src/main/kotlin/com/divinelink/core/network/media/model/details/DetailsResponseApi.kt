@@ -10,9 +10,11 @@ import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
+import com.divinelink.core.network.media.mapper.details.map
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
+import com.divinelink.core.network.media.model.details.season.SeasonResponseApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -77,6 +79,7 @@ sealed class DetailsResponseApi {
     @SerialName("origin_country") val originCountry: List<String>,
     @SerialName("original_language") override val originalLanguage: String,
     @SerialName("original_name") val originalName: String,
+    val tagline: String,
     override val overview: String,
     override val popularity: Double,
     @SerialName("poster_path") override val posterPath: String?,
@@ -86,6 +89,7 @@ sealed class DetailsResponseApi {
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
     @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
+    @SerialName("seasons") val seasons: List<SeasonResponseApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
     @SerialName("external_ids") val externalIds: ExternalIdsApi,
   ) : DetailsResponseApi()
@@ -99,15 +103,17 @@ fun DetailsResponseApi.toDomainMedia(): MediaDetails = when (this) {
 private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
+  backdropPath = this.backdropPath ?: "",
   releaseDate = this.releaseDate,
   title = this.title,
   ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
   ),
+  tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
-  genres = this.genres.map { it.name },
-  director = this.credits.crew.toDirector(),
+  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
+  creators = this.credits.crew.map(),
   cast = this.credits.cast.toActors(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
@@ -117,34 +123,23 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
 private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   id = this.id,
   posterPath = this.posterPath ?: "",
+  backdropPath = this.backdropPath ?: "",
   releaseDate = this.releaseDate,
   title = this.name,
-  genres = this.genres.map { it.name },
+  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
   ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
   ),
+  tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
   isFavorite = false,
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
+  seasons = this.seasons.map(),
   imdbId = this.externalIds.imdbId,
   status = TvStatus.from(this.status),
 )
-
-private fun List<CrewApi>.toDirector(): Person? {
-  val director = this.find { it.job == "Director" }
-  return director?.let {
-    Person(
-      id = director.id,
-      name = director.name,
-      profilePath = director.profilePath,
-      gender = Gender.from(director.gender),
-      knownForDepartment = director.knownForDepartment,
-      role = listOf(PersonRole.Director),
-    )
-  }
-}
 
 private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
 

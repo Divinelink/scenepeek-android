@@ -5,6 +5,7 @@
   <string name="core_ui_confirm">Confirm</string>
 
   <string name="core_ui_save">Save</string>
+  <string name="core_ui_play_trailer">Watch Trailer</string>
 
   <string name="core_ui_connected">You\'re back online</string>
   <string name="core_ui_not_connected">You\'re offline</string>
@@ -22,6 +23,11 @@
   <string name="core_ui_password">Password</string>
   <string name="core_ui_view_all">View all</string>
 
+  <plurals name="core_ui_character_episode_episodes">
+    <item quantity="one">(%s Episode)</item>
+    <item quantity="other">(%s Episodes)</item>
+  </plurals>
+
   <string name="general_error_title">An error occurred</string>
 
   <string name="core_ui_review_author">A review by: %s, %s</string>
@@ -30,10 +36,27 @@
 
   <string name="details__director_title">Director</string>
   <string name="details__cast_title">Cast</string>
-  <string name="core_ui_series_creator">Creator</string>
-  <string name="core_ui_series_creators">Creators</string>
   <string name="core_ui_series_cast_title">Series Cast</string>
-  <string name="core_ui_episode_count">%s episodes</string>
+
+  <string name="core_ui_director">Director</string>
+  <string name="core_ui_screenplay">Screenplay</string>
+  <string name="core_ui_novel">Novel</string>
+  <string name="core_ui_creator">Creator</string>
+
+  <plurals name="core_ui_series_creator">
+    <item quantity="one">Creator</item>
+    <item quantity="other">Creators</item>
+  </plurals>
+
+  <plurals name="core_ui_cast_count">
+    <item quantity="one">%s person</item>
+    <item quantity="other">%s persons</item>
+  </plurals>
+
+  <plurals name="core_ui_episode_count">
+    <item quantity="one">%s episode</item>
+    <item quantity="other">%s episodes</item>
+  </plurals>
 
   <string name="core_ui_toolbar_search">Search</string>
   <string name="core_ui_movies">movies</string>
@@ -44,9 +67,6 @@
   <string name="movie_extra_details">Details &amp; More</string>
 
   <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
-
-  <string name="details__add_to_watchlist_button">Add to Watchlist</string>
-  <string name="details__added_to_watchlist_button">Added to watchlist</string>
 
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>
@@ -60,6 +80,7 @@
   <string name="core_ui_request_confirmation_text">Are you sure you want to request %s?</string>
 
   <string name="core_ui_read_more">Read more</string>
+  <string name="core_ui_show_more">Show more</string>
   <string name="core_ui_show_less">Show less</string>
 
   <string name="core_ui_view">View</string>
@@ -82,6 +103,8 @@
   <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
+  <string name="core_ui_add_to_watchlist_content_desc">Add to watchlist</string>
+  <string name="core_ui_remove_from_watchlist_content_desc">Remove from watchlist</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
   <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>

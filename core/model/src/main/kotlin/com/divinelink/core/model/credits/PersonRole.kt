@@ -27,6 +27,8 @@ sealed class PersonRole(val title: String?) {
   ) : PersonRole(job)
 
   data object Director : PersonRole(null)
+  data object Screenplay : PersonRole(null)
+  data object Novel : PersonRole(null)
 
   data object Creator : PersonRole(null)
 

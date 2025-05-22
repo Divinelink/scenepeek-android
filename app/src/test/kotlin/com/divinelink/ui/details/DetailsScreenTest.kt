@@ -2,21 +2,27 @@ package com.divinelink.ui.details
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
@@ -78,6 +84,7 @@ class DetailsScreenTest : ComposeTest() {
         Result.success(
           MediaDetailsResult.SimilarSuccess(
             similar = MediaItemFactory.MoviesList(),
+            formOrder = MovieTab.Recommendations.order,
           ),
         ),
       ),
@@ -109,36 +116,34 @@ class DetailsScreenTest : ComposeTest() {
           navigatedToDetails = true
         },
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
-    composeTestRule
-      .onNodeWithTag(TestTags.Details.CONTENT_LIST)
-      .performScrollToNode(
-        matcher = hasText(
-          MediaItemFactory.MoviesList()[0].name,
-        ),
-      )
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Recommendations.value)).performClick()
 
-    composeTestRule
-      .onNodeWithTag(TestTags.Details.SIMILAR_MOVIES_LIST)
-      .performScrollToNode(
-        matcher = hasText(MediaItemFactory.MoviesList()[0].name),
-      )
+      composeTestRule
+        .onNodeWithTag(TestTags.Details.Recommendations.FORM)
+        .assertIsDisplayed()
+        .performScrollToNode(
+          matcher = hasText(MediaItemFactory.MoviesList()[0].name),
+        )
 
-    composeTestRule
-      .onNodeWithText(MediaItemFactory.MoviesList()[0].name)
-      .assertIsDisplayed()
-      .performClick()
+      composeTestRule
+        .onNodeWithText(MediaItemFactory.MoviesList()[0].name)
+        .assertIsDisplayed()
+        .performClick()
 
-    val navigateUpContentDescription = composeTestRule.activity
-      .getString(uiR.string.core_ui_navigate_up_button_content_description)
+      val navigateUpContentDescription = composeTestRule.activity
+        .getString(uiR.string.core_ui_navigate_up_button_content_description)
 
-    composeTestRule
-      .onNodeWithContentDescription(navigateUpContentDescription)
-      .performClick()
+      composeTestRule
+        .onNodeWithContentDescription(navigateUpContentDescription)
+        .performClick()
 
-    assertThat(navigatedToDetails).isTrue()
+      assertThat(navigatedToDetails).isTrue()
+    }
   }
 
   @Test
@@ -185,13 +190,15 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
-    composeTestRule.onNodeWithTag(
-      testTag = TestTags.Details.YOUR_RATING,
+    composeTestRule.onAllNodesWithTag(
+      testTag = TestTags.Details.RATE_THIS_BUTTON,
       useUnmergedTree = true,
-    ).performClick()
+    ).onFirst()
+      .performClick()
 
     composeTestRule.onNodeWithTag(
       TestTags.Details.RATE_DIALOG,
@@ -245,30 +252,37 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
     val addRatingText = composeTestRule.activity.getString(detailsR.string.details__add_rating)
 
-    composeTestRule.onNodeWithTag(
-      TestTags.Details.YOUR_RATING,
-      useUnmergedTree = true,
-    ).assertDoesNotExist()
+    composeTestRule.onAllNodesWithTag(TestTags.Details.YOUR_RATING, useUnmergedTree = true)
+      .onFirst()
+      .assertDoesNotExist()
 
-    composeTestRule.onNodeWithText(
+    composeTestRule.onAllNodesWithText(
       text = addRatingText,
       useUnmergedTree = true,
-    ).assertIsDisplayed().performClick()
+    )
+      .onFirst()
+      .assertIsDisplayed()
+      .performClick()
 
-    composeTestRule.onNodeWithTag(
-      TestTags.Details.RATE_DIALOG,
-    ).assertIsDisplayed()
+    composeTestRule
+      .onAllNodesWithTag(TestTags.Details.RATE_DIALOG)
+      .onFirst()
+      .assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(
+    composeTestRule.onAllNodesWithTag(
       TestTags.Details.RATE_SLIDER,
-    ).assertExists().performTouchInput {
-      swipeRight()
-    }
+    )
+      .onFirst()
+      .assertExists()
+      .performTouchInput {
+        swipeRight()
+      }
 
     val submitRatingText = composeTestRule
       .activity.getString(detailsR.string.details__submit_rating_button)
@@ -307,8 +321,8 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {
-          route = it
           navigatedToCredits = true
+          route = it
         },
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -330,29 +344,27 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Details.CONTENT_LIST).performScrollToIndex(2)
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
 
-      onNodeWithText(getString(R.string.core_ui_view_all))
+      onNodeWithTag(TestTags.Details.Cast.FORM)
+        .performScrollToNode(hasText(SeriesCastFactory.cast().first().name))
         .assertIsDisplayed()
-        .performClick()
 
-      assertThat(navigatedToCredits).isTrue()
-      assertThat(route).isEqualTo(
-        CreditsRoute(
-          id = 2316,
-          mediaType = MediaType.TV,
-        ),
-      )
-
-      // Navigate up from Credits screen
-      onNodeWithContentDescription(
-        getString(uiR.string.core_ui_navigate_up_button_content_description),
-      ).assertIsDisplayed().performClick()
+      onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
     }
+
+    assertThat(navigatedToCredits).isTrue()
+    assertThat(route).isEqualTo(
+      CreditsRoute(
+        id = 2316,
+        mediaType = MediaType.TV,
+      ),
+    )
   }
 
   @Test
@@ -363,6 +375,14 @@ class DetailsScreenTest : ComposeTest() {
           MediaDetailsResult.DetailsSuccess(
             mediaDetails = MediaDetailsFactory.TheOffice(),
             ratingSource = RatingSource.TMDB,
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.CreditsSuccess(
+            aggregateCredits = AggregatedCreditsFactory.credits().copy(
+              cast = emptyList(),
+              crewDepartments = emptyList(),
+            ),
           ),
         ),
       ),
@@ -392,10 +412,17 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
+
+      onNodeWithTag(TestTags.Details.Cast.FORM)
+        .performScrollToNode(hasTestTag(TestTags.Details.Cast.EMPTY))
+        .assertIsDisplayed()
+
       onNodeWithText(getString(R.string.core_ui_view_all)).assertDoesNotExist()
     }
   }
@@ -443,18 +470,24 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        setBottomNavigationVisible = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Rating.DETAILS_RATING_BUTTON).assertIsDisplayed().performClick()
+      onAllNodesWithTag(TestTags.Rating.DETAILS_RATING_BUTTON)
+        .onFirst()
+        .assertIsDisplayed()
+        .performClick()
 
-      onNodeWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET).assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET)
+        .onFirst()
+        .assertIsDisplayed()
     }
   }
 
   @Test
-  fun `test onViewAllRatingsClick `() = runTest {
+  fun `test onViewAllRatingsClick`() = runTest {
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
@@ -494,43 +527,49 @@ class DetailsScreenTest : ComposeTest() {
 
     setContentWithTheme {
       DetailsScreen(
+        viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
-        viewModel = viewModel,
+        setBottomNavigationVisible = {},
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Rating.DETAILS_RATING_BUTTON).assertIsDisplayed().performClick()
+      onAllNodesWithTag(TestTags.Rating.DETAILS_RATING_BUTTON)
+        .onFirst()
+        .assertIsDisplayed()
+        .performClick()
 
-      onNodeWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET).assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Rating.ALL_RATINGS_BOTTOM_SHEET)
+        .onFirst()
+        .assertIsDisplayed()
 
-      onNodeWithTag(
-        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB),
-      ).assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB))
+        .onFirst()
+        .assertIsDisplayed()
 
-      onNodeWithTag(
-        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT),
-      ).assertIsDisplayed()
+      onAllNodesWithTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT))
+        .onFirst()
+        .assertIsDisplayed()
 
       allRatingsChannel.send(
         Result.success(RatingSource.IMDB to RatingDetails.Score(8.1, 1234)),
       )
 
-      onNodeWithTag(
-        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB),
-      ).assertIsNotDisplayed()
+      onAllNodesWithTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.IMDB))
+        .onFirst()
+        .assertIsNotDisplayed()
 
       allRatingsChannel.send(
         Result.success(RatingSource.TRAKT to RatingDetails.Score(8.5, 12345)),
       )
 
-      onNodeWithTag(
-        TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT),
-      ).assertIsNotDisplayed()
+      onAllNodesWithTag(TestTags.Rating.RATING_SOURCE_SKELETON.format(RatingSource.TRAKT))
+        .onFirst()
+        .assertIsNotDisplayed()
     }
   }
 }

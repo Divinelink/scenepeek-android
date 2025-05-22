@@ -40,6 +40,7 @@ data class Dimensions(
   val keyline_84: Dp = 84.dp,
   val keyline_96: Dp = 96.dp,
   val shortMediaCard: Dp = 120.dp,
+  val posterSizeSmall: Dp = 140.dp,
   val posterSize: Dp = 180.dp,
 )
 
