@@ -13,7 +13,7 @@ object MediaDetailsFactory {
   fun FightClub() = Movie(
     id = 1123,
     posterPath = "123456",
-    backdropPath = "123456",
+    backdropPath = "backdropUrl",
     releaseDate = "2022",
     title = "Flight Club",
     ratingCount = RatingCount.tmdb(7.3, 123_456),

@@ -15,6 +15,7 @@ import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
+import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
@@ -69,12 +70,23 @@ class TestMediaService {
     )
   }
 
-  fun mockFetchSimilarMovies(
+  fun mockFetchRecommendedMovies(
     request: MediaRequestApi.Movie,
     response: Flow<MoviesResponseApi>,
   ) {
     whenever(
       mock.fetchRecommendedMovies(request),
+    ).thenReturn(
+      response,
+    )
+  }
+
+  fun mockFetchRecommendedTv(
+    request: MediaRequestApi.TV,
+    response: Flow<TvResponseApi>,
+  ) {
+    whenever(
+      mock.fetchRecommendedTv(request),
     ).thenReturn(
       response,
     )

@@ -32,11 +32,12 @@ sealed class MovieTab(
   )
 
   companion object {
-    val entries = listOf(
-      About,
-      Cast,
-      Recommendations,
-      Reviews,
-    )
+    val entries
+      get() = listOf(
+        About,
+        Cast,
+        Recommendations,
+        Reviews,
+      )
   }
 }

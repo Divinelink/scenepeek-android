@@ -76,7 +76,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   fun getViewModel() = viewModel
 
   fun assertViewState(expectedViewState: DetailsViewState) = apply {
-    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
+    assertThat(expectedViewState).isEqualTo(viewModel.viewState.value)
   }
 
   fun assertOpenUrlTab(validate: suspend TurbineTestContext<String>.() -> Unit) = apply {
@@ -155,6 +155,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       mediaType = mediaType,
       isFavorite = isFavorite,
     )
+  }
+
+  fun onTabSelected(index: Int) = apply {
+    viewModel.onTabSelected(index)
   }
 
   // Mock Functions

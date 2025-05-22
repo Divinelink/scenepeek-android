@@ -6,21 +6,21 @@ import com.divinelink.core.model.details.review.Review
 object ReviewFactory {
 
   fun Review_1() = Review(
-    author = AuthorFactory.empty().copy(name = "Eledriel S."),
+    author = AuthorFactory.eledriel(),
     rating = 10,
     content = LoremIpsum(100).values.joinToString(),
     date = "13-02-2017",
   )
 
   fun Review_2() = Review(
-    author = AuthorFactory.empty().copy(name = "Andreas O."),
+    author = AuthorFactory.andreas(),
     rating = 6,
     content = LoremIpsum(80).values.joinToString(),
     date = "13-02-2018",
   )
 
   fun Review_3() = Review(
-    author = AuthorFactory.empty().copy(name = "John Doe"),
+    author = AuthorFactory.john(),
     rating = 9,
     content = LoremIpsum(60).values.joinToString(),
     date = "13-02-2019",

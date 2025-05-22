@@ -14,7 +14,6 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
-import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
@@ -36,6 +35,7 @@ import com.divinelink.core.testing.dao.TestCreditsDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.api.movie.MoviesResponseApiFactory
+import com.divinelink.core.testing.factories.api.tv.TvResponseApiFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.factories.entity.credits.AggregateCreditsEntityFactory
 import com.divinelink.core.testing.service.TestMediaService
@@ -181,25 +181,16 @@ class ProdDetailsRepositoryTest {
       request = request,
     ).first()
 
-    assertThat(expectedResult).isEqualTo(actualResult.data)
+    assertThat(actualResult.data).isEqualTo(expectedResult)
   }
 
   @Test
-  fun testFetchSimilarMoviesSuccessfully() = runTest {
+  fun `test fetch movie recommendations with success`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    val expectedResult = MediaItemFactory.MoviesList().map { movie ->
-      movie.toWizard {
-        withPosterPath(posterPath = if (movie.id % 2 == 0) ".jpg" else null)
-        withReleaseDate(releaseDate = (2000 + movie.id).toString())
-        withName(name = "Lorem Ipsum title")
-        withVoteAverage(rating = 9.9)
-        withOverview(overview = "Lorem Ipsum ${movie.id}")
-        withFavorite(null)
-      }
-    }
+    val expectedResult = MediaItemFactory.moviesPagination()
 
-    mediaRemote.mockFetchSimilarMovies(
+    mediaRemote.mockFetchRecommendedMovies(
       request = request,
       response = flowOf(MoviesResponseApiFactory.full()),
     )
@@ -208,7 +199,25 @@ class ProdDetailsRepositoryTest {
       request = request,
     ).first()
 
-    assertThat(expectedResult).isEqualTo(actualResult.data)
+    assertThat(actualResult.data).isEqualTo(expectedResult)
+  }
+
+  @Test
+  fun `test fetch tv recommendations with success`() = runTest {
+    val request = MediaRequestApiFactory.tv()
+
+    val expectedResult = MediaItemFactory.tvPagination()
+
+    mediaRemote.mockFetchRecommendedTv(
+      request = request,
+      response = flowOf(TvResponseApiFactory.full()),
+    )
+
+    val actualResult = repository.fetchRecommendedTv(
+      request = request,
+    ).first()
+
+    assertThat(actualResult.data).isEqualTo(expectedResult)
   }
 
   @Test

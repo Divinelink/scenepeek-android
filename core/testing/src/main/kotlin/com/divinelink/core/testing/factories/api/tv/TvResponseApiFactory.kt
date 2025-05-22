@@ -6,7 +6,7 @@ object TvResponseApiFactory {
 
   fun full() = TvResponseApi(
     page = 1,
-    results = emptyList(), // TODO Add data
+    results = TvItemApiFactory.all(),
     totalPages = 3,
     totalResults = 60,
   )

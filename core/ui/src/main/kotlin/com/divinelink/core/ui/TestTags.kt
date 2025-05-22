@@ -31,6 +31,8 @@ object TestTags {
 
   const val LAZY_COLUMN = "Lazy Column"
 
+  const val VIEW_ALL = "View All Button"
+
   object Rating {
     const val IMDB_RATING = "IMDb Rating"
     const val IMDB_RATING_SKELETON = "IMDb Rating Skeleton"
@@ -47,10 +49,11 @@ object TestTags {
 
   object Details {
     const val CONTENT_SCAFFOLD = "Details Content Scaffold"
-    const val SIMILAR_MOVIES_LIST = "Details Similar Movies Lazy List"
 
+    const val COLLAPSIBLE_LAYOUT = "Details Collapsible Layout"
     const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"
 
+    const val RATE_THIS_BUTTON = "Rate This Button"
     const val YOUR_RATING = "Details Your Rating %s"
     const val RATE_DIALOG = "Details Rate Dialog"
     const val RATE_SLIDER = "Details Rate Slider"

@@ -189,7 +189,7 @@ fun PersonContent(
     CollapsingToolBarLayout(
       state = state,
       modifier = Modifier
-        .testTag(TestTags.Details.CONTENT_SCAFFOLD)
+        .testTag(TestTags.Person.COLLAPSIBLE_CONTENT)
         .navigationBarsPadding(),
       toolbar = {
         CollapsiblePersonContent(

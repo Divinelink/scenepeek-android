@@ -110,7 +110,9 @@ private fun TotalTvCastRow(
     )
     Spacer(modifier = Modifier.weight(1f))
     TextButton(
-      modifier = Modifier.align(alignment = Alignment.CenterVertically),
+      modifier = Modifier
+        .testTag(TestTags.VIEW_ALL)
+        .align(alignment = Alignment.CenterVertically),
       onClick = onViewAllClick,
     ) {
       Text(

@@ -67,7 +67,7 @@ fun DynamicDetailsCollapsingToolbar(
       CollapsingToolBarLayout(
         state = state,
         modifier = Modifier
-          .testTag(TestTags.Details.CONTENT_SCAFFOLD)
+          .testTag(TestTags.Details.COLLAPSIBLE_CONTENT)
           .navigationBarsPadding(),
         toolbar = {
           Box {

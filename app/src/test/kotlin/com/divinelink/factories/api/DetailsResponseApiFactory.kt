@@ -8,7 +8,7 @@ object DetailsResponseApiFactory {
 
   fun Movie() = DetailsResponseApi.Movie(
     adult = false,
-    backdropPath = "",
+    backdropPath = "backdropUrl",
     belongToCollection = null,
     budget = 0,
     genres = GenreFactory.all(),
@@ -26,7 +26,7 @@ object DetailsResponseApiFactory {
     revenue = 0,
     runtime = 130,
     spokenLanguage = listOf(),
-    tagline = "",
+    tagline = "You don't talk about Fight Club.",
     title = "Flight Club",
     video = false,
     voteAverage = 7.316,

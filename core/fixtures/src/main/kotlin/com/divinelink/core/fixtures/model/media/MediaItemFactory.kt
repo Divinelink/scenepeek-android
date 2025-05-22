@@ -20,13 +20,34 @@ object MediaItemFactory {
 
   fun theOffice(): MediaItem.Media.TV = MediaItem.Media.TV(
     id = 2316,
-    posterPath = "the_office.jpg",
+    overview = "The everyday lives of office employees in the Scranton, " +
+      "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
+    posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
     releaseDate = "2005-03-24",
     name = "The Office",
-    voteAverage = 9.5,
-    voteCount = 12_345,
-    overview = "Michael Scarn is thee best.",
+    voteAverage = 8.6,
+    voteCount = 4503,
     isFavorite = false,
+  )
+
+  fun theWire() = MediaItem.Media.TV(
+    id = 1438,
+    overview = "Told from the points of view of both the Baltimore homicide and " +
+      "narcotics detectives and their targets, the series captures a " +
+      "universe in which the national war on drugs has become a permanent," +
+      " self-sustaining bureaucracy, and distinctions between good " +
+      "and evil are routinely obliterated.",
+    posterPath = "/4lbclFySvugI51fwsyxBTOm4DqK.jpg",
+    releaseDate = "2002-06-02",
+    name = "The Wire",
+    voteAverage = 8.6,
+    voteCount = 2358,
+    isFavorite = false,
+  )
+
+  fun tvAll() = listOf(
+    theWire(),
+    theOffice(),
   )
 
   fun Person() = MediaItem.Person(
@@ -63,10 +84,20 @@ object MediaItemFactory {
     )
   }
 
+  /**
+   * Migrate to these values for new tests
+   */
+
   fun moviesPagination() = PaginationData<MediaItem.Media>(
-    totalPages = 1,
-    totalResults = 10,
+    totalPages = 3,
+    totalResults = 60,
     list = MoviesList(),
+  )
+
+  fun tvPagination() = PaginationData<MediaItem.Media>(
+    totalPages = 3,
+    totalResults = 60,
+    list = tvAll(),
   )
 
   class MovieMediaItemFactoryWizard(private var mediaItem: MediaItem.Media.Movie) {

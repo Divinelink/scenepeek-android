@@ -137,7 +137,7 @@ fun RatingButton(
     elevation = ButtonDefaults.buttonElevation(
       defaultElevation = MaterialTheme.dimensions.keyline_2,
     ),
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Details.RATE_THIS_BUTTON),
     onClick = onClick,
   ) {
     if (accountRating != null) {
