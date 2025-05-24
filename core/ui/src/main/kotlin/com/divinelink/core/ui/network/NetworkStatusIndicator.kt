@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -34,7 +35,7 @@ fun NetworkStatusIndicator(networkState: NetworkState) {
   AnimatedVisibility(
     visible = networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial,
   ) {
-    val color = animateColorAsState(
+    val color by animateColorAsState(
       targetValue = when (networkState) {
         is NetworkState.Offline.Initial -> MaterialTheme.colorScheme.primary
         is NetworkState.Online.Initial -> MaterialTheme.colorScheme.primary
@@ -45,7 +46,7 @@ fun NetworkStatusIndicator(networkState: NetworkState) {
 
     StatusMessage(
       text = text,
-      containerColor = color.value,
+      containerColor = color,
     )
   }
 }

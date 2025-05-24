@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
@@ -43,6 +41,7 @@ fun CustomNavigationSuiteScaffold(
   layoutType: NavigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
     WindowAdaptiveInfoDefault,
   ),
+  windowInsets: WindowInsets,
   showNavigationSuite: Boolean,
   navigationSuiteColors: NavigationSuiteColors = NavigationSuiteDefaults.colors(),
   containerColor: Color = NavigationSuiteScaffoldDefaults.containerColor,
@@ -63,21 +62,25 @@ fun CustomNavigationSuiteScaffold(
       Box(
         modifier = Modifier
           .padding(
-            start = when (layoutType) {
-              NavigationSuiteType.NavigationBar -> MaterialTheme.dimensions.keyline_0
-              NavigationSuiteType.NavigationRail -> navigationSuiteSizeDp
-              NavigationSuiteType.NavigationDrawer -> navigationSuiteSizeDp
-              else -> MaterialTheme.dimensions.keyline_0
+            start = if (showNavigationSuite) {
+              when (layoutType) {
+                NavigationSuiteType.NavigationBar -> MaterialTheme.dimensions.keyline_0
+                NavigationSuiteType.NavigationRail -> navigationSuiteSizeDp
+                NavigationSuiteType.NavigationDrawer -> navigationSuiteSizeDp
+                else -> MaterialTheme.dimensions.keyline_0
+              }
+            } else {
+              MaterialTheme.dimensions.keyline_0
             },
           )
           .consumeWindowInsets(
             when (layoutType) {
               NavigationSuiteType.NavigationBar ->
                 NavigationBarDefaults.windowInsets.only(WindowInsetsSides.Bottom)
-              NavigationSuiteType.NavigationRail ->
-                NavigationBarDefaults.windowInsets.only(WindowInsetsSides.Start)
-              NavigationSuiteType.NavigationDrawer ->
-                DrawerDefaults.windowInsets.only(WindowInsetsSides.Start)
+              NavigationSuiteType.NavigationRail, NavigationSuiteType.NavigationDrawer ->
+                NavigationBarDefaults.windowInsets.only(
+                  WindowInsetsSides.Start + WindowInsetsSides.Bottom,
+                )
               else -> WindowInsets(0, 0, 0, 0)
             },
           ),
@@ -115,7 +118,7 @@ fun CustomNavigationSuiteScaffold(
               },
             ) {
               NavigationSuite(
-                modifier = Modifier.wrapContentHeight(),
+                modifier = Modifier.consumeWindowInsets(windowInsets),
                 layoutType = layoutType,
                 colors = NavigationSuiteDefaults.colors(
                   navigationBarContentColor = navigationSuiteColors.navigationBarContentColor,

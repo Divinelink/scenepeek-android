@@ -1,14 +1,17 @@
+@file:Suppress("UnusedMaterial3ScaffoldPaddingParameter")
+
 package com.divinelink.scenepeek.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.WindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +27,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.divinelink.core.designsystem.component.ScenePeekNavigationSuiteScaffold
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.network.NetworkStatusIndicator
@@ -46,7 +50,6 @@ fun ScenePeekApp(
   uiState: MainUiState,
   uiEvent: MainUiEvent,
   onConsumeEvent: () -> Unit,
-  windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
@@ -111,13 +114,6 @@ fun ScenePeekApp(
           .fillMaxSize()
           .weight(1f),
         showNavigationSuite = !showOnboarding && showBottomNavigation,
-//        windowInsets = if (
-//          networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
-//        ) {
-//          WindowInsets(bottom = MaterialTheme.dimensions.keyline_8)
-//        } else {
-//          NavigationBarDefaults.windowInsets
-//        },
         navigationSuiteItems = {
           state.topLevelDestinations.forEach { destination ->
             val selected = currentDestination.isRouteInHierarchy(destination.route::class)
@@ -141,11 +137,23 @@ fun ScenePeekApp(
             )
           }
         },
+        windowInsets = if (
+          networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
+        ) {
+          WindowInsets(bottom = MaterialTheme.dimensions.keyline_72)
+        } else {
+          WindowInsets(bottom = MaterialTheme.dimensions.keyline_16)
+        },
         content = { innerPadding ->
           Scaffold(
             modifier = Modifier.fillMaxSize(),
-            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-          ) { _ ->
+            snackbarHost = {
+              SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
+              )
+            },
+          ) {
             CompositionLocalProvider(
               LocalBottomNavigationPadding provides innerPadding.calculateBottomPadding(),
             ) {

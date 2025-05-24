@@ -228,6 +228,7 @@ fun ScenePeekNavigationSuiteScaffold(
   modifier: Modifier = Modifier,
   windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
   showNavigationSuite: Boolean,
+  windowInsets: WindowInsets,
   content: @Composable (PaddingValues) -> Unit,
 ) {
   val layoutType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(windowAdaptiveInfo)
@@ -274,6 +275,7 @@ fun ScenePeekNavigationSuiteScaffold(
       navigationDrawerContentColor = ScenePeekNavigationDefaults.contentColor(),
     ),
     modifier = modifier,
+    windowInsets = windowInsets,
     content = {
       content(it)
     },
