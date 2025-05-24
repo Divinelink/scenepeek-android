@@ -1,19 +1,14 @@
 package com.divinelink.scenepeek.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -27,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.divinelink.core.designsystem.component.ScenePeekNavigationSuiteScaffold
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.network.NetworkStatusIndicator
@@ -38,9 +33,7 @@ import com.divinelink.feature.details.navigation.navigateToPerson
 import com.divinelink.feature.onboarding.navigation.navigateToOnboarding
 import com.divinelink.scenepeek.MainUiEvent
 import com.divinelink.scenepeek.MainUiState
-import com.divinelink.scenepeek.R
 import com.divinelink.scenepeek.navigation.ScenePeekNavHost
-import com.divinelink.scenepeek.navigation.TopLevelDestination
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -53,12 +46,15 @@ fun ScenePeekApp(
   uiState: MainUiState,
   uiEvent: MainUiEvent,
   onConsumeEvent: () -> Unit,
+  windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
   val showBottomNavigation by state.showBottomNavigation.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
+
+  val currentDestination = state.currentDestination
 
   LaunchedEffect(isOffline) {
     state.scope.launch {
@@ -105,79 +101,64 @@ fun ScenePeekApp(
     }
   }
 
-  ProvideSnackbarController(
-    snackbarHostState = snackbarHostState,
-    coroutineScope = state.scope,
-  ) {
-    Scaffold(
-      contentWindowInsets = WindowInsets(0, 0, 0, 0),
-      snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-      bottomBar = {
-        Column {
-          AnimatedVisibility(!showOnboarding && showBottomNavigation) {
-            AppNavigationBar(
-              windowInsets = if (
-                networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
-              ) {
-                WindowInsets(bottom = MaterialTheme.dimensions.keyline_8)
-              } else {
-                NavigationBarDefaults.windowInsets
-              },
-            ) {
-              TopLevelDestination.entries.forEach { destination ->
-                val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
-
-                NavigationBarItem(
-                  selected = selected,
-                  onClick = { state.navigateToTopLevelDestination(destination) },
-                  label = {
-                    Text(text = stringResource(id = destination.titleTextId))
-                  },
-                  icon = {
-                    if (selected) {
-                      Icon(
-                        imageVector = destination.selectedIcon,
-                        contentDescription = stringResource(
-                          id = R.string.top_level_navigation_content_description_selected,
-                          stringResource(id = destination.titleTextId),
-                        ),
-                      )
-                    } else {
-                      Icon(
-                        imageVector = destination.unselectedIcon,
-                        contentDescription = stringResource(
-                          id = R.string.top_level_navigation_content_description_unselected,
-                          stringResource(id = destination.titleTextId),
-                        ),
-                      )
-                    }
-                  },
+  Column(modifier = Modifier.fillMaxSize()) {
+    ProvideSnackbarController(
+      snackbarHostState = snackbarHostState,
+      coroutineScope = state.scope,
+    ) {
+      ScenePeekNavigationSuiteScaffold(
+        modifier = Modifier
+          .fillMaxSize()
+          .weight(1f),
+        showNavigationSuite = !showOnboarding && showBottomNavigation,
+//        windowInsets = if (
+//          networkState is NetworkState.Offline || networkState is NetworkState.Online.Initial
+//        ) {
+//          WindowInsets(bottom = MaterialTheme.dimensions.keyline_8)
+//        } else {
+//          NavigationBarDefaults.windowInsets
+//        },
+        navigationSuiteItems = {
+          state.topLevelDestinations.forEach { destination ->
+            val selected = currentDestination.isRouteInHierarchy(destination.route::class)
+            item(
+              selected = selected,
+              onClick = { state.navigateToTopLevelDestination(destination) },
+              icon = {
+                Icon(
+                  imageVector = destination.unselectedIcon,
+                  contentDescription = null,
                 )
+              },
+              selectedIcon = {
+                Icon(
+                  imageVector = destination.selectedIcon,
+                  contentDescription = null,
+                )
+              },
+              label = { Text(stringResource(destination.iconTextId)) },
+              modifier = Modifier,
+            )
+          }
+        },
+        content = { innerPadding ->
+          Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+          ) { _ ->
+            CompositionLocalProvider(
+              LocalBottomNavigationPadding provides innerPadding.calculateBottomPadding(),
+            ) {
+              when (uiState) {
+                is MainUiState.Completed -> ScenePeekNavHost(state = state)
+                MainUiState.Loading -> LoadingContent()
               }
             }
           }
-
-          NetworkStatusIndicator(networkState = networkState)
-        }
-      },
-    ) { innerPadding ->
-      CompositionLocalProvider(
-        LocalBottomNavigationPadding provides innerPadding.calculateBottomPadding(),
-      ) {
-        Surface(
-          modifier = Modifier
-            .fillMaxSize()
-            .consumeWindowInsets(innerPadding),
-        ) {
-          when (uiState) {
-            is MainUiState.Completed -> ScenePeekNavHost(
-              state = state,
-            )
-            MainUiState.Loading -> LoadingContent()
-          }
-        }
-      }
+        },
+      )
     }
+    NetworkStatusIndicator(networkState = networkState)
   }
 }
 
