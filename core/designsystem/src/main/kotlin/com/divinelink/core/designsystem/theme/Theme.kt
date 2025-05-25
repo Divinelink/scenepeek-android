@@ -39,7 +39,7 @@ fun AppTheme(
   val view = LocalView.current
   if (!view.isInEditMode) {
     SideEffect {
-      updateStatusBarColor(view, !useDarkTheme)
+      updateSystemBarsColor(view, !useDarkTheme)
     }
   }
 

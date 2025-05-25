@@ -20,6 +20,22 @@ fun updateStatusBarColor(
   }
 
   WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = setLight
+
+  return window
+}
+
+fun updateSystemBarsColor(
+  view: View,
+  setLight: Boolean,
+): Window {
+  val window = (view.context as Activity).window
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    window.isNavigationBarContrastEnforced = false
+  } else {
+    window.navigationBarColor = Color.Transparent.toArgb()
+  }
+
+  WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = setLight
   WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = setLight
 
   return window
