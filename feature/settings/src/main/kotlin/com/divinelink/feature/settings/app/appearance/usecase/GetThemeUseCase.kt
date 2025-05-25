@@ -13,7 +13,6 @@ class GetThemeUseCase(
 ) : UseCase<Unit, Theme>(dispatcher.io) {
   override suspend fun execute(parameters: Unit): Theme {
     val selectedTheme = preferenceStorage.selectedTheme.first()
-    return themeFromStorageKey(selectedTheme)
-      ?: Theme.SYSTEM
+    return themeFromStorageKey(selectedTheme) ?: Theme.SYSTEM
   }
 }

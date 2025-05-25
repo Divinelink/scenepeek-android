@@ -21,7 +21,6 @@ fun AppearanceSettingsScreen(
   val viewState by viewModel.uiState.collectAsState()
 
   val resources = LocalContext.current.resources
-  val themeLabels = resources.getStringArray(R.array.pref_theme_entries)
   val themeValues = resources.getStringArray(R.array.pref_theme_values)
 
   SettingsScaffold(
@@ -32,9 +31,11 @@ fun AppearanceSettingsScreen(
       item {
         SettingsRadioPrefItem(
           title = stringResource(id = R.string.preferences__theme),
-          selected = themeLabels[viewState.theme.ordinal],
+          selected = stringResource(viewState.theme.label),
           selectedIndex = themeValues.indexOf(viewState.theme.storageKey),
-          listItems = themeLabels.toList(),
+          listItems = viewState.availableThemes.map { theme ->
+            stringResource(theme.label)
+          },
           onSelected = { index ->
             viewModel.setTheme(viewState.availableThemes[index])
           },
