@@ -1,6 +1,7 @@
 package com.divinelink.core.designsystem.theme
 
 import android.os.Build
+import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.designsystem.R
 
 @Composable
 fun AppTheme(
@@ -60,10 +62,13 @@ val ListPaddingValues = PaddingValues(
   horizontal = 12.dp,
 )
 
-enum class Theme(val storageKey: String) {
-  SYSTEM("system"),
-  LIGHT("light"),
-  DARK("dark"),
+enum class Theme(
+  val storageKey: String,
+  @StringRes val label: Int,
+) {
+  SYSTEM("system", R.string.core_designsystem__system_default),
+  LIGHT("light", R.string.core_designsystem__light_theme),
+  DARK("dark", R.string.core_designsystem__dark_theme),
 }
 
 /**
