@@ -1,6 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -30,7 +30,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import kotlin.test.Test
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 class JellyseerrSettingsScreenTest : ComposeTest() {
 
   private lateinit var logoutJellyseerrUseCase: FakeLogoutJellyseerrUseCase

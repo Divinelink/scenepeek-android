@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.navigation
+package com.divinelink.core.scaffold
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmarks
@@ -6,9 +6,8 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.Bookmarks
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.divinelink.feature.watchlist.navigation.WatchlistRoute
-import com.divinelink.scenepeek.R
-import com.divinelink.scenepeek.home.navigation.HomeRoute
+import com.divinelink.core.navigation.HomeRoute
+import com.divinelink.core.navigation.WatchlistRoute
 
 enum class TopLevelDestination(
   val selectedIcon: ImageVector,

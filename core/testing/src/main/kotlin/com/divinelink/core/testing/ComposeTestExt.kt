@@ -1,7 +1,6 @@
 package com.divinelink.core.testing
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -24,7 +23,6 @@ fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 fun ComposeTest.setSharedLayoutContent(
   content: @Composable (
     sharedTransitionScope: SharedTransitionScope,

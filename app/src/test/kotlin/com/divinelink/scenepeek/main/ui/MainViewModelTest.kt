@@ -8,8 +8,6 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.scenepeek.MainUiEvent
-import com.divinelink.scenepeek.MainUiState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.runner.RunWith

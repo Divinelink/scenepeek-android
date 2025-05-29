@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.details
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,12 +14,14 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DetailPreferencesSettingsScreen(
+  animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateUp: () -> Unit,
   viewModel: DetailsPreferencesViewModel = koinViewModel(),
 ) {
   val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
   SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.feature_settings_details_preferences),
     onNavigationClick = onNavigateUp,
   ) { paddingValues ->

@@ -14,6 +14,7 @@ fun NavController.navigateToLinkHandlingSettings() = navigate(LinkHandlingSettin
 fun NavGraphBuilder.linkHandlingSettingsScreen(onNavigateUp: () -> Unit) {
   composable<LinkHandlingSettingsRoute> {
     LinkHandlingSettingsScreen(
+      animatedVisibilityScope = this,
       navigateUp = onNavigateUp,
     )
   }

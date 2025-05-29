@@ -1,5 +1,7 @@
-package com.divinelink.scenepeek.ui
+package com.divinelink.core.scaffold
 
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -12,11 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.domain.onboarding.OnboardingManager
-import com.divinelink.feature.watchlist.navigation.navigateToWatchlist
-import com.divinelink.scenepeek.home.navigation.navigateToHome
-import com.divinelink.scenepeek.navigation.TopLevelDestination
+import com.divinelink.core.navigation.navigateToHome
+import com.divinelink.core.navigation.navigateToWatchlist
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -26,28 +26,32 @@ import kotlin.time.Duration.Companion.seconds
 fun rememberScenePeekAppState(
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
+  navigationProvider: List<NavGraphExtension>,
   scope: CoroutineScope = rememberCoroutineScope(),
+  snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
   navController: NavHostController = rememberNavController(),
 ): ScenePeekAppState = remember(networkMonitor, scope) {
   ScenePeekAppState(
     scope = scope,
     navController = navController,
+    navigationExtension = navigationProvider,
     networkMonitor = networkMonitor,
     onboardingManager = onboardingManager,
+    snackbarHostState = snackbarHostState,
   )
 }
 
 @Stable
-class ScenePeekAppState(
+class ScenePeekAppState internal constructor(
   val navController: NavHostController,
   val scope: CoroutineScope,
+  val navigationExtension: List<NavGraphExtension>,
+  val snackbarHostState: SnackbarHostState,
   networkMonitor: NetworkMonitor,
-  onboardingManager: OnboardingManager,
+  onboardingManager: OnboardingManager, // This could go on MainViewModel
 ) {
   val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
-
-  val showBottomNavigation = MutableStateFlow(true)
 
   val isOffline = networkMonitor.isOnline
     .map(Boolean::not)
@@ -66,9 +70,7 @@ class ScenePeekAppState(
 
   val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
-  fun setBottomNavigationVisibility(visible: Boolean) {
-    showBottomNavigation.value = visible
-  }
+  lateinit var sharedTransitionScope: SharedTransitionScope
 
   fun navigateToTopLevelDestination(destination: TopLevelDestination) {
     val topLevelNavOptions = navOptions {

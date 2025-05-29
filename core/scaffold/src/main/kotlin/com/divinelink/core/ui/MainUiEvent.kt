@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek
+package com.divinelink.core.ui
 
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute

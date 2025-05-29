@@ -14,6 +14,7 @@ fun NavController.navigateToAppearanceSettings() = navigate(route = AppearanceSe
 fun NavGraphBuilder.appearanceSettingsScreen(onNavigateUp: () -> Unit) {
   composable<AppearanceSettingsRoute> {
     AppearanceSettingsScreen(
+      animatedVisibilityScope = this,
       onNavigateUp = onNavigateUp,
     )
   }

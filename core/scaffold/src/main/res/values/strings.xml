@@ -1,0 +1,7 @@
+<resources>
+  <string name="home">Home</string>
+  <string name="watchlist">Watchlist</string>
+
+  <string name="top_level_navigation_content_description_selected">Selected bottom navigation item %s</string>
+  <string name="top_level_navigation_content_description_unselected">Unselected bottom navigation item %s</string>
+</resources>

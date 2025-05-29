@@ -297,7 +297,7 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test navigate to credits screen with tv credits`() {
-    // Initial navigation to Details screen
+    // Initial navigation to DETAILS screen
     var navigatedToCredits = false
     var route: CreditsRoute? = null
 

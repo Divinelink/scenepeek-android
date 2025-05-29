@@ -68,7 +68,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   private lateinit var navController: TestNavHostController
   private lateinit var fakePreferenceStorage: FakePreferenceStorage
 
-  // Home use cases
+  // HOME use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
   private lateinit var markAsFavoriteUseCase: FakeMarkAsFavoriteUseCase

@@ -2,6 +2,7 @@
 
 package com.divinelink.feature.details.person.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -15,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -31,6 +31,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
+import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
@@ -40,6 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 fun PersonScreen(
   onNavigateUp: () -> Unit,
   onNavigateToDetails: (DetailsRoute) -> Unit,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: PersonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,7 +70,9 @@ fun PersonScreen(
     label = "appBarContainerColor",
   )
 
-  Scaffold(
+  rememberScaffoldState(
+    animatedVisibilityScope = animatedVisibilityScope,
+  ).PersistentScaffold(
     topBar = {
       if (personDetails is PersonDetailsUiState.Data) {
         AppTopAppBar(
@@ -97,34 +104,41 @@ fun PersonScreen(
         )
       }
     },
-  ) { paddingValues ->
-    Column {
-      Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+    navigationRail = {
+      PersistentNavigationRail()
+    },
+    navigationBar = {
+      PersistentNavigationBar()
+    },
+    content = { paddingValues ->
+      Column {
+        Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
 
-      when {
-        uiState.isError -> {
-          // TODO Add error content
+        when {
+          uiState.isError -> {
+            // TODO Add error content
+          }
+          uiState.isLoading -> LoadingContent()
+          else -> PersonContent(
+            uiState = uiState,
+            lazyListState = lazyListState,
+            scope = scope,
+            onMediaClick = { mediaItem ->
+              onNavigateToDetails(
+                DetailsRoute(
+                  id = mediaItem.id,
+                  mediaType = mediaItem.mediaType,
+                  isFavorite = null,
+                ),
+              )
+            },
+            onTabSelected = viewModel::onTabSelected,
+            onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
+            onApplyFilter = viewModel::onApplyFilter,
+            onShowTitle = { isAppBarVisible = it },
+          )
         }
-        uiState.isLoading -> LoadingContent()
-        else -> PersonContent(
-          uiState = uiState,
-          lazyListState = lazyListState,
-          scope = scope,
-          onMediaClick = { mediaItem ->
-            onNavigateToDetails(
-              DetailsRoute(
-                id = mediaItem.id,
-                mediaType = mediaItem.mediaType,
-                isFavorite = null,
-              ),
-            )
-          },
-          onTabSelected = viewModel::onTabSelected,
-          onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
-          onApplyFilter = viewModel::onApplyFilter,
-          onShowTitle = { isAppBarVisible = it },
-        )
       }
-    }
-  }
+    },
+  )
 }

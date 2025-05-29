@@ -15,6 +15,7 @@ import com.divinelink.scenepeek.base.di.appRemoteModule
 import com.divinelink.scenepeek.base.di.appRepositoryModule
 import com.divinelink.scenepeek.base.di.appUseCaseModule
 import com.divinelink.scenepeek.base.di.appViewModelModule
+import com.divinelink.scenepeek.base.di.navigationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.androix.startup.KoinStartup.onKoinStartup
 
@@ -38,6 +39,7 @@ class Application : Application() {
         useCaseModule,
         storageModule,
         settingsUseCaseModule,
+        navigationModule,
       )
     }
   }

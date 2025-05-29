@@ -1,9 +1,9 @@
 package com.divinelink.feature.settings.app.links
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +18,7 @@ import androidx.compose.ui.text.withStyle
 import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
@@ -25,7 +26,10 @@ import com.divinelink.feature.settings.components.SettingsTextItem
 import com.divinelink.core.commons.R as CoreR
 
 @Composable
-fun LinkHandlingSettingsScreen(navigateUp: () -> Unit) {
+fun LinkHandlingSettingsScreen(
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  navigateUp: () -> Unit,
+) {
   val context = LocalContext.current
 
   val directions = buildAnnotatedString {
@@ -54,7 +58,16 @@ fun LinkHandlingSettingsScreen(navigateUp: () -> Unit) {
   }
 
   SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.feature_settings_link_handling),
+    floatingActionButton = {
+      ScaffoldFab(
+        icon = Icons.Default.Settings,
+        text = stringResource(id = R.string.feature_settings_open_settings),
+        expanded = true,
+        onClick = { AppSettingsUtil.openAppDetails(context) },
+      )
+    },
     onNavigationClick = navigateUp,
   ) {
     ScenePeekLazyColumn(
@@ -83,18 +96,6 @@ fun LinkHandlingSettingsScreen(navigateUp: () -> Unit) {
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.secondary,
         )
-      }
-
-      item {
-        Row {
-          Spacer(modifier = Modifier.weight(1f))
-          Button(
-            onClick = { AppSettingsUtil.openAppDetails(context) },
-          ) {
-            Text(stringResource(id = R.string.feature_settings_open_settings))
-          }
-          Spacer(modifier = Modifier.weight(1f))
-        }
       }
     }
   }

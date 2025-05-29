@@ -1,13 +1,10 @@
 package com.divinelink.feature.details.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.feature.details.person.ui.PersonScreen
-
-fun NavController.navigateToPerson(route: PersonRoute) = navigate(route = route)
 
 fun NavGraphBuilder.personScreen(
   onNavigateUp: () -> Unit,
@@ -17,6 +14,7 @@ fun NavGraphBuilder.personScreen(
     PersonScreen(
       onNavigateUp = onNavigateUp,
       onNavigateToDetails = onNavigateToDetails,
+      animatedVisibilityScope = this@composable,
     )
   }
 }

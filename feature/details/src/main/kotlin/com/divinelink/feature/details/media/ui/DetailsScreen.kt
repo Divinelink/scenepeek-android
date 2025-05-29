@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +40,7 @@ fun DetailsScreen(
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
-  setBottomNavigationVisible: (show: Boolean) -> Unit,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
   var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }
@@ -54,14 +55,6 @@ fun DetailsScreen(
       onNavigateUp()
     } else {
       videoUrl = null
-    }
-  }
-
-  LaunchedEffect(videoUrl) {
-    if (videoUrl.isNullOrEmpty()) {
-      setBottomNavigationVisible(true)
-    } else {
-      setBottomNavigationVisible(false)
     }
   }
 
@@ -165,6 +158,7 @@ fun DetailsScreen(
       },
       onTabSelected = viewModel::onTabSelected,
       onPlayTrailerClick = { videoUrl = it },
+      animatedVisibilityScope = animatedVisibilityScope,
     )
 
     OverlayScreen(

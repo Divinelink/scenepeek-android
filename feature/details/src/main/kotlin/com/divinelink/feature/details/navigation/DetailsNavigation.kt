@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.divinelink.core.navigation.route.CreditsRoute
@@ -8,15 +7,12 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.feature.details.media.ui.DetailsScreen
 
-fun NavController.navigateToDetails(route: DetailsRoute) = navigate(route = route)
-
 fun NavGraphBuilder.detailsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
-  setBottomNavigationVisibility: (show: Boolean) -> Unit,
 ) {
   composable<DetailsRoute> {
     DetailsScreen(
@@ -25,7 +21,7 @@ fun NavGraphBuilder.detailsScreen(
       onNavigateToCredits = onNavigateToCredits,
       onNavigateToPerson = onNavigateToPerson,
       onNavigateToTMDBLogin = onNavigateToTMDBLogin,
-      setBottomNavigationVisible = setBottomNavigationVisibility,
+      animatedVisibilityScope = this@composable,
     )
   }
 }

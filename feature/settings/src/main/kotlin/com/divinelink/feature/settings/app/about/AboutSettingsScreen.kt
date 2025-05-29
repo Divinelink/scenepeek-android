@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.about
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,9 +23,11 @@ import com.divinelink.core.commons.R as commonR
 @Composable
 fun AboutSettingsScreen(
   onNavigateUp: () -> Unit,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
 ) {
   SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(R.string.feature_settings_about),
     onNavigationClick = onNavigateUp,
   ) { paddingValues ->

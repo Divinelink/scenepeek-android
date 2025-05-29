@@ -12,6 +12,8 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.ui.MainUiEvent
+import com.divinelink.core.ui.MainUiState
 import com.divinelink.scenepeek.ui.ThemedActivityDelegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

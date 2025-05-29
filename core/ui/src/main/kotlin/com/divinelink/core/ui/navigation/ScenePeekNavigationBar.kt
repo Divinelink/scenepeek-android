@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.ui
+package com.divinelink.core.ui.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.ui.TestTags
 
 @Composable
-fun AppNavigationBar(
+fun ScenePeekNavigationBar(
   modifier: Modifier = Modifier,
   containerColor: Color = MaterialTheme.colorScheme.surface,
   contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),

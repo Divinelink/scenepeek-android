@@ -1,18 +1,12 @@
-package com.divinelink.scenepeek.navigation
+package com.divinelink.scenepeek.base.di
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
+import com.divinelink.core.navigation.NavigationQualifier
+import com.divinelink.core.navigation.navigateToDetails
+import com.divinelink.core.navigation.navigateToPerson
+import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
-import com.divinelink.feature.details.navigation.navigateToDetails
-import com.divinelink.feature.details.navigation.navigateToPerson
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
@@ -32,38 +26,48 @@ import com.divinelink.feature.settings.navigation.settings.settingsScreen
 import com.divinelink.feature.tmdb.auth.navigateToTMDBAuth
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.watchlist.navigation.watchlistScreen
-import com.divinelink.scenepeek.home.navigation.HomeRoute
 import com.divinelink.scenepeek.home.navigation.homeScreen
-import com.divinelink.scenepeek.ui.ScenePeekAppState
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-fun ScenePeekNavHost(state: ScenePeekAppState) {
-  val navController = state.navController
+val navigationModule = module {
 
-  SharedTransitionLayout {
-    NavHost(
-      navController = navController,
-      startDestination = HomeRoute,
-      enterTransition = {
-        fadeIn(animationSpec = tween(durationMillis = 300, easing = LinearEasing))
-      },
-      exitTransition = {
-        fadeOut(animationSpec = tween(durationMillis = 300, easing = LinearEasing))
-      },
-    ) {
+  single<NavGraphExtension>(named(NavigationQualifier.Home)) {
+    { navController, _ ->
       homeScreen(
         onNavigateToSettings = navController::navigateToSettings,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToPerson = navController::navigateToPerson,
       )
+    }
+  }
 
+// Person Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Person)) {
+    { navController, _ ->
       personScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
       )
+    }
+  }
 
-      // Settings screens
+// Details Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Details)) {
+    { navController, _ ->
+      detailsScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToDetails = navController::navigate,
+        onNavigateToCredits = navController::navigateToCredits,
+        onNavigateToPerson = navController::navigateToPerson,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+      )
+    }
+  }
+
+// Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Settings)) {
+    { navController, _ ->
       settingsScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToAccountSettings = navController::navigateToAccountSettings,
@@ -72,62 +76,113 @@ fun ScenePeekNavHost(state: ScenePeekAppState) {
         onNavigateToLinkHandling = navController::navigateToLinkHandlingSettings,
         onNavigateToAboutSettings = navController::navigateToAboutSettings,
       )
+    }
+  }
 
+// Account Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AccountSettings)) {
+    { navController, transitionScope ->
       accountSettingsScreen(
-        sharedTransitionScope = this@SharedTransitionLayout,
+        sharedTransitionScope = transitionScope,
         onNavigateUp = navController::navigateUp,
         onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
         onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
       )
+    }
+  }
 
+// Jellyseerr Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.JellyseerrSettings)) {
+    { navController, transitionScope ->
       jellyseerrSettingsScreen(
-        sharedTransitionScope = this@SharedTransitionLayout,
+        sharedTransitionScope = transitionScope,
         onNavigateUp = navController::navigateUp,
       )
+    }
+  }
 
+// Appearance Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AppearanceSettings)) {
+    { navController, _ ->
       appearanceSettingsScreen(
         onNavigateUp = navController::navigateUp,
       )
+    }
+  }
 
+// Details Preferences Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.DetailsPreferencesSettings)) {
+    { navController, _ ->
       detailsPreferencesSettingsScreen(
         onNavigateUp = navController::navigateUp,
       )
+    }
+  }
 
+// Link Handling Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.LinkHandlingSettings)) {
+    { navController, _ ->
       linkHandlingSettingsScreen(
         onNavigateUp = navController::navigateUp,
       )
+    }
+  }
 
+// About Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AboutSettings)) {
+    { navController, _ ->
       aboutSettingsScreen(
         onNavigateUp = navController::navigateUp,
       )
-      // End of settings screens
+    }
+  }
 
-      detailsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToDetails = navController::navigateToDetails,
-        onNavigateToCredits = navController::navigateToCredits,
-        onNavigateToPerson = navController::navigateToPerson,
-        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
-        setBottomNavigationVisibility = state::setBottomNavigationVisibility,
-      )
-
+// Credits Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Credits)) {
+    { navController, _ ->
       creditsScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToPerson = navController::navigateToPerson,
       )
+    }
+  }
 
+// Watchlist Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Watchlist)) {
+    { navController, _ ->
       watchlistScreen(
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )
+    }
+  }
 
+// Onboarding Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Onboarding)) {
+    { navController, _ ->
       onboardingScreen(
         onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
         onNavigateUp = navController::navigateUp,
       )
+    }
+  }
 
+// TMDB Auth Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.TMDBAuth)) {
+    { navController, _ ->
       tmdbAuthScreen(navController::navigateUp)
     }
+  }
+
+// Collect all navigation extensions
+  single<List<NavGraphExtension>> {
+    NavigationQualifier.entries.map { qualifier ->
+      get<NavGraphExtension>(named(qualifier))
+    }
+  }
+
+  single<List<NavGraphExtension>> {
+    getAll<NavGraphExtension>()
   }
 }

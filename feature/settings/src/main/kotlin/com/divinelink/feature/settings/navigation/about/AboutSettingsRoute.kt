@@ -14,6 +14,7 @@ fun NavController.navigateToAboutSettings() = navigate(route = AboutSettingsRout
 fun NavGraphBuilder.aboutSettingsScreen(onNavigateUp: () -> Unit) {
   composable<AboutSettingsRoute> {
     AboutSettingsScreen(
+      animatedVisibilityScope = this,
       onNavigateUp = onNavigateUp,
     )
   }

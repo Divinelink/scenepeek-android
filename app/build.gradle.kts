@@ -94,6 +94,7 @@ dependencies {
   implementation(projects.core.navigation)
   implementation(projects.core.network)
   implementation(projects.core.ui)
+  implementation(projects.core.scaffold)
 
   implementation(projects.feature.watchlist)
   implementation(projects.feature.details)

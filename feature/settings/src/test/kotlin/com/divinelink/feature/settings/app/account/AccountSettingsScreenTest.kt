@@ -1,6 +1,6 @@
 package com.divinelink.feature.settings.app.account
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -25,7 +25,6 @@ import org.junit.Before
 import org.junit.Rule
 import kotlin.test.Test
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 class AccountSettingsScreenTest : ComposeTest() {
 
   private lateinit var createRequestTokenUseCase: FakeCreateRequestTokenUseCase

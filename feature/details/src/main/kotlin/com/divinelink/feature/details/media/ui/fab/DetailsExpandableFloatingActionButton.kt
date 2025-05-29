@@ -1,14 +1,13 @@
-package com.divinelink.feature.details.media.ui
+package com.divinelink.feature.details.media.ui.fab
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.material.icons.rounded.WatchLater
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.components.expandablefab.ExpandableFloatActionButton
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
@@ -16,7 +15,7 @@ import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-internal fun DetailsExpandableFloatingActionButton(
+internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
   modifier: Modifier = Modifier,
   actionButtons: List<DetailActionItem>,
   onAddRateClicked: () -> Unit,
@@ -24,7 +23,7 @@ internal fun DetailsExpandableFloatingActionButton(
   onRequestClicked: () -> Unit,
 ) {
   ExpandableFloatActionButton(
-    modifier = modifier.padding(bottom = LocalBottomNavigationPadding.current),
+    modifier = modifier,
     buttons = actionButtons.map { button ->
       when (button) {
         DetailActionItem.RATE -> FloatingActionButtonItem(

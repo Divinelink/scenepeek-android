@@ -43,8 +43,6 @@ import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.onboarding.ui.OnboardingViewModel
 import com.divinelink.feature.watchlist.WatchlistViewModel
-import com.divinelink.scenepeek.MainUiEvent
-import com.divinelink.scenepeek.MainUiState
 import com.divinelink.scenepeek.R
 import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
@@ -55,7 +53,6 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
-import com.divinelink.scenepeek.navigation.TopLevelDestination
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
@@ -80,7 +77,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   private lateinit var state: ScenePeekAppState
 
-  // Home use cases
+  // HOME use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
   private lateinit var markAsFavoriteUseCase: FakeMarkAsFavoriteUseCase
@@ -90,7 +87,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var observeAccountUseCase: TestObserveAccountUseCase
   private lateinit var fetchWatchlistUseCase: FakeFetchWatchlistUseCase
 
-  // Details use cases
+  // DETAILS use cases
   private lateinit var getMediaDetailsUseCase: FakeGetMediaDetailsUseCase
   private lateinit var submitRatingUseCase: FakeSubmitRatingUseCase
   private lateinit var deleteRatingUseCase: FakeDeleteRatingUseCase

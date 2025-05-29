@@ -16,6 +16,7 @@ fun NavController.navigateToDetailsPreferenceSettings() = navigate(
 fun NavGraphBuilder.detailsPreferencesSettingsScreen(onNavigateUp: () -> Unit) {
   composable<DetailsPreferencesSettingsRoute> {
     DetailPreferencesSettingsScreen(
+      animatedVisibilityScope = this,
       onNavigateUp = onNavigateUp,
     )
   }

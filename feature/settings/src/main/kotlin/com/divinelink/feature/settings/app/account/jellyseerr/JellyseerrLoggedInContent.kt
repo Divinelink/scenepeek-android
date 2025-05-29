@@ -2,7 +2,7 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,6 @@ import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.core.ui.R as uiR
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun JellyseerrLoggedInContent(
   modifier: Modifier = Modifier,
@@ -170,7 +169,6 @@ fun JellyseerrLoggedInContent(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentPreview() {
@@ -194,7 +192,6 @@ private fun JellyseerrLoggedInContentPreview() {
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentLoadingPreview() {

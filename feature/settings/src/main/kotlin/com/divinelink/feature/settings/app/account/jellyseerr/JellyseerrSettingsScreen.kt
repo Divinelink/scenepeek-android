@@ -2,14 +2,15 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -17,7 +18,6 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun JellyseerrSettingsScreen(
   sharedTransitionScope: SharedTransitionScope,
@@ -25,7 +25,7 @@ fun JellyseerrSettingsScreen(
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: JellyseerrSettingsViewModel = koinViewModel(),
 ) {
-  val uiState = viewModel.uiState.collectAsState().value
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   SnackbarMessageHandler(
     snackbarMessage = uiState.snackbarMessage,
@@ -33,6 +33,7 @@ fun JellyseerrSettingsScreen(
   )
 
   SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(R.string.feature_settings_jellyseerr_account),
     onNavigationClick = onNavigateUp,
   ) { paddingValues ->
