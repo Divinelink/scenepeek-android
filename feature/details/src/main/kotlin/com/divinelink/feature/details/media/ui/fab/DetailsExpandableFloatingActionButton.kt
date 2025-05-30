@@ -9,7 +9,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.ui.IconWrapper
-import com.divinelink.core.ui.components.expandablefab.ExpandableFloatActionButton
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.feature.details.R
 import com.divinelink.core.ui.R as uiR

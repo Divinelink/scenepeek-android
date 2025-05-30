@@ -3,7 +3,7 @@ package com.divinelink.core.scaffold
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -102,7 +102,9 @@ fun ScenePeekApp(
         CompositionLocalProvider(
           LocalScenePeekAppState provides state,
         ) {
-          Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
+          Surface(
+            modifier = Modifier.fillMaxSize(),
+          ) {
             when (uiState) {
               is MainUiState.Completed -> ScenePeekNavHost()
               MainUiState.Loading -> LoadingContent()

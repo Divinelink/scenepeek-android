@@ -1,14 +1,18 @@
 package com.divinelink.core.scaffold
 
 import androidx.compose.animation.animateBounds
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -42,16 +46,28 @@ fun ScaffoldState.PersistentScaffold(
           floatingActionButton()
         },
         bottomBar = {
-          navigationBar()
-        },
-        snackbarHost = {
-          PersistentSnackbarHost()
+          Column(
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            if (canShowBottomNavigation) {
+              PersistentSnackbarHost(
+                modifier = Modifier.animateContentSize(),
+              )
+            }
+            navigationBar()
+          }
         },
         content = { paddingValues ->
           CompositionLocalProvider(
             LocalBottomNavigationPadding provides paddingValues.calculateBottomPadding(),
           ) {
-            content(paddingValues)
+            Box(modifier = Modifier.fillMaxSize()) {
+              content(paddingValues)
+
+              if (canShowNavRail) {
+                PersistentSnackbarHost(modifier = Modifier.align(Alignment.BottomCenter))
+              }
+            }
           }
         },
       )

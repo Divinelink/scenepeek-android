@@ -1,10 +1,7 @@
-package com.divinelink.core.ui.components.expandablefab
+package com.divinelink.feature.details.media.ui.fab
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,12 +23,10 @@ import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,42 +39,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ScaffoldFab
+import com.divinelink.core.scaffold.ScaffoldState
+import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.getString
-import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 @Composable
-fun ExpandableFloatActionButton(
+fun ScaffoldState.ExpandableFloatActionButton(
   modifier: Modifier = Modifier,
   buttons: List<FloatingActionButtonItem>,
 ) {
-  val snackbarController = LocalSnackbarController.current
-
   var expanded by remember { mutableStateOf(false) }
   val rotationState by animateFloatAsState(
     targetValue = if (expanded) 45f else 0f,
     animationSpec = tween(durationMillis = 300),
     label = "Floating Action Button Rotation Animation",
-  )
-
-  val fabOffset by animateDpAsState(
-    targetValue = if (snackbarController.isVisible()) {
-      MaterialTheme.dimensions.keyline_58
-    } else {
-      MaterialTheme.dimensions.keyline_0
-    },
-    animationSpec = spring(
-      dampingRatio = Spring.DampingRatioMediumBouncy,
-      stiffness = Spring.StiffnessLow,
-    ),
-    label = "Snackbar Offset Animation",
   )
 
   Box(modifier = modifier.fillMaxSize()) {
@@ -110,9 +93,7 @@ fun ExpandableFloatActionButton(
     Column(
       horizontalAlignment = Alignment.End,
       verticalArrangement = Arrangement.Bottom,
-      modifier = Modifier
-        .offset { IntOffset(0, -fabOffset.roundToPx()) }
-        .fillMaxSize(),
+      modifier = Modifier.fillMaxSize(),
     ) {
       StaggeredFloatingActionsButtons(
         fabItems = buttons,
@@ -122,17 +103,15 @@ fun ExpandableFloatActionButton(
 
       Spacer(modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8))
 
-      FloatingActionButton(
-        onClick = { expanded = !expanded },
+      ScaffoldFab(
         modifier = Modifier
           .testTag(TestTags.Components.ExpandableFab.BUTTON)
           .rotate(rotationState),
-      ) {
-        Icon(
-          imageVector = Icons.Rounded.Add,
-          contentDescription = "Expandable FAB",
-        )
-      }
+        text = null,
+        icon = Icons.Rounded.Add,
+        onClick = { expanded = !expanded },
+        expanded = false,
+      )
     }
   }
 }
@@ -175,6 +154,7 @@ fun StaggeredAnimatedFloatingActionButton(
   }
 
   AnimatedVisibility(
+    modifier = Modifier,
     visible = expanded,
     enter = enterTransition,
     exit = exitTransition,
@@ -207,15 +187,15 @@ fun StaggeredAnimatedFloatingActionButton(
       ) {
         when (fabItem.icon) {
           is IconWrapper.Image -> Image(
-            painter = painterResource(id = fabItem.icon.resourceId),
+            painter = painterResource(id = (fabItem.icon as IconWrapper.Image).resourceId),
             contentDescription = fabItem.contentDescription.getString(),
           )
           is IconWrapper.Icon -> Icon(
-            painter = painterResource(id = fabItem.icon.resourceId),
+            painter = painterResource(id = (fabItem.icon as IconWrapper.Icon).resourceId),
             contentDescription = fabItem.contentDescription.getString(),
           )
           is IconWrapper.Vector -> Icon(
-            imageVector = fabItem.icon.vector,
+            imageVector = (fabItem.icon as IconWrapper.Vector).vector,
             contentDescription = fabItem.contentDescription.getString(),
           )
         }
@@ -234,14 +214,15 @@ private fun ExpandableFloatingActionButton() {
     snackbarHostState = snackbarHostState,
     coroutineScope = coroutineScope,
   ) {
-    AppTheme {
-      Surface {
-        Text(
-          text = "Click the FAB to expand",
-          style = MaterialTheme.typography.headlineLarge,
-          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-        )
-
+    AnimatedVisibilityScopeProvider { _, visibilityScope ->
+      Text(
+        text = "Click the FAB to expand",
+        style = MaterialTheme.typography.headlineLarge,
+        modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+      )
+      rememberScaffoldState(
+        animatedVisibilityScope = visibilityScope,
+      ).PersistentScaffold {
         ExpandableFloatActionButton(
           buttons = listOf(
             FloatingActionButtonItem(
