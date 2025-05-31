@@ -19,19 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
+import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiTokens
 
 @Composable
 fun ScenePeekNavigationBar(
   modifier: Modifier = Modifier,
-  containerColor: Color = MaterialTheme.colorScheme.surface,
+  containerColor: Color = ScenePeekNavigationDefaults.containerColor(),
   contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
   windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
   content: @Composable RowScope.() -> Unit,
 ) {
   Surface(
-    color = containerColor.copy(alpha = 0.8f),
+    color = containerColor,
     contentColor = contentColor,
     modifier = modifier,
   ) {
@@ -40,11 +42,11 @@ fun ScenePeekNavigationBar(
         .testTag(TestTags.Components.NAVIGATION_BAR)
         .fillMaxWidth()
         .windowInsetsPadding(windowInsets)
-        .heightIn(max = 60.dp)
-        .defaultMinSize(minHeight = 60.dp)
-        .padding(top = 8.dp)
+        .heightIn(max = UiTokens.bottomNavHeight)
+        .defaultMinSize(minHeight = UiTokens.bottomNavHeight)
+        .padding(top = MaterialTheme.dimensions.keyline_8)
         .selectableGroup(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
       content = content,
     )

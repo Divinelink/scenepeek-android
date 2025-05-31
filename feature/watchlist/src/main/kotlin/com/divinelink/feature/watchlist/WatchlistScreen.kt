@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
@@ -33,7 +31,6 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
-import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -91,14 +88,6 @@ fun WatchlistScreen(
     },
     navigationBar = {
       PersistentNavigationBar()
-    },
-    floatingActionButton = {
-      ScaffoldFab(
-        text = "Test",
-        icon = Icons.Default.Dns,
-        expanded = true,
-        onClick = {},
-      )
     },
     content = { paddingValues ->
       Column {

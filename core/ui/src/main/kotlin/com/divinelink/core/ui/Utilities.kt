@@ -1,4 +1,4 @@
-package com.divinelink.core.scaffold
+package com.divinelink.core.ui
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues

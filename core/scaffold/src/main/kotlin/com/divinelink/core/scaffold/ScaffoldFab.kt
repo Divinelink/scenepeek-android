@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.UiTokens
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -50,12 +53,14 @@ fun ScaffoldState.ScaffoldFab(
         content = {
           Row(
             modifier = Modifier
-              .padding(horizontal = 16.dp),
+              .padding(horizontal = MaterialTheme.dimensions.keyline_16),
             verticalAlignment = Alignment.CenterVertically,
           ) {
             if (icon != null) FabIcon(icon)
             if (icon == null || expanded) {
-              if (icon != null) Spacer(modifier = Modifier.width(8.dp))
+              if (icon != null) {
+                Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
+              }
               text?.let {
                 AnimatedContent(targetState = text) { text ->
                   Text(
