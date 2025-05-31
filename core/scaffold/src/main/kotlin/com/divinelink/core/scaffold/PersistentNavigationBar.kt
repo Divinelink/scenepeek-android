@@ -10,12 +10,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.navigation.ScenePeekNavigationBar
 
@@ -53,6 +55,13 @@ fun ScaffoldState.PersistentNavigationBar(
 
           NavigationBarItem(
             selected = selected,
+            colors = NavigationBarItemDefaults.colors(
+              selectedIconColor = ScenePeekNavigationDefaults.selectedItemColor(),
+              unselectedIconColor = ScenePeekNavigationDefaults.contentColor(),
+              selectedTextColor = ScenePeekNavigationDefaults.selectedTextColor(),
+              unselectedTextColor = ScenePeekNavigationDefaults.contentColor(),
+              indicatorColor = ScenePeekNavigationDefaults.indicatorColor(),
+            ),
             onClick = { state.navigateToTopLevelDestination(destination) },
             label = {
               Text(text = stringResource(id = destination.titleTextId))

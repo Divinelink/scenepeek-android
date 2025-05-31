@@ -9,10 +9,12 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
 
 @Composable
 fun ScaffoldState.PersistentNavigationRail(
@@ -40,6 +42,13 @@ fun ScaffoldState.PersistentNavigationRail(
           NavigationRailItem(
             selected = selected,
             onClick = { state.navigateToTopLevelDestination(destination) },
+            colors = NavigationRailItemDefaults.colors(
+              selectedIconColor = ScenePeekNavigationDefaults.selectedItemColor(),
+              unselectedIconColor = ScenePeekNavigationDefaults.contentColor(),
+              selectedTextColor = ScenePeekNavigationDefaults.selectedTextColor(),
+              unselectedTextColor = ScenePeekNavigationDefaults.contentColor(),
+              indicatorColor = ScenePeekNavigationDefaults.indicatorColor(),
+            ),
             label = {
               Text(text = stringResource(id = destination.titleTextId))
             },
