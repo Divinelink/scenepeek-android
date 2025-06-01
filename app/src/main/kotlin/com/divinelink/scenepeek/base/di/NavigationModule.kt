@@ -1,0 +1,188 @@
+package com.divinelink.scenepeek.base.di
+
+import com.divinelink.core.navigation.NavigationQualifier
+import com.divinelink.core.navigation.navigateToDetails
+import com.divinelink.core.navigation.navigateToPerson
+import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.feature.credits.navigation.creditsScreen
+import com.divinelink.feature.credits.navigation.navigateToCredits
+import com.divinelink.feature.details.navigation.detailsScreen
+import com.divinelink.feature.details.navigation.personScreen
+import com.divinelink.feature.onboarding.navigation.onboardingScreen
+import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
+import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
+import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
+import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen
+import com.divinelink.feature.settings.navigation.account.navigateToAccountSettings
+import com.divinelink.feature.settings.navigation.account.navigateToJellyseerrSettings
+import com.divinelink.feature.settings.navigation.appearance.appearanceSettingsScreen
+import com.divinelink.feature.settings.navigation.appearance.navigateToAppearanceSettings
+import com.divinelink.feature.settings.navigation.details.detailsPreferencesSettingsScreen
+import com.divinelink.feature.settings.navigation.details.navigateToDetailsPreferenceSettings
+import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScreen
+import com.divinelink.feature.settings.navigation.links.navigateToLinkHandlingSettings
+import com.divinelink.feature.settings.navigation.settings.navigateToSettings
+import com.divinelink.feature.settings.navigation.settings.settingsScreen
+import com.divinelink.feature.tmdb.auth.navigateToTMDBAuth
+import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
+import com.divinelink.feature.watchlist.navigation.watchlistScreen
+import com.divinelink.scenepeek.home.navigation.homeScreen
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+val navigationModule = module {
+
+  single<NavGraphExtension>(named(NavigationQualifier.Home)) {
+    { navController, _ ->
+      homeScreen(
+        onNavigateToSettings = navController::navigateToSettings,
+        onNavigateToDetails = navController::navigateToDetails,
+        onNavigateToPerson = navController::navigateToPerson,
+      )
+    }
+  }
+
+// Person Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Person)) {
+    { navController, _ ->
+      personScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToDetails = navController::navigateToDetails,
+      )
+    }
+  }
+
+// Details Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Details)) {
+    { navController, _ ->
+      detailsScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToDetails = navController::navigate,
+        onNavigateToCredits = navController::navigateToCredits,
+        onNavigateToPerson = navController::navigateToPerson,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+      )
+    }
+  }
+
+// Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Settings)) {
+    { navController, _ ->
+      settingsScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToAccountSettings = navController::navigateToAccountSettings,
+        onNavigateToAppearanceSettings = navController::navigateToAppearanceSettings,
+        onNavigateToDetailPreferencesSettings = navController::navigateToDetailsPreferenceSettings,
+        onNavigateToLinkHandling = navController::navigateToLinkHandlingSettings,
+        onNavigateToAboutSettings = navController::navigateToAboutSettings,
+      )
+    }
+  }
+
+// Account Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AccountSettings)) {
+    { navController, transitionScope ->
+      accountSettingsScreen(
+        sharedTransitionScope = transitionScope,
+        onNavigateUp = navController::navigateUp,
+        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
+        onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
+      )
+    }
+  }
+
+// Jellyseerr Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.JellyseerrSettings)) {
+    { navController, transitionScope ->
+      jellyseerrSettingsScreen(
+        sharedTransitionScope = transitionScope,
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// Appearance Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AppearanceSettings)) {
+    { navController, _ ->
+      appearanceSettingsScreen(
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// Details Preferences Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.DetailsPreferencesSettings)) {
+    { navController, _ ->
+      detailsPreferencesSettingsScreen(
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// Link Handling Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.LinkHandlingSettings)) {
+    { navController, _ ->
+      linkHandlingSettingsScreen(
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// About Settings Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AboutSettings)) {
+    { navController, _ ->
+      aboutSettingsScreen(
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// Credits Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Credits)) {
+    { navController, _ ->
+      creditsScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToPerson = navController::navigateToPerson,
+      )
+    }
+  }
+
+// Watchlist Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Watchlist)) {
+    { navController, _ ->
+      watchlistScreen(
+        onNavigateToDetails = navController::navigateToDetails,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+      )
+    }
+  }
+
+// Onboarding Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Onboarding)) {
+    { navController, _ ->
+      onboardingScreen(
+        onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+// TMDB Auth Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.TMDBAuth)) {
+    { navController, _ ->
+      tmdbAuthScreen(navController::navigateUp)
+    }
+  }
+
+// Collect all navigation extensions
+  single<List<NavGraphExtension>> {
+    NavigationQualifier.entries.map { qualifier ->
+      get<NavGraphExtension>(named(qualifier))
+    }
+  }
+
+  single<List<NavGraphExtension>> {
+    getAll<NavGraphExtension>()
+  }
+}

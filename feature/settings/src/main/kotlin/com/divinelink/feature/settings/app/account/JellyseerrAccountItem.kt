@@ -2,7 +2,7 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -31,7 +31,6 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
 import com.divinelink.core.ui.R as uiR
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun JellyseerrAccountItem(
   accountDetails: JellyseerrAccountDetails?,
@@ -122,7 +121,6 @@ fun JellyseerrAccountItem(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 private fun AccountItemPreview() {

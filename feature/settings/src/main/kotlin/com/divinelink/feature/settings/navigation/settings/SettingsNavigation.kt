@@ -38,6 +38,7 @@ fun NavGraphBuilder.settingsScreen(
     },
   ) {
     SettingsScreen(
+      animatedVisibilityScope = this,
       onNavigateUp = onNavigateUp,
       onNavigateToAppearanceSettings = onNavigateToAppearanceSettings,
       onNavigateToAccountSettings = onNavigateToAccountSettings,

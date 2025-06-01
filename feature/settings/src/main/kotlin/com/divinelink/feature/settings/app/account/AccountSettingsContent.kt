@@ -1,7 +1,7 @@
 package com.divinelink.feature.settings.app.account
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +21,6 @@ import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsTextItem
 import com.divinelink.feature.settings.provider.AccountDetailsParameterProvider
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AccountSettingsContent(
   paddingValues: PaddingValues = PaddingValues(),
@@ -66,7 +65,6 @@ fun AccountSettingsContent(
   }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Previews
 @Composable
 fun AccountSettingsContentPreview(

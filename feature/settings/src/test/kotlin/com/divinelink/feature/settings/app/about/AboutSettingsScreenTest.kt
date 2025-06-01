@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
@@ -31,10 +31,11 @@ class AboutSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test version with debug build`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AboutSettingsScreen(
         buildConfigProvider = debugBuildConfigProvider,
         onNavigateUp = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -56,10 +57,11 @@ class AboutSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test version with release`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AboutSettingsScreen(
         onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -77,10 +79,11 @@ class AboutSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test about card is visible`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AboutSettingsScreen(
         onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -91,10 +94,11 @@ class AboutSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test privacy policy is visible`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AboutSettingsScreen(
         onNavigateUp = {},
         buildConfigProvider = releaseBuildConfigProvider,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -108,7 +112,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test navigateUp`() {
     var navigatedUp = false
     var navigatedToAbout = false
-    setContentWithTheme {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = { navigatedUp = true },
         onNavigateToAccountSettings = {},
@@ -116,6 +120,7 @@ class AboutSettingsScreenTest : ComposeTest() {
         onNavigateToDetailPreferencesSettings = {},
         onNavigateToLinkHandling = {},
         onNavigateToAboutSettings = { navigatedToAbout = true },
+        animatedVisibilityScope = this,
       )
     }
 

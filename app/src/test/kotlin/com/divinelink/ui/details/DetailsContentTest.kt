@@ -32,7 +32,7 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.factories.VideoFactory
@@ -52,7 +52,7 @@ class DetailsContentTest : ComposeTest() {
   @Test
   fun clickMarkAsFavoriteTest() {
     var hasClickedMarkAsFavorite = false
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -73,6 +73,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -88,7 +89,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun loadingTest() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -108,6 +109,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -118,7 +120,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test reviews form is empty when reviews are empty`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -141,6 +143,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -151,7 +154,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test render movie reviews`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -174,6 +177,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -187,7 +191,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun testErrorAlert() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -207,6 +211,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -227,7 +232,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test render watch trailer button with trailer is available`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -250,6 +255,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -263,7 +269,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given user rating score is displayed`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -286,6 +292,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -311,7 +318,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given unrated movie add your rate button is displayed`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -333,6 +340,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -349,7 +357,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given movie is not on watchlist add to watchlist button is displayed`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -372,6 +380,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -385,7 +394,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `given movie is on watchlist added to watchlist button is displayed`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -410,6 +419,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -435,7 +445,7 @@ class DetailsContentTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = viewState.value,
         onNavigateUp = {},
@@ -458,6 +468,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -486,7 +497,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open and close dropdown menu`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -508,6 +519,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -521,7 +533,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open and close share dialog`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -544,6 +556,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -557,7 +570,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test dropdown menu is not available without media details`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -577,6 +590,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -588,7 +602,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open request dialog for tv show`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -611,6 +625,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
     composeTestRule
@@ -631,7 +646,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open request dialog for movie`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -654,6 +669,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
     composeTestRule
@@ -675,7 +691,7 @@ class DetailsContentTest : ComposeTest() {
   @Test
   fun `test on obfuscate spoilers when initial is shown`() {
     var hasClickedObfuscateSpoilers = false
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -701,6 +717,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -720,7 +737,7 @@ class DetailsContentTest : ComposeTest() {
   @Test
   fun `test on obfuscate spoilers when initially is hidden`() {
     var hasClickedObfuscateSpoilers = false
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -746,6 +763,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -766,7 +784,7 @@ class DetailsContentTest : ComposeTest() {
   fun `test viewAllRatingsClick`() = runTest {
     var hasClickedViewAllRatings = false
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -787,6 +805,7 @@ class DetailsContentTest : ComposeTest() {
         onObfuscateSpoilers = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
         },
@@ -804,7 +823,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test rating item with IMDB preferences shows IMDB Rating`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -829,6 +848,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -847,7 +867,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test rating item with Trakt preferences shows Trakt Rating`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -872,6 +892,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -889,7 +910,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test rating item with tmdb preferences shows tmdb Rating`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -914,6 +935,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -931,7 +953,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test tv status is visible when is not unknown`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -956,6 +978,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -975,7 +998,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test tv status is not visible when is unknown`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1000,6 +1023,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1017,7 +1041,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test number of seasons is visible when available`() = runTest {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1040,6 +1064,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1050,7 +1075,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test about form for movies with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1073,6 +1098,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1083,7 +1109,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test about form for tv shows with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1106,6 +1132,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1116,7 +1143,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test cast form for movies with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1139,6 +1166,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1155,7 +1183,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test cast form for tv with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1178,6 +1206,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1191,7 +1220,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test cast form for tv with empty data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1214,6 +1243,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1224,7 +1254,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for movies with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1247,6 +1277,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1258,7 +1289,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for tv with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1281,6 +1312,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1292,7 +1324,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test recommendations form for tv with empty data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1315,6 +1347,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1325,7 +1358,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test seasons form for tv with data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1348,6 +1381,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1360,13 +1394,12 @@ class DetailsContentTest : ComposeTest() {
 
       onNodeWithText(SeasonFactory.season1().overview)
         .assertIsDisplayed()
-        .performClick()
     }
   }
 
   @Test
   fun `test seasons form for tv with empty data`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1389,6 +1422,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -1399,7 +1433,7 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test loading forms for shows loading indicator`() {
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
           mediaId = 0,
@@ -1422,6 +1456,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        animatedVisibilityScope = this,
       )
     }
 

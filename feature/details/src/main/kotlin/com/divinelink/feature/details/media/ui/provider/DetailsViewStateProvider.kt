@@ -8,6 +8,8 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MovieTab
+import com.divinelink.core.model.tab.TvTab
 import com.divinelink.feature.details.media.ui.DetailsViewState
 
 @Suppress("MagicNumber")
@@ -15,18 +17,6 @@ import com.divinelink.feature.details.media.ui.DetailsViewState
 class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
   override val values: Sequence<DetailsViewState>
     get() {
-      val similarMovies = (1..10).map {
-        MediaItem.Media.Movie(
-          id = it,
-          posterPath = "",
-          releaseDate = "",
-          name = "Flight Club",
-          voteAverage = 7.2,
-          voteCount = 1020,
-          overview = "This movie is good.",
-          isFavorite = false,
-        )
-      }.toList()
       val popularMovie = MediaItem.Media.Movie(
         id = 0,
         posterPath = "",
@@ -53,16 +43,19 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             watchlist = false,
           ),
           mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
+          tabs = TvTab.entries,
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
+          tabs = TvTab.entries,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             numberOfSeasons = 0,
           ),
@@ -70,6 +63,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.TV,
+          tabs = TvTab.entries,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             status = TvStatus.UNKNOWN,
           ),
@@ -77,11 +71,13 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
         ),
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
           userDetails = AccountMediaDetails(
             id = 0,
@@ -93,6 +89,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
         DetailsViewState(
           mediaId = popularMovie.id,
           mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
           error = UIText.StringText("Something went wrong."),
         ),
       )

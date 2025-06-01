@@ -31,7 +31,7 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchChangesUseCase
 import com.divinelink.core.testing.usecase.TestFetchPersonDetailsUseCase
 import com.divinelink.core.ui.TestTags
@@ -95,11 +95,12 @@ class PersonScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -118,11 +119,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -149,11 +151,12 @@ class PersonScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -173,11 +176,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -199,11 +203,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -227,11 +232,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -261,11 +267,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -306,11 +313,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -398,11 +406,12 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
 
-      setContentWithTheme {
+      setVisibilityScopeContent {
         PersonScreen(
           onNavigateUp = {},
           onNavigateToDetails = {},
           viewModel = viewModel,
+          animatedVisibilityScope = this,
         )
       }
       with(composeTestRule) {
@@ -443,11 +452,12 @@ class PersonScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -491,13 +501,14 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {
           detailsRoute = it
         },
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -555,11 +566,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -592,11 +604,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
     with(composeTestRule) {
@@ -640,11 +653,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -670,11 +684,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -719,11 +734,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -777,11 +793,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -828,11 +845,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -881,11 +899,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -934,11 +953,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 
@@ -990,11 +1010,12 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        animatedVisibilityScope = this,
       )
     }
 

@@ -2,7 +2,6 @@ package com.divinelink.feature.details.media.ui.collapsing
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -67,8 +66,7 @@ fun DynamicDetailsCollapsingToolbar(
       CollapsingToolBarLayout(
         state = state,
         modifier = Modifier
-          .testTag(TestTags.Details.COLLAPSIBLE_CONTENT)
-          .navigationBarsPadding(),
+          .testTag(TestTags.Details.COLLAPSIBLE_LAYOUT),
         toolbar = {
           Box {
             BackdropImage(

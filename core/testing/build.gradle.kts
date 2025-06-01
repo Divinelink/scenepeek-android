@@ -6,6 +6,7 @@ plugins {
 dependencies {
   api(projects.core.data)
   api(projects.core.model)
+  api(projects.core.scaffold)
   api(projects.core.fixtures)
 
   api(libs.compose.ui.test.junit4)

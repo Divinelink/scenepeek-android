@@ -1,12 +1,12 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -18,7 +18,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
@@ -37,7 +36,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -45,6 +43,8 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
@@ -56,6 +56,13 @@ import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
+import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ProvideScenePeekAppState
+import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.scaffold.rememberScenePeekAppState
+import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
@@ -70,12 +77,14 @@ import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
+import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
 import com.divinelink.feature.details.media.ui.forms.cast.CastFormContent
 import com.divinelink.feature.details.media.ui.forms.recommendation.RecommendationsFormContent
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -86,6 +95,7 @@ import com.divinelink.core.ui.R as uiR
 fun DetailsContent(
   viewState: DetailsViewState,
   modifier: Modifier = Modifier,
+  animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
@@ -102,6 +112,7 @@ fun DetailsContent(
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
+  val scope = rememberCoroutineScope()
 
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -177,20 +188,9 @@ fun DetailsContent(
     }
   }
 
-  Scaffold(
-    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-    modifier = modifier
-      .testTag(TestTags.Details.CONTENT_SCAFFOLD)
-      .navigationBarsPadding()
-      .nestedScroll(scrollBehavior.nestedScrollConnection),
-    floatingActionButton = {
-      DetailsExpandableFloatingActionButton(
-        actionButtons = viewState.actionButtons,
-        onAddRateClicked = onAddRateClick,
-        onAddToWatchlistClicked = onAddToWatchlistClick,
-        onRequestClicked = { showRequestDialog = true },
-      )
-    },
+  rememberScaffoldState(
+    animatedVisibilityScope = animatedVisibilityScope,
+  ).PersistentScaffold(
     topBar = {
       AppTopAppBar(
         modifier = Modifier.background(containerColor),
@@ -236,6 +236,20 @@ fun DetailsContent(
         onNavigateUp = onNavigateUp,
       )
     },
+    floatingActionButton = {
+      DetailsExpandableFloatingActionButton(
+        actionButtons = viewState.actionButtons,
+        onAddRateClicked = onAddRateClick,
+        onAddToWatchlistClicked = onAddToWatchlistClick,
+        onRequestClicked = { showRequestDialog = true },
+      )
+    },
+    navigationRail = {
+      PersistentNavigationRail()
+    },
+    navigationBar = {
+      PersistentNavigationBar()
+    },
     content = { paddingValues ->
       Column {
         Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
@@ -260,6 +274,7 @@ fun DetailsContent(
               isAppBarVisible = showTitle
             },
             onBackdropLoaded = { onBackdropLoaded = true },
+            scope = scope,
           )
           null -> {
             // Do nothing
@@ -298,9 +313,8 @@ private fun MediaDetailsContent(
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  scope: CoroutineScope,
 ) {
-  val scope = rememberCoroutineScope()
-
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -331,6 +345,7 @@ private fun MediaDetailsContent(
     Column(
       modifier = Modifier
         .fillMaxSize()
+        .testTag("Pager")
         .background(MaterialTheme.colorScheme.background),
     ) {
       ScenePeekTabs(
@@ -406,30 +421,43 @@ fun DetailsContentPreview(
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+    val state = rememberScenePeekAppState(
+      networkMonitor = TestNetworkMonitor(),
+      onboardingManager = TestOnboardingManager(),
+      navigationProvider = emptyList(),
+    )
 
-  ProvideSnackbarController(
-    snackbarHostState = snackbarHostState,
-    coroutineScope = coroutineScope,
-  ) {
-    AppTheme {
-      Surface {
-        DetailsContent(
-          modifier = Modifier,
-          viewState = viewState,
-          onNavigateUp = {},
-          onMarkAsFavoriteClicked = {},
-          onSimilarMovieClicked = {},
-          onConsumeSnackbar = {},
-          onAddRateClick = {},
-          onAddToWatchlistClick = {},
-          requestMedia = {},
-          onPersonClick = {},
-          onViewAllCreditsClick = {},
-          onObfuscateSpoilers = {},
-          onShowAllRatingsClick = {},
-          onTabSelected = {},
-          onPlayTrailerClick = {},
-        )
+    ProvideScenePeekAppState(
+      appState = state,
+    ) {
+      state.sharedTransitionScope = transitionScope
+      ProvideSnackbarController(
+        snackbarHostState = snackbarHostState,
+        coroutineScope = coroutineScope,
+      ) {
+        AppTheme {
+          Surface {
+            DetailsContent(
+              modifier = Modifier,
+              viewState = viewState,
+              animatedVisibilityScope = visibilityScope,
+              onNavigateUp = {},
+              onMarkAsFavoriteClicked = {},
+              onSimilarMovieClicked = {},
+              onConsumeSnackbar = {},
+              onAddRateClick = {},
+              onAddToWatchlistClick = {},
+              requestMedia = {},
+              onPersonClick = {},
+              onViewAllCreditsClick = {},
+              onObfuscateSpoilers = {},
+              onShowAllRatingsClick = {},
+              onTabSelected = {},
+              onPlayTrailerClick = {},
+            )
+          }
+        }
       }
     }
   }

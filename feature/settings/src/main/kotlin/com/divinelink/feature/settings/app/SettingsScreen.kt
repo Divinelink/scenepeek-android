@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -21,6 +22,7 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 
 @Composable
 fun SettingsScreen(
+  animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateUp: () -> Unit,
   onNavigateToAccountSettings: () -> Unit,
   onNavigateToAppearanceSettings: () -> Unit,
@@ -31,6 +33,7 @@ fun SettingsScreen(
   SettingsScaffold(
     title = stringResource(R.string.settings),
     onNavigationClick = onNavigateUp,
+    animatedVisibilityScope = animatedVisibilityScope,
     navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
   ) { paddingValues ->
 

@@ -13,8 +13,10 @@ import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.onboarding.OnboardingManager
-import com.divinelink.scenepeek.ui.ScenePeekApp
-import com.divinelink.scenepeek.ui.rememberScenePeekAppState
+import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.ScenePeekApp
+import com.divinelink.core.scaffold.rememberScenePeekAppState
+import com.divinelink.core.ui.MainUiState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -28,6 +30,7 @@ class MainActivity :
 
   private val networkMonitor: NetworkMonitor by inject<NetworkMonitor>()
   private val onboardingManager: OnboardingManager by inject<OnboardingManager>()
+  private val navigationProviders: List<NavGraphExtension> by inject()
 
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
@@ -47,6 +50,7 @@ class MainActivity :
       val appState = rememberScenePeekAppState(
         onboardingManager = onboardingManager,
         networkMonitor = networkMonitor,
+        navigationProvider = navigationProviders,
       )
 
       AppTheme(

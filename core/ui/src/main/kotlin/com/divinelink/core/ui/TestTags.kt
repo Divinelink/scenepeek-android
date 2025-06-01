@@ -4,6 +4,8 @@ object TestTags {
 
   object Components {
 
+    const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
+
     object SearchBar {
       const val LOADING_INDICATOR = "Search Bar Loading Indicator"
     }

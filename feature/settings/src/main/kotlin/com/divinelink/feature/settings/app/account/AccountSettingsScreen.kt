@@ -1,7 +1,6 @@
 package com.divinelink.feature.settings.app.account
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +15,6 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import org.koin.androidx.compose.koinViewModel
 import com.divinelink.core.ui.R as uiR
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun AccountSettingsScreen(
   onNavigateUp: () -> Unit,
@@ -42,6 +40,7 @@ fun AccountSettingsScreen(
   }
 
   SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.preferences__account),
     onNavigationClick = onNavigateUp,
   ) { paddingValues ->
