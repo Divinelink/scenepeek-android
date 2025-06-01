@@ -26,13 +26,11 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,18 +38,21 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
 import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.getString
-import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 @Composable
 fun ScaffoldState.ExpandableFloatActionButton(
@@ -207,14 +208,18 @@ fun StaggeredAnimatedFloatingActionButton(
 @Previews
 @Composable
 private fun ExpandableFloatingActionButton() {
-  val snackbarHostState = remember { SnackbarHostState() }
-  val coroutineScope = rememberCoroutineScope()
+  val state = rememberScenePeekAppState(
+    networkMonitor = TestNetworkMonitor(),
+    onboardingManager = TestOnboardingManager(),
+    navigationProvider = emptyList(),
+  )
 
-  ProvideSnackbarController(
-    snackbarHostState = snackbarHostState,
-    coroutineScope = coroutineScope,
+  ProvideScenePeekAppState(
+    appState = state,
   ) {
-    AnimatedVisibilityScopeProvider { _, visibilityScope ->
+    AnimatedVisibilityScopeProvider { sharedTransitionScope, visibilityScope ->
+      state.sharedTransitionScope = sharedTransitionScope
+
       Text(
         text = "Click the FAB to expand",
         style = MaterialTheme.typography.headlineLarge,

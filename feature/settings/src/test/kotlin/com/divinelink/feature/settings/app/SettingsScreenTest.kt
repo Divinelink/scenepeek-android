@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.google.common.truth.Truth.assertThat
@@ -20,7 +21,7 @@ class SettingsScreenTest : ComposeTest() {
   fun `test navigate to account screen and navigate up`() {
     var navigatedToAccountSettings = false
     var navigatedUp = false
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = {
           navigatedUp = true
@@ -32,6 +33,7 @@ class SettingsScreenTest : ComposeTest() {
         onNavigateToDetailPreferencesSettings = { },
         onNavigateToLinkHandling = { },
         onNavigateToAboutSettings = { },
+        animatedVisibilityScope = this,
       )
     }
 
@@ -55,7 +57,7 @@ class SettingsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to appearance screen`() {
     var navigatedToAppearanceSettings = false
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = {},
         onNavigateToAccountSettings = {},
@@ -65,6 +67,7 @@ class SettingsScreenTest : ComposeTest() {
         onNavigateToDetailPreferencesSettings = {},
         onNavigateToLinkHandling = {},
         onNavigateToAboutSettings = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -81,7 +84,7 @@ class SettingsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to link handling screen`() {
     var navigatedToLinkHandling = false
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = {},
         onNavigateToAccountSettings = {},
@@ -91,6 +94,7 @@ class SettingsScreenTest : ComposeTest() {
           navigatedToLinkHandling = true
         },
         onNavigateToAboutSettings = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -107,7 +111,7 @@ class SettingsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to about screen`() {
     var navigatedToAbout = false
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = {},
         onNavigateToAccountSettings = {},
@@ -117,6 +121,7 @@ class SettingsScreenTest : ComposeTest() {
         onNavigateToAboutSettings = {
           navigatedToAbout = true
         },
+        animatedVisibilityScope = this,
       )
     }
 
@@ -137,7 +142,7 @@ class SettingsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to details preference screen`() {
     var navigatedToDetailPreferencesSettings = false
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       SettingsScreen(
         onNavigateUp = {},
         onNavigateToAccountSettings = {},
@@ -147,6 +152,7 @@ class SettingsScreenTest : ComposeTest() {
         },
         onNavigateToLinkHandling = {},
         onNavigateToAboutSettings = {},
+        animatedVisibilityScope = this,
       )
     }
 

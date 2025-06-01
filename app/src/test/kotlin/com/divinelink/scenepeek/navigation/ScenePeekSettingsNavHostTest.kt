@@ -1,5 +1,7 @@
 package com.divinelink.scenepeek.navigation
 
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
@@ -10,12 +12,16 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.ProvideScenePeekAppState
+import com.divinelink.core.scaffold.ScenePeekNavHost
+import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.manager.TestOnboardingManager
-import com.divinelink.core.testing.network.TestNetworkMonitor
-import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -23,7 +29,9 @@ import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
+import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -45,19 +53,20 @@ import com.divinelink.feature.settings.navigation.links.LinkHandlingSettingsRout
 import com.divinelink.feature.settings.navigation.settings.SettingsRoute
 import com.divinelink.feature.tmdb.auth.TMDBAuthRoute
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
+import com.divinelink.scenepeek.base.di.navigationModule
 import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.divinelink.scenepeek.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
-import com.divinelink.scenepeek.ui.ScenePeekAppState
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.test.get
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -82,7 +91,9 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   fun setup() {
     startKoin {
       androidContext(composeTestRule.activity)
-      modules()
+      modules(
+        navigationModule,
+      )
     }
 
     fakePreferenceStorage = FakePreferenceStorage()
@@ -103,17 +114,33 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
     }
 
-    setContentWithTheme {
+    composeTestRule.setContent {
       navController = TestNavHostController(LocalContext.current)
       navController.navigatorProvider.addNavigator(ComposeNavigator())
-      ScenePeekNavHost(
-        state = ScenePeekAppState(
-          navController = navController,
-          scope = rememberCoroutineScope(),
-          onboardingManager = TestOnboardingManager(),
-          networkMonitor = TestNetworkMonitor(),
-        ),
+      val snackbarHostState = remember { SnackbarHostState() }
+      val coroutineScope = rememberCoroutineScope()
+
+      val state = rememberScenePeekAppState(
+        networkMonitor = TestNetworkMonitor(),
+        onboardingManager = TestOnboardingManager(),
+        navController = navController,
+        navigationProvider = get<List<NavGraphExtension>>(),
       )
+
+      ProvideScenePeekAppState(appState = state) {
+        ProvideSnackbarController(
+          snackbarHostState = snackbarHostState,
+          coroutineScope = coroutineScope,
+        ) {
+          AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+            state.sharedTransitionScope = transitionScope
+
+            rememberScaffoldState(
+              animatedVisibilityScope = visibilityScope,
+            ).ScenePeekNavHost()
+          }
+        }
+      }
     }
   }
 

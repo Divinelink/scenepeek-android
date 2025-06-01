@@ -9,6 +9,8 @@ import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestFindByIdUseCase
+import com.divinelink.core.ui.MainUiEvent
+import com.divinelink.core.ui.MainUiState
 import com.divinelink.scenepeek.MainViewModel
 import com.divinelink.scenepeek.fakes.usecase.FakeSetRemoteConfigUseCase
 import com.divinelink.scenepeek.test.util.fakes.FakeThemedActivityDelegate

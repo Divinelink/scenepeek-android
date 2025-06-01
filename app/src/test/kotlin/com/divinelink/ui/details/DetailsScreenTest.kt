@@ -14,6 +14,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
+import androidx.compose.ui.test.swipeUp
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
@@ -27,7 +28,7 @@ import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
@@ -64,7 +65,73 @@ class DetailsScreenTest : ComposeTest() {
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
 
   @Test
-  fun navigateToAnotherDetailsScreen() {
+  fun `test switch between movie tabs`() = runTest {
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.SimilarSuccess(
+            similar = MediaItemFactory.MoviesList(),
+            formOrder = MovieTab.Recommendations.order,
+          ),
+        ),
+      ),
+    )
+
+    setVisibilityScopeContent {
+      DetailsScreen(
+        onNavigateToTMDBLogin = {},
+        onNavigateToCredits = {},
+        viewModel = DetailsViewModel(
+          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+          submitRatingUseCase = submitRateUseCase.mock,
+          deleteRatingUseCase = deleteRatingUseCase.mock,
+          addToWatchlistUseCase = addToWatchlistUseCase.mock,
+          requestMediaUseCase = requestMediaUseCase.mock,
+          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "id" to 0,
+              "isFavorite" to false,
+              "mediaType" to MediaType.MOVIE,
+            ),
+          ),
+        ),
+        onNavigateUp = {},
+        onNavigateToDetails = {},
+        onNavigateToPerson = {},
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.PERSISTENT_SCAFFOLD).assertIsDisplayed()
+
+      // Add swipe up to avoid overlapping of tabs with bottom navigation
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
+      composeTestRule.onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(MovieTab.Recommendations.value))
+        .assertIsDisplayed()
+        .performClick()
+
+      composeTestRule.onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun navigateToAnotherDetailsScreen() = runTest {
     var navigatedToDetails = false
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
@@ -90,7 +157,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
@@ -116,12 +183,19 @@ class DetailsScreenTest : ComposeTest() {
           navigatedToDetails = true
         },
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Recommendations.value)).performClick()
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(MovieTab.Recommendations.value)).performClick()
 
       composeTestRule
         .onNodeWithTag(TestTags.Details.Recommendations.FORM)
@@ -182,7 +256,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
@@ -190,7 +264,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -244,7 +318,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
@@ -252,7 +326,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -317,7 +391,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {
@@ -344,11 +418,18 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
       onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
 
       onNodeWithTag(TestTags.Details.Cast.FORM)
@@ -388,7 +469,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
@@ -412,11 +493,18 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
       onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(TvTab.Cast.value)).performClick()
 
       onNodeWithTag(TestTags.Details.Cast.FORM)
@@ -462,7 +550,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
@@ -470,7 +558,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -525,7 +613,7 @@ class DetailsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailsScreen(
         viewModel = viewModel,
         onNavigateUp = {},
@@ -533,7 +621,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateToPerson = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
-        setBottomNavigationVisible = {},
+        animatedVisibilityScope = this,
       )
     }
 

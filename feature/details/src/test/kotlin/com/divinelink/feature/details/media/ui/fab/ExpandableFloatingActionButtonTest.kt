@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components.expandablefab
+package com.divinelink.feature.details.media.ui.fab
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -9,10 +9,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.model.UIText
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setScaffoldContent
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
@@ -43,7 +44,7 @@ class ExpandableFloatingActionButtonTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setScaffoldContent {
       ExpandableFloatActionButton(
         buttons = actionButtons,
       )
@@ -97,7 +98,7 @@ class ExpandableFloatingActionButtonTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setScaffoldContent {
       ExpandableFloatActionButton(
         buttons = actionButtons,
       )
@@ -141,7 +142,7 @@ class ExpandableFloatingActionButtonTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setScaffoldContent {
       ExpandableFloatActionButton(
         buttons = actionButtons,
       )

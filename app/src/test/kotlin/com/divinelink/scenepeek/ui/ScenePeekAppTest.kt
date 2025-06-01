@@ -19,16 +19,21 @@ import androidx.navigation.createGraph
 import androidx.navigation.testing.TestNavHostController
 import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.core.scaffold.ScenePeekApp
+import com.divinelink.core.scaffold.ScenePeekAppState
+import com.divinelink.core.scaffold.TopLevelDestination
+import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.manager.TestOnboardingManager
-import com.divinelink.core.testing.network.TestNetworkMonitor
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
@@ -38,12 +43,15 @@ import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
+import com.divinelink.core.ui.MainUiEvent
+import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.onboarding.ui.OnboardingViewModel
 import com.divinelink.feature.watchlist.WatchlistViewModel
 import com.divinelink.scenepeek.R
+import com.divinelink.scenepeek.base.di.navigationModule
 import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
@@ -61,6 +69,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.test.get
 import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -74,6 +83,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   private val networkMonitor = TestNetworkMonitor()
   private val onboardingManager = TestOnboardingManager()
+  private lateinit var navigationProvider: List<NavGraphExtension>
 
   private lateinit var state: ScenePeekAppState
 
@@ -124,8 +134,12 @@ class ScenePeekAppTest : ComposeTest() {
 
     startKoin {
       androidContext(composeTestRule.activity)
-      modules()
+      modules(
+        navigationModule,
+      )
     }
+
+    navigationProvider = get<List<NavGraphExtension>>()
   }
 
   @AfterTest
@@ -155,6 +169,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {
@@ -212,6 +227,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {
@@ -319,6 +335,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {
@@ -350,12 +367,12 @@ class ScenePeekAppTest : ComposeTest() {
         .performClick()
 
       // Has navigated to details screen
-      onNodeWithTag(TestTags.Details.CONTENT_SCAFFOLD).assertIsDisplayed()
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).assertIsDisplayed()
       onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsNotDisplayed()
 
       onNodeWithText(watchlistTab).performClick()
       onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsDisplayed()
-      onNodeWithTag(TestTags.Details.CONTENT_SCAFFOLD).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).assertIsNotDisplayed()
 
       // Has navigated back to watchlist while keeping the scroll position
       onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertIsNotDisplayed()
@@ -399,6 +416,7 @@ class ScenePeekAppTest : ComposeTest() {
       val state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {
@@ -448,11 +466,12 @@ class ScenePeekAppTest : ComposeTest() {
 
       KoinContext {
         ScenePeekApp(
-          state = ScenePeekAppState(
+          state = rememberScenePeekAppState(
             navController = navController,
             scope = backgroundScope,
             onboardingManager = onboardingManager,
             networkMonitor = networkMonitor,
+            navigationProvider = navigationProvider,
           ),
           uiState = uiState,
           uiEvent = uiEvent,
@@ -472,11 +491,12 @@ class ScenePeekAppTest : ComposeTest() {
   ) {
     setContentWithTheme {
       val navController = rememberTestNavController()
-      state = ScenePeekAppState(
+      state = rememberScenePeekAppState(
         navController = navController,
         scope = backgroundScope,
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
     }
 
@@ -511,6 +531,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         scope = backgroundScope,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {
@@ -544,14 +565,13 @@ class ScenePeekAppTest : ComposeTest() {
 
     setContentWithTheme {
       val navController = rememberTestNavController()
-      state = remember(navController) {
-        ScenePeekAppState(
-          navController = navController,
-          scope = backgroundScope,
-          networkMonitor = networkMonitor,
-          onboardingManager = onboardingManager,
-        )
-      }
+      state = rememberScenePeekAppState(
+        navController = navController,
+        scope = backgroundScope,
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
+      )
 
       currentDestination = state.currentDestination?.route
 
@@ -571,6 +591,7 @@ class ScenePeekAppTest : ComposeTest() {
       state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
     }
 
@@ -609,6 +630,7 @@ class ScenePeekAppTest : ComposeTest() {
       state = rememberScenePeekAppState(
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
       )
 
       KoinContext {

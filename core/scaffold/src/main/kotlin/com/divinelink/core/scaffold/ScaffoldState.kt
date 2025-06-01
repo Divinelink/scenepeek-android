@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +62,17 @@ private fun isMediumScreenWidthOrWider(): State<Boolean> {
   val isMediumScreenWidthOrWider: Boolean = (widthSizeClass in mediumOrHigherClasses)
 
   return rememberUpdatedState(isMediumScreenWidthOrWider)
+}
+
+@Composable
+fun ProvideScenePeekAppState(
+  appState: ScenePeekAppState,
+  content: @Composable () -> Unit,
+) {
+  CompositionLocalProvider(
+    LocalScenePeekAppState provides appState,
+    content = content,
+  )
 }
 
 internal val LocalScenePeekAppState = staticCompositionLocalOf<ScenePeekAppState> {

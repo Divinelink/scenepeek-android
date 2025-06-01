@@ -1,6 +1,5 @@
 package com.divinelink.feature.settings.app.account
 
-
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -11,7 +10,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setSharedLayoutContent
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
@@ -52,10 +51,10 @@ class AccountSettingsScreenTest : ComposeTest() {
   fun `test login is visible when user not connected`() {
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -74,10 +73,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -101,10 +100,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -125,10 +124,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -161,10 +160,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -187,10 +186,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     var navigatedToJellyseerrSettingsScreen = false
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},
@@ -216,10 +215,10 @@ class AccountSettingsScreenTest : ComposeTest() {
 
     val account = JellyseerrAccountDetailsFactory.jellyseerr()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       AccountSettingsScreen(
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToTMDBAuth = {},

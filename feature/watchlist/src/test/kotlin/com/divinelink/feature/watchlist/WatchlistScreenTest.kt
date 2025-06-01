@@ -14,7 +14,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
@@ -32,7 +32,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test unknown error`() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
@@ -40,6 +40,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -57,7 +58,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     observeAccountUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {
           verifyNavigatedToTMDBLogin = true
@@ -67,6 +68,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -91,7 +93,7 @@ class WatchlistScreenTest : ComposeTest() {
   fun `test watchlist tabs are visible with movies and tv tabs`() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
@@ -99,6 +101,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -125,7 +128,7 @@ class WatchlistScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
@@ -133,6 +136,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -167,7 +171,7 @@ class WatchlistScreenTest : ComposeTest() {
       response = Result.success(WatchlistResponseFactory.emptyMovies()),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
@@ -175,6 +179,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -208,7 +213,7 @@ class WatchlistScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
@@ -216,6 +221,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 
@@ -267,7 +273,7 @@ class WatchlistScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       WatchlistScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {
@@ -278,6 +284,7 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
+        animatedVisibilityScope = this,
       )
     }
 

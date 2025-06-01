@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.manager
+package com.divinelink.core.fixtures.manager
 
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.onboarding.OnboardingPage

@@ -1,4 +1,4 @@
-package com.divinelink.core.testing.network
+package com.divinelink.core.fixtures.core.data.network
 
 import com.divinelink.core.data.network.NetworkMonitor
 import kotlinx.coroutines.flow.Flow

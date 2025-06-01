@@ -36,7 +36,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -81,6 +80,7 @@ import com.divinelink.feature.details.media.ui.forms.recommendation.Recommendati
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -108,6 +108,7 @@ fun DetailsContent(
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
+  val scope = rememberCoroutineScope()
 
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
@@ -186,9 +187,6 @@ fun DetailsContent(
   rememberScaffoldState(
     animatedVisibilityScope = animatedVisibilityScope,
   ).PersistentScaffold(
-    modifier = Modifier
-      .testTag(TestTags.Details.CONTENT_SCAFFOLD)
-      .nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       AppTopAppBar(
         modifier = Modifier.background(containerColor),
@@ -272,6 +270,7 @@ fun DetailsContent(
               isAppBarVisible = showTitle
             },
             onBackdropLoaded = { onBackdropLoaded = true },
+            scope = scope,
           )
           null -> {
             // Do nothing
@@ -286,7 +285,6 @@ fun DetailsContent(
         }
       }
     },
-
   )
   if (viewState.isLoading) {
     LoadingContent()
@@ -311,9 +309,8 @@ private fun MediaDetailsContent(
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  scope: CoroutineScope,
 ) {
-  val scope = rememberCoroutineScope()
-
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -344,6 +341,7 @@ private fun MediaDetailsContent(
     Column(
       modifier = Modifier
         .fillMaxSize()
+        .testTag("Pager")
         .background(MaterialTheme.colorScheme.background),
     ) {
       ScenePeekTabs(

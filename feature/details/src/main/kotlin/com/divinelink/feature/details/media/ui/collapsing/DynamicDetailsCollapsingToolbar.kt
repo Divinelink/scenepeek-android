@@ -66,7 +66,7 @@ fun DynamicDetailsCollapsingToolbar(
       CollapsingToolBarLayout(
         state = state,
         modifier = Modifier
-          .testTag(TestTags.Details.COLLAPSIBLE_CONTENT),
+          .testTag(TestTags.Details.COLLAPSIBLE_LAYOUT),
         toolbar = {
           Box {
             BackdropImage(

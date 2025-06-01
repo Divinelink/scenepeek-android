@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.zIndex
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
+import com.divinelink.core.ui.TestTags
 
 /**
  * A persistent [Scaffold] that will render the various slots for any given screen,
@@ -31,11 +33,11 @@ fun ScaffoldState.PersistentScaffold(
   content: @Composable ScaffoldState.(PaddingValues) -> Unit,
 ) {
   NavigationRailScaffold(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Components.PERSISTENT_SCAFFOLD),
     navigationRail = navigationRail,
     content = {
       Scaffold(
-        modifier = modifier
+        modifier = Modifier
           .animateBounds(lookaheadScope = this),
         topBar = {
           topBar()

@@ -13,6 +13,7 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.ui.components.FILTER_BAR_TEST_TAG
 import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
@@ -46,13 +47,14 @@ class HomeScreenTest : ComposeTest() {
       response = flowOf(Result.success(MediaItemFactory.MoviesList())),
     )
 
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       HomeScreen(
         onNavigateToSettings = {},
         onNavigateToDetails = {
           detailsRoute = it
         },
         onNavigateToPerson = {},
+        animatedVisibilityScope = this,
         viewModel = HomeViewModel(
           getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
           markAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -88,7 +90,7 @@ class HomeScreenTest : ComposeTest() {
       ),
     )
 
-    composeTestRule.setContent {
+    setVisibilityScopeContent {
       HomeScreen(
         viewModel = HomeViewModel(
           getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
@@ -99,6 +101,7 @@ class HomeScreenTest : ComposeTest() {
         onNavigateToSettings = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        animatedVisibilityScope = this,
       )
     }
 

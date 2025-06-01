@@ -1,6 +1,5 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
-
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -18,7 +17,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFac
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setSharedLayoutContent
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
@@ -52,11 +51,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -74,11 +73,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -95,11 +94,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -176,11 +175,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -262,11 +261,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -293,11 +292,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     val viewModel = setupViewModel()
 
-    setSharedLayoutContent { transitionScope, visibilityScope ->
+    setVisibilityScopeContent {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
-        sharedTransitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        sharedTransitionScope = it,
+        animatedVisibilityScope = this,
         onNavigateUp = {},
       )
     }
@@ -341,11 +340,11 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       val viewModel = setupViewModel()
 
-      setSharedLayoutContent { transitionScope, visibilityScope ->
+      setVisibilityScopeContent {
         JellyseerrSettingsScreen(
           viewModel = viewModel,
-          sharedTransitionScope = transitionScope,
-          animatedVisibilityScope = visibilityScope,
+          sharedTransitionScope = it,
+          animatedVisibilityScope = this,
           onNavigateUp = {},
         )
       }

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestMediaRatingPreferenceUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -33,10 +33,11 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailPreferencesSettingsScreen(
         viewModel = viewModel,
         onNavigateUp = {},
+        animatedVisibilityScope = this,
       )
     }
 
@@ -65,10 +66,11 @@ class DetailsPreferencesSettingsScreenTest : ComposeTest() {
       ),
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       DetailPreferencesSettingsScreen(
         viewModel = viewModel,
         onNavigateUp = {},
+        animatedVisibilityScope = this,
       )
     }
 
