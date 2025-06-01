@@ -43,6 +43,8 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
+import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
@@ -57,7 +59,9 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
@@ -417,31 +421,42 @@ fun DetailsContentPreview(
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
-  AnimatedVisibilityScopeProvider { _, visibilityScope ->
-    ProvideSnackbarController(
-      snackbarHostState = snackbarHostState,
-      coroutineScope = coroutineScope,
+  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+    val state = rememberScenePeekAppState(
+      networkMonitor = TestNetworkMonitor(),
+      onboardingManager = TestOnboardingManager(),
+      navigationProvider = emptyList(),
+    )
+
+    ProvideScenePeekAppState(
+      appState = state,
     ) {
-      AppTheme {
-        Surface {
-          DetailsContent(
-            modifier = Modifier,
-            viewState = viewState,
-            animatedVisibilityScope = visibilityScope,
-            onNavigateUp = {},
-            onMarkAsFavoriteClicked = {},
-            onSimilarMovieClicked = {},
-            onConsumeSnackbar = {},
-            onAddRateClick = {},
-            onAddToWatchlistClick = {},
-            requestMedia = {},
-            onPersonClick = {},
-            onViewAllCreditsClick = {},
-            onObfuscateSpoilers = {},
-            onShowAllRatingsClick = {},
-            onTabSelected = {},
-            onPlayTrailerClick = {},
-          )
+      state.sharedTransitionScope = transitionScope
+      ProvideSnackbarController(
+        snackbarHostState = snackbarHostState,
+        coroutineScope = coroutineScope,
+      ) {
+        AppTheme {
+          Surface {
+            DetailsContent(
+              modifier = Modifier,
+              viewState = viewState,
+              animatedVisibilityScope = visibilityScope,
+              onNavigateUp = {},
+              onMarkAsFavoriteClicked = {},
+              onSimilarMovieClicked = {},
+              onConsumeSnackbar = {},
+              onAddRateClick = {},
+              onAddToWatchlistClick = {},
+              requestMedia = {},
+              onPersonClick = {},
+              onViewAllCreditsClick = {},
+              onObfuscateSpoilers = {},
+              onShowAllRatingsClick = {},
+              onTabSelected = {},
+              onPlayTrailerClick = {},
+            )
+          }
         }
       }
     }
