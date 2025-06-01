@@ -13,11 +13,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adb
 import androidx.compose.material.icons.filled.Brush
@@ -52,8 +56,10 @@ import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
+import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.getString
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ScaffoldState.ExpandableFloatActionButton(
   modifier: Modifier = Modifier,
@@ -94,7 +100,14 @@ fun ScaffoldState.ExpandableFloatActionButton(
     Column(
       horizontalAlignment = Alignment.End,
       verticalArrangement = Arrangement.Bottom,
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier
+        .conditional(
+          condition = canShowNavRail,
+          ifTrue = {
+            Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+          },
+        )
+        .fillMaxSize(),
     ) {
       StaggeredFloatingActionsButtons(
         fabItems = buttons,
