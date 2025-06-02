@@ -1,13 +1,13 @@
-package com.divinelink.core.navigation
+package com.divinelink.core.navigation.route
 
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import kotlinx.serialization.Serializable
 
 @Serializable
-object WatchlistRoute
+object HomeRoute
 
-fun NavController.navigateToWatchlist(navOptions: NavOptions) = navigate(
-  route = WatchlistRoute,
+fun NavController.navigateToHome(navOptions: NavOptions) = navigate(
+  route = HomeRoute,
   navOptions = navOptions,
 )

@@ -1,11 +1,11 @@
 package com.divinelink.core.navigation.route
 
+import androidx.navigation.NavController
 import com.divinelink.core.model.media.MediaType
 import kotlinx.serialization.Serializable
 
-/**
- * Information required when launching the movie details screen.
- */
+fun NavController.navigateToDetails(route: DetailsRoute) = navigate(route = route)
+
 @Serializable
 data class DetailsRoute(
   val id: Int,

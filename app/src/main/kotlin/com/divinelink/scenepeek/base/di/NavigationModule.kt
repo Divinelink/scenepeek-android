@@ -1,14 +1,15 @@
 package com.divinelink.scenepeek.base.di
 
 import com.divinelink.core.navigation.NavigationQualifier
-import com.divinelink.core.navigation.navigateToDetails
-import com.divinelink.core.navigation.navigateToPerson
+import com.divinelink.core.navigation.route.navigateToDetails
+import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
+import com.divinelink.feature.search.navigation.searchScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
@@ -61,6 +62,15 @@ val navigationModule = module {
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+      )
+    }
+  }
+
+// Search Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Search)) {
+    { navController, _ ->
+      searchScreen(
+        onNavigateUp = navController::navigateUp,
       )
     }
   }

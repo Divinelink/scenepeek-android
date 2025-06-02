@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
-import com.divinelink.core.navigation.HomeRoute
+import com.divinelink.core.navigation.route.HomeRoute
 
 typealias NavGraphExtension = NavGraphBuilder.(
   navController: NavController,

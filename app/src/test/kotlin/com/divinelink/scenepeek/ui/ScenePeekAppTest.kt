@@ -74,6 +74,7 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import com.divinelink.core.scaffold.R as scaffoldR
 import com.divinelink.core.ui.R as uiR
 
 class ScenePeekAppTest : ComposeTest() {
@@ -149,8 +150,9 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigation items are visible`() = runTest {
-    val homeTab = getString(R.string.home)
-    val watchlistTab = getString(R.string.watchlist)
+    val homeTab = getString(scaffoldR.string.home)
+    val watchlistTab = getString(scaffoldR.string.watchlist)
+    val searchTab = getString(scaffoldR.string.search)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
@@ -195,13 +197,18 @@ class ScenePeekAppTest : ComposeTest() {
         getString(R.string.top_level_navigation_content_description_unselected, watchlistTab),
         useUnmergedTree = true,
       ).assertExists()
+
+      onNodeWithContentDescription(
+        getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+        useUnmergedTree = true,
+      ).assertExists()
     }
   }
 
   @Test
   fun `test navigate to watchlist`() = runTest {
-    val homeTab = getString(R.string.home)
-    val watchlistTab = getString(R.string.watchlist)
+    val homeTab = getString(scaffoldR.string.home)
+    val watchlistTab = getString(scaffoldR.string.watchlist)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
@@ -269,9 +276,71 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
+  fun `test navigate to search`() = runTest {
+    val homeTab = getString(scaffoldR.string.home)
+    val searchTab = getString(scaffoldR.string.search)
+
+    popularMoviesUseCase.mockFetchPopularMovies(
+      response = Result.success(MediaItemFactory.MoviesList()),
+    )
+
+    declare {
+      HomeViewModel(
+        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+      )
+    }
+
+    setContentWithTheme {
+      val state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
+      )
+
+      KoinContext {
+        ScenePeekApp(
+          state = state,
+          uiState = uiState,
+          uiEvent = uiEvent,
+          onConsumeEvent = {},
+        )
+      }
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(homeTab).assertExists()
+
+      onNodeWithContentDescription(
+        getString(R.string.top_level_navigation_content_description_selected, homeTab),
+        useUnmergedTree = true,
+      ).assertExists()
+
+      onNodeWithContentDescription(
+        getString(R.string.top_level_navigation_content_description_unselected, searchTab),
+        useUnmergedTree = true,
+      )
+        .assertExists()
+        .performClick()
+
+      onNodeWithContentDescription(
+        getString(R.string.top_level_navigation_content_description_selected, searchTab),
+        useUnmergedTree = true,
+      ).assertExists()
+
+      onNodeWithContentDescription(
+        getString(R.string.top_level_navigation_content_description_unselected, homeTab),
+        useUnmergedTree = true,
+      ).assertExists()
+    }
+  }
+
+  @Test
   fun `test navigate to watchlist when is on movie details`() = runTest {
-    val homeTab = getString(R.string.home)
-    val watchlistTab = getString(R.string.watchlist)
+    val homeTab = getString(scaffoldR.string.home)
+    val watchlistTab = getString(scaffoldR.string.watchlist)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
@@ -382,8 +451,8 @@ class ScenePeekAppTest : ComposeTest() {
 
   @Test
   fun `test navigate between home and watchlist does not re-create watchlist`() = runTest {
-    val homeTab = getString(R.string.home)
-    val watchlistTab = getString(R.string.watchlist)
+    val homeTab = getString(scaffoldR.string.home)
+    val watchlistTab = getString(scaffoldR.string.watchlist)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
@@ -595,9 +664,10 @@ class ScenePeekAppTest : ComposeTest() {
       )
     }
 
-    assertThat(state.topLevelDestinations.size).isEqualTo(2)
+    assertThat(state.topLevelDestinations.size).isEqualTo(3)
     assertThat(state.topLevelDestinations[0].name).contains(TopLevelDestination.HOME.name)
-    assertThat(state.topLevelDestinations[1].name).contains(TopLevelDestination.WATCHLIST.name)
+    assertThat(state.topLevelDestinations[1].name).contains(TopLevelDestination.SEARCH.name)
+    assertThat(state.topLevelDestinations[2].name).contains(TopLevelDestination.WATCHLIST.name)
   }
 
   @Test

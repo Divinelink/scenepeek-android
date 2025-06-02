@@ -186,6 +186,10 @@ object TestTags {
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }
 
+  object Search {
+    const val SEARCH_SCAFFOLD = "Search Scaffold"
+  }
+
   object Credits {
     const val TAB_BAR = "Credits Tab Bar $%s"
     const val CAST_CREDITS_CONTENT = "Credits Content with cast"

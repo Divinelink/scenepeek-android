@@ -4,6 +4,7 @@ enum class NavigationQualifier {
   Home,
   Person,
   Details,
+  Search,
   Settings,
   AccountSettings,
   JellyseerrSettings,

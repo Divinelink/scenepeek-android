@@ -1,4 +1,4 @@
-package com.divinelink.core.navigation
+package com.divinelink.core.navigation.route
 
 import androidx.navigation.NavController
 import kotlinx.serialization.Serializable

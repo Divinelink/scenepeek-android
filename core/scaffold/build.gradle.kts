@@ -10,9 +10,6 @@ dependencies {
   implementation(projects.core.data)
   implementation(projects.core.domain)
 
-  // Make sure this is necessary
-  implementation(projects.core.navigation)
-
   // Navigation
   implementation(libs.androidx.navigation.runtime.ktx)
   implementation(libs.androidx.navigation.compose)

@@ -10,7 +10,6 @@ dependencies {
   implementation(projects.core.datastore)
   implementation(projects.core.domain)
   implementation(projects.core.model)
-  implementation(projects.core.navigation)
 
   implementation(libs.timber)
 
