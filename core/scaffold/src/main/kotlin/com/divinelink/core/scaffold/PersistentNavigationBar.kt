@@ -26,6 +26,7 @@ fun ScaffoldState.PersistentNavigationBar(
   modifier: Modifier = Modifier,
   enterTransition: EnterTransition = slideInVertically(initialOffsetY = { it }),
   exitTransition: ExitTransition = slideOutVertically(targetOffsetY = { it }),
+  onNavItemReselected: () -> Boolean = { false },
 ) {
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
 
@@ -62,7 +63,11 @@ fun ScaffoldState.PersistentNavigationBar(
               unselectedTextColor = ScenePeekNavigationDefaults.contentColor(),
               indicatorColor = ScenePeekNavigationDefaults.indicatorColor(),
             ),
-            onClick = { state.navigateToTopLevelDestination(destination) },
+            onClick = {
+              if (selected && onNavItemReselected()) return@NavigationBarItem
+
+              state.navigateToTopLevelDestination(destination)
+            },
             label = {
               Text(text = stringResource(id = destination.titleTextId))
             },

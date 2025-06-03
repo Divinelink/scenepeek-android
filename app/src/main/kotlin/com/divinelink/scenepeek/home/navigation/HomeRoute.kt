@@ -11,12 +11,14 @@ fun NavGraphBuilder.homeScreen(
   onNavigateToSettings: () -> Unit,
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
+  onNavigateToSearch: () -> Unit,
 ) {
   composable<HomeRoute> {
     HomeScreen(
       onNavigateToDetails = onNavigateToDetails,
       onNavigateToSettings = onNavigateToSettings,
       onNavigateToPerson = onNavigateToPerson,
+      onNavigateToSearch = onNavigateToSearch,
       animatedVisibilityScope = this@composable,
     )
   }

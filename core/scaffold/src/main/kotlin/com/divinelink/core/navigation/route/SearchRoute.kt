@@ -5,9 +5,13 @@ import androidx.navigation.NavOptions
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object SearchRoute
+data class SearchRoute(val focus: Boolean)
 
 fun NavController.navigateToSearch(navOptions: NavOptions) = navigate(
   navOptions = navOptions,
-  route = SearchRoute,
+  route = SearchRoute(false),
+)
+
+fun NavController.navigateToSearchAndFocus() = navigate(
+  route = SearchRoute(true),
 )

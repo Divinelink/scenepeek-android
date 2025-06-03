@@ -6,10 +6,12 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -37,15 +39,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -53,10 +58,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.conditional
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,16 +75,40 @@ fun ScenePeekSearchBar(
   onSearchFieldChanged: (String) -> Unit,
   actions: @Composable RowScope.() -> Unit = {},
   state: ToolbarState = ToolbarState.Unfocused,
+  focusTrigger: Int = 0,
   isLoading: Boolean = false,
+  isSearchable: Boolean = true,
+  onFocused: () -> Unit,
   scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
-  val toolbarState = remember { mutableStateOf(state) }
+  var toolbarState by remember { mutableStateOf(state) }
   val focusRequester = remember { FocusRequester() }
   val focusManager = LocalFocusManager.current
+  val keyboardController = LocalSoftwareKeyboardController.current
 
-  LaunchedEffect(toolbarState.value) {
-    if (toolbarState.value == ToolbarState.Focused) {
+  // Sync external state changes to local state
+  LaunchedEffect(state) {
+    toolbarState = state
+  }
+
+  LaunchedEffect(focusTrigger) {
+    if (focusTrigger > 0 && isSearchable) {
+      // Always request focus and show keyboard when trigger changes
       focusRequester.requestFocus()
+      delay(50)
+      keyboardController?.show()
+    }
+  }
+
+  LaunchedEffect(toolbarState) {
+    if (toolbarState == ToolbarState.Focused) {
+      if (isSearchable) {
+        if (focusTrigger == 0) {
+          focusRequester.requestFocus()
+        }
+      } else {
+        onFocused()
+      }
     } else {
       focusManager.clearFocus()
     }
@@ -89,7 +120,7 @@ fun ScenePeekSearchBar(
     R.string.core_ui_people,
   )
 
-  var typeIndex by remember { mutableIntStateOf(0) }
+  var typeIndex by rememberSaveable { mutableIntStateOf(0) }
 
   LaunchedEffect(Unit) {
     while (true) {
@@ -111,12 +142,19 @@ fun ScenePeekSearchBar(
       Box(modifier = Modifier.offset(x = -MaterialTheme.dimensions.keyline_8)) {
         Row(
           modifier = modifier
+            .clip(SearchBarShape)
+            .conditional(
+              condition = isSearchable,
+              ifFalse = {
+                Modifier.clickable { onFocused() }
+              },
+            )
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainerHighest),
           verticalAlignment = Alignment.CenterVertically,
         ) {
           Crossfade(
-            targetState = toolbarState.value,
+            targetState = toolbarState,
             label = "SearchBar Crossfade",
           ) { toolbar ->
             if (toolbar == ToolbarState.Focused) {
@@ -128,11 +166,11 @@ fun ScenePeekSearchBar(
                   } else {
                     onClearClicked()
                   }
-                  toolbarState.value = ToolbarState.Unfocused
+                  toolbarState = ToolbarState.Unfocused
                 },
               )
             } else {
-              IconButton(onClick = { toolbarState.value = ToolbarState.Focused }) {
+              IconButton(onClick = { toolbarState = ToolbarState.Focused }) {
                 Icon(
                   imageVector = Icons.Default.Search,
                   contentDescription = stringResource(id = R.string.core_ui_toolbar_search),
@@ -141,22 +179,30 @@ fun ScenePeekSearchBar(
             }
           }
 
-          SearchField(
-            modifier = Modifier
-              .weight(1f)
-              .onFocusChanged { focusState ->
-                toolbarState.value = if (focusState.isFocused) {
-                  ToolbarState.Focused
-                } else {
-                  ToolbarState.Unfocused
+          if (isSearchable) {
+            SearchField(
+              modifier = Modifier
+                .weight(1f)
+                .onFocusChanged { focusState ->
+                  toolbarState = if (focusState.isFocused) {
+                    ToolbarState.Focused
+                  } else {
+                    ToolbarState.Unfocused
+                  }
                 }
-              }
-              .focusRequester(focusRequester),
-            value = query,
-            onQueryChanged = onSearchFieldChanged,
-            typeOptions = typeOptions,
-            typeIndex = typeIndex,
-          )
+                .focusRequester(focusRequester),
+              value = query,
+              onQueryChanged = onSearchFieldChanged,
+              typeOptions = typeOptions,
+              typeIndex = typeIndex,
+            )
+          } else {
+            SearchPlaceHolder(
+              typeOptions = typeOptions,
+              typeIndex = typeIndex,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+          }
 
           Row(
             horizontalArrangement = Arrangement.End,
@@ -184,10 +230,11 @@ fun ScenePeekSearchBar(
 
 @Composable
 private fun SearchPlaceHolder(
+  modifier: Modifier = Modifier,
   typeOptions: List<Int>,
   typeIndex: Int,
 ) {
-  Row(modifier = Modifier.fillMaxWidth()) {
+  Row(modifier = modifier) {
     Text(
       text = stringResource(id = R.string.core_ui_toolbar_search),
       style = MaterialTheme.typography.titleMedium,
@@ -199,7 +246,7 @@ private fun SearchPlaceHolder(
       style = MaterialTheme.typography.titleMedium,
     )
 
-    Row(Modifier.fillMaxWidth()) {
+    Row(modifier) {
       ScrollingText(
         text = stringResource(id = typeOptions[typeIndex]),
       )
@@ -269,6 +316,7 @@ private fun SearchField(
     decorationBox = { innerTextField ->
       if (value.isNullOrEmpty()) {
         SearchPlaceHolder(
+          modifier = Modifier.fillMaxWidth(),
           typeOptions = typeOptions,
           typeIndex = typeIndex,
         )
@@ -292,6 +340,7 @@ private fun SearchBarPreview() {
       ScenePeekSearchBar(
         actions = {},
         onClearClicked = {},
+        onFocused = {},
         onSearchFieldChanged = {},
       )
     }
@@ -307,6 +356,7 @@ private fun FocusedSearchBarPreview() {
         state = ToolbarState.Focused,
         actions = {},
         onClearClicked = {},
+        onFocused = {},
         onSearchFieldChanged = {},
       )
     }
@@ -331,6 +381,7 @@ private fun FilledSearchBarPreview() {
         },
         onClearClicked = {},
         onSearchFieldChanged = {},
+        onFocused = {},
         isLoading = true,
       )
     }

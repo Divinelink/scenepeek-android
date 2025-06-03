@@ -13,11 +13,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.designsystem.theme.SearchBarShape
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
@@ -35,6 +33,7 @@ fun HomeScreen(
   onNavigateToSettings: () -> Unit,
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
+  onNavigateToSearch: () -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: HomeViewModel = koinViewModel(),
 ) {
@@ -48,7 +47,10 @@ fun HomeScreen(
     topBar = {
       ScenePeekSearchBar(
         scrollBehavior = scrollBehavior,
-        modifier = Modifier.clip(SearchBarShape),
+        modifier = Modifier,
+        onFocused = {
+          onNavigateToSearch()
+        },
         actions = {
           IconButton(onClick = onNavigateToSettings) {
             Icon(
@@ -57,10 +59,15 @@ fun HomeScreen(
             )
           }
         },
-        isLoading = viewState.isSearchLoading,
-        query = viewState.query,
-        onSearchFieldChanged = viewModel::onSearchMovies,
-        onClearClicked = viewModel::onClearClicked,
+        isLoading = false, // viewState.isSearchLoading,
+        isSearchable = false,
+        query = "",
+        onSearchFieldChanged = {
+//          viewModel::onSearchMovies
+        },
+        onClearClicked = {
+//          viewModel::onClearClicked
+        },
       )
     },
     navigationRail = {
