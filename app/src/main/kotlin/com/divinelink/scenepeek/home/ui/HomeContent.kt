@@ -114,21 +114,6 @@ private fun HomeContentPreview() {
             shouldLoadMore = true,
           ),
           error = null,
-//          searchResults = MediaSection(
-//            data = (1..10).map {
-//              MediaItem.Media.Movie(
-//                id = it,
-//                name = "Movie 1",
-//                posterPath = "/poster1",
-//                overview = "Overview 1",
-//                releaseDate = "2021-01-01",
-//                isFavorite = false,
-//                voteAverage = it.toDouble(),
-//                voteCount = it * 1000,
-//              )
-//            },
-//            shouldLoadMore = false,
-//          ),
           filters = HomeFilter.entries.map { it.filter },
           filteredResults = null,
           isSearchLoading = false,
