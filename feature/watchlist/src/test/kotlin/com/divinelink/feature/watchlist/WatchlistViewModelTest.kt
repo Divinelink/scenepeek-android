@@ -249,6 +249,86 @@ class WatchlistViewModelTest {
       )
   }
 
+  @Test
+  fun `test onRefresh when state is unknown error for movie`() = runTest {
+    testRobot
+      .mockObserveAccount {
+        mockFailure(Exception())
+      }
+      .buildViewModel()
+      .assertUiState(
+        expectedUiState = createUiState(
+          forms = mapOf(
+            MediaType.MOVIE to WatchlistForm.Error.Unknown,
+            MediaType.TV to WatchlistForm.Error.Unknown,
+          ),
+        ),
+      )
+      .mockFetchWatchlist {
+        mockSuccess(
+          flowOf(Result.success(WatchlistResponseFactory.movies())),
+        )
+      }
+      .onRefresh()
+      .assertUiState(
+        expectedUiState = createUiState(
+          forms = mapOf(
+            MediaType.MOVIE to WatchlistForm.Data(
+              mediaType = MediaType.MOVIE,
+              data = WatchlistResponseFactory.movies().data,
+              totalResults = WatchlistResponseFactory.movies().totalResults,
+            ),
+            MediaType.TV to WatchlistForm.Error.Unknown,
+          ),
+          pages = mapOf(
+            MediaType.MOVIE to 2,
+            MediaType.TV to 1,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onRefresh when state is unknown error for tv`() = runTest {
+    testRobot
+      .mockObserveAccount {
+        mockFailure(Exception())
+      }
+      .buildViewModel()
+      .assertUiState(
+        expectedUiState = createUiState(
+          forms = mapOf(
+            MediaType.MOVIE to WatchlistForm.Error.Unknown,
+            MediaType.TV to WatchlistForm.Error.Unknown,
+          ),
+        ),
+      )
+      .selectTab(1)
+      .mockFetchWatchlist {
+        mockSuccess(
+          flowOf(Result.success(WatchlistResponseFactory.tv())),
+        )
+      }
+      .onRefresh()
+      .assertUiState(
+        expectedUiState = createUiState(
+          forms = mapOf(
+            MediaType.MOVIE to WatchlistForm.Error.Unknown,
+            MediaType.TV to WatchlistForm.Data(
+              mediaType = MediaType.TV,
+              data = WatchlistResponseFactory.tv().data,
+              totalResults = WatchlistResponseFactory.tv().totalResults,
+            ),
+          ),
+          selectedTabIndex = 1,
+          pages = mapOf(
+            MediaType.MOVIE to 1,
+            MediaType.TV to 2,
+          ),
+        ),
+      )
+  }
+
   private fun createUiState(
     selectedTabIndex: Int = 0,
     tabs: List<WatchlistTab> = listOf(WatchlistTab.MOVIE, WatchlistTab.TV),

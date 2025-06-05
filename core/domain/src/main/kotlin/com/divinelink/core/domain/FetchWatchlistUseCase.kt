@@ -17,7 +17,7 @@ class FetchWatchlistUseCase(
   private val sessionStorage: SessionStorage,
   private val accountRepository: AccountRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher.io) {
+) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher.default) {
 
   override fun execute(parameters: WatchlistParameters): Flow<Result<WatchlistResponse>> = flow {
     val accountId = sessionStorage.accountId.first()

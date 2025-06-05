@@ -6,7 +6,6 @@ import com.divinelink.core.network.account.AccountService
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 class ProdAccountRepository(private val remote: AccountService) : AccountRepository {
@@ -21,9 +20,6 @@ class ProdAccountRepository(private val remote: AccountService) : AccountReposit
     .map { apiResponse ->
       Result.success(apiResponse.map())
     }
-    .catch { exception ->
-      throw Exception(exception.message)
-    }
 
   override suspend fun fetchTvShowsWatchlist(
     page: Int,
@@ -34,8 +30,5 @@ class ProdAccountRepository(private val remote: AccountService) : AccountReposit
     .fetchTvShowsWatchlist(page, sortBy, accountId, sessionId)
     .map { apiResponse ->
       Result.success(apiResponse.map())
-    }
-    .catch { exception ->
-      throw Exception(exception.message)
     }
 }

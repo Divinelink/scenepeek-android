@@ -11,5 +11,6 @@
   <string name="feature_watchlist_empty_movies_watchlist">You haven\'t added any movies to your watchlist.</string>
   <string name="feature_watchlist_empty_tv_shows_watchlist">You haven\'t added any TV shows to your watchlist.</string>
 
-  <string name="feature_watchlist_login_to_see_watchlist">Please login to see your watchlist</string>
+  <string name="feature_watchlist_login_title">Login to your account</string>
+  <string name="feature_watchlist_login_description">You need to be logged in to view your watchlist.</string>
 </resources>

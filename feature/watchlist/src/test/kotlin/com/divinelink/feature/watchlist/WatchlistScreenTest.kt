@@ -14,12 +14,14 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
+import java.net.UnknownHostException
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
@@ -44,12 +46,39 @@ class WatchlistScreenTest : ComposeTest() {
       )
     }
 
-    val generalErrorString = composeTestRule.activity.getString(
-      uiR.string.core_ui_error_retry,
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_error_generic_title))
+      .assertIsDisplayed()
+    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_error_generic_description))
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun `test network error`() {
+    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    fetchWatchlistUseCase.mockSuccess(
+      response = flowOf(Result.failure(UnknownHostException())),
     )
 
+    setVisibilityScopeContent {
+      WatchlistScreen(
+        onNavigateToTMDBLogin = {},
+        onNavigateToMediaDetails = {},
+        viewModel = WatchlistViewModel(
+          observeAccountUseCase = observeAccountUseCase.mock,
+          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+        ),
+        animatedVisibilityScope = this,
+      )
+    }
+
     composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
-    composeTestRule.onNodeWithText(generalErrorString).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_offline_title))
+      .assertIsDisplayed()
+    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_offline_description))
+      .assertIsDisplayed()
   }
 
   @Test
@@ -77,7 +106,7 @@ class WatchlistScreenTest : ComposeTest() {
     )
 
     val loginToSeeWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_watchlist_login_to_see_watchlist,
+      R.string.feature_watchlist_login_title
     )
 
     composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()

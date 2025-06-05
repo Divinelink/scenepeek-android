@@ -89,6 +89,9 @@
   <string name="core_ui_offline_title">You are offline</string>
   <string name="core_ui_offline_description">Please connect to the internet and try again.</string>
 
+  <string name="core_ui_error_generic_title">Something when wrong</string>
+  <string name="core_ui_error_generic_description">Please try again.</string>
+
   <string name="core_ui_jellyseerr_session_expired">Your Jellyseerr session has expired. Please login again.</string>
 
   <string name="core_ui_tmdb_user_score">User\nScore</string>
