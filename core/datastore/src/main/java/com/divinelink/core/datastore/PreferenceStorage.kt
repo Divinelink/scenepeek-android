@@ -111,7 +111,7 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   }
 
   override val isMaterialYouEnabled = dataStore.data.map {
-    it[PREF_MATERIAL_YOU] ?: false
+    it[PREF_MATERIAL_YOU] ?: true
   }
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {
