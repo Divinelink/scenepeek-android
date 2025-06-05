@@ -106,7 +106,7 @@ class WatchlistScreenTest : ComposeTest() {
     )
 
     val loginToSeeWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_watchlist_login_to_see_watchlist,
+      R.string.feature_watchlist_login_title
     )
 
     composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()

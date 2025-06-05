@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
@@ -31,6 +33,7 @@ import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -83,6 +86,23 @@ fun WatchlistScreen(
         },
       )
     },
+    floatingActionButton = {
+      uiState.forms.values.elementAt(pagerState.currentPage).let {
+        when (it) {
+          is WatchlistForm.Error.Unauthenticated -> {
+            ScaffoldFab(
+              icon = Icons.Default.AccountCircle,
+              text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
+              expanded = true,
+              onClick = onNavigateToTMDBLogin,
+            )
+          }
+          else -> {
+            // No FAB needed for other states
+          }
+        }
+      }
+    },
     navigationRail = {
       PersistentNavigationRail()
     },
@@ -116,7 +136,6 @@ fun WatchlistScreen(
                 )
                 is WatchlistForm.Error -> WatchlistErrorContent(
                   error = it,
-                  onLogin = onNavigateToTMDBLogin,
                   onRetry = viewModel::onRefresh,
                 )
                 is WatchlistForm.Data -> {

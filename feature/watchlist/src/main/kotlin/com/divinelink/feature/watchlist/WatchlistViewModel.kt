@@ -12,7 +12,6 @@ import com.divinelink.core.model.watchlist.WatchlistResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -46,7 +45,6 @@ class WatchlistViewModel(
   init {
     viewModelScope.launch {
       observeAccountUseCase.invoke(Unit)
-        .distinctUntilChanged()
         .collectLatest { result ->
           result.onSuccess {
             fetchWatchlist(MediaType.TV)

@@ -18,13 +18,11 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun WatchlistErrorContent(
   error: WatchlistForm.Error,
-  onLogin: () -> Unit,
-  onRetry: () -> Unit,
+  onRetry: (() -> Unit)? = null,
 ) {
   Column(
     modifier = Modifier
@@ -38,10 +36,10 @@ fun WatchlistErrorContent(
     when (error) {
       WatchlistForm.Error.Unauthenticated -> BlankSlate(
         uiState = BlankSlateState.Custom(
-          title = UIText.ResourceText(R.string.feature_watchlist_login_to_see_watchlist),
+          icon = com.divinelink.core.model.R.drawable.core_model_ic_tmdb,
+          title = UIText.ResourceText(R.string.feature_watchlist_login_title),
+          description = UIText.ResourceText(R.string.feature_watchlist_login_description),
         ),
-        onRetry = onLogin,
-        actionText = UIText.ResourceText(uiR.string.core_ui_login),
       )
       WatchlistForm.Error.Network -> BlankSlate(
         uiState = BlankSlateState.Offline,
@@ -64,8 +62,6 @@ private fun WatchlistInvalidSessionErrorContentPreview() {
       Column {
         WatchlistErrorContent(
           error = WatchlistForm.Error.Unauthenticated,
-          onLogin = {},
-          onRetry = {},
         )
       }
     }
@@ -80,8 +76,6 @@ private fun WatchlistUnknownErrorContentPreview() {
       Column {
         WatchlistErrorContent(
           error = WatchlistForm.Error.Unknown,
-          onLogin = {},
-          onRetry = {},
         )
       }
     }
