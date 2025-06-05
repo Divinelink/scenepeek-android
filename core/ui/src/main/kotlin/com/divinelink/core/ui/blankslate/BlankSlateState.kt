@@ -14,6 +14,11 @@ sealed class BlankSlateState(
     description = UIText.ResourceText(R.string.core_ui_offline_description),
   )
 
+  data object Generic : BlankSlateState(
+    title = UIText.ResourceText(R.string.core_ui_error_generic_title),
+    description = UIText.ResourceText(R.string.core_ui_error_generic_description),
+  )
+
   data class Custom(
     override val icon: Int? = null,
     override val title: UIText,

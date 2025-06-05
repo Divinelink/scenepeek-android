@@ -117,8 +117,7 @@ fun WatchlistScreen(
                 is WatchlistForm.Error -> WatchlistErrorContent(
                   error = it,
                   onLogin = onNavigateToTMDBLogin,
-                  onRetry = {
-                  },
+                  onRetry = viewModel::onRefresh,
                 )
                 is WatchlistForm.Data -> {
                   if (it.isEmpty) {

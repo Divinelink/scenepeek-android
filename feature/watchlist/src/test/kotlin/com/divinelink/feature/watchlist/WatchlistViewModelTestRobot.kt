@@ -37,4 +37,8 @@ class WatchlistViewModelTestRobot : ViewModelTestRobot<WatchlistUiState>() {
   fun selectTab(tabIndex: Int) = apply {
     viewModel.onTabSelected(tabIndex)
   }
+
+  fun onRefresh() = apply {
+    viewModel.onRefresh()
+  }
 }

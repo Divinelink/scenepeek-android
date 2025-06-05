@@ -2,6 +2,7 @@ package com.divinelink.feature.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.FetchWatchlistUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.net.UnknownHostException
 
 class WatchlistViewModel(
   private val observeAccountUseCase: ObserveAccountUseCase,
@@ -74,6 +76,15 @@ class WatchlistViewModel(
     }
   }
 
+  fun onRefresh() {
+    val mediaType = _uiState.value.mediaType
+
+    _uiState.update { uiState ->
+      uiState.copy(forms = uiState.forms + (mediaType to WatchlistForm.Loading))
+    }
+    fetchWatchlist(mediaType)
+  }
+
   private fun fetchWatchlist(mediaType: MediaType) {
     viewModelScope.launch {
       fetchWatchlistUseCase.invoke(
@@ -111,19 +122,27 @@ class WatchlistViewModel(
     mediaType: MediaType,
     throwable: Throwable,
   ) {
-    if (throwable is SessionException.Unauthenticated) {
-      _uiState.update {
-        it.copy(
-          forms = it.forms.entries.associate { (mediaType, _) ->
-            mediaType to WatchlistForm.Error.Unauthenticated
-          },
-        )
+    ErrorHandler.create(throwable) {
+      on<UnknownHostException> {
+        _uiState.update {
+          it.copy(
+            forms = it.forms + (mediaType to WatchlistForm.Error.Network),
+          )
+        }
       }
-    } else {
-      _uiState.update {
-        it.copy(
-          forms = it.forms + (mediaType to WatchlistForm.Error.Unknown),
-        )
+      on<SessionException.Unauthenticated> {
+        _uiState.update {
+          it.copy(
+            forms = it.forms + (mediaType to WatchlistForm.Error.Unauthenticated),
+          )
+        }
+      }
+      otherwise {
+        _uiState.update {
+          it.copy(
+            forms = it.forms + (mediaType to WatchlistForm.Error.Unknown),
+          )
+        }
       }
     }
   }

@@ -28,6 +28,7 @@ fun BlankSlate(
   modifier: Modifier = Modifier,
   uiState: BlankSlateState,
   onRetry: ((() -> Unit))? = null,
+  actionText: UIText? = null,
 ) {
   Column(
     modifier = modifier
@@ -65,7 +66,9 @@ fun BlankSlate(
         onClick = it,
         modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
       ) {
-        Text(text = UIText.ResourceText(R.string.core_ui_retry).getString())
+        actionText?.let { actionText ->
+          Text(text = actionText.getString())
+        } ?: Text(text = UIText.ResourceText(R.string.core_ui_retry).getString())
       }
     }
   }

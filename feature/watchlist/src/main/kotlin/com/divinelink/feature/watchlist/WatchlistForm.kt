@@ -9,6 +9,7 @@ sealed interface WatchlistForm<out T : MediaItem.Media> {
 
   sealed interface Error : WatchlistForm<Nothing> {
     data object Unauthenticated : Error
+    data object Network : Error
     data object Unknown : Error
   }
 
