@@ -16,9 +16,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.divinelink.core.model.network.NetworkState
-import com.divinelink.core.navigation.navigateToDetails
-import com.divinelink.core.navigation.navigateToOnboarding
-import com.divinelink.core.navigation.navigateToPerson
+import com.divinelink.core.navigation.route.navigateToDetails
+import com.divinelink.core.navigation.route.navigateToOnboarding
+import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent

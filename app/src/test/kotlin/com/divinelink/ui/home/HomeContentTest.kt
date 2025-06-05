@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.model.home.HomeMode
+import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
@@ -14,7 +15,6 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.scenepeek.R
 import com.divinelink.scenepeek.home.ui.HomeContent
 import com.divinelink.scenepeek.home.ui.HomeViewState
-import com.divinelink.scenepeek.home.ui.MediaSection
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
@@ -152,79 +152,6 @@ class HomeContentTest : ComposeTest() {
       onNodeWithText(
         getString(R.string.home__empty_filtered_result_description),
       ).assertIsDisplayed()
-    }
-  }
-
-  @Test
-  fun `test empty search blank slate when is empty and search mode without other error`() {
-    val uiState = HomeViewState.initial().copy(
-      error = null,
-      retryAction = null,
-      filteredResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
-      searchResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
-      mode = HomeMode.Search,
-    )
-
-    setContentWithTheme {
-      HomeContent(
-        viewState = uiState,
-        onMarkAsFavoriteClicked = {},
-        onLoadNextPage = {},
-        onNavigateToDetails = {},
-        onFilterClick = {},
-        onClearFiltersClick = {},
-        onRetryClick = {},
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(getString(R.string.search__empty_result_title)).assertIsDisplayed()
-      onNodeWithText(
-        getString(R.string.search__empty_result_description),
-      ).assertIsDisplayed()
-    }
-  }
-
-  @Test
-  fun `test search blank slate when is empty and search mode but has other error`() {
-    val uiState = HomeViewState.initial().copy(
-      error = BlankSlateState.Offline,
-      retryAction = null,
-      filteredResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
-      searchResults = MediaSection(
-        data = emptyList(),
-        shouldLoadMore = false,
-      ),
-      mode = HomeMode.Search,
-    )
-
-    setContentWithTheme {
-      HomeContent(
-        viewState = uiState,
-        onMarkAsFavoriteClicked = {},
-        onLoadNextPage = {},
-        onNavigateToDetails = {},
-        onFilterClick = {},
-        onClearFiltersClick = {},
-        onRetryClick = {},
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-      onNodeWithText(getString(uiR.string.core_ui_offline_title)).assertIsDisplayed()
-      onNodeWithText(getString(uiR.string.core_ui_offline_description)).assertIsDisplayed()
-      onNodeWithContentDescription("Blank slate illustration").assertIsDisplayed()
     }
   }
 }

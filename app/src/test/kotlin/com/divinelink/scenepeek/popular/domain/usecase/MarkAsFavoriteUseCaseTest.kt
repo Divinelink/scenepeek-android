@@ -4,7 +4,7 @@ import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
+import com.divinelink.core.testing.repository.TestMoviesRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -17,11 +17,11 @@ class MarkAsFavoriteUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeMoviesRepository
+  private lateinit var repository: TestMoviesRepository
 
   @Before
   fun setUp() {
-    repository = FakeMoviesRepository()
+    repository = TestMoviesRepository()
   }
 
   private val remoteMovies = MediaItemFactory.MoviesList()

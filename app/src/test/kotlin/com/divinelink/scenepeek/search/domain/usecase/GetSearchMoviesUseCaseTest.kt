@@ -5,7 +5,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
+import com.divinelink.core.testing.repository.TestMoviesRepository
 import com.divinelink.scenepeek.home.domain.usecase.GetSearchMoviesUseCase
 import com.divinelink.scenepeek.home.domain.usecase.SearchResult
 import com.google.common.truth.Truth.assertThat
@@ -22,7 +22,7 @@ class GetSearchMoviesUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeMoviesRepository
+  private lateinit var repository: TestMoviesRepository
 
   private val request = SearchRequestApi(query = "test query", page = 1)
 
@@ -35,7 +35,7 @@ class GetSearchMoviesUseCaseTest {
 
   @Before
   fun setUp() {
-    repository = FakeMoviesRepository()
+    repository = TestMoviesRepository()
   }
 
   @Test

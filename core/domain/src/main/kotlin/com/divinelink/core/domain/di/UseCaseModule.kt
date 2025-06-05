@@ -17,11 +17,13 @@ import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
+import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -61,4 +63,6 @@ val useCaseModule = module {
 
   // Onboarding
   factoryOf(::MarkOnboardingCompleteUseCase)
+
+  singleOf(::SearchStateManager)
 }

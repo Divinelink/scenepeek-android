@@ -2,12 +2,17 @@ package com.divinelink.core.ui
 
 object TestTags {
 
+  const val TOP_LEVEL_DESTINATION = "Top Level Destination %s"
+
   object Components {
 
     const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
 
     object SearchBar {
+      const val CLICKABLE_SEARCH_BAR = "Clickable Search Bar"
+      const val SEARCH_BAR = "Search Bar focus status %s"
       const val LOADING_INDICATOR = "Search Bar Loading Indicator"
+      const val CLOSE_SEARCH = "Search Bar Close Button"
     }
 
     object TopAppBar {
@@ -184,6 +189,10 @@ object TestTags {
     const val WATCHLIST_CONTENT = "Watchlist Content with data"
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
+  }
+
+  object Search {
+    const val SEARCH_SCAFFOLD = "Search Scaffold"
   }
 
   object Credits {

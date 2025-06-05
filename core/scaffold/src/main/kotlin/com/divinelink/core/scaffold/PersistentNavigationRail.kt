@@ -21,6 +21,7 @@ fun ScaffoldState.PersistentNavigationRail(
   modifier: Modifier = Modifier,
   enterTransition: EnterTransition = slideInVertically(initialOffsetY = { it }),
   exitTransition: ExitTransition = slideOutVertically(targetOffsetY = { it }),
+  onNavItemReselected: () -> Boolean = { false },
 ) {
   AnimatedVisibility(
     modifier = modifier
@@ -41,7 +42,11 @@ fun ScaffoldState.PersistentNavigationRail(
 
           NavigationRailItem(
             selected = selected,
-            onClick = { state.navigateToTopLevelDestination(destination) },
+            onClick = {
+              if (selected && onNavItemReselected()) return@NavigationRailItem
+
+              state.navigateToTopLevelDestination(destination)
+            },
             colors = NavigationRailItemDefaults.colors(
               selectedIconColor = ScenePeekNavigationDefaults.selectedItemColor(),
               unselectedIconColor = ScenePeekNavigationDefaults.contentColor(),

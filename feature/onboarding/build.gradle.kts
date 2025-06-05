@@ -10,7 +10,6 @@ dependencies {
 
   implementation(projects.core.datastore)
   implementation(projects.core.domain)
-  implementation(projects.core.navigation)
   implementation(projects.core.scaffold)
 
   testImplementation(projects.core.testing)

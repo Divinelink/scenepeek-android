@@ -14,8 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.domain.onboarding.OnboardingManager
-import com.divinelink.core.navigation.navigateToHome
-import com.divinelink.core.navigation.navigateToWatchlist
+import com.divinelink.core.navigation.route.navigateToHome
+import com.divinelink.core.navigation.route.navigateToSearchFromTab
+import com.divinelink.core.navigation.route.navigateToWatchlist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -86,6 +87,7 @@ class ScenePeekAppState internal constructor(
     when (destination) {
       TopLevelDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
       TopLevelDestination.WATCHLIST -> navController.navigateToWatchlist(topLevelNavOptions)
+      TopLevelDestination.SEARCH -> navController.navigateToSearchFromTab(topLevelNavOptions)
     }
 
     navController.popBackStack(

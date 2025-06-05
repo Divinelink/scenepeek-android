@@ -16,11 +16,11 @@ import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewState
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
-import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
@@ -41,7 +41,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val fakeMarkAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+  private val fakeMarkAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private val fakeGetMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()

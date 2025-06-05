@@ -63,6 +63,8 @@
   <string name="core_ui_tv_shows">tv shows</string>
   <string name="core_ui_people">people</string>
 
+  <string name="core_ui_load_more">Loading more…</string>
+
   <string name="popular_movie__rating">Rating</string>
   <string name="movie_extra_details">Details &amp; More</string>
 

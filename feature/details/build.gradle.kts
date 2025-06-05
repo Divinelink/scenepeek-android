@@ -10,7 +10,6 @@ dependencies {
   implementation(projects.core.domain)
   implementation(projects.core.model)
 
-  implementation(projects.core.navigation) // Maybe replace navigation with scaffold
   implementation(projects.core.scaffold)
 
   implementation(libs.androidx.browser)
