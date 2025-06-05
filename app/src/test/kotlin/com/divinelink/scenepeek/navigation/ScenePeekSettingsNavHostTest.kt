@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
+import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
@@ -23,10 +24,12 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
@@ -54,10 +57,8 @@ import com.divinelink.feature.settings.navigation.settings.SettingsRoute
 import com.divinelink.feature.tmdb.auth.TMDBAuthRoute
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
 import com.divinelink.scenepeek.base.di.navigationModule
-import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
-import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.divinelink.scenepeek.settings.appearance.usecase.material.you.FakeGetMaterialYouVisibleUseCase
 import com.google.common.truth.Truth.assertThat
@@ -80,7 +81,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
   // HOME use cases
   private lateinit var popularMoviesUseCase: FakeGetPopularMoviesUseCase
   private lateinit var fetchMultiInfoSearchUseCase: FakeFetchMultiInfoSearchUseCase
-  private lateinit var markAsFavoriteUseCase: FakeMarkAsFavoriteUseCase
+  private lateinit var markAsFavoriteUseCase: TestMarkAsFavoriteUseCase
   private lateinit var getFavoriteMoviesUseCase: FakeGetFavoriteMoviesUseCase
 
   @get:Rule
@@ -100,7 +101,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
 
     popularMoviesUseCase = FakeGetPopularMoviesUseCase()
     fetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
-    markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+    markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
     getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
     popularMoviesUseCase.mockFetchPopularMovies(Result.success(emptyList()))
@@ -108,9 +109,9 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
-        fetchMultiInfoSearchUseCase = fetchMultiInfoSearchUseCase.mock,
         markAsFavoriteUseCase = markAsFavoriteUseCase,
         getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+        searchStateManager = SearchStateManager(),
       )
     }
 

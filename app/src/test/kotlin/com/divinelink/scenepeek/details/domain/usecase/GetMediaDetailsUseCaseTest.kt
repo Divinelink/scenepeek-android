@@ -21,6 +21,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
+import com.divinelink.core.testing.repository.TestMoviesRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
@@ -28,7 +29,6 @@ import com.divinelink.factories.VideoFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.details.media.usecase.GetMediaDetailsUseCase
-import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
 import com.divinelink.scenepeek.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -46,7 +46,7 @@ class GetMediaDetailsUseCaseTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var repository: TestDetailsRepository
-  private lateinit var moviesRepository: FakeMoviesRepository
+  private lateinit var moviesRepository: TestMoviesRepository
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
   private lateinit var fakeGetDropdownMenuItemsUseCase: FakeGetDropdownMenuItemsUseCase
@@ -60,7 +60,7 @@ class GetMediaDetailsUseCaseTest {
   @Before
   fun setUp() {
     repository = TestDetailsRepository()
-    moviesRepository = FakeMoviesRepository()
+    moviesRepository = TestMoviesRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     fakeGetDetailsActionItemsUseCase = FakeGetDetailsActionItemsUseCase()

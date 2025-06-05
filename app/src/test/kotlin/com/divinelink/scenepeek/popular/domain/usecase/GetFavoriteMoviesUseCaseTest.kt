@@ -3,7 +3,7 @@ package com.divinelink.scenepeek.popular.domain.usecase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
+import com.divinelink.core.testing.repository.TestMoviesRepository
 import com.divinelink.scenepeek.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -18,11 +18,11 @@ class GetFavoriteMoviesUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeMoviesRepository
+  private lateinit var repository: TestMoviesRepository
 
   @Before
   fun setUp() {
-    repository = FakeMoviesRepository()
+    repository = TestMoviesRepository()
   }
 
   private val favorites = MediaItemFactory.MoviesList(1..6).map { movie ->

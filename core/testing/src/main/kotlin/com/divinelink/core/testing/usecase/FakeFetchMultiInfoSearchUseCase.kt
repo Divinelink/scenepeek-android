@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.fakes.usecase
+package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchResult

@@ -26,6 +26,9 @@ class SearchBarTest : ComposeTest() {
         actions = {},
         state = ToolbarState.Focused,
         isLoading = true,
+        focusTrigger = 0,
+        isSearchable = true,
+        onFocused = {},
       )
     }
 
@@ -48,6 +51,9 @@ class SearchBarTest : ComposeTest() {
         actions = {},
         state = ToolbarState.Unfocused,
         isLoading = true,
+        focusTrigger = 0,
+        isSearchable = true,
+        onFocused = {},
       )
     }
 

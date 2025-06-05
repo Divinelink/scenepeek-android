@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.fakes.repository
+package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.data.media.repository.MediaRepository
@@ -11,7 +11,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class FakeMoviesRepository {
+class TestMoviesRepository {
 
   val mock: MediaRepository = mock()
 

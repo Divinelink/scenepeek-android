@@ -31,6 +31,7 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
@@ -39,7 +40,6 @@ import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
-import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeFetchAccountMediaDetailsUseCase
@@ -55,7 +55,7 @@ import com.divinelink.feature.details.R as detailsR
 class DetailsScreenTest : ComposeTest() {
 
   private val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
-  private val markAsFavoriteUseCase = FakeMarkAsFavoriteUseCase()
+  private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private val fetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
   private val submitRateUseCase = FakeSubmitRatingUseCase()
   private val deleteRatingUseCase = FakeDeleteRatingUseCase()

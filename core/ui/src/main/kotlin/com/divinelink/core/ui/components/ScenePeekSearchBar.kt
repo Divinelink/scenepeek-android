@@ -103,9 +103,7 @@ fun ScenePeekSearchBar(
   LaunchedEffect(toolbarState) {
     if (toolbarState == ToolbarState.Focused) {
       if (isSearchable) {
-        if (focusTrigger == 0) {
-          focusRequester.requestFocus()
-        }
+        focusRequester.requestFocus()
       } else {
         onFocused()
       }
@@ -131,7 +129,7 @@ fun ScenePeekSearchBar(
   }
 
   TopAppBar(
-    modifier = modifier,
+    modifier = modifier.testTag(TestTags.Components.SearchBar.SEARCH_BAR.format(toolbarState.name)),
     scrollBehavior = scrollBehavior,
     colors = TopAppBarDefaults.topAppBarColors(
       containerColor = Color.Transparent,
@@ -146,7 +144,9 @@ fun ScenePeekSearchBar(
             .conditional(
               condition = isSearchable,
               ifFalse = {
-                Modifier.clickable { onFocused() }
+                Modifier
+                  .testTag(TestTags.Components.SearchBar.CLICKABLE_SEARCH_BAR)
+                  .clickable { onFocused() }
               },
             )
             .fillMaxWidth()
@@ -264,26 +264,25 @@ private fun SearchIconWithLoading(
     label = "SearchIconWithLoading",
   ) { loading ->
     when (loading) {
-      true -> {
-        Material3CircularProgressIndicator(
-          modifier = Modifier
-            .testTag(TestTags.Components.SearchBar.LOADING_INDICATOR)
-            .padding(
-              horizontal = MaterialTheme.dimensions.keyline_12,
-              vertical = MaterialTheme.dimensions.keyline_8,
-            )
-            .size(MaterialTheme.dimensions.keyline_24),
-        )
-      }
-      false -> {
-        IconButton(onClick = onClearClicked) {
-          Icon(
-            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-            contentDescription = stringResource(
-              id = R.string.clear_search_button_content_description,
-            ),
+      true -> Material3CircularProgressIndicator(
+        modifier = Modifier
+          .testTag(TestTags.Components.SearchBar.LOADING_INDICATOR)
+          .padding(
+            horizontal = MaterialTheme.dimensions.keyline_12,
+            vertical = MaterialTheme.dimensions.keyline_8,
           )
-        }
+          .size(MaterialTheme.dimensions.keyline_24),
+      )
+      false -> IconButton(
+        modifier = Modifier.testTag(TestTags.Components.SearchBar.CLOSE_SEARCH),
+        onClick = onClearClicked,
+      ) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Default.ArrowBack,
+          contentDescription = stringResource(
+            id = R.string.clear_search_button_content_description,
+          ),
+        )
       }
     }
   }

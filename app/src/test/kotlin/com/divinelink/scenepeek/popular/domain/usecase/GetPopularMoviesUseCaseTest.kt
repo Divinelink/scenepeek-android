@@ -4,7 +4,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.scenepeek.fakes.repository.FakeMoviesRepository
+import com.divinelink.core.testing.repository.TestMoviesRepository
 import com.divinelink.scenepeek.home.domain.usecase.GetPopularMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.last
@@ -19,7 +19,7 @@ class GetPopularMoviesUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: FakeMoviesRepository
+  private lateinit var repository: TestMoviesRepository
 
   private val request = MoviesRequestApi(page = 0)
 
@@ -30,7 +30,7 @@ class GetPopularMoviesUseCaseTest {
 
   @Before
   fun setUp() {
-    repository = FakeMoviesRepository()
+    repository = TestMoviesRepository()
   }
 
   @Test

@@ -15,10 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.navigation.ScenePeekNavigationBar
 
 @Composable
@@ -55,6 +57,7 @@ fun ScaffoldState.PersistentNavigationBar(
           val selected = state.currentDestination.isRouteInHierarchy(destination.route::class)
 
           NavigationBarItem(
+            modifier = Modifier.testTag(TestTags.TOP_LEVEL_DESTINATION.format(destination)),
             selected = selected,
             colors = NavigationBarItemDefaults.colors(
               selectedIconColor = ScenePeekNavigationDefaults.selectedItemColor(),

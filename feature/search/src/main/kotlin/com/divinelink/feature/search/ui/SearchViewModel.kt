@@ -129,6 +129,7 @@ class SearchViewModel(
         searchResults = null,
         query = "",
         isLoading = false,
+        focusSearch = false,
       )
     }
   }
