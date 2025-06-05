@@ -38,7 +38,6 @@ class HomeViewModelTest {
           popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -58,7 +57,6 @@ class HomeViewModelTest {
           error = null,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -80,7 +78,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -97,7 +94,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -119,7 +115,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 1,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -141,7 +136,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 1,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -154,7 +148,6 @@ class HomeViewModelTest {
           retryAction = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 1,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -176,7 +169,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 1,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -190,7 +182,6 @@ class HomeViewModelTest {
           retryAction = null,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -210,7 +201,6 @@ class HomeViewModelTest {
           error = null,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -228,7 +218,6 @@ class HomeViewModelTest {
           error = null,
           pages = mapOf(
             HomePage.Popular to 3,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -254,7 +243,6 @@ class HomeViewModelTest {
           error = null,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -269,7 +257,6 @@ class HomeViewModelTest {
           error = null,
           pages = mapOf(
             HomePage.Popular to 3,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -300,10 +287,8 @@ class HomeViewModelTest {
         expectedViewState = HomeViewState.initial().copy(
           popularMovies = MediaSection(data = popularMoviesList, shouldLoadMore = true),
           isLoading = false,
-          isSearchLoading = false,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -320,7 +305,6 @@ class HomeViewModelTest {
           isLoading = false,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -356,7 +340,6 @@ class HomeViewModelTest {
             mode = HomeMode.Filtered,
             pages = mapOf(
               HomePage.Popular to 2,
-              HomePage.Search to 1,
             ),
           ),
         )
@@ -370,7 +353,6 @@ class HomeViewModelTest {
             mode = HomeMode.Browser,
             pages = mapOf(
               HomePage.Popular to 2,
-              HomePage.Search to 1,
             ),
           ),
         )
@@ -405,7 +387,6 @@ class HomeViewModelTest {
           mode = HomeMode.Filtered,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -419,7 +400,6 @@ class HomeViewModelTest {
           mode = HomeMode.Browser,
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )
@@ -444,7 +424,6 @@ class HomeViewModelTest {
           filters = listOf(HomeFilter.Liked.filter),
           pages = mapOf(
             HomePage.Popular to 2,
-            HomePage.Search to 1,
           ),
         ),
       )

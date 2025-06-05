@@ -16,8 +16,6 @@ data class HomeViewState(
   val filters: List<Filter>,
   val popularMovies: MediaSection,
   val filteredResults: MediaSection?,
-  val query: String,
-  val isSearchLoading: Boolean,
   val error: BlankSlateState?,
   val mode: HomeMode,
   val pages: Map<HomePage, Int>,
@@ -58,13 +56,10 @@ data class HomeViewState(
       ),
       filters = HomeFilter.entries.map { it.filter },
       filteredResults = null,
-      isSearchLoading = false,
       error = null,
-      query = "",
       mode = HomeMode.Browser,
       pages = mapOf(
         HomePage.Popular to 1,
-        HomePage.Search to 1,
       ),
       retryAction = null,
     )
