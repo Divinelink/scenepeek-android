@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.home.ui
+package com.divinelink.core.ui.media
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +30,11 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DevicePreviews
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.R
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.core.ui.components.details.cast.CreditsItemCard
 import com.divinelink.core.ui.components.extensions.OnBottomReached
-import com.divinelink.scenepeek.R
 
 @Composable
 fun FlatMediaList(
@@ -124,7 +124,7 @@ private fun LoadMoreContent(modifier: Modifier = Modifier) {
 
     Text(
       color = MaterialTheme.colorScheme.onSurfaceVariant,
-      text = stringResource(id = R.string.load_more),
+      text = stringResource(id = R.string.core_ui_load_more),
     )
   }
 }

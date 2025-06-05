@@ -1,7 +1,7 @@
 package com.divinelink.scenepeek.fakes.usecase
 
-import com.divinelink.scenepeek.home.domain.usecase.FetchMultiInfoSearchUseCase
-import com.divinelink.scenepeek.home.domain.usecase.MultiSearchResult
+import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
+import com.divinelink.core.domain.search.MultiSearchResult
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
+import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.R
@@ -14,7 +15,6 @@ data class HomeViewState(
   val isLoading: Boolean,
   val filters: List<Filter>,
   val popularMovies: MediaSection,
-  val searchResults: MediaSection?,
   val filteredResults: MediaSection?,
   val query: String,
   val isSearchLoading: Boolean,
@@ -29,16 +29,10 @@ data class HomeViewState(
 
   val isEmpty: Boolean = when (mode) {
     HomeMode.Browser -> popularMovies.data.isEmpty()
-    HomeMode.Search -> searchResults?.data?.isEmpty() ?: true
     HomeMode.Filtered -> filteredResults?.data?.isEmpty() ?: true
   }
 
   private val emptyContentUiState: BlankSlateState? = when (mode) {
-    HomeMode.Search -> BlankSlateState.Custom(
-      icon = uiR.drawable.core_ui_search,
-      title = UIText.ResourceText(R.string.search__empty_result_title),
-      description = UIText.ResourceText(R.string.search__empty_result_description),
-    )
     HomeMode.Filtered -> BlankSlateState.Custom(
       icon = uiR.drawable.core_ui_ghost,
       title = UIText.ResourceText(R.string.home__empty_filtered_result_title),
@@ -63,7 +57,6 @@ data class HomeViewState(
         shouldLoadMore = true,
       ),
       filters = HomeFilter.entries.map { it.filter },
-      searchResults = null,
       filteredResults = null,
       isSearchLoading = false,
       error = null,

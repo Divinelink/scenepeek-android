@@ -49,6 +49,7 @@ fun HomeScreen(
         scrollBehavior = scrollBehavior,
         modifier = Modifier,
         onFocused = {
+          viewModel.onNavigateToSearch()
           onNavigateToSearch()
         },
         actions = {
@@ -59,14 +60,14 @@ fun HomeScreen(
             )
           }
         },
-        isLoading = false, // viewState.isSearchLoading,
+        isLoading = false,
         isSearchable = false,
         query = "",
         onSearchFieldChanged = {
-//          viewModel::onSearchMovies
+          // Do nothing
         },
         onClearClicked = {
-//          viewModel::onClearClicked
+          // Do nothing
         },
       )
     },

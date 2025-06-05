@@ -4,6 +4,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.domain.search.getMediaWithUpdatedFavoriteStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,4 @@
-package com.divinelink.scenepeek.home.ui
-
-import com.divinelink.core.model.media.MediaItem
+package com.divinelink.core.model.media
 
 data class MediaSection(
   val data: List<MediaItem>,

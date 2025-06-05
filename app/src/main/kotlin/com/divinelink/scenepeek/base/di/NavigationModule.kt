@@ -3,7 +3,7 @@ package com.divinelink.scenepeek.base.di
 import com.divinelink.core.navigation.NavigationQualifier
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToPerson
-import com.divinelink.core.navigation.route.navigateToSearchAndFocus
+import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
@@ -40,7 +40,7 @@ val navigationModule = module {
         onNavigateToSettings = navController::navigateToSettings,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToPerson = navController::navigateToPerson,
-        onNavigateToSearch = navController::navigateToSearchAndFocus,
+        onNavigateToSearch = navController::navigateToSearchFromHome,
       )
     }
   }
@@ -73,6 +73,8 @@ val navigationModule = module {
     { navController, _ ->
       searchScreen(
         onNavigateToSettings = navController::navigateToSettings,
+        onNavigateToDetails = navController::navigateToDetails,
+        onNavigateToPerson = navController::navigateToPerson,
       )
     }
   }

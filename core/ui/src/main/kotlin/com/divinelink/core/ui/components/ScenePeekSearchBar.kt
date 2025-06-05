@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -64,6 +63,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -299,7 +299,7 @@ private fun SearchField(
 ) {
   val searchContentDescription = stringResource(R.string.core_ui_toolbar_search_placeholder)
 
-  BasicTextField(
+  BasicTextFieldWithCursorAtEnd(
     modifier = modifier
       .semantics { contentDescription = searchContentDescription },
     value = value ?: "",

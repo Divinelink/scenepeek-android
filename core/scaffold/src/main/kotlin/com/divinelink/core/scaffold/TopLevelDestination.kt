@@ -31,7 +31,7 @@ enum class TopLevelDestination(
     unselectedIcon = Icons.Outlined.Search,
     iconTextId = R.string.search,
     titleTextId = R.string.search,
-    route = SearchRoute(false),
+    route = SearchRoute,
   ),
   WATCHLIST(
     selectedIcon = Icons.Rounded.Bookmarks,

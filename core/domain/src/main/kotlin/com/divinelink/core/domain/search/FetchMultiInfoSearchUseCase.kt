@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.home.domain.usecase
+package com.divinelink.core.domain.search
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
@@ -18,13 +18,23 @@ data class MultiSearchResult(
   val totalPages: Int,
 )
 
+data class MultiSearchParameters(
+  val query: String,
+  val page: Int,
+)
+
 open class FetchMultiInfoSearchUseCase(
   private val repository: MediaRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<MultiSearchRequestApi, MultiSearchResult>(dispatcher.io) {
-  override fun execute(parameters: MultiSearchRequestApi): Flow<Result<MultiSearchResult>> {
+) : FlowUseCase<MultiSearchParameters, MultiSearchResult>(dispatcher.io) {
+  override fun execute(parameters: MultiSearchParameters): Flow<Result<MultiSearchResult>> {
     val favoriteMovies = repository.fetchFavoriteIds()
-    val searchResult = repository.fetchMultiInfo(parameters)
+    val searchResult = repository.fetchMultiInfo(
+      MultiSearchRequestApi(
+        query = parameters.query,
+        page = parameters.page,
+      ),
+    )
 
     return favoriteMovies
       .distinctUntilChanged()

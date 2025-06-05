@@ -1,16 +1,16 @@
 package com.divinelink.scenepeek.popular.ui
 
+import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.scenepeek.home.domain.usecase.MultiSearchResult
 import com.divinelink.scenepeek.home.ui.HomeFilter
 import com.divinelink.scenepeek.home.ui.HomeViewState
-import com.divinelink.scenepeek.home.ui.MediaSection
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import java.net.UnknownHostException

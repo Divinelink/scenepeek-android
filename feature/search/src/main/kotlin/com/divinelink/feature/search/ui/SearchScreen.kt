@@ -21,27 +21,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.SearchBarShape
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
+import com.divinelink.core.ui.media.MediaContent
 import com.divinelink.feature.search.R
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.SearchScreen(
-  focus: Boolean,
   onNavigateToSettings: () -> Unit,
+  onNavigateToDetails: (DetailsRoute) -> Unit,
+  onNavigateToPerson: (PersonRoute) -> Unit,
   viewModel: SearchViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-  var focusSearchBar by remember { mutableStateOf(focus) }
+  var focusSearchBar by remember { mutableStateOf(false) }
   var focusTrigger by remember { mutableIntStateOf(0) }
+
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(uiState.focusSearch) {
+    if (uiState.focusSearch) {
+      focusSearchBar = true
+      focusTrigger++
+      viewModel.updateEntryPoint()
+    } else {
+      focusSearchBar = false
+    }
+  }
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
@@ -68,17 +90,13 @@ fun AnimatedVisibilityScope.SearchScreen(
             )
           }
         },
-        isLoading = false, // viewState.isSearchLoading,
-        query = "", // viewState.query,
-        onSearchFieldChanged = {
-//          viewModel::onSearchMovies
-        },
+        isLoading = uiState.isLoading,
+        query = uiState.query,
+        onSearchFieldChanged = viewModel::onSearchMovies,
         onFocused = {
           // Do nothing
         },
-        onClearClicked = {
-//          viewModel::onClearClicked
-        },
+        onClearClicked = viewModel::onClearClick,
       )
     },
     navigationRail = {
@@ -96,11 +114,72 @@ fun AnimatedVisibilityScope.SearchScreen(
     content = { paddingValues ->
       Column {
         Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+
+        when {
+          uiState.error is BlankSlateState.Offline -> BlankSlate(
+            modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+            uiState = BlankSlateState.Offline,
+            onRetry = {
+              viewModel.onRetryClick()
+            },
+          )
+
+          uiState.searchResults?.data?.isEmpty() == true -> BlankSlate(
+            modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+            uiState = BlankSlateState.Custom(
+              icon = com.divinelink.core.ui.R.drawable.core_ui_search,
+              title = UIText.ResourceText(R.string.search__empty_result_title),
+              description = UIText.ResourceText(R.string.search__empty_result_description),
+            ),
+            onRetry = null,
+          )
+
+          uiState.searchResults?.data?.isNotEmpty() == true -> MediaContent(
+            modifier = Modifier,
+            section = uiState.searchResults,
+            onMediaClick = { media ->
+              when (media) {
+                is MediaItem.Media -> {
+                  val route = DetailsRoute(
+                    id = media.id,
+                    mediaType = media.mediaType,
+                    isFavorite = media.isFavorite,
+                  )
+                  onNavigateToDetails(route)
+                }
+                is MediaItem.Person -> {
+                  val route = PersonRoute(
+                    id = media.id.toLong(),
+                    knownForDepartment = media.knownForDepartment,
+                    name = media.name,
+                    profilePath = media.profilePath,
+                    gender = media.gender,
+                  )
+                  onNavigateToPerson(route)
+                }
+                else -> {
+                  return@MediaContent
+                }
+              }
+            },
+            onMarkAsFavoriteClick = viewModel::onMarkAsFavoriteClick,
+            onLoadNextPage = viewModel::onLoadNextPage,
+          )
+
+          else -> BlankSlate(
+            modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+            uiState = BlankSlateState.Custom(
+              icon = null,
+              title = UIText.ResourceText(R.string.feature_search__initial_title),
+              description = UIText.ResourceText(R.string.feature_search__initial_description),
+            ),
+            onRetry = null,
+          )
+        }
       }
     },
   )
 
-  // Handle focus trigger changes
   LaunchedEffect(focusTrigger) {
     if (focusTrigger > 0) {
       focusSearchBar = true

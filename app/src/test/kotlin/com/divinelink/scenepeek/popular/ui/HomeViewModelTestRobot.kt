@@ -1,6 +1,7 @@
 package com.divinelink.scenepeek.popular.ui
 
 import com.divinelink.core.data.media.repository.MediaListResult
+import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.components.Filter
@@ -8,7 +9,6 @@ import com.divinelink.scenepeek.fakes.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeMarkAsFavoriteUseCase
-import com.divinelink.scenepeek.home.domain.usecase.MultiSearchResult
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import com.divinelink.scenepeek.home.ui.HomeViewState
 import com.google.common.truth.Truth.assertThat
