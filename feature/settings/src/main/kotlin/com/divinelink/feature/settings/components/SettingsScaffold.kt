@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
@@ -72,6 +74,12 @@ fun SettingsScaffold(
         },
         scrollBehavior = scrollBehavior,
       )
+    },
+    navigationBar = {
+      PersistentNavigationBar()
+    },
+    navigationRail = {
+      PersistentNavigationRail()
     },
     floatingActionButton = {
       floatingActionButton()
