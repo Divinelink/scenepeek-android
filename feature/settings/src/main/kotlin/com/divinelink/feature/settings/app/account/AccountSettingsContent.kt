@@ -3,7 +3,6 @@ package com.divinelink.feature.settings.app.account
 import androidx.compose.animation.AnimatedVisibilityScope
 
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import com.divinelink.feature.settings.provider.AccountDetailsParameterProvider
 
 @Composable
 fun AccountSettingsContent(
-  paddingValues: PaddingValues = PaddingValues(),
   transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   uiState: AccountSettingsViewState,
@@ -33,7 +31,6 @@ fun AccountSettingsContent(
 ) {
   ScenePeekLazyColumn(
     modifier = Modifier.fillMaxSize(),
-    contentPadding = paddingValues,
   ) {
     item {
       AccountItem(

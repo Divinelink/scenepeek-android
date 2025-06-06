@@ -43,11 +43,10 @@ fun AccountSettingsScreen(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.preferences__account),
     onNavigationClick = onNavigateUp,
-  ) { paddingValues ->
+  ) {
     AccountSettingsContent(
       transitionScope = sharedTransitionScope,
       animatedVisibilityScope = animatedVisibilityScope,
-      paddingValues = paddingValues,
       onLoginClick = viewModel::login,
       uiState = viewState.value,
       onLogoutClick = viewModel::logoutDialog,

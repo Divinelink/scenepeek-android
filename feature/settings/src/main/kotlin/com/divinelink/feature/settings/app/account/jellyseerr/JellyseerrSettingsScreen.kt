@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
 
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,10 +18,10 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun JellyseerrSettingsScreen(
+fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
   sharedTransitionScope: SharedTransitionScope,
+  withNavigationBar: Boolean,
   onNavigateUp: () -> Unit,
-  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: JellyseerrSettingsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -33,10 +32,11 @@ fun JellyseerrSettingsScreen(
   )
 
   SettingsScaffold(
-    animatedVisibilityScope = animatedVisibilityScope,
+    animatedVisibilityScope = this,
     title = stringResource(R.string.feature_settings_jellyseerr_account),
     onNavigationClick = onNavigateUp,
-  ) { paddingValues ->
+    withNavigationBar = withNavigationBar,
+  ) {
     AnimatedContent(
       targetState = uiState.jellyseerrState,
       label = "Jellyseerr State Animated Content",
@@ -50,17 +50,15 @@ fun JellyseerrSettingsScreen(
       when (state) {
         is JellyseerrState.Initial -> JellyseerrInitialContent(
           modifier = Modifier
-            .padding(paddingValues)
             .testTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET),
           jellyseerrState = state,
           interaction = viewModel::onJellyseerrInteraction,
         )
         is JellyseerrState.LoggedIn -> JellyseerrLoggedInContent(
           modifier = Modifier
-            .padding(paddingValues)
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
           jellyseerrState = state,
-          animatedVisibilityScope = animatedVisibilityScope,
+          animatedVisibilityScope = this,
           transitionScope = sharedTransitionScope,
           onLogoutClock = viewModel::onJellyseerrInteraction,
         )

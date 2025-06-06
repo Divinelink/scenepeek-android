@@ -30,8 +30,7 @@ fun AboutSettingsScreen(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(R.string.feature_settings_about),
     onNavigationClick = onNavigateUp,
-  ) { paddingValues ->
-
+  ) {
     val version = UIText.ResourceText(commonR.string.version_name)
 
     val buildVersion = if (buildConfigProvider.isDebug) {
@@ -42,7 +41,6 @@ fun AboutSettingsScreen(
 
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.Settings.About.SCROLLABLE_CONTENT),
-      contentPadding = paddingValues,
     ) {
       item {
         AboutCard(

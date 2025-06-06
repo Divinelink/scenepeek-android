@@ -100,7 +100,7 @@ val navigationModule = module {
         sharedTransitionScope = transitionScope,
         onNavigateUp = navController::navigateUp,
         onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
-        onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
+        onNavigateToJellyseerrSettings = { navController.navigateToJellyseerrSettings(true) },
       )
     }
   }
@@ -175,7 +175,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.Onboarding)) {
     { navController, _ ->
       onboardingScreen(
-        onNavigateToJellyseerrSettings = navController::navigateToJellyseerrSettings,
+        onNavigateToJellyseerrSettings = { navController.navigateToJellyseerrSettings(false) },
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
         onNavigateUp = navController::navigateUp,
       )

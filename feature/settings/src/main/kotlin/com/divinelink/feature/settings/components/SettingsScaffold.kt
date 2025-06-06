@@ -2,8 +2,10 @@ package com.divinelink.feature.settings.components
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +41,8 @@ fun SettingsScaffold(
   @StringRes navigationContentDescription: Int =
     uiR.string.core_ui_navigate_up_button_content_description,
   floatingActionButton: @Composable ScaffoldState.() -> Unit = {},
-  content: @Composable (PaddingValues) -> Unit,
+  withNavigationBar: Boolean = true,
+  content: @Composable () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -76,15 +79,23 @@ fun SettingsScaffold(
       )
     },
     navigationBar = {
-      PersistentNavigationBar()
+      if (withNavigationBar) {
+        PersistentNavigationBar()
+      }
     },
     navigationRail = {
-      PersistentNavigationRail()
+      if (withNavigationBar) {
+        PersistentNavigationRail()
+      }
     },
     floatingActionButton = {
       floatingActionButton()
     },
   ) {
-    content(it)
+    Column {
+      Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+
+      content()
+    }
   }
 }

@@ -30,7 +30,7 @@ fun AppearanceSettingsScreen(
     title = stringResource(id = R.string.preferences__appearance),
     onNavigationClick = onNavigateUp,
   ) {
-    ScenePeekLazyColumn(contentPadding = it) {
+    ScenePeekLazyColumn {
       item {
         SettingsRadioPrefItem(
           title = stringResource(id = R.string.preferences__theme),
