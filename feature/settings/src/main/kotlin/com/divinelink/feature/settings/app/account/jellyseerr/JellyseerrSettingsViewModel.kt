@@ -63,9 +63,11 @@ class JellyseerrSettingsViewModel(
           }
         }.onFailure {
           ErrorHandler.create(it) {
-            otherwise {
+            otherwise { throwable ->
               _uiState.setSnackbarMessage(
-                UIText.ResourceText(uiR.string.core_ui_error_retry),
+                throwable.message?.let { message ->
+                  UIText.StringText(message)
+                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
               )
             }
           }
