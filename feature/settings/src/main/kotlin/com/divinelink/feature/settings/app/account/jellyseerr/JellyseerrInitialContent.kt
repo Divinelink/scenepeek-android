@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -40,6 +41,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -79,6 +82,10 @@ fun JellyseerrInitialContent(
         .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
         .fillMaxWidth(),
       value = jellyseerrState.address,
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Uri,
+        imeAction = ImeAction.Next,
+      ),
       singleLine = true,
       onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
       label = { Text(text = stringResource(R.string.feature_settings_jellyseerr_address)) },
