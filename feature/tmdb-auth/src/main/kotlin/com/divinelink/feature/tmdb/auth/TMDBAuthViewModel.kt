@@ -3,7 +3,9 @@ package com.divinelink.feature.tmdb.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.CreateRequestTokenUseCase
+import com.divinelink.core.domain.session.TMDB_AUTH_DELAY
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -32,8 +34,15 @@ class TMDBAuthViewModel(private val createRequestTokenUseCase: CreateRequestToke
       }
   }
 
+  /**
+   * There's a delay to make sure the session is properly created before proceeding
+   * Also check [com.divinelink.core.domain.session.CreateSessionUseCase]
+   */
   fun handleCloseWeb() {
-    _onNavigateUp.trySend(Unit)
+    viewModelScope.launch {
+      delay(TMDB_AUTH_DELAY)
+      _onNavigateUp.trySend(Unit)
+    }
   }
 
   private fun createLoginUrl(token: String): String {

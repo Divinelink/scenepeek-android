@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="feature_tmdb_auth_loading_text">Please wait while authentication is in progress…</string>
+</resources>
