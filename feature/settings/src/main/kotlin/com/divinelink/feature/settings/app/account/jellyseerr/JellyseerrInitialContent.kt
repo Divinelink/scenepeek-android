@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
@@ -42,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
+import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
@@ -63,140 +62,148 @@ fun JellyseerrInitialContent(
     mutableIntStateOf(jellyseerrState.preferredOption?.ordinal ?: -1)
   }
 
-  Column(
+  ScenePeekLazyColumn(
     modifier = modifier
-      .verticalScroll(rememberScrollState())
       .fillMaxWidth()
       .fillMaxSize()
       .padding(MaterialTheme.dimensions.keyline_16),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
-    Text(
-      text = stringResource(R.string.feature_settings_jellyseerr_description),
-    )
+    item {
+      Text(
+        text = stringResource(R.string.feature_settings_jellyseerr_description),
+      )
+    }
 
-    OutlinedTextField(
-      modifier = Modifier
-        .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
-        .fillMaxWidth(),
-      value = jellyseerrState.address,
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Uri,
-        imeAction = ImeAction.Next,
-      ),
-      singleLine = true,
-      onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
-      label = { Text(text = stringResource(R.string.feature_settings_jellyseerr_address)) },
-    )
+    item {
+      OutlinedTextField(
+        modifier = Modifier
+          .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
+          .fillMaxWidth(),
+        value = jellyseerrState.address,
+        keyboardOptions = KeyboardOptions(
+          keyboardType = KeyboardType.Uri,
+          imeAction = ImeAction.Next,
+        ),
+        singleLine = true,
+        onValueChange = { interaction(JellyseerrInteraction.OnAddressChange(it)) },
+        label = { Text(text = stringResource(R.string.feature_settings_jellyseerr_address)) },
+      )
+    }
+    item {
+      ExpandableCard(
+        modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.JELLYFIN_EXPANDABLE_CARD_BUTTON),
+        title = stringResource(R.string.feature_settings_login_using_jellyfin),
+        isExpanded = expandedCard == 0,
+        onExpand = {
+          expandedCard = if (expandedCard == 0) {
+            -1
+          } else {
+            0
+          }
+          interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYFIN))
+        },
+        content = {
+          OutlinedTextField(
+            modifier = Modifier
+              .semantics {
+                contentType = ContentType.Username
+              }
+              .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_USERNAME_TEXT_FIELD)
+              .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+              keyboardType = KeyboardType.Email,
+              imeAction = ImeAction.Next,
+            ),
+            value = jellyseerrState.jellyfinLogin.username.value,
+            singleLine = true,
+            onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
+            label = { Text(text = stringResource(R.string.feature_settings_username)) },
+          )
 
-    ExpandableCard(
-      modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.JELLYFIN_EXPANDABLE_CARD_BUTTON),
-      title = stringResource(R.string.feature_settings_login_using_jellyfin),
-      isExpanded = expandedCard == 0,
-      onExpand = {
-        expandedCard = if (expandedCard == 0) {
-          -1
-        } else {
-          0
-        }
-        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYFIN))
-      },
-      content = {
-        OutlinedTextField(
-          modifier = Modifier
-            .semantics {
-              contentType = ContentType.Username
-            }
-            .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_USERNAME_TEXT_FIELD)
-            .fillMaxWidth(),
-          keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next,
-          ),
-          value = jellyseerrState.jellyfinLogin.username.value,
-          singleLine = true,
-          onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
-          label = { Text(text = stringResource(R.string.feature_settings_username)) },
-        )
+          PasswordOutlinedTextField(
+            modifier = Modifier
+              .semantics {
+                contentType = ContentType.Password
+              }
+              .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_PASSWORD_TEXT_FIELD)
+              .fillMaxWidth(),
+            value = jellyseerrState.jellyfinLogin.password.value,
+            onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
+          )
+        },
+      )
+    }
 
-        PasswordOutlinedTextField(
-          modifier = Modifier
-            .semantics {
-              contentType = ContentType.Password
-            }
-            .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_PASSWORD_TEXT_FIELD)
-            .fillMaxWidth(),
-          value = jellyseerrState.jellyfinLogin.password.value,
-          onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-        )
-      },
-    )
+    item {
+      ExpandableCard(
+        modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_EXPANDABLE_CARD_BUTTON),
+        title = stringResource(R.string.feature_settings_login_using_jellyseerr),
+        isExpanded = expandedCard == 1,
+        onExpand = {
+          expandedCard = if (expandedCard == 1) {
+            -1
+          } else {
+            1
+          }
+          interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYSEERR))
+        },
+        content = {
+          OutlinedTextField(
+            modifier = Modifier
+              .semantics {
+                contentType = ContentType.EmailAddress
+              }
+              .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
+              .fillMaxWidth(),
+            value = jellyseerrState.jellyseerrLogin.username.value,
+            keyboardOptions = KeyboardOptions(
+              keyboardType = KeyboardType.Email,
+              imeAction = ImeAction.Next,
+            ),
+            singleLine = true,
+            onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
+            label = { Text(text = stringResource(R.string.feature_settings_username_or_email)) },
+          )
 
-    ExpandableCard(
-      modifier = Modifier.testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_EXPANDABLE_CARD_BUTTON),
-      title = stringResource(R.string.feature_settings_login_using_jellyseerr),
-      isExpanded = expandedCard == 1,
-      onExpand = {
-        expandedCard = if (expandedCard == 1) {
-          -1
-        } else {
-          1
-        }
-        interaction(JellyseerrInteraction.OnSelectLoginMethod(JellyseerrAuthMethod.JELLYSEERR))
-      },
-      content = {
-        OutlinedTextField(
-          modifier = Modifier
-            .semantics {
-              contentType = ContentType.EmailAddress
-            }
-            .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
-            .fillMaxWidth(),
-          value = jellyseerrState.jellyseerrLogin.username.value,
-          keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next,
-          ),
-          singleLine = true,
-          onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
-          label = { Text(text = stringResource(R.string.feature_settings_username_or_email)) },
-        )
+          PasswordOutlinedTextField(
+            modifier = Modifier
+              .semantics {
+                contentType = ContentType.Password
+              }
+              .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD)
+              .fillMaxWidth(),
+            value = jellyseerrState.jellyseerrLogin.password.value,
+            onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
+          )
+        },
+      )
+    }
 
-        PasswordOutlinedTextField(
-          modifier = Modifier
-            .semantics {
-              contentType = ContentType.Password
-            }
-            .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD)
-            .fillMaxWidth(),
-          value = jellyseerrState.jellyseerrLogin.password.value,
-          onValueChange = { interaction(JellyseerrInteraction.OnPasswordChange(it)) },
-        )
-      },
-    )
-
-    AnimatedContent(
-      targetState = jellyseerrState.isLoading,
-      contentAlignment = Alignment.Center,
-      label = "Login Button Animated Content",
-    ) { loading ->
-      when (loading) {
-        true -> Row(
-          modifier = Modifier
-            .testTag(TestTags.LOADING_PROGRESS)
-            .fillMaxWidth(),
-          horizontalArrangement = Arrangement.Center,
-        ) {
-          CircularProgressIndicator()
-        }
-        false -> Button(
-          modifier = Modifier
-            .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON)
-            .fillMaxWidth(),
-          enabled = jellyseerrState.isLoginEnabled,
-          onClick = { interaction(JellyseerrInteraction.OnLoginClick) },
-        ) {
-          Text(stringResource(id = uiR.string.core_ui_login))
+    item {
+      AnimatedContent(
+        targetState = jellyseerrState.isLoading,
+        contentAlignment = Alignment.Center,
+        label = "Login Button Animated Content",
+      ) { loading ->
+        when (loading) {
+          true -> Row(
+            modifier = Modifier
+              .testTag(TestTags.LOADING_PROGRESS)
+              .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+          ) {
+            CircularProgressIndicator()
+          }
+          false -> Button(
+            modifier = Modifier
+              .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON)
+              .fillMaxWidth(),
+            enabled = jellyseerrState.isLoginEnabled,
+            onClick = { interaction(JellyseerrInteraction.OnLoginClick) },
+          ) {
+            Text(stringResource(id = uiR.string.core_ui_login))
+          }
         }
       }
     }
