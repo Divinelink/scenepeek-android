@@ -24,9 +24,8 @@ fun DetailPreferencesSettingsScreen(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.feature_settings_details_preferences),
     onNavigationClick = onNavigateUp,
-  ) { paddingValues ->
-
-    ScenePeekLazyColumn(contentPadding = paddingValues) {
+  ) {
+    ScenePeekLazyColumn {
       item {
         SettingsTextItem(
           title = stringResource(id = R.string.feature_settings_ratings),

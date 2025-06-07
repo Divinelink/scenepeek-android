@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +40,15 @@ fun CastFormContent(
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.testTag(TestTags.Details.Cast.FORM),
-    contentPadding = PaddingValues(horizontal = MaterialTheme.dimensions.keyline_16),
+    contentPadding = PaddingValues(
+      top = if (cast.isTv) {
+        MaterialTheme.dimensions.keyline_0
+      } else {
+        MaterialTheme.dimensions.keyline_16
+      },
+      start = MaterialTheme.dimensions.keyline_16,
+      end = MaterialTheme.dimensions.keyline_16,
+    ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
   ) {
     if (cast.items.isEmpty()) {
@@ -61,10 +68,6 @@ fun CastFormContent(
       if (cast.isTv) {
         item {
           TotalTvCastRow(cast, onViewAllClick)
-        }
-      } else {
-        item {
-          Spacer(modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16))
         }
       }
 

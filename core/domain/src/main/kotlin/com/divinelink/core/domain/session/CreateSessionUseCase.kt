@@ -6,6 +6,9 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.network.session.model.CreateSessionRequestApi
+import kotlinx.coroutines.delay
+
+const val TMDB_AUTH_DELAY = 3000L // 3 seconds
 
 class CreateSessionUseCase(
   private val repository: SessionRepository,
@@ -18,6 +21,8 @@ class CreateSessionUseCase(
     repository
       .createSession(CreateSessionRequestApi(parameters))
       .onSuccess {
+        // There's a delay to make sure the session is properly created before proceeding
+        delay(TMDB_AUTH_DELAY)
         storage.setSession(it.id)
 
         // Fetch account details

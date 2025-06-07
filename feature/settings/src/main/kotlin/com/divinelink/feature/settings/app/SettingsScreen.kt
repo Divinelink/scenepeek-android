@@ -35,11 +35,9 @@ fun SettingsScreen(
     onNavigationClick = onNavigateUp,
     animatedVisibilityScope = animatedVisibilityScope,
     navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
-  ) { paddingValues ->
-
+  ) {
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.Settings.SCREEN_CONTENT),
-      contentPadding = paddingValues,
     ) {
       item {
         SettingsClickItem(

@@ -72,7 +72,6 @@ fun LinkHandlingSettingsScreen(
   ) {
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.LAZY_COLUMN),
-      contentPadding = it,
     ) {
       item {
         SettingsTextItem(

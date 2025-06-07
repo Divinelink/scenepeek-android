@@ -1,5 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
+import com.divinelink.core.commons.exception.ApiClientException
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.Password
@@ -134,7 +135,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(uiR.string.core_ui_error_retry),
+            UIText.StringText(InvalidStatusException(500).message!!),
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
@@ -198,6 +199,43 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
+            UIText.StringText(InvalidStatusException(500).message!!),
+          ),
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test logout with error and no message shows generic error`() = runTest {
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+      )
+      .mockLogoutJellyseerrResponse(
+        Result.failure(
+          ApiClientException(
+            message = null,
+            cause = null,
+          ),
+        ),
+      )
+      .buildViewModel()
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
+          ),
+        ),
+      )
+      .onLogoutJellyseerr()
+      .assertUiState(
+        createUiState(
+          snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(uiR.string.core_ui_error_retry),
           ),
           jellyseerrState = JellyseerrState.LoggedIn(
@@ -221,7 +259,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(uiR.string.core_ui_error_retry),
+            UIText.StringText(InvalidStatusException(500).message!!),
           ),
           jellyseerrState = JellyseerrState.Initial(
             isLoading = false,

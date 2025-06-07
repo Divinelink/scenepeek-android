@@ -47,10 +47,10 @@ kotlinx-serialization = "1.7.1"
 koin = "4.0.0"
 
 # Compose
-compose-bom = "2025.03.01"
+compose-bom = "2025.06.00"
 # 1.8.0-rc2 creates compose test issues with bottom sheets on person screen
-compose-foundation = "1.8.0-alpha08"
-material3 = "1.3.1"
+compose-foundation = "1.8.2"
+material3 = "1.3.2"
 
 compose-shimmer = "1.3.0"
 
@@ -65,8 +65,8 @@ truth = "1.4.2"
 turbine = "1.1.0"
 
 # UI
-robolectric = "4.12.2"
-androidx-compose-ui-test = "1.7.8"
+robolectric = "4.14"
+androidx-compose-ui-test = "1.8.2"
 ui-automator = "2.3.0"
 
 # Mockers

@@ -5,9 +5,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
@@ -351,6 +355,17 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       onNodeWithText(getString(R.string.settings)).assertIsDisplayed()
       assertThat(navController.currentDestination?.hasRoute(SettingsRoute::class)).isTrue()
       assertThat(navController.currentDestination?.hasRoute(AboutSettingsRoute::class)).isFalse()
+
+      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
+        hasText(getString(R.string.feature_settings_about)),
+      )
+
+      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
 
       onNodeWithText(getString(R.string.feature_settings_about)).assertExists().performClick()
 

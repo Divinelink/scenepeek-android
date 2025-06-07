@@ -1,15 +1,11 @@
 package com.divinelink.feature.settings.app
 
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
-import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
@@ -106,37 +102,6 @@ class SettingsScreenTest : ComposeTest() {
     }
 
     assertThat(navigatedToLinkHandling).isTrue()
-  }
-
-  @Test
-  fun `test navigate to about screen`() {
-    var navigatedToAbout = false
-    setVisibilityScopeContent {
-      SettingsScreen(
-        onNavigateUp = {},
-        onNavigateToAccountSettings = {},
-        onNavigateToAppearanceSettings = {},
-        onNavigateToDetailPreferencesSettings = {},
-        onNavigateToLinkHandling = {},
-        onNavigateToAboutSettings = {
-          navigatedToAbout = true
-        },
-        animatedVisibilityScope = this,
-      )
-    }
-
-    val aboutString = getString(R.string.feature_settings_about)
-
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Settings.SCREEN_CONTENT).performScrollToNode(
-        hasText(aboutString),
-      )
-      onNodeWithText(aboutString).assertExists()
-
-      onNodeWithText(aboutString).performClick()
-    }
-
-    assertThat(navigatedToAbout).isTrue()
   }
 
   @Test

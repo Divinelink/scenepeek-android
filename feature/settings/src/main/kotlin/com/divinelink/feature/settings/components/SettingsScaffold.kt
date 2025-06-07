@@ -2,8 +2,10 @@ package com.divinelink.feature.settings.components
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
@@ -37,7 +41,8 @@ fun SettingsScaffold(
   @StringRes navigationContentDescription: Int =
     uiR.string.core_ui_navigate_up_button_content_description,
   floatingActionButton: @Composable ScaffoldState.() -> Unit = {},
-  content: @Composable (PaddingValues) -> Unit,
+  withNavigationBar: Boolean = true,
+  content: @Composable () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -73,10 +78,24 @@ fun SettingsScaffold(
         scrollBehavior = scrollBehavior,
       )
     },
+    navigationBar = {
+      if (withNavigationBar) {
+        PersistentNavigationBar()
+      }
+    },
+    navigationRail = {
+      if (withNavigationBar) {
+        PersistentNavigationRail()
+      }
+    },
     floatingActionButton = {
       floatingActionButton()
     },
   ) {
-    content(it)
+    Column {
+      Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+
+      content()
+    }
   }
 }
