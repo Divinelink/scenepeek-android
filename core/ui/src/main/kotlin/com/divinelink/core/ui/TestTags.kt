@@ -154,8 +154,8 @@ object TestTags {
     }
 
     object Jellyseerr {
-      const val INITIAL_BOTTOM_SHEET = "Jellyseerr Initial Bottom Sheet"
-      const val LOGGED_IN_BOTTOM_SHEET = "Jellyseerr Logged In Bottom Sheet"
+      const val INITIAL_CONTENT = "Jellyseerr Initial Content"
+      const val LOGGED_IN_CONTENT = "Jellyseerr Logged In Content"
       const val ADDRESS_TEXT_FIELD = "Jellyseerr Address Text Field"
 
       const val LOGGED_IN_AVATAR = "Jellyseerr Logged In Avatar"

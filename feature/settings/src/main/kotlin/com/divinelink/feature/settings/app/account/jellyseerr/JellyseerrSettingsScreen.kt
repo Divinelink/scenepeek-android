@@ -50,13 +50,13 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
       when (state) {
         is JellyseerrState.Initial -> JellyseerrInitialContent(
           modifier = Modifier
-            .testTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET),
+            .testTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT),
           jellyseerrState = state,
           interaction = viewModel::onJellyseerrInteraction,
         )
         is JellyseerrState.LoggedIn -> JellyseerrLoggedInContent(
           modifier = Modifier
-            .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
+            .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT),
           jellyseerrState = state,
           animatedVisibilityScope = this@JellyseerrSettingsScreen,
           transitionScope = sharedTransitionScope,

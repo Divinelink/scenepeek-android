@@ -5,13 +5,17 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrState
@@ -55,8 +59,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = true,
       )
     }
 
@@ -77,8 +81,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = true,
       )
     }
 
@@ -98,13 +102,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = false,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
         onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
@@ -148,19 +152,17 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
         TestTags.Settings.Jellyseerr.JELLYFIN_PASSWORD_TEXT_FIELD,
       ).assert(hasText("••••••••"))
 
-      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
-
       // Need to scroll to login button to make it visible on the screen because
       // there's not enough space to display it.
-      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON)
-        .performScrollTo()
-        .assertIsDisplayed()
-        .performClick()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+        hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+      )
+      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
 
       // Success login
-      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
 
       val loggedInUsername = JellyseerrAccountDetailsFactory.jellyfin().displayName
       onNodeWithText(loggedInUsername).assertIsDisplayed()
@@ -179,13 +181,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = false,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
         onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
@@ -211,6 +213,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       ).assertIsEnabled()
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD).assertIsDisplayed()
 
       onNodeWithTag(
@@ -238,15 +246,15 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       // Need to scroll to login button to make it visible on the screen because
       // there's not enough space to display it.
-      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON)
-        .performScrollTo()
-        .assertIsDisplayed()
-        .performClick()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+        hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+      )
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
 
       // Success login
-      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsNotDisplayed()
-
-      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
 
       val loggedInUsername = JellyseerrAccountDetailsFactory.jellyseerr().displayName
       onNodeWithText(loggedInUsername).assertIsDisplayed()
@@ -265,22 +273,22 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = true,
       )
     }
 
     with(composeTestRule) {
       runOnUiThread {
-        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsDisplayed()
-        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsNotDisplayed()
+        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
+        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
 
         onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON)
           .assertIsDisplayed()
           .performClick()
 
-        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsDisplayed()
-        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET).assertIsNotDisplayed()
+        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
+        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsNotDisplayed()
       }
     }
   }
@@ -296,13 +304,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       JellyseerrSettingsScreen(
         viewModel = viewModel,
         sharedTransitionScope = it,
-        animatedVisibilityScope = this,
         onNavigateUp = {},
+        withNavigationBar = true,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
         onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
@@ -344,13 +352,13 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
         JellyseerrSettingsScreen(
           viewModel = viewModel,
           sharedTransitionScope = it,
-          animatedVisibilityScope = this,
           onNavigateUp = {},
+          withNavigationBar = true,
         )
       }
 
       with(composeTestRule) {
-        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_BOTTOM_SHEET).assertIsDisplayed()
+        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
         waitUntil {
           onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
@@ -414,6 +422,42 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
           .performTextInput("Jellyfin password")
       }
     }
+
+  @Test
+  fun `test jellyseerr settings withNavigationBar false does not show nav bar`() = runTest {
+    val viewModel = setupViewModel()
+
+    setVisibilityScopeContent {
+      JellyseerrSettingsScreen(
+        viewModel = viewModel,
+        sharedTransitionScope = it,
+        onNavigateUp = {},
+        withNavigationBar = false,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `test jellyseerr settings withNavigationBar true shows nav bar`() = runTest {
+    val viewModel = setupViewModel()
+
+    setVisibilityScopeContent {
+      JellyseerrSettingsScreen(
+        viewModel = viewModel,
+        sharedTransitionScope = it,
+        onNavigateUp = {},
+        withNavigationBar = true,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsDisplayed()
+    }
+  }
 
   private fun setupViewModel(): JellyseerrSettingsViewModel = JellyseerrSettingsViewModel(
     logoutJellyseerrUseCase = logoutJellyseerrUseCase.mock,

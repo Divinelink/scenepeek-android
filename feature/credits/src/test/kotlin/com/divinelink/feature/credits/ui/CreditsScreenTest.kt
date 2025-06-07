@@ -15,7 +15,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.TestTags
@@ -51,7 +51,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},
@@ -71,7 +71,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},
@@ -96,7 +96,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         viewModel = viewModel,
@@ -130,7 +130,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},
@@ -168,7 +168,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},
@@ -194,7 +194,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},
@@ -222,7 +222,7 @@ class CreditsScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       CreditsScreen(
         onNavigateUp = {},
         onNavigateToPersonDetails = {},

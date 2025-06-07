@@ -51,6 +51,9 @@ fun CreditsFilterModalBottomSheet(
   ModalBottomSheet(
     modifier = modifier.testTag(TestTags.Person.CREDITS_FILTER_BOTTOM_SHEET),
     sheetState = sheetState,
+    shape = MaterialTheme.shapes.extraLarge, // TODO Remove this once
+    // https://issuetracker.google.com/issues/366255137 is fixed
+    // This is a workaround for robolectric tests failing when not passing rounded shape
     onDismissRequest = onDismissRequest,
   ) {
     CreditsFilterBottomSheetContent(filters, appliedFilters, onClick)
