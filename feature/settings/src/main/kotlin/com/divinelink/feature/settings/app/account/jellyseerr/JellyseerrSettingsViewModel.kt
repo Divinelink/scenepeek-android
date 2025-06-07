@@ -120,7 +120,9 @@ class JellyseerrSettingsViewModel(
                 }
                 otherwise {
                   _uiState.setSnackbarMessage(
-                    UIText.ResourceText(uiR.string.core_ui_error_retry),
+                    it.message?.let { message ->
+                      UIText.StringText(message)
+                    } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
                   )
                 }
               }
@@ -158,7 +160,11 @@ class JellyseerrSettingsViewModel(
                   }
                 }
                 otherwise {
-                  _uiState.setSnackbarMessage(UIText.ResourceText(uiR.string.core_ui_error_retry))
+                  _uiState.setSnackbarMessage(
+                    it.message?.let { message ->
+                      UIText.StringText(message)
+                    } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
+                  )
                 }
               }
             }

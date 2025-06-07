@@ -1,5 +1,6 @@
 package com.divinelink.core.ui
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -14,6 +15,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -36,6 +39,10 @@ fun PasswordOutlinedTextField(
     } else {
       VisualTransformation.None
     },
+    keyboardOptions = KeyboardOptions(
+      keyboardType = KeyboardType.Password,
+      imeAction = ImeAction.Next,
+    ),
     onValueChange = onValueChange,
     trailingIcon = {
       val image = if (isMasked) {

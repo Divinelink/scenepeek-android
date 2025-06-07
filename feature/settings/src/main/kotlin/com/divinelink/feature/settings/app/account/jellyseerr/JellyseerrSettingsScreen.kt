@@ -32,7 +32,7 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
   )
 
   SettingsScaffold(
-    animatedVisibilityScope = this,
+    animatedVisibilityScope = this@JellyseerrSettingsScreen,
     title = stringResource(R.string.feature_settings_jellyseerr_account),
     onNavigationClick = onNavigateUp,
     withNavigationBar = withNavigationBar,
@@ -58,7 +58,7 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
           modifier = Modifier
             .testTag(TestTags.Settings.Jellyseerr.LOGGED_IN_BOTTOM_SHEET),
           jellyseerrState = state,
-          animatedVisibilityScope = this,
+          animatedVisibilityScope = this@JellyseerrSettingsScreen,
           transitionScope = sharedTransitionScope,
           onLogoutClock = viewModel::onJellyseerrInteraction,
         )

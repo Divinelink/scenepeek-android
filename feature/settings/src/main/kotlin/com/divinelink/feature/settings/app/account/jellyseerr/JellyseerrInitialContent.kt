@@ -9,10 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -111,6 +109,10 @@ fun JellyseerrInitialContent(
             }
             .testTag(TestTags.Settings.Jellyseerr.JELLYFIN_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+          ),
           value = jellyseerrState.jellyfinLogin.username.value,
           singleLine = true,
           onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
@@ -151,6 +153,10 @@ fun JellyseerrInitialContent(
             .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_USERNAME_TEXT_FIELD)
             .fillMaxWidth(),
           value = jellyseerrState.jellyseerrLogin.username.value,
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+          ),
           singleLine = true,
           onValueChange = { interaction(JellyseerrInteraction.OnUsernameChange(it)) },
           label = { Text(text = stringResource(R.string.feature_settings_username_or_email)) },
@@ -168,8 +174,6 @@ fun JellyseerrInitialContent(
         )
       },
     )
-
-    Spacer(Modifier.height(MaterialTheme.dimensions.keyline_32))
 
     AnimatedContent(
       targetState = jellyseerrState.isLoading,

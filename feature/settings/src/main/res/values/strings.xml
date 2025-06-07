@@ -27,7 +27,7 @@
   <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
 
   <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr features.\nMake sure to include the full URL with https:// or http:// and port number if needed.</string>
-  <string name="feature_settings_jellyseerr_address">Jellyseerr address</string>
+  <string name="feature_settings_jellyseerr_address">http(s)://your-jellyseerr-server.com</string>
 
   <string name="feature_settings_login_using_jellyfin">Use your Jellyfin account</string>
   <string name="feature_settings_login_using_jellyseerr">Use your Jellyseerr account</string>
