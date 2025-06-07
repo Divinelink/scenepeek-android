@@ -72,7 +72,10 @@ fun ScaffoldState.PersistentNavigationBar(
               state.navigateToTopLevelDestination(destination)
             },
             label = {
-              Text(text = stringResource(id = destination.titleTextId))
+              Text(
+                text = stringResource(id = destination.titleTextId),
+                style = MaterialTheme.typography.labelSmall,
+              )
             },
             icon = {
               if (selected) {

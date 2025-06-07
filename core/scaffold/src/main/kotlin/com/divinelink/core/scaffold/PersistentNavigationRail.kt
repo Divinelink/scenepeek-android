@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
@@ -55,7 +56,10 @@ fun ScaffoldState.PersistentNavigationRail(
               indicatorColor = ScenePeekNavigationDefaults.indicatorColor(),
             ),
             label = {
-              Text(text = stringResource(id = destination.titleTextId))
+              Text(
+                text = stringResource(id = destination.titleTextId),
+                style = MaterialTheme.typography.labelSmall,
+              )
             },
             icon = {
               if (selected) {
