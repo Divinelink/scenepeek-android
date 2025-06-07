@@ -142,11 +142,10 @@ internal fun PersonGridContent(
             )
           }
         }
-
-        item {
-          Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
-        }
       }
+    }
+    item {
+      Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
     }
   }
 }
