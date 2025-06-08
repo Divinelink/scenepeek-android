@@ -21,6 +21,7 @@ fun SnackbarMessageHandler(
       val actionLabel = snackbarMessage.actionLabelText?.getString()
 
       LaunchedEffect(snackbarMessage, onDismissSnackbar) {
+        onDismissSnackbar()
         onShowMessage()
 
         snackbarController.showMessage(
@@ -37,6 +38,8 @@ fun SnackbarMessageHandler(
 
     is SnackbarMessage.Visuals -> {
       LaunchedEffect(snackbarMessage, onDismissSnackbar) {
+        onDismissSnackbar()
+
         snackbarController.showMessage(
           snackbarVisuals = snackbarMessage.snackbarVisuals,
           onSnackbarResult = snackbarMessage.onSnackbarResult,

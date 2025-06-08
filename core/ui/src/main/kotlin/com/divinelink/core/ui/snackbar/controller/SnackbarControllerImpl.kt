@@ -21,6 +21,8 @@ class SnackbarControllerImpl(
     onSnackbarResult: (SnackbarResult) -> Unit,
   ) {
     coroutineScope.launch {
+      snackbarHostState.currentSnackbarData?.dismiss()
+
       snackbarHostState.showSnackbar(
         message = message,
         actionLabel = actionLabel,
@@ -35,6 +37,8 @@ class SnackbarControllerImpl(
     onSnackbarResult: (SnackbarResult) -> Unit,
   ) {
     coroutineScope.launch {
+      snackbarHostState.currentSnackbarData?.dismiss()
+
       snackbarHostState.showSnackbar(visuals = snackbarVisuals).let(onSnackbarResult)
     }
   }
