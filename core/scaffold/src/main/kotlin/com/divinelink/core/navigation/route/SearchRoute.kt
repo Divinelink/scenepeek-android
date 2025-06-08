@@ -14,13 +14,20 @@ fun NavController.navigateToSearchFromTab(navOptions: NavOptions? = null) = navi
   route = SearchRoute,
 )
 
-fun NavController.navigateToSearchFromHome() = navigate(
-  navOptions = navOptions {
-    popUpTo(this@navigateToSearchFromHome.graph.findStartDestination().id) {
-      saveState = true
-    }
-    launchSingleTop = true
-    restoreState = true
-  },
-  route = SearchRoute,
-)
+fun NavController.navigateToSearchFromHome() {
+  navigate(
+    navOptions = navOptions {
+      popUpTo(this@navigateToSearchFromHome.graph.findStartDestination().id) {
+        saveState = true
+      }
+      launchSingleTop = true
+      restoreState = true
+    },
+    route = SearchRoute,
+  )
+
+  popBackStack(
+    route = SearchRoute,
+    inclusive = false,
+  )
+}
