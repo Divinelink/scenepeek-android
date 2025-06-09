@@ -145,13 +145,22 @@ fun TMDBRatingItem(
         ),
       ) {
         Text(
-          text = sanitizedRating?.toString() ?: "-",
+          text = if (sanitizedRating == 0) {
+            "-"
+          } else {
+            sanitizedRating?.toString() ?: "-"
+          },
           style = textSize,
           textAlign = TextAlign.Center,
           color = textColor,
         )
 
-        if (voteCount != null && sanitizedRating != null && size == RatingSize.LARGE) {
+        if (
+          voteCount != null &&
+          sanitizedRating != null &&
+          size == RatingSize.LARGE &&
+          voteCount > 0
+        ) {
           Text(
             modifier = Modifier.testTag(TestTags.Rating.VOTE_COUNT),
             text = voteCount.toShortString(),
@@ -197,6 +206,8 @@ fun TMDBRatingItemPreview() {
         Row(
           horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         ) {
+          TMDBRatingItem(rating = 0.0, size = RatingSize.LARGE, voteCount = 0)
+          TMDBRatingItem(rating = 0.0, size = RatingSize.LARGE, voteCount = 10)
           TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_202_583)
           TMDBRatingItem(rating = 9.2, size = RatingSize.LARGE, voteCount = 1_102_583)
         }
