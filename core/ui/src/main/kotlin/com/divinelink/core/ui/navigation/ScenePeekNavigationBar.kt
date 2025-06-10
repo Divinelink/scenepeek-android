@@ -33,7 +33,7 @@ fun ScenePeekNavigationBar(
   content: @Composable RowScope.() -> Unit,
 ) {
   Surface(
-    color = containerColor,
+    color = Color.Transparent,
     contentColor = contentColor,
     modifier = modifier,
   ) {

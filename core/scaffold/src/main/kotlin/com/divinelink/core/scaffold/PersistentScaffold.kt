@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.zIndex
+import com.divinelink.core.designsystem.component.ScenePeekNavigationDefaults.FadeGradientEffect
+
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.ui.TestTags
 
@@ -63,6 +65,10 @@ fun ScaffoldState.PersistentScaffold(
           ) {
             Box(modifier = Modifier.fillMaxSize()) {
               content(paddingValues)
+
+              if (canShowBottomNavigation) {
+                this@Box.FadeGradientEffect()
+              }
 
               if (canShowNavRail) {
                 PersistentSnackbarHost(modifier = Modifier.align(Alignment.BottomCenter))
