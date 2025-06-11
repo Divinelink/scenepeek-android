@@ -78,7 +78,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     // Initial request
@@ -132,7 +132,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<InvalidStatusException> {
@@ -168,7 +168,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
@@ -201,7 +201,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
@@ -234,7 +234,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
@@ -267,7 +267,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
@@ -300,7 +300,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       encryptedStorage = encryptedStorage,
-      datastore = datastore,
+      storage = datastore,
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {

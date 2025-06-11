@@ -7,6 +7,8 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.MovieInfoResponseApi
+import com.divinelink.core.network.jellyseerr.model.TvInfoResponseApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -68,6 +70,30 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       url = url,
       body = body,
     )
+
+    emit(response)
+  }
+
+  override suspend fun getMovieDetails(mediaId: Int): Flow<MovieInfoResponseApi> = flow {
+    if (restClient.hostAddress() == null) {
+      throw IllegalStateException("Host address is not set")
+    }
+
+    val url = "${restClient.hostAddress()}/api/v1/movie/$mediaId"
+
+    val response = restClient.get<MovieInfoResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override suspend fun getTvDetails(mediaId: Int): Flow<TvInfoResponseApi> = flow {
+    if (restClient.hostAddress() == null) {
+      throw IllegalStateException("Host address is not set")
+    }
+
+    val url = "${restClient.hostAddress()}/api/v1/tv/$mediaId"
+
+    val response = restClient.get<TvInfoResponseApi>(url = url)
 
     emit(response)
   }

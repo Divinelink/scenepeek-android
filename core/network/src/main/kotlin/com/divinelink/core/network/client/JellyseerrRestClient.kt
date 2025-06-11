@@ -21,12 +21,14 @@ import kotlinx.coroutines.flow.first
 class JellyseerrRestClient(
   engine: HttpClientEngine,
   private val encryptedStorage: EncryptedStorage,
-  private val datastore: PreferenceStorage,
+  private val storage: PreferenceStorage,
 ) {
 
   companion object {
     const val AUTH_ENDPOINT = "/api/v1/auth"
   }
+
+  suspend fun hostAddress(): String? = storage.jellyseerrAddress.first()
 
   val client: HttpClient = ktorClient(engine)
     .config {
@@ -64,10 +66,10 @@ class JellyseerrRestClient(
     }
 
   private suspend fun reAuthenticate() {
-    val account = datastore.jellyseerrAccount.first()
+    val account = storage.jellyseerrAccount.first()
     val password = encryptedStorage.jellyseerrPassword
-    val address = datastore.jellyseerrAddress.first()
-    val signInMethod = datastore.jellyseerrAuthMethod.first()
+    val address = storage.jellyseerrAddress.first()
+    val signInMethod = storage.jellyseerrAuthMethod.first()
 
     if (account == null || password == null || address == null || signInMethod == null) {
       throw JellyseerrInvalidCredentials()

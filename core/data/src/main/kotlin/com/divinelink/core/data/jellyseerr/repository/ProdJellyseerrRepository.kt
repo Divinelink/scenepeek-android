@@ -9,6 +9,7 @@ import com.divinelink.core.database.jellyseerr.mapper.map
 import com.divinelink.core.database.jellyseerr.mapper.mapToEntity
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -62,4 +63,12 @@ class ProdJellyseerrRepository(
   ): Flow<Result<JellyseerrMediaRequest>> = service
     .requestMedia(body)
     .map { Result.success(it.map()) }
+
+  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo.Movie> = service
+    .getMovieDetails(mediaId)
+    .map { it.map() }
+
+  override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo.TV> = service
+    .getTvDetails(mediaId)
+    .map { it.map() }
 }

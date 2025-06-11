@@ -7,6 +7,7 @@ import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
@@ -31,6 +32,7 @@ import timber.log.Timber
 @Suppress("LongMethod")
 open class GetMediaDetailsUseCase(
   private val repository: DetailsRepository,
+  private val jellyseerrRepository: JellyseerrRepository,
   private val mediaRepository: MediaRepository,
   private val preferenceStorage: PreferenceStorage,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
@@ -178,6 +180,22 @@ open class GetMediaDetailsUseCase(
             }
             send(Result.success(MediaDetailsResult.VideosSuccess(video)))
           }
+      }
+
+      launch(dispatcher.default) {
+        when (parameters) {
+          is MediaRequestApi.Movie -> jellyseerrRepository.getMovieDetails(parameters.movieId)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              // TODO complete logic
+            }
+          is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              // TODO complete logic
+            }
+          MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
+        }
       }
 
       launch(dispatcher.default) {

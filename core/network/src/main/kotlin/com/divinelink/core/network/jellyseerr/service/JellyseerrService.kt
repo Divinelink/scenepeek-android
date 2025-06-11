@@ -4,6 +4,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.MovieInfoResponseApi
+import com.divinelink.core.network.jellyseerr.model.TvInfoResponseApi
 import kotlinx.coroutines.flow.Flow
 
 interface JellyseerrService {
@@ -17,4 +19,8 @@ interface JellyseerrService {
   suspend fun logout(address: String): Flow<Unit>
 
   suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<JellyseerrResponseBodyApi>
+
+  suspend fun getMovieDetails(mediaId: Int): Flow<MovieInfoResponseApi>
+
+  suspend fun getTvDetails(mediaId: Int): Flow<TvInfoResponseApi>
 }
