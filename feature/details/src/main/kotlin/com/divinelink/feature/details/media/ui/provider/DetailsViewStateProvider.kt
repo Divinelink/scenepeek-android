@@ -2,6 +2,9 @@ package com.divinelink.feature.details.media.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
+import com.divinelink.core.fixtures.details.media.DetailsDataFactory
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory
+import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toTvWzd
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -34,17 +37,20 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.full(),
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice(),
+          forms = DetailsFormFactory.Tv.full(),
           tabs = TvTab.entries,
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.TheOffice().id,
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.full(),
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
             numberOfSeasons = 0,
           ),
@@ -62,12 +68,14 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.full(),
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.full(),
           userDetails = AccountMediaDetails(
             id = 0,
             favorite = false,
@@ -79,22 +87,34 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
-        ),
-
-        DetailsViewState(
-          mediaId = MediaDetailsFactory.TheOffice().id,
-          mediaType = MediaType.TV,
-          tabs = TvTab.entries,
-          mediaDetails = MediaDetailsFactory.FightClub(),
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          error = UIText.StringText("Something went wrong."),
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.FightClub().id,
           mediaType = MediaType.MOVIE,
           tabs = MovieTab.entries,
-          error = UIText.StringText("Something went wrong."),
+          mediaDetails = MediaDetailsFactory.FightClub(),
+          forms = DetailsFormFactory.Movie.full(),
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PENDING,
+        ),
+        DetailsViewState(
+          mediaId = MediaDetailsFactory.TheOffice().id,
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          forms = DetailsFormFactory.Tv.full(),
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+        ),
+        DetailsViewState(
+          mediaId = MediaDetailsFactory.TheOffice().id,
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          selectedTabIndex = 1,
+          forms = DetailsFormFactory.Tv.full().toTvWzd {
+            withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+          },
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
         ),
       )
     }
