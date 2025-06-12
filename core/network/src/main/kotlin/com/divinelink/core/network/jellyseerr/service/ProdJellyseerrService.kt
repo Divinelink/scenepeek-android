@@ -1,5 +1,6 @@
 package com.divinelink.core.network.jellyseerr.service
 
+import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
@@ -64,7 +65,9 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   override suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
   ): Flow<JellyseerrResponseBodyApi> = flow {
-    val url = "${body.address}/api/v1/request"
+    requireNotNull(restClient.hostAddress()) { throw MissingJellyseerrHostAddressException() }
+
+    val url = "$restClient/api/v1/request"
 
     val response = restClient.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
       url = url,
@@ -74,27 +77,34 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     emit(response)
   }
 
-  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMovieDetailsResponse> = flow {
-    if (restClient.hostAddress() == null) {
-      throw IllegalStateException("Host address is not set") // TODO Add custom exception
+  override suspend fun getMovieDetails(
+    mediaId: Int,
+  ): Flow<Result<JellyseerrMovieDetailsResponse>> = flow {
+    val hostAddress = restClient.hostAddress()
+    if (hostAddress == null) {
+      emit(Result.failure(MissingJellyseerrHostAddressException()))
+      return@flow
     }
 
-    val url = "${restClient.hostAddress()}/api/v1/movie/$mediaId"
-
-    val response = restClient.get<JellyseerrMovieDetailsResponse>(url = url)
-
-    emit(response)
-  }
-
-  override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrTvDetailsResponse> = flow {
-    if (restClient.hostAddress() == null) {
-      throw IllegalStateException("Host address is not set")
+    val result = runCatching {
+      val url = "${restClient.hostAddress()}/api/v1/movie/$mediaId"
+      restClient.get<JellyseerrMovieDetailsResponse>(url = url)
     }
-
-    val url = "${restClient.hostAddress()}/api/v1/tv/$mediaId"
-
-    val response = restClient.get<JellyseerrTvDetailsResponse>(url = url)
-
-    emit(response)
+    emit(result)
   }
+
+  override suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>> =
+    flow {
+      val hostAddress = restClient.hostAddress()
+      if (hostAddress == null) {
+        emit(Result.failure(MissingJellyseerrHostAddressException()))
+        return@flow
+      }
+
+      val result = runCatching {
+        val url = "${restClient.hostAddress()}/api/v1/tv/$mediaId"
+        restClient.get<JellyseerrTvDetailsResponse>(url = url)
+      }
+      emit(result)
+    }
 }

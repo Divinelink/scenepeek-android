@@ -2,6 +2,7 @@ package com.divinelink.core.fixtures.details.media
 
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.media.DetailsData
@@ -79,6 +80,10 @@ object DetailsDataFactory {
 
     fun seasons() = DetailsData.Seasons(
       items = MediaDetailsFactory.TheOffice().seasons,
+    )
+
+    fun seasonsWithStatus() = DetailsData.Seasons(
+      items = SeasonFactory.allWithStatus(),
     )
   }
 }

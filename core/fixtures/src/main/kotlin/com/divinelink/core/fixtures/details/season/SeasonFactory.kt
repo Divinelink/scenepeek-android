@@ -1,6 +1,7 @@
 package com.divinelink.core.fixtures.details.season
 
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 
 object SeasonFactory {
 
@@ -173,4 +174,22 @@ object SeasonFactory {
     season8(),
     season9(),
   )
+
+  fun allWithStatus() = all().map { season ->
+    season.copy(
+      status = when (season.seasonNumber) {
+        0 -> null
+        1 -> JellyseerrMediaStatus.AVAILABLE
+        2 -> JellyseerrMediaStatus.AVAILABLE
+        3 -> JellyseerrMediaStatus.AVAILABLE
+        4 -> JellyseerrMediaStatus.AVAILABLE
+        5 -> JellyseerrMediaStatus.AVAILABLE
+        6 -> JellyseerrMediaStatus.AVAILABLE
+        7 -> JellyseerrMediaStatus.AVAILABLE
+        8 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        9 -> JellyseerrMediaStatus.UNKNOWN
+        else -> null
+      },
+    )
+  }
 }

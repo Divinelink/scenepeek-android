@@ -21,7 +21,7 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -43,6 +43,8 @@ open class GetMediaDetailsUseCase(
 ) : FlowUseCase<MediaRequestApi, MediaDetailsResult>(dispatcher.default) {
   override fun execute(parameters: MediaRequestApi): Flow<Result<MediaDetailsResult>> =
     channelFlow {
+      val detailsCompleted = CompletableDeferred<Unit>()
+
       if (parameters == MediaRequestApi.Unknown) {
         send(Result.failure(MediaDetailsException()))
         return@channelFlow
@@ -68,11 +70,12 @@ open class GetMediaDetailsUseCase(
         MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
       }
 
-      val asyncDetails = async(dispatcher.default) {
+      launch(dispatcher.default) {
         repository.fetchMediaDetails(requestApi)
           .catch {
             Timber.e(it)
             send(Result.failure(MediaDetailsException()))
+            detailsCompleted.complete(Unit)
           }
           .map { result ->
             val details = result.data
@@ -100,7 +103,10 @@ open class GetMediaDetailsUseCase(
               ),
             )
           }
-          .collect { send(it) }
+          .collect {
+            send(it)
+            detailsCompleted.complete(Unit)
+          }
       }
 
       launch(dispatcher.default) {
@@ -189,15 +195,17 @@ open class GetMediaDetailsUseCase(
             .catch { Timber.e(it) }
             .collect { result ->
               result?.status?.let {
-                asyncDetails.await()
+                detailsCompleted.await()
                 send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
               }
             }
           is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
             .catch { Timber.e(it) }
             .collect { result ->
-              asyncDetails.await()
-              send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              result?.status?.let {
+                detailsCompleted.await()
+                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              }
             }
           MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
         }

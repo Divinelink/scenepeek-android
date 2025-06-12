@@ -10,7 +10,9 @@ import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.media.model.MediaRequestApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -29,6 +31,10 @@ class TestDetailsRepository {
     ).thenReturn(
       flowOf(response),
     )
+  }
+
+  fun mockFetchMediaDetails(response: Channel<Result<MediaDetails>>) = apply {
+    whenever(mock.fetchMediaDetails(any())).thenReturn(response.consumeAsFlow())
   }
 
   fun mockFetchMovieReviews(

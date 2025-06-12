@@ -29,5 +29,5 @@ interface JellyseerrRepository {
 
   suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo.Movie?>
 
-  suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo.TV>
+  suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo.TV?>
 }

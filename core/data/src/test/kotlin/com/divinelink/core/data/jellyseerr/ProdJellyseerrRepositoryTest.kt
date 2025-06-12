@@ -4,12 +4,20 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.movie.MovieInfoResponse
+import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
+import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
@@ -176,5 +184,115 @@ class ProdJellyseerrRepositoryTest {
     val result = repository.getLocalJellyseerrAccountDetails()
 
     assertThat(result.first()).isNull()
+  }
+
+  @Test
+  fun `test getMovieDetails with success response`() = runTest {
+    remote.mockGetMovieDetails(
+      response = Result.success(
+        JellyseerrMovieDetailsResponse(
+          mediaInfo = MovieInfoResponse(JellyseerrMediaStatus.PENDING.status),
+        ),
+      ),
+    )
+
+    val result = repository.getMovieDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(
+      JellyseerrMediaInfoFactory.Movie.pending(),
+    )
+  }
+
+  @Test
+  fun `test getMovieDetails with null`() = runTest {
+    remote.mockGetMovieDetails(response = Result.success(JellyseerrMovieDetailsResponse(null)))
+
+    val result = repository.getMovieDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test getMovieDetails with failure`() = runTest {
+    remote.mockGetMovieDetails(response = Result.failure(MissingJellyseerrHostAddressException()))
+
+    val result = repository.getMovieDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test getTvDetails with success response`() = runTest {
+    remote.mockGetTvDetails(
+      response = Result.success(
+        JellyseerrTvDetailsResponse(
+          mediaInfo = TvInfoResponse(
+            JellyseerrMediaStatus.AVAILABLE.status,
+            seasons = listOf(
+              TvSeasonResponse(
+                seasonNumber = 1,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 2,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 3,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 4,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 5,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 6,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 7,
+                status = JellyseerrMediaStatus.AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 8,
+                status = JellyseerrMediaStatus.PARTIALLY_AVAILABLE.status,
+              ),
+              TvSeasonResponse(
+                seasonNumber = 9,
+                status = JellyseerrMediaStatus.UNKNOWN.status,
+              ),
+            ),
+          ),
+        ),
+      ),
+    )
+
+    val result = repository.getTvDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(
+      JellyseerrMediaInfoFactory.tv(),
+    )
+  }
+
+  @Test
+  fun `test getTvDetails with failure`() = runTest {
+    remote.mockGetTvDetails(response = Result.success(JellyseerrTvDetailsResponse(null)))
+
+    val result = repository.getTvDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(null)
+  }
+
+  @Test
+  fun `test getTvDetails with null`() = runTest {
+    remote.mockGetTvDetails(response = Result.failure(MissingJellyseerrHostAddressException()))
+
+    val result = repository.getTvDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(null)
   }
 }

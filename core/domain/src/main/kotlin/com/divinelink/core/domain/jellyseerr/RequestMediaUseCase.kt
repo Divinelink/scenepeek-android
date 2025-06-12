@@ -5,6 +5,7 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
@@ -16,20 +17,19 @@ open class RequestMediaUseCase(
   private val repository: JellyseerrRepository,
   private val storage: PreferenceStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<JellyseerrRequestParams, JellyseerrMediaRequest>(dispatcher.io) {
+) : FlowUseCase<JellyseerrRequestParams, JellyseerrMediaRequest>(dispatcher.default) {
 
   override fun execute(parameters: JellyseerrRequestParams): Flow<Result<JellyseerrMediaRequest>> =
     flow {
       val address = storage.jellyseerrAddress.first()
 
       if (address == null) {
-        emit(Result.failure(IllegalArgumentException("Address cannot be null")))
+        emit(Result.failure(MissingJellyseerrHostAddressException()))
         return@flow
       }
 
       val result = repository.requestMedia(
         JellyseerrRequestMediaBodyApi(
-          address = address,
           mediaType = parameters.mediaType,
           mediaId = parameters.mediaId,
           is4k = parameters.is4k,

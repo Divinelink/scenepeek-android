@@ -6,7 +6,6 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 object JellyseerrRequestMediaBodyApiFactory {
 
   fun tv() = JellyseerrRequestMediaBodyApi(
-    address = "http://localhost:8096",
     mediaType = MediaType.TV.value,
     mediaId = 8096,
     is4k = false,
@@ -14,7 +13,6 @@ object JellyseerrRequestMediaBodyApiFactory {
   )
 
   fun movie() = JellyseerrRequestMediaBodyApi(
-    address = "http://localhost:8096",
     mediaType = MediaType.MOVIE.value,
     mediaId = 8080,
     is4k = false,

@@ -20,7 +20,7 @@ interface JellyseerrService {
 
   suspend fun requestMedia(body: JellyseerrRequestMediaBodyApi): Flow<JellyseerrResponseBodyApi>
 
-  suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMovieDetailsResponse>
+  suspend fun getMovieDetails(mediaId: Int): Flow<Result<JellyseerrMovieDetailsResponse>>
 
-  suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrTvDetailsResponse>
+  suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>>
 }

@@ -93,6 +93,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
+  fun mockFetchMediaDetails(response: Channel<Result<MediaDetailsResult>>) = apply {
+    fakeGetMovieDetailsUseCase.mockFetchMediaDetails(
+      response = response,
+    )
+  }
+
   fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequest>>) = apply {
     fakeRequestMediaUseCase.mockSuccess(response = response)
   }
