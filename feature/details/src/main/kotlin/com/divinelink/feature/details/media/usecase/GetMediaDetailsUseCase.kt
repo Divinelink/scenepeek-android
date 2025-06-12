@@ -21,6 +21,7 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -67,7 +68,7 @@ open class GetMediaDetailsUseCase(
         MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
       }
 
-      launch(dispatcher.default) {
+      val asyncDetails = async(dispatcher.default) {
         repository.fetchMediaDetails(requestApi)
           .catch {
             Timber.e(it)
@@ -187,12 +188,16 @@ open class GetMediaDetailsUseCase(
           is MediaRequestApi.Movie -> jellyseerrRepository.getMovieDetails(parameters.movieId)
             .catch { Timber.e(it) }
             .collect { result ->
-              // TODO complete logic
+              result?.status?.let {
+                asyncDetails.await()
+                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              }
             }
           is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
             .catch { Timber.e(it) }
             .collect { result ->
-              // TODO complete logic
+              asyncDetails.await()
+              send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
             }
           MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
         }

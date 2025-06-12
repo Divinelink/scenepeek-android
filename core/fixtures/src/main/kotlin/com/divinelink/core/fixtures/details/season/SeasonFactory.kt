@@ -13,6 +13,7 @@ object SeasonFactory {
     episodeCount = 130,
     voteAverage = 0.0,
     seasonNumber = 0,
+    status = null,
   )
 
   fun season1() = Season(
@@ -30,6 +31,7 @@ object SeasonFactory {
     episodeCount = 6,
     voteAverage = 7.6,
     seasonNumber = 1,
+    status = null,
   )
 
   fun season2() = Season(
@@ -47,6 +49,7 @@ object SeasonFactory {
     episodeCount = 22,
     voteAverage = 8.1,
     seasonNumber = 2,
+    status = null,
   )
 
   fun season3() = Season(
@@ -63,6 +66,7 @@ object SeasonFactory {
     episodeCount = 23,
     voteAverage = 8.2,
     seasonNumber = 3,
+    status = null,
   )
 
   fun season4() = Season(
@@ -82,6 +86,7 @@ object SeasonFactory {
     episodeCount = 14,
     voteAverage = 8.2,
     seasonNumber = 4,
+    status = null,
   )
 
   fun season5() = Season(
@@ -94,6 +99,7 @@ object SeasonFactory {
     episodeCount = 26,
     voteAverage = 8.2,
     seasonNumber = 5,
+    status = null,
   )
 
   fun season6() = Season(
@@ -106,6 +112,7 @@ object SeasonFactory {
     episodeCount = 24,
     voteAverage = 7.8,
     seasonNumber = 6,
+    status = null,
   )
 
   fun season7() = Season(
@@ -119,6 +126,7 @@ object SeasonFactory {
     episodeCount = 24,
     voteAverage = 8.0,
     seasonNumber = 7,
+    status = null,
   )
 
   fun season8() = Season(
@@ -136,6 +144,7 @@ object SeasonFactory {
     episodeCount = 24,
     voteAverage = 7.6,
     seasonNumber = 8,
+    status = null,
   )
 
   fun season9() = Season(
@@ -149,6 +158,7 @@ object SeasonFactory {
     episodeCount = 23,
     voteAverage = 7.7,
     seasonNumber = 9,
+    status = null,
   )
 
   fun all() = listOf(

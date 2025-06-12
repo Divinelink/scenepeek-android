@@ -2,9 +2,11 @@ package com.divinelink.core.network.jellyseerr.mapper
 
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
-import com.divinelink.core.network.jellyseerr.model.TvInfoResponseApi
+import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
 
-fun TvInfoResponseApi.map() = JellyseerrMediaInfo.TV(
+fun TvInfoResponse.map() = JellyseerrMediaInfo.TV(
   status = JellyseerrMediaStatus.from(status),
-  seasons = seasons.map { it.map() },
+  seasons = seasons.associate {
+    it.seasonNumber to JellyseerrMediaStatus.from(it.status)
+  },
 )

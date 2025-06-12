@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.coreRedHighlight
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.shape
 
 @Composable
@@ -33,7 +33,7 @@ fun FavoriteButton(
 ) {
   val color by animateColorAsState(
     targetValue = when (isFavorite) {
-      true -> coreRedHighlight
+      true -> MaterialTheme.colors.redHighlight
       false -> inactiveColor
     },
     label = "Like button color",

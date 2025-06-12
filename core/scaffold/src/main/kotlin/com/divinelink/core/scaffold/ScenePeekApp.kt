@@ -101,9 +101,7 @@ fun ScenePeekApp(
           snackbarHostState = state.snackbarHostState,
           coroutineScope = state.scope,
         ) {
-          Surface(
-            modifier = Modifier.fillMaxSize(),
-          ) {
+          Surface(modifier = Modifier.fillMaxSize()) {
             when (uiState) {
               is MainUiState.Completed -> ScenePeekNavHost()
               MainUiState.Loading -> LoadingContent()

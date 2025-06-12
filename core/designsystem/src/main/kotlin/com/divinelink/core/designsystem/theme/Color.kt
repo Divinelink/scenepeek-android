@@ -2,8 +2,13 @@
 
 package com.divinelink.core.designsystem.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // Seed #FF004872
@@ -156,4 +161,28 @@ internal val darkScheme = darkColorScheme(
   surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-val coreRedHighlight = Color(0xFFEF5350)
+val MaterialTheme.colors: ExtendedColors
+  @Composable
+  @ReadOnlyComposable
+  get() = LocalColors.current
+
+internal val LocalColors = staticCompositionLocalOf { ExtendedColors() }
+
+@Immutable
+data class ExtendedColors(
+  val redHighlight: Color = PrimitiveColors.redHighlight,
+  val crimsonRed: Color = PrimitiveColors.crimsonRed,
+  val vibrantPurple: Color = PrimitiveColors.vibrantPurple,
+  val brightOrange: Color = PrimitiveColors.brightOrange,
+  val limeYellow: Color = PrimitiveColors.limeYellow,
+  val emeraldGreen: Color = PrimitiveColors.emeraldGreen,
+)
+
+private data object PrimitiveColors {
+  val redHighlight = Color(0xFFEF5350)
+  val crimsonRed = Color(0xFFDB2360)
+  val vibrantPurple = Color(99, 102, 241)
+  val brightOrange = Color(0xFFFF5722)
+  val limeYellow = Color(234, 179, 8, 255)
+  val emeraldGreen = Color(34, 197, 94, 255)
+}

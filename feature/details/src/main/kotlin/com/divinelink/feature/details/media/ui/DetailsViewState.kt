@@ -11,6 +11,7 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.Tab
@@ -33,6 +34,7 @@ data class DetailsViewState(
   val spoilersObfuscated: Boolean = false,
   val ratingSource: RatingSource = RatingSource.TMDB,
   val selectedTabIndex: Int = 0,
+  val jellyseerrMediaStatus: JellyseerrMediaStatus? = null,
   val tabs: List<Tab> = emptyList(),
   val forms: DetailsForms = emptyMap(),
 ) {

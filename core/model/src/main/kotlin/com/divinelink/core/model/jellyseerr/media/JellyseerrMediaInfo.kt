@@ -6,6 +6,6 @@ sealed class JellyseerrMediaInfo(open val status: JellyseerrMediaStatus) {
 
   data class TV(
     override val status: JellyseerrMediaStatus,
-    val seasons: List<JellyseerrSeasonInfo>,
+    val seasons: Map<Int, JellyseerrMediaStatus>,
   ) : JellyseerrMediaInfo(status)
 }

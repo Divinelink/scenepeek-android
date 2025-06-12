@@ -64,11 +64,11 @@ class ProdJellyseerrRepository(
     .requestMedia(body)
     .map { Result.success(it.map()) }
 
-  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo.Movie> = service
+  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo.Movie?> = service
     .getMovieDetails(mediaId)
-    .map { it.map() }
+    .map { it.mediaInfo?.map() }
 
   override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo.TV> = service
     .getTvDetails(mediaId)
-    .map { it.map() }
+    .map { it.mediaInfo.map() }
 }
