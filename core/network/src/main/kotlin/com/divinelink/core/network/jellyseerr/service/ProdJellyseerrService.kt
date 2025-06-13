@@ -67,7 +67,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   ): Flow<JellyseerrResponseBodyApi> = flow {
     requireNotNull(restClient.hostAddress()) { throw MissingJellyseerrHostAddressException() }
 
-    val url = "$restClient/api/v1/request"
+    val url = "${restClient.hostAddress()}/api/v1/request"
 
     val response = restClient.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
       url = url,
