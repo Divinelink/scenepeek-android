@@ -2,6 +2,8 @@ package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -46,6 +48,22 @@ class TestJellyseerrService {
   suspend fun mockRequestMedia(response: JellyseerrResponseBodyApi) {
     whenever(
       mock.requestMedia(body = any()),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
+
+  suspend fun mockGetMovieDetails(response: Result<JellyseerrMovieDetailsResponse>) {
+    whenever(
+      mock.getMovieDetails(any()),
+    ).thenReturn(
+      flowOf(response),
+    )
+  }
+
+  suspend fun mockGetTvDetails(response: Result<JellyseerrTvDetailsResponse>) {
+    whenever(
+      mock.getTvDetails(any()),
     ).thenReturn(
       flowOf(response),
     )

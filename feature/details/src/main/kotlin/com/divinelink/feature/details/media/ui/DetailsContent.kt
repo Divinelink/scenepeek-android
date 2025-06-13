@@ -46,14 +46,11 @@ import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.account.AccountMediaDetails
-import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
-import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -257,8 +254,6 @@ fun DetailsContent(
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(
             uiState = viewState,
-            mediaDetails = viewState.mediaDetails,
-            userDetails = viewState.userDetails,
             trailer = viewState.trailer,
             onMediaItemClick = onSimilarMovieClicked,
             onAddRateClick = onAddRateClick,
@@ -266,7 +261,6 @@ fun DetailsContent(
             viewAllCreditsClick = onViewAllCreditsClick,
             onPersonClick = onPersonClick,
             obfuscateEpisodes = viewState.spoilersObfuscated,
-            ratingSource = viewState.ratingSource,
             viewAllRatingsClick = onShowAllRatingsClick,
             onTabSelected = onTabSelected,
             onWatchTrailer = onPlayTrailerClick,
@@ -298,9 +292,6 @@ fun DetailsContent(
 @Composable
 private fun MediaDetailsContent(
   uiState: DetailsViewState,
-  ratingSource: RatingSource,
-  mediaDetails: MediaDetails,
-  userDetails: AccountMediaDetails?,
   trailer: Video?,
   obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
@@ -315,6 +306,8 @@ private fun MediaDetailsContent(
   onBackdropLoaded: () -> Unit,
   scope: CoroutineScope,
 ) {
+  if (uiState.mediaDetails == null) return
+
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -331,13 +324,14 @@ private fun MediaDetailsContent(
   }
 
   DynamicDetailsCollapsingToolbar(
-    mediaDetails = mediaDetails,
-    ratingSource = ratingSource,
+    mediaDetails = uiState.mediaDetails,
+    status = uiState.jellyseerrMediaStatus,
+    ratingSource = uiState.ratingSource,
     hasTrailer = trailer?.key != null,
     onAddToWatchlistClick = onAddToWatchlistClick,
     onAddRateClick = onAddRateClick,
     onShowAllRatingsClick = viewAllRatingsClick,
-    userDetails = userDetails,
+    userDetails = uiState.userDetails,
     onShowTitle = onShowTitle,
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
@@ -385,7 +379,7 @@ private fun MediaDetailsContent(
               is DetailsData.Cast -> CastFormContent(
                 modifier = Modifier.fillMaxSize(),
                 cast = form.data as DetailsData.Cast,
-                title = mediaDetails.title,
+                title = uiState.mediaDetails.title,
                 onPersonClick = onPersonClick,
                 obfuscateSpoilers = obfuscateEpisodes,
                 onViewAllClick = viewAllCreditsClick,
@@ -393,17 +387,17 @@ private fun MediaDetailsContent(
               is DetailsData.Recommendations -> RecommendationsFormContent(
                 modifier = Modifier.fillMaxSize(),
                 recommendations = form.data as DetailsData.Recommendations,
-                title = mediaDetails.title,
+                title = uiState.mediaDetails.title,
                 onItemClick = onMediaItemClick,
               )
               is DetailsData.Reviews -> ReviewsFormContent(
                 modifier = Modifier.fillMaxSize(),
-                title = mediaDetails.title,
+                title = uiState.mediaDetails.title,
                 reviews = form.data as DetailsData.Reviews,
               )
               is DetailsData.Seasons -> SeasonsFormContent(
                 modifier = Modifier.fillMaxSize(),
-                title = mediaDetails.title,
+                title = uiState.mediaDetails.title,
                 reviews = form.data as DetailsData.Seasons,
               )
             }

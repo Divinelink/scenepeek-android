@@ -31,8 +31,10 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.WatchTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.conditional
@@ -46,6 +48,7 @@ fun CollapsibleDetailsContent(
   mediaDetails: MediaDetails,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
+  status: JellyseerrMediaStatus?,
   ratingCount: RatingCount,
   ratingSource: RatingSource,
   hasTrailer: Boolean,
@@ -82,10 +85,18 @@ fun CollapsibleDetailsContent(
         verticalArrangement = Arrangement.SpaceEvenly,
       ) {
         TitleDetails(mediaDetails = mediaDetails)
+        AnimatedVisibility(status != null) {
+          status?.let {
+            JellyseerrStatusPill(
+              modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
+              status = status,
+            )
+          }
+        }
+
         AnimatedVisibility(hasTrailer) {
           WatchTrailerButton(
             modifier = Modifier
-              .padding(top = MaterialTheme.dimensions.keyline_8)
               .offset(x = -MaterialTheme.dimensions.keyline_12),
             onClick = onWatchTrailerClick,
           )

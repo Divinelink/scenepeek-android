@@ -13,6 +13,7 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.UIText
@@ -21,6 +22,7 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
@@ -1326,6 +1328,132 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess movie MediaDetailsResult updates media status`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.DetailsSuccess(movieDetails, RatingSource.TMDB)),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Movie.pending(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PENDING,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess tv MediaDetailsResult update seasons status`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.tv(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails,
+        ),
+      )
+  }
+
+  @Test
+  fun `test on JellyseerrDetailsSuccess MediaDetailsResult updates current seasons`() = runTest {
+    val channel = Channel<Result<MediaDetailsResult>>()
+    testRobot
+      .mockFetchMediaDetails(channel)
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          launch {
+            channel.send(
+              Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
+            )
+          }
+
+          launch {
+            channel.send(
+              Result.success(
+                MediaDetailsResult.JellyseerrDetailsSuccess(JellyseerrMediaInfoFactory.tv()),
+              ),
+            )
+          }
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading(),
+            jellyseerrMediaStatus = null,
+            mediaId = mediaId,
+            isLoading = true,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasons())
+            },
+            jellyseerrMediaStatus = null,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = tvDetails,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+            },
+            jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = tvDetails,
+          ),
         ),
       )
   }

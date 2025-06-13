@@ -17,5 +17,6 @@ fun SeasonResponseApi.map(): Season? {
     posterPath = posterPath,
     seasonNumber = seasonNumber,
     voteAverage = voteAverage,
+    status = null,
   )
 }

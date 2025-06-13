@@ -7,6 +7,7 @@ import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
@@ -20,6 +21,7 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -31,6 +33,7 @@ import timber.log.Timber
 @Suppress("LongMethod")
 open class GetMediaDetailsUseCase(
   private val repository: DetailsRepository,
+  private val jellyseerrRepository: JellyseerrRepository,
   private val mediaRepository: MediaRepository,
   private val preferenceStorage: PreferenceStorage,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
@@ -40,6 +43,8 @@ open class GetMediaDetailsUseCase(
 ) : FlowUseCase<MediaRequestApi, MediaDetailsResult>(dispatcher.default) {
   override fun execute(parameters: MediaRequestApi): Flow<Result<MediaDetailsResult>> =
     channelFlow {
+      val detailsCompleted = CompletableDeferred<Unit>()
+
       if (parameters == MediaRequestApi.Unknown) {
         send(Result.failure(MediaDetailsException()))
         return@channelFlow
@@ -70,6 +75,7 @@ open class GetMediaDetailsUseCase(
           .catch {
             Timber.e(it)
             send(Result.failure(MediaDetailsException()))
+            detailsCompleted.complete(Unit)
           }
           .map { result ->
             val details = result.data
@@ -97,7 +103,10 @@ open class GetMediaDetailsUseCase(
               ),
             )
           }
-          .collect { send(it) }
+          .collect {
+            send(it)
+            detailsCompleted.complete(Unit)
+          }
       }
 
       launch(dispatcher.default) {
@@ -178,6 +187,28 @@ open class GetMediaDetailsUseCase(
             }
             send(Result.success(MediaDetailsResult.VideosSuccess(video)))
           }
+      }
+
+      launch(dispatcher.default) {
+        when (parameters) {
+          is MediaRequestApi.Movie -> jellyseerrRepository.getMovieDetails(parameters.movieId)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              result?.status?.let {
+                detailsCompleted.await()
+                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              }
+            }
+          is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
+            .catch { Timber.e(it) }
+            .collect { result ->
+              result?.status?.let {
+                detailsCompleted.await()
+                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              }
+            }
+          MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
+        }
       }
 
       launch(dispatcher.default) {

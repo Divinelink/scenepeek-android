@@ -13,6 +13,13 @@
   <string name="core_model_tab_movies">Movies</string>
   <string name="core_model_tab_tv_shows">TV Shows</string>
 
+  <string name="core_model_status_unknown">Unknown</string>
+  <string name="core_model_status_pending">Pending</string>
+  <string name="core_model_status_processing">Requested</string>
+  <string name="core_model_status_partially_available">Partially available</string>
+  <string name="core_model_status_available">Available</string>
+  <string name="core_model_status_deleted">Deleted</string>
+
   <string name="core_model_tv_status_ended">Ended</string>
   <string name="core_model_tv_status_canceled">Canceled</string>
   <string name="core_model_tv_status_continuing">Continuing</string>

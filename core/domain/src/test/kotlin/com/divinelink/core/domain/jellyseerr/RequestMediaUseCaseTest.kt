@@ -2,6 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -41,8 +42,10 @@ class RequestMediaUseCaseTest {
 
     useCase.invoke(params).collect {
       assertThat(it.isFailure).isTrue()
-      assertThat(it.exceptionOrNull()).isInstanceOf(IllegalArgumentException::class.java)
-      assertThat(it.exceptionOrNull()?.message).isEqualTo("Address cannot be null")
+      assertThat(it.exceptionOrNull()).isInstanceOf(
+        MissingJellyseerrHostAddressException::class.java,
+      )
+      assertThat(it.exceptionOrNull()?.message).isEqualTo("Jellyseerr host address is not set.")
     }
   }
 
