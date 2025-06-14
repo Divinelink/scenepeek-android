@@ -175,6 +175,24 @@ object SeasonFactory {
     season9(),
   )
 
+  fun partiallyAvailable() = all().map { season ->
+    season.copy(
+      status = when (season.seasonNumber) {
+        0 -> null
+        1 -> JellyseerrMediaStatus.AVAILABLE
+        2 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        3 -> null
+        4 -> null
+        5 -> null
+        6 -> null
+        7 -> null
+        8 -> null
+        9 -> null
+        else -> null
+      },
+    )
+  }
+
   fun allWithStatus() = all().map { season ->
     season.copy(
       status = when (season.seasonNumber) {

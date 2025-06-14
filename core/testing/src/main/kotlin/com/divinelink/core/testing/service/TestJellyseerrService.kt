@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
-import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
@@ -45,7 +45,7 @@ class TestJellyseerrService {
     )
   }
 
-  suspend fun mockRequestMedia(response: JellyseerrResponseBodyApi) {
+  suspend fun mockRequestMedia(response: JellyseerrRequestMediaResponse) {
     whenever(
       mock.requestMedia(body = any()),
     ).thenReturn(

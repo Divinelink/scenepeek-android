@@ -7,7 +7,7 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
@@ -76,7 +76,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   fun getViewModel() = viewModel
 
   fun assertViewState(expectedViewState: DetailsViewState) = apply {
-    assertThat(expectedViewState).isEqualTo(viewModel.viewState.value)
+    assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
   fun assertOpenUrlTab(validate: suspend TurbineTestContext<String>.() -> Unit) = apply {
@@ -99,7 +99,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
-  fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequest>>) = apply {
+  fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequestResponse>>) = apply {
     fakeRequestMediaUseCase.mockSuccess(response = response)
   }
 

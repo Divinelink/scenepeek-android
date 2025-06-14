@@ -23,6 +23,7 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -232,21 +233,9 @@ class DetailsViewModel(
               is MediaDetailsResult.JellyseerrDetailsSuccess -> {
                 val jellyseerrData = (result.data as? MediaDetailsResult.JellyseerrDetailsSuccess)
                   ?: return@onSuccess
-                val seasonsTabOrder = TvTab.Seasons.order
-
                 if (jellyseerrData.info is JellyseerrMediaInfo.TV) {
                   val tvInfo = jellyseerrData.info
-                  val currentSeasonsForm = viewState.forms[seasonsTabOrder] as? DetailsForm.Content
-                  val currentSeasonsData = (currentSeasonsForm?.data as? DetailsData.Seasons)?.items
-                    ?: emptyList()
-
-                  val updatedSeasons = currentSeasonsData.map { season ->
-                    season.copy(status = tvInfo.seasons[season.seasonNumber])
-                  }
-
-                  val updatedForms = viewState.forms + mapOf(
-                    seasonsTabOrder to DetailsForm.Content(DetailsData.Seasons(updatedSeasons)),
-                  )
+                  val updatedForms = getUpdatedSeasonForms(tvInfo)
 
                   viewState.copy(
                     jellyseerrMediaStatus = tvInfo.status,
@@ -493,17 +482,35 @@ class DetailsViewModel(
       }
       .onEach { result ->
         result.onSuccess { response ->
-          response.message?.let { message ->
-            setSnackbarMessage(SnackbarMessage.from(text = UIText.StringText(message)))
-          } ?: run {
-            setSnackbarMessage(
-              SnackbarMessage.from(
-                UIText.ResourceText(
-                  R.string.feature_details_jellyseerr_success_media_request,
-                  viewState.value.mediaDetails?.title ?: "",
-                ),
-              ),
-            )
+          val message = response.message?.let { message ->
+            UIText.StringText(message)
+          } ?: UIText.ResourceText(
+            R.string.feature_details_jellyseerr_success_media_request,
+            viewState.value.mediaDetails?.title ?: "",
+          )
+
+          if (response.mediaInfo is JellyseerrMediaInfo.TV) {
+            val tvInfo = response.mediaInfo as JellyseerrMediaInfo.TV
+            val updatedForms = getUpdatedSeasonForms(tvInfo)
+
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(message),
+                jellyseerrMediaStatus = if (tvInfo.status == JellyseerrMediaStatus.UNKNOWN) {
+                  viewState.jellyseerrMediaStatus
+                } else {
+                  tvInfo.status
+                },
+                forms = updatedForms,
+              )
+            }
+          } else {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(message),
+                jellyseerrMediaStatus = response.mediaInfo.status,
+              )
+            }
           }
         }.onFailure {
           ErrorHandler.create(it) {
@@ -638,4 +645,24 @@ class DetailsViewModel(
         else -> null
       },
     )
+
+  private fun getUpdatedSeasonForms(tvInfo: JellyseerrMediaInfo.TV): Map<Int, DetailsForm<*>> {
+    val seasonsTabOrder = TvTab.Seasons.order
+
+    val currentSeasonsForm = _viewState.value.forms[seasonsTabOrder] as? DetailsForm.Content
+    val currentSeasonsData = (currentSeasonsForm?.data as? DetailsData.Seasons)?.items
+      ?: emptyList()
+
+    val updatedSeasons = currentSeasonsData.map { season ->
+      val status = tvInfo.seasons[season.seasonNumber] ?: season.status
+      season.copy(status = status)
+    }
+
+    val updatedForms = _viewState.value.forms + mapOf(
+      seasonsTabOrder to DetailsForm.Content(
+        DetailsData.Seasons(updatedSeasons),
+      ),
+    )
+    return updatedForms
+  }
 }

@@ -3,7 +3,7 @@ package com.divinelink.core.testing.repository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -37,7 +37,7 @@ class TestJellyseerrRepository {
     whenever(mock.logout(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockRequestMedia(response: Result<JellyseerrMediaRequest>) {
+  suspend fun mockRequestMedia(response: Result<JellyseerrMediaRequestResponse>) {
     whenever(mock.requestMedia(any())).thenReturn(flowOf(response))
   }
 

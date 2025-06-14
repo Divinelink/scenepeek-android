@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.UIText
@@ -22,8 +23,9 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -1472,7 +1474,7 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(
-        response = flowOf(Result.success(JellyseerrMediaRequest(null))),
+        response = flowOf(Result.success(JellyseerrMediaRequestResponseFactory.movie())),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
@@ -1489,6 +1491,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = null,
           mediaDetails = movieDetails,
+          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.feature_details_jellyseerr_success_media_request,
@@ -1513,7 +1516,13 @@ class DetailsViewModelTest {
         ),
       )
       .mockRequestMedia(
-        response = flowOf(Result.success(JellyseerrMediaRequest("Success"))),
+        response = flowOf(
+          Result.success(
+            JellyseerrMediaRequestResponseFactory.movie().copy(
+              message = "Success",
+            ),
+          ),
+        ),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
@@ -1526,12 +1535,151 @@ class DetailsViewModelTest {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.StringText("Success"),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request tv with success updates current seasons`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.tvPartiallyAvailable(),
+            ),
+          ),
+        ),
+      )
+      .mockRequestMedia(
+        response = flowOf(
+          Result.success(
+            JellyseerrMediaRequestResponseFactory.tv().copy(
+              message = "Success",
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(
+              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+            )
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails,
+        ),
+      )
+      .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.StringText("Success"),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test request tv with current status and unknown response wont update status`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.tvPartiallyAvailable(),
+            ),
+          ),
+        ),
+      )
+      .mockRequestMedia(
+        response = flowOf(
+          Result.success(
+            JellyseerrMediaRequestResponse(
+              message = "Failure",
+              mediaInfo = JellyseerrMediaInfo.TV(
+                status = JellyseerrMediaStatus.UNKNOWN,
+                seasons = mapOf(),
+              ),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(
+              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+            )
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails,
+        ),
+      )
+      .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsPartiallyAvailable())
+          },
+          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.StringText("Failure"),
           ),
         ),
       )
