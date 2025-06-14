@@ -85,5 +85,9 @@ object DetailsDataFactory {
     fun seasonsWithStatus() = DetailsData.Seasons(
       items = SeasonFactory.allWithStatus(),
     )
+
+    fun seasonsPartiallyAvailable() = DetailsData.Seasons(
+      items = SeasonFactory.partiallyAvailable(),
+    )
   }
 }

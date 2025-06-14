@@ -2,8 +2,8 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
@@ -53,7 +53,7 @@ class RequestMediaUseCaseTest {
   fun `test requestMedia with valid address`() = runTest {
     preferenceStorage = FakePreferenceStorage(jellyseerrAddress = "http://localhost:8096")
 
-    repository.mockRequestMedia(Result.success(JellyseerrMediaRequest("Success")))
+    repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.movie()))
 
     val useCase = RequestMediaUseCase(
       repository = repository.mock,
@@ -70,7 +70,7 @@ class RequestMediaUseCaseTest {
 
     useCase.invoke(params).collect {
       assertThat(it.isSuccess).isTrue()
-      assertThat(it.getOrNull()).isEqualTo(JellyseerrMediaRequest("Success"))
+      assertThat(it.getOrNull()).isEqualTo(JellyseerrMediaRequestResponseFactory.movie())
     }
   }
 

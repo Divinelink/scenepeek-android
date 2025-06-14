@@ -11,9 +11,9 @@ import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
+import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
-import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.movie.MovieInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
@@ -99,15 +99,19 @@ class ProdJellyseerrRepositoryTest {
 
   @Test
   fun `test tv request media successfully`() = runTest {
-    val response = JellyseerrResponseBodyApi(
+    val response = JellyseerrRequestMediaResponse(
       message = "Success",
       type = "tv",
       status = JellyseerrMediaStatus.PROCESSING.status,
       seasons = listOf(),
     )
 
-    val mappedResponse = JellyseerrMediaRequest(
+    val mappedResponse = JellyseerrMediaRequestResponse(
       message = "Success",
+      mediaInfo = JellyseerrMediaInfo.TV(
+        status = JellyseerrMediaStatus.PROCESSING,
+        seasons = emptyMap(),
+      ),
     )
 
     remote.mockRequestMedia(response = response)
@@ -121,14 +125,17 @@ class ProdJellyseerrRepositoryTest {
 
   @Test
   fun `test movie request media successfully`() = runTest {
-    val response = JellyseerrResponseBodyApi(
+    val response = JellyseerrRequestMediaResponse(
       message = "Success",
       type = "movie",
       status = JellyseerrMediaStatus.PROCESSING.status,
     )
 
-    val mappedResponse = JellyseerrMediaRequest(
+    val mappedResponse = JellyseerrMediaRequestResponse(
       message = "Success",
+      mediaInfo = JellyseerrMediaInfo.Movie(
+        status = JellyseerrMediaStatus.PROCESSING,
+      ),
     )
 
     remote.mockRequestMedia(response = response)

@@ -17,6 +17,6 @@ enum class JellyseerrMediaStatus(
   companion object {
     private val map = JellyseerrMediaStatus.entries.associateBy { it.status }
 
-    fun from(status: Int): JellyseerrMediaStatus = map[status] ?: UNKNOWN
+    fun from(status: Int?): JellyseerrMediaStatus = map[status] ?: UNKNOWN
   }
 }

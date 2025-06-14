@@ -29,4 +29,12 @@ object JellyseerrMediaInfoFactory {
       9 to JellyseerrMediaStatus.UNKNOWN,
     ),
   )
+
+  fun tvPartiallyAvailable() = JellyseerrMediaInfo.TV(
+    status = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+    seasons = mapOf(
+      1 to JellyseerrMediaStatus.AVAILABLE,
+      2 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+    ),
+  )
 }

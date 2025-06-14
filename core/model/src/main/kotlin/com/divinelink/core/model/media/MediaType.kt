@@ -15,7 +15,7 @@ enum class MediaType(
   UNKNOWN(value = "unknown", traktPath = "unknown");
 
   companion object {
-    fun from(type: String) = when (type) {
+    fun from(type: String?) = when (type) {
       TV.value -> TV
       MOVIE.value -> MOVIE
       PERSON.value -> PERSON

@@ -7,7 +7,7 @@ import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_EN
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
-import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
@@ -64,12 +64,12 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
   override suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
-  ): Flow<JellyseerrResponseBodyApi> = flow {
+  ): Flow<JellyseerrRequestMediaResponse> = flow {
     requireNotNull(restClient.hostAddress()) { throw MissingJellyseerrHostAddressException() }
 
     val url = "${restClient.hostAddress()}/api/v1/request"
 
-    val response = restClient.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+    val response = restClient.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
       url = url,
       body = body,
     )

@@ -6,7 +6,7 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.exception.JellyseerrInvalidCredentials
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
-import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -82,7 +82,7 @@ class JellyseerrRestClientTest {
     )
 
     // Initial request
-    client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+    client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
       url = "http://localhost:8080/api/v1/request",
       body = JellyseerrRequestMediaBodyApiFactory.movie(),
     )
@@ -136,7 +136,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<InvalidStatusException> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
@@ -172,7 +172,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
@@ -205,7 +205,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
@@ -238,7 +238,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
@@ -271,7 +271,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
@@ -304,7 +304,7 @@ class JellyseerrRestClientTest {
     )
 
     assertFailsWith<JellyseerrInvalidCredentials> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrResponseBodyApi>(
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
         url = "http://localhost:8080/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )

@@ -4,9 +4,9 @@ import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class JellyseerrResponseBodyApi(
+data class JellyseerrRequestMediaResponse(
   val message: String? = null,
   val type: String? = null,
-  val status: Int,
+  val status: Int? = null,
   val seasons: List<TvSeasonResponse>? = null,
 )
