@@ -55,7 +55,7 @@ class JellyseerrRestClientTest {
             )
           } else {
             respond(
-              content = """{"success": true}""",
+              content = """{"success": true, "status": 2}""",
               status = HttpStatusCode.OK,
             )
           }

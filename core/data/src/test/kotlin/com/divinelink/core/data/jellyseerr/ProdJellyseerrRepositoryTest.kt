@@ -9,6 +9,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
@@ -16,6 +17,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrResponseBodyApi
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.movie.MovieInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.tv.MediaInfoRequestsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
@@ -100,6 +102,8 @@ class ProdJellyseerrRepositoryTest {
     val response = JellyseerrResponseBodyApi(
       message = "Success",
       type = "tv",
+      status = JellyseerrMediaStatus.PROCESSING.status,
+      seasons = listOf(),
     )
 
     val mappedResponse = JellyseerrMediaRequest(
@@ -120,6 +124,7 @@ class ProdJellyseerrRepositoryTest {
     val response = JellyseerrResponseBodyApi(
       message = "Success",
       type = "movie",
+      status = JellyseerrMediaStatus.PROCESSING.status,
     )
 
     val mappedResponse = JellyseerrMediaRequest(
@@ -227,7 +232,7 @@ class ProdJellyseerrRepositoryTest {
       response = Result.success(
         JellyseerrTvDetailsResponse(
           mediaInfo = TvInfoResponse(
-            JellyseerrMediaStatus.AVAILABLE.status,
+            status = JellyseerrMediaStatus.AVAILABLE.status,
             seasons = listOf(
               TvSeasonResponse(
                 seasonNumber = 1,
@@ -266,6 +271,7 @@ class ProdJellyseerrRepositoryTest {
                 status = JellyseerrMediaStatus.UNKNOWN.status,
               ),
             ),
+            requests = listOf(),
           ),
         ),
       ),
@@ -275,6 +281,61 @@ class ProdJellyseerrRepositoryTest {
 
     assertThat(result.first()).isEqualTo(
       JellyseerrMediaInfoFactory.tv(),
+    )
+  }
+
+  @Test
+  fun `test getTvDetails with requests lists`() = runTest {
+    remote.mockGetTvDetails(
+      response = Result.success(
+        JellyseerrTvDetailsResponse(
+          mediaInfo = TvInfoResponse(
+            status = JellyseerrMediaStatus.AVAILABLE.status,
+            seasons = listOf(
+              TvSeasonResponse(
+                seasonNumber = 1,
+                status = JellyseerrMediaStatus.DELETED.status,
+              ),
+            ),
+            requests = listOf(
+              MediaInfoRequestsResponse(
+                listOf(
+                  TvSeasonResponse(
+                    seasonNumber = 2,
+                    status = JellyseerrMediaStatus.AVAILABLE.status,
+                  ),
+                  TvSeasonResponse(
+                    seasonNumber = 3,
+                    status = JellyseerrMediaStatus.AVAILABLE.status,
+                  ),
+                ),
+              ),
+              MediaInfoRequestsResponse(
+                listOf(
+                  TvSeasonResponse(
+                    seasonNumber = 6,
+                    status = JellyseerrMediaStatus.PROCESSING.status,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    )
+
+    val result = repository.getTvDetails(mediaId = 1)
+
+    assertThat(result.first()).isEqualTo(
+      JellyseerrMediaInfo.TV(
+        status = JellyseerrMediaStatus.AVAILABLE,
+        seasons = mapOf(
+          1 to JellyseerrMediaStatus.DELETED,
+          2 to JellyseerrMediaStatus.AVAILABLE,
+          3 to JellyseerrMediaStatus.AVAILABLE,
+          6 to JellyseerrMediaStatus.PROCESSING,
+        ),
+      ),
     )
   }
 
