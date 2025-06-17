@@ -17,6 +17,7 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.Movie
+import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.media.DetailsData
@@ -239,7 +240,10 @@ class DetailsViewModel(
 
                   viewState.copy(
                     jellyseerrMediaStatus = tvInfo.status,
-                    forms = updatedForms,
+                    forms = updatedForms.first,
+                    mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+                      seasons = updatedForms.second,
+                    ),
                   )
                 } else {
                   viewState.copy(
@@ -501,7 +505,10 @@ class DetailsViewModel(
                 } else {
                   tvInfo.status
                 },
-                forms = updatedForms,
+                forms = updatedForms.first,
+                mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+                  seasons = updatedForms.second,
+                ),
               )
             }
           } else {
@@ -646,7 +653,9 @@ class DetailsViewModel(
       },
     )
 
-  private fun getUpdatedSeasonForms(tvInfo: JellyseerrMediaInfo.TV): Map<Int, DetailsForm<*>> {
+  private fun getUpdatedSeasonForms(
+    tvInfo: JellyseerrMediaInfo.TV,
+  ): Pair<Map<Int, DetailsForm<*>>, List<Season>> {
     val seasonsTabOrder = TvTab.Seasons.order
 
     val currentSeasonsForm = _viewState.value.forms[seasonsTabOrder] as? DetailsForm.Content
@@ -663,6 +672,6 @@ class DetailsViewModel(
         DetailsData.Seasons(updatedSeasons),
       ),
     )
-    return updatedForms
+    return updatedForms to updatedSeasons
   }
 }

@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
-import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
+import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
@@ -49,7 +49,7 @@ class RequestDialogsTest : ComposeTest() {
   @Test
   fun `test show request tv show dialog`() {
     composeTestRule.setContent {
-      SelectSeasonsDialog(
+      ManageSeasonsModal(
         numberOfSeasons = 5,
         onRequestClick = {},
         onDismissRequest = {},
@@ -71,7 +71,7 @@ class RequestDialogsTest : ComposeTest() {
     var onRequestClick = false
 
     composeTestRule.setContent {
-      SelectSeasonsDialog(
+      ManageSeasonsModal(
         numberOfSeasons = 5,
         onRequestClick = {
           onRequestClick = true
@@ -97,7 +97,7 @@ class RequestDialogsTest : ComposeTest() {
     var onRequestClick = false
 
     composeTestRule.setContent {
-      SelectSeasonsDialog(
+      ManageSeasonsModal(
         numberOfSeasons = 5,
         onRequestClick = {
           onRequestClick = true
@@ -134,7 +134,7 @@ class RequestDialogsTest : ComposeTest() {
   @Test
   fun `test re-selecting seasons removes them`() {
     composeTestRule.setContent {
-      SelectSeasonsDialog(
+      ManageSeasonsModal(
         numberOfSeasons = 5,
         onRequestClick = {},
         onDismissRequest = {},

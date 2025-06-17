@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
@@ -32,6 +33,8 @@ fun JellyseerrStatusPill(
     text = stringResource(status.resourceId),
     color = Color.White,
     style = MaterialTheme.typography.labelSmall,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
     modifier = modifier
       .background(
         shape = MaterialTheme.shape.rounded,

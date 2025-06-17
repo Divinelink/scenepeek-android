@@ -68,7 +68,7 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.RequestMovieDialog
-import com.divinelink.core.ui.components.dialog.SelectSeasonsDialog
+import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
@@ -124,8 +124,8 @@ fun DetailsContent(
   var showRequestDialog by remember { mutableStateOf(false) }
   if (showRequestDialog) {
     when (viewState.mediaDetails) {
-      is TV -> SelectSeasonsDialog(
-        numberOfSeasons = viewState.mediaDetails.numberOfSeasons,
+      is TV -> ManageSeasonsModal(
+        seasons = viewState.mediaDetails.seasons,
         onRequestClick = {
           requestMedia(it)
           showRequestDialog = false
