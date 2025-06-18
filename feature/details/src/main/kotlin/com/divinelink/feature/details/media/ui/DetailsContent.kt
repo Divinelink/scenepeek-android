@@ -67,8 +67,8 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
+import com.divinelink.core.ui.components.dialog.RequestSeasonsModal
 import com.divinelink.core.ui.components.dialog.RequestMovieModal
-import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
@@ -115,28 +115,29 @@ fun DetailsContent(
   var showDropdownMenu by remember { mutableStateOf(false) }
   var isAppBarVisible by remember { mutableStateOf(false) }
   var onBackdropLoaded by remember { mutableStateOf(false) }
+  var showRequestModal by remember { mutableStateOf(false) }
+  var showManageMediaModal by remember { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
     onDismissSnackbar = onConsumeSnackbar,
   )
 
-  var showRequestDialog by remember { mutableStateOf(false) }
-  if (showRequestDialog) {
+  if (showRequestModal) {
     when (viewState.mediaDetails) {
-      is TV -> ManageSeasonsModal(
+      is TV -> RequestSeasonsModal(
         seasons = viewState.mediaDetails.seasons,
         onRequestClick = {
           requestMedia(it)
-          showRequestDialog = false
+          showRequestModal = false
         },
-        onDismissRequest = { showRequestDialog = false },
+        onDismissRequest = { showRequestModal = false },
       )
       is Movie -> RequestMovieModal(
-        onDismissRequest = { showRequestDialog = false },
+        onDismissRequest = { showRequestModal = false },
         onConfirm = {
           requestMedia(emptyList())
-          showRequestDialog = false
+          showRequestModal = false
         },
         title = viewState.mediaDetails.title,
       )
@@ -238,7 +239,9 @@ fun DetailsContent(
         actionButtons = viewState.actionButtons,
         onAddRateClicked = onAddRateClick,
         onAddToWatchlistClicked = onAddToWatchlistClick,
-        onRequestClicked = { showRequestDialog = true },
+        onRequestClicked = { showRequestModal = true },
+        onManageMovie = { showManageMediaModal = true },
+        onManageTv = { showManageMediaModal = true },
       )
     },
     navigationRail = {

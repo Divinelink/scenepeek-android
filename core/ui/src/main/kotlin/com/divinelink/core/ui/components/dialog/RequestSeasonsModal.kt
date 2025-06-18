@@ -46,14 +46,13 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ManageSeasonsModal(
+fun RequestSeasonsModal(
   seasons: List<Season>,
   onRequestClick: (List<Int>) -> Unit,
   onDismissRequest: () -> Unit,
 ) {
   val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = seasons
-    .filterNot { it.seasonNumber == 0 }
+  val validSeasons = seasons.filterNot { it.seasonNumber == 0 }
 
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -247,7 +246,7 @@ fun ManageSeasonsModal(
 private fun SelectSeasonsDialogPreview() {
   AppTheme {
     Surface {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},

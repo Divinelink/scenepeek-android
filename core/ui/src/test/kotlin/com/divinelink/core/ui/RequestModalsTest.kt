@@ -9,8 +9,8 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
 import com.divinelink.core.ui.components.dialog.RequestMovieModal
+import com.divinelink.core.ui.components.dialog.RequestSeasonsModal
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
@@ -51,7 +51,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test show request tv show dialog`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},
@@ -67,7 +67,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test request tv show dialog confirm button is disabled without selected seasons`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},
@@ -89,7 +89,7 @@ class RequestModalsTest : ComposeTest() {
     var onRequestClick = false
 
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.all(),
         onRequestClick = {
           onRequestClick = true
@@ -126,7 +126,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test re-selecting seasons removes them`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.all(),
         onRequestClick = {},
         onDismissRequest = {},
@@ -164,7 +164,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test request tv show dialog toggle all switch`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.all(),
         onRequestClick = {},
         onDismissRequest = {},
@@ -187,7 +187,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test request tv show dialog toggle all after already have selected few seasons`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.all(),
         onRequestClick = {},
         onDismissRequest = {},
@@ -212,7 +212,7 @@ class RequestModalsTest : ComposeTest() {
   @Test
   fun `test request tv show modal already processed seasons are not clickable`() {
     composeTestRule.setContent {
-      ManageSeasonsModal(
+      RequestSeasonsModal(
         seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},

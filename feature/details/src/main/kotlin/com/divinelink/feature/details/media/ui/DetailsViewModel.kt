@@ -16,10 +16,13 @@ import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
@@ -244,10 +247,12 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
+                    actionButtons = findTvActions(updatedForms.second),
                   )
                 } else {
                   viewState.copy(
                     jellyseerrMediaStatus = jellyseerrData.info.status,
+                    actionButtons = findMovieActions(jellyseerrData.info.status),
                   )
                 }
               }
@@ -509,6 +514,7 @@ class DetailsViewModel(
                 mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                   seasons = updatedForms.second,
                 ),
+                actionButtons = findTvActions(updatedForms.second),
               )
             }
           } else {
@@ -516,6 +522,7 @@ class DetailsViewModel(
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
                 jellyseerrMediaStatus = response.mediaInfo.status,
+                actionButtons = findMovieActions(response.mediaInfo.status),
               )
             }
           }
@@ -672,6 +679,27 @@ class DetailsViewModel(
         DetailsData.Seasons(updatedSeasons),
       ),
     )
-    return updatedForms to updatedSeasons
+    return updatedForms to updatedSeasons.filterNot { it.seasonNumber == 0 }
+  }
+
+  private fun findTvActions(seasons: List<Season>): List<DetailActionItem> = buildList {
+    add(DetailActionItem.Rate)
+    add(DetailActionItem.Watchlist)
+    if (seasons.any { it.canBeRequested() }) {
+      add(DetailActionItem.Request)
+    }
+    if (seasons.any { it.isAvailable() }) {
+      add(DetailActionItem.ManageTvShow)
+    }
+  }
+
+  private fun findMovieActions(status: JellyseerrMediaStatus): List<DetailActionItem> = buildList {
+    add(DetailActionItem.Rate)
+    add(DetailActionItem.Watchlist)
+    if (status == JellyseerrMediaStatus.UNKNOWN) {
+      add(DetailActionItem.Request)
+    } else {
+      add(DetailActionItem.ManageMovie)
+    }
   }
 }

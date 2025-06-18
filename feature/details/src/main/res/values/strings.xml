@@ -26,6 +26,8 @@
   <string name="feature_details_jellyseerr_request_failed">Failed to request %s</string>
   <string name="feature_details_jellyseerr_select_seasons">Select seasons to request</string>
   <string name="feature_details_request">Request</string>
+  <string name="feature_details_manage_movie">Manage movie</string>
+  <string name="feature_details_manage_tv">Manage series</string>
   <string name="feature_details_season">Season %s</string>
 
   <string name="feature_details_personal_info_section">Personal info</string>

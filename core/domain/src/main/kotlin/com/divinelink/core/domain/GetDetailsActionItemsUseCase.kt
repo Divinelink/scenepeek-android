@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.mapLatest
 class GetDetailsActionItemsUseCase(
   private val storage: PreferenceStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Unit, List<DetailActionItem>>(dispatcher.io) {
+) : FlowUseCase<Unit, List<DetailActionItem>>(dispatcher.default) {
 
   override fun execute(parameters: Unit): Flow<Result<List<DetailActionItem>>> =
     storage.jellyseerrAccount.mapLatest { account ->
       val menuItems = buildList {
-        add(DetailActionItem.RATE)
-        add(DetailActionItem.WATCHLIST)
+        add(DetailActionItem.Rate)
+        add(DetailActionItem.Watchlist)
         account?.firstOrNull()?.let {
-          add(DetailActionItem.REQUEST)
+          add(DetailActionItem.Request)
         }
       }
       Result.success(menuItems)

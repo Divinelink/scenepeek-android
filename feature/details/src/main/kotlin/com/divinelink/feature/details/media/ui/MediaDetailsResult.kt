@@ -45,8 +45,7 @@ sealed class MediaDetailsResult {
 
   data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MediaDetailsResult()
 
-  data class ActionButtonsSuccess(val actionButtons: List<DetailActionItem>) :
-    MediaDetailsResult()
+  data class ActionButtonsSuccess(val actionButtons: List<DetailActionItem>) : MediaDetailsResult()
 
   sealed class Failure(
     open val message: UIText = UIText.ResourceText(R.string.general_error_message),
