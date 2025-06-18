@@ -6,14 +6,15 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
+import com.divinelink.core.ui.components.dialog.RequestMovieDialog
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
-class RequestDialogsTest : ComposeTest() {
+class RequestModalsTest : ComposeTest() {
 
   @Test
   fun `test show request movie dialog`() {
@@ -50,7 +51,7 @@ class RequestDialogsTest : ComposeTest() {
   fun `test show request tv show dialog`() {
     composeTestRule.setContent {
       ManageSeasonsModal(
-        numberOfSeasons = 5,
+        seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},
       )
@@ -59,26 +60,16 @@ class RequestDialogsTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_request_series)).assertIsDisplayed()
-      (1..5).forEach {
-        onNodeWithText("Season $it").assertIsDisplayed()
-      }
     }
   }
 
   @Test
   fun `test request tv show dialog confirm button is disabled without selected seasons`() {
-    var onDismissRequest = false
-    var onRequestClick = false
-
     composeTestRule.setContent {
       ManageSeasonsModal(
-        numberOfSeasons = 5,
-        onRequestClick = {
-          onRequestClick = true
-        },
-        onDismissRequest = {
-          onDismissRequest = true
-        },
+        seasons = SeasonFactory.allWithStatus(),
+        onRequestClick = {},
+        onDismissRequest = {},
       )
     }
 
@@ -98,7 +89,7 @@ class RequestDialogsTest : ComposeTest() {
 
     composeTestRule.setContent {
       ManageSeasonsModal(
-        numberOfSeasons = 5,
+        seasons = SeasonFactory.all(),
         onRequestClick = {
           onRequestClick = true
         },
@@ -112,9 +103,9 @@ class RequestDialogsTest : ComposeTest() {
       onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
 
-      onNodeWithText("Season 1").performClick()
-      onNodeWithText("Season 2").performClick()
-      onNodeWithText("Season 3").performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(1)).performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(2)).performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
 
       onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
 
@@ -135,7 +126,7 @@ class RequestDialogsTest : ComposeTest() {
   fun `test re-selecting seasons removes them`() {
     composeTestRule.setContent {
       ManageSeasonsModal(
-        numberOfSeasons = 5,
+        seasons = SeasonFactory.all(),
         onRequestClick = {},
         onDismissRequest = {},
       )
@@ -157,19 +148,85 @@ class RequestDialogsTest : ComposeTest() {
 
       onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
 
-      onNodeWithText(getString(R.string.core_ui_select_seasons_button))
-        .assertDoesNotExist()
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertDoesNotExist()
 
-      onNodeWithTag(TestTags.RadioButton.SELECT_SEASON_RADIO_BUTTON.format(1)).assertIsDisplayed()
-        .performClick()
-      onNodeWithTag(TestTags.RadioButton.SELECT_SEASON_RADIO_BUTTON.format(2)).assertIsDisplayed()
-        .performClick()
-      onNodeWithTag(TestTags.RadioButton.SELECT_SEASON_RADIO_BUTTON.format(3)).assertIsDisplayed()
-        .performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1)).performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2)).performClick()
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3)).performClick()
 
       onNodeWithText(getString(R.string.core_ui_select_seasons_button))
         .assertIsDisplayed()
         .assertIsNotEnabled()
+    }
+  }
+
+  @Test
+  fun `test request tv show dialog toggle all switch`() {
+    composeTestRule.setContent {
+      ManageSeasonsModal(
+        seasons = SeasonFactory.all(),
+        onRequestClick = {},
+        onDismissRequest = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+      onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
+
+      // Toggle it back to unselect all seasons
+      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test request tv show dialog toggle all after already have selected few seasons`() {
+    composeTestRule.setContent {
+      ManageSeasonsModal(
+        seasons = SeasonFactory.all(),
+        onRequestClick = {},
+        onDismissRequest = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
+
+      onNodeWithText("Season 1").performClick()
+      onNodeWithText("Season 2").performClick()
+      onNodeWithText("Season 3").performClick()
+
+      onNodeWithText("Request 3 seasons").assertIsDisplayed().assertIsEnabled()
+
+      onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
+      onNodeWithText("Request 9 seasons").assertIsDisplayed().assertIsEnabled()
+    }
+  }
+
+  @Test
+  fun `test request tv show modal already processed seasons are not clickable`() {
+    composeTestRule.setContent {
+      ManageSeasonsModal(
+        seasons = SeasonFactory.allWithStatus(),
+        onRequestClick = {},
+        onDismissRequest = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
+
+      onNodeWithText("Season 1").performClick()
+      onNodeWithText("Season 2").performClick()
+      onNodeWithText("Season 3").performClick()
+
+      onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
     }
   }
 }

@@ -55,6 +55,7 @@ fun ManageSeasonsModal(
 
   ModalBottomSheet(
     modifier = Modifier.testTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG),
+    shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
     content = {
@@ -88,7 +89,7 @@ fun ManageSeasonsModal(
                     selectedSeasons.clear()
 
                     selectedSeasons.addAll(
-                      seasons.mapIndexedNotNull { index, season ->
+                      validSeasons.mapIndexedNotNull { index, season ->
                         if (!season.isAvailable()) index else null
                       },
                     )
@@ -97,6 +98,7 @@ fun ManageSeasonsModal(
                   }
                 },
                 modifier = Modifier
+                  .testTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH)
                   .weight(0.6f),
               )
 
@@ -130,6 +132,7 @@ fun ManageSeasonsModal(
             Row(
               modifier = Modifier
                 .fillMaxWidth()
+                .testTag(TestTags.Dialogs.SEASON_ROW.format(item.seasonNumber))
                 .clickable(enabled = item.canBeRequested()) {
                   if (item.canBeRequested()) {
                     if (selectedSeasons.contains(item.seasonNumber)) {
@@ -153,6 +156,7 @@ fun ManageSeasonsModal(
                   }
                 },
                 modifier = Modifier
+                  .testTag(TestTags.Dialogs.SEASON_SWITCH.format(item.seasonNumber))
                   .weight(0.6f),
               )
 

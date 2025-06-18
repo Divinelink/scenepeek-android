@@ -128,11 +128,10 @@ object TestTags {
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
 
     const val SELECT_SEASONS_DIALOG = "Select Seasons Dialog"
+    const val TOGGLE_ALL_SEASONS_SWITCH = "Season Toggle All Switch"
+    const val SEASON_SWITCH = "Season Switch %s"
+    const val SEASON_ROW = "Season Row %s"
     const val REQUEST_MOVIE_DIALOG = "Request Movie Dialog"
-  }
-
-  object RadioButton {
-    const val SELECT_SEASON_RADIO_BUTTON = "Select Season %s Radio Button"
   }
 
   object Settings {
