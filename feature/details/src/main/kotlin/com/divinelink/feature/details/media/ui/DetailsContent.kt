@@ -67,8 +67,8 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
-import com.divinelink.core.ui.components.dialog.RequestSeasonsModal
-import com.divinelink.core.ui.components.dialog.RequestMovieModal
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController

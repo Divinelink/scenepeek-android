@@ -135,6 +135,10 @@ object TestTags {
     const val REQUEST_MOVIE_BUTTON = "Request Movie Button"
   }
 
+  object Modal {
+    const val BOTTOM_SHEET = "Modal Bottom Sheet"
+  }
+
   object Settings {
     const val SCREEN_CONTENT = "Settings Screen Content"
 

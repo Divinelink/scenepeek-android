@@ -9,8 +9,8 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.ui.components.dialog.RequestMovieModal
-import com.divinelink.core.ui.components.dialog.RequestSeasonsModal
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 

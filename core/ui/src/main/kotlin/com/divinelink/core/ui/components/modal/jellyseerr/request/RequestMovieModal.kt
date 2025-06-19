@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components.dialog
+package com.divinelink.core.ui.components.modal.jellyseerr.request
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
