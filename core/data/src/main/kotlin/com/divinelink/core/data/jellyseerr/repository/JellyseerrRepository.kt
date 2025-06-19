@@ -23,7 +23,9 @@ interface JellyseerrRepository {
 
   suspend fun logout(address: String): Flow<Result<Unit>>
 
-  suspend fun deleteRequest(mediaId: Int): Result<Unit>
+  suspend fun deleteRequest(requestId: Int): Result<Unit>
+
+  suspend fun deleteMedia(mediaId: Int): Result<Unit>
 
   suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,

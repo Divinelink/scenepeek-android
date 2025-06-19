@@ -93,7 +93,7 @@ fun RequestSeasonsModal(
 
                     selectedSeasons.addAll(
                       validSeasons.mapIndexedNotNull { index, season ->
-                        if (!season.isAvailable()) index else null
+                        if (!season.isAvailable()) index + 1 else null
                       },
                     )
                   } else {

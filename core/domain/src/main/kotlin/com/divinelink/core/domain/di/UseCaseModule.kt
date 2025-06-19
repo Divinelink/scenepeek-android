@@ -12,6 +12,7 @@ import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
@@ -45,6 +46,7 @@ val useCaseModule = module {
   factoryOf(::LogoutJellyseerrUseCase)
   factoryOf(::RequestMediaUseCase)
   factoryOf(::DeleteRequestUseCase)
+  factoryOf(::DeleteMediaUseCase)
 
   // Session
   factoryOf(::CreateSessionUseCase)
