@@ -237,7 +237,7 @@ class DetailsViewModel(
               is MediaDetailsResult.JellyseerrDetailsSuccess -> {
                 val jellyseerrData = (result.data as? MediaDetailsResult.JellyseerrDetailsSuccess)
                   ?: return@onSuccess
-                if (jellyseerrData.info is JellyseerrMediaInfo.TV) {
+                if (viewState.mediaType == MediaType.TV) {
                   val tvInfo = jellyseerrData.info
                   val updatedForms = getUpdatedSeasonForms(tvInfo)
 
@@ -498,8 +498,8 @@ class DetailsViewModel(
             viewState.value.mediaDetails?.title ?: "",
           )
 
-          if (response.mediaInfo is JellyseerrMediaInfo.TV) {
-            val tvInfo = response.mediaInfo as JellyseerrMediaInfo.TV
+          if (viewState.value.mediaType == MediaType.TV) {
+            val tvInfo = response.mediaInfo
             val updatedForms = getUpdatedSeasonForms(tvInfo)
 
             _viewState.update { viewState ->
@@ -661,7 +661,7 @@ class DetailsViewModel(
     )
 
   private fun getUpdatedSeasonForms(
-    tvInfo: JellyseerrMediaInfo.TV,
+    tvInfo: JellyseerrMediaInfo,
   ): Pair<Map<Int, DetailsForm<*>>, List<Season>> {
     val seasonsTabOrder = TvTab.Seasons.order
 

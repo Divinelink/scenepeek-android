@@ -1,0 +1,15 @@
+package com.divinelink.core.network.jellyseerr.model.movie
+
+import com.divinelink.core.network.jellyseerr.model.RequestedByResponse
+import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class MediaInfoRequestResponse(
+  val id: Int,
+  val status: Int,
+  val createdAt: String,
+  val updatedAt: String,
+  val seasons: List<TvSeasonResponse>,
+  val requestedBy: RequestedByResponse,
+)

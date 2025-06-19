@@ -17,7 +17,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaRespon
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.movie.MovieInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
-import com.divinelink.core.network.jellyseerr.model.tv.MediaInfoRequestsResponse
+import com.divinelink.core.network.jellyseerr.model.tv.MediaInfoTvShowRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
@@ -305,7 +305,7 @@ class ProdJellyseerrRepositoryTest {
               ),
             ),
             requests = listOf(
-              MediaInfoRequestsResponse(
+              MediaInfoTvShowRequestResponse(
                 listOf(
                   TvSeasonResponse(
                     seasonNumber = 2,
@@ -317,7 +317,7 @@ class ProdJellyseerrRepositoryTest {
                   ),
                 ),
               ),
-              MediaInfoRequestsResponse(
+              MediaInfoTvShowRequestResponse(
                 listOf(
                   TvSeasonResponse(
                     seasonNumber = 6,

@@ -12,6 +12,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.network.jellyseerr.mapper.map
+import com.divinelink.core.network.jellyseerr.mapper.movie.map
+import com.divinelink.core.network.jellyseerr.mapper.tv.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.Flow
@@ -70,11 +72,11 @@ class ProdJellyseerrRepository(
   override suspend fun deleteMedia(mediaId: Int): Result<Unit> = service
     .deleteMedia(mediaId)
 
-  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo.Movie?> = service
+  override suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo?> = service
     .getMovieDetails(mediaId)
     .map { it.getOrNull()?.mediaInfo?.map() }
 
-  override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo.TV?> = service
+  override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?> = service
     .getTvDetails(mediaId)
     .map { it.getOrNull()?.mediaInfo?.map() }
 }

@@ -6,16 +6,24 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 object JellyseerrMediaInfoFactory {
 
   object Movie {
-    fun available() = JellyseerrMediaInfo.Movie(
+    fun available() = JellyseerrMediaInfo(
+      mediaId = 496244,
+      requests = emptyList(),
       status = JellyseerrMediaStatus.AVAILABLE,
+      seasons = emptyMap(),
     )
 
-    fun pending() = JellyseerrMediaInfo.Movie(
+    fun pending() = JellyseerrMediaInfo(
+      mediaId = 496244,
+      requests = emptyList(),
       status = JellyseerrMediaStatus.PENDING,
+      seasons = emptyMap(),
     )
   }
 
-  fun tv() = JellyseerrMediaInfo.TV(
+  fun tv() = JellyseerrMediaInfo(
+    mediaId = 1399,
+    requests = emptyList(),
     status = JellyseerrMediaStatus.AVAILABLE,
     seasons = mapOf(
       1 to JellyseerrMediaStatus.AVAILABLE,
@@ -30,7 +38,9 @@ object JellyseerrMediaInfoFactory {
     ),
   )
 
-  fun tvPartiallyAvailable() = JellyseerrMediaInfo.TV(
+  fun tvPartiallyAvailable() = JellyseerrMediaInfo(
+    mediaId = 1399,
+    requests = emptyList(),
     status = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
     seasons = mapOf(
       1 to JellyseerrMediaStatus.AVAILABLE,
