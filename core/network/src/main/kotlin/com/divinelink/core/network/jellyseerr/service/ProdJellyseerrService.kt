@@ -77,6 +77,16 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     emit(response)
   }
 
+  override suspend fun deleteRequest(mediaId: Int): Result<Unit> {
+    val hostAddress = restClient.hostAddress()
+      ?: return Result.failure(MissingJellyseerrHostAddressException())
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/request/$mediaId"
+      restClient.delete<Unit>(url = url)
+    }
+  }
+
   override suspend fun getMovieDetails(
     mediaId: Int,
   ): Flow<Result<JellyseerrMovieDetailsResponse>> = flow {

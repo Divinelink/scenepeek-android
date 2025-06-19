@@ -22,6 +22,8 @@ interface JellyseerrService {
     body: JellyseerrRequestMediaBodyApi,
   ): Flow<JellyseerrRequestMediaResponse>
 
+  suspend fun deleteRequest(mediaId: Int): Result<Unit>
+
   suspend fun getMovieDetails(mediaId: Int): Flow<Result<JellyseerrMovieDetailsResponse>>
 
   suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>>
