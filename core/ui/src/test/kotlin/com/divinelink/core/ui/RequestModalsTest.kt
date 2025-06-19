@@ -10,7 +10,7 @@ import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
-import com.divinelink.core.ui.components.dialog.RequestMovieDialog
+import com.divinelink.core.ui.components.dialog.RequestMovieModal
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
@@ -22,7 +22,7 @@ class RequestModalsTest : ComposeTest() {
     var onConfirm = false
 
     composeTestRule.setContent {
-      RequestMovieDialog(
+      RequestMovieModal(
         title = "Taxi Driver",
         onDismissRequest = {
           onDismissRequest = true
@@ -33,14 +33,15 @@ class RequestModalsTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithText("Request movie").assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
 
-    composeTestRule.onNodeWithText("Confirm").performClick()
+    composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
 
-    composeTestRule.onNodeWithText("Are you sure you want to request Taxi Driver?")
+    composeTestRule
+      .onNodeWithText("Do you want to request Taxi Driver?")
       .assertIsDisplayed()
 
-    assertThat(onDismissRequest).isFalse()
+    assertThat(onDismissRequest).isTrue()
     assertThat(onConfirm).isTrue()
 
     composeTestRule.onNodeWithText("Cancel").performClick()

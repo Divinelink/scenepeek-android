@@ -132,6 +132,7 @@ object TestTags {
     const val SEASON_SWITCH = "Season Switch %s"
     const val SEASON_ROW = "Season Row %s"
     const val REQUEST_MOVIE_DIALOG = "Request Movie Dialog"
+    const val REQUEST_MOVIE_BUTTON = "Request Movie Button"
   }
 
   object Settings {

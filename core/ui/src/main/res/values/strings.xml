@@ -83,7 +83,7 @@
   <string name="core_ui_season_number">Season %d</string>
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
-  <string name="core_ui_request_confirmation_text">Are you sure you want to request %s?</string>
+  <string name="core_ui_request_confirmation_text">Do you want to request %s?</string>
 
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_more">Show more</string>

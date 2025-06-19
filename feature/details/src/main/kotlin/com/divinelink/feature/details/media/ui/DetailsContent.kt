@@ -67,7 +67,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
-import com.divinelink.core.ui.components.dialog.RequestMovieDialog
+import com.divinelink.core.ui.components.dialog.RequestMovieModal
 import com.divinelink.core.ui.components.dialog.ManageSeasonsModal
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -132,7 +132,7 @@ fun DetailsContent(
         },
         onDismissRequest = { showRequestDialog = false },
       )
-      is Movie -> RequestMovieDialog(
+      is Movie -> RequestMovieModal(
         onDismissRequest = { showRequestDialog = false },
         onConfirm = {
           requestMedia(emptyList())
