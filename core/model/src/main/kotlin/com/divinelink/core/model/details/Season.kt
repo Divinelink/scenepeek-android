@@ -13,3 +13,13 @@ data class Season(
   val seasonNumber: Int,
   val status: JellyseerrMediaStatus? = null,
 )
+
+fun Season.canBeRequested(): Boolean = status != JellyseerrMediaStatus.AVAILABLE &&
+  status != JellyseerrMediaStatus.PARTIALLY_AVAILABLE &&
+  status != JellyseerrMediaStatus.PROCESSING &&
+  status != JellyseerrMediaStatus.PENDING
+
+fun Season.isAvailable(): Boolean = status == JellyseerrMediaStatus.AVAILABLE ||
+  status == JellyseerrMediaStatus.PARTIALLY_AVAILABLE ||
+  status == JellyseerrMediaStatus.PROCESSING ||
+  status == JellyseerrMediaStatus.PENDING

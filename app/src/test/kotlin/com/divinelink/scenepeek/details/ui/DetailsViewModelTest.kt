@@ -10,6 +10,7 @@ import com.divinelink.core.fixtures.details.media.DetailsFormFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toMovieWzd
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toTvWzd
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
@@ -1393,7 +1394,9 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
-          mediaDetails = tvDetails,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allWithStatus(),
+          ),
         ),
       )
   }
@@ -1454,7 +1457,9 @@ class DetailsViewModelTest {
             mediaId = mediaId,
             isLoading = false,
             userDetails = null,
-            mediaDetails = tvDetails,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allWithStatus(),
+            ),
           ),
         ),
       )
@@ -1590,7 +1595,9 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
-          mediaDetails = tvDetails,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable(),
+          ),
         ),
       )
       .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
@@ -1606,7 +1613,9 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
-          mediaDetails = tvDetails,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allWithStatus(),
+          ),
           snackbarMessage = SnackbarMessage.from(
             text = UIText.StringText("Success"),
           ),
@@ -1661,7 +1670,9 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
-          mediaDetails = tvDetails,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable(),
+          ),
         ),
       )
       .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
@@ -1677,7 +1688,9 @@ class DetailsViewModelTest {
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
-          mediaDetails = tvDetails,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable(),
+          ),
           snackbarMessage = SnackbarMessage.from(
             text = UIText.StringText("Failure"),
           ),

@@ -70,6 +70,10 @@
 
   <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
 
+  <string name="core_ui_season">Season</string>
+  <string name="core_ui_episodes">Episodes</string>
+  <string name="core_ui_status">Status</string>
+
   <plurals name="core_ui_request_series_button">
     <item quantity="one">Request 1 season</item>
     <item quantity="other">Request %d seasons</item>
@@ -79,7 +83,7 @@
   <string name="core_ui_season_number">Season %d</string>
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
-  <string name="core_ui_request_confirmation_text">Are you sure you want to request %s?</string>
+  <string name="core_ui_request_confirmation_text">Do you want to request %s?</string>
 
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_more">Show more</string>
