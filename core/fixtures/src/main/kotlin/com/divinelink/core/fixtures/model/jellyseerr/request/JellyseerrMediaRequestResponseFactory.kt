@@ -12,6 +12,16 @@ object JellyseerrMediaRequestResponseFactory {
 
   fun tv() = JellyseerrMediaRequestResponse(
     message = null,
-    mediaInfo = JellyseerrMediaInfoFactory.tv(),
+    mediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
+  )
+
+  fun tvPartially() = JellyseerrMediaRequestResponse(
+    message = null,
+    mediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+  )
+
+  fun tvAllRequested() = JellyseerrMediaRequestResponse(
+    message = null,
+    mediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
   )
 }

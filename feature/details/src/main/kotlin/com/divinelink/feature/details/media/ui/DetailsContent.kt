@@ -67,9 +67,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
+import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
@@ -328,7 +328,7 @@ private fun MediaDetailsContent(
 
   DynamicDetailsCollapsingToolbar(
     mediaDetails = uiState.mediaDetails,
-    status = uiState.jellyseerrMediaStatus,
+    status = uiState.jellyseerrMediaInfo?.status,
     ratingSource = uiState.ratingSource,
     hasTrailer = trailer?.key != null,
     onAddToWatchlistClick = onAddToWatchlistClick,
@@ -342,7 +342,6 @@ private fun MediaDetailsContent(
     Column(
       modifier = Modifier
         .fillMaxSize()
-        .testTag("Pager")
         .background(MaterialTheme.colorScheme.background),
     ) {
       ScenePeekTabs(

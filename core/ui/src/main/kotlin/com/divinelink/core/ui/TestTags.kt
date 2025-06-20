@@ -131,11 +131,11 @@ object TestTags {
     const val TOGGLE_ALL_SEASONS_SWITCH = "Season Toggle All Switch"
     const val SEASON_SWITCH = "Season Switch %s"
     const val SEASON_ROW = "Season Row %s"
-    const val REQUEST_MOVIE_DIALOG = "Request Movie Dialog"
     const val REQUEST_MOVIE_BUTTON = "Request Movie Button"
   }
 
   object Modal {
+    const val REQUEST_MOVIE = "Request Movie Modal"
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
   }
 

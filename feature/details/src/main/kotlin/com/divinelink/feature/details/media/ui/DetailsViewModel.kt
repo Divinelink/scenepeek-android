@@ -242,7 +242,7 @@ class DetailsViewModel(
                   val updatedForms = getUpdatedSeasonForms(tvInfo)
 
                   viewState.copy(
-                    jellyseerrMediaStatus = tvInfo.status,
+                    jellyseerrMediaInfo = tvInfo,
                     forms = updatedForms.first,
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
@@ -251,7 +251,7 @@ class DetailsViewModel(
                   )
                 } else {
                   viewState.copy(
-                    jellyseerrMediaStatus = jellyseerrData.info.status,
+                    jellyseerrMediaInfo = jellyseerrData.info,
                     actionButtons = findMovieActions(jellyseerrData.info.status),
                   )
                 }
@@ -505,10 +505,10 @@ class DetailsViewModel(
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaStatus = if (tvInfo.status == JellyseerrMediaStatus.UNKNOWN) {
-                  viewState.jellyseerrMediaStatus
+                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrMediaStatus.UNKNOWN) {
+                  viewState.jellyseerrMediaInfo
                 } else {
-                  tvInfo.status
+                  tvInfo
                 },
                 forms = updatedForms.first,
                 mediaDetails = (viewState.mediaDetails as? TV)?.copy(
@@ -521,7 +521,7 @@ class DetailsViewModel(
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaStatus = response.mediaInfo.status,
+                jellyseerrMediaInfo = response.mediaInfo,
                 actionButtons = findMovieActions(response.mediaInfo.status),
               )
             }

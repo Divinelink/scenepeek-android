@@ -210,4 +210,22 @@ object SeasonFactory {
       },
     )
   }
+
+  fun allRequested() = all().map { season ->
+    season.copy(
+      status = when (season.seasonNumber) {
+        0 -> null
+        1 -> JellyseerrMediaStatus.AVAILABLE
+        2 -> JellyseerrMediaStatus.AVAILABLE
+        3 -> JellyseerrMediaStatus.AVAILABLE
+        4 -> JellyseerrMediaStatus.AVAILABLE
+        5 -> JellyseerrMediaStatus.AVAILABLE
+        6 -> JellyseerrMediaStatus.AVAILABLE
+        7 -> JellyseerrMediaStatus.AVAILABLE
+        8 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        9 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        else -> null
+      },
+    )
+  }
 }

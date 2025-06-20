@@ -8,6 +8,6 @@ import com.divinelink.core.network.jellyseerr.model.movie.MovieInfoResponse
 fun MovieInfoResponse.map() = JellyseerrMediaInfo(
   mediaId = id,
   status = JellyseerrMediaStatus.from(status),
-  requests = requests.map { it.map() },
+  requests = requests.map { it.map(false) },
   seasons = emptyMap(),
 )

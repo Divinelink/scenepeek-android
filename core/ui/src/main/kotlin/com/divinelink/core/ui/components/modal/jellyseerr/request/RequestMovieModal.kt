@@ -37,7 +37,7 @@ fun RequestMovieModal(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
-    modifier = Modifier.testTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG),
+    modifier = Modifier.testTag(TestTags.Modal.REQUEST_MOVIE),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,

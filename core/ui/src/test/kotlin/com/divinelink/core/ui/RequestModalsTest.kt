@@ -33,7 +33,7 @@ class RequestModalsTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
 
     composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
 

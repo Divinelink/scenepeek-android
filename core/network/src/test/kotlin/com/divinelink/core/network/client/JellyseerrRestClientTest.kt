@@ -55,7 +55,15 @@ class JellyseerrRestClientTest {
             )
           } else {
             respond(
-              content = """{"success": true, "status": 2}""",
+              content = """
+              {
+                "success": true,
+                "status": 2,
+                "media": {
+                  "tmdbId": 8080
+                }
+              }
+              """.trimIndent(),
               status = HttpStatusCode.OK,
             )
           }

@@ -41,11 +41,11 @@ class TestJellyseerrRepository {
     whenever(mock.requestMedia(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockGetMovieDetails(response: JellyseerrMediaInfo.Movie?) {
+  suspend fun mockGetMovieDetails(response: JellyseerrMediaInfo?) {
     whenever(mock.getMovieDetails(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockGetTvDetails(response: JellyseerrMediaInfo.TV?) {
+  suspend fun mockGetTvDetails(response: JellyseerrMediaInfo?) {
     whenever(mock.getTvDetails(any())).thenReturn(flowOf(response))
   }
 }

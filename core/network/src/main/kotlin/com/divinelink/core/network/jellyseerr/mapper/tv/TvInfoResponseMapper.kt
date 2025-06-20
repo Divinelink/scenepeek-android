@@ -17,5 +17,5 @@ fun TvInfoResponse.map() = JellyseerrMediaInfo(
     .associate {
       it.seasonNumber to JellyseerrMediaStatus.from(it.status)
     },
-  requests = requests.map { it.map() },
+  requests = requests.map { it.map(true) },
 )
