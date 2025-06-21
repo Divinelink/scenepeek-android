@@ -3,6 +3,7 @@
   <string name="core_ui_ok">OK</string>
   <string name="core_ui_cancel">Cancel</string>
   <string name="core_ui_confirm">Confirm</string>
+  <string name="core_ui_delete">Delete</string>
 
   <string name="core_ui_save">Save</string>
   <string name="core_ui_play_trailer">Watch Trailer</string>
@@ -43,10 +44,12 @@
   <string name="core_ui_novel">Novel</string>
   <string name="core_ui_creator">Creator</string>
 
-  <plurals name="core_ui_series_creator">
-    <item quantity="one">Creator</item>
-    <item quantity="other">Creators</item>
+  <plurals name="core_ui_season">
+    <item quantity="one">Season</item>
+    <item quantity="other">Seasons</item>
   </plurals>
+
+  <string name="core_ui_requests">Requests</string>
 
   <plurals name="core_ui_cast_count">
     <item quantity="one">%s person</item>
@@ -84,6 +87,9 @@
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
   <string name="core_ui_request_confirmation_text">Do you want to request %s?</string>
+
+  <string name="core_ui_delete_request_title">Delete request</string>
+  <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>
 
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_more">Show more</string>

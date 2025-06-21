@@ -68,6 +68,7 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
@@ -116,7 +117,7 @@ fun DetailsContent(
   var isAppBarVisible by remember { mutableStateOf(false) }
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
-  var showManageMediaModal by remember { mutableStateOf(false) }
+  var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -145,6 +146,14 @@ fun DetailsContent(
         // Do nothing
       }
     }
+  }
+
+  if (showManageMediaModal) {
+    ManageJellyseerrMediaModal(
+      requests = viewState.jellyseerrMediaInfo?.requests,
+      onDismissRequest = { showManageMediaModal = false },
+      onDeleteRequest = {},
+    )
   }
 
   val containerColor by animateColorAsState(
