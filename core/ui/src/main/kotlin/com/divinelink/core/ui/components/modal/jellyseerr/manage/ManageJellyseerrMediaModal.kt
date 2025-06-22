@@ -1,5 +1,6 @@
 package com.divinelink.core.ui.components.modal.jellyseerr.manage
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -23,6 +25,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -50,6 +53,7 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 @Composable
 fun ManageJellyseerrMediaModal(
   requests: List<JellyseerrRequest>?,
+  isLoading: Boolean,
   onDeleteRequest: (Int) -> Unit,
   onDismissRequest: () -> Unit,
 ) {
@@ -59,7 +63,10 @@ fun ManageJellyseerrMediaModal(
   if (deleteRequestId != null) {
     DeleteRequestDialog(
       onDismissRequest = { deleteRequestId = null },
-      onConfirm = { deleteRequestId?.let(onDeleteRequest) },
+      onConfirm = {
+        deleteRequestId?.let(onDeleteRequest)
+        deleteRequestId = null
+      },
     )
   }
 
@@ -76,7 +83,16 @@ fun ManageJellyseerrMediaModal(
         contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
-        requests?.let {
+        item {
+          AnimatedVisibility(isLoading) {
+            LinearProgressIndicator(
+              modifier = Modifier
+                .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+                .fillMaxWidth(),
+            )
+          }
+        }
+        if (requests?.isNotEmpty() == true) {
           item {
             Text(
               text = stringResource(R.string.core_ui_requests),
@@ -87,7 +103,8 @@ fun ManageJellyseerrMediaModal(
             items = requests,
             key = { it.id },
           ) { request ->
-            RequestsItem(
+            RequestItem(
+              modifier = Modifier,
               request = request,
               onDeleteRequest = {
                 deleteRequestId = it
@@ -129,12 +146,13 @@ private fun DeleteRequestDialog(
 }
 
 @Composable
-private fun RequestsItem(
+private fun LazyItemScope.RequestItem(
+  modifier: Modifier = Modifier,
   request: JellyseerrRequest,
   onDeleteRequest: (Int) -> Unit,
 ) {
   Card(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.animateItem(),
   ) {
     Row(
       modifier = Modifier

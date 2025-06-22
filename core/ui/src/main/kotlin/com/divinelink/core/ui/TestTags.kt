@@ -31,6 +31,7 @@ object TestTags {
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
+  const val LINEAR_LOADING_INDICATOR = "Linear Loading Indicator"
   const val MEDIA_LIST_TAG = "MEDIA_LIST_TAG"
   const val SCROLL_TO_TOP_BUTTON = "SCROLL_TO_TOP_BUTTON_TAG"
   const val LOADING_PROGRESS = "Loading Progress Bar"

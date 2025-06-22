@@ -13,6 +13,7 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
@@ -66,6 +67,7 @@ class DetailsViewModel(
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -618,6 +620,31 @@ class DetailsViewModel(
       if (url.isNotEmpty()) {
         _openUrlTab.send(url)
       }
+    }
+  }
+
+  fun onDeleteRequest(id: Int) {
+    _viewState.update {
+      it.copy(isLoading = true)
+    }
+    viewModelScope.launch {
+      deleteRequestUseCase
+        .invoke(id)
+        .onSuccess {
+          _viewState.update { viewState ->
+            val jellyseerrMediaInfo = viewState.jellyseerrMediaInfo
+            if (jellyseerrMediaInfo != null) {
+              viewState.copy(
+                jellyseerrMediaInfo = jellyseerrMediaInfo.copy(
+                  requests = jellyseerrMediaInfo.requests.filterNot { it.id == id },
+                ),
+                isLoading = false,
+              )
+            } else {
+              viewState.copy(isLoading = false)
+            }
+          }
+        }
     }
   }
 

@@ -107,6 +107,7 @@ fun DetailsContent(
   onShowAllRatingsClick: () -> Unit,
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
+  onDeleteRequest: (Int) -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -152,7 +153,8 @@ fun DetailsContent(
     ManageJellyseerrMediaModal(
       requests = viewState.jellyseerrMediaInfo?.requests,
       onDismissRequest = { showManageMediaModal = false },
-      onDeleteRequest = {},
+      onDeleteRequest = onDeleteRequest,
+      isLoading = viewState.isLoading,
     )
   }
 
@@ -294,11 +296,11 @@ fun DetailsContent(
           )
         }
       }
+      if (viewState.isLoading) {
+        LoadingContent()
+      }
     },
   )
-  if (viewState.isLoading) {
-    LoadingContent()
-  }
 }
 
 @Composable
@@ -460,6 +462,7 @@ fun DetailsContentPreview(
               onShowAllRatingsClick = {},
               onTabSelected = {},
               onPlayTrailerClick = {},
+              onDeleteRequest = {},
             )
           }
         }
