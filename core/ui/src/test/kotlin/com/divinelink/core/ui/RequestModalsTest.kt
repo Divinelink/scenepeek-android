@@ -59,7 +59,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_request_series)).assertIsDisplayed()
     }
   }
@@ -75,7 +75,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
       onNodeWithText(getString(R.string.core_ui_select_seasons_button))
         .assertIsDisplayed()
@@ -101,7 +101,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
 
       onNodeWithTag(TestTags.Dialogs.SEASON_ROW.format(1)).performClick()
@@ -134,7 +134,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_cancel)).assertIsDisplayed().assertIsEnabled()
 
       onNodeWithText(getString(R.string.core_ui_select_seasons_button))
@@ -172,7 +172,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
 
       onNodeWithTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH).performClick()
@@ -195,7 +195,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
 
       onNodeWithText("Season 1").performClick()
@@ -220,7 +220,7 @@ class RequestModalsTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
       onNodeWithText(getString(R.string.core_ui_select_seasons_button)).assertIsDisplayed()
 
       onNodeWithText("Season 1").performClick()

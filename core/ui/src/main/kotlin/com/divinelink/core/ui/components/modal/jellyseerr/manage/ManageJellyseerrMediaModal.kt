@@ -28,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -41,10 +42,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.JellyseerrStatusPill
@@ -77,44 +82,55 @@ fun ManageJellyseerrMediaModal(
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
     content = {
-      LazyColumn(
-        modifier = Modifier
-          .testTag(TestTags.LAZY_COLUMN),
-        contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      ) {
-        item {
-          AnimatedVisibility(isLoading) {
-            LinearProgressIndicator(
-              modifier = Modifier
-                .testTag(TestTags.LINEAR_LOADING_INDICATOR)
-                .fillMaxWidth(),
-            )
-          }
-        }
-        if (requests?.isNotEmpty() == true) {
-          item {
-            Text(
-              text = stringResource(R.string.core_ui_requests),
-              style = MaterialTheme.typography.headlineSmall,
-            )
-          }
-          items(
-            items = requests,
-            key = { it.id },
-          ) { request ->
-            RequestItem(
-              modifier = Modifier,
-              request = request,
-              onDeleteRequest = {
-                deleteRequestId = it
-              },
-            )
-          }
-        }
-      }
+      ManageJellyseerrMediaContent(
+        isLoading = isLoading,
+        requests = requests,
+        onDeleteRequest = { deleteRequestId = it },
+      )
     },
   )
+}
+
+@Composable
+fun ManageJellyseerrMediaContent(
+  isLoading: Boolean,
+  requests: List<JellyseerrRequest>?,
+  onDeleteRequest: (Int) -> Unit,
+) {
+  LazyColumn(
+    modifier = Modifier
+      .testTag(TestTags.LAZY_COLUMN),
+    contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+  ) {
+    item {
+      AnimatedVisibility(isLoading) {
+        LinearProgressIndicator(
+          modifier = Modifier
+            .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+            .fillMaxWidth(),
+        )
+      }
+    }
+    if (requests?.isNotEmpty() == true) {
+      item {
+        Text(
+          text = stringResource(R.string.core_ui_requests),
+          style = MaterialTheme.typography.headlineSmall,
+        )
+      }
+      items(
+        items = requests,
+        key = { it.id },
+      ) { request ->
+        RequestItem(
+          modifier = Modifier,
+          request = request,
+          onDeleteRequest = onDeleteRequest,
+        )
+      }
+    }
+  }
 }
 
 @Composable
@@ -257,5 +273,33 @@ private fun RequesterDisplay(requester: JellyseerrRequester) {
       contentDescription = null,
     )
     Text(style = MaterialTheme.typography.bodyMedium, text = requester.displayName)
+  }
+}
+
+@Composable
+@Previews
+fun ManageJellyseerrMediaContentPreview() {
+  AppTheme {
+    Surface {
+      ManageJellyseerrMediaContent(
+        requests = JellyseerrRequestFactory.Tv.all(),
+        isLoading = false,
+        onDeleteRequest = {},
+      )
+    }
+  }
+}
+
+@Composable
+@Preview
+fun ManageJellyseerrMediaContentLoadingPreview() {
+  AppTheme {
+    Surface {
+      ManageJellyseerrMediaContent(
+        requests = listOf(JellyseerrRequestFactory.movie()),
+        isLoading = true,
+        onDeleteRequest = {},
+      )
+    }
   }
 }

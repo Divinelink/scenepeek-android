@@ -51,9 +51,6 @@ fun RequestSeasonsModal(
   onRequestClick: (List<Int>) -> Unit,
   onDismissRequest: () -> Unit,
 ) {
-  val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = seasons.filterNot { it.seasonNumber == 0 }
-
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
@@ -62,183 +59,199 @@ fun RequestSeasonsModal(
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
     content = {
-      Box {
-        LazyColumn(
-          modifier = Modifier
-            .padding(vertical = MaterialTheme.dimensions.keyline_24)
-            .padding(bottom = MaterialTheme.dimensions.keyline_96),
-        ) {
-          item {
-            Text(
-              modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-              text = stringResource(id = R.string.core_ui_request_series),
-              style = MaterialTheme.typography.headlineSmall,
-            )
-          }
-          item {
-            Row(
-              modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surfaceContainer),
-              verticalAlignment = Alignment.CenterVertically,
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-            ) {
-              Switch(
-                checked = selectedSeasons.size == validSeasons
-                  .filter { it.canBeRequested() }.size,
-                enabled = validSeasons.any { it.canBeRequested() },
-                onCheckedChange = {
-                  if (it) {
-                    selectedSeasons.clear()
-
-                    selectedSeasons.addAll(
-                      validSeasons.mapIndexedNotNull { index, season ->
-                        if (!season.isAvailable()) index + 1 else null
-                      },
-                    )
-                  } else {
-                    selectedSeasons.clear()
-                  }
-                },
-                modifier = Modifier
-                  .testTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH)
-                  .weight(0.6f),
-              )
-
-              Text(
-                text = stringResource(R.string.core_ui_season),
-                modifier = Modifier
-                  .weight(1f),
-                style = MaterialTheme.typography.titleSmall,
-              )
-
-              Text(
-                text = stringResource(R.string.core_ui_episodes),
-                modifier = Modifier
-                  .weight(1f),
-                style = MaterialTheme.typography.titleSmall,
-              )
-
-              Text(
-                text = stringResource(R.string.core_ui_status),
-                modifier = Modifier
-                  .weight(1f),
-                style = MaterialTheme.typography.titleSmall,
-              )
-            }
-          }
-
-          items(
-            items = validSeasons,
-            key = { it.seasonNumber },
-          ) { item ->
-            Row(
-              modifier = Modifier
-                .fillMaxWidth()
-                .testTag(TestTags.Dialogs.SEASON_ROW.format(item.seasonNumber))
-                .clickable(enabled = item.canBeRequested()) {
-                  if (item.canBeRequested()) {
-                    if (selectedSeasons.contains(item.seasonNumber)) {
-                      selectedSeasons.remove(item.seasonNumber)
-                    } else {
-                      selectedSeasons.add(item.seasonNumber)
-                    }
-                  }
-                },
-              verticalAlignment = Alignment.CenterVertically,
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-            ) {
-              Switch(
-                checked = selectedSeasons.contains(item.seasonNumber) || item.isAvailable(),
-                enabled = item.canBeRequested(),
-                onCheckedChange = {
-                  if (it) {
-                    selectedSeasons.add(item.seasonNumber)
-                  } else {
-                    selectedSeasons.remove(item.seasonNumber)
-                  }
-                },
-                modifier = Modifier
-                  .testTag(TestTags.Dialogs.SEASON_SWITCH.format(item.seasonNumber))
-                  .weight(0.6f),
-              )
-
-              Text(
-                text = stringResource(id = R.string.core_ui_season_number, item.seasonNumber),
-                overflow = TextOverflow.MiddleEllipsis,
-                maxLines = 1,
-                modifier = Modifier
-                  .weight(1f),
-                style = MaterialTheme.typography.bodyMedium,
-              )
-
-              Text(
-                text = item.episodeCount.toString(),
-                modifier = Modifier
-                  .weight(1f),
-                style = MaterialTheme.typography.bodyMedium,
-              )
-
-              Box(
-                modifier = Modifier
-                  .weight(1f),
-              ) {
-                item.status?.let {
-                  JellyseerrStatusPill(status = it)
-                }
-              }
-            }
-
-            HorizontalDivider()
-          }
-        }
-
-        Column(
-          modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-          ElevatedButton(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-            onClick = { onDismissRequest() },
-          ) {
-            Text(text = stringResource(id = R.string.core_ui_cancel))
-          }
-          Button(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(bottom = MaterialTheme.dimensions.keyline_8)
-              .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-            enabled = selectedSeasons.isNotEmpty(),
-            onClick = {
-              onRequestClick(selectedSeasons)
-              onDismissRequest()
-            },
-          ) {
-            val text = if (selectedSeasons.isEmpty()) {
-              stringResource(id = R.string.core_ui_select_seasons_button)
-            } else {
-              pluralStringResource(
-                id = R.plurals.core_ui_request_series_button,
-                count = selectedSeasons.size,
-                selectedSeasons.size,
-              )
-            }
-
-            Row(
-              horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-              verticalAlignment = Alignment.CenterVertically,
-            ) {
-              AnimatedVisibility(selectedSeasons.isNotEmpty()) {
-                Icon(Icons.Default.Download, null)
-              }
-              Text(text = text)
-            }
-          }
-        }
-      }
+      RequestSeasonsContent(
+        seasons = seasons,
+        onDismissRequest = onDismissRequest,
+        onRequestClick = onRequestClick,
+      )
     },
   )
+}
+
+@Composable
+private fun RequestSeasonsContent(
+  seasons: List<Season>,
+  onDismissRequest: () -> Unit,
+  onRequestClick: (List<Int>) -> Unit,
+) {
+  val selectedSeasons = remember { mutableStateListOf<Int>() }
+  val validSeasons = seasons.filterNot { it.seasonNumber == 0 }
+
+  Box {
+    LazyColumn(
+      modifier = Modifier
+        .padding(vertical = MaterialTheme.dimensions.keyline_24)
+        .padding(bottom = MaterialTheme.dimensions.keyline_96),
+    ) {
+      item {
+        Text(
+          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+          text = stringResource(id = R.string.core_ui_request_series),
+          style = MaterialTheme.typography.headlineSmall,
+        )
+      }
+      item {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.surfaceContainer),
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+        ) {
+          Switch(
+            checked = selectedSeasons.size == validSeasons
+              .filter { it.canBeRequested() }.size,
+            enabled = validSeasons.any { it.canBeRequested() },
+            onCheckedChange = {
+              if (it) {
+                selectedSeasons.clear()
+
+                selectedSeasons.addAll(
+                  validSeasons.mapIndexedNotNull { index, season ->
+                    if (!season.isAvailable()) index + 1 else null
+                  },
+                )
+              } else {
+                selectedSeasons.clear()
+              }
+            },
+            modifier = Modifier
+              .testTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH)
+              .weight(0.6f),
+          )
+
+          Text(
+            text = stringResource(R.string.core_ui_season),
+            modifier = Modifier
+              .weight(1f),
+            style = MaterialTheme.typography.titleSmall,
+          )
+
+          Text(
+            text = stringResource(R.string.core_ui_episodes),
+            modifier = Modifier
+              .weight(1f),
+            style = MaterialTheme.typography.titleSmall,
+          )
+
+          Text(
+            text = stringResource(R.string.core_ui_status),
+            modifier = Modifier
+              .weight(1f),
+            style = MaterialTheme.typography.titleSmall,
+          )
+        }
+      }
+
+      items(
+        items = validSeasons,
+        key = { it.seasonNumber },
+      ) { item ->
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .testTag(TestTags.Dialogs.SEASON_ROW.format(item.seasonNumber))
+            .clickable(enabled = item.canBeRequested()) {
+              if (item.canBeRequested()) {
+                if (selectedSeasons.contains(item.seasonNumber)) {
+                  selectedSeasons.remove(item.seasonNumber)
+                } else {
+                  selectedSeasons.add(item.seasonNumber)
+                }
+              }
+            },
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+        ) {
+          Switch(
+            checked = selectedSeasons.contains(item.seasonNumber) || item.isAvailable(),
+            enabled = item.canBeRequested(),
+            onCheckedChange = {
+              if (it) {
+                selectedSeasons.add(item.seasonNumber)
+              } else {
+                selectedSeasons.remove(item.seasonNumber)
+              }
+            },
+            modifier = Modifier
+              .testTag(TestTags.Dialogs.SEASON_SWITCH.format(item.seasonNumber))
+              .weight(0.6f),
+          )
+
+          Text(
+            text = stringResource(id = R.string.core_ui_season_number, item.seasonNumber),
+            overflow = TextOverflow.MiddleEllipsis,
+            maxLines = 1,
+            modifier = Modifier
+              .weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+
+          Text(
+            text = item.episodeCount.toString(),
+            modifier = Modifier
+              .weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+          )
+
+          Box(
+            modifier = Modifier
+              .weight(1f),
+          ) {
+            item.status?.let {
+              JellyseerrStatusPill(status = it)
+            }
+          }
+        }
+
+        HorizontalDivider()
+      }
+    }
+
+    Column(
+      modifier = Modifier.align(Alignment.BottomCenter),
+    ) {
+      ElevatedButton(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        onClick = { onDismissRequest() },
+      ) {
+        Text(text = stringResource(id = R.string.core_ui_cancel))
+      }
+      Button(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(bottom = MaterialTheme.dimensions.keyline_8)
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        enabled = selectedSeasons.isNotEmpty(),
+        onClick = {
+          onRequestClick(selectedSeasons)
+          onDismissRequest()
+        },
+      ) {
+        val text = if (selectedSeasons.isEmpty()) {
+          stringResource(id = R.string.core_ui_select_seasons_button)
+        } else {
+          pluralStringResource(
+            id = R.plurals.core_ui_request_series_button,
+            count = selectedSeasons.size,
+            selectedSeasons.size,
+          )
+        }
+
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          AnimatedVisibility(selectedSeasons.isNotEmpty()) {
+            Icon(Icons.Default.Download, null)
+          }
+          Text(text = text)
+        }
+      }
+    }
+  }
 }
 
 @Previews
@@ -247,6 +260,20 @@ private fun SelectSeasonsDialogPreview() {
   AppTheme {
     Surface {
       RequestSeasonsModal(
+        seasons = SeasonFactory.allWithStatus(),
+        onRequestClick = {},
+        onDismissRequest = {},
+      )
+    }
+  }
+}
+
+@Previews
+@Composable
+fun RequestSeasonsContentPreview() {
+  AppTheme {
+    Surface {
+      RequestSeasonsContent(
         seasons = SeasonFactory.allWithStatus(),
         onRequestClick = {},
         onDismissRequest = {},
