@@ -1,7 +1,7 @@
 package com.divinelink.core.fixtures.details.season
 
 import com.divinelink.core.model.details.Season
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 
 object SeasonFactory {
 
@@ -179,8 +179,8 @@ object SeasonFactory {
     season.copy(
       status = when (season.seasonNumber) {
         0 -> null
-        1 -> JellyseerrMediaStatus.AVAILABLE
-        2 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        1 -> JellyseerrStatus.Media.AVAILABLE
+        2 -> JellyseerrStatus.Media.PARTIALLY_AVAILABLE
         3 -> null
         4 -> null
         5 -> null
@@ -197,15 +197,15 @@ object SeasonFactory {
     season.copy(
       status = when (season.seasonNumber) {
         0 -> null
-        1 -> JellyseerrMediaStatus.AVAILABLE
-        2 -> JellyseerrMediaStatus.AVAILABLE
-        3 -> JellyseerrMediaStatus.AVAILABLE
-        4 -> JellyseerrMediaStatus.AVAILABLE
-        5 -> JellyseerrMediaStatus.AVAILABLE
-        6 -> JellyseerrMediaStatus.AVAILABLE
-        7 -> JellyseerrMediaStatus.AVAILABLE
-        8 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
-        9 -> JellyseerrMediaStatus.UNKNOWN
+        1 -> JellyseerrStatus.Media.AVAILABLE
+        2 -> JellyseerrStatus.Media.AVAILABLE
+        3 -> JellyseerrStatus.Media.AVAILABLE
+        4 -> JellyseerrStatus.Media.AVAILABLE
+        5 -> JellyseerrStatus.Media.AVAILABLE
+        6 -> JellyseerrStatus.Media.AVAILABLE
+        7 -> JellyseerrStatus.Media.AVAILABLE
+        8 -> JellyseerrStatus.Media.PARTIALLY_AVAILABLE
+        9 -> JellyseerrStatus.Media.UNKNOWN
         else -> null
       },
     )
@@ -215,15 +215,15 @@ object SeasonFactory {
     season.copy(
       status = when (season.seasonNumber) {
         0 -> null
-        1 -> JellyseerrMediaStatus.AVAILABLE
-        2 -> JellyseerrMediaStatus.AVAILABLE
-        3 -> JellyseerrMediaStatus.AVAILABLE
-        4 -> JellyseerrMediaStatus.AVAILABLE
-        5 -> JellyseerrMediaStatus.AVAILABLE
-        6 -> JellyseerrMediaStatus.AVAILABLE
-        7 -> JellyseerrMediaStatus.AVAILABLE
-        8 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
-        9 -> JellyseerrMediaStatus.PARTIALLY_AVAILABLE
+        1 -> JellyseerrStatus.Media.AVAILABLE
+        2 -> JellyseerrStatus.Media.AVAILABLE
+        3 -> JellyseerrStatus.Media.AVAILABLE
+        4 -> JellyseerrStatus.Media.AVAILABLE
+        5 -> JellyseerrStatus.Media.AVAILABLE
+        6 -> JellyseerrStatus.Media.AVAILABLE
+        7 -> JellyseerrStatus.Media.AVAILABLE
+        8 -> JellyseerrStatus.Media.PARTIALLY_AVAILABLE
+        9 -> JellyseerrStatus.Media.PARTIALLY_AVAILABLE
         else -> null
       },
     )

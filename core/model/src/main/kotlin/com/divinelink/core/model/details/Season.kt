@@ -1,6 +1,6 @@
 package com.divinelink.core.model.details
 
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 
 data class Season(
   val id: Int,
@@ -11,15 +11,15 @@ data class Season(
   val episodeCount: Int,
   val voteAverage: Double,
   val seasonNumber: Int,
-  val status: JellyseerrMediaStatus? = null,
+  val status: JellyseerrStatus.Media? = null,
 )
 
-fun Season.canBeRequested(): Boolean = status != JellyseerrMediaStatus.AVAILABLE &&
-  status != JellyseerrMediaStatus.PARTIALLY_AVAILABLE &&
-  status != JellyseerrMediaStatus.PROCESSING &&
-  status != JellyseerrMediaStatus.PENDING
+fun Season.canBeRequested(): Boolean = status != JellyseerrStatus.Media.AVAILABLE &&
+  status != JellyseerrStatus.Media.PARTIALLY_AVAILABLE &&
+  status != JellyseerrStatus.Media.PROCESSING &&
+  status != JellyseerrStatus.Media.PENDING
 
-fun Season.isAvailable(): Boolean = status == JellyseerrMediaStatus.AVAILABLE ||
-  status == JellyseerrMediaStatus.PARTIALLY_AVAILABLE ||
-  status == JellyseerrMediaStatus.PROCESSING ||
-  status == JellyseerrMediaStatus.PENDING
+fun Season.isAvailable(): Boolean = status == JellyseerrStatus.Media.AVAILABLE ||
+  status == JellyseerrStatus.Media.PARTIALLY_AVAILABLE ||
+  status == JellyseerrStatus.Media.PROCESSING ||
+  status == JellyseerrStatus.Media.PENDING

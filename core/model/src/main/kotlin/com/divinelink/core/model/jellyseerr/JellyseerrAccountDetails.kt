@@ -1,7 +1,6 @@
 package com.divinelink.core.model.jellyseerr
 
-import com.divinelink.core.commons.Constants
-import com.divinelink.core.commons.extensions.formatTo
+import com.divinelink.core.commons.extensions.localizeIsoDate
 
 data class JellyseerrAccountDetails(
   val id: Long,
@@ -11,8 +10,5 @@ data class JellyseerrAccountDetails(
   val requestCount: Long,
   val createdAt: String,
 ) {
-  val formattedCreatedAt: String = createdAt.formatTo(
-    inputFormat = Constants.ISO_8601,
-    outputFormat = Constants.MMMM_DD_YYYY,
-  ) ?: createdAt
+  val formattedCreatedAt: String = createdAt.localizeIsoDate()
 }

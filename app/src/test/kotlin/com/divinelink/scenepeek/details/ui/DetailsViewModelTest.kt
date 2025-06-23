@@ -26,7 +26,6 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
@@ -1689,7 +1688,7 @@ class DetailsViewModelTest {
               message = "Failure",
               mediaInfo = JellyseerrMediaInfo(
                 mediaId = mediaId,
-                status = JellyseerrMediaStatus.UNKNOWN,
+                status = JellyseerrStatus.Media.UNKNOWN,
                 seasons = mapOf(),
                 requests = emptyList(),
               ),

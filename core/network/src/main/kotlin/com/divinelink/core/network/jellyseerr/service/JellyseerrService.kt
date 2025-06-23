@@ -5,6 +5,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.movie.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +26,8 @@ interface JellyseerrService {
   suspend fun deleteRequest(mediaId: Int): Result<Unit>
 
   suspend fun deleteMedia(mediaId: Int): Result<Unit>
+
+  suspend fun getRequestDetails(requestId: Int): Flow<Result<MediaInfoRequestResponse>>
 
   suspend fun getMovieDetails(mediaId: Int): Flow<Result<JellyseerrMovieDetailsResponse>>
 

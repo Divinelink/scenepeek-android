@@ -13,6 +13,7 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
@@ -28,7 +29,7 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -241,7 +242,10 @@ class DetailsViewModel(
                   ?: return@onSuccess
                 if (viewState.mediaType == MediaType.TV) {
                   val tvInfo = jellyseerrData.info
-                  val updatedForms = getUpdatedSeasonForms(tvInfo)
+                  val updatedForms = getUpdatedSeasonForms(
+                    tvInfo = tvInfo,
+                    overrideSeasonStatus = true,
+                  )
 
                   viewState.copy(
                     jellyseerrMediaInfo = tvInfo,
@@ -502,12 +506,15 @@ class DetailsViewModel(
 
           if (viewState.value.mediaType == MediaType.TV) {
             val tvInfo = response.mediaInfo
-            val updatedForms = getUpdatedSeasonForms(tvInfo)
+            val updatedForms = getUpdatedSeasonForms(
+              tvInfo = tvInfo,
+              overrideSeasonStatus = false,
+            )
 
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrMediaStatus.UNKNOWN) {
+                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
                   viewState.jellyseerrMediaInfo
                 } else {
                   tvInfo
@@ -629,21 +636,47 @@ class DetailsViewModel(
     }
     viewModelScope.launch {
       deleteRequestUseCase
-        .invoke(id)
-        .onSuccess {
-          _viewState.update { viewState ->
-            val jellyseerrMediaInfo = viewState.jellyseerrMediaInfo
-            if (jellyseerrMediaInfo != null) {
-              viewState.copy(
-                jellyseerrMediaInfo = jellyseerrMediaInfo.copy(
-                  requests = jellyseerrMediaInfo.requests.filterNot { it.id == id },
-                ),
-                isLoading = false,
-              )
-            } else {
-              viewState.copy(isLoading = false)
+        .invoke(
+          DeleteRequestParameters(
+            requestId = id,
+            mediaRequest = when (viewState.value.mediaType) {
+              MediaType.TV -> MediaRequestApi.TV(viewState.value.mediaId)
+              MediaType.MOVIE -> MediaRequestApi.Movie(viewState.value.mediaId)
+              else -> MediaRequestApi.Unknown
+            },
+          ),
+        )
+        .collect { result ->
+          result
+            .onSuccess { mediaInfo ->
+              _viewState.update { viewState ->
+                if (viewState.mediaType == MediaType.TV) {
+                  val updatedForms = getUpdatedSeasonForms(
+                    tvInfo = mediaInfo,
+                    overrideSeasonStatus = true,
+                  )
+
+                  viewState.copy(
+                    jellyseerrMediaInfo = mediaInfo,
+                    forms = updatedForms.first,
+                    mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+                      seasons = updatedForms.second,
+                    ),
+                    actionButtons = findTvActions(updatedForms.second),
+                    isLoading = false,
+                  )
+                } else {
+                  viewState.copy(
+                    jellyseerrMediaInfo = mediaInfo,
+                    actionButtons = findMovieActions(mediaInfo.status),
+                    isLoading = false,
+                  )
+                }
+              }
             }
-          }
+            .onFailure {
+              // TODO Handle error
+            }
         }
     }
   }
@@ -687,8 +720,15 @@ class DetailsViewModel(
       },
     )
 
+  /**
+   * @param overrideSeasonStatus If true, the season status will be set to UNKNOWN.
+   * This is used only when requesting a TV show, to ensure that the seasons are updated
+   * On delete request, we already get all the seasons with their correct status, since we
+   * re-fetch all media details.
+   */
   private fun getUpdatedSeasonForms(
     tvInfo: JellyseerrMediaInfo,
+    overrideSeasonStatus: Boolean,
   ): Pair<Map<Int, DetailsForm<*>>, List<Season>> {
     val seasonsTabOrder = TvTab.Seasons.order
 
@@ -697,7 +737,11 @@ class DetailsViewModel(
       ?: emptyList()
 
     val updatedSeasons = currentSeasonsData.map { season ->
-      val status = tvInfo.seasons[season.seasonNumber] ?: season.status
+      val status = tvInfo.seasons[season.seasonNumber] ?: if (overrideSeasonStatus) {
+        JellyseerrStatus.Media.UNKNOWN
+      } else {
+        season.status
+      }
       season.copy(status = status)
     }
 
@@ -720,10 +764,10 @@ class DetailsViewModel(
     }
   }
 
-  private fun findMovieActions(status: JellyseerrMediaStatus): List<DetailActionItem> = buildList {
+  private fun findMovieActions(status: JellyseerrStatus.Media): List<DetailActionItem> = buildList {
     add(DetailActionItem.Rate)
     add(DetailActionItem.Watchlist)
-    if (status == JellyseerrMediaStatus.UNKNOWN) {
+    if (status == JellyseerrStatus.Media.UNKNOWN) {
       add(DetailActionItem.Request)
     } else {
       add(DetailActionItem.ManageMovie)

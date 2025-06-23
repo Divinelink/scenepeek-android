@@ -4,20 +4,20 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.JellyseerrRequestMediaResponseFactory
+import com.divinelink.core.fixtures.core.network.jellyseerr.model.RequestedByResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.movie.MovieInfoResponseFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequesterFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
-import com.divinelink.core.network.jellyseerr.model.RequestedByResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.movie.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
@@ -118,7 +118,7 @@ class ProdJellyseerrRepositoryTest {
   @Test
   fun `test movie request media successfully`() = runTest {
     val response = JellyseerrRequestMediaResponseFactory.movie(
-      status = JellyseerrMediaStatus.PROCESSING,
+      status = JellyseerrStatus.Media.PROCESSING,
     )
 
     val mappedResponse = JellyseerrMediaRequestResponseFactory.movie().copy(
@@ -226,43 +226,43 @@ class ProdJellyseerrRepositoryTest {
       response = Result.success(
         JellyseerrTvDetailsResponse(
           mediaInfo = TvInfoResponse(
-            status = JellyseerrMediaStatus.AVAILABLE.status,
+            status = JellyseerrStatus.Media.AVAILABLE.status,
             seasons = listOf(
               TvSeasonResponse(
                 seasonNumber = 1,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 2,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 3,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 4,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 5,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 6,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 7,
-                status = JellyseerrMediaStatus.AVAILABLE.status,
+                status = JellyseerrStatus.Media.AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 8,
-                status = JellyseerrMediaStatus.PARTIALLY_AVAILABLE.status,
+                status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE.status,
               ),
               TvSeasonResponse(
                 seasonNumber = 9,
-                status = JellyseerrMediaStatus.UNKNOWN.status,
+                status = JellyseerrStatus.Media.UNKNOWN.status,
               ),
             ),
             requests = listOf(),
@@ -277,14 +277,14 @@ class ProdJellyseerrRepositoryTest {
     assertThat(result.first()).isEqualTo(
       JellyseerrMediaInfoFactory.Tv.available().copy(
         seasons = mapOf(
-          1 to JellyseerrMediaStatus.AVAILABLE,
-          2 to JellyseerrMediaStatus.AVAILABLE,
-          3 to JellyseerrMediaStatus.AVAILABLE,
-          4 to JellyseerrMediaStatus.AVAILABLE,
-          5 to JellyseerrMediaStatus.AVAILABLE,
-          6 to JellyseerrMediaStatus.AVAILABLE,
-          7 to JellyseerrMediaStatus.AVAILABLE,
-          8 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          1 to JellyseerrStatus.Media.AVAILABLE,
+          2 to JellyseerrStatus.Media.AVAILABLE,
+          3 to JellyseerrStatus.Media.AVAILABLE,
+          4 to JellyseerrStatus.Media.AVAILABLE,
+          5 to JellyseerrStatus.Media.AVAILABLE,
+          6 to JellyseerrStatus.Media.AVAILABLE,
+          7 to JellyseerrStatus.Media.AVAILABLE,
+          8 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
         ),
       ),
     )
@@ -296,11 +296,11 @@ class ProdJellyseerrRepositoryTest {
       response = Result.success(
         JellyseerrTvDetailsResponse(
           mediaInfo = TvInfoResponse(
-            status = JellyseerrMediaStatus.AVAILABLE.status,
+            status = JellyseerrStatus.Media.AVAILABLE.status,
             seasons = listOf(
               TvSeasonResponse(
                 seasonNumber = 1,
-                status = JellyseerrMediaStatus.DELETED.status,
+                status = JellyseerrStatus.Media.DELETED.status,
               ),
             ),
             requests = listOf(
@@ -308,36 +308,30 @@ class ProdJellyseerrRepositoryTest {
                 seasons = listOf(
                   TvSeasonResponse(
                     seasonNumber = 2,
-                    status = JellyseerrMediaStatus.AVAILABLE.status,
+                    status = JellyseerrStatus.Media.AVAILABLE.status,
                   ),
                   TvSeasonResponse(
                     seasonNumber = 3,
-                    status = JellyseerrMediaStatus.AVAILABLE.status,
+                    status = JellyseerrStatus.Media.AVAILABLE.status,
                   ),
                 ),
-                status = JellyseerrMediaStatus.PENDING.status,
-                createdAt = "2023-10-01T12:00:00Z",
-                updatedAt = "2023-10-02T12:00:00Z",
-                requestedBy = RequestedByResponse(
-                  id = 1,
-                  displayName = "User One",
-                ),
+                status = JellyseerrStatus.Media.PENDING.status,
+                createdAt = "2025-06-22T13:00:22.000Z",
+                updatedAt = "2025-06-23T13:00:22.000Z",
+                requestedBy = RequestedByResponseFactory.bob(),
                 id = 1,
               ),
               MediaInfoRequestResponse(
                 seasons = listOf(
                   TvSeasonResponse(
                     seasonNumber = 6,
-                    status = JellyseerrMediaStatus.PROCESSING.status,
+                    status = JellyseerrStatus.Media.PROCESSING.status,
                   ),
                 ),
-                status = JellyseerrMediaStatus.PROCESSING.status,
-                createdAt = "2023-10-03T12:00:00Z",
-                updatedAt = "2023-10-04T12:00:00Z",
-                requestedBy = RequestedByResponse(
-                  id = 2,
-                  displayName = "User Two",
-                ),
+                status = JellyseerrStatus.Media.PROCESSING.status,
+                createdAt = "2025-06-21T13:00:22.000Z",
+                updatedAt = "2025-06-24T13:00:22.000Z",
+                requestedBy = RequestedByResponseFactory.rhea(),
                 id = 2,
               ),
             ),
@@ -351,26 +345,28 @@ class ProdJellyseerrRepositoryTest {
 
     assertThat(result.first()).isEqualTo(
       JellyseerrMediaInfo(
-        status = JellyseerrMediaStatus.AVAILABLE,
+        status = JellyseerrStatus.Media.AVAILABLE,
         seasons = mapOf(
-          1 to JellyseerrMediaStatus.DELETED,
-          2 to JellyseerrMediaStatus.AVAILABLE,
-          3 to JellyseerrMediaStatus.AVAILABLE,
-          6 to JellyseerrMediaStatus.PROCESSING,
+          1 to JellyseerrStatus.Media.DELETED,
+          2 to JellyseerrStatus.Media.AVAILABLE,
+          3 to JellyseerrStatus.Media.AVAILABLE,
+          6 to JellyseerrStatus.Media.PROCESSING,
         ),
         mediaId = 1399,
         requests = listOf(
-          JellyseerrRequest.TV(
+          JellyseerrRequest(
             id = 1,
-            status = JellyseerrMediaStatus.PENDING,
-            requester = JellyseerrRequester("User One"),
+            status = JellyseerrStatus.Request.APPROVED,
+            requester = JellyseerrRequesterFactory.bob(),
             seasons = listOf(2, 3),
+            requestDate = "June 22, 2025",
           ),
-          JellyseerrRequest.TV(
+          JellyseerrRequest(
             id = 2,
-            status = JellyseerrMediaStatus.PROCESSING,
-            requester = JellyseerrRequester("User Two"),
+            status = JellyseerrStatus.Request.DECLINED,
+            requester = JellyseerrRequesterFactory.rhea(),
             seasons = listOf(6),
+            requestDate = "June 21, 2025",
           ),
         ),
       ),

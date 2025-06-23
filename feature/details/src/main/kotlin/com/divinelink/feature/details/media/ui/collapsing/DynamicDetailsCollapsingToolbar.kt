@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.collapsing.CollapsingOption
 import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
@@ -24,7 +24,7 @@ fun DynamicDetailsCollapsingToolbar(
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
   userDetails: AccountMediaDetails?,
-  status: JellyseerrMediaStatus?,
+  status: JellyseerrStatus.Media?,
   hasTrailer: Boolean,
   onAddToWatchlistClick: () -> Unit,
   onAddRateClick: () -> Unit,

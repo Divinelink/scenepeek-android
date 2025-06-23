@@ -136,7 +136,7 @@ private fun DeleteRequestDialog(
     confirmButton = {
       Button(
         colors = ButtonDefaults.buttonColors(
-          containerColor = MaterialTheme.colorScheme.error,
+          containerColor = MaterialTheme.colors.crimsonRed,
         ),
         onClick = { onConfirm() },
         content = { Text(stringResource(id = R.string.core_ui_delete)) },
@@ -185,7 +185,7 @@ private fun LazyItemScope.RequestItem(
           )
         }
 
-        if (request is JellyseerrRequest.TV) {
+        if (request.seasons.isNotEmpty()) {
           Column(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
           ) {
@@ -216,7 +216,7 @@ private fun LazyItemScope.RequestItem(
       ) {
         Icon(
           imageVector = Icons.Default.Delete,
-          tint = Color.Red,
+          tint = MaterialTheme.colors.crimsonRed,
           contentDescription = null,
         )
       }

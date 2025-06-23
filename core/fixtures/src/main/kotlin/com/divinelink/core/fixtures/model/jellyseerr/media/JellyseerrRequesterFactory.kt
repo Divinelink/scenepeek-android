@@ -9,6 +9,6 @@ object JellyseerrRequesterFactory {
   )
 
   fun rhea() = JellyseerrRequester(
-    displayName = "Rhea Seehorn Rhea Seehorn Rhea Seehorn Rhea Seehorn",
+    displayName = "Rhea Seehorn",
   )
 }

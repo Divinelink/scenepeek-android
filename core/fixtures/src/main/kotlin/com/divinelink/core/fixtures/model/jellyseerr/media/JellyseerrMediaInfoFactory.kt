@@ -1,7 +1,7 @@
 package com.divinelink.core.fixtures.model.jellyseerr.media
 
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 
 object JellyseerrMediaInfoFactory {
 
@@ -9,21 +9,21 @@ object JellyseerrMediaInfoFactory {
     fun available() = JellyseerrMediaInfo(
       mediaId = 496244,
       requests = emptyList(),
-      status = JellyseerrMediaStatus.AVAILABLE,
+      status = JellyseerrStatus.Media.AVAILABLE,
       seasons = emptyMap(),
     )
 
     fun processing() = JellyseerrMediaInfo(
       mediaId = 496244,
-      requests = emptyList(),
-      status = JellyseerrMediaStatus.PROCESSING,
+      requests = listOf(JellyseerrRequestFactory.movie()),
+      status = JellyseerrStatus.Media.PROCESSING,
       seasons = emptyMap(),
     )
 
     fun pending() = JellyseerrMediaInfo(
       mediaId = 496244,
       requests = emptyList(),
-      status = JellyseerrMediaStatus.PENDING,
+      status = JellyseerrStatus.Media.PENDING,
       seasons = emptyMap(),
     )
   }
@@ -32,44 +32,44 @@ object JellyseerrMediaInfoFactory {
     fun available() = JellyseerrMediaInfo(
       mediaId = 1399,
       requests = emptyList(),
-      status = JellyseerrMediaStatus.AVAILABLE,
+      status = JellyseerrStatus.Media.AVAILABLE,
       seasons = mapOf(
-        1 to JellyseerrMediaStatus.AVAILABLE,
-        2 to JellyseerrMediaStatus.AVAILABLE,
-        3 to JellyseerrMediaStatus.AVAILABLE,
-        4 to JellyseerrMediaStatus.AVAILABLE,
-        5 to JellyseerrMediaStatus.AVAILABLE,
-        6 to JellyseerrMediaStatus.AVAILABLE,
-        7 to JellyseerrMediaStatus.AVAILABLE,
-        8 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
-        9 to JellyseerrMediaStatus.UNKNOWN,
+        1 to JellyseerrStatus.Media.AVAILABLE,
+        2 to JellyseerrStatus.Media.AVAILABLE,
+        3 to JellyseerrStatus.Media.AVAILABLE,
+        4 to JellyseerrStatus.Media.AVAILABLE,
+        5 to JellyseerrStatus.Media.AVAILABLE,
+        6 to JellyseerrStatus.Media.AVAILABLE,
+        7 to JellyseerrStatus.Media.AVAILABLE,
+        8 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
+        9 to JellyseerrStatus.Media.UNKNOWN,
       ),
     )
 
     fun requested() = JellyseerrMediaInfo(
       mediaId = 1399,
       requests = emptyList(),
-      status = JellyseerrMediaStatus.AVAILABLE,
+      status = JellyseerrStatus.Media.AVAILABLE,
       seasons = mapOf(
-        1 to JellyseerrMediaStatus.AVAILABLE,
-        2 to JellyseerrMediaStatus.AVAILABLE,
-        3 to JellyseerrMediaStatus.AVAILABLE,
-        4 to JellyseerrMediaStatus.AVAILABLE,
-        5 to JellyseerrMediaStatus.AVAILABLE,
-        6 to JellyseerrMediaStatus.AVAILABLE,
-        7 to JellyseerrMediaStatus.AVAILABLE,
-        8 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
-        9 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+        1 to JellyseerrStatus.Media.AVAILABLE,
+        2 to JellyseerrStatus.Media.AVAILABLE,
+        3 to JellyseerrStatus.Media.AVAILABLE,
+        4 to JellyseerrStatus.Media.AVAILABLE,
+        5 to JellyseerrStatus.Media.AVAILABLE,
+        6 to JellyseerrStatus.Media.AVAILABLE,
+        7 to JellyseerrStatus.Media.AVAILABLE,
+        8 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
+        9 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
       ),
     )
 
     fun partiallyAvailable() = JellyseerrMediaInfo(
       mediaId = 1399,
       requests = emptyList(),
-      status = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+      status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
       seasons = mapOf(
-        1 to JellyseerrMediaStatus.AVAILABLE,
-        2 to JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+        1 to JellyseerrStatus.Media.AVAILABLE,
+        2 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
       ),
     )
   }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,7 @@ import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.media.DetailsData
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -128,20 +129,23 @@ fun SeasonItem(
   }
 }
 
+// TODO Add screenshots
 @Previews
 @Composable
 fun SeasonItemPreview() {
   AppTheme {
-    Column(
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-    ) {
-      SeasonItem(
-        season = SeasonFactory.season1(),
-      )
+    Surface {
+      Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+      ) {
+        SeasonItem(
+          season = SeasonFactory.season1(),
+        )
 
-      SeasonItem(
-        season = SeasonFactory.season2().copy(status = JellyseerrMediaStatus.AVAILABLE),
-      )
+        SeasonItem(
+          season = SeasonFactory.season2().copy(status = JellyseerrStatus.Media.AVAILABLE),
+        )
+      }
     }
   }
 }

@@ -2,7 +2,7 @@ package com.divinelink.core.model.jellyseerr.media
 
 data class JellyseerrMediaInfo(
   val mediaId: Int,
-  val status: JellyseerrMediaStatus,
+  val status: JellyseerrStatus.Media,
   val requests: List<JellyseerrRequest>,
-  val seasons: Map<Int, JellyseerrMediaStatus>,
+  val seasons: Map<Int, JellyseerrStatus.Media>,
 )

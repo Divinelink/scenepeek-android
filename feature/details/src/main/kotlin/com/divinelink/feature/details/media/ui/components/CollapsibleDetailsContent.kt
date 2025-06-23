@@ -31,7 +31,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.JellyseerrStatusPill
@@ -48,7 +48,7 @@ fun CollapsibleDetailsContent(
   mediaDetails: MediaDetails,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
-  status: JellyseerrMediaStatus?,
+  status: JellyseerrStatus.Media?,
   ratingCount: RatingCount,
   ratingSource: RatingSource,
   hasTrailer: Boolean,

@@ -1,53 +1,40 @@
 package com.divinelink.core.fixtures.model.jellyseerr.media
 
-import com.divinelink.core.commons.Constants
-import com.divinelink.core.commons.extensions.formatTo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 
 object JellyseerrRequestFactory {
 
-  fun movie() = JellyseerrRequest.Movie(
+  fun movie() = JellyseerrRequest(
     id = 1,
-    status = JellyseerrMediaStatus.PENDING,
-    requestDate = "2025-06-19T14:52:56.000Z".formatTo(
-      inputFormat = Constants.ISO_8601,
-      outputFormat = Constants.MMMM_DD_YYYY,
-    )!!,
+    status = JellyseerrStatus.Request.PENDING,
+    requestDate = "June 22, 2025",
     requester = JellyseerrRequesterFactory.bob(),
+    seasons = emptyList(),
   )
 
   object Tv {
-    fun betterCallSaul1() = JellyseerrRequest.TV(
+    fun betterCallSaul1() = JellyseerrRequest(
       id = 2,
-      status = JellyseerrMediaStatus.PENDING,
+      status = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = "2025-06-19T14:52:56.000Z".formatTo(
-        inputFormat = Constants.ISO_8601,
-        outputFormat = Constants.MMMM_DD_YYYY,
-      )!!,
+      requestDate = "June 22, 2025",
       seasons = listOf(1),
     )
 
-    fun betterCallSaul2() = JellyseerrRequest.TV(
+    fun betterCallSaul2() = JellyseerrRequest(
       id = 3,
-      status = JellyseerrMediaStatus.AVAILABLE,
+      status = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = "2025-06-20T14:52:56.000Z".formatTo(
-        inputFormat = Constants.ISO_8601,
-        outputFormat = Constants.MMMM_DD_YYYY,
-      )!!,
+      requestDate = "",
       seasons = listOf(2, 3, 4),
     )
 
-    fun betterCallSaul3() = JellyseerrRequest.TV(
+    fun betterCallSaul3() = JellyseerrRequest(
       id = 4,
-      status = JellyseerrMediaStatus.PROCESSING,
+      status = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.bob(),
-      requestDate = "2025-06-21T14:52:56.000Z".formatTo(
-        inputFormat = Constants.ISO_8601,
-        outputFormat = Constants.MMMM_DD_YYYY,
-      )!!,
+      requestDate = " ",
       seasons = listOf(5, 6),
     )
 

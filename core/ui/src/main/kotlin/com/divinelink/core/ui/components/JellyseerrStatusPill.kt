@@ -13,20 +13,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 
 @Composable
 fun JellyseerrStatusPill(
   modifier: Modifier = Modifier,
-  status: JellyseerrMediaStatus,
+  status: JellyseerrStatus,
 ) {
   val color = when (status) {
-    JellyseerrMediaStatus.PENDING -> MaterialTheme.colors.vibrantPurple
-    JellyseerrMediaStatus.PROCESSING -> MaterialTheme.colors.vibrantPurple
-    JellyseerrMediaStatus.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
-    JellyseerrMediaStatus.AVAILABLE -> MaterialTheme.colors.emeraldGreen
-    JellyseerrMediaStatus.DELETED -> MaterialTheme.colors.crimsonRed
-    JellyseerrMediaStatus.UNKNOWN -> return
+    JellyseerrStatus.Media.UNKNOWN -> return
+    JellyseerrStatus.Request.UNKNOWN -> return
+    JellyseerrStatus.Media.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Media.PROCESSING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Media.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Media.AVAILABLE -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Media.DELETED -> MaterialTheme.colors.crimsonRed
+    JellyseerrStatus.Request.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Request.APPROVED -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Request.DECLINED -> MaterialTheme.colors.crimsonRed
+    JellyseerrStatus.Request.FAILED -> MaterialTheme.colors.crimsonRed
   }
 
   Text(
