@@ -2,6 +2,7 @@ package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
+import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
@@ -67,5 +68,17 @@ class TestJellyseerrService {
     ).thenReturn(
       flowOf(response),
     )
+  }
+
+  suspend fun mockDeleteRequest(response: Result<Unit>) {
+    whenever(mock.deleteRequest(any())).thenReturn(response)
+  }
+
+  suspend fun mockDeleteMedia(response: Result<Unit>) {
+    whenever(mock.deleteMedia(any())).thenReturn(response)
+  }
+
+  suspend fun mockGetRequestDetails(response: Result<MediaInfoRequestResponse>) {
+    whenever(mock.getRequestDetails(any())).thenReturn(flowOf(response))
   }
 }

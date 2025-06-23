@@ -13,18 +13,23 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
+import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.externalUrl
+import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -63,6 +68,7 @@ class DetailsViewModel(
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -234,20 +240,25 @@ class DetailsViewModel(
               is MediaDetailsResult.JellyseerrDetailsSuccess -> {
                 val jellyseerrData = (result.data as? MediaDetailsResult.JellyseerrDetailsSuccess)
                   ?: return@onSuccess
-                if (jellyseerrData.info is JellyseerrMediaInfo.TV) {
+                if (viewState.mediaType == MediaType.TV) {
                   val tvInfo = jellyseerrData.info
-                  val updatedForms = getUpdatedSeasonForms(tvInfo)
+                  val updatedForms = getUpdatedSeasonForms(
+                    tvInfo = tvInfo,
+                    overrideSeasonStatus = true,
+                  )
 
                   viewState.copy(
-                    jellyseerrMediaStatus = tvInfo.status,
+                    jellyseerrMediaInfo = tvInfo,
                     forms = updatedForms.first,
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
+                    actionButtons = findTvActions(updatedForms.second),
                   )
                 } else {
                   viewState.copy(
-                    jellyseerrMediaStatus = jellyseerrData.info.status,
+                    jellyseerrMediaInfo = jellyseerrData.info,
+                    actionButtons = findMovieActions(jellyseerrData.info.status),
                   )
                 }
               }
@@ -493,29 +504,34 @@ class DetailsViewModel(
             viewState.value.mediaDetails?.title ?: "",
           )
 
-          if (response.mediaInfo is JellyseerrMediaInfo.TV) {
-            val tvInfo = response.mediaInfo as JellyseerrMediaInfo.TV
-            val updatedForms = getUpdatedSeasonForms(tvInfo)
+          if (viewState.value.mediaType == MediaType.TV) {
+            val tvInfo = response.mediaInfo
+            val updatedForms = getUpdatedSeasonForms(
+              tvInfo = tvInfo,
+              overrideSeasonStatus = false,
+            )
 
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaStatus = if (tvInfo.status == JellyseerrMediaStatus.UNKNOWN) {
-                  viewState.jellyseerrMediaStatus
+                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
+                  viewState.jellyseerrMediaInfo
                 } else {
-                  tvInfo.status
+                  tvInfo
                 },
                 forms = updatedForms.first,
                 mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                   seasons = updatedForms.second,
                 ),
+                actionButtons = findTvActions(updatedForms.second),
               )
             }
           } else {
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaStatus = response.mediaInfo.status,
+                jellyseerrMediaInfo = response.mediaInfo,
+                actionButtons = findMovieActions(response.mediaInfo.status),
               )
             }
           }
@@ -614,6 +630,76 @@ class DetailsViewModel(
     }
   }
 
+  fun onDeleteRequest(id: Int) {
+    _viewState.update {
+      it.copy(isLoading = true)
+    }
+    viewModelScope.launch {
+      deleteRequestUseCase
+        .invoke(
+          DeleteRequestParameters(
+            requestId = id,
+            mediaRequest = when (viewState.value.mediaType) {
+              MediaType.TV -> MediaRequestApi.TV(viewState.value.mediaId)
+              MediaType.MOVIE -> MediaRequestApi.Movie(viewState.value.mediaId)
+              else -> MediaRequestApi.Unknown
+            },
+          ),
+        )
+        .collect { result ->
+          result
+            .onSuccess { mediaInfo ->
+              _viewState.update { viewState ->
+                if (viewState.mediaType == MediaType.TV) {
+                  val updatedForms = getUpdatedSeasonForms(
+                    tvInfo = mediaInfo,
+                    overrideSeasonStatus = true,
+                  )
+
+                  viewState.copy(
+                    jellyseerrMediaInfo = mediaInfo,
+                    forms = updatedForms.first,
+                    mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+                      seasons = updatedForms.second,
+                    ),
+                    actionButtons = findTvActions(updatedForms.second),
+                    isLoading = false,
+                    snackbarMessage = SnackbarMessage.from(
+                      text = UIText.ResourceText(
+                        R.string.feature_details_jellyseerr_success_request_delete,
+                      ),
+                    ),
+                  )
+                } else {
+                  viewState.copy(
+                    jellyseerrMediaInfo = mediaInfo,
+                    actionButtons = findMovieActions(mediaInfo.status),
+                    isLoading = false,
+                    snackbarMessage = SnackbarMessage.from(
+                      text = UIText.ResourceText(
+                        R.string.feature_details_jellyseerr_success_request_delete,
+                      ),
+                    ),
+                  )
+                }
+              }
+            }
+            .onFailure {
+              _viewState.update { viewState ->
+                viewState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_details_jellyseerr_failed_request_delete,
+                    ),
+                  ),
+                )
+              }
+            }
+        }
+    }
+  }
+
   private fun setSnackbarMessage(snackbarMessage: SnackbarMessage) {
     _viewState.update { viewState ->
       viewState.copy(
@@ -653,8 +739,15 @@ class DetailsViewModel(
       },
     )
 
+  /**
+   * @param overrideSeasonStatus If true, the season status will be set to UNKNOWN.
+   * This is used only when requesting a TV show, to ensure that the seasons are updated
+   * On delete request, we already get all the seasons with their correct status, since we
+   * re-fetch all media details.
+   */
   private fun getUpdatedSeasonForms(
-    tvInfo: JellyseerrMediaInfo.TV,
+    tvInfo: JellyseerrMediaInfo,
+    overrideSeasonStatus: Boolean,
   ): Pair<Map<Int, DetailsForm<*>>, List<Season>> {
     val seasonsTabOrder = TvTab.Seasons.order
 
@@ -663,7 +756,11 @@ class DetailsViewModel(
       ?: emptyList()
 
     val updatedSeasons = currentSeasonsData.map { season ->
-      val status = tvInfo.seasons[season.seasonNumber] ?: season.status
+      val status = tvInfo.seasons[season.seasonNumber] ?: if (overrideSeasonStatus) {
+        null
+      } else {
+        season.status
+      }
       season.copy(status = status)
     }
 
@@ -672,6 +769,27 @@ class DetailsViewModel(
         DetailsData.Seasons(updatedSeasons),
       ),
     )
-    return updatedForms to updatedSeasons
+    return updatedForms to updatedSeasons.filterNot { it.seasonNumber == 0 }
+  }
+
+  private fun findTvActions(seasons: List<Season>): List<DetailActionItem> = buildList {
+    add(DetailActionItem.Rate)
+    add(DetailActionItem.Watchlist)
+    if (seasons.any { it.isAvailable() }) {
+      add(DetailActionItem.ManageTvShow)
+    }
+    if (seasons.any { it.canBeRequested() }) {
+      add(DetailActionItem.Request)
+    }
+  }
+
+  private fun findMovieActions(status: JellyseerrStatus.Media): List<DetailActionItem> = buildList {
+    add(DetailActionItem.Rate)
+    add(DetailActionItem.Watchlist)
+    if (status == JellyseerrStatus.Media.UNKNOWN) {
+      add(DetailActionItem.Request)
+    } else {
+      add(DetailActionItem.ManageMovie)
+    }
   }
 }

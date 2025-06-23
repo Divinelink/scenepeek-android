@@ -8,25 +8,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.ui.TestTags
 
 @Composable
 fun JellyseerrStatusPill(
   modifier: Modifier = Modifier,
-  status: JellyseerrMediaStatus,
+  status: JellyseerrStatus,
 ) {
   val color = when (status) {
-    JellyseerrMediaStatus.PENDING -> MaterialTheme.colors.vibrantPurple
-    JellyseerrMediaStatus.PROCESSING -> MaterialTheme.colors.vibrantPurple
-    JellyseerrMediaStatus.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
-    JellyseerrMediaStatus.AVAILABLE -> MaterialTheme.colors.emeraldGreen
-    JellyseerrMediaStatus.DELETED -> MaterialTheme.colors.crimsonRed
-    JellyseerrMediaStatus.UNKNOWN -> return
+    JellyseerrStatus.Media.UNKNOWN -> return
+    JellyseerrStatus.Request.UNKNOWN -> return
+    JellyseerrStatus.Media.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Media.PROCESSING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Media.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Media.AVAILABLE -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Media.DELETED -> MaterialTheme.colors.crimsonRed
+    JellyseerrStatus.Request.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Request.APPROVED -> MaterialTheme.colors.emeraldGreen
+    JellyseerrStatus.Request.DECLINED -> MaterialTheme.colors.crimsonRed
+    JellyseerrStatus.Request.FAILED -> MaterialTheme.colors.crimsonRed
   }
 
   Text(
@@ -36,6 +43,7 @@ fun JellyseerrStatusPill(
     maxLines = 1,
     overflow = TextOverflow.Ellipsis,
     modifier = modifier
+      .testTag(TestTags.Components.STATUS_PILL.format(stringResource(status.resourceId)))
       .background(
         shape = MaterialTheme.shape.rounded,
         color = color.copy(alpha = 0.8f),

@@ -10,6 +10,7 @@ import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestRespon
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 
@@ -39,7 +40,21 @@ class RequestMediaUseCase(
     )
 
     result.last().fold(
-      onSuccess = { emit(Result.success(it)) },
+      onSuccess = { requestResult ->
+        val requestDetails = repository
+          .getRequestDetails(requestResult.requestId)
+          .firstOrNull()?.getOrNull()
+
+        if (requestDetails != null) {
+          val updatedMediaInfo = requestResult.mediaInfo.copy(
+            requests = requestResult.mediaInfo.requests + listOf(requestDetails),
+          )
+
+          emit(Result.success(requestResult.copy(mediaInfo = updatedMediaInfo)))
+        } else {
+          emit(Result.success(requestResult))
+        }
+      },
       onFailure = { emit(Result.failure(it)) },
     )
   }

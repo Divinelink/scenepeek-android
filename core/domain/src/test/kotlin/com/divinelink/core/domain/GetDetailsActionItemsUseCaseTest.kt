@@ -23,8 +23,8 @@ class GetDetailsActionItemsUseCaseTest {
       assertThat(result.isSuccess).isTrue()
       assertThat(result.getOrNull()).isEqualTo(
         listOf(
-          DetailActionItem.RATE,
-          DetailActionItem.WATCHLIST,
+          DetailActionItem.Rate,
+          DetailActionItem.Watchlist,
         ),
       )
     }
@@ -40,9 +40,9 @@ class GetDetailsActionItemsUseCaseTest {
       assertThat(result.isSuccess).isTrue()
       assertThat(result.getOrNull()).isEqualTo(
         listOf(
-          DetailActionItem.RATE,
-          DetailActionItem.WATCHLIST,
-          DetailActionItem.REQUEST,
+          DetailActionItem.Rate,
+          DetailActionItem.Watchlist,
+          DetailActionItem.Request,
         ),
       )
     }

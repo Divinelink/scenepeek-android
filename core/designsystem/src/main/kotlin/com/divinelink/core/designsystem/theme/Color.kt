@@ -180,6 +180,7 @@ data class ExtendedColors(
 
 private data object PrimitiveColors {
   val redHighlight = Color(0xFFEF5350)
+//  val crimsonRed = Color(220, 38, 38)
   val crimsonRed = Color(0xFFDB2360)
   val vibrantPurple = Color(99, 102, 241)
   val brightOrange = Color(0xFFFF5722)

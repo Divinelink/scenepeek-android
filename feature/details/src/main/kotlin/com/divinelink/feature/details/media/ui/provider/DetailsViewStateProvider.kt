@@ -6,10 +6,10 @@ import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toTvWzd
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.TvStatus
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -95,7 +95,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tabs = MovieTab.entries,
           mediaDetails = MediaDetailsFactory.FightClub(),
           forms = DetailsFormFactory.Movie.full(),
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PENDING,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.pending(),
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.TheOffice().id,
@@ -103,7 +103,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           tabs = TvTab.entries,
           mediaDetails = MediaDetailsFactory.TheOffice(),
           forms = DetailsFormFactory.Tv.full(),
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
         DetailsViewState(
           mediaId = MediaDetailsFactory.TheOffice().id,
@@ -114,7 +114,7 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
             withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
           },
           mediaDetails = MediaDetailsFactory.TheOffice(),
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
       )
     }

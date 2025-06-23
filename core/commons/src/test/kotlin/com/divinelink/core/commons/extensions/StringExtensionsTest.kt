@@ -32,6 +32,24 @@ class StringExtensionsTest {
   }
 
   @Test
+  fun `test localizeIsoDate with valid iso date`() {
+    val date = "2025-06-22T13:00:22.000Z"
+
+    val result = date.localizeIsoDate()
+
+    assertThat(result).isEqualTo("June 22, 2025")
+  }
+
+  @Test
+  fun `test localizeIsoDate with invalid iso date`() {
+    val date = "2025-06-22T13:00:22"
+
+    val result = date.localizeIsoDate()
+
+    assertThat(result).isEqualTo("2025-06-22T13:00:22")
+  }
+
+  @Test
   fun `test extractDetailsFromDeeplink with valid url`() {
     val url = "https://www.themoviedb.org/tv/693134-dune-part-two"
 

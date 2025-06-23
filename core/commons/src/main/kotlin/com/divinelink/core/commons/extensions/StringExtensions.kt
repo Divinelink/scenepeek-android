@@ -1,5 +1,6 @@
 package com.divinelink.core.commons.extensions
 
+import com.divinelink.core.commons.Constants
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
@@ -21,6 +22,11 @@ fun String.formatTo(
 } catch (e: Exception) {
   null
 }
+
+fun String.localizeIsoDate() = this.formatTo(
+  inputFormat = Constants.ISO_8601,
+  outputFormat = Constants.MMMM_DD_YYYY,
+) ?: this
 
 fun String?.extractDetailsFromDeepLink(): Pair<Int, String>? {
   // Example URL format: "https://www.themoviedb.org/tv/693134-dune-part-two"

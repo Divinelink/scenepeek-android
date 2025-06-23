@@ -1,5 +1,6 @@
 package com.divinelink.core.network.client
 
+import JvmUnitTestDemoAssetManager
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
@@ -31,64 +32,68 @@ class JellyseerrRestClientTest {
 
   @Test
   fun `test unauthorized request triggers reAuthentication`() = runTest {
-    val requestHistory = mutableListOf<Pair<String, HttpStatusCode>>()
+    JvmUnitTestDemoAssetManager.open("request-movie.json").use {
+      val requestResponse = it.readBytes().decodeToString().trimIndent()
 
-    val expectedRequests = listOf(
-      "http://localhost:8080/api/v1/request" to HttpStatusCode.Unauthorized,
-      "http://localhost:8080/api/v1/auth/local" to HttpStatusCode.OK,
-      "http://localhost:8080/api/v1/request" to HttpStatusCode.OK,
-    )
+      val requestHistory = mutableListOf<Pair<String, HttpStatusCode>>()
 
-    var requestCount = 0
+      val expectedRequests = listOf(
+        "http://localhost:8080/api/v1/request" to HttpStatusCode.Unauthorized,
+        "http://localhost:8080/api/v1/auth/local" to HttpStatusCode.OK,
+        "http://localhost:8080/api/v1/request" to HttpStatusCode.OK,
+      )
 
-    engine = MockEngine { request ->
-      when (request.method) {
-        HttpMethod.Get -> respond(
-          content = "Failed to authenticate",
-          status = HttpStatusCode.Unauthorized,
-        )
-        HttpMethod.Post -> {
-          val response = if (requestCount == 0) {
-            respond(
-              content = "Failed to authenticate",
-              status = HttpStatusCode.Unauthorized,
-            )
-          } else {
-            respond(
-              content = """{"success": true, "status": 2}""",
-              status = HttpStatusCode.OK,
-            )
+      var requestCount = 0
+
+      engine = MockEngine { request ->
+        when (request.method) {
+          HttpMethod.Get -> respond(
+            content = "Failed to authenticate",
+            status = HttpStatusCode.Unauthorized,
+          )
+          HttpMethod.Post -> {
+            val response = if (requestCount == 0) {
+              respond(
+                content = "Failed to authenticate",
+                status = HttpStatusCode.Unauthorized,
+              )
+            } else {
+              respond(
+                content = requestResponse,
+                status = HttpStatusCode.OK,
+              )
+            }
+            requestCount++
+            response.also { requestHistory.add(request.url.toString() to response.statusCode) }
           }
-          requestCount++
-          response.also { requestHistory.add(request.url.toString() to response.statusCode) }
+          else -> error("Unexpected request method: ${request.method}")
         }
-        else -> error("Unexpected request method: ${request.method}")
       }
+
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        jellyseerrPassword = "testPassword",
+      )
+      datastore = FakePreferenceStorage(
+        jellyseerrAccount = "testAccount",
+        jellyseerrAddress = address,
+        jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
+      )
+
+      client = JellyseerrRestClient(
+        engine = engine,
+        encryptedStorage = encryptedStorage,
+        storage = datastore,
+      )
+
+      // Initial request
+      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
+        url = "http://localhost:8080/api/v1/request",
+        body = JellyseerrRequestMediaBodyApiFactory.movie(),
+      )
+
+      assertThat(requestHistory.size).isEqualTo(3)
+      assertThat(requestHistory).isEqualTo(expectedRequests)
     }
-
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-    )
-
-    client = JellyseerrRestClient(
-      engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
-    )
-
-    // Initial request
-    client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-      url = "http://localhost:8080/api/v1/request",
-      body = JellyseerrRequestMediaBodyApiFactory.movie(),
-    )
-
-    assertThat(requestHistory.size).isEqualTo(3)
-    assertThat(requestHistory).isEqualTo(expectedRequests)
   }
 
   @Test

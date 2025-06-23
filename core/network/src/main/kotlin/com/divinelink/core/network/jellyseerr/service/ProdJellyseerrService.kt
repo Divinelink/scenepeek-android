@@ -9,6 +9,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -75,6 +76,42 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     )
 
     emit(response)
+  }
+
+  override suspend fun getRequestDetails(requestId: Int): Flow<Result<MediaInfoRequestResponse>> =
+    flow {
+      val hostAddress = restClient.hostAddress()
+      if (hostAddress == null) {
+        emit(Result.failure(MissingJellyseerrHostAddressException()))
+        return@flow
+      }
+
+      val result = runCatching {
+        val url = "${restClient.hostAddress()}/api/v1/request/$requestId"
+        restClient.get<MediaInfoRequestResponse>(url = url)
+      }
+
+      emit(result)
+    }
+
+  override suspend fun deleteRequest(mediaId: Int): Result<Unit> {
+    val hostAddress = restClient.hostAddress()
+      ?: return Result.failure(MissingJellyseerrHostAddressException())
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/request/$mediaId"
+      restClient.delete<Unit>(url = url)
+    }
+  }
+
+  override suspend fun deleteMedia(mediaId: Int): Result<Unit> {
+    val hostAddress = restClient.hostAddress()
+      ?: return Result.failure(MissingJellyseerrHostAddressException())
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/media/$mediaId"
+      restClient.delete<Unit>(url = url)
+    }
   }
 
   override suspend fun getMovieDetails(

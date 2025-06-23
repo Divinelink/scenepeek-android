@@ -788,7 +788,7 @@ class GetMediaDetailsUseCaseTest {
     val channel = Channel<Result<MediaDetails>>()
 
     repository.mockFetchMediaDetails(channel)
-    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.tv())
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.available())
 
     val useCase = createGetMediaDetailsUseCase()
 
@@ -807,7 +807,9 @@ class GetMediaDetailsUseCaseTest {
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.JellyseerrDetailsSuccess(info = JellyseerrMediaInfoFactory.tv()),
+          MediaDetailsResult.JellyseerrDetailsSuccess(
+            info = JellyseerrMediaInfoFactory.Tv.available(),
+          ),
         ),
       )
     }

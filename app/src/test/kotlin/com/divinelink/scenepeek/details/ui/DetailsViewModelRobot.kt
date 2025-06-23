@@ -7,6 +7,7 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -15,6 +16,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -48,6 +50,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
+  private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
   private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
@@ -63,6 +66,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       requestMediaUseCase = fakeRequestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = testDeleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
@@ -143,6 +147,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onObfuscateSpoilers()
   }
 
+  fun onDeleteRequest(id: Int) = apply {
+    viewModel.onDeleteRequest(id)
+  }
+
   fun consumeSnackbar() = apply {
     viewModel.consumeSnackbarMessage()
   }
@@ -193,6 +201,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockAddToWatchlist(response: Flow<Result<Unit>>) = apply {
     fakeAddToWatchListUseCase.mockAddToWatchlist(
+      response = response,
+    )
+  }
+
+  fun mockDeleteRequest(response: Flow<Result<JellyseerrMediaInfo>>) = apply {
+    testDeleteRequestUseCase.mockSuccess(
       response = response,
     )
   }

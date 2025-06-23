@@ -126,6 +126,7 @@ fun DetailsScreen(
   ) {
     DetailsContent(
       viewState = viewState,
+      animatedVisibilityScope = animatedVisibilityScope,
       onNavigateUp = onNavigateUp,
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
       onSimilarMovieClicked = { movie ->
@@ -158,7 +159,7 @@ fun DetailsScreen(
       },
       onTabSelected = viewModel::onTabSelected,
       onPlayTrailerClick = { videoUrl = it },
-      animatedVisibilityScope = animatedVisibilityScope,
+      onDeleteRequest = viewModel::onDeleteRequest,
     )
 
     OverlayScreen(

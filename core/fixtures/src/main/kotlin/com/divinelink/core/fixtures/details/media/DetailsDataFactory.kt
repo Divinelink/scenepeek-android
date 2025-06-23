@@ -86,6 +86,10 @@ object DetailsDataFactory {
       items = SeasonFactory.allWithStatus(),
     )
 
+    fun seasonsAllRequested() = DetailsData.Seasons(
+      items = SeasonFactory.allRequested(),
+    )
+
     fun seasonsPartiallyAvailable() = DetailsData.Seasons(
       items = SeasonFactory.partiallyAvailable(),
     )

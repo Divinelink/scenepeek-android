@@ -13,7 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -59,7 +58,6 @@ import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.getString
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ScaffoldState.ExpandableFloatActionButton(
   modifier: Modifier = Modifier,

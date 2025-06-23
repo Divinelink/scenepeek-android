@@ -93,6 +93,8 @@ class JellyseerrRestClient(
     body: T,
   ): V = client.post(url, body)
 
+  suspend inline fun <reified T : Any> delete(url: String) = client.delete<T>(url)
+
   fun close() {
     client.close()
   }

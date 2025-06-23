@@ -20,13 +20,11 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaStatus
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -1358,7 +1356,12 @@ class DetailsViewModelTest {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PENDING,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.pending(),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageMovie,
+          ),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
@@ -1375,7 +1378,7 @@ class DetailsViewModelTest {
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
           Result.success(
             MediaDetailsResult.JellyseerrDetailsSuccess(
-              JellyseerrMediaInfoFactory.tv(),
+              JellyseerrMediaInfoFactory.Tv.available(),
             ),
           ),
         ),
@@ -1390,12 +1393,18 @@ class DetailsViewModelTest {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.allWithStatus(),
+            seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1419,7 +1428,9 @@ class DetailsViewModelTest {
           launch {
             channel.send(
               Result.success(
-                MediaDetailsResult.JellyseerrDetailsSuccess(JellyseerrMediaInfoFactory.tv()),
+                MediaDetailsResult.JellyseerrDetailsSuccess(
+                  JellyseerrMediaInfoFactory.Tv.available(),
+                ),
               ),
             )
           }
@@ -1429,7 +1440,7 @@ class DetailsViewModelTest {
             mediaType = MediaType.TV,
             tabs = TvTab.entries,
             forms = DetailsFormFactory.Tv.loading(),
-            jellyseerrMediaStatus = null,
+            jellyseerrMediaInfo = null,
             mediaId = mediaId,
             isLoading = true,
           ),
@@ -1440,7 +1451,7 @@ class DetailsViewModelTest {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasons())
             },
-            jellyseerrMediaStatus = null,
+            jellyseerrMediaInfo = null,
             mediaId = mediaId,
             isLoading = false,
             userDetails = null,
@@ -1453,12 +1464,18 @@ class DetailsViewModelTest {
               withAbout(DetailsDataFactory.Tv.about())
               withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
             },
-            jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
             mediaId = mediaId,
             isLoading = false,
             userDetails = null,
             mediaDetails = tvDetails.copy(
-              seasons = SeasonFactory.allWithStatus(),
+              seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageTvShow,
+              DetailActionItem.Request,
             ),
           ),
         ),
@@ -1496,7 +1513,12 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = null,
           mediaDetails = movieDetails,
-          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageMovie,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.feature_details_jellyseerr_success_media_request,
@@ -1540,7 +1562,12 @@ class DetailsViewModelTest {
             withAbout(DetailsDataFactory.Movie.about())
             withCast(DetailsDataFactory.Movie.cast())
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageMovie,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
@@ -1565,7 +1592,7 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetailsSuccess(
-              JellyseerrMediaInfoFactory.tvPartiallyAvailable(),
+              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
             ),
           ),
         ),
@@ -1573,7 +1600,7 @@ class DetailsViewModelTest {
       .mockRequestMedia(
         response = flowOf(
           Result.success(
-            JellyseerrMediaRequestResponseFactory.tv().copy(
+            JellyseerrMediaRequestResponseFactory.tvAllRequested().copy(
               message = "Success",
             ),
           ),
@@ -1591,12 +1618,18 @@ class DetailsViewModelTest {
               DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
             )
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.partiallyAvailable(),
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1607,17 +1640,22 @@ class DetailsViewModelTest {
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.loading().toTvWzd {
             withAbout(DetailsDataFactory.Tv.about())
-            withSeasons(DetailsDataFactory.Tv.seasonsWithStatus())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.allWithStatus(),
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
           ),
           snackbarMessage = SnackbarMessage.from(
             text = UIText.StringText("Success"),
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
           ),
         ),
       )
@@ -1636,7 +1674,7 @@ class DetailsViewModelTest {
           ),
           Result.success(
             MediaDetailsResult.JellyseerrDetailsSuccess(
-              JellyseerrMediaInfoFactory.tvPartiallyAvailable(),
+              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
             ),
           ),
         ),
@@ -1644,13 +1682,7 @@ class DetailsViewModelTest {
       .mockRequestMedia(
         response = flowOf(
           Result.success(
-            JellyseerrMediaRequestResponse(
-              message = "Failure",
-              mediaInfo = JellyseerrMediaInfo.TV(
-                status = JellyseerrMediaStatus.UNKNOWN,
-                seasons = mapOf(),
-              ),
-            ),
+            JellyseerrMediaRequestResponseFactory.tvFailure(),
           ),
         ),
       )
@@ -1666,12 +1698,18 @@ class DetailsViewModelTest {
               DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
             )
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.partiallyAvailable(),
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1684,15 +1722,21 @@ class DetailsViewModelTest {
             withAbout(DetailsDataFactory.Tv.about())
             withSeasons(DetailsDataFactory.Tv.seasonsPartiallyAvailable())
           },
-          jellyseerrMediaStatus = JellyseerrMediaStatus.PARTIALLY_AVAILABLE,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
           userDetails = null,
           mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.partiallyAvailable(),
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.StringText("Failure"),
+            text = UIText.StringText("Request failed"),
           ),
         ),
       )
@@ -2226,6 +2270,273 @@ class DetailsViewModelTest {
           mediaDetails = movieDetails,
           ratingSource = RatingSource.TMDB,
           selectedTabIndex = 1,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on TV media with success overrides seasons`() {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.success(JellyseerrMediaInfoFactory.Tv.unknown()),
+        ),
+      )
+      .onDeleteRequest(3)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_request_delete,
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on Movie media with success updates status`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Movie.processing(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = movieDetails,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageMovie,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.success(JellyseerrMediaInfoFactory.Movie.unknown()),
+        ),
+      )
+      .expectUiStates(
+        action = {
+          onDeleteRequest(3)
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.Request,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.unknown(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_request_delete,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on TV media with failure`() {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.failure(Exception("Failed to delete request")),
+        ),
+      )
+      .onDeleteRequest(3)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_failed_request_delete,
+            ),
+          ),
         ),
       )
   }

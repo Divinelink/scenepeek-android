@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components.dialog
+package com.divinelink.core.ui.components.modal.jellyseerr.request
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +37,7 @@ fun RequestMovieModal(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
-    modifier = Modifier.testTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG),
+    modifier = Modifier.testTag(TestTags.Modal.REQUEST_MOVIE),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,
@@ -86,6 +86,7 @@ fun RequestMovieModal(
           ) {
             Row(
               horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+              verticalAlignment = Alignment.CenterVertically,
             ) {
               Icon(Icons.Default.Download, null)
               Text(text = stringResource(id = R.string.core_ui_request_movie))

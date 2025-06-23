@@ -8,6 +8,8 @@ object Constants {
   const val MMM_YYYY = "MMM yyyy"
   const val YYYY_MM_DD = "yyyy-MM-dd"
 
+  const val EMPTY_JSON_RESPONSE = "{}"
+
   object String {
     const val EMPTY = ""
     const val EMPTY_DASH = "-"

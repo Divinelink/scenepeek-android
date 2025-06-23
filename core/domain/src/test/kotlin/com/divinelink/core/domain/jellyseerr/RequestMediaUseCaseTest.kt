@@ -2,6 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.media.MediaType
@@ -50,10 +51,11 @@ class RequestMediaUseCaseTest {
   }
 
   @Test
-  fun `test requestMedia with valid address`() = runTest {
+  fun `test requestMedia with success and success request details response`() = runTest {
     preferenceStorage = FakePreferenceStorage(jellyseerrAddress = "http://localhost:8096")
 
     repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.movie()))
+    repository.mockRequestDetails(Result.success(JellyseerrRequestFactory.movie()))
 
     val useCase = RequestMediaUseCase(
       repository = repository.mock,
@@ -70,7 +72,37 @@ class RequestMediaUseCaseTest {
 
     useCase.invoke(params).collect {
       assertThat(it.isSuccess).isTrue()
-      assertThat(it.getOrNull()).isEqualTo(JellyseerrMediaRequestResponseFactory.movie())
+      assertThat(it.getOrNull()).isEqualTo(
+        JellyseerrMediaRequestResponseFactory.movieWithRequest(),
+      )
+    }
+  }
+
+  @Test
+  fun `test requestMedia with success and success request with null details response`() = runTest {
+    preferenceStorage = FakePreferenceStorage(jellyseerrAddress = "http://localhost:8096")
+
+    repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.movie()))
+    repository.mockRequestDetails(Result.failure(Exception("Request details not found")))
+
+    val useCase = RequestMediaUseCase(
+      repository = repository.mock,
+      storage = preferenceStorage,
+      dispatcher = testDispatcher,
+    )
+
+    val params = JellyseerrRequestParams(
+      mediaType = MediaType.MOVIE.name,
+      mediaId = 123,
+      is4k = false,
+      seasons = emptyList(),
+    )
+
+    useCase.invoke(params).collect {
+      assertThat(it.isSuccess).isTrue()
+      assertThat(it.getOrNull()).isEqualTo(
+        JellyseerrMediaRequestResponseFactory.movie(),
+      )
     }
   }
 
