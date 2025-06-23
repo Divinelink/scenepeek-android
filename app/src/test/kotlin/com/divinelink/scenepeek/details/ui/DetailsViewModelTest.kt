@@ -2342,6 +2342,11 @@ class DetailsViewModelTest {
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_request_delete,
+            ),
+          ),
         ),
       )
   }
@@ -2449,6 +2454,88 @@ class DetailsViewModelTest {
               DetailActionItem.Request,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.unknown(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_request_delete,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteRequest on TV media with failure`() {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteRequest(
+        response = flowOf(
+          Result.failure(Exception("Failed to delete request")),
+        ),
+      )
+      .onDeleteRequest(3)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_failed_request_delete,
+            ),
           ),
         ),
       )

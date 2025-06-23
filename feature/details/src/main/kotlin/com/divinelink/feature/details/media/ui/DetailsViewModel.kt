@@ -664,14 +664,36 @@ class DetailsViewModel(
                     ),
                     actionButtons = findTvActions(updatedForms.second),
                     isLoading = false,
+                    snackbarMessage = SnackbarMessage.from(
+                      text = UIText.ResourceText(
+                        R.string.feature_details_jellyseerr_success_request_delete,
+                      ),
+                    ),
                   )
                 } else {
                   viewState.copy(
                     jellyseerrMediaInfo = mediaInfo,
                     actionButtons = findMovieActions(mediaInfo.status),
                     isLoading = false,
+                    snackbarMessage = SnackbarMessage.from(
+                      text = UIText.ResourceText(
+                        R.string.feature_details_jellyseerr_success_request_delete,
+                      ),
+                    ),
                   )
                 }
+              }
+            }
+            .onFailure {
+              _viewState.update { viewState ->
+                viewState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_details_jellyseerr_failed_request_delete,
+                    ),
+                  ),
+                )
               }
             }
         }

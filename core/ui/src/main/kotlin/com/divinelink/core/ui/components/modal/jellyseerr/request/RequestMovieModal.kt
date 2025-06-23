@@ -86,6 +86,7 @@ fun RequestMovieModal(
           ) {
             Row(
               horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+              verticalAlignment = Alignment.CenterVertically,
             ) {
               Icon(Icons.Default.Download, null)
               Text(text = stringResource(id = R.string.core_ui_request_movie))
