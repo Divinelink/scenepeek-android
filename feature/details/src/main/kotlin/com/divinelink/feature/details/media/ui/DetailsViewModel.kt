@@ -738,7 +738,7 @@ class DetailsViewModel(
 
     val updatedSeasons = currentSeasonsData.map { season ->
       val status = tvInfo.seasons[season.seasonNumber] ?: if (overrideSeasonStatus) {
-        JellyseerrStatus.Media.UNKNOWN
+        null
       } else {
         season.status
       }
@@ -756,11 +756,11 @@ class DetailsViewModel(
   private fun findTvActions(seasons: List<Season>): List<DetailActionItem> = buildList {
     add(DetailActionItem.Rate)
     add(DetailActionItem.Watchlist)
-    if (seasons.any { it.canBeRequested() }) {
-      add(DetailActionItem.Request)
-    }
     if (seasons.any { it.isAvailable() }) {
       add(DetailActionItem.ManageTvShow)
+    }
+    if (seasons.any { it.canBeRequested() }) {
+      add(DetailActionItem.Request)
     }
   }
 

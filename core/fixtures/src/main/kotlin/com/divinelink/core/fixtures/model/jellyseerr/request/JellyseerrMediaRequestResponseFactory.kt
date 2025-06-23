@@ -11,6 +11,18 @@ object JellyseerrMediaRequestResponseFactory {
     mediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
   )
 
+  fun movieWithRequest() = JellyseerrMediaRequestResponse(
+    requestId = 12,
+    message = null,
+    mediaInfo = JellyseerrMediaInfoFactory.Movie.availableWithRequest(),
+  )
+
+  fun movieProcessing() = JellyseerrMediaRequestResponse(
+    requestId = 12,
+    message = null,
+    mediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+  )
+
   fun tv() = JellyseerrMediaRequestResponse(
     requestId = 23,
     message = null,
@@ -27,5 +39,17 @@ object JellyseerrMediaRequestResponseFactory {
     requestId = 45,
     message = null,
     mediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+  )
+
+  fun movieFailure() = JellyseerrMediaRequestResponse(
+    requestId = 56,
+    message = "Request failed",
+    mediaInfo = JellyseerrMediaInfoFactory.Movie.unknown(),
+  )
+
+  fun tvFailure() = JellyseerrMediaRequestResponse(
+    requestId = 56,
+    message = "Request failed",
+    mediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
   )
 }

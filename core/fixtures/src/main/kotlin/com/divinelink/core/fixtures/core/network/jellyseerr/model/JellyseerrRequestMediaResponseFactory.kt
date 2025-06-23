@@ -17,7 +17,7 @@ object JellyseerrRequestMediaResponseFactory {
       ),
       seasons = emptyList(),
       requestedBy = RequestedByResponseFactory.bob(),
-      requestId = 3,
+      requestId = 12,
       createdAt = "2025-06-22T12:07:59.000Z",
     )
 
@@ -27,11 +27,11 @@ object JellyseerrRequestMediaResponseFactory {
     status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE.status,
     media = JellyseerrRequestMediaResponse.MediaResponse(
       tmdbId = 1399,
-      requests = emptyList(), // TODO add requests if needed
+      requests = MediaInfoRequestResponseFactory.all(),
     ),
     seasons = TvSeasonResponseFactory.partially(),
     requestedBy = RequestedByResponseFactory.rhea(),
-    requestId = 4,
+    requestId = 34,
     createdAt = "2025-06-22T12:07:59.000Z",
   )
 }

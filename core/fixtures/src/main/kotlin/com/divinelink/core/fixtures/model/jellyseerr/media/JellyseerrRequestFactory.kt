@@ -19,23 +19,23 @@ object JellyseerrRequestFactory {
       status = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
       requestDate = "June 22, 2025",
-      seasons = listOf(1),
+      seasons = listOf(2, 3),
     )
 
     fun betterCallSaul2() = JellyseerrRequest(
       id = 3,
       status = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.rhea(),
-      requestDate = "",
-      seasons = listOf(2, 3, 4),
+      requestDate = "June 21, 2025",
+      seasons = listOf(5),
     )
 
     fun betterCallSaul3() = JellyseerrRequest(
       id = 4,
-      status = JellyseerrStatus.Request.PENDING,
+      status = JellyseerrStatus.Request.DECLINED,
       requester = JellyseerrRequesterFactory.bob(),
-      requestDate = " ",
-      seasons = listOf(5, 6),
+      requestDate = "June 23, 2025",
+      seasons = listOf(1, 6),
     )
 
     fun all() = listOf(

@@ -30,6 +30,7 @@ import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFa
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
@@ -63,6 +64,7 @@ class DetailsScreenTest : ComposeTest() {
   private val requestMediaUseCase = FakeRequestMediaUseCase()
   private val fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
+  private val deleteRequestUseCase = TestDeleteRequestUseCase()
 
   @Test
   fun `test switch between movie tabs`() = runTest {
@@ -96,6 +98,7 @@ class DetailsScreenTest : ComposeTest() {
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+          deleteRequestUseCase = deleteRequestUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -170,6 +173,7 @@ class DetailsScreenTest : ComposeTest() {
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+          deleteRequestUseCase = deleteRequestUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -247,6 +251,7 @@ class DetailsScreenTest : ComposeTest() {
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -309,6 +314,7 @@ class DetailsScreenTest : ComposeTest() {
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -407,6 +413,7 @@ class DetailsScreenTest : ComposeTest() {
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+          deleteRequestUseCase = deleteRequestUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -482,6 +489,7 @@ class DetailsScreenTest : ComposeTest() {
           requestMediaUseCase = requestMediaUseCase.mock,
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+          deleteRequestUseCase = deleteRequestUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -541,6 +549,7 @@ class DetailsScreenTest : ComposeTest() {
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -604,6 +613,7 @@ class DetailsScreenTest : ComposeTest() {
       requestMediaUseCase = requestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,

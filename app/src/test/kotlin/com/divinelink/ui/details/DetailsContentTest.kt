@@ -73,6 +73,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -109,6 +110,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -143,6 +145,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -177,6 +180,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -211,6 +215,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -255,6 +260,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -292,6 +298,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -340,6 +347,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -380,6 +388,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -419,6 +428,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -468,6 +478,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -519,6 +530,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -556,6 +568,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -590,6 +603,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -629,6 +643,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -677,6 +692,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -725,6 +741,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -771,6 +788,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -813,6 +831,7 @@ class DetailsContentTest : ComposeTest() {
         onObfuscateSpoilers = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
@@ -856,6 +875,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -900,6 +920,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -943,6 +964,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -986,6 +1008,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1031,6 +1054,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1072,6 +1096,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1106,6 +1131,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1140,6 +1166,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1174,6 +1201,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1214,6 +1242,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1251,6 +1280,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1285,6 +1315,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1320,6 +1351,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1355,6 +1387,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1389,6 +1422,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1430,6 +1464,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1464,6 +1499,7 @@ class DetailsContentTest : ComposeTest() {
         onShowAllRatingsClick = {},
         onTabSelected = {},
         onPlayTrailerClick = {},
+        onDeleteRequest = {},
         animatedVisibilityScope = this,
       )
     }

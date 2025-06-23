@@ -1,6 +1,5 @@
-package com.divinelink.core.network.jellyseerr.model.movie
+package com.divinelink.core.network.jellyseerr.model
 
-import com.divinelink.core.network.jellyseerr.model.RequestedByResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import kotlinx.serialization.Serializable
 

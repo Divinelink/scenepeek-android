@@ -15,6 +15,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -48,6 +49,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
+  private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
   private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
@@ -63,6 +65,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       requestMediaUseCase = fakeRequestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = testDeleteRequestUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,

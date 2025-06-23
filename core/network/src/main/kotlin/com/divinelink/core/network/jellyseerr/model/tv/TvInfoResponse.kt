@@ -1,6 +1,6 @@
 package com.divinelink.core.network.jellyseerr.model.tv
 
-import com.divinelink.core.network.jellyseerr.model.movie.MediaInfoRequestResponse
+import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import kotlinx.serialization.Serializable
 
 @Serializable

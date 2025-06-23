@@ -23,7 +23,6 @@ fun String.formatTo(
   null
 }
 
-// TODO Add tests
 fun String.localizeIsoDate() = this.formatTo(
   inputFormat = Constants.ISO_8601,
   outputFormat = Constants.MMMM_DD_YYYY,

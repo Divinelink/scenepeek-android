@@ -9,7 +9,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
-import com.divinelink.core.network.jellyseerr.model.movie.MediaInfoRequestResponse
+import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

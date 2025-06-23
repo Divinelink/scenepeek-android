@@ -25,8 +25,6 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -1405,8 +1403,8 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
-            DetailActionItem.Request,
             DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1476,8 +1474,8 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
-              DetailActionItem.Request,
               DetailActionItem.ManageTvShow,
+              DetailActionItem.Request,
             ),
           ),
         ),
@@ -1630,8 +1628,8 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
-            DetailActionItem.Request,
             DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1684,15 +1682,7 @@ class DetailsViewModelTest {
       .mockRequestMedia(
         response = flowOf(
           Result.success(
-            JellyseerrMediaRequestResponse(
-              message = "Failure",
-              mediaInfo = JellyseerrMediaInfo(
-                mediaId = mediaId,
-                status = JellyseerrStatus.Media.UNKNOWN,
-                seasons = mapOf(),
-                requests = emptyList(),
-              ),
-            ),
+            JellyseerrMediaRequestResponseFactory.tvFailure(),
           ),
         ),
       )
@@ -1718,8 +1708,8 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
-            DetailActionItem.Request,
             DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
         ),
       )
@@ -1742,11 +1732,11 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
-            DetailActionItem.Request,
             DetailActionItem.ManageTvShow,
+            DetailActionItem.Request,
           ),
           snackbarMessage = SnackbarMessage.from(
-            text = UIText.StringText("Failure"),
+            text = UIText.StringText("Request failed"),
           ),
         ),
       )
