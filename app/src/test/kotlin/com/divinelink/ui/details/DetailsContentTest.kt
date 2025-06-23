@@ -660,7 +660,7 @@ class DetailsContentTest : ComposeTest() {
       .assertIsDisplayed()
       .performClick()
 
-    composeTestRule.onNodeWithTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG).assertIsDisplayed()
+    composeTestRule.onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
   }
 
   @Test

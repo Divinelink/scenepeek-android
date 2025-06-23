@@ -28,6 +28,8 @@ object TestTags {
     const val FILTER_BUTTON = "Filter Button"
 
     const val NAVIGATION_BAR = "App Navigation Bar"
+
+    const val STATUS_PILL = "Status Pill %s"
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
@@ -56,8 +58,6 @@ object TestTags {
   }
 
   object Details {
-    const val CONTENT_SCAFFOLD = "Details Content Scaffold"
-
     const val COLLAPSIBLE_LAYOUT = "Details Collapsible Layout"
     const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"
 
@@ -129,7 +129,6 @@ object TestTags {
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
     const val DELETE_REQUEST = "Delete Request Dialog"
 
-    const val SELECT_SEASONS_DIALOG = "Select Seasons Dialog"
     const val TOGGLE_ALL_SEASONS_SWITCH = "Season Toggle All Switch"
     const val SEASON_SWITCH = "Season Switch %s"
     const val SEASON_ROW = "Season Row %s"
@@ -138,7 +137,10 @@ object TestTags {
 
   object Modal {
     const val REQUEST_MOVIE = "Request Movie Modal"
+    const val REQUEST_SEASONS = "Select Seasons Modal"
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
+
+    const val DELETE_BUTTON = "Delete button for id %s"
   }
 
   object Settings {

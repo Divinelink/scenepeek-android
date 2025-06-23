@@ -57,7 +57,7 @@ fun RequestSeasonsModal(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
-    modifier = Modifier.testTag(TestTags.Dialogs.SELECT_SEASONS_DIALOG),
+    modifier = Modifier.testTag(TestTags.Modal.REQUEST_SEASONS),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,

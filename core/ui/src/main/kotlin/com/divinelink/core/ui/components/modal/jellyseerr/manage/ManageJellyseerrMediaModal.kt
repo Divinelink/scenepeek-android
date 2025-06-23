@@ -211,7 +211,9 @@ private fun LazyItemScope.RequestItem(
       }
 
       IconButton(
-        modifier = Modifier.align(Alignment.Top),
+        modifier = Modifier
+          .testTag(TestTags.Modal.DELETE_BUTTON.format(request.id))
+          .align(Alignment.Top),
         onClick = { onDeleteRequest(request.id) },
       ) {
         Icon(
