@@ -52,6 +52,7 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -151,9 +152,13 @@ fun DetailsContent(
     }
   }
 
-  if (showManageMediaModal) {
+  if (
+    showManageMediaModal &&
+    viewState.jellyseerrMediaInfo != null &&
+    viewState.jellyseerrMediaInfo.status != JellyseerrStatus.Media.UNKNOWN
+  ) {
     ManageJellyseerrMediaModal(
-      requests = viewState.jellyseerrMediaInfo?.requests,
+      requests = viewState.jellyseerrMediaInfo.requests,
       onDismissRequest = { showManageMediaModal = false },
       onDeleteRequest = onDeleteRequest,
       isLoading = viewState.isLoading,
