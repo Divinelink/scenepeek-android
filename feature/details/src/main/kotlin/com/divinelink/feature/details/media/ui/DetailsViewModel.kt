@@ -13,6 +13,7 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
@@ -70,6 +71,7 @@ class DetailsViewModel(
   private val requestMediaUseCase: RequestMediaUseCase,
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
+  private val deleteMediaUseCase: DeleteMediaUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -697,6 +699,30 @@ class DetailsViewModel(
               }
             }
         }
+    }
+  }
+
+  fun onDeleteMedia() {
+    _viewState.update {
+      it.copy(isLoading = true)
+    }
+    viewModelScope.launch {
+      viewState.value.jellyseerrMediaInfo?.mediaId?.let {
+        deleteMediaUseCase.invoke(it)
+          .onSuccess {
+            _viewState.update { viewState ->
+              viewState.copy(
+                isLoading = false,
+                jellyseerrMediaInfo = null,
+              )
+            }
+          }
+          .onFailure {
+            _viewState.update { viewState ->
+              viewState.copy(isLoading = false)
+            }
+          }
+      }
     }
   }
 

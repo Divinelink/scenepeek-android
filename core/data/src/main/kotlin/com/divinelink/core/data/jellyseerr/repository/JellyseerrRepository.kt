@@ -28,6 +28,8 @@ interface JellyseerrRepository {
 
   suspend fun deleteMedia(mediaId: Int): Result<Unit>
 
+  suspend fun deleteFile(mediaId: Int): Result<Unit>
+
   suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
   ): Flow<Result<JellyseerrMediaRequestResponse>>

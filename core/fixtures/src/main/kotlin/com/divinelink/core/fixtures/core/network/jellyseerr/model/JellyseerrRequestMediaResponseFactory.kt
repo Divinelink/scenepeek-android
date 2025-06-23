@@ -12,6 +12,7 @@ object JellyseerrRequestMediaResponseFactory {
       type = "movie",
       status = status.status,
       media = JellyseerrRequestMediaResponse.MediaResponse(
+        id = 123,
         tmdbId = 496244,
         requests = null,
       ),
@@ -26,6 +27,7 @@ object JellyseerrRequestMediaResponseFactory {
     type = "tv",
     status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE.status,
     media = JellyseerrRequestMediaResponse.MediaResponse(
+      id = 134,
       tmdbId = 1399,
       requests = MediaInfoRequestResponseFactory.all(),
     ),

@@ -17,6 +17,7 @@ data class JellyseerrRequestMediaResponse(
 ) {
   @Serializable
   data class MediaResponse(
+    val id: Int,
     val tmdbId: Int,
     val requests: List<MediaInfoRequestResponse>? = null,
   )

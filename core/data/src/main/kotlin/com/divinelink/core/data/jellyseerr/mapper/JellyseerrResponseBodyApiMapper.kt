@@ -10,7 +10,7 @@ fun JellyseerrRequestMediaResponse.map() = JellyseerrMediaRequestResponse(
   requestId = requestId,
   message = message,
   mediaInfo = JellyseerrMediaInfo(
-    mediaId = media.tmdbId,
+    mediaId = media.id,
     seasons = seasons?.associate {
       it.seasonNumber to JellyseerrStatus.Media.from(it.status)
     } ?: emptyMap(),

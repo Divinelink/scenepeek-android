@@ -73,6 +73,8 @@ class ProdJellyseerrRepository(
   override suspend fun deleteMedia(mediaId: Int): Result<Unit> = service
     .deleteMedia(mediaId)
 
+  override suspend fun deleteFile(mediaId: Int): Result<Unit> = service.deleteFile(mediaId)
+
   override suspend fun getRequestDetails(requestId: Int): Flow<Result<JellyseerrRequest>> = service
     .getRequestDetails(requestId)
     .map {

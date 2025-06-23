@@ -10,6 +10,13 @@ class DeleteMediaUseCase(
 ) : UseCase<Int, Unit>(dispatcher.default) {
 
   override suspend fun execute(parameters: Int) {
-    repository.deleteMedia(parameters)
+    repository
+      .deleteFile(parameters)
+      .onFailure {
+        repository.deleteMedia(parameters)
+      }
+      .onSuccess {
+        repository.deleteMedia(parameters)
+      }
   }
 }

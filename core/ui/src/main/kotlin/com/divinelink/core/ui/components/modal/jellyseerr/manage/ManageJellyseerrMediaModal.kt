@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,6 +51,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
@@ -58,9 +61,12 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 @Composable
 fun ManageJellyseerrMediaModal(
   requests: List<JellyseerrRequest>?,
+  mediaType: MediaType,
   isLoading: Boolean,
   onDeleteRequest: (Int) -> Unit,
   onDismissRequest: () -> Unit,
+  onRemoveMedia: () -> Unit,
+  onClearData: () -> Unit,
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   var deleteRequestId: Int? by remember { mutableStateOf(null) }
@@ -84,8 +90,15 @@ fun ManageJellyseerrMediaModal(
     content = {
       ManageJellyseerrMediaContent(
         isLoading = isLoading,
+        mediaType = mediaType,
         requests = requests,
         onDeleteRequest = { deleteRequestId = it },
+        onRemoveMedia = {
+          onRemoveMedia()
+        },
+        onClearData = {
+          onClearData()
+        },
       )
     },
   )
@@ -94,8 +107,11 @@ fun ManageJellyseerrMediaModal(
 @Composable
 fun ManageJellyseerrMediaContent(
   isLoading: Boolean,
+  mediaType: MediaType,
   requests: List<JellyseerrRequest>?,
   onDeleteRequest: (Int) -> Unit,
+  onRemoveMedia: () -> Unit,
+  onClearData: () -> Unit,
 ) {
   LazyColumn(
     modifier = Modifier
@@ -129,7 +145,105 @@ fun ManageJellyseerrMediaContent(
           onDeleteRequest = onDeleteRequest,
         )
       }
+
+      item {
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+        MediaSection(
+          mediaType = mediaType,
+          onClick = onRemoveMedia,
+        )
+      }
+
+      item {
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+        AdvancedSection(
+          mediaType = mediaType,
+          onClick = onClearData,
+        )
+      }
     }
+  }
+}
+
+@Composable
+private fun MediaSection(
+  mediaType: MediaType,
+  onClick: () -> Unit,
+) {
+  val text = when (mediaType) {
+    MediaType.MOVIE -> stringResource(R.string.core_ui_remove_from_radarr)
+    else -> stringResource(R.string.core_ui_remove_from_sonarr)
+  }
+  val description = when (mediaType) {
+    MediaType.MOVIE -> stringResource(R.string.core_ui_remove_from_radarr_description)
+    else -> stringResource(R.string.core_ui_remove_from_sonarr_description)
+  }
+  Column(
+    modifier = Modifier
+      .fillMaxWidth(),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+  ) {
+    Text(
+      text = stringResource(R.string.core_ui_media),
+      style = MaterialTheme.typography.headlineSmall,
+    )
+
+    Button(
+      modifier = Modifier.fillMaxWidth(),
+      colors = ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colors.crimsonRed,
+      ),
+      onClick = onClick,
+    ) {
+      Text(
+        text = text,
+        color = Color.White,
+      )
+    }
+    Text(
+      text = description,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+    )
+  }
+}
+
+@Composable
+private fun AdvancedSection(
+  mediaType: MediaType,
+  onClick: () -> Unit,
+) {
+  val description = when (mediaType) {
+    MediaType.MOVIE -> stringResource(R.string.core_ui_clear_data_movie_description)
+    else -> stringResource(R.string.core_ui_clear_data_series_description)
+  }
+  Column(
+    modifier = Modifier
+      .fillMaxWidth(),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+  ) {
+    Text(
+      text = stringResource(R.string.core_ui_advanced),
+      style = MaterialTheme.typography.headlineSmall,
+    )
+
+    Button(
+      modifier = Modifier.fillMaxWidth(),
+      colors = ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colors.crimsonRed,
+      ),
+      onClick = onClick,
+    ) {
+      Text(
+        text = stringResource(R.string.core_ui_clear_data),
+        color = Color.White,
+      )
+    }
+    Text(
+      text = description,
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+    )
   }
 }
 
@@ -155,7 +269,12 @@ private fun DeleteRequestDialog(
           containerColor = MaterialTheme.colors.crimsonRed,
         ),
         onClick = { onConfirm() },
-        content = { Text(stringResource(id = R.string.core_ui_delete)) },
+        content = {
+          Text(
+            text = stringResource(id = R.string.core_ui_delete),
+            color = Color.White,
+          )
+        },
       )
     },
   )
@@ -283,8 +402,11 @@ fun ManageJellyseerrMediaContentPreview() {
     Surface {
       ManageJellyseerrMediaContent(
         requests = JellyseerrRequestFactory.Tv.all(),
+        mediaType = MediaType.TV,
         isLoading = false,
         onDeleteRequest = {},
+        onRemoveMedia = {},
+        onClearData = {},
       )
     }
   }
@@ -297,8 +419,11 @@ fun ManageJellyseerrMediaContentLoadingPreview() {
     Surface {
       ManageJellyseerrMediaContent(
         requests = listOf(JellyseerrRequestFactory.movie()),
+        mediaType = MediaType.MOVIE,
         isLoading = true,
         onDeleteRequest = {},
+        onRemoveMedia = {},
+        onClearData = {},
       )
     }
   }
