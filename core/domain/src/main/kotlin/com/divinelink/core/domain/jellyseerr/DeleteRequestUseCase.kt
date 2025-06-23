@@ -28,14 +28,19 @@ class DeleteRequestUseCase(
             is MediaRequestApi.Movie -> {
               val details = repository.getMovieDetails(mediaRequest.movieId).firstOrNull()
 
-              details?.let {
+              if (details != null) {
                 emit(Result.success(details))
+              } else {
+                emit(Result.failure(Exception("Movie details not found")))
               }
             }
             is MediaRequestApi.TV -> {
               val details = repository.getTvDetails(mediaRequest.seriesId).firstOrNull()
-              details?.let {
+
+              if (details != null) {
                 emit(Result.success(details))
+              } else {
+                emit(Result.failure(Exception("TV details not found")))
               }
             }
             else -> emit(Result.failure(Exception("Unsupported media request type")))

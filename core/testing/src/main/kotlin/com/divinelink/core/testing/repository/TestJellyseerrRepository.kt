@@ -46,6 +46,10 @@ class TestJellyseerrRepository {
     whenever(mock.getRequestDetails(any())).thenReturn(flowOf(response))
   }
 
+  suspend fun mockDeleteRequest(response: Result<Unit>) {
+    whenever(mock.deleteRequest(any())).thenReturn(response)
+  }
+
   suspend fun mockGetMovieDetails(response: JellyseerrMediaInfo?) {
     whenever(mock.getMovieDetails(any())).thenReturn(flowOf(response))
   }

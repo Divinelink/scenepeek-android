@@ -7,6 +7,7 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -146,6 +147,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onObfuscateSpoilers()
   }
 
+  fun onDeleteRequest(id: Int) = apply {
+    viewModel.onDeleteRequest(id)
+  }
+
   fun consumeSnackbar() = apply {
     viewModel.consumeSnackbarMessage()
   }
@@ -196,6 +201,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockAddToWatchlist(response: Flow<Result<Unit>>) = apply {
     fakeAddToWatchListUseCase.mockAddToWatchlist(
+      response = response,
+    )
+  }
+
+  fun mockDeleteRequest(response: Flow<Result<JellyseerrMediaInfo>>) = apply {
+    testDeleteRequestUseCase.mockSuccess(
       response = response,
     )
   }

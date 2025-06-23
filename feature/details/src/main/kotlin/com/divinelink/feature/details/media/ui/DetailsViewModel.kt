@@ -674,9 +674,6 @@ class DetailsViewModel(
                 }
               }
             }
-            .onFailure {
-              // TODO Handle error
-            }
         }
     }
   }
