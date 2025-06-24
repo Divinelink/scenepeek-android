@@ -28,7 +28,7 @@ sealed interface JellyseerrStatus {
     override val resourceId: Int,
   ) : JellyseerrStatus {
     UNKNOWN(1, R.string.core_model_status_unknown),
-    PENDING(2, R.string.core_model_status_requested),
+    PENDING(2, R.string.core_model_status_pending),
     PROCESSING(3, R.string.core_model_status_requested),
     PARTIALLY_AVAILABLE(4, R.string.core_model_status_partially_available),
     AVAILABLE(5, R.string.core_model_status_available),

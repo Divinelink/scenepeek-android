@@ -29,7 +29,7 @@ fun JellyseerrStatusPill(
   val color = when (status) {
     JellyseerrStatus.Media.UNKNOWN -> return
     JellyseerrStatus.Request.UNKNOWN -> return
-    JellyseerrStatus.Media.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Media.PENDING -> MaterialTheme.colors.limeYellow
     JellyseerrStatus.Media.PROCESSING -> MaterialTheme.colors.vibrantPurple
     JellyseerrStatus.Media.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
     JellyseerrStatus.Media.AVAILABLE -> MaterialTheme.colors.emeraldGreen
