@@ -294,6 +294,7 @@ fun DetailsContent(
               isAppBarVisible = showTitle
             },
             onBackdropLoaded = { onBackdropLoaded = true },
+            onOpenManageModal = { showManageMediaModal = true },
             scope = scope,
           )
           null -> {
@@ -330,6 +331,7 @@ private fun MediaDetailsContent(
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  onOpenManageModal: () -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -361,6 +363,7 @@ private fun MediaDetailsContent(
     onShowTitle = onShowTitle,
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
+    onOpenManageModal = onOpenManageModal,
   ) {
     Column(
       modifier = Modifier

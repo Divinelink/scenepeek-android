@@ -32,6 +32,7 @@ fun DynamicDetailsCollapsingToolbar(
   onShowTitle: (Boolean) -> Unit,
   onWatchTrailerClick: () -> Unit,
   onBackdropLoaded: () -> Unit,
+  onOpenManageModal: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   SubcomposeLayout { constraints ->
@@ -50,6 +51,7 @@ fun DynamicDetailsCollapsingToolbar(
         onAddRateClick = onAddRateClick,
         onShowAllRatingsClick = onShowAllRatingsClick,
         onWatchTrailerClick = onWatchTrailerClick,
+        onOpenManageModal = onOpenManageModal,
       )
     }.first().measure(constraints)
 
@@ -91,6 +93,7 @@ fun DynamicDetailsCollapsingToolbar(
               onAddRateClick = onAddRateClick,
               onShowAllRatingsClick = onShowAllRatingsClick,
               onWatchTrailerClick = onWatchTrailerClick,
+              onOpenManageModal = onOpenManageModal,
             )
           }
         },

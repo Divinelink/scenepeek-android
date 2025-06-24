@@ -2,6 +2,7 @@ package com.divinelink.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,11 +17,13 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.conditional
 
 @Composable
 fun JellyseerrStatusPill(
   modifier: Modifier = Modifier,
   status: JellyseerrStatus,
+  onClick: (() -> Unit)? = null,
 ) {
   val color = when (status) {
     JellyseerrStatus.Media.UNKNOWN -> return
@@ -54,8 +57,18 @@ fun JellyseerrStatusPill(
         shape = MaterialTheme.shape.rounded,
       )
       .padding(
-        vertical = MaterialTheme.dimensions.keyline_4,
+        vertical = if (onClick == null) {
+          MaterialTheme.dimensions.keyline_4
+        } else {
+          MaterialTheme.dimensions.keyline_6
+        },
         horizontal = MaterialTheme.dimensions.keyline_8,
+      )
+      .conditional(
+        condition = onClick != null,
+        ifTrue = {
+          clickable(onClick = onClick!!)
+        },
       ),
   )
 }
