@@ -16,6 +16,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
@@ -51,6 +52,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
+  private val testDeleteMediaUseCase = TestDeleteMediaUseCase()
   private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
@@ -67,6 +69,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
+      deleteMediaUseCase = testDeleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
@@ -151,6 +154,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.onDeleteRequest(id)
   }
 
+  fun onDeleteMedia(deleteFile: Boolean) = apply {
+    viewModel.onDeleteMedia(deleteFile)
+  }
+
   fun consumeSnackbar() = apply {
     viewModel.consumeSnackbarMessage()
   }
@@ -207,6 +214,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockDeleteRequest(response: Flow<Result<JellyseerrMediaInfo>>) = apply {
     testDeleteRequestUseCase.mockSuccess(
+      response = response,
+    )
+  }
+
+  suspend fun mockDeleteMedia(response: Result<Unit>) = apply {
+    testDeleteMediaUseCase.mockSuccess(
       response = response,
     )
   }

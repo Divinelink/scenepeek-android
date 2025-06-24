@@ -42,6 +42,7 @@ import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
@@ -114,6 +115,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var spoilersObfuscationUseCase: SpoilersObfuscationUseCase
   private lateinit var fetchAllRatingsUseCase: TestFetchAllRatingsUseCase
   private lateinit var deleteRequestUseCase: TestDeleteRequestUseCase
+  private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
 
   // Onboarding use cases
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
@@ -141,6 +143,7 @@ class ScenePeekAppTest : ComposeTest() {
     fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
     spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
     deleteRequestUseCase = TestDeleteRequestUseCase()
+    deleteMediaUseCase = TestDeleteMediaUseCase()
 
     startKoin {
       androidContext(composeTestRule.activity)
@@ -677,6 +680,7 @@ class ScenePeekAppTest : ComposeTest() {
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         deleteRequestUseCase = deleteRequestUseCase.mock,
+        deleteMediaUseCase = deleteMediaUseCase.mock,
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,

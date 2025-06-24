@@ -7,28 +7,28 @@ object JellyseerrMediaInfoFactory {
 
   object Movie {
     fun unknown() = JellyseerrMediaInfo(
-      mediaId = 496244,
+      mediaId = 123,
       requests = emptyList(),
       status = JellyseerrStatus.Media.UNKNOWN,
       seasons = emptyMap(),
     )
 
     fun available() = JellyseerrMediaInfo(
-      mediaId = 496244,
+      mediaId = 123,
       requests = emptyList(),
       status = JellyseerrStatus.Media.AVAILABLE,
       seasons = emptyMap(),
     )
 
     fun availableWithRequest() = JellyseerrMediaInfo(
-      mediaId = 496244,
+      mediaId = 123,
       requests = listOf(JellyseerrRequestFactory.movie()),
       status = JellyseerrStatus.Media.AVAILABLE,
       seasons = emptyMap(),
     )
 
     fun processing() = JellyseerrMediaInfo(
-      mediaId = 496244,
+      mediaId = 123,
       requests = emptyList(),
       status = JellyseerrStatus.Media.PROCESSING,
       seasons = emptyMap(),
@@ -44,7 +44,7 @@ object JellyseerrMediaInfoFactory {
 
   object Tv {
     fun available() = JellyseerrMediaInfo(
-      mediaId = 1399,
+      mediaId = 134,
       requests = emptyList(),
       status = JellyseerrStatus.Media.AVAILABLE,
       seasons = mapOf(
@@ -61,7 +61,7 @@ object JellyseerrMediaInfoFactory {
     )
 
     fun requested() = JellyseerrMediaInfo(
-      mediaId = 1399,
+      mediaId = 134,
       requests = emptyList(),
       status = JellyseerrStatus.Media.AVAILABLE,
       seasons = mapOf(
@@ -78,7 +78,7 @@ object JellyseerrMediaInfoFactory {
     )
 
     fun partiallyAvailable() = JellyseerrMediaInfo(
-      mediaId = 1399,
+      mediaId = 134,
       requests = JellyseerrRequestFactory.Tv.all(),
       status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
       seasons = mapOf(
@@ -88,7 +88,7 @@ object JellyseerrMediaInfoFactory {
     )
 
     fun unknown() = JellyseerrMediaInfo(
-      mediaId = 1399,
+      mediaId = 134,
       requests = emptyList(),
       status = JellyseerrStatus.Media.UNKNOWN,
       seasons = mapOf(),

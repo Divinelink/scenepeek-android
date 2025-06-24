@@ -16,16 +16,9 @@ class DeleteMediaUseCase(
 
   override suspend fun execute(parameters: DeleteMediaParameters) {
     if (parameters.deleteFile) {
-      repository
-        .deleteFile(parameters.mediaId)
-        .onFailure {
-          repository.deleteMedia(parameters.mediaId)
-        }
-        .onSuccess {
-          repository.deleteMedia(parameters.mediaId)
-        }
-    } else {
-      repository.deleteMedia(parameters.mediaId)
+      repository.deleteFile(parameters.mediaId)
     }
+
+    repository.deleteMedia(parameters.mediaId).getOrThrow()
   }
 }
