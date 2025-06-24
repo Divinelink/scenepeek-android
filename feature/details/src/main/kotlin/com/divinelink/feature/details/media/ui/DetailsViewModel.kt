@@ -257,7 +257,7 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(updatedForms.second),
+                    actionButtons = findTvActions(tvInfo.status, updatedForms.second),
                   )
                 } else {
                   viewState.copy(
@@ -515,19 +515,24 @@ class DetailsViewModel(
               overrideSeasonStatus = false,
             )
 
+            val jellyseerrInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
+              viewState.value.jellyseerrMediaInfo
+            } else {
+              tvInfo
+            }
+
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
-                  viewState.jellyseerrMediaInfo
-                } else {
-                  tvInfo
-                },
+                jellyseerrMediaInfo = jellyseerrInfo,
                 forms = updatedForms.first,
                 mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                   seasons = updatedForms.second,
                 ),
-                actionButtons = findTvActions(updatedForms.second),
+                actionButtons = findTvActions(
+                  tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
+                  updatedForms.second,
+                ),
               )
             }
           } else {
@@ -666,7 +671,7 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(updatedForms.second),
+                    actionButtons = findTvActions(tvStatus = mediaInfo.status, updatedForms.second),
                     isLoading = false,
                     snackbarMessage = SnackbarMessage.from(
                       text = UIText.ResourceText(
@@ -839,10 +844,13 @@ class DetailsViewModel(
     return updatedForms to updatedSeasons.filterNot { it.seasonNumber == 0 }
   }
 
-  private fun findTvActions(seasons: List<Season>): List<DetailActionItem> = buildList {
+  private fun findTvActions(
+    tvStatus: JellyseerrStatus,
+    seasons: List<Season>,
+  ): List<DetailActionItem> = buildList {
     add(DetailActionItem.Rate)
     add(DetailActionItem.Watchlist)
-    if (seasons.any { it.isAvailable() }) {
+    if (seasons.any { it.isAvailable() } || tvStatus != JellyseerrStatus.Media.UNKNOWN) {
       add(DetailActionItem.ManageTvShow)
     }
     if (seasons.any { it.canBeRequested() }) {
