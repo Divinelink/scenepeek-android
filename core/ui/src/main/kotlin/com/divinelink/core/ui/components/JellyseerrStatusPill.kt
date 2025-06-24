@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -51,6 +52,13 @@ fun JellyseerrStatusPill(
         shape = MaterialTheme.shape.rounded,
         color = color.copy(alpha = 0.8f),
       )
+      .clip(MaterialTheme.shape.rounded)
+      .conditional(
+        condition = onClick != null,
+        ifTrue = {
+          clickable(onClick = onClick!!)
+        },
+      )
       .border(
         width = MaterialTheme.dimensions.keyline_1,
         color = color,
@@ -63,12 +71,6 @@ fun JellyseerrStatusPill(
           MaterialTheme.dimensions.keyline_6
         },
         horizontal = MaterialTheme.dimensions.keyline_8,
-      )
-      .conditional(
-        condition = onClick != null,
-        ifTrue = {
-          clickable(onClick = onClick!!)
-        },
       ),
   )
 }
