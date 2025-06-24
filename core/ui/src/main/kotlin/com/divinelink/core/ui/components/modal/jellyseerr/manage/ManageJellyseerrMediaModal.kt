@@ -23,7 +23,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +49,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
 import com.divinelink.core.model.media.MediaType
@@ -56,6 +57,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.JellyseerrStatusPill
+import com.divinelink.core.ui.getString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,18 +67,23 @@ fun ManageJellyseerrMediaModal(
   isLoading: Boolean,
   onDeleteRequest: (Int) -> Unit,
   onDismissRequest: () -> Unit,
-  onRemoveMedia: () -> Unit,
-  onClearData: () -> Unit,
+  onDeleteMedia: (deleteFile: Boolean) -> Unit,
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-  var deleteRequestId: Int? by remember { mutableStateOf(null) }
+  var dialogInfo by remember { mutableStateOf<JellyseerrDialogInfo?>(null) }
 
-  if (deleteRequestId != null) {
+  dialogInfo?.let { info ->
     DeleteRequestDialog(
-      onDismissRequest = { deleteRequestId = null },
+      info = info,
+      onDismissRequest = { dialogInfo = null },
       onConfirm = {
-        deleteRequestId?.let(onDeleteRequest)
-        deleteRequestId = null
+        when (info) {
+          is JellyseerrDialogInfo.DeleteRequest -> onDeleteRequest(info.requestId)
+          is JellyseerrDialogInfo.RemoveFromSonarr -> onDeleteMedia(true)
+          is JellyseerrDialogInfo.RemoveFromRadarr -> onDeleteMedia(true)
+          is JellyseerrDialogInfo.ClearData -> onDeleteMedia(false)
+        }
+        dialogInfo = null
       },
     )
   }
@@ -92,12 +99,16 @@ fun ManageJellyseerrMediaModal(
         isLoading = isLoading,
         mediaType = mediaType,
         requests = requests,
-        onDeleteRequest = { deleteRequestId = it },
+        onDeleteRequest = { dialogInfo = JellyseerrDialogInfo.DeleteRequest(it) },
         onRemoveMedia = {
-          onRemoveMedia()
+          dialogInfo = when (mediaType) {
+            MediaType.MOVIE -> JellyseerrDialogInfo.RemoveFromRadarr
+            MediaType.TV -> JellyseerrDialogInfo.RemoveFromSonarr
+            else -> null
+          }
         },
         onClearData = {
-          onClearData()
+          dialogInfo = JellyseerrDialogInfo.ClearData(mediaType == MediaType.MOVIE)
         },
       )
     },
@@ -145,22 +156,24 @@ fun ManageJellyseerrMediaContent(
           onDeleteRequest = onDeleteRequest,
         )
       }
-
       item {
         Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
-        MediaSection(
-          mediaType = mediaType,
-          onClick = onRemoveMedia,
-        )
       }
+    }
 
-      item {
-        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
-        AdvancedSection(
-          mediaType = mediaType,
-          onClick = onClearData,
-        )
-      }
+    item {
+      MediaSection(
+        mediaType = mediaType,
+        onClick = onRemoveMedia,
+      )
+    }
+
+    item {
+      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+      AdvancedSection(
+        mediaType = mediaType,
+        onClick = onClearData,
+      )
     }
   }
 }
@@ -201,7 +214,7 @@ private fun MediaSection(
       )
     }
     Text(
-      text = description,
+      text = "* $description",
       style = MaterialTheme.typography.bodySmall,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
     )
@@ -240,7 +253,7 @@ private fun AdvancedSection(
       )
     }
     Text(
-      text = description,
+      text = "* $description",
       style = MaterialTheme.typography.bodySmall,
       color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
     )
@@ -249,16 +262,17 @@ private fun AdvancedSection(
 
 @Composable
 private fun DeleteRequestDialog(
+  info: JellyseerrDialogInfo,
   onDismissRequest: () -> Unit,
   onConfirm: () -> Unit,
 ) {
   AlertDialog(
     modifier = Modifier.testTag(TestTags.Dialogs.DELETE_REQUEST),
-    title = { Text(stringResource(id = R.string.core_ui_delete_request_title)) },
-    text = { Text(stringResource(id = R.string.core_ui_delete_request_confirmation_text)) },
+    title = { Text(info.title.getString()) },
+    text = { Text(info.message.getString()) },
     onDismissRequest = onDismissRequest,
     dismissButton = {
-      ElevatedButton(
+      TextButton(
         onClick = onDismissRequest,
         content = { Text(stringResource(id = R.string.core_ui_cancel)) },
       )
@@ -268,7 +282,7 @@ private fun DeleteRequestDialog(
         colors = ButtonDefaults.buttonColors(
           containerColor = MaterialTheme.colors.crimsonRed,
         ),
-        onClick = { onConfirm() },
+        onClick = onConfirm,
         content = {
           Text(
             text = stringResource(id = R.string.core_ui_delete),
@@ -427,4 +441,35 @@ fun ManageJellyseerrMediaContentLoadingPreview() {
       )
     }
   }
+}
+
+sealed class JellyseerrDialogInfo(
+  val title: UIText,
+  val message: UIText,
+) {
+  data class DeleteRequest(val requestId: Int) :
+    JellyseerrDialogInfo(
+      title = UIText.ResourceText(R.string.core_ui_delete_request_title),
+      message = UIText.ResourceText(R.string.core_ui_delete_request_confirmation_text),
+    )
+
+  data object RemoveFromSonarr : JellyseerrDialogInfo(
+    title = UIText.ResourceText(R.string.core_ui_remove_from_sonarr),
+    message = UIText.ResourceText(R.string.core_ui_remove_from_sonarr_description),
+  )
+
+  data object RemoveFromRadarr : JellyseerrDialogInfo(
+    title = UIText.ResourceText(R.string.core_ui_remove_from_radarr),
+    message = UIText.ResourceText(R.string.core_ui_remove_from_radarr_description),
+  )
+
+  data class ClearData(val isMovie: Boolean) :
+    JellyseerrDialogInfo(
+      title = UIText.ResourceText(R.string.core_ui_clear_data),
+      message = if (isMovie) {
+        UIText.ResourceText(R.string.core_ui_clear_data_movie_description)
+      } else {
+        UIText.ResourceText(R.string.core_ui_clear_data_series_description)
+      },
+    )
 }

@@ -13,6 +13,7 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
@@ -24,6 +25,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.canBeRequested
+import com.divinelink.core.model.details.clearSeasonsStatus
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
@@ -702,24 +704,63 @@ class DetailsViewModel(
     }
   }
 
-  fun onDeleteMedia() {
+  fun onDeleteMedia(deleteFile: Boolean) {
     _viewState.update {
       it.copy(isLoading = true)
     }
     viewModelScope.launch {
-      viewState.value.jellyseerrMediaInfo?.mediaId?.let {
-        deleteMediaUseCase.invoke(it)
+      viewState.value.jellyseerrMediaInfo?.mediaId?.let { mediaId ->
+        deleteMediaUseCase.invoke(
+          DeleteMediaParameters(
+            mediaId = mediaId,
+            deleteFile = deleteFile,
+          ),
+        )
           .onSuccess {
             _viewState.update { viewState ->
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
+                actionButtons = listOf(
+                  DetailActionItem.Rate,
+                  DetailActionItem.Watchlist,
+                  DetailActionItem.Request,
+                ),
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.feature_details_jellyseerr_success_media_delete,
+                    viewState.mediaDetails?.title ?: "",
+                  ),
+                ),
+                mediaDetails = viewState.mediaDetails.clearSeasonsStatus(),
+                forms = if (viewState.mediaType == MediaType.TV) {
+                  val form = _viewState.value.forms[TvTab.Seasons.order] as? DetailsForm.Content
+                  val clearedSeasons = (form?.data as? DetailsData.Seasons)?.items?.map { season ->
+                    season.copy(status = null)
+                  } ?: emptyList()
+
+                  viewState.forms + mapOf(
+                    TvTab.Seasons.order to DetailsForm.Content(
+                      DetailsData.Seasons(clearedSeasons),
+                    ),
+                  )
+                } else {
+                  viewState.forms
+                },
               )
             }
           }
           .onFailure {
             _viewState.update { viewState ->
-              viewState.copy(isLoading = false)
+              viewState.copy(
+                isLoading = false,
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.feature_details_jellyseerr_failure_media_delete,
+                    viewState.mediaDetails?.title ?: "",
+                  ),
+                ),
+              )
             }
           }
       }

@@ -22,6 +22,8 @@
   <string name="feature_details_genres">Genres</string>
 
   <string name="feature_details_jellyseerr_success_request_delete">Request deleted successfully</string>
+  <string name="feature_details_jellyseerr_success_media_delete"><b>%s</b> successfully removed</string>
+  <string name="feature_details_jellyseerr_failure_media_delete">Failed to remove <b>%s</b></string>
   <string name="feature_details_jellyseerr_failed_request_delete">Failed to delete request</string>
   <string name="feature_details_jellyseerr_success_media_request">%s requested successfully</string>
   <string name="feature_details_jellyseerr_request_exists">Request for this media already exists.</string>

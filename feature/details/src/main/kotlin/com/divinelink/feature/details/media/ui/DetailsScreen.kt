@@ -160,10 +160,7 @@ fun DetailsScreen(
       onTabSelected = viewModel::onTabSelected,
       onPlayTrailerClick = { videoUrl = it },
       onDeleteRequest = viewModel::onDeleteRequest,
-      onRemoveMedia = viewModel::onDeleteMedia,
-      onClearData = {
-//        viewModel::onClearData
-      },
+      onDeleteMedia = viewModel::onDeleteMedia,
     )
 
     OverlayScreen(

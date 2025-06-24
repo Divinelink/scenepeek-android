@@ -109,8 +109,7 @@ fun DetailsContent(
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
   onDeleteRequest: (Int) -> Unit,
-  onRemoveMedia: () -> Unit,
-  onClearData: () -> Unit,
+  onDeleteMedia: (Boolean) -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -152,19 +151,22 @@ fun DetailsContent(
     }
   }
 
-  if (
-    showManageMediaModal &&
-    viewState.jellyseerrMediaInfo != null &&
-    viewState.jellyseerrMediaInfo.status != JellyseerrStatus.Media.UNKNOWN
-  ) {
+  LaunchedEffect(viewState.jellyseerrMediaInfo) {
+    if (viewState.jellyseerrMediaInfo?.status == JellyseerrStatus.Media.UNKNOWN ||
+      viewState.jellyseerrMediaInfo == null
+    ) {
+      showManageMediaModal = false
+    }
+  }
+
+  if (showManageMediaModal) {
     ManageJellyseerrMediaModal(
-      requests = viewState.jellyseerrMediaInfo.requests,
+      requests = viewState.jellyseerrMediaInfo?.requests,
       onDismissRequest = { showManageMediaModal = false },
       onDeleteRequest = onDeleteRequest,
       isLoading = viewState.isLoading,
       mediaType = viewState.mediaType,
-      onRemoveMedia = onRemoveMedia,
-      onClearData = onClearData,
+      onDeleteMedia = onDeleteMedia,
     )
   }
 
@@ -473,8 +475,7 @@ fun DetailsContentPreview(
               onTabSelected = {},
               onPlayTrailerClick = {},
               onDeleteRequest = {},
-              onRemoveMedia = {},
-              onClearData = {},
+              onDeleteMedia = {},
             )
           }
         }

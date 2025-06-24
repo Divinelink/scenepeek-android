@@ -68,16 +68,15 @@
 
   <string name="core_ui_media">Media</string>
   <string name="core_ui_remove_from_radarr">Remove from Radarr</string>
-  <string name="core_ui_remove_from_radarr_description">* This will irreversibly remove this movie from Radarr, including all files.</string>
+  <string name="core_ui_remove_from_radarr_description">This will irreversibly remove this movie from Radarr, including all files.</string>
 
   <string name="core_ui_remove_from_sonarr">Remove from Sonarr</string>
-  <string name="core_ui_remove_from_sonarr_description">* This will irreversibly remove this movie from Sonarr, including all files.</string>
+  <string name="core_ui_remove_from_sonarr_description">This will irreversibly remove this movie from Sonarr, including all files.</string>
 
   <string name="core_ui_advanced">Advanced</string>
   <string name="core_ui_clear_data">Clear data</string>
-  <string name="core_ui_clear_data_movie_description">* This will irreversibly remove all data for this movie, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
-  <string name="core_ui_clear_data_series_description">* This will irreversibly remove all data for this series, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
-
+  <string name="core_ui_clear_data_movie_description">This will irreversibly remove all data for this movie, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
+  <string name="core_ui_clear_data_series_description">This will irreversibly remove all data for this series, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
 
   <string name="core_ui_load_more">Loading more…</string>
 
@@ -103,6 +102,9 @@
 
   <string name="core_ui_delete_request_title">Delete request</string>
   <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>
+
+  <string name="core_ui_clear_media_title">Clear data</string>
+
 
   <string name="core_ui_read_more">Read more</string>
   <string name="core_ui_show_more">Show more</string>
