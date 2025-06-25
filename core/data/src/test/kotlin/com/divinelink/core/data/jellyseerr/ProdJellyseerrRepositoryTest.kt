@@ -310,11 +310,11 @@ class ProdJellyseerrRepositoryTest {
     assertThat(result.first()).isEqualTo(
       JellyseerrMediaInfoFactory.Tv.partiallyAvailable().copy(
         seasons = mapOf(
-          2 to JellyseerrStatus.Media.AVAILABLE,
-          3 to JellyseerrStatus.Media.AVAILABLE,
-          5 to JellyseerrStatus.Media.PROCESSING,
+          2 to JellyseerrStatus.Media.DELETED,
+          3 to JellyseerrStatus.Media.DELETED,
+          5 to JellyseerrStatus.Media.PENDING,
           1 to JellyseerrStatus.Media.DELETED,
-          6 to JellyseerrStatus.Media.PENDING,
+          6 to JellyseerrStatus.Media.AVAILABLE,
         ),
       ),
     )
