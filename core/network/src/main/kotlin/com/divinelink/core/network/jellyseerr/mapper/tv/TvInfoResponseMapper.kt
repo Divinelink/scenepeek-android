@@ -10,6 +10,8 @@ fun TvInfoResponse.map() = JellyseerrMediaInfo(
   mediaId = id,
   status = JellyseerrStatus.Media.from(status),
   seasons = requests
+    // Filter out declined requests
+    .filterNot { JellyseerrStatus.Request.from(it.status) == JellyseerrStatus.Request.DECLINED }
     .flatMap { request ->
       request.seasons.map { season ->
         TvSeasonResponse(

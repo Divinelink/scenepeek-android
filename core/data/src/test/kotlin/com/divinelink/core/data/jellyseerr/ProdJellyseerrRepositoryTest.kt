@@ -314,7 +314,6 @@ class ProdJellyseerrRepositoryTest {
           3 to JellyseerrStatus.Media.DELETED,
           5 to JellyseerrStatus.Media.PENDING,
           1 to JellyseerrStatus.Media.DELETED,
-          6 to JellyseerrStatus.Media.AVAILABLE,
         ),
       ),
     )

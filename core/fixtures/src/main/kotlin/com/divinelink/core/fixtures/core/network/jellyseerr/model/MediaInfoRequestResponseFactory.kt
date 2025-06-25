@@ -8,6 +8,8 @@ import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 object MediaInfoRequestResponseFactory {
 
   fun betterCallSaul1() = MediaInfoRequestResponse(
+    id = 2,
+    status = JellyseerrStatus.Request.PENDING.status,
     seasons = listOf(
       TvSeasonResponse(
         seasonNumber = 2,
@@ -18,7 +20,6 @@ object MediaInfoRequestResponseFactory {
         status = JellyseerrStatus.Media.AVAILABLE.status,
       ),
     ),
-    status = JellyseerrStatus.Request.PENDING.status,
     createdAt = "2025-06-22T13:00:22.000Z",
     updatedAt = "2025-06-23T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.rhea(),
@@ -28,17 +29,17 @@ object MediaInfoRequestResponseFactory {
       tmdbId = 123,
       requests = emptyList(),
     ),
-    id = 2,
   )
 
   fun betterCallSaul2() = MediaInfoRequestResponse(
+    id = 3,
+    status = JellyseerrStatus.Request.APPROVED.status,
     seasons = listOf(
       TvSeasonResponse(
         seasonNumber = 5,
         status = JellyseerrStatus.Media.PROCESSING.status,
       ),
     ),
-    status = JellyseerrStatus.Request.APPROVED.status,
     createdAt = "2025-06-21T13:00:22.000Z",
     updatedAt = "2025-06-24T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.rhea(),
@@ -48,10 +49,14 @@ object MediaInfoRequestResponseFactory {
       tmdbId = 123,
       requests = emptyList(),
     ),
-    id = 3,
   )
 
+  /**
+   * DECLINED request
+   */
   fun betterCallSaul3() = MediaInfoRequestResponse(
+    id = 4,
+    status = JellyseerrStatus.Request.DECLINED.status,
     seasons = listOf(
       TvSeasonResponse(
         seasonNumber = 1,
@@ -62,7 +67,6 @@ object MediaInfoRequestResponseFactory {
         status = JellyseerrStatus.Media.PENDING.status,
       ),
     ),
-    status = JellyseerrStatus.Request.DECLINED.status,
     createdAt = "2025-06-23T13:00:22.000Z",
     updatedAt = "2025-06-24T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.bob(),
@@ -72,7 +76,6 @@ object MediaInfoRequestResponseFactory {
       tmdbId = 123,
       requests = emptyList(),
     ),
-    id = 4,
   )
 
   fun all() = listOf(
