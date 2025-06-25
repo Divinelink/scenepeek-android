@@ -4,6 +4,9 @@ import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * @param status The status of the request
+ */
 @Serializable
 data class JellyseerrRequestMediaResponse(
   @SerialName("id") val requestId: Int,
@@ -15,9 +18,13 @@ data class JellyseerrRequestMediaResponse(
   val requestedBy: RequestedByResponse,
   val createdAt: String,
 ) {
+  /**
+   * @param status The status of the media
+   */
   @Serializable
   data class MediaResponse(
     val id: Int,
+    val status: Int,
     val tmdbId: Int,
     val requests: List<MediaInfoRequestResponse>? = null,
   )

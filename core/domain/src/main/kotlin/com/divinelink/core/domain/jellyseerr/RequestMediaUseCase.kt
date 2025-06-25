@@ -47,7 +47,9 @@ class RequestMediaUseCase(
 
         if (requestDetails != null) {
           val updatedMediaInfo = requestResult.mediaInfo.copy(
-            requests = requestResult.mediaInfo.requests + listOf(requestDetails),
+            requests = (requestResult.mediaInfo.requests + listOf(requestDetails))
+              .distinctBy { it.id },
+            status = requestDetails.mediaStatus,
           )
 
           emit(Result.success(requestResult.copy(mediaInfo = updatedMediaInfo)))

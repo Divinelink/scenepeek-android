@@ -1,6 +1,7 @@
 package com.divinelink.core.fixtures.core.network.jellyseerr.model
 
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 
@@ -21,6 +22,12 @@ object MediaInfoRequestResponseFactory {
     createdAt = "2025-06-22T13:00:22.000Z",
     updatedAt = "2025-06-23T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.rhea(),
+    media = JellyseerrRequestMediaResponse.MediaResponse(
+      id = 1,
+      status = JellyseerrStatus.Media.DELETED.status,
+      tmdbId = 123,
+      requests = emptyList(),
+    ),
     id = 2,
   )
 
@@ -35,6 +42,12 @@ object MediaInfoRequestResponseFactory {
     createdAt = "2025-06-21T13:00:22.000Z",
     updatedAt = "2025-06-24T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.rhea(),
+    media = JellyseerrRequestMediaResponse.MediaResponse(
+      id = 1,
+      status = JellyseerrStatus.Media.PENDING.status,
+      tmdbId = 123,
+      requests = emptyList(),
+    ),
     id = 3,
   )
 
@@ -53,6 +66,12 @@ object MediaInfoRequestResponseFactory {
     createdAt = "2025-06-23T13:00:22.000Z",
     updatedAt = "2025-06-24T13:00:22.000Z",
     requestedBy = RequestedByResponseFactory.bob(),
+    media = JellyseerrRequestMediaResponse.MediaResponse(
+      id = 1,
+      status = JellyseerrStatus.Media.AVAILABLE.status,
+      tmdbId = 123,
+      requests = emptyList(),
+    ),
     id = 4,
   )
 

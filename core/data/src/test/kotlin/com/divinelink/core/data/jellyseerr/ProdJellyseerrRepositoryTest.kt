@@ -99,7 +99,7 @@ class ProdJellyseerrRepositoryTest {
 
   @Test
   fun `test tv request media successfully`() = runTest {
-    val response = JellyseerrRequestMediaResponseFactory.tv()
+    val response = JellyseerrRequestMediaResponseFactory.partiallyAvailableTv()
 
     val expectedResponse = JellyseerrMediaRequestResponseFactory.tvPartially()
 

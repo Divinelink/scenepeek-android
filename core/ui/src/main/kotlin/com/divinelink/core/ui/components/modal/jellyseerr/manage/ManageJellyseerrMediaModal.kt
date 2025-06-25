@@ -316,7 +316,7 @@ private fun LazyItemScope.RequestItem(
       ) {
         RequesterDisplay(request.requester)
 
-        JellyseerrStatusPill(status = request.status)
+        JellyseerrStatusPill(status = request.requestStatus)
 
         Row(
           modifier = Modifier,

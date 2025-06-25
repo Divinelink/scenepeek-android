@@ -9,7 +9,8 @@ fun List<MediaInfoRequestResponse>?.map() = this?.map { it.map() } ?: emptyList(
 
 fun MediaInfoRequestResponse.map() = JellyseerrRequest(
   id = id,
-  status = JellyseerrStatus.Request.from(status),
+  mediaStatus = JellyseerrStatus.Media.from(media.status),
+  requestStatus = JellyseerrStatus.Request.from(status),
   requester = requestedBy.map(),
   seasons = seasons.map { it.seasonNumber },
   requestDate = createdAt.localizeIsoDate(),
