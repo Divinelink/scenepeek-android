@@ -25,25 +25,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.feature.profile.R
 import com.valentinilk.shimmer.shimmer
 import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun ProfileItem(
-  tmdbAccount: TMDBAccount,
+  tmdbAccount: TMDBAccountUiState,
   onLoginClick: () -> Unit,
 ) {
-  AnimatedContent(tmdbAccount) { account ->
-    when (account) {
-      is TMDBAccount.LoggedIn -> {
-      }
-      TMDBAccount.Initial -> InitialProfileItem(
+  AnimatedContent(tmdbAccount) { state ->
+    when (state) {
+      TMDBAccountUiState.Error -> TODO()
+      TMDBAccountUiState.Initial -> InitialProfileItem(
         isLoading = true,
         onLoginClick = onLoginClick,
       )
-      TMDBAccount.NotLoggedIn -> InitialProfileItem(
+      is TMDBAccountUiState.LoggedIn -> {
+      }
+      TMDBAccountUiState.NotLoggedIn -> InitialProfileItem(
         isLoading = false,
         onLoginClick = onLoginClick,
       )

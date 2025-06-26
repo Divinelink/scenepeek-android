@@ -6,7 +6,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.account.TMDBAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
@@ -16,16 +16,18 @@ class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
   private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Unit, AccountDetails>(dispatcher.default) {
+) : FlowUseCase<Unit, TMDBAccount>(dispatcher.default) {
 
-  override fun execute(parameters: Unit): Flow<Result<AccountDetails>> = channelFlow {
+  override fun execute(parameters: Unit): Flow<Result<TMDBAccount>> = channelFlow {
     val sessionId = storage.sessionId
 
     launch(dispatcher.default) {
       storage.accountStorage.accountDetails.collect { accountDetails ->
         Timber.i("Details updated: $accountDetails")
-        if (accountDetails != null) {
-          send(Result.success(accountDetails))
+        if (accountDetails == null) {
+          send(Result.success(TMDBAccount.NotLoggedIn))
+        } else {
+          send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
         }
       }
     }

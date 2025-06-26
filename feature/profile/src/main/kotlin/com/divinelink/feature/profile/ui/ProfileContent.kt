@@ -30,7 +30,7 @@ fun ProfileContent(
   ) {
     item {
       ProfileItem(
-        tmdbAccount = uiState.tmdbAccount,
+        tmdbAccount = uiState.accountUiState,
         onLoginClick = { userInteraction(ProfileUserInteraction.Login) },
       )
     }

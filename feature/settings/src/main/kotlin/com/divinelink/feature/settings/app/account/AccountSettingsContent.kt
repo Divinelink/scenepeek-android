@@ -34,7 +34,7 @@ fun AccountSettingsContent(
   ) {
     item {
       AccountItem(
-        accountDetails = uiState.accountDetails,
+        accountDetails = uiState.tmdbAccount,
         onLoginClick = onLoginClick,
         onLogoutClick = onLogoutClick,
       )

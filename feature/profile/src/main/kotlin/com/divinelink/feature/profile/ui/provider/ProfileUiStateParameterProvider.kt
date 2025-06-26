@@ -4,18 +4,22 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.feature.profile.ProfileUiState
+import com.divinelink.feature.profile.ui.TMDBAccountUiState
 
 class ProfileUiStateParameterProvider : PreviewParameterProvider<ProfileUiState> {
   override val values: Sequence<ProfileUiState> = sequenceOf(
     ProfileUiState(
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      accountUiState = TMDBAccountUiState.NotLoggedIn,
     ),
     ProfileUiState(
-      tmdbAccount = TMDBAccount.Initial,
+      accountUiState = TMDBAccountUiState.Initial,
     ),
     ProfileUiState(
-      tmdbAccount = TMDBAccount.LoggedIn(
-        AccountDetailsFactory.Pinkman(),
+      accountUiState = TMDBAccountUiState.Error,
+    ),
+    ProfileUiState(
+      accountUiState = TMDBAccountUiState.LoggedIn(
+        TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
       ),
     ),
   )
