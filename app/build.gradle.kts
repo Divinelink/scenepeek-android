@@ -102,6 +102,7 @@ dependencies {
   implementation(projects.feature.credits)
   implementation(projects.feature.tmdbAuth)
   implementation(projects.feature.onboarding)
+  implementation(projects.feature.profile)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
