@@ -1,3 +1,5 @@
 package com.divinelink.feature.profile
 
-data object ProfileUiState
+import com.divinelink.core.model.account.TMDBAccount
+
+data class ProfileUiState(val tmdbAccount: TMDBAccount)

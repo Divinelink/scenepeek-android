@@ -12,6 +12,7 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.feature.profile.ui.ProfileContent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,9 +36,7 @@ fun AnimatedVisibilityScope.ProfileScreen(
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-        Column {
-          // TODO add content
-        }
+        ProfileContent(uiState = uiState)
       }
     },
   )
