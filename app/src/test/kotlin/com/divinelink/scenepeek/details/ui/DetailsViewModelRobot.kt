@@ -8,7 +8,7 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
+import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
@@ -106,7 +106,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
-  fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequestResponse>>) = apply {
+  fun mockRequestMedia(response: Flow<Result<MediaRequestResult>>) = apply {
     fakeRequestMediaUseCase.mockSuccess(response = response)
   }
 

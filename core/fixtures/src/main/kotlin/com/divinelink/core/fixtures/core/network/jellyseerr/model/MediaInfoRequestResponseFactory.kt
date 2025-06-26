@@ -13,11 +13,11 @@ object MediaInfoRequestResponseFactory {
     seasons = listOf(
       TvSeasonResponse(
         seasonNumber = 2,
-        status = JellyseerrStatus.Media.AVAILABLE.status,
+        status = JellyseerrStatus.Media.PENDING.status,
       ),
       TvSeasonResponse(
         seasonNumber = 3,
-        status = JellyseerrStatus.Media.AVAILABLE.status,
+        status = JellyseerrStatus.Media.PENDING.status,
       ),
     ),
     createdAt = "2025-06-22T13:00:22.000Z",

@@ -352,7 +352,7 @@ private fun LazyItemScope.RequestItem(
               horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
             ) {
               request.seasons.forEach {
-                SeasonPill(season = it)
+                SeasonPill(season = it.seasonNumber)
               }
             }
           }

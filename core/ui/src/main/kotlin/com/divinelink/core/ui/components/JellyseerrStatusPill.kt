@@ -29,15 +29,18 @@ fun JellyseerrStatusPill(
   val color = when (status) {
     JellyseerrStatus.Media.UNKNOWN -> return
     JellyseerrStatus.Request.UNKNOWN -> return
+    JellyseerrStatus.Season.UNKNOWN -> return
     JellyseerrStatus.Media.PENDING -> MaterialTheme.colors.limeYellow
     JellyseerrStatus.Media.PROCESSING -> MaterialTheme.colors.vibrantPurple
     JellyseerrStatus.Media.PARTIALLY_AVAILABLE -> MaterialTheme.colors.emeraldGreen
     JellyseerrStatus.Media.AVAILABLE -> MaterialTheme.colors.emeraldGreen
     JellyseerrStatus.Media.DELETED -> MaterialTheme.colors.crimsonRed
-    JellyseerrStatus.Request.PENDING -> MaterialTheme.colors.vibrantPurple
+    JellyseerrStatus.Request.PENDING -> MaterialTheme.colors.limeYellow
     JellyseerrStatus.Request.APPROVED -> MaterialTheme.colors.emeraldGreen
     JellyseerrStatus.Request.DECLINED -> MaterialTheme.colors.crimsonRed
     JellyseerrStatus.Request.FAILED -> MaterialTheme.colors.crimsonRed
+    JellyseerrStatus.Season.PENDING -> MaterialTheme.colors.limeYellow
+    JellyseerrStatus.Season.PROCESSING -> MaterialTheme.colors.vibrantPurple
   }
 
   Text(

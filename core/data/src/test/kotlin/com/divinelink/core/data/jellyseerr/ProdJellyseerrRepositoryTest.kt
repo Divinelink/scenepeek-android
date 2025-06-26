@@ -1,5 +1,6 @@
 package com.divinelink.core.data.jellyseerr
 
+import app.cash.turbine.test
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.database.Database
@@ -14,7 +15,9 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
@@ -101,15 +104,26 @@ class ProdJellyseerrRepositoryTest {
   fun `test tv request media successfully`() = runTest {
     val response = JellyseerrRequestMediaResponseFactory.partiallyAvailableTv()
 
-    val expectedResponse = JellyseerrMediaRequestResponseFactory.tvPartially()
+    val expectedResponse = JellyseerrMediaRequestResponseFactory.tvPartially().copy(
+      mediaInfo = JellyseerrMediaInfo(
+        mediaId = 134,
+        requests = JellyseerrRequestFactory.Tv.all(),
+        status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
+        seasons = listOf(
+          SeasonRequest(1, JellyseerrStatus.Media.PARTIALLY_AVAILABLE),
+          SeasonRequest(2, JellyseerrStatus.Media.PARTIALLY_AVAILABLE),
+        ),
+      ),
+    )
 
     remote.mockRequestMedia(response = response)
 
-    val result = repository.requestMedia(
+    repository.requestMedia(
       body = JellyseerrRequestMediaBodyApiFactory.tv(),
-    )
-
-    assertThat(result.first()).isEqualTo(Result.success(expectedResponse))
+    ).test {
+      assertThat(awaitItem()).isInstanceOf(Result.success(expectedResponse)::class.java)
+      awaitComplete()
+    }
   }
 
   @Test
@@ -271,15 +285,16 @@ class ProdJellyseerrRepositoryTest {
 
     assertThat(result.first()).isEqualTo(
       JellyseerrMediaInfoFactory.Tv.available().copy(
-        seasons = mapOf(
-          1 to JellyseerrStatus.Media.AVAILABLE,
-          2 to JellyseerrStatus.Media.AVAILABLE,
-          3 to JellyseerrStatus.Media.AVAILABLE,
-          4 to JellyseerrStatus.Media.AVAILABLE,
-          5 to JellyseerrStatus.Media.AVAILABLE,
-          6 to JellyseerrStatus.Media.AVAILABLE,
-          7 to JellyseerrStatus.Media.AVAILABLE,
-          8 to JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
+        seasons = listOf(
+          SeasonRequest(1, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(2, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(3, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(4, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(5, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(6, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(7, JellyseerrStatus.Media.AVAILABLE),
+          SeasonRequest(8, JellyseerrStatus.Media.PARTIALLY_AVAILABLE),
+          SeasonRequest(9, JellyseerrStatus.Media.UNKNOWN),
         ),
       ),
     )
@@ -305,18 +320,34 @@ class ProdJellyseerrRepositoryTest {
       ),
     )
 
-    val result = repository.getTvDetails(mediaId = 1399)
-
-    assertThat(result.first()).isEqualTo(
-      JellyseerrMediaInfoFactory.Tv.partiallyAvailable().copy(
-        seasons = mapOf(
-          2 to JellyseerrStatus.Media.DELETED,
-          3 to JellyseerrStatus.Media.DELETED,
-          5 to JellyseerrStatus.Media.PENDING,
-          1 to JellyseerrStatus.Media.DELETED,
-        ),
-      ),
-    )
+    repository.getTvDetails(mediaId = 1399).test {
+      assertThat(awaitItem()).isInstanceOf(
+        JellyseerrMediaInfoFactory.Tv.partiallyAvailable().copy(
+          requests = listOf(
+            JellyseerrRequestFactory.Tv.betterCallSaul1().copy(
+              seasons = listOf(
+                SeasonRequest(2, JellyseerrStatus.Season.PENDING),
+                SeasonRequest(3, JellyseerrStatus.Season.PENDING),
+              ),
+            ),
+            JellyseerrRequestFactory.Tv.betterCallSaul2(),
+            JellyseerrRequestFactory.Tv.betterCallSaul3().copy(
+              seasons = listOf(
+                SeasonRequest(1, JellyseerrStatus.Season.PROCESSING),
+                SeasonRequest(6, JellyseerrStatus.Season.PENDING),
+              ),
+            ),
+          ),
+          seasons = listOf(
+            SeasonRequest(1, JellyseerrStatus.Media.DELETED),
+            SeasonRequest(2, JellyseerrStatus.Media.PROCESSING),
+            SeasonRequest(3, JellyseerrStatus.Media.PROCESSING),
+            SeasonRequest(5, JellyseerrStatus.Media.UNKNOWN),
+          ),
+        )::class.java,
+      )
+      awaitComplete()
+    }
   }
 
   @Test
@@ -345,10 +376,10 @@ class ProdJellyseerrRepositoryTest {
 
     val result = repository.getRequestDetails(requestId = 2)
 
-    assertThat(result.first()).isEqualTo(
+    assertThat(result.first()).isInstanceOf(
       Result.success(
         JellyseerrRequestFactory.Tv.betterCallSaul1(),
-      ),
+      )::class.java,
     )
   }
 

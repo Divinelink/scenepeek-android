@@ -6,5 +6,10 @@ data class JellyseerrRequest(
   val requestStatus: JellyseerrStatus.Request,
   val requester: JellyseerrRequester,
   val requestDate: String,
-  val seasons: List<Int>,
+  val seasons: List<SeasonRequest>,
+)
+
+data class SeasonRequest(
+  val seasonNumber: Int,
+  val status: JellyseerrStatus,
 )

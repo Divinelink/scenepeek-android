@@ -828,11 +828,13 @@ class DetailsViewModel(
       ?: emptyList()
 
     val updatedSeasons = currentSeasonsData.map { season ->
-      val status = tvInfo.seasons[season.seasonNumber] ?: if (overrideSeasonStatus) {
-        null
-      } else {
-        season.status
-      }
+      val status = tvInfo.seasons.firstOrNull { it.seasonNumber == season.seasonNumber }?.status
+        ?: if (overrideSeasonStatus) {
+          null
+        } else {
+          season.status
+        }
+
       season.copy(status = status)
     }
 
