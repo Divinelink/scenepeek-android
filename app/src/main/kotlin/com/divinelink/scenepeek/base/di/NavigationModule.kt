@@ -4,6 +4,7 @@ import com.divinelink.core.navigation.NavigationQualifier
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
+import com.divinelink.core.navigation.route.navigateToWatchlist
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
@@ -193,7 +194,12 @@ val navigationModule = module {
   // Profile Navigation
   single<NavGraphExtension>(named(NavigationQualifier.Profile)) {
     { navController, _ ->
-      profileScreen()
+      profileScreen(
+        onNavigateToWatchlist = navController::navigateToWatchlist,
+        onNavigateToLists = {
+          TODO()
+        },
+      )
     }
   }
 

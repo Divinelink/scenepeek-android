@@ -5,8 +5,14 @@ import androidx.navigation.compose.composable
 import com.divinelink.core.navigation.route.ProfileRoute
 import com.divinelink.feature.profile.ProfileScreen
 
-fun NavGraphBuilder.profileScreen() {
+fun NavGraphBuilder.profileScreen(
+  onNavigateToWatchlist: () -> Unit,
+  onNavigateToLists: () -> Unit,
+) {
   composable<ProfileRoute> {
-    ProfileScreen()
+    ProfileScreen(
+      onNavigateToWatchlist = onNavigateToWatchlist,
+      onNavigateToLists = onNavigateToLists,
+    )
   }
 }
