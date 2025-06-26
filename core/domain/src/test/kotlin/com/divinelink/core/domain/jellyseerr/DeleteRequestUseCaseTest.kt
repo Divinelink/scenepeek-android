@@ -129,6 +129,9 @@ class DeleteRequestUseCaseTest {
     )
 
     useCase.invoke(params).test {
+      assertThat(awaitItem()).isInstanceOf(
+        Result.failure<Exception>(Exception("Failed to delete request"))::class.java,
+      )
       awaitComplete()
     }
   }
