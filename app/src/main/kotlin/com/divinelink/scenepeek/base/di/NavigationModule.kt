@@ -196,6 +196,7 @@ val navigationModule = module {
     { navController, _ ->
       profileScreen(
         onNavigateToWatchlist = navController::navigateToWatchlist,
+        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
         onNavigateToLists = {
           TODO()
         },

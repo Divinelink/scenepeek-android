@@ -11,6 +11,9 @@ class ProfileUiStateParameterProvider : PreviewParameterProvider<ProfileUiState>
       tmdbAccount = TMDBAccount.NotLoggedIn,
     ),
     ProfileUiState(
+      tmdbAccount = TMDBAccount.Initial,
+    ),
+    ProfileUiState(
       tmdbAccount = TMDBAccount.LoggedIn(
         AccountDetailsFactory.Pinkman(),
       ),

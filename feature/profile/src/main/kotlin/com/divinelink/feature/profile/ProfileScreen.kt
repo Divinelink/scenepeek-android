@@ -19,6 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimatedVisibilityScope.ProfileScreen(
   onNavigateToWatchlist: () -> Unit,
   onNavigateToLists: () -> Unit,
+  onNavigateToTMDBAuth: () -> Unit,
   viewModel: ProfileViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,7 +37,17 @@ fun AnimatedVisibilityScope.ProfileScreen(
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-        ProfileContent(uiState = uiState)
+        ProfileContent(
+          uiState = uiState,
+          userInteraction = { userInteraction ->
+            when (userInteraction) {
+              ProfileUserInteraction.Login -> onNavigateToTMDBAuth()
+              ProfileUserInteraction.Logout -> {
+                // TODO
+              }
+            }
+          },
+        )
       }
     },
   )

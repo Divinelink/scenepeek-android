@@ -9,7 +9,7 @@ class ProfileViewModel : ViewModel() {
 
   private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(
     ProfileUiState(
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      tmdbAccount = TMDBAccount.Initial,
     ),
   )
   val uiState: StateFlow<ProfileUiState> = _uiState

@@ -8,11 +8,13 @@ import com.divinelink.feature.profile.ProfileScreen
 fun NavGraphBuilder.profileScreen(
   onNavigateToWatchlist: () -> Unit,
   onNavigateToLists: () -> Unit,
+  onNavigateToTMDBAuth: () -> Unit,
 ) {
   composable<ProfileRoute> {
     ProfileScreen(
       onNavigateToWatchlist = onNavigateToWatchlist,
       onNavigateToLists = onNavigateToLists,
+      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
     )
   }
 }
