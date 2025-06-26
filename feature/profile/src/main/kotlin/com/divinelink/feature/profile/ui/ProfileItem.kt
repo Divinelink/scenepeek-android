@@ -21,10 +21,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.feature.profile.R
 import com.valentinilk.shimmer.shimmer
 import com.divinelink.core.ui.R as uiR
@@ -36,18 +39,41 @@ fun ProfileItem(
 ) {
   AnimatedContent(tmdbAccount) { state ->
     when (state) {
-      TMDBAccountUiState.Error -> TODO()
+      TMDBAccountUiState.Error -> {
+      }
       TMDBAccountUiState.Initial -> InitialProfileItem(
         isLoading = true,
         onLoginClick = onLoginClick,
       )
-      is TMDBAccountUiState.LoggedIn -> {
-      }
+      is TMDBAccountUiState.LoggedIn -> LoggedInProfileItem(
+        state.account,
+      )
       TMDBAccountUiState.NotLoggedIn -> InitialProfileItem(
         isLoading = false,
         onLoginClick = onLoginClick,
       )
     }
+  }
+}
+
+@Composable
+private fun LoggedInProfileItem(account: TMDBAccount.LoggedIn) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(MaterialTheme.dimensions.keyline_16),
+    horizontalArrangement = Arrangement.Center,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    AvatarImage.Medium(
+      avatarUrl = account.accountDetails.avatarUrl,
+      username = account.accountDetails.username,
+    )
+    Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_16))
+    Text(
+      text = account.accountDetails.username,
+      style = MaterialTheme.typography.titleMedium,
+    )
   }
 }
 
