@@ -37,6 +37,7 @@ import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFa
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
@@ -72,6 +73,7 @@ class DetailsScreenTest : ComposeTest() {
   private val fetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
   private val deleteRequestUseCase = TestDeleteRequestUseCase()
+  private val deleteMediaUseCase = TestDeleteMediaUseCase()
 
   @Test
   fun `test switch between movie tabs`() = runTest {
@@ -106,6 +108,7 @@ class DetailsScreenTest : ComposeTest() {
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
+          deleteMediaUseCase = deleteMediaUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -181,6 +184,7 @@ class DetailsScreenTest : ComposeTest() {
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
+          deleteMediaUseCase = deleteMediaUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -259,6 +263,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -322,6 +327,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -421,6 +427,7 @@ class DetailsScreenTest : ComposeTest() {
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
+          deleteMediaUseCase = deleteMediaUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -497,6 +504,7 @@ class DetailsScreenTest : ComposeTest() {
           spoilersObfuscationUseCase = spoilersObfuscationUseCase,
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
+          deleteMediaUseCase = deleteMediaUseCase.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -557,6 +565,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -621,6 +630,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -716,6 +726,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -818,6 +829,7 @@ class DetailsScreenTest : ComposeTest() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,

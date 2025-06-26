@@ -4,12 +4,21 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 
+data class DeleteMediaParameters(
+  val mediaId: Int,
+  val deleteFile: Boolean,
+)
+
 class DeleteMediaUseCase(
   private val repository: JellyseerrRepository,
   val dispatcher: DispatcherProvider,
-) : UseCase<Int, Unit>(dispatcher.default) {
+) : UseCase<DeleteMediaParameters, Unit>(dispatcher.default) {
 
-  override suspend fun execute(parameters: Int) {
-    repository.deleteMedia(parameters)
+  override suspend fun execute(parameters: DeleteMediaParameters) {
+    if (parameters.deleteFile) {
+      repository.deleteFile(parameters.mediaId)
+    }
+
+    repository.deleteMedia(parameters.mediaId).getOrThrow()
   }
 }

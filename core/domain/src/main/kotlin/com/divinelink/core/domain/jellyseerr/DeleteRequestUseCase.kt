@@ -46,5 +46,8 @@ class DeleteRequestUseCase(
             else -> emit(Result.failure(Exception("Unsupported media request type")))
           }
         }
+        .onFailure {
+          emit(Result.failure(it))
+        }
     }
 }

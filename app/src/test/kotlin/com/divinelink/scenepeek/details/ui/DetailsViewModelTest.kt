@@ -2540,4 +2540,384 @@ class DetailsViewModelTest {
         ),
       )
   }
+
+  @Test
+  fun `test onDeleteMedia and file on TV media with success`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.success(Unit),
+      )
+      .onDeleteMedia(true)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = null,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_media_delete,
+              "The Office",
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on TV with success`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.success(Unit),
+      )
+      .onDeleteMedia(false)
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasons())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.Request,
+          ),
+          jellyseerrMediaInfo = null,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(
+              R.string.feature_details_jellyseerr_success_media_delete,
+              "The Office",
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on TV with failure`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Tv.requested(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageTvShow,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+        ),
+      )
+      .mockDeleteMedia(
+        response = Result.failure(Exception("Failed to delete media")),
+      )
+      .expectUiStates(
+        action = { onDeleteMedia(false) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = null,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(DetailsDataFactory.Tv.seasonsAllRequested())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageTvShow,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_failure_media_delete,
+                "The Office"
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onDeleteMedia and file on Movie with success`() = runTest {
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetailsSuccess(
+              JellyseerrMediaInfoFactory.Movie.processing(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          mediaDetails = movieDetails,
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.ManageMovie,
+          ),
+          ratingSource = RatingSource.TMDB,
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+        ),
+      )
+      .mockDeleteMedia(response = Result.success(Unit))
+      .expectUiStates(
+        action = { onDeleteMedia(true) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = true,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.ManageMovie,
+            ),
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = null,
+            mediaDetails = movieDetails,
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.Request,
+            ),
+            jellyseerrMediaInfo = null,
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_details_jellyseerr_success_media_delete,
+                "Flight Club",
+              ),
+            ),
+          ),
+        ),
+      )
+  }
 }

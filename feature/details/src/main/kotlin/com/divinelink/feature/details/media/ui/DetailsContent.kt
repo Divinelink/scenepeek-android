@@ -52,6 +52,7 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -108,6 +109,7 @@ fun DetailsContent(
   onTabSelected: (Int) -> Unit,
   onPlayTrailerClick: (String) -> Unit,
   onDeleteRequest: (Int) -> Unit,
+  onDeleteMedia: (Boolean) -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -149,12 +151,22 @@ fun DetailsContent(
     }
   }
 
+  LaunchedEffect(viewState.jellyseerrMediaInfo) {
+    if (viewState.jellyseerrMediaInfo?.status == JellyseerrStatus.Media.UNKNOWN ||
+      viewState.jellyseerrMediaInfo == null
+    ) {
+      showManageMediaModal = false
+    }
+  }
+
   if (showManageMediaModal) {
     ManageJellyseerrMediaModal(
       requests = viewState.jellyseerrMediaInfo?.requests,
       onDismissRequest = { showManageMediaModal = false },
       onDeleteRequest = onDeleteRequest,
       isLoading = viewState.isLoading,
+      mediaType = viewState.mediaType,
+      onDeleteMedia = onDeleteMedia,
     )
   }
 
@@ -282,6 +294,7 @@ fun DetailsContent(
               isAppBarVisible = showTitle
             },
             onBackdropLoaded = { onBackdropLoaded = true },
+            onOpenManageModal = { showManageMediaModal = true },
             scope = scope,
           )
           null -> {
@@ -318,6 +331,7 @@ private fun MediaDetailsContent(
   onTabSelected: (Int) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  onOpenManageModal: () -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -349,6 +363,7 @@ private fun MediaDetailsContent(
     onShowTitle = onShowTitle,
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
+    onOpenManageModal = onOpenManageModal,
   ) {
     Column(
       modifier = Modifier
@@ -463,6 +478,7 @@ fun DetailsContentPreview(
               onTabSelected = {},
               onPlayTrailerClick = {},
               onDeleteRequest = {},
+              onDeleteMedia = {},
             )
           }
         }

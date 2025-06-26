@@ -145,6 +145,10 @@ fun SeasonItemPreview() {
         SeasonItem(
           season = SeasonFactory.season2().copy(status = JellyseerrStatus.Media.AVAILABLE),
         )
+
+        SeasonItem(
+          season = SeasonFactory.season3().copy(status = JellyseerrStatus.Request.PENDING),
+        )
       }
     }
   }

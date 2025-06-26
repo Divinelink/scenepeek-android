@@ -8,7 +8,7 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
+import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
@@ -16,6 +16,7 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
@@ -51,6 +52,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
+  private val testDeleteMediaUseCase = TestDeleteMediaUseCase()
   private val spoilersObfuscationUseCase = SpoilersObfuscationUseCase(
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
@@ -67,6 +69,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
+      deleteMediaUseCase = testDeleteMediaUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
@@ -103,7 +106,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
-  fun mockRequestMedia(response: Flow<Result<JellyseerrMediaRequestResponse>>) = apply {
+  fun mockRequestMedia(response: Flow<Result<MediaRequestResult>>) = apply {
     fakeRequestMediaUseCase.mockSuccess(response = response)
   }
 
@@ -149,6 +152,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun onDeleteRequest(id: Int) = apply {
     viewModel.onDeleteRequest(id)
+  }
+
+  fun onDeleteMedia(deleteFile: Boolean) = apply {
+    viewModel.onDeleteMedia(deleteFile)
   }
 
   fun consumeSnackbar() = apply {
@@ -207,6 +214,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockDeleteRequest(response: Flow<Result<JellyseerrMediaInfo>>) = apply {
     testDeleteRequestUseCase.mockSuccess(
+      response = response,
+    )
+  }
+
+  suspend fun mockDeleteMedia(response: Result<Unit>) = apply {
+    testDeleteMediaUseCase.mockSuccess(
       response = response,
     )
   }

@@ -13,6 +13,8 @@ import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
+import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
+import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
@@ -23,6 +25,7 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.canBeRequested
+import com.divinelink.core.model.details.clearSeasonsStatus
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
@@ -70,6 +73,7 @@ class DetailsViewModel(
   private val requestMediaUseCase: RequestMediaUseCase,
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
+  private val deleteMediaUseCase: DeleteMediaUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -253,7 +257,7 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(updatedForms.second),
+                    actionButtons = findTvActions(tvInfo.status, updatedForms.second),
                   )
                 } else {
                   viewState.copy(
@@ -511,19 +515,24 @@ class DetailsViewModel(
               overrideSeasonStatus = false,
             )
 
+            val jellyseerrInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
+              viewState.value.jellyseerrMediaInfo
+            } else {
+              tvInfo
+            }
+
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
-                  viewState.jellyseerrMediaInfo
-                } else {
-                  tvInfo
-                },
+                jellyseerrMediaInfo = jellyseerrInfo,
                 forms = updatedForms.first,
                 mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                   seasons = updatedForms.second,
                 ),
-                actionButtons = findTvActions(updatedForms.second),
+                actionButtons = findTvActions(
+                  tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
+                  updatedForms.second,
+                ),
               )
             }
           } else {
@@ -662,7 +671,7 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(updatedForms.second),
+                    actionButtons = findTvActions(tvStatus = mediaInfo.status, updatedForms.second),
                     isLoading = false,
                     snackbarMessage = SnackbarMessage.from(
                       text = UIText.ResourceText(
@@ -697,6 +706,69 @@ class DetailsViewModel(
               }
             }
         }
+    }
+  }
+
+  fun onDeleteMedia(deleteFile: Boolean) {
+    _viewState.update {
+      it.copy(isLoading = true)
+    }
+    viewModelScope.launch {
+      viewState.value.jellyseerrMediaInfo?.mediaId?.let { mediaId ->
+        deleteMediaUseCase.invoke(
+          DeleteMediaParameters(
+            mediaId = mediaId,
+            deleteFile = deleteFile,
+          ),
+        )
+          .onSuccess {
+            _viewState.update { viewState ->
+              viewState.copy(
+                isLoading = false,
+                jellyseerrMediaInfo = null,
+                actionButtons = listOf(
+                  DetailActionItem.Rate,
+                  DetailActionItem.Watchlist,
+                  DetailActionItem.Request,
+                ),
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.feature_details_jellyseerr_success_media_delete,
+                    viewState.mediaDetails?.title ?: "",
+                  ),
+                ),
+                mediaDetails = viewState.mediaDetails.clearSeasonsStatus(),
+                forms = if (viewState.mediaType == MediaType.TV) {
+                  val form = _viewState.value.forms[TvTab.Seasons.order] as? DetailsForm.Content
+                  val clearedSeasons = (form?.data as? DetailsData.Seasons)?.items?.map { season ->
+                    season.copy(status = null)
+                  } ?: emptyList()
+
+                  viewState.forms + mapOf(
+                    TvTab.Seasons.order to DetailsForm.Content(
+                      DetailsData.Seasons(clearedSeasons),
+                    ),
+                  )
+                } else {
+                  viewState.forms
+                },
+              )
+            }
+          }
+          .onFailure {
+            _viewState.update { viewState ->
+              viewState.copy(
+                isLoading = false,
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(
+                    R.string.feature_details_jellyseerr_failure_media_delete,
+                    viewState.mediaDetails?.title ?: "",
+                  ),
+                ),
+              )
+            }
+          }
+      }
     }
   }
 
@@ -756,11 +828,13 @@ class DetailsViewModel(
       ?: emptyList()
 
     val updatedSeasons = currentSeasonsData.map { season ->
-      val status = tvInfo.seasons[season.seasonNumber] ?: if (overrideSeasonStatus) {
-        null
-      } else {
-        season.status
-      }
+      val status = tvInfo.seasons.firstOrNull { it.seasonNumber == season.seasonNumber }?.status
+        ?: if (overrideSeasonStatus) {
+          null
+        } else {
+          season.status
+        }
+
       season.copy(status = status)
     }
 
@@ -772,10 +846,13 @@ class DetailsViewModel(
     return updatedForms to updatedSeasons.filterNot { it.seasonNumber == 0 }
   }
 
-  private fun findTvActions(seasons: List<Season>): List<DetailActionItem> = buildList {
+  private fun findTvActions(
+    tvStatus: JellyseerrStatus,
+    seasons: List<Season>,
+  ): List<DetailActionItem> = buildList {
     add(DetailActionItem.Rate)
     add(DetailActionItem.Watchlist)
-    if (seasons.any { it.isAvailable() }) {
+    if (seasons.any { it.isAvailable() } || tvStatus != JellyseerrStatus.Media.UNKNOWN) {
       add(DetailActionItem.ManageTvShow)
     }
     if (seasons.any { it.canBeRequested() }) {

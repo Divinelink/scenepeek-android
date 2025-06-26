@@ -8,8 +8,8 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
-import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
+import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -104,12 +104,28 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     }
   }
 
+  /**
+   * Removes a media item. The `MANAGE_REQUESTS` permission is required to perform this action.
+   */
   override suspend fun deleteMedia(mediaId: Int): Result<Unit> {
     val hostAddress = restClient.hostAddress()
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
     return runCatching {
       val url = "$hostAddress/api/v1/media/$mediaId"
+      restClient.delete<Unit>(url = url)
+    }
+  }
+
+  /**
+   * Removes a media file from radarr/sonarr.
+   */
+  override suspend fun deleteFile(mediaId: Int): Result<Unit> {
+    val hostAddress = restClient.hostAddress()
+      ?: return Result.failure(MissingJellyseerrHostAddressException())
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/media/$mediaId/file"
       restClient.delete<Unit>(url = url)
     }
   }

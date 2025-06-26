@@ -93,3 +93,12 @@ fun MediaDetails.externalUrl(source: RatingSource = RatingSource.TMDB): String? 
     }
   }
 }
+
+// TODO Add tests
+fun MediaDetails?.clearSeasonsStatus(): MediaDetails? = when (this) {
+  is Movie -> this
+  is TV -> this.copy(
+    seasons = seasons.map { it.copy(status = null) },
+  )
+  null -> null
+}

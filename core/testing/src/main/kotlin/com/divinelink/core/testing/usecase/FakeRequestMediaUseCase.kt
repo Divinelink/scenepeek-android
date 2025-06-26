@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
+import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -12,7 +12,7 @@ class FakeRequestMediaUseCase {
 
   val mock: RequestMediaUseCase = mock()
 
-  fun mockSuccess(response: Flow<Result<JellyseerrMediaRequestResponse>>) {
+  fun mockSuccess(response: Flow<Result<MediaRequestResult>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 

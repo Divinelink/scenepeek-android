@@ -11,7 +11,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.jellyseerr.request.JellyseerrMediaRequestResponse
+import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
@@ -63,7 +63,7 @@ class ProdJellyseerrRepository(
 
   override suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
-  ): Flow<Result<JellyseerrMediaRequestResponse>> = service
+  ): Flow<Result<MediaRequestResult>> = service
     .requestMedia(body)
     .map { Result.success(it.map()) }
 
@@ -72,6 +72,8 @@ class ProdJellyseerrRepository(
 
   override suspend fun deleteMedia(mediaId: Int): Result<Unit> = service
     .deleteMedia(mediaId)
+
+  override suspend fun deleteFile(mediaId: Int): Result<Unit> = service.deleteFile(mediaId)
 
   override suspend fun getRequestDetails(requestId: Int): Flow<Result<JellyseerrRequest>> = service
     .getRequestDetails(requestId)
