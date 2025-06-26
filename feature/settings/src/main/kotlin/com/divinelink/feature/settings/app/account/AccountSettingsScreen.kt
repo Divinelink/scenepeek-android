@@ -4,10 +4,9 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.commons.util.launchCustomTab
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.feature.settings.R
@@ -24,14 +23,7 @@ fun AccountSettingsScreen(
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: AccountSettingsViewModel = koinViewModel(),
 ) {
-  val viewState = viewModel.viewState.collectAsState()
-  val context = LocalContext.current
-
-  LaunchedEffect(Unit) {
-    viewModel.openUrlTab.collect { url ->
-      launchCustomTab(context = context, url = url)
-    }
-  }
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
     viewModel.navigateToTMDBAuth.collect {
@@ -48,13 +40,13 @@ fun AccountSettingsScreen(
       transitionScope = sharedTransitionScope,
       animatedVisibilityScope = animatedVisibilityScope,
       onLoginClick = viewModel::login,
-      uiState = viewState.value,
+      uiState = viewState,
       onLogoutClick = viewModel::logoutDialog,
       onNavigateToJellyseerrLogin = onNavigateToJellyseerrSettingsScreen,
     )
   }
 
-  viewState.value.alertDialogUiState?.let { uiState ->
+  viewState.alertDialogUiState?.let { uiState ->
     SimpleAlertDialog(
       confirmClick = viewModel::confirmLogout,
       dismissClick = viewModel::dismissLogoutDialog,

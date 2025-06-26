@@ -32,9 +32,6 @@ class AccountSettingsViewModel(
   private val _navigateToTMDBAuth = Channel<Unit>()
   val navigateToTMDBAuth: Flow<Unit> = _navigateToTMDBAuth.receiveAsFlow()
 
-  private val _openUrlTab = Channel<String>()
-  val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
-
   init {
     fetchAccountDetails()
 
