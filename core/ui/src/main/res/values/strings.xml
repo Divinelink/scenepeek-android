@@ -125,6 +125,10 @@
 
   <string name="core_ui_back_to_top">Back to the top</string>
 
+  <string name="core_ui_section_watchlist">Watchlist</string>
+  <string name="core_ui_section_ratings">Ratings</string>
+  <string name="core_ui_section_lists">Lists</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

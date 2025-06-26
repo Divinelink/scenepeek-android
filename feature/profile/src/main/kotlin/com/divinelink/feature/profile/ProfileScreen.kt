@@ -42,9 +42,7 @@ fun AnimatedVisibilityScope.ProfileScreen(
           userInteraction = { userInteraction ->
             when (userInteraction) {
               ProfileUserInteraction.Login -> onNavigateToTMDBAuth()
-              ProfileUserInteraction.Logout -> {
-                // TODO
-              }
+              ProfileUserInteraction.NavigateToWatchlist -> onNavigateToWatchlist()
             }
           },
         )
