@@ -35,16 +35,20 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.SharedElementKeys
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.R as uiR
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.NavigateUpButton
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistScreen(
+  onNavigateUp: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
@@ -82,8 +86,17 @@ fun WatchlistScreen(
         colors = topAppBarColor,
         scrollBehavior = scrollBehavior,
         title = {
-          Text(stringResource(R.string.feature_watchlist_title))
+          Text(
+            modifier = Modifier.sharedElement(
+              sharedContentState = rememberSharedContentState(
+                SharedElementKeys.WatchlistTitle,
+              ),
+              animatedVisibilityScope = this,
+            ),
+            text = stringResource(uiR.string.core_ui_section_watchlist),
+          )
         },
+        navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
       )
     },
     floatingActionButton = {

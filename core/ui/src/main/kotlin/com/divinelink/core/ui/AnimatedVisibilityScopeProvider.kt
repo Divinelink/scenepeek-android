@@ -28,3 +28,22 @@ fun AnimatedVisibilityScopeProvider(
     }
   }
 }
+
+@Composable
+fun SharedTransitionScopeProvider(
+  content: @Composable AnimatedVisibilityScope.(
+    sharedTransitionScope: SharedTransitionScope,
+  ) -> Unit,
+) {
+  AppTheme {
+    Surface {
+      SharedTransitionLayout {
+        AnimatedVisibility(visible = true) {
+          content(
+            this@SharedTransitionLayout,
+          )
+        }
+      }
+    }
+  }
+}

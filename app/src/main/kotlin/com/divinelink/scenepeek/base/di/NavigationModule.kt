@@ -167,6 +167,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.Watchlist)) {
     { navController, _ ->
       watchlistScreen(
+        onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )

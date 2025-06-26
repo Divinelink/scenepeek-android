@@ -9,11 +9,13 @@ import com.divinelink.feature.watchlist.WatchlistScreen
 fun NavGraphBuilder.watchlistScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  onNavigateUp: () -> Unit,
 ) {
   composable<WatchlistRoute> {
     WatchlistScreen(
       onNavigateToMediaDetails = onNavigateToDetails,
       onNavigateToTMDBLogin = onNavigateToTMDBLogin,
+      onNavigateUp = onNavigateUp,
       animatedVisibilityScope = this@composable,
     )
   }

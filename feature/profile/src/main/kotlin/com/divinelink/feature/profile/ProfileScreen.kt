@@ -39,6 +39,7 @@ fun AnimatedVisibilityScope.ProfileScreen(
 
         ProfileContent(
           uiState = uiState,
+          sharedTransitionScope = this@PersistentScaffold,
           userInteraction = { userInteraction ->
             when (userInteraction) {
               ProfileUserInteraction.Login -> onNavigateToTMDBAuth()
