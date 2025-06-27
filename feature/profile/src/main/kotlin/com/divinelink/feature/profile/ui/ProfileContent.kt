@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
@@ -47,7 +48,18 @@ fun ProfileContent(
     item {
       ProfileSectionItem(
         section = ProfileSection.Watchlist,
-        onClick = { userInteraction(ProfileUserInteraction.NavigateToWatchlist) },
+        onClick = {
+          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Watchlist))
+        },
+      )
+    }
+
+    item {
+      ProfileSectionItem(
+        section = ProfileSection.Ratings,
+        onClick = {
+          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Ratings))
+        },
       )
     }
   }

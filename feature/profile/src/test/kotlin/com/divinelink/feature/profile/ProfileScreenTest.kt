@@ -29,7 +29,7 @@ class ProfileScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       ProfileScreen(
         viewModel = viewModel,
-        onNavigateToWatchlist = {},
+        onNavigateToUserData = {},
         onNavigateToLists = {},
         onNavigateToTMDBAuth = {
           navigateToTMDBAuthCalled = true
@@ -54,7 +54,7 @@ class ProfileScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       ProfileScreen(
         viewModel = viewModel,
-        onNavigateToWatchlist = {
+        onNavigateToUserData = {
           navigateToWatchlistCalled = true
         },
         onNavigateToLists = {},
