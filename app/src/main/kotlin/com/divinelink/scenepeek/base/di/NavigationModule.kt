@@ -4,7 +4,7 @@ import com.divinelink.core.navigation.NavigationQualifier
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
-import com.divinelink.core.navigation.route.navigateToWatchlist
+import com.divinelink.core.navigation.route.navigateToUserData
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
@@ -29,7 +29,7 @@ import com.divinelink.feature.settings.navigation.settings.navigateToSettings
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
 import com.divinelink.feature.tmdb.auth.navigateToTMDBAuth
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
-import com.divinelink.feature.watchlist.navigation.watchlistScreen
+import com.divinelink.feature.user.data.navigation.userDataScreen
 import com.divinelink.scenepeek.home.navigation.homeScreen
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -164,9 +164,9 @@ val navigationModule = module {
   }
 
 // Watchlist Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Watchlist)) {
+  single<NavGraphExtension>(named(NavigationQualifier.UserData)) {
     { navController, _ ->
-      watchlistScreen(
+      userDataScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
@@ -196,7 +196,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.Profile)) {
     { navController, _ ->
       profileScreen(
-        onNavigateToWatchlist = navController::navigateToWatchlist,
+        onNavigateToWatchlist = navController::navigateToUserData,
         onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
         onNavigateToLists = {
           TODO()

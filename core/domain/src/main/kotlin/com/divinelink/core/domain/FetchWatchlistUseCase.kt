@@ -6,8 +6,8 @@ import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.watchlist.WatchlistParameters
-import com.divinelink.core.model.watchlist.WatchlistResponse
+import com.divinelink.core.model.user.data.UserDataParameters
+import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -17,9 +17,9 @@ class FetchWatchlistUseCase(
   private val sessionStorage: SessionStorage,
   private val accountRepository: AccountRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<WatchlistParameters, WatchlistResponse>(dispatcher.default) {
+) : FlowUseCase<UserDataParameters, UserDataResponse>(dispatcher.default) {
 
-  override fun execute(parameters: WatchlistParameters): Flow<Result<WatchlistResponse>> = flow {
+  override fun execute(parameters: UserDataParameters): Flow<Result<UserDataResponse>> = flow {
     val accountId = sessionStorage.accountId.first()
     val sessionId = sessionStorage.sessionId
 
@@ -40,7 +40,7 @@ class FetchWatchlistUseCase(
 
           emit(
             Result.success(
-              WatchlistResponse(
+              UserDataResponse(
                 data = it.list,
                 totalResults = it.totalResults,
                 type = MediaType.TV,
@@ -65,7 +65,7 @@ class FetchWatchlistUseCase(
 
           emit(
             Result.success(
-              WatchlistResponse(
+              UserDataResponse(
                 data = it.list,
                 totalResults = it.totalResults,
                 type = MediaType.MOVIE,

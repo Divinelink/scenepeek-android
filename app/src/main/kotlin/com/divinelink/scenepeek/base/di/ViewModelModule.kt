@@ -11,7 +11,7 @@ import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettings
 import com.divinelink.feature.settings.app.appearance.AppearanceSettingsViewModel
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
-import com.divinelink.feature.watchlist.WatchlistViewModel
+import com.divinelink.feature.user.data.UserDataViewModel
 import com.divinelink.scenepeek.MainViewModel
 import com.divinelink.scenepeek.home.ui.HomeViewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -27,7 +27,7 @@ val appViewModelModule = module {
   viewModelOf(::PersonViewModel)
   viewModelOf(::SearchViewModel)
   viewModelOf(::JellyseerrSettingsViewModel)
-  viewModelOf(::WatchlistViewModel)
+  viewModelOf(::UserDataViewModel)
   viewModelOf(::DetailsPreferencesViewModel)
   viewModelOf(::TMDBAuthViewModel)
   viewModelOf(::OnboardingViewModel)

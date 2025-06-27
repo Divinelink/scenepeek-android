@@ -95,7 +95,6 @@ dependencies {
   implementation(projects.core.ui)
   implementation(projects.core.scaffold)
 
-  implementation(projects.feature.watchlist)
   implementation(projects.feature.details)
   implementation(projects.feature.search)
   implementation(projects.feature.settings)
@@ -103,6 +102,7 @@ dependencies {
   implementation(projects.feature.tmdbAuth)
   implementation(projects.feature.onboarding)
   implementation(projects.feature.profile)
+  implementation(projects.feature.userData)
 
   // Firebase
   implementation(platform(libs.firebase.bom))
