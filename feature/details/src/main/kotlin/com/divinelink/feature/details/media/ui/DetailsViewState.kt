@@ -27,7 +27,6 @@ data class DetailsViewState(
   val trailer: Video? = null,
   val error: UIText? = null,
   val snackbarMessage: SnackbarMessage? = null,
-  val showRateDialog: Boolean = false,
   val navigateToLogin: Boolean? = null,
   val menuOptions: List<DetailsMenuOptions> = emptyList(),
   val actionButtons: List<DetailActionItem> = emptyList(),

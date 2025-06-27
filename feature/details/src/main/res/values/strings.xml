@@ -3,7 +3,7 @@
   <string name="feature_details__watchlist">Watchlist</string>
   <string name="details__your_rating">Your rating</string>
   <string name="details__add_rating">Rate this</string>
-  <string name="details__add_rating_description">What do you think of %s?</string>
+  <string name="details__add_rating_description"><![CDATA[What do you think of <b>%s</b>?]]></string>
   <string name="details__clear_my_rating">Clear my rating</string>
   <string name="details__your_score">Your rating %s</string>
   <string name="details__submit_rating_button">Submit rating</string>

@@ -682,24 +682,6 @@ class DetailsViewModelTest {
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
-      .onAddRateClicked()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
-            withId(mediaId)
-          },
-          showRateDialog = true,
-        ),
-      )
       .onSubmitRate(5)
       .assertViewState(
         DetailsViewState(
@@ -722,7 +704,6 @@ class DetailsViewModelTest {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false,
         ),
       )
   }
@@ -764,7 +745,6 @@ class DetailsViewModelTest {
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin,
           ),
-          showRateDialog = false,
         ),
       )
   }
@@ -806,7 +786,6 @@ class DetailsViewModelTest {
             actionLabelText = UIText.ResourceText(R.string.login),
             onSnackbarResult = viewModel::navigateToLogin,
           ),
-          showRateDialog = false,
         ),
       )
       .onNavigateToLogin(SnackbarResult.ActionPerformed)
@@ -889,24 +868,6 @@ class DetailsViewModelTest {
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
-      .onAddRateClicked()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated().toWizard {
-            withId(mediaId)
-          },
-          showRateDialog = true,
-        ),
-      )
       .onSubmitRate(5)
       .assertViewState(
         DetailsViewState(
@@ -929,7 +890,6 @@ class DetailsViewModelTest {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false,
         ),
       )
       .consumeSnackbar()
@@ -948,85 +908,6 @@ class DetailsViewModelTest {
             withId(mediaId)
             withRating(5.0f)
           },
-          showRateDialog = false,
-        ),
-      )
-  }
-
-  @Test
-  fun `test onAddRateClicked opens bottom sheet`() {
-    testRobot
-      .mockFetchMediaDetails(
-        response = defaultDetails(
-          MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails,
-            ratingSource = RatingSource.TMDB,
-          ),
-        ),
-      )
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .onAddRateClicked()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = true,
-        ),
-      )
-  }
-
-  @Test
-  fun `test onDismissRateDialog hides dialog`() {
-    testRobot
-      .mockFetchMediaDetails(
-        response = defaultDetails(
-          MediaDetailsResult.DetailsSuccess(
-            mediaDetails = movieDetails,
-            ratingSource = RatingSource.TMDB,
-          ),
-        ),
-      )
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .onAddRateClicked()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = true,
-        ),
-      )
-      .onDismissRateDialog()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          showRateDialog = false,
         ),
       )
   }
@@ -2805,7 +2686,7 @@ class DetailsViewModelTest {
             snackbarMessage = SnackbarMessage.from(
               text = UIText.ResourceText(
                 R.string.feature_details_jellyseerr_failure_media_delete,
-                "The Office"
+                "The Office",
               ),
             ),
           ),

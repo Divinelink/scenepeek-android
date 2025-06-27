@@ -4,8 +4,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.feature.details.media.ui.rate.RateDialogContent
 import com.google.common.truth.Truth.assertThat
@@ -24,7 +27,6 @@ class RateDialogContentTest : ComposeTest() {
     setContentWithTheme {
       RateDialogContent(
         value = ratingValue.value,
-        onRateChanged = {},
         mediaTitle = movie.title,
         onSubmitRate = {
           submitClicked = true
@@ -34,16 +36,14 @@ class RateDialogContentTest : ComposeTest() {
       )
     }
 
-    val descriptionText = composeTestRule.activity.getString(
-      detailsR.string.details__add_rating_description,
-      movie.title,
+    val descriptionText = AnnotatedString.fromHtml(
+      getString(detailsR.string.details__add_rating_description, movie.title),
     )
 
-    val submitButtonText =
-      composeTestRule.activity.getString(detailsR.string.details__submit_rating_button)
+    val submitButtonText = getString(detailsR.string.details__submit_rating_button)
 
     with(composeTestRule) {
-      onNodeWithText(descriptionText).assertExists()
+      onNodeWithText(descriptionText.text).assertExists()
       onNodeWithText(submitButtonText).performClick()
 
       assertThat(submitClicked).isTrue()
@@ -60,26 +60,21 @@ class RateDialogContentTest : ComposeTest() {
     setContentWithTheme {
       RateDialogContent(
         value = ratingValue.value,
-        onRateChanged = {},
         mediaTitle = movie.title,
-        onSubmitRate = {
-          submitClicked = true
-        },
+        onSubmitRate = { submitClicked = true },
         onClearRate = {},
         canClearRate = true,
       )
     }
 
-    val descriptionText = composeTestRule.activity.getString(
-      detailsR.string.details__add_rating_description,
-      movie.title,
+    val descriptionText = AnnotatedString.fromHtml(
+      getString(detailsR.string.details__add_rating_description, movie.title),
     )
 
-    val submitButtonText =
-      composeTestRule.activity.getString(detailsR.string.details__submit_rating_button)
+    val submitButtonText = getString(detailsR.string.details__submit_rating_button)
 
     with(composeTestRule) {
-      onNodeWithText(descriptionText).assertExists()
+      onNodeWithText(descriptionText.text).assertExists()
       onNodeWithText(submitButtonText).assertIsNotEnabled()
       onNodeWithText(submitButtonText).performClick()
 
@@ -97,26 +92,21 @@ class RateDialogContentTest : ComposeTest() {
     setContentWithTheme {
       RateDialogContent(
         value = ratingValue.value,
-        onRateChanged = {},
         mediaTitle = movie.title,
         onSubmitRate = {},
-        onClearRate = {
-          deleteClicked = true
-        },
+        onClearRate = { deleteClicked = true },
         canClearRate = true,
       )
     }
 
-    val descriptionText = composeTestRule.activity.getString(
-      detailsR.string.details__add_rating_description,
-      movie.title,
+    val descriptionText = AnnotatedString.fromHtml(
+      getString(detailsR.string.details__add_rating_description, movie.title),
     )
 
-    val deleteButtonText =
-      composeTestRule.activity.getString(detailsR.string.details__clear_my_rating)
+    val deleteButtonText = getString(detailsR.string.details__clear_my_rating)
 
     with(composeTestRule) {
-      onNodeWithText(descriptionText).assertExists()
+      onNodeWithText(descriptionText.text).assertExists()
       onNodeWithText(deleteButtonText).performClick()
 
       assertThat(deleteClicked).isTrue()

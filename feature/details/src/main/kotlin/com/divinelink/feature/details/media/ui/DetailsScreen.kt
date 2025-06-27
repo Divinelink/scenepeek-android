@@ -27,10 +27,7 @@ import com.divinelink.core.ui.components.OverlayScreen
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
-
-private const val BOTTOM_SHEET_DELAY = 200L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,8 +43,8 @@ fun DetailsScreen(
   var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }
 
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-  var openBottomSheet by rememberSaveable { mutableStateOf(false) }
   var showAllRatingBottomSheet by rememberSaveable { mutableStateOf(false) }
+  var openRateBottomSheet by rememberSaveable { mutableStateOf(false) }
   val context = LocalContext.current
 
   BackHandler {
@@ -68,43 +65,24 @@ fun DetailsScreen(
   val rateBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val allRatingsBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-  LaunchedEffect(viewState.showRateDialog) {
-    if (viewState.showRateDialog) {
-      openBottomSheet = true
-      delay(BOTTOM_SHEET_DELAY)
-      rateBottomSheetState.show()
-    } else {
-      rateBottomSheetState.hide()
-      openBottomSheet = false
-    }
-  }
-
-  LaunchedEffect(showAllRatingBottomSheet) {
-    if (showAllRatingBottomSheet) {
-      allRatingsBottomSheetState.show()
-    } else {
-      allRatingsBottomSheetState.hide()
-    }
-  }
-
   LaunchedEffect(Unit) {
     viewModel.openUrlTab.collect { url ->
       launchCustomTab(context, url)
     }
   }
 
-  if (openBottomSheet) {
+  if (openRateBottomSheet) {
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
       value = viewState.userDetails?.beautifiedRating,
       mediaTitle = viewState.mediaDetails?.title ?: "",
-      onSubmitRate = viewModel::onSubmitRate,
-      onClearRate = viewModel::onClearRating,
-      onRateChanged = {
-        // TODO implement
+      onSubmitRate = {
+        openRateBottomSheet = false
+        viewModel.onSubmitRate(it)
       },
-      onDismissRequest = viewModel::onDismissRateDialog,
+      onClearRate = viewModel::onClearRating,
+      onDismissRequest = { openRateBottomSheet = false },
       canClearRate = viewState.userDetails?.rating != null,
     )
   }
@@ -139,7 +117,7 @@ fun DetailsScreen(
       },
       onPersonClick = { person -> onNavigateToPerson(person.map()) },
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
-      onAddRateClick = viewModel::onAddRateClicked,
+      onAddRateClick = { openRateBottomSheet = true },
       onAddToWatchlistClick = viewModel::onAddToWatchlist,
       requestMedia = viewModel::onRequestMedia,
       onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
