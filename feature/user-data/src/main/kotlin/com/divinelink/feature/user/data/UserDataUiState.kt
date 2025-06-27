@@ -2,8 +2,10 @@ package com.divinelink.feature.user.data
 
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.user.data.UserDataSection
 
 data class UserDataUiState(
+  val section: UserDataSection,
   val selectedTabIndex: Int,
   val tabs: List<MediaTab>,
   val pages: Map<MediaType, Int>,
