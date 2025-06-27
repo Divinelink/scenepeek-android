@@ -3,7 +3,9 @@ package com.divinelink.feature.profile.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -46,6 +48,10 @@ fun ProfileContent(
     }
 
     item {
+      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+    }
+
+    item {
       ProfileSectionItem(
         section = ProfileSection.Watchlist,
         onClick = {
@@ -71,8 +77,7 @@ private fun ProfileSectionItem(
   onClick: () -> Unit,
 ) {
   ElevatedCard(
-    modifier = Modifier
-      .padding(MaterialTheme.dimensions.keyline_16),
+    modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
     onClick = onClick,
   ) {
     Row(
