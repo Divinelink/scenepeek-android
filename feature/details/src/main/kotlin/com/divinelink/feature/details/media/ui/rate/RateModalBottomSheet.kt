@@ -20,7 +20,6 @@ fun RateModalBottomSheet(
   mediaTitle: String,
   canClearRate: Boolean,
   onSubmitRate: (Int) -> Unit,
-  onRateChanged: (Float) -> Unit,
   onClearRate: () -> Unit,
   onDismissRequest: () -> Unit,
 ) {
@@ -32,9 +31,11 @@ fun RateModalBottomSheet(
       modifier = modifier,
       value = value?.toFloat() ?: 0f,
       mediaTitle = mediaTitle,
-      onRateChanged = onRateChanged,
       onSubmitRate = onSubmitRate,
-      onClearRate = onClearRate,
+      onClearRate = {
+        onClearRate()
+        onDismissRequest()
+      },
       canClearRate = canClearRate,
     )
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))

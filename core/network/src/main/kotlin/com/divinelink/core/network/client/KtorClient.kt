@@ -4,7 +4,6 @@ import com.divinelink.core.commons.Constants
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.ResponseException
@@ -110,9 +109,9 @@ suspend inline fun <reified T : Any, reified V : Any> HttpClient.delete(
 @OptIn(InternalSerializationApi::class)
 suspend inline fun <reified T : Any> HttpClient.delete(url: String): T {
   try {
-    val json = this.delete(url).bodyOrNull<T>() ?: Constants.EMPTY_JSON_RESPONSE
+    val json = this.delete(url).bodyAsTextOrNull() ?: Constants.EMPTY_JSON_RESPONSE
 
-    return localJson.decodeFromString(T::class.serializer(), json.toString())
+    return localJson.decodeFromString(T::class.serializer(), json)
   } catch (e: ResponseException) {
     throw e
   } catch (e: Exception) {
@@ -128,7 +127,7 @@ suspend fun HttpClient.put(
   this.body = body
 }
 
-suspend inline fun <reified T : Any> HttpResponse.bodyOrNull(): T? = when (status) {
+suspend inline fun HttpResponse.bodyAsTextOrNull(): String? = when (status) {
   HttpStatusCode.NoContent -> null
-  else -> body()
+  else -> bodyAsText()
 }

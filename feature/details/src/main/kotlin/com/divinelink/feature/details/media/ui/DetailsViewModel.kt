@@ -340,7 +340,6 @@ class DetailsViewModel(
           Timber.d("Rating submitted: $rating")
           _viewState.update { viewState ->
             viewState.copy(
-              showRateDialog = false,
               userDetails = updateOrCreateAccountMediaDetails(rating),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
@@ -354,7 +353,6 @@ class DetailsViewModel(
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
-                showRateDialog = false,
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
                   actionLabelText = UIText.ResourceText(R.string.login),
@@ -407,19 +405,10 @@ class DetailsViewModel(
                   viewState.mediaDetails?.title ?: "",
                 ),
               ),
-              showRateDialog = false,
             )
           }
         }
       }
-    }
-  }
-
-  fun onAddRateClicked() {
-    _viewState.update { viewState ->
-      viewState.copy(
-        showRateDialog = true,
-      )
     }
   }
 
@@ -790,12 +779,6 @@ class DetailsViewModel(
   fun consumeSnackbarMessage() {
     _viewState.update { viewState ->
       viewState.copy(snackbarMessage = null)
-    }
-  }
-
-  fun onDismissRateDialog() {
-    _viewState.update { viewState ->
-      viewState.copy(showRateDialog = false)
     }
   }
 

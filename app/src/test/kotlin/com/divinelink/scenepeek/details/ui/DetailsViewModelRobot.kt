@@ -110,10 +110,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     fakeRequestMediaUseCase.mockSuccess(response = response)
   }
 
-  fun onAddRateClicked() = apply {
-    viewModel.onAddRateClicked()
-  }
-
   fun onSubmitRate(rating: Int) = apply {
     viewModel.onSubmitRate(rating)
   }
@@ -124,10 +120,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun onAddToWatchlist() = apply {
     viewModel.onAddToWatchlist()
-  }
-
-  fun onDismissRateDialog() = apply {
-    viewModel.onDismissRateDialog()
   }
 
   fun onNavigateToLogin(snackbarResult: SnackbarResult) = apply {
