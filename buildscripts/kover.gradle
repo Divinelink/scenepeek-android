@@ -16,8 +16,10 @@ dependencies {
   kover(projects.feature.details)
   kover(projects.feature.onboarding)
   kover(projects.feature.settings)
+  kover(projects.feature.search)
   kover(projects.feature.tmdbAuth)
-  kover(projects.feature.watchlist)
+  kover(projects.feature.profile)
+  kover(projects.feature.userData)
 }
 
 kover {

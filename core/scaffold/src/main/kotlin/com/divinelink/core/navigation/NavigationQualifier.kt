@@ -13,7 +13,7 @@ enum class NavigationQualifier {
   LinkHandlingSettings,
   AboutSettings,
   Credits,
-  Watchlist,
+  UserData,
   Onboarding,
   TMDBAuth,
   Profile,

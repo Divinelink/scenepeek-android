@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.FetchWatchlistUseCase
-import com.divinelink.core.model.watchlist.WatchlistResponse
+import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -23,11 +23,11 @@ class FakeFetchWatchlistUseCase {
     whenever(mock.invoke(any())).thenReturn(flowOf(Result.failure(Exception())))
   }
 
-  fun mockSuccess(response: Result<WatchlistResponse>) {
+  fun mockSuccess(response: Result<UserDataResponse>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 
-  fun mockSuccess(response: Flow<Result<WatchlistResponse>>) {
+  fun mockSuccess(response: Flow<Result<UserDataResponse>>) {
     whenever(mock.invoke(any())).thenReturn(response)
   }
 }

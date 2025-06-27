@@ -3,7 +3,7 @@ package com.divinelink.core.domain
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.watchlist.WatchlistParameters
+import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAccountRepository
@@ -33,7 +33,7 @@ class FetchWatchlistUseCaseTest {
     )
 
     val result = useCase.invoke(
-      parameters = WatchlistParameters(
+      parameters = UserDataParameters(
         page = 1,
         mediaType = MediaType.MOVIE,
       ),
@@ -54,7 +54,7 @@ class FetchWatchlistUseCaseTest {
     )
 
     val result = useCase.invoke(
-      parameters = WatchlistParameters(
+      parameters = UserDataParameters(
         page = 1,
         mediaType = MediaType.MOVIE,
       ),
