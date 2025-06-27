@@ -110,6 +110,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
+
       waitUntil {
         onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
       }

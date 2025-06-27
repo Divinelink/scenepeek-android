@@ -6,6 +6,7 @@ import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.channels.Channel
@@ -31,9 +32,6 @@ class AccountSettingsViewModel(
 
   private val _navigateToTMDBAuth = Channel<Unit>()
   val navigateToTMDBAuth: Flow<Unit> = _navigateToTMDBAuth.receiveAsFlow()
-
-  private val _openUrlTab = Channel<String>()
-  val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
 
   init {
     fetchAccountDetails()
@@ -62,7 +60,7 @@ class AccountSettingsViewModel(
           .onSuccess { accountDetails ->
             Timber.d("Updating Ui with account details: $accountDetails")
             _viewState.update {
-              it.copy(accountDetails = accountDetails)
+              it.copy(tmdbAccount = accountDetails)
             }
           }
       }
@@ -82,7 +80,7 @@ class AccountSettingsViewModel(
           title = UIText.ResourceText(R.string.feature_settings_logout),
           text = UIText.ResourceText(
             R.string.feature_settings_currently_login_dialog_summary,
-            it.accountDetails?.username ?: "",
+            (it.tmdbAccount as? TMDBAccount.LoggedIn)?.accountDetails?.username ?: "",
           ),
         ),
       )
@@ -94,7 +92,7 @@ class AccountSettingsViewModel(
       logoutUseCase.invoke(Unit).onSuccess {
         _viewState.update {
           it.copy(
-            accountDetails = null,
+            tmdbAccount = TMDBAccount.Anonymous,
             alertDialogUiState = null,
           )
         }

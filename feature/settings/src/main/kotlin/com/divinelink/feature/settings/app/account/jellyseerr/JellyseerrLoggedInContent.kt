@@ -26,9 +26,9 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrState
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.getString
@@ -172,10 +172,10 @@ fun JellyseerrLoggedInContent(
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentPreview() {
-  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+  SharedTransitionScopeProvider {
     JellyseerrLoggedInContent(
-      transitionScope = transitionScope,
-      animatedVisibilityScope = visibilityScope,
+      transitionScope = it,
+      animatedVisibilityScope = this,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = false,
         accountDetails = JellyseerrAccountDetails(
@@ -195,10 +195,10 @@ private fun JellyseerrLoggedInContentPreview() {
 @Previews
 @Composable
 private fun JellyseerrLoggedInContentLoadingPreview() {
-  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+  SharedTransitionScopeProvider {
     JellyseerrLoggedInContent(
-      transitionScope = transitionScope,
-      animatedVisibilityScope = visibilityScope,
+      transitionScope = it,
+      animatedVisibilityScope = this,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = true,
         accountDetails = JellyseerrAccountDetails(

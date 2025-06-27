@@ -9,10 +9,9 @@ import androidx.compose.runtime.Composable
 import com.divinelink.core.designsystem.theme.AppTheme
 
 @Composable
-fun AnimatedVisibilityScopeProvider(
-  content: @Composable (
+fun SharedTransitionScopeProvider(
+  content: @Composable AnimatedVisibilityScope.(
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
   ) -> Unit,
 ) {
   AppTheme {
@@ -21,7 +20,6 @@ fun AnimatedVisibilityScopeProvider(
         AnimatedVisibility(visible = true) {
           content(
             this@SharedTransitionLayout,
-            this,
           )
         }
       }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="feature_watchlist_title">Your watchlist</string>
-
   <string name="feature_watchlist_movie_tab">Movies</string>
   <string name="feature_watchlist_tv_show_tab">TV Shows</string>
 

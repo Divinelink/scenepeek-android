@@ -4,12 +4,14 @@ import com.divinelink.core.navigation.NavigationQualifier
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
+import com.divinelink.core.navigation.route.navigateToWatchlist
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
+import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.search.navigation.searchScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
@@ -165,6 +167,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.Watchlist)) {
     { navController, _ ->
       watchlistScreen(
+        onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )
@@ -186,6 +189,19 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.TMDBAuth)) {
     { navController, _ ->
       tmdbAuthScreen(navController::navigateUp)
+    }
+  }
+
+  // Profile Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.Profile)) {
+    { navController, _ ->
+      profileScreen(
+        onNavigateToWatchlist = navController::navigateToWatchlist,
+        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
+        onNavigateToLists = {
+          TODO()
+        },
+      )
     }
   }
 

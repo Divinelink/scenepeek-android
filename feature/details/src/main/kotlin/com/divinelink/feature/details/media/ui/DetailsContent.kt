@@ -60,10 +60,10 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.DetailsDropdownMenu
 import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
@@ -443,7 +443,7 @@ fun DetailsContentPreview(
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
-  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+  SharedTransitionScopeProvider {
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
@@ -453,7 +453,7 @@ fun DetailsContentPreview(
     ProvideScenePeekAppState(
       appState = state,
     ) {
-      state.sharedTransitionScope = transitionScope
+      state.sharedTransitionScope = it
       ProvideSnackbarController(
         snackbarHostState = snackbarHostState,
         coroutineScope = coroutineScope,
@@ -463,7 +463,7 @@ fun DetailsContentPreview(
             DetailsContent(
               modifier = Modifier,
               viewState = viewState,
-              animatedVisibilityScope = visibilityScope,
+              animatedVisibilityScope = this,
               onNavigateUp = {},
               onMarkAsFavoriteClicked = {},
               onSimilarMovieClicked = {},

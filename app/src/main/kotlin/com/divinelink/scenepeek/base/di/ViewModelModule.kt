@@ -4,6 +4,7 @@ import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
 import com.divinelink.feature.onboarding.ui.OnboardingViewModel
+import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -30,4 +31,5 @@ val appViewModelModule = module {
   viewModelOf(::DetailsPreferencesViewModel)
   viewModelOf(::TMDBAuthViewModel)
   viewModelOf(::OnboardingViewModel)
+  viewModelOf(::ProfileViewModel)
 }

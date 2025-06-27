@@ -22,10 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsClickItem
@@ -124,12 +124,12 @@ fun JellyseerrAccountItem(
 @Previews
 @Composable
 private fun AccountItemPreview() {
-  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+  SharedTransitionScopeProvider {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
       JellyseerrAccountItem(
         accountDetails = null,
-        transitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        transitionScope = it,
+        animatedVisibilityScope = this@SharedTransitionScopeProvider,
         onNavigateToJellyseerrLogin = {},
       )
 
@@ -142,8 +142,8 @@ private fun AccountItemPreview() {
           email = null,
           createdAt = "August 9th, 2021",
         ),
-        transitionScope = transitionScope,
-        animatedVisibilityScope = visibilityScope,
+        transitionScope = it,
+        animatedVisibilityScope = this@SharedTransitionScopeProvider,
         onNavigateToJellyseerrLogin = {},
       )
     }

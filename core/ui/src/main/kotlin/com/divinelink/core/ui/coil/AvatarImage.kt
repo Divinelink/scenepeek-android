@@ -59,6 +59,20 @@ object AvatarImage {
   }
 
   @Composable
+  fun Medium(
+    modifier: Modifier = Modifier,
+    avatarUrl: String?,
+    username: String,
+  ) {
+    AvatarComponent(
+      modifier = modifier.size(MaterialTheme.dimensions.keyline_72),
+      fallbackSize = MaterialTheme.dimensions.keyline_40,
+      avatarUrl = avatarUrl,
+      username = username,
+    )
+  }
+
+  @Composable
   fun Large(
     modifier: Modifier = Modifier,
     avatarUrl: String?,
@@ -202,6 +216,11 @@ fun AvatarImageWithInitialsPreview() {
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
         AvatarImage.Large(
+          avatarUrl = null,
+          username = "Jenifer Reeves",
+        )
+
+        AvatarImage.Medium(
           avatarUrl = null,
           username = "Jenifer Reeves",
         )

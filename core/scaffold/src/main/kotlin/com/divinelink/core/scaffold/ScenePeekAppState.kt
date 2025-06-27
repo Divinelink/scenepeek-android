@@ -15,8 +15,8 @@ import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.navigation.route.navigateToHome
+import com.divinelink.core.navigation.route.navigateToProfile
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
-import com.divinelink.core.navigation.route.navigateToWatchlist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -86,7 +86,7 @@ class ScenePeekAppState internal constructor(
 
     when (destination) {
       TopLevelDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
-      TopLevelDestination.WATCHLIST -> navController.navigateToWatchlist(topLevelNavOptions)
+      TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
       TopLevelDestination.SEARCH -> navController.navigateToSearchFromTab(topLevelNavOptions)
     }
 

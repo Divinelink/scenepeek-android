@@ -36,7 +36,7 @@ import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.feature.settings.R
@@ -137,11 +137,11 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
           snackbarHostState = snackbarHostState,
           coroutineScope = coroutineScope,
         ) {
-          AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
-            state.sharedTransitionScope = transitionScope
+          SharedTransitionScopeProvider {
+            state.sharedTransitionScope = it
 
             rememberScaffoldState(
-              animatedVisibilityScope = visibilityScope,
+              animatedVisibilityScope = this,
             ).ScenePeekNavHost()
           }
         }

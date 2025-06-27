@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
@@ -31,8 +32,9 @@ class AccountSettingsScreenTest : ComposeTest() {
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
   private lateinit var logoutUseCase: FakeLogoutUseCase
 
-  private val sessionResult = Result.success(true)
-  private val accountDetailsResult = Result.success(AccountDetailsFactory.Pinkman())
+  private val accountDetailsResult = Result.success(
+    TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
+  )
 
   private val tags = TestTags.Settings.Account
 
@@ -85,7 +87,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     }
 
     val tmdbAccountText = getString(R.string.feature_settings_tmdb_account)
-    val usernameText = accountDetailsResult.getOrThrow().username
+    val usernameText = accountDetailsResult.getOrThrow().accountDetails.username
 
     with(composeTestRule) {
       onNodeWithText(usernameText).assertIsDisplayed()
@@ -136,7 +138,7 @@ class AccountSettingsScreenTest : ComposeTest() {
     }
 
     val tmdbAccountText = getString(R.string.feature_settings_tmdb_account)
-    val usernameText = accountDetailsResult.getOrThrow().username
+    val usernameText = accountDetailsResult.getOrThrow().accountDetails.username
 
     with(composeTestRule) {
       onNodeWithTag(tags.LOGOUT_BUTTON).performClick()

@@ -1,6 +1,6 @@
 package com.divinelink.feature.onboarding
 
-import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.OnboardingAction
@@ -120,7 +120,7 @@ class OnboardingViewModelTest {
     robot
       .mockOnboardingPages(OnboardingPages.initialPages)
       .mockIsInitialOnboarding(true)
-      .mockGetAccountDetails(Result.success(AccountDetailsFactory.Pinkman()))
+      .mockGetAccountDetails(Result.success(TMDBAccountFactory.loggedIn()))
       .buildViewModel()
       .onPageScroll(1)
       .assertUiState(

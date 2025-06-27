@@ -39,15 +39,17 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.NavigateUpButton
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchlistScreen(
+fun AnimatedVisibilityScope.WatchlistScreen(
+  onNavigateUp: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
-  animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: WatchlistViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -72,7 +74,7 @@ fun WatchlistScreen(
   }
 
   rememberScaffoldState(
-    animatedVisibilityScope = animatedVisibilityScope,
+    animatedVisibilityScope = this,
   ).PersistentScaffold(
     modifier = Modifier
       .testTag(TestTags.Watchlist.WATCHLIST_SCREEN)
@@ -82,8 +84,11 @@ fun WatchlistScreen(
         colors = topAppBarColor,
         scrollBehavior = scrollBehavior,
         title = {
-          Text(stringResource(R.string.feature_watchlist_title))
+          Text(
+            text = stringResource(uiR.string.core_ui_section_watchlist),
+          )
         },
+        navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
       )
     },
     floatingActionButton = {

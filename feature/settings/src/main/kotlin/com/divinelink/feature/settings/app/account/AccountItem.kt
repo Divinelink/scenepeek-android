@@ -29,7 +29,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.AvatarImage
@@ -37,7 +39,7 @@ import com.divinelink.feature.settings.R
 
 @Composable
 fun AccountItem(
-  accountDetails: AccountDetails?,
+  accountDetails: TMDBAccount,
   onLoginClick: () -> Unit,
   onLogoutClick: () -> Unit,
 ) {
@@ -45,10 +47,12 @@ fun AccountItem(
     targetState = accountDetails,
     label = "Account details animation",
   ) { details ->
-    if (details != null) {
-      LoggedInContent(details = details, onLogoutClick = onLogoutClick)
-    } else {
-      NotLoggedInContent(onLoginClick = onLoginClick)
+    when (details) {
+      is TMDBAccount.LoggedIn -> LoggedInContent(
+        details = details.accountDetails,
+        onLogoutClick = onLogoutClick,
+      )
+      TMDBAccount.Anonymous -> NotLoggedInContent(onLoginClick = onLoginClick)
     }
   }
 }
@@ -160,18 +164,13 @@ private fun AccountItemPreview() {
     Surface {
       Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
         AccountItem(
-          accountDetails = null,
+          accountDetails = TMDBAccount.Anonymous,
           onLoginClick = {},
           onLogoutClick = {},
         )
 
         AccountItem(
-          accountDetails = AccountDetails(
-            id = 123,
-            username = "Jessee Pinkman",
-            name = "name",
-            tmdbAvatarPath = null,
-          ),
+          accountDetails = TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
           onLoginClick = {},
           onLogoutClick = {},
         )

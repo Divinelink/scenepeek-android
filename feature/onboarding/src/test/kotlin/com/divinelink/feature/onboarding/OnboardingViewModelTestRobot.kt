@@ -2,7 +2,7 @@ package com.divinelink.feature.onboarding
 
 import app.cash.turbine.test
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
-import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.onboarding.OnboardingPage
 import com.divinelink.core.testing.ViewModelTestRobot
@@ -57,7 +57,7 @@ class OnboardingViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     onboardingManager.setIsInitialOnboarding(isInitialOnboarding)
   }
 
-  fun mockGetAccountDetails(response: Result<AccountDetails>) = apply {
+  fun mockGetAccountDetails(response: Result<TMDBAccount>) = apply {
     getAccountDetailsUseCase.mockSuccess(response)
   }
 
