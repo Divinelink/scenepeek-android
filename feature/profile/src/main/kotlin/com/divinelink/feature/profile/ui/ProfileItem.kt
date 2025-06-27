@@ -39,8 +39,10 @@ fun ProfileItem(
 ) {
   AnimatedContent(tmdbAccount) { state ->
     when (state) {
-      TMDBAccountUiState.Error -> {
-      }
+      TMDBAccountUiState.Error -> InitialProfileItem(
+        isLoading = true,
+        onLoginClick = onLoginClick,
+      )
       TMDBAccountUiState.Initial -> InitialProfileItem(
         isLoading = true,
         onLoginClick = onLoginClick,
@@ -48,7 +50,7 @@ fun ProfileItem(
       is TMDBAccountUiState.LoggedIn -> LoggedInProfileItem(
         state.account,
       )
-      TMDBAccountUiState.NotLoggedIn -> InitialProfileItem(
+      TMDBAccountUiState.Anonymous -> InitialProfileItem(
         isLoading = false,
         onLoginClick = onLoginClick,
       )

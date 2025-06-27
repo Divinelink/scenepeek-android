@@ -4,7 +4,9 @@ import com.divinelink.core.model.account.TMDBAccount
 
 object TMDBAccountFactory {
 
-  fun LoggedIn() = TMDBAccount.LoggedIn(
+  fun loggedIn() = TMDBAccount.LoggedIn(
     AccountDetailsFactory.Pinkman(),
   )
+
+  fun anonymous() = TMDBAccount.Anonymous
 }

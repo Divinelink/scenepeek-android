@@ -1,7 +1,5 @@
 package com.divinelink.feature.profile.ui
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,17 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.profile.ProfileSection
 import com.divinelink.feature.profile.ProfileUiState
@@ -28,8 +26,7 @@ import com.divinelink.feature.profile.ProfileUserInteraction
 import com.divinelink.feature.profile.ui.provider.ProfileUiStateParameterProvider
 
 @Composable
-fun AnimatedVisibilityScope.ProfileContent(
-  sharedTransitionScope: SharedTransitionScope,
+fun ProfileContent(
   uiState: ProfileUiState,
   userInteraction: (ProfileUserInteraction) -> Unit,
 ) {
@@ -49,7 +46,6 @@ fun AnimatedVisibilityScope.ProfileContent(
 
     item {
       ProfileSectionItem(
-        sharedTransitionScope = sharedTransitionScope,
         section = ProfileSection.Watchlist,
         onClick = { userInteraction(ProfileUserInteraction.NavigateToWatchlist) },
       )
@@ -58,8 +54,7 @@ fun AnimatedVisibilityScope.ProfileContent(
 }
 
 @Composable
-private fun AnimatedVisibilityScope.ProfileSectionItem(
-  sharedTransitionScope: SharedTransitionScope,
+private fun ProfileSectionItem(
   section: ProfileSection,
   onClick: () -> Unit,
 ) {
@@ -78,26 +73,13 @@ private fun AnimatedVisibilityScope.ProfileSectionItem(
         modifier = Modifier.padding(MaterialTheme.dimensions.keyline_8),
       )
 
-      with(sharedTransitionScope) {
-        Text(
-          text = section.title.getString(),
-          style = MaterialTheme.typography.titleMedium,
-          modifier = Modifier
-            .conditional(
-              condition = section.sharedElementKey != null,
-              ifTrue = {
-                sharedElement(
-                  sharedContentState = rememberSharedContentState(
-                    section.sharedElementKey!!,
-                  ),
-                  animatedVisibilityScope = this@ProfileSectionItem,
-                )
-              },
-            )
-            .padding(MaterialTheme.dimensions.keyline_8)
-            .weight(1f),
-        )
-      }
+      Text(
+        text = section.title.getString(),
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier
+          .padding(MaterialTheme.dimensions.keyline_8)
+          .weight(1f),
+      )
     }
   }
 }
@@ -107,11 +89,12 @@ private fun AnimatedVisibilityScope.ProfileSectionItem(
 fun ProfileContentPreview(
   @PreviewParameter(ProfileUiStateParameterProvider::class) state: ProfileUiState,
 ) {
-  SharedTransitionScopeProvider {
-    ProfileContent(
-      sharedTransitionScope = it,
-      uiState = state,
-      userInteraction = {},
-    )
+  AppTheme {
+    Surface {
+      ProfileContent(
+        uiState = state,
+        userInteraction = {},
+      )
+    }
   }
 }

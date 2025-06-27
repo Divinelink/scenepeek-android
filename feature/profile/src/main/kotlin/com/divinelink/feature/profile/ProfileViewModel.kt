@@ -33,7 +33,7 @@ class ProfileViewModel(private val getAccountDetailsUseCase: GetAccountDetailsUs
               it.copy(
                 accountUiState = when (account) {
                   is TMDBAccount.LoggedIn -> TMDBAccountUiState.LoggedIn(account)
-                  TMDBAccount.Anonymous -> TMDBAccountUiState.NotLoggedIn
+                  TMDBAccount.Anonymous -> TMDBAccountUiState.Anonymous
                 },
               )
             }

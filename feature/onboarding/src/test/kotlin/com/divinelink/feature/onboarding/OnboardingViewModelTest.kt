@@ -120,7 +120,7 @@ class OnboardingViewModelTest {
     robot
       .mockOnboardingPages(OnboardingPages.initialPages)
       .mockIsInitialOnboarding(true)
-      .mockGetAccountDetails(Result.success(TMDBAccountFactory.LoggedIn()))
+      .mockGetAccountDetails(Result.success(TMDBAccountFactory.loggedIn()))
       .buildViewModel()
       .onPageScroll(1)
       .assertUiState(

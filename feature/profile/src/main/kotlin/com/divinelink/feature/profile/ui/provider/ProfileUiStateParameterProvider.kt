@@ -9,7 +9,7 @@ import com.divinelink.feature.profile.ui.TMDBAccountUiState
 class ProfileUiStateParameterProvider : PreviewParameterProvider<ProfileUiState> {
   override val values: Sequence<ProfileUiState> = sequenceOf(
     ProfileUiState(
-      accountUiState = TMDBAccountUiState.NotLoggedIn,
+      accountUiState = TMDBAccountUiState.Anonymous,
     ),
     ProfileUiState(
       accountUiState = TMDBAccountUiState.Initial,
