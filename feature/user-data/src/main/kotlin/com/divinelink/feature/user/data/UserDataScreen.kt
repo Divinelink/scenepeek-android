@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -29,6 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -60,6 +62,15 @@ fun AnimatedVisibilityScope.UserDataScreen(
   var selectedPage by rememberSaveable { mutableIntStateOf(0) }
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+  val title by remember {
+    mutableIntStateOf(
+      when (uiState.section) {
+        UserDataSection.Watchlist -> uiR.string.core_ui_section_watchlist
+        UserDataSection.Ratings -> uiR.string.core_ui_section_ratings
+      },
+    )
+  }
+
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
     initialPage = selectedPage,
@@ -84,9 +95,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
         colors = topAppBarColor,
         scrollBehavior = scrollBehavior,
         title = {
-          Text(
-            text = stringResource(uiR.string.core_ui_section_watchlist),
-          )
+          Text(text = stringResource(title))
         },
         navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
       )
