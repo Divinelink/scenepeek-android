@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsDivider
 import com.divinelink.feature.settings.components.SettingsTextItem
@@ -67,11 +67,11 @@ fun AccountSettingsContent(
 fun AccountSettingsContentPreview(
   @PreviewParameter(AccountDetailsParameterProvider::class) uiState: AccountSettingsViewState,
 ) {
-  AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
+  SharedTransitionScopeProvider {
     AccountSettingsContent(
       uiState = uiState,
-      transitionScope = transitionScope,
-      animatedVisibilityScope = visibilityScope,
+      transitionScope = it,
+      animatedVisibilityScope = this,
       onLogoutClick = {},
       onLoginClick = {},
       onNavigateToJellyseerrLogin = {},

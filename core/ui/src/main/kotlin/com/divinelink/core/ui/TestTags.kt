@@ -57,6 +57,10 @@ object TestTags {
     const val RATING_SOURCE_SKELETON = "Rating skeleton for %s"
   }
 
+  object Profile {
+    const val CONTENT = "Profile Content"
+  }
+
   object Details {
     const val COLLAPSIBLE_LAYOUT = "Details Collapsible Layout"
     const val COLLAPSIBLE_CONTENT = "Details Collapsible Content"

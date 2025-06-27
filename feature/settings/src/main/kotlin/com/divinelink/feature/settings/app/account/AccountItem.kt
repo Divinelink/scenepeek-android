@@ -52,7 +52,7 @@ fun AccountItem(
         details = details.accountDetails,
         onLogoutClick = onLogoutClick,
       )
-      TMDBAccount.NotLoggedIn -> NotLoggedInContent(onLoginClick = onLoginClick)
+      TMDBAccount.Anonymous -> NotLoggedInContent(onLoginClick = onLoginClick)
     }
   }
 }
@@ -164,7 +164,7 @@ private fun AccountItemPreview() {
     Surface {
       Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16)) {
         AccountItem(
-          accountDetails = TMDBAccount.NotLoggedIn,
+          accountDetails = TMDBAccount.Anonymous,
           onLoginClick = {},
           onLogoutClick = {},
         )

@@ -23,17 +23,17 @@ class AccountDetailsParameterProvider : PreviewParameterProvider<AccountSettings
       jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
     ),
     AccountSettingsViewState(
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      tmdbAccount = TMDBAccount.Anonymous,
       alertDialogUiState = null,
       jellyseerrAccountDetails = null,
     ),
     AccountSettingsViewState(
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      tmdbAccount = TMDBAccount.Anonymous,
       alertDialogUiState = null,
       jellyseerrAccountDetails = null,
     ),
     AccountSettingsViewState(
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      tmdbAccount = TMDBAccount.Anonymous,
       alertDialogUiState = null,
       jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyfin(),
     ),

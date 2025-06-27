@@ -16,7 +16,6 @@ fun NavGraphBuilder.watchlistScreen(
       onNavigateToMediaDetails = onNavigateToDetails,
       onNavigateToTMDBLogin = onNavigateToTMDBLogin,
       onNavigateUp = onNavigateUp,
-      animatedVisibilityScope = this@composable,
     )
   }
 }

@@ -14,7 +14,7 @@ import com.divinelink.core.scaffold.ProvideScenePeekAppState
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 
 fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
@@ -39,14 +39,13 @@ fun ComposeTest.setVisibilityScopeContent(
       onboardingManager = TestOnboardingManager(),
       navigationProvider = listOf(),
     )
-
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     ProvideScenePeekAppState(appState = state) {
       ProvideSnackbarController(snackbarHostState, coroutineScope) {
-        AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
-          state.sharedTransitionScope = transitionScope
-          visibilityScope.content(transitionScope)
+        SharedTransitionScopeProvider { sharedTransitionScope ->
+          state.sharedTransitionScope = sharedTransitionScope
+          content(sharedTransitionScope)
         }
       }
     }
@@ -69,11 +68,11 @@ fun ComposeTest.setScaffoldContent(
 
     ProvideScenePeekAppState(appState = state) {
       ProvideSnackbarController(snackbarHostState, coroutineScope) {
-        AnimatedVisibilityScopeProvider { transitionScope, visibilityScope ->
-          state.sharedTransitionScope = transitionScope
+        SharedTransitionScopeProvider {
+          state.sharedTransitionScope = it
 
           rememberScaffoldState(
-            animatedVisibilityScope = visibilityScope,
+            animatedVisibilityScope = this,
           ).content()
         }
       }

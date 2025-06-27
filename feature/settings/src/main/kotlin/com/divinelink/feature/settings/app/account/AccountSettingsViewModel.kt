@@ -92,7 +92,7 @@ class AccountSettingsViewModel(
       logoutUseCase.invoke(Unit).onSuccess {
         _viewState.update {
           it.copy(
-            tmdbAccount = TMDBAccount.NotLoggedIn,
+            tmdbAccount = TMDBAccount.Anonymous,
             alertDialogUiState = null,
           )
         }

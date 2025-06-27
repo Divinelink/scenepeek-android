@@ -1,8 +1,11 @@
 package com.divinelink.scenepeek.settings.app.account.usecase
 
+import app.cash.turbine.test
+import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
@@ -39,9 +42,12 @@ class GetAccountDetailsUseCaseTest {
 
     )
 
-    val result = useCase.invoke(Unit)
-
-    assertThat(result.first().isFailure).isTrue()
+    useCase.invoke(Unit).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(TMDBAccount.Anonymous))
+      assertThat(
+        awaitItem(),
+      ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
+    }
   }
 
   @Test

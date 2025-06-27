@@ -12,7 +12,7 @@ data class AccountSettingsViewState(
   companion object {
     fun initial(): AccountSettingsViewState = AccountSettingsViewState(
       alertDialogUiState = null,
-      tmdbAccount = TMDBAccount.NotLoggedIn,
+      tmdbAccount = TMDBAccount.Anonymous,
       jellyseerrAccountDetails = null,
     )
   }

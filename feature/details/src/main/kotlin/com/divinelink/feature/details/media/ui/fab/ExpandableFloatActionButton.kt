@@ -50,9 +50,9 @@ import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.AnimatedVisibilityScopeProvider
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.expandablefab.FloatingActionButtonItem
 import com.divinelink.core.ui.conditional
@@ -228,7 +228,7 @@ private fun ExpandableFloatingActionButton() {
   ProvideScenePeekAppState(
     appState = state,
   ) {
-    AnimatedVisibilityScopeProvider { sharedTransitionScope, visibilityScope ->
+    SharedTransitionScopeProvider { sharedTransitionScope ->
       state.sharedTransitionScope = sharedTransitionScope
 
       Text(
@@ -237,7 +237,7 @@ private fun ExpandableFloatingActionButton() {
         modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
       )
       rememberScaffoldState(
-        animatedVisibilityScope = visibilityScope,
+        animatedVisibilityScope = this,
       ).PersistentScaffold {
         ExpandableFloatActionButton(
           buttons = listOf(

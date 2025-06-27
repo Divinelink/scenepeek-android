@@ -36,7 +36,7 @@ fun AnimatedVisibilityScope.ProfileContent(
   ScenePeekLazyColumn(
     modifier = Modifier
       .fillMaxSize()
-      .testTag(TestTags.LAZY_COLUMN),
+      .testTag(TestTags.Profile.CONTENT),
     contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
@@ -83,14 +83,17 @@ private fun AnimatedVisibilityScope.ProfileSectionItem(
           text = section.title.getString(),
           style = MaterialTheme.typography.titleMedium,
           modifier = Modifier
-            .conditional(section.sharedElementKey != null) {
-              sharedElement(
-                sharedContentState = rememberSharedContentState(
-                  section.sharedElementKey!!,
-                ),
-                animatedVisibilityScope = this@ProfileSectionItem,
-              )
-            }
+            .conditional(
+              condition = section.sharedElementKey != null,
+              ifTrue = {
+                sharedElement(
+                  sharedContentState = rememberSharedContentState(
+                    section.sharedElementKey!!,
+                  ),
+                  animatedVisibilityScope = this@ProfileSectionItem,
+                )
+              },
+            )
             .padding(MaterialTheme.dimensions.keyline_8)
             .weight(1f),
         )

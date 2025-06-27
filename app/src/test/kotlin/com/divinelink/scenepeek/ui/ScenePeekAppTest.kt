@@ -6,12 +6,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.compose.ComposeNavigator
@@ -23,6 +21,7 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingSource
@@ -34,11 +33,9 @@ import com.divinelink.core.scaffold.TopLevelDestination
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
-import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
@@ -47,7 +44,6 @@ import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
-import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
@@ -56,8 +52,8 @@ import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import com.divinelink.feature.onboarding.ui.OnboardingViewModel
+import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
-import com.divinelink.feature.watchlist.WatchlistViewModel
 import com.divinelink.scenepeek.R
 import com.divinelink.scenepeek.base.di.navigationModule
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
@@ -102,9 +98,8 @@ class ScenePeekAppTest : ComposeTest() {
 
   private val searchStateManager = SearchStateManager()
 
-  // Watchlist use cases
-  private lateinit var observeAccountUseCase: TestObserveAccountUseCase
-  private lateinit var fetchWatchlistUseCase: FakeFetchWatchlistUseCase
+  // Profile use cases
+  private lateinit var getAccountDetailsUseCaseTest: FakeGetAccountDetailsUseCase
 
   // DETAILS use cases
   private lateinit var getMediaDetailsUseCase: FakeGetMediaDetailsUseCase
@@ -132,8 +127,7 @@ class ScenePeekAppTest : ComposeTest() {
     markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
     getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
-    observeAccountUseCase = TestObserveAccountUseCase()
-    fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
+    getAccountDetailsUseCaseTest = FakeGetAccountDetailsUseCase()
 
     getMediaDetailsUseCase = FakeGetMediaDetailsUseCase()
     submitRatingUseCase = FakeSubmitRatingUseCase()
@@ -163,7 +157,7 @@ class ScenePeekAppTest : ComposeTest() {
   @Test
   fun `test navigation items are visible`() = runTest {
     val homeTab = getString(scaffoldR.string.home)
-    val watchlistTab = getString(scaffoldR.string.watchlist)
+    val profileTab = getString(scaffoldR.string.profile)
     val searchTab = getString(scaffoldR.string.search)
 
     popularMoviesUseCase.mockFetchPopularMovies(
@@ -198,7 +192,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(homeTab).assertExists()
-      onNodeWithText(watchlistTab).assertExists()
+      onNodeWithText(profileTab).assertExists()
 
       onNodeWithContentDescription(
         getString(R.string.top_level_navigation_content_description_selected, homeTab),
@@ -206,7 +200,7 @@ class ScenePeekAppTest : ComposeTest() {
       ).assertExists()
 
       onNodeWithContentDescription(
-        getString(R.string.top_level_navigation_content_description_unselected, watchlistTab),
+        getString(R.string.top_level_navigation_content_description_unselected, profileTab),
         useUnmergedTree = true,
       ).assertExists()
 
@@ -218,9 +212,9 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigate to watchlist`() = runTest {
+  fun `test navigate to profile`() = runTest {
     val homeTab = getString(scaffoldR.string.home)
-    val watchlistTab = getString(scaffoldR.string.watchlist)
+    val profileTab = getString(scaffoldR.string.profile)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
@@ -236,9 +230,8 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     declare {
-      WatchlistViewModel(
-        observeAccountUseCase = observeAccountUseCase.mock,
-        fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+      ProfileViewModel(
+        getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       )
     }
 
@@ -261,7 +254,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(homeTab).assertExists()
-      onNodeWithText(watchlistTab).assertExists()
+      onNodeWithText(profileTab).assertExists()
 
       onNodeWithContentDescription(
         getString(R.string.top_level_navigation_content_description_selected, homeTab),
@@ -269,14 +262,14 @@ class ScenePeekAppTest : ComposeTest() {
       ).assertExists()
 
       onNodeWithContentDescription(
-        getString(R.string.top_level_navigation_content_description_unselected, watchlistTab),
+        getString(R.string.top_level_navigation_content_description_unselected, profileTab),
         useUnmergedTree = true,
       ).assertExists()
 
-      onNodeWithText(watchlistTab).performClick()
+      onNodeWithText(profileTab).performClick()
 
       onNodeWithContentDescription(
-        getString(R.string.top_level_navigation_content_description_selected, watchlistTab),
+        getString(R.string.top_level_navigation_content_description_selected, profileTab),
         useUnmergedTree = true,
       ).assertExists()
 
@@ -627,20 +620,15 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test navigate to watchlist when is on movie details`() = runTest {
+  fun `test navigate to profile when is on movie details`() = runTest {
     val homeTab = getString(scaffoldR.string.home)
-    val watchlistTab = getString(scaffoldR.string.watchlist)
+    val profileTab = getString(scaffoldR.string.profile)
 
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
-    observeAccountUseCase.mockSuccess(Result.success(true))
-    fetchWatchlistUseCase.mockSuccess(
-      Result.success(
-        WatchlistResponseFactory.movies().copy(canFetchMore = false),
-      ),
-    )
+    getAccountDetailsUseCase.mockSuccess(Result.success(TMDBAccountFactory.LoggedIn()))
 
     getMediaDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(
@@ -663,9 +651,8 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     declare {
-      WatchlistViewModel(
-        observeAccountUseCase = observeAccountUseCase.mock,
-        fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+      ProfileViewModel(
+        getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       )
     }
 
@@ -710,110 +697,13 @@ class ScenePeekAppTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithText(homeTab).assertIsDisplayed()
-      onNodeWithText(watchlistTab).assertIsDisplayed()
+      onNodeWithText(profileTab).assertIsDisplayed()
 
-      onNodeWithText(watchlistTab).performClick()
+      onNodeWithText(profileTab).performClick()
 
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertIsDisplayed()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertDoesNotExist()
-      // Scroll to last items of watchlist
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_CONTENT).performScrollToNode(
-        hasText(WatchlistResponseFactory.movies().data.last().name),
-      )
+      onNodeWithTag(TestTags.Profile.CONTENT).assertIsDisplayed()
 
-      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name)
-        .assertIsDisplayed()
-        .performClick()
-
-      // Has navigated to details screen
-      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).assertIsDisplayed()
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsNotDisplayed()
-
-      onNodeWithText(watchlistTab).performClick()
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsDisplayed()
-      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).assertIsNotDisplayed()
-
-      // Has navigated back to watchlist while keeping the scroll position
-      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertIsNotDisplayed()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
-    }
-  }
-
-  @Test
-  fun `test navigate between home and watchlist does not re-create watchlist`() = runTest {
-    val homeTab = getString(scaffoldR.string.home)
-    val watchlistTab = getString(scaffoldR.string.watchlist)
-
-    popularMoviesUseCase.mockFetchPopularMovies(
-      response = Result.success(MediaItemFactory.MoviesList()),
-    )
-
-    observeAccountUseCase.mockSuccess(Result.success(true))
-    fetchWatchlistUseCase.mockSuccess(
-      Result.success(
-        WatchlistResponseFactory.movies().copy(canFetchMore = false),
-      ),
-    )
-
-    declare {
-      HomeViewModel(
-        getPopularMoviesUseCase = popularMoviesUseCase.mock,
-        markAsFavoriteUseCase = markAsFavoriteUseCase,
-        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
-        searchStateManager = searchStateManager,
-      )
-    }
-
-    declare {
-      WatchlistViewModel(
-        observeAccountUseCase = observeAccountUseCase.mock,
-        fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
-      )
-    }
-
-    setContentWithTheme {
-      val state = rememberScenePeekAppState(
-        networkMonitor = networkMonitor,
-        onboardingManager = onboardingManager,
-        navigationProvider = navigationProvider,
-      )
-
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
-    }
-
-    with(composeTestRule) {
-      onNodeWithText(homeTab).assertIsDisplayed()
-      onNodeWithText(watchlistTab).assertIsDisplayed()
-
-      // Go to watchlist
-      onNodeWithText(watchlistTab).performClick()
-
-      onNodeWithText(WatchlistResponseFactory.movies().data.first().name).assertIsDisplayed()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertDoesNotExist()
-      // Scroll to last items of watchlist
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_CONTENT).performScrollToNode(
-        hasText(WatchlistResponseFactory.movies().data.last().name),
-      )
-
-      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
-
-      onNodeWithText(homeTab).performClick()
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsNotDisplayed()
-
-      // Has navigated back to watchlist while keeping the scroll position
-      onNodeWithText(watchlistTab).performClick()
-      onNodeWithTag(TestTags.Watchlist.WATCHLIST_SCREEN).assertIsDisplayed()
-      onNodeWithText(WatchlistResponseFactory.movies().data[3].name).assertDoesNotExist()
-      onNodeWithText(WatchlistResponseFactory.movies().data.last().name).assertIsDisplayed()
+      onNodeWithText("Watchlist").assertIsDisplayed()
     }
   }
 
@@ -958,7 +848,7 @@ class ScenePeekAppTest : ComposeTest() {
     assertThat(state.topLevelDestinations.size).isEqualTo(3)
     assertThat(state.topLevelDestinations[0].name).contains(TopLevelDestination.HOME.name)
     assertThat(state.topLevelDestinations[1].name).contains(TopLevelDestination.SEARCH.name)
-    assertThat(state.topLevelDestinations[2].name).contains(TopLevelDestination.WATCHLIST.name)
+    assertThat(state.topLevelDestinations[2].name).contains(TopLevelDestination.PROFILE.name)
   }
 
   @Test

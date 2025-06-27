@@ -20,7 +20,9 @@ import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import java.net.UnknownHostException
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
@@ -31,27 +33,30 @@ class WatchlistScreenTest : ComposeTest() {
   private val fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
 
   @Test
-  fun `test unknown error`() {
+  fun `test unknown error`() = runTest {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
-    composeTestRule.onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
-    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_error_generic_title))
-      .assertIsDisplayed()
-    composeTestRule.onNodeWithText(getString(uiR.string.core_ui_error_generic_description))
-      .assertIsDisplayed()
+    with(composeTestRule) {
+      waitForIdle()
+      delay(2000)
+
+      onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+      onNodeWithText(getString(uiR.string.core_ui_error_generic_title)).assertIsDisplayed()
+      onNodeWithText(getString(uiR.string.core_ui_error_generic_description)).assertIsDisplayed()
+    }
   }
 
   @Test
@@ -63,13 +68,13 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
@@ -82,13 +87,14 @@ class WatchlistScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test unauthenticated error`() {
+  fun `test unauthenticated error`() = runTest {
     var verifyNavigatedToTMDBLogin = false
 
     observeAccountUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {
           verifyNavigatedToTMDBLogin = true
         },
@@ -97,7 +103,6 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
@@ -106,7 +111,7 @@ class WatchlistScreenTest : ComposeTest() {
     )
 
     val loginToSeeWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_watchlist_login_title
+      R.string.feature_watchlist_login_title,
     )
 
     composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
@@ -124,13 +129,14 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
+
       )
     }
 
@@ -159,13 +165,13 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
@@ -202,13 +208,13 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
@@ -244,13 +250,13 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {},
         viewModel = WatchlistViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
@@ -304,6 +310,7 @@ class WatchlistScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       WatchlistScreen(
+        onNavigateUp = {},
         onNavigateToTMDBLogin = {},
         onNavigateToMediaDetails = {
           verifyNavigatedToMediaDetails = true
@@ -313,7 +320,6 @@ class WatchlistScreenTest : ComposeTest() {
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
         ),
-        animatedVisibilityScope = this,
       )
     }
 
