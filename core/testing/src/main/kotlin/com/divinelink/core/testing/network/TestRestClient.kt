@@ -24,4 +24,13 @@ class TestRestClient {
 
     restClient.get<T>(url = url)
   }
+
+  suspend inline fun <reified T : Any> mockDelete(
+    url: String,
+    response: String,
+  ) {
+    restClient = TMDbClient(MockEngine(response))
+
+    restClient.delete<T>(url = url)
+  }
 }
