@@ -19,4 +19,18 @@ interface AccountService {
     accountId: String,
     sessionId: String,
   ): Flow<TvResponseApi>
+
+  fun fetchRatedMovies(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<MoviesResponseApi>
+
+  fun fetchRatedTvShows(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<TvResponseApi>
 }

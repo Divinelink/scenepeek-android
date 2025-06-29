@@ -19,6 +19,7 @@ sealed class MediaItem(
     open val overview: String,
     open val isFavorite: Boolean?,
     override val mediaType: MediaType,
+    open val accountRating: Int?,
   ) : MediaItem(
     id = id,
     posterPath = posterPath,
@@ -35,6 +36,7 @@ sealed class MediaItem(
       override val voteCount: Int,
       override val overview: String,
       override val isFavorite: Boolean?,
+      override val accountRating: Int? = null,
     ) : Media(
       id = id,
       posterPath = posterPath,
@@ -45,6 +47,7 @@ sealed class MediaItem(
       overview = overview,
       isFavorite = isFavorite,
       mediaType = MediaType.TV,
+      accountRating = accountRating,
     )
 
     data class Movie(
@@ -56,6 +59,7 @@ sealed class MediaItem(
       override val voteCount: Int,
       override val overview: String,
       override val isFavorite: Boolean?,
+      override val accountRating: Int? = null,
     ) : Media(
       id = id,
       posterPath = posterPath,
@@ -66,6 +70,7 @@ sealed class MediaItem(
       overview = overview,
       isFavorite = isFavorite == true,
       mediaType = MediaType.MOVIE,
+      accountRating = accountRating,
     )
   }
 

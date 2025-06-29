@@ -1,0 +1,382 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/gc8PfyTqzqltKPW3X0cIVUGmagz.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "id": 1396,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Breaking Bad",
+      "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
+      "popularity": 163.323,
+      "poster_path": "/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+      "first_air_date": "2008-01-20",
+      "name": "Breaking Bad",
+      "vote_average": 8.928,
+      "vote_count": 15715,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/rAOjnEFTuNysY7bot8zonhImGMh.jpg",
+      "genre_ids": [
+        10759,
+        18,
+        10765
+      ],
+      "id": 1402,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Walking Dead",
+      "overview": "Sheriff's deputy Rick Grimes awakens from a coma to find a post-apocalyptic world dominated by flesh-eating zombies. He sets out to find his family and encounters many other survivors along the way.",
+      "popularity": 161.4067,
+      "poster_path": "/ng3cMtxYKt1OSQYqFlnKWnVsqNO.jpg",
+      "first_air_date": "2010-10-31",
+      "name": "The Walking Dead",
+      "vote_average": 8.096,
+      "vote_count": 17039,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/siA2d4PNn4JVFZAwfIYx4pnKCaK.jpg",
+      "genre_ids": [
+        18,
+        9648
+      ],
+      "id": 46648,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "True Detective",
+      "overview": "An American anthology police detective series utilizing multiple timelines in which investigations seem to unearth personal and professional secrets of those involved, both within or outside the law.",
+      "popularity": 71.9379,
+      "poster_path": "/cuV2O5ZyDLHSOWzg3nLVljp1ubw.jpg",
+      "first_air_date": "2014-01-12",
+      "name": "True Detective",
+      "vote_average": 8.285,
+      "vote_count": 3677,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/41neXsH222hV2zrsTyw8h7javon.jpg",
+      "genre_ids": [
+        16,
+        35
+      ],
+      "id": 2190,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "South Park",
+      "overview": "Follows the misadventures of four irreverent grade-schoolers in the quiet, dysfunctional town of South Park, Colorado.",
+      "popularity": 118.6456,
+      "poster_path": "/xJnbMTrJ2fl1AXAKx34U4BPvOhs.jpg",
+      "first_air_date": "1997-08-13",
+      "name": "South Park",
+      "vote_average": 8.369,
+      "vote_count": 4554,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/2Nwbv0hrN8sThLvgooShcPqmFrO.jpg",
+      "genre_ids": [
+        99
+      ],
+      "id": 58474,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Cosmos",
+      "overview": "Famed astrophysicist Neil deGrasse Tyson provides clarity for the vision of the cosmos as he voyages across the universe with never-before-told stories that delve into the scientific concepts of the laws of gravity and the origins of space and time.",
+      "popularity": 30.3572,
+      "poster_path": "/5o07ps0QZ0bNoRYxTn9cPdRWlUu.jpg",
+      "first_air_date": "2014-03-09",
+      "name": "Cosmos",
+      "vote_average": 8.471,
+      "vote_count": 1579,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/hjJ5XDKP7XY2ADUuMdHM5NsC32s.jpg",
+      "genre_ids": [
+        99
+      ],
+      "id": 1430,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Cosmos: A Personal Voyage",
+      "overview": "Carl Sagan covers a wide range of scientific subjects, including the origin of life and a perspective of our place in the universe.",
+      "popularity": 15.7903,
+      "poster_path": "/nOGArjE0WMkzY2GW1taJm8l9gxD.jpg",
+      "first_air_date": "1980-09-28",
+      "name": "Cosmos: A Personal Voyage",
+      "vote_average": 8.598,
+      "vote_count": 388,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/vcFW09U4834DyFOeRZpsx9x1D3S.jpg",
+      "genre_ids": [
+        10759,
+        18,
+        10765
+      ],
+      "id": 57243,
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "Doctor Who",
+      "overview": "The Doctor is a Time Lord: a 900 year old alien with 2 hearts, part of a gifted civilization who mastered time travel. The Doctor saves planets for a living—more of a hobby actually, and the Doctor's very, very good at it.",
+      "popularity": 169.1981,
+      "poster_path": "/w8enSKCf6Zm0topeQ2XPccDqsqp.jpg",
+      "first_air_date": "2005-03-26",
+      "name": "Doctor Who",
+      "vote_average": 7.551,
+      "vote_count": 3154,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/oHnig7tDh7Lox4GZ95dFmCbU6US.jpg",
+      "genre_ids": [
+        10765,
+        18,
+        9648
+      ],
+      "id": 1705,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Fringe",
+      "overview": "FBI Special Agent Olivia Dunham, brilliant but formerly institutionalized scientist Walter Bishop and his scheming, reluctant son Peter uncover a deadly mystery involving a series of unbelievable events and realize they may be a part of a larger, more disturbing pattern that blurs the line between science fiction and technology.",
+      "popularity": 108.0471,
+      "poster_path": "/sY9hg5dLJ93RJOyKEiu1nAtBRND.jpg",
+      "first_air_date": "2008-09-09",
+      "name": "Fringe",
+      "vote_average": 8.135,
+      "vote_count": 2577,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/hPea3Qy5Gd6z4kJLUruBbwAH8Rm.jpg",
+      "genre_ids": [
+        80,
+        18
+      ],
+      "id": 60059,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Better Call Saul",
+      "overview": "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+      "popularity": 99.0705,
+      "poster_path": "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+      "first_air_date": "2015-02-08",
+      "name": "Better Call Saul",
+      "vote_average": 8.7,
+      "vote_count": 5702,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/9YteO4VWteiPmEbWYJRAeBTQZPD.jpg",
+      "genre_ids": [
+        35
+      ],
+      "id": 1100,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "How I Met Your Mother",
+      "overview": "A father recounts to his children - through a series of flashbacks - the journey he and his four best friends took leading up to him meeting their mother.",
+      "popularity": 199.885,
+      "poster_path": "/b34jPzmB0wZy7EjUZoleXOl2RRI.jpg",
+      "first_air_date": "2005-09-19",
+      "name": "How I Met Your Mother",
+      "vote_average": 8.141,
+      "vote_count": 5260,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/sccDflItNho4OiHkzpiDxB2fUFw.jpg",
+      "genre_ids": [
+        35
+      ],
+      "id": 1418,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Big Bang Theory",
+      "overview": "Physicists Leonard and Sheldon find their nerd-centric social circle with pals Howard and Raj expanding when aspiring actress Penny moves in next door.",
+      "popularity": 153.3292,
+      "poster_path": "/ooBGRQBdbGzBxAVfExiO8r7kloA.jpg",
+      "first_air_date": "2007-09-24",
+      "name": "The Big Bang Theory",
+      "vote_average": 7.91,
+      "vote_count": 11800,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/grR9khLE8TibHjTYZq1jCSSupYk.jpg",
+      "genre_ids": [
+        80,
+        18
+      ],
+      "id": 60622,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Fargo",
+      "overview": "A close-knit anthology series dealing with stories involving malice, violence and murder based in and around Minnesota.",
+      "popularity": 72.6856,
+      "poster_path": "/6U9CPeD8obHzweikFhiLhpc7YBT.jpg",
+      "first_air_date": "2014-04-15",
+      "name": "Fargo",
+      "vote_average": 8.295,
+      "vote_count": 2902,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/nVRyd8hlg0ZLxBn9RaI7mUMQLnz.jpg",
+      "genre_ids": [
+        18,
+        9648,
+        10765
+      ],
+      "id": 1622,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Supernatural",
+      "overview": "When they were boys, Sam and Dean Winchester lost their mother to a mysterious and demonic supernatural force. Subsequently, their father raised them to be soldiers. He taught them about the paranormal evil that lives in the dark corners and on the back roads of America ... and he taught them how to kill it. Now, the Winchester brothers crisscross the country in their '67 Chevy Impala, battling every kind of supernatural threat they encounter along the way. ",
+      "popularity": 280.8093,
+      "poster_path": "/KoYWXbnYuS3b0GyQPkbuexlVK9.jpg",
+      "first_air_date": "2005-09-13",
+      "name": "Supernatural",
+      "vote_average": 8.296,
+      "vote_count": 7871,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/c4CSgKL6QfkJxsWcGYDyTxpbzpW.jpg",
+      "genre_ids": [
+        18,
+        9648
+      ],
+      "id": 66788,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "13 Reasons Why",
+      "overview": "After a teenage girl's perplexing suicide, a classmate receives a series of tapes that unravel the mystery of her tragic choice.",
+      "popularity": 101.2349,
+      "poster_path": "/nel144y4dIOdFFid6twN5mAX9Yd.jpg",
+      "first_air_date": "2017-03-31",
+      "name": "13 Reasons Why",
+      "vote_average": 7.575,
+      "vote_count": 4320,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/hmLTIRtVyTHShJl2Wb8LHmvUgJm.jpg",
+      "genre_ids": [
+        80,
+        18,
+        9648
+      ],
+      "id": 19885,
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "Sherlock",
+      "overview": "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
+      "popularity": 49.9259,
+      "poster_path": "/cIfGAkpvWD2zxHrXzhv3uptYbyV.jpg",
+      "first_air_date": "2010-07-25",
+      "name": "Sherlock",
+      "vote_average": 8.514,
+      "vote_count": 5794,
+      "rating": 9
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/yGNnjoIGOdQy3douq60tULY8teK.jpg",
+      "genre_ids": [
+        10765,
+        37
+      ],
+      "id": 63247,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Westworld",
+      "overview": "A dark odyssey about the dawn of artificial consciousness and the evolution of sin. Set at the intersection of the near future and the reimagined past, it explores a world in which every human appetite, no matter how noble or depraved, can be indulged.",
+      "popularity": 77.6365,
+      "poster_path": "/8MfgyFHf7XEboZJPZXCIDqqiz6e.jpg",
+      "first_air_date": "2016-10-02",
+      "name": "Westworld",
+      "vote_average": 8.036,
+      "vote_count": 5748,
+      "rating": 10
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/a906PH7CDmSOdS7kmnAgdWk5mhv.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "id": 67744,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "MINDHUNTER",
+      "overview": "An agent in the FBI's Elite Serial Crime Unit develops profiling techniques as he pursues notorious serial killers and rapists.",
+      "popularity": 36.7297,
+      "poster_path": "/fbKE87mojpIETWepSbD5Qt741fp.jpg",
+      "first_air_date": "2017-10-13",
+      "name": "MINDHUNTER",
+      "vote_average": 8.084,
+      "vote_count": 2638,
+      "rating": 9
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 25
+}
