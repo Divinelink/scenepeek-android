@@ -13,4 +13,12 @@ data class UserDataUiState(
   val canFetchMore: Map<MediaType, Boolean>,
 ) {
   val mediaType = MediaType.from(MediaTab.entries[selectedTabIndex].value)
+
+  val totalMovies: Int? = forms[MediaType.MOVIE]?.let {
+    if (it is UserDataForm.Data<*>) it.totalResults else null
+  }
+
+  val totalTvShows: Int? = forms[MediaType.TV]?.let {
+    if (it is UserDataForm.Data<*>) it.totalResults else null
+  }
 }

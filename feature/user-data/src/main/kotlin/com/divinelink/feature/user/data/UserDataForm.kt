@@ -19,20 +19,11 @@ sealed interface UserDataForm<out T : MediaItem.Media> {
     val totalResults: Int,
   ) : UserDataForm<T> {
     private val isMovie = mediaType == MediaType.MOVIE
-    private val isTvShow = mediaType == MediaType.TV
 
-    val emptyResultsUiText: UIText = if (isMovie) {
+    val emptyResultsUiText: UIText = if (isMovie) { // TODO Handle ratings
       UIText.ResourceText(R.string.feature_user_data_empty_movies_watchlist)
     } else {
       UIText.ResourceText(R.string.feature_user_data_empty_tv_shows_watchlist)
-    }
-
-    val totalResultsUiText: UIText? = if (isMovie) {
-      UIText.ResourceText(R.string.feature_user_data_total_movies_in_watchlist, totalResults)
-    } else if (isTvShow) {
-      UIText.ResourceText(R.string.feature_user_data_total_tv_shows_in_watchlist, totalResults)
-    } else {
-      null
     }
 
     val isEmpty: Boolean = data.isEmpty()

@@ -1,7 +1,10 @@
 package com.divinelink.feature.user.data
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,6 +33,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -130,6 +134,10 @@ fun AnimatedVisibilityScope.UserDataScreen(
         Column {
           UserDataTabs(
             tabs = uiState.tabs,
+            size = listOf(
+              uiState.totalMovies,
+              uiState.totalTvShows,
+            ),
             selectedIndex = selectedPage,
             onClick = {
               scope.launch {
@@ -167,7 +175,6 @@ fun AnimatedVisibilityScope.UserDataScreen(
                           ),
                         )
                       },
-                      totalResults = it.totalResultsUiText,
                       onLoadMore = viewModel::onLoadMore,
                     )
                   }
@@ -185,6 +192,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
 @Composable
 private fun UserDataTabs(
   tabs: List<MediaTab>,
+  size: List<Int?>,
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
@@ -193,14 +201,30 @@ private fun UserDataTabs(
       Tab(
         modifier = Modifier.testTag(TestTags.Watchlist.TAB_BAR.format(tab.value)),
         text = {
-          Text(
-            text = stringResource(tab.titleRes),
-            color = if (index == selectedIndex) {
-              MaterialTheme.colorScheme.primary
-            } else {
-              MaterialTheme.colorScheme.onSurfaceVariant
-            },
-          )
+          FlowRow(
+            verticalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center,
+          ) {
+            Text(
+              text = stringResource(tab.titleRes),
+              color = if (index == selectedIndex) {
+                MaterialTheme.colorScheme.primary
+              } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+              },
+            )
+            AnimatedVisibility(visible = size[index] != null) {
+              Text(
+                modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_4),
+                text = "(${size[index] ?: 0})",
+                color = if (index == selectedIndex) {
+                  MaterialTheme.colorScheme.primary
+                } else {
+                  MaterialTheme.colorScheme.onSurfaceVariant
+                },
+              )
+            }
+          }
         },
         selected = index == selectedIndex,
         onClick = { onClick(index) },
