@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.data.session.model.SessionException
-import com.divinelink.core.domain.FetchWatchlistUseCase
+import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
@@ -22,7 +22,7 @@ import java.net.UnknownHostException
 
 class UserDataViewModel(
   private val observeAccountUseCase: ObserveAccountUseCase,
-  private val fetchWatchlistUseCase: FetchWatchlistUseCase,
+  private val fetchUserDataUseCase: FetchUserDataUseCase,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -110,7 +110,7 @@ class UserDataViewModel(
     mediaType: MediaType,
   ) {
     viewModelScope.launch {
-      fetchWatchlistUseCase.invoke(
+      fetchUserDataUseCase.invoke(
         UserDataParameters(
           page = uiState.value.pages[mediaType] ?: 1,
           section = section,

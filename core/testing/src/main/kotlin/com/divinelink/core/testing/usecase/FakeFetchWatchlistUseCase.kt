@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.usecase
 
-import com.divinelink.core.domain.FetchWatchlistUseCase
+import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -10,7 +10,7 @@ import org.mockito.kotlin.whenever
 
 class FakeFetchWatchlistUseCase {
 
-  val mock: FetchWatchlistUseCase = mock()
+  val mock: FetchUserDataUseCase = mock()
 
   /**
    * Response is a failure by default.

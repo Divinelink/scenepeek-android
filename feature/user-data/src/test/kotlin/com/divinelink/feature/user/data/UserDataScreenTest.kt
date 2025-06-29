@@ -43,7 +43,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -73,7 +73,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -101,7 +101,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -134,7 +134,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
 
         )
@@ -170,7 +170,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -213,7 +213,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -255,7 +255,7 @@ class UserDataScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }
@@ -318,7 +318,7 @@ class UserDataScreenTest : ComposeTest() {
         },
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
-          fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
         ),
       )
     }

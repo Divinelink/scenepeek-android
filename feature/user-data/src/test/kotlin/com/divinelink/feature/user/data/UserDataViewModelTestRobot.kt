@@ -15,7 +15,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
   override fun buildViewModel() = apply {
     viewModel = UserDataViewModel(
       observeAccountUseCase = observeAccountUseCase.mock,
-      fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+      fetchUserDataUseCase = fetchWatchlistUseCase.mock,
     )
   }
 

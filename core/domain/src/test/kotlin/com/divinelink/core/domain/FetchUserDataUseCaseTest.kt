@@ -13,7 +13,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
 
-class FetchWatchlistUseCaseTest {
+class FetchUserDataUseCaseTest {
 
   private lateinit var sessionStorage: SessionStorage
   private val accountRepository: TestAccountRepository = TestAccountRepository()
@@ -26,7 +26,7 @@ class FetchWatchlistUseCaseTest {
   fun `given null accountId when fetching movies watchlist then expect exception`() = runTest {
     sessionStorage = SessionStorageFactory.noAccountId()
 
-    val useCase = FetchWatchlistUseCase(
+    val useCase = FetchUserDataUseCase(
       dispatcher = testDispatcher,
       sessionStorage = sessionStorage,
       accountRepository = accountRepository.mock,
@@ -47,7 +47,7 @@ class FetchWatchlistUseCaseTest {
   fun `given null sessionId when fetching movies watchlist then expect exception`() = runTest {
     sessionStorage = SessionStorageFactory.noSessionId()
 
-    val useCase = FetchWatchlistUseCase(
+    val useCase = FetchUserDataUseCase(
       dispatcher = testDispatcher,
       sessionStorage = sessionStorage,
       accountRepository = accountRepository.mock,

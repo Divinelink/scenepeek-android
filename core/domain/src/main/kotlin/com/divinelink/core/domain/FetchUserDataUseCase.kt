@@ -8,12 +8,14 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
+import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 
-class FetchWatchlistUseCase(
+class FetchUserDataUseCase(
   private val sessionStorage: SessionStorage,
   private val accountRepository: AccountRepository,
   val dispatcher: DispatcherProvider,
@@ -28,6 +30,75 @@ class FetchWatchlistUseCase(
       return@flow
     }
 
+    when (parameters.section) {
+      UserDataSection.Watchlist -> fetchWatchlist(parameters, accountId, sessionId)
+      UserDataSection.Ratings -> fetchRatings(parameters, accountId, sessionId)
+    }
+  }
+
+  private suspend fun FlowCollector<Result<UserDataResponse>>.fetchRatings(
+    parameters: UserDataParameters,
+    accountId: String,
+    sessionId: String,
+  ) {
+    if (parameters.mediaType == MediaType.TV) {
+      accountRepository.fetchRatedTvShows(
+        page = parameters.page,
+        sortBy = parameters.sortBy.value,
+        accountId = accountId,
+        sessionId = sessionId,
+      ).last().fold(
+        onSuccess = {
+          val canFetchMore = parameters.page < it.totalPages
+
+          emit(
+            Result.success(
+              UserDataResponse(
+                data = it.list,
+                totalResults = it.totalResults,
+                type = MediaType.TV,
+                canFetchMore = canFetchMore,
+              ),
+            ),
+          )
+        },
+        onFailure = {
+          emit(Result.failure(it))
+        },
+      )
+    } else {
+      accountRepository.fetchRatedMovies(
+        page = parameters.page,
+        sortBy = parameters.sortBy.value,
+        accountId = accountId,
+        sessionId = sessionId,
+      ).last().fold(
+        onSuccess = {
+          val canFetchMore = parameters.page < it.totalPages
+
+          emit(
+            Result.success(
+              UserDataResponse(
+                data = it.list,
+                totalResults = it.totalResults,
+                type = MediaType.MOVIE,
+                canFetchMore = canFetchMore,
+              ),
+            ),
+          )
+        },
+        onFailure = {
+          emit(Result.failure(it))
+        },
+      )
+    }
+  }
+
+  private suspend fun FlowCollector<Result<UserDataResponse>>.fetchWatchlist(
+    parameters: UserDataParameters,
+    accountId: String,
+    sessionId: String,
+  ) {
     if (parameters.mediaType == MediaType.TV) {
       accountRepository.fetchTvShowsWatchlist(
         page = parameters.page,
