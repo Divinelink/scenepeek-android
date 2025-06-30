@@ -19,6 +19,7 @@ class CreateRequestTokenUseCase(
       .createRequestToken()
       .onSuccess { result ->
         Timber.d("Token created successfully")
+        repository.setRequestToken(result)
 
         result.token
       }

@@ -3,7 +3,9 @@ package com.divinelink.core.network
 object Routes {
   object TMDb {
     const val HOST = "api.themoviedb.org"
+    const val AUTH_REDIRECT_URL = "scenepeek://auth/redirect"
     const val V3 = "3"
+    const val V4 = "4"
   }
 
   object OMDb {

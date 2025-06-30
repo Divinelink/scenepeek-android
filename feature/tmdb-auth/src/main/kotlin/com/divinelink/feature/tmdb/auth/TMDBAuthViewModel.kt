@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.CreateRequestTokenUseCase
 import com.divinelink.core.domain.session.TMDB_AUTH_DELAY
+import com.divinelink.core.network.session.util.buildRequestTokenApproveUrl
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +29,7 @@ class TMDBAuthViewModel(private val createRequestTokenUseCase: CreateRequestToke
   private suspend fun createRequestToken() {
     createRequestTokenUseCase.invoke(Unit)
       .onSuccess { requestToken ->
-        val loginUrl = createLoginUrl(requestToken)
+        val loginUrl = buildRequestTokenApproveUrl(requestToken)
 
         _openUrlTab.send(loginUrl)
       }
@@ -43,10 +44,5 @@ class TMDBAuthViewModel(private val createRequestTokenUseCase: CreateRequestToke
       delay(TMDB_AUTH_DELAY)
       _onNavigateUp.trySend(Unit)
     }
-  }
-
-  private fun createLoginUrl(token: String): String {
-    val redirectUrl = "scenepeek://auth/redirect"
-    return "https://www.themoviedb.org/authenticate/$token?redirect_to=$redirectUrl"
   }
 }

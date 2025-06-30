@@ -3,15 +3,19 @@ package com.divinelink.core.data.session.repository
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.mapper.map
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
-import com.divinelink.core.network.session.model.CreateSessionRequestApi
+import com.divinelink.core.network.session.mapper.map
 import com.divinelink.core.network.session.service.SessionService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-class ProdSessionRepository(private val remote: SessionService) : SessionRepository {
+class ProdSessionRepository(
+  private val remote: SessionService,
+  private val requestTokenManager: RequestTokenManager,
+) : SessionRepository {
 
   override suspend fun createRequestToken(): Result<RequestToken> {
     val response = remote.createRequestToken()
@@ -19,17 +23,21 @@ class ProdSessionRepository(private val remote: SessionService) : SessionReposit
     return Result.success(response.data.map())
   }
 
-  override suspend fun createSession(token: CreateSessionRequestApi): Result<Session> {
-    val response = remote.createSession(token)
+  override suspend fun createAccessToken(token: String): Result<AccessToken> {
+    val response = remote.createAccessToken(token)
 
     return Result.success(response.data.map())
   }
 
-  override suspend fun deleteSession(sessionId: String): Result<Boolean> {
-    val response = remote.deleteSession(sessionId = sessionId)
+  override suspend fun createSession(accessToken: String): Result<Session> {
+    val response = remote.createSession(accessToken)
 
-    return Result.success(response.data.success)
+    return Result.success(response.data.map())
   }
+
+  override suspend fun deleteSession(accessToken: String): Result<Boolean> = remote
+    .logout(accessToken)
+    .map { it.success }
 
   override fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>> = remote
     .getAccountDetails(sessionId)
@@ -39,4 +47,21 @@ class ProdSessionRepository(private val remote: SessionService) : SessionReposit
     .catch { exception ->
       Result.failure<Exception>(Exception(exception.message))
     }
+
+  override suspend fun setRequestToken(token: RequestToken) {
+    requestTokenManager.setRequestToken(token)
+  }
+
+  override suspend fun clearRequestToken() {
+    requestTokenManager.setRequestToken(null)
+  }
+
+  override suspend fun retrieveRequestToken(): Result<RequestToken> {
+    val token = requestTokenManager.retrieveRequestToken()
+    return if (token != null) {
+      Result.success(token)
+    } else {
+      Result.failure(IllegalStateException("No request token found"))
+    }
+  }
 }

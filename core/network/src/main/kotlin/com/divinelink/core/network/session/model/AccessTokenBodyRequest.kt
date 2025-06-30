@@ -4,4 +4,4 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateSessionRequestApi(@SerialName("request_token") val requestToken: String)
+data class AccessTokenBodyRequest(@SerialName("access_token") val accessToken: String)

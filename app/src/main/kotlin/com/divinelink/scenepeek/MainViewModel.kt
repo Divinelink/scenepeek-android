@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
-import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
@@ -23,7 +22,6 @@ import kotlinx.coroutines.launch
 class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
   private val findByIdUseCase: FindByIdUseCase,
-  private val storage: SessionStorage,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
@@ -48,14 +46,9 @@ class MainViewModel(
     when {
       uri.isForTMDB() -> handleSchemeTMDBRedirect(
         uri = uri,
-        onAuthSuccess = { requestToken ->
+        onAuthSuccess = {
           viewModelScope.launch {
-            createSessionUseCase.invoke(requestToken)
-          }
-        },
-        onAuthFailure = {
-          viewModelScope.launch {
-            storage.clearSession()
+            createSessionUseCase.invoke(Unit)
           }
         },
       )
@@ -162,21 +155,13 @@ private fun handleSchemeIMDB(
 
 private fun handleSchemeTMDBRedirect(
   uri: Uri,
-  onAuthSuccess: (String) -> Unit,
-  onAuthFailure: () -> Unit,
+  onAuthSuccess: () -> Unit,
 ) {
   if (uri.scheme == "scenepeek" &&
     uri.host == "auth" &&
     uri.path == "/redirect"
   ) {
-    val approved = uri.getQueryParameter("approved")
-    val requestToken = uri.getQueryParameter("request_token")
-
-    if (approved == "true" && requestToken != null) {
-      onAuthSuccess(requestToken)
-    } else {
-      onAuthFailure()
-    }
+    onAuthSuccess()
   }
 }
 

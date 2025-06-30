@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
@@ -89,14 +90,27 @@ class AccountSettingsViewModel(
 
   fun confirmLogout() {
     viewModelScope.launch {
-      logoutUseCase.invoke(Unit).onSuccess {
-        _viewState.update {
-          it.copy(
-            tmdbAccount = TMDBAccount.Anonymous,
-            alertDialogUiState = null,
-          )
+      logoutUseCase.invoke(Unit)
+        .onSuccess {
+          _viewState.update {
+            it.copy(
+              tmdbAccount = TMDBAccount.Anonymous,
+              alertDialogUiState = null,
+            )
+          }
         }
-      }
+        .onFailure { error ->
+          ErrorHandler.create(error) {
+            on(401) {
+              _viewState.update {
+                it.copy(
+                  tmdbAccount = TMDBAccount.Anonymous,
+                  alertDialogUiState = null,
+                )
+              }
+            }
+          }
+        }
     }
   }
 

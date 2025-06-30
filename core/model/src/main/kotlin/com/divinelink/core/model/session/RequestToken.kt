@@ -1,6 +1,3 @@
 package com.divinelink.core.model.session
 
-data class RequestToken(
-  val token: String,
-  val expiresAt: String,
-)
+data class RequestToken(val token: String)

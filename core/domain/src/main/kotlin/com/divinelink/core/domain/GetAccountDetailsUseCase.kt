@@ -25,7 +25,7 @@ class GetAccountDetailsUseCase(
       storage.accountStorage.accountDetails.collect { accountDetails ->
         Timber.i("Details updated: $accountDetails")
         if (accountDetails == null) {
-          send(Result.success(TMDBAccount.Anonymous))
+          send(Result.failure(SessionException.Unauthenticated()))
         } else {
           send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
         }

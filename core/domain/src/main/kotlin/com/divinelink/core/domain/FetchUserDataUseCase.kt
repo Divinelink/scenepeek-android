@@ -13,7 +13,6 @@ import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 
@@ -24,7 +23,7 @@ class FetchUserDataUseCase(
 ) : FlowUseCase<UserDataParameters, UserDataResponse>(dispatcher.default) {
 
   override fun execute(parameters: UserDataParameters): Flow<Result<UserDataResponse>> = flow {
-    val accountId = sessionStorage.accountId.first()
+    val accountId = sessionStorage.accountId
     val sessionId = sessionStorage.sessionId
 
     if (accountId == null || sessionId == null) {
