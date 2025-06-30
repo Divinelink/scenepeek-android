@@ -1,7 +1,9 @@
 package com.divinelink.core.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +30,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
 import com.divinelink.core.ui.rating.RatingSize
+import com.divinelink.core.ui.rating.StarRatingItem
 import com.divinelink.core.ui.rating.TMDBRatingItem
 
 @Composable
@@ -75,10 +78,19 @@ fun DetailedMediaItem(
           .fillMaxWidth()
           .padding(start = MaterialTheme.dimensions.keyline_12),
       ) {
-        Text(
-          text = mediaItem.name,
-          style = MaterialTheme.typography.titleMedium,
-        )
+        FlowRow(
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
+          Text(
+            text = mediaItem.name,
+            style = MaterialTheme.typography.titleMedium,
+          )
+
+          mediaItem.accountRating?.let {
+            StarRatingItem(it)
+          }
+        }
         if (mediaItem.releaseDate.isNotEmpty()) {
           Text(
             modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_4),

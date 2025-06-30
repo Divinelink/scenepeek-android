@@ -183,7 +183,7 @@ class UserDataViewModel(
         forms = uiState.forms + (
           response.type to UserDataForm.Data(
             mediaType = response.type,
-            data = emptyList(),//currentData + response.data,
+            data = currentData + response.data,
             totalResults = response.totalResults,
           )
           ),
