@@ -5,6 +5,8 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
@@ -49,17 +51,10 @@ class FetchUserDataUseCase(
         sessionId = sessionId,
       ).last().fold(
         onSuccess = {
-          val canFetchMore = parameters.page < it.totalPages
-
-          emit(
-            Result.success(
-              UserDataResponse(
-                data = it.list,
-                totalResults = it.totalResults,
-                type = MediaType.TV,
-                canFetchMore = canFetchMore,
-              ),
-            ),
+          handleSuccessResponse(
+            type = MediaType.TV,
+            parameters = parameters,
+            response = it,
           )
         },
         onFailure = {
@@ -74,17 +69,10 @@ class FetchUserDataUseCase(
         sessionId = sessionId,
       ).last().fold(
         onSuccess = {
-          val canFetchMore = parameters.page < it.totalPages
-
-          emit(
-            Result.success(
-              UserDataResponse(
-                data = it.list,
-                totalResults = it.totalResults,
-                type = MediaType.MOVIE,
-                canFetchMore = canFetchMore,
-              ),
-            ),
+          handleSuccessResponse(
+            type = MediaType.MOVIE,
+            parameters = parameters,
+            response = it,
           )
         },
         onFailure = {
@@ -107,17 +95,10 @@ class FetchUserDataUseCase(
         sessionId = sessionId,
       ).last().fold(
         onSuccess = {
-          val canFetchMore = parameters.page < it.totalPages
-
-          emit(
-            Result.success(
-              UserDataResponse(
-                data = it.list,
-                totalResults = it.totalResults,
-                type = MediaType.TV,
-                canFetchMore = canFetchMore,
-              ),
-            ),
+          handleSuccessResponse(
+            type = MediaType.TV,
+            parameters = parameters,
+            response = it,
           )
         },
         onFailure = {
@@ -132,17 +113,10 @@ class FetchUserDataUseCase(
         sessionId = sessionId,
       ).last().fold(
         onSuccess = {
-          val canFetchMore = parameters.page < it.totalPages
-
-          emit(
-            Result.success(
-              UserDataResponse(
-                data = it.list,
-                totalResults = it.totalResults,
-                type = MediaType.MOVIE,
-                canFetchMore = canFetchMore,
-              ),
-            ),
+          handleSuccessResponse(
+            type = MediaType.MOVIE,
+            parameters = parameters,
+            response = it,
           )
         },
         onFailure = {
@@ -150,5 +124,24 @@ class FetchUserDataUseCase(
         },
       )
     }
+  }
+
+  private suspend fun FlowCollector<Result<UserDataResponse>>.handleSuccessResponse(
+    type: MediaType,
+    parameters: UserDataParameters,
+    response: PaginationData<MediaItem.Media>,
+  ) {
+    val canFetchMore = parameters.page < response.totalPages
+
+    emit(
+      Result.success(
+        UserDataResponse(
+          data = response.list,
+          totalResults = response.totalResults,
+          type = type,
+          canFetchMore = canFetchMore,
+        ),
+      ),
+    )
   }
 }
