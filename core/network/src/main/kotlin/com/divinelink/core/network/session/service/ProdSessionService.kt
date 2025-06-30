@@ -13,8 +13,6 @@ import com.divinelink.core.network.session.model.v4.CreateAccessTokenResponse
 import com.divinelink.core.network.session.model.v4.CreateRequestTokenRequest
 import com.divinelink.core.network.session.util.buildAccessTokenUrl
 import com.divinelink.core.network.session.util.buildCreateRequestTokenUrl
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class ProdSessionService(
   private val restClient: TMDbClient,
@@ -67,11 +65,11 @@ class ProdSessionService(
     }
   }
 
-  override fun getAccountDetails(sessionId: String): Flow<AccountDetailsResponseApi> = flow {
+  override suspend fun getAccountDetails(sessionId: String): Result<AccountDetailsResponseApi> {
     val url = "${authTMDBClient.tmdbUrl}/account"
 
-    val response = authTMDBClient.get<AccountDetailsResponseApi>(url = url)
-
-    emit(response)
+    return runCatching {
+      authTMDBClient.get<AccountDetailsResponseApi>(url = url)
+    }
   }
 }

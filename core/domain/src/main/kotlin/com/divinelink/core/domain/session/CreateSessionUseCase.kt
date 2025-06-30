@@ -30,8 +30,8 @@ class CreateSessionUseCase(
               accessToken = accessToken,
             )
 
-            repository.getAccountDetails(session.id).collect { accountDetailsResult ->
-              storage.setTMDbAccountDetails(accountDetailsResult.data)
+            repository.getAccountDetails(session.id).onSuccess { accountDetails ->
+              storage.setTMDbAccountDetails(accountDetails)
             }
 
             repository.clearRequestToken()

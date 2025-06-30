@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class AccountSettingsViewModel(
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
@@ -59,9 +58,17 @@ class AccountSettingsViewModel(
       getAccountDetailsUseCase.invoke(Unit).collect { result ->
         result
           .onSuccess { accountDetails ->
-            Timber.d("Updating Ui with account details: $accountDetails")
             _viewState.update {
               it.copy(tmdbAccount = accountDetails)
+            }
+          }
+          .onFailure {
+            ErrorHandler.create(it) {
+              on(401) {
+                _viewState.update { uiState ->
+                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
+                }
+              }
             }
           }
       }

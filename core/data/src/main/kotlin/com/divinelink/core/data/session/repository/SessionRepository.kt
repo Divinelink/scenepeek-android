@@ -4,7 +4,6 @@ import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
-import kotlinx.coroutines.flow.Flow
 
 interface SessionRepository {
 
@@ -16,7 +15,7 @@ interface SessionRepository {
 
   suspend fun deleteSession(accessToken: String): Result<Boolean>
 
-  fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>>
+  suspend fun getAccountDetails(sessionId: String): Result<AccountDetails>
 
   suspend fun clearRequestToken()
   suspend fun setRequestToken(token: RequestToken)

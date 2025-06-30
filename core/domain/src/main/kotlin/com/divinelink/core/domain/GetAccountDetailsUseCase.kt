@@ -2,7 +2,7 @@ package com.divinelink.core.domain
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.domain.data
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
@@ -36,9 +36,29 @@ class GetAccountDetailsUseCase(
       if (sessionId == null) {
         send(Result.failure(SessionException.Unauthenticated()))
       } else {
-        repository.getAccountDetails(sessionId).collect { details ->
-          storage.accountStorage.setAccountDetails(details.data)
-        }
+        repository.getAccountDetails(sessionId).fold(
+          onSuccess = { details ->
+            storage.accountStorage.setAccountDetails(details)
+          },
+          onFailure = {
+            if (it is InvalidStatusException && it.status == 401) {
+              storage.clearSession()
+              send(Result.failure(SessionException.Unauthenticated()))
+            } else {
+              send(Result.failure(it))
+            }
+          },
+        )
+//          .collect { result ->
+//          result.fold(
+//            onSuccess = { details ->
+//
+//            },
+//            onFailure = {
+//
+//            },
+//          )
+//      }
       }
     }
   }

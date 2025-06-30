@@ -8,9 +8,6 @@ import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.network.session.mapper.map
 import com.divinelink.core.network.session.service.SessionService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 
 class ProdSessionRepository(
   private val remote: SessionService,
@@ -39,13 +36,10 @@ class ProdSessionRepository(
     .logout(accessToken)
     .map { it.success }
 
-  override fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>> = remote
+  override suspend fun getAccountDetails(sessionId: String): Result<AccountDetails> = remote
     .getAccountDetails(sessionId)
-    .map { apiResponse ->
-      Result.success(apiResponse.map())
-    }
-    .catch { exception ->
-      Result.failure<Exception>(Exception(exception.message))
+    .map { response ->
+      response.map()
     }
 
   override suspend fun setRequestToken(token: RequestToken) {
