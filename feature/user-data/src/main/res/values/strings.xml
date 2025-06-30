@@ -12,5 +12,6 @@
   <string name="feature_user_data_empty">You haven\'t added anything here.</string>
 
   <string name="feature_user_data_login_title">Login to your account</string>
-  <string name="feature_user_data_login_description">You need to be logged in to view your watchlist.</string>
+  <string name="feature_user_data_login_rated_description">You need to be logged in to view your rated media.</string>
+  <string name="feature_user_data_login_watchlist_description">You need to be logged in to view your watchlist.</string>
 </resources>

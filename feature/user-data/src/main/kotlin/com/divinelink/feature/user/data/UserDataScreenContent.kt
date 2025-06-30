@@ -74,6 +74,7 @@ fun UserDataScreenContent(
           is UserDataForm.Error -> UserDataErrorContent(
             error = it,
             onRetry = onRefresh,
+            section = uiState.section,
           )
           is UserDataForm.Data -> {
             if (it.isEmpty) {

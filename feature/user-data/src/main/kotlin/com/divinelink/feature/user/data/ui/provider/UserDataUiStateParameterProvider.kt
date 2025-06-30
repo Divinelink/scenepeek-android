@@ -206,28 +206,6 @@ class UserDataUiStateParameterProvider : PreviewParameterProvider<UserDataUiStat
     ),
     UserDataUiState(
       section = UserDataSection.Ratings,
-      selectedTabIndex = 1,
-      tabs = MediaTab.entries.associateWith {
-        when (it) {
-          MediaTab.MOVIE -> 500
-          MediaTab.TV -> 1000
-        }
-      },
-      pages = mapOf(
-        MediaType.MOVIE to 1,
-        MediaType.TV to 1,
-      ),
-      forms = mapOf(
-        MediaType.MOVIE to UserDataForm.Error.Unknown,
-        MediaType.TV to UserDataForm.Error.Unauthenticated,
-      ),
-      canFetchMore = mapOf(
-        MediaType.MOVIE to true,
-        MediaType.TV to true,
-      ),
-    ),
-    UserDataUiState(
-      section = UserDataSection.Ratings,
       selectedTabIndex = 0,
       tabs = MediaTab.entries.associateWith {
         when (it) {
@@ -287,4 +265,30 @@ class UserDataUiStateParameterProvider : PreviewParameterProvider<UserDataUiStat
       ),
     ),
   )
+    .plus(
+      UserDataSection.entries.map {
+        UserDataUiState(
+          section = it,
+          selectedTabIndex = 1,
+          tabs = MediaTab.entries.associateWith { tab ->
+            when (tab) {
+              MediaTab.MOVIE -> null
+              MediaTab.TV -> null
+            }
+          },
+          pages = mapOf(
+            MediaType.MOVIE to 1,
+            MediaType.TV to 1,
+          ),
+          forms = mapOf(
+            MediaType.MOVIE to UserDataForm.Error.Unknown,
+            MediaType.TV to UserDataForm.Error.Unauthenticated,
+          ),
+          canFetchMore = mapOf(
+            MediaType.MOVIE to true,
+            MediaType.TV to true,
+          ),
+        )
+      },
+    )
 }
