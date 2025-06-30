@@ -134,10 +134,6 @@ fun AnimatedVisibilityScope.UserDataScreen(
         Column {
           UserDataTabs(
             tabs = uiState.tabs,
-            size = listOf(
-              uiState.totalMovies,
-              uiState.totalTvShows,
-            ),
             selectedIndex = selectedPage,
             onClick = {
               scope.launch {
@@ -191,13 +187,12 @@ fun AnimatedVisibilityScope.UserDataScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserDataTabs(
-  tabs: List<MediaTab>,
-  size: List<Int?>,
+  tabs: Map<MediaTab, Int?>,
   selectedIndex: Int,
   onClick: (Int) -> Unit,
 ) {
   SecondaryTabRow(selectedTabIndex = selectedIndex) {
-    tabs.forEachIndexed { index, tab ->
+    tabs.keys.forEachIndexed { index, tab ->
       Tab(
         modifier = Modifier.testTag(TestTags.Watchlist.TAB_BAR.format(tab.value)),
         text = {
@@ -213,10 +208,10 @@ private fun UserDataTabs(
                 MaterialTheme.colorScheme.onSurfaceVariant
               },
             )
-            AnimatedVisibility(visible = size[index] != null) {
+            AnimatedVisibility(visible = tabs[tab] != null) {
               Text(
                 modifier = Modifier.padding(start = MaterialTheme.dimensions.keyline_4),
-                text = "(${size[index] ?: 0})",
+                text = "(${tabs[tab] ?: 0})",
                 color = if (index == selectedIndex) {
                   MaterialTheme.colorScheme.primary
                 } else {

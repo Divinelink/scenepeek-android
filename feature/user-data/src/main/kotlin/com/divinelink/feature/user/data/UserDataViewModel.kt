@@ -34,7 +34,10 @@ class UserDataViewModel(
     UserDataUiState(
       section = route.userDataSection,
       selectedTabIndex = MediaTab.MOVIE.ordinal,
-      tabs = MediaTab.entries,
+      tabs = mapOf(
+        MediaTab.MOVIE to null,
+        MediaTab.TV to null,
+      ),
       pages = mapOf(
         MediaType.MOVIE to 1,
         MediaType.TV to 1,
@@ -186,6 +189,11 @@ class UserDataViewModel(
           ),
         pages = uiState.pages + (response.type to currentPage + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
+        tabs = uiState.tabs + if (response.type == MediaType.MOVIE) {
+          MediaTab.MOVIE to response.totalResults
+        } else {
+          MediaTab.TV to response.totalResults
+        },
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
         Timber.d("Update page for ${response.type} to ${currentPage + 1}")
