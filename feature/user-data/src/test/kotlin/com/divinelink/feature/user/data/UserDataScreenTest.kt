@@ -18,7 +18,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.data.UserDataResponseFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
-import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
+import com.divinelink.core.testing.usecase.TestFetchUseDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
@@ -32,7 +32,7 @@ import com.divinelink.core.ui.R as uiR
 class UserDataScreenTest : ComposeTest() {
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
-  private val fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
+  private val fetchWatchlistUseCase = TestFetchUseDataUseCase()
 
   @Test
   fun `test unknown error`() = runTest {

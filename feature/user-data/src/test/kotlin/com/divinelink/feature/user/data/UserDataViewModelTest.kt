@@ -65,7 +65,7 @@ class UserDataViewModelTest {
       .mockObserveAccount {
         mockSuccess(Result.success(true))
       }
-      .mockFetchWatchlist {
+      .mockFetchUserData {
         mockSuccess(
           flowOf(
             Result.success(UserDataResponseFactory.movies()),
@@ -78,6 +78,53 @@ class UserDataViewModelTest {
       .assertUiState(
         expectedUiState = createUiState(
           section = UserDataSection.Watchlist,
+          forms = mapOf(
+            MediaType.MOVIE to UserDataForm.Data(
+              mediaType = MediaType.MOVIE,
+              data = (1..2).map {
+                UserDataResponseFactory.movies()
+              }.flatMap { it.data },
+              totalResults = UserDataResponseFactory.movies().totalResults,
+            ),
+            MediaType.TV to UserDataForm.Data(
+              mediaType = MediaType.TV,
+              data = (1..2).map {
+                UserDataResponseFactory.tv()
+              }.flatMap { it.data },
+              totalResults = UserDataResponseFactory.tv().totalResults,
+            ),
+          ),
+          pages = mapOf(
+            MediaType.MOVIE to 3,
+            MediaType.TV to 3,
+          ),
+          tabs = mapOf(
+            MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
+            MediaTab.TV to UserDataResponseFactory.tv().totalResults,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch rated movies with success`() = runTest {
+    testRobot
+      .mockObserveAccount {
+        mockSuccess(Result.success(true))
+      }
+      .mockFetchUserData {
+        mockSuccess(
+          flowOf(
+            Result.success(UserDataResponseFactory.movies()),
+            Result.success(UserDataResponseFactory.tv()),
+          ),
+        )
+      }
+      .withSection(UserDataSection.Ratings)
+      .buildViewModel()
+      .assertUiState(
+        expectedUiState = createUiState(
+          section = UserDataSection.Ratings,
           forms = mapOf(
             MediaType.MOVIE to UserDataForm.Data(
               mediaType = MediaType.MOVIE,
@@ -167,7 +214,7 @@ class UserDataViewModelTest {
       .mockObserveAccount {
         mockSuccess(Result.success(true))
       }
-      .mockFetchWatchlist {
+      .mockFetchUserData {
         mockSuccess(
           flowOf(
             Result.success(UserDataResponseFactory.movies()),
@@ -180,7 +227,7 @@ class UserDataViewModelTest {
       .expectUiStates(
         action = {
           selectTab(1)
-          mockFetchWatchlist {
+          mockFetchUserData {
             mockSuccess(Result.success(UserDataResponseFactory.tv()))
           }
           onLoadMore()
@@ -212,12 +259,12 @@ class UserDataViewModelTest {
   fun `test onLoadMore`() = runTest {
     testRobot
       .mockObserveAccount { mockSuccess(Result.success(true)) }
-      .mockFetchWatchlist { mockSuccess(Result.success(UserDataResponseFactory.movies())) }
+      .mockFetchUserData { mockSuccess(Result.success(UserDataResponseFactory.movies())) }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
       .expectUiStates(
         action = {
-          mockFetchWatchlist {
+          mockFetchUserData {
             mockSuccess(
               Result.success(
                 UserDataResponseFactory.movies(
@@ -296,7 +343,7 @@ class UserDataViewModelTest {
           ),
         ),
       )
-      .mockFetchWatchlist {
+      .mockFetchUserData {
         mockSuccess(
           flowOf(Result.success(UserDataResponseFactory.movies())),
         )
@@ -343,7 +390,7 @@ class UserDataViewModelTest {
         ),
       )
       .selectTab(1)
-      .mockFetchWatchlist {
+      .mockFetchUserData {
         mockSuccess(
           flowOf(Result.success(UserDataResponseFactory.tv())),
         )
