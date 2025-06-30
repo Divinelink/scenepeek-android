@@ -9,11 +9,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
-import com.divinelink.core.testing.factories.model.watchlist.WatchlistResponseFactory
+import com.divinelink.core.testing.factories.model.data.UserDataResponseFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
@@ -44,6 +46,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -74,6 +81,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -102,6 +114,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -135,9 +152,14 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
 
-        )
+      )
     }
 
     composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
@@ -158,8 +180,8 @@ class UserDataScreenTest : ComposeTest() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
-        Result.success(WatchlistResponseFactory.emptyMovies()),
-        Result.success(WatchlistResponseFactory.emptyTV()),
+        Result.success(UserDataResponseFactory.emptyMovies()),
+        Result.success(UserDataResponseFactory.emptyTV()),
       ),
     )
 
@@ -171,6 +193,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -203,7 +230,7 @@ class UserDataScreenTest : ComposeTest() {
   fun `test tv watching is loading`() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
-      response = Result.success(WatchlistResponseFactory.emptyMovies()),
+      response = Result.success(UserDataResponseFactory.emptyMovies()),
     )
 
     setVisibilityScopeContent {
@@ -214,6 +241,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -243,8 +275,8 @@ class UserDataScreenTest : ComposeTest() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
-        Result.success(WatchlistResponseFactory.movies()),
-        Result.success(WatchlistResponseFactory.tv()),
+        Result.success(UserDataResponseFactory.movies()),
+        Result.success(UserDataResponseFactory.tv()),
       ),
     )
 
@@ -256,6 +288,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -268,7 +305,7 @@ class UserDataScreenTest : ComposeTest() {
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    val movieList = WatchlistResponseFactory.movies().data
+    val movieList = UserDataResponseFactory.movies().data
 
     composeTestRule.onNodeWithText(movieList.first().name).assertIsDisplayed()
     composeTestRule.onNodeWithText(movieList.last().name).assertDoesNotExist()
@@ -303,8 +340,8 @@ class UserDataScreenTest : ComposeTest() {
     observeAccountUseCase.mockSuccess(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
-        Result.success(WatchlistResponseFactory.movies()),
-        Result.success(WatchlistResponseFactory.tv()),
+        Result.success(UserDataResponseFactory.movies()),
+        Result.success(UserDataResponseFactory.tv()),
       ),
     )
 
@@ -319,6 +356,11 @@ class UserDataScreenTest : ComposeTest() {
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+          savedStateHandle = SavedStateHandle(
+            mapOf(
+              "userDataSection" to UserDataSection.Watchlist,
+            ),
+          ),
         ),
       )
     }
@@ -333,7 +375,7 @@ class UserDataScreenTest : ComposeTest() {
       .performClick()
       .assertIsSelected()
 
-    val tvList = WatchlistResponseFactory.tv().data
+    val tvList = UserDataResponseFactory.tv().data
 
     composeTestRule.onNodeWithText(tvList.first().name).assertIsDisplayed()
     composeTestRule.onNodeWithText(tvList.last().name).assertDoesNotExist()

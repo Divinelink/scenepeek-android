@@ -1,4 +1,4 @@
-package com.divinelink.scenepeek.feature.watchlist
+package com.divinelink.scenepeek.feature.user.data
 
 import androidx.compose.runtime.Composable
 import com.divinelink.core.ui.Previews

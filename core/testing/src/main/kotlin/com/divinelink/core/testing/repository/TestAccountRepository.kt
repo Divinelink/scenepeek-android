@@ -32,4 +32,26 @@ class TestAccountRepository {
       ),
     ).thenReturn(response)
   }
+
+  suspend fun mockFetchRatedMovies(response: Flow<Result<PaginationData<MediaItem.Media>>>) {
+    whenever(
+      mock.fetchRatedMovies(
+        page = any(),
+        sortBy = any(),
+        accountId = any(),
+        sessionId = any(),
+      ),
+    ).thenReturn(response)
+  }
+
+  suspend fun mockFetchRatedTvShows(response: Flow<Result<PaginationData<MediaItem.Media>>>) {
+    whenever(
+      mock.fetchRatedTvShows(
+        page = any(),
+        sortBy = any(),
+        accountId = any(),
+        sessionId = any(),
+      ),
+    ).thenReturn(response)
+  }
 }

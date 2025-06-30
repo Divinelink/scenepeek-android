@@ -171,7 +171,7 @@ class ProdAccountServiceTest {
           name = "Breaking Bad",
           voteAverage = 8.928,
           voteCount = 15715,
-          rating = 10,
+          rating = 10.0,
         ),
       )
 
@@ -223,7 +223,7 @@ class ProdAccountServiceTest {
           video = false,
           voteAverage = 8.179,
           voteCount = 15360,
-          rating = 9,
+          rating = 9.0,
         ),
       )
 
