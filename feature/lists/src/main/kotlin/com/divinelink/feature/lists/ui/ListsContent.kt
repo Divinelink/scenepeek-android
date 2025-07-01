@@ -41,8 +41,8 @@ fun ListsContent(
         title = UIText.ResourceText(R.string.feature_lists_empty),
       ),
     )
-    else -> ListsDataContent(
-      uiState = uiState,
+    uiState.lists is ListData.Data -> ListsDataContent(
+      data = uiState.lists.data,
       userInteraction = userInteraction,
     )
   }

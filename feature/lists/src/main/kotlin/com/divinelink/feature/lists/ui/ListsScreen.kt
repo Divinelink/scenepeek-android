@@ -83,6 +83,8 @@ fun AnimatedVisibilityScope.ListsScreen(
           userInteraction = { userInteraction ->
             when (userInteraction) {
               ListsUserInteraction.LoadMore -> viewModel.onLoadMore()
+              is ListsUserInteraction.OnListClick -> {
+              }
             }
           },
         )

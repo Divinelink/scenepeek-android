@@ -12,9 +12,11 @@ fun ListsResponse.map(): PaginationData<ListItem> = PaginationData(
 )
 
 fun ListsResponse.ListItemResponse.map() = ListItem(
+  id = id,
   name = name,
   posterPath = posterPath,
   backdropPath = backdropPath,
   description = description,
   public = public == 1,
+  numberOfItems = numberOfItems,
 )

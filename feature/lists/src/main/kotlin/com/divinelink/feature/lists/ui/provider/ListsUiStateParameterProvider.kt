@@ -1,6 +1,7 @@
 package com.divinelink.feature.lists.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.ListData
@@ -28,7 +29,7 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       isLoading = false,
       loadingMore = true,
       error = null,
-      lists = ListData.Initial,
+      lists = ListData.Data(ListItemFactory.paginationData()),
     ),
     ListsUiState(
       page = 1,
