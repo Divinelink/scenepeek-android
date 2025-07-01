@@ -8,6 +8,7 @@ import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.channels.Channel
@@ -64,6 +65,11 @@ class AccountSettingsViewModel(
           }
           .onFailure {
             ErrorHandler.create(it) {
+              on<SessionException.Unauthenticated> {
+                _viewState.update { uiState ->
+                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
+                }
+              }
               on(401) {
                 _viewState.update { uiState ->
                   uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
