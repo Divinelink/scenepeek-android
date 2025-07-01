@@ -1,7 +1,11 @@
 package com.divinelink.core.domain.session
 
+import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.session.AccessTokenFactory
+import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
@@ -9,7 +13,6 @@ import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -20,124 +23,126 @@ class CreateSessionUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
+  val repository = TestSessionRepository()
+
+  val storage = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(),
+    accountStorage = FakeAccountStorage(),
+  )
+
   @Test
-  fun `test on create session with success saves session id to storage`() = runTest {
-    val repository = TestSessionRepository()
-    val storage = SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-      accountStorage = FakeAccountStorage(),
+  fun `test createSession with null request token clears session and token`() = runTest {
+    repository.mockRetrieveRequestToken(Result.failure(SessionException.RequestTokenNotFound()))
+
+    storage.setAccessToken(
+      sessionId = "sessionId",
+      accessToken = AccessTokenFactory.valid(),
     )
 
-    repository.mockCreateSession(
-      response = Result.success(Session(id = "sessionId")),
-    )
-
-    val useCase = CreateSessionUseCase(
+    CreateSessionUseCase(
       repository = repository.mock,
       storage = storage,
       dispatcher = testDispatcher,
-    )
+    ).invoke(Unit)
 
-    assertThat(storage.sessionId).isNull()
-
-    useCase("requestToken")
-
-    assertThat(storage.sessionId).isEqualTo("sessionId")
+    assertThat(storage.sessionId).isEqualTo(null)
+    assertThat(storage.accountId).isEqualTo(null)
+    assertThat(storage.encryptedStorage.accessToken).isEqualTo(null)
   }
 
   @Test
-  fun `test on create session with success session and account details stores them`() = runTest {
-    val repository = TestSessionRepository()
-    val storage = SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-      accountStorage = FakeAccountStorage(),
+  fun `test createSession with valid request token and failure accessToken`() = runTest {
+    repository.mockRetrieveRequestToken(Result.success(RequestToken("123456789")))
+    repository.mockCreateAccessToken(Result.failure(Exception("Access token creation failed")))
+
+    storage.setAccessToken(
+      sessionId = "sessionId",
+      accessToken = AccessTokenFactory.valid(),
     )
 
-    repository.mockCreateSession(
-      response = Result.success(Session(id = "sessionId")),
-    )
-
-    repository.mockGetAccountDetails(
-      response = Result.success(AccountDetailsFactory.Pinkman()),
-    )
-
-    val useCase = CreateSessionUseCase(
+    CreateSessionUseCase(
       repository = repository.mock,
       storage = storage,
       dispatcher = testDispatcher,
-    )
+    ).invoke(Unit)
 
-    assertThat(storage.sessionId).isNull()
-
-    useCase("requestToken")
-
-    assertThat(storage.sessionId).isEqualTo("sessionId")
-
-    assertThat(
-      storage.accountStorage.accountDetails.first(),
-    ).isEqualTo(AccountDetailsFactory.Pinkman())
+    assertThat(storage.sessionId).isEqualTo(null)
+    assertThat(storage.accountId).isEqualTo(null)
+    assertThat(storage.encryptedStorage.accessToken).isEqualTo(null)
   }
 
   @Test
-  fun `test on create session with failure does not save session to storage`() = runTest {
-    val repository = TestSessionRepository()
-    val storage = SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-      accountStorage = FakeAccountStorage(),
-    )
+  fun `test createSession with success accessToken and createSession`() = runTest {
+    repository.mockRetrieveRequestToken(Result.success(RequestToken("123456789")))
+    repository.mockCreateAccessToken(Result.success(AccessTokenFactory.valid()))
+    repository.mockCreateSession(Result.success(Session(id = "sessionId")))
 
-    repository.mockCreateSession(
-      response = Result.failure(Exception()),
-    )
-
-    val useCase = CreateSessionUseCase(
+    CreateSessionUseCase(
       repository = repository.mock,
       storage = storage,
       dispatcher = testDispatcher,
+    ).invoke(Unit)
+
+    assertThat(storage.sessionId).isEqualTo("sessionId")
+    assertThat(storage.accountId).isEqualTo(AccessTokenFactory.valid().accountId)
+    assertThat(storage.encryptedStorage.accessToken).isEqualTo(
+      AccessTokenFactory.valid().accessToken,
     )
 
-    assertThat(storage.sessionId).isNull()
-
-    useCase("requestToken")
-
-    assertThat(storage.sessionId).isNull()
+    repository.clearRequestTokenInvoke()
   }
 
   @Test
-  fun `test on create session with failure clears session storage`() = runTest {
-    val repository = TestSessionRepository()
-    val storage = SessionStorage(
-      storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(),
-      accountStorage = FakeAccountStorage(),
-    )
+  fun `test createSession with success and accountDetails`() = runTest {
+    repository.mockRetrieveRequestToken(Result.success(RequestToken("123456789")))
+    repository.mockCreateAccessToken(Result.success(AccessTokenFactory.valid()))
+    repository.mockCreateSession(Result.success(Session(id = "sessionId")))
+    repository.mockGetAccountDetails(Result.success(AccountDetailsFactory.Pinkman()))
 
-    storage.setTMDbAccountDetails(AccountDetailsFactory.Pinkman())
-    storage.setSession("sessionId")
-
-    repository.mockCreateSession(
-      response = Result.failure(Exception()),
-    )
-
-    val useCase = CreateSessionUseCase(
+    CreateSessionUseCase(
       repository = repository.mock,
       storage = storage,
       dispatcher = testDispatcher,
-    )
+    ).invoke(Unit)
 
     assertThat(storage.sessionId).isEqualTo("sessionId")
-    assertThat(
-      storage.accountStorage.accountDetails.first(),
-    ).isEqualTo(AccountDetailsFactory.Pinkman())
+    assertThat(storage.accountId).isEqualTo(AccessTokenFactory.valid().accountId)
+    assertThat(storage.encryptedStorage.accessToken).isEqualTo(
+      AccessTokenFactory.valid().accessToken,
+    )
+    storage.accountStorage.accountDetails.test {
+      assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman())
+    }
 
-    useCase("requestToken")
+    repository.clearRequestTokenInvoke()
+  }
+
+  @Test
+  fun `test createSession with createSession failure`() = runTest {
+    repository.mockRetrieveRequestToken(Result.success(RequestToken("123456789")))
+    repository.mockCreateAccessToken(Result.success(AccessTokenFactory.valid()))
+    repository.mockCreateSession(Result.failure(Exception("Session creation failed")))
+    repository.mockGetAccountDetails(Result.success(AccountDetailsFactory.Pinkman()))
+
+    storage.setAccessToken(
+      sessionId = "sessionId",
+      accessToken = AccessTokenFactory.valid(),
+    )
+
+    CreateSessionUseCase(
+      repository = repository.mock,
+      storage = storage,
+      dispatcher = testDispatcher,
+    ).invoke(Unit)
 
     assertThat(storage.sessionId).isNull()
-    assertThat(
-      storage.accountStorage.accountDetails.first(),
-    ).isNull()
+    assertThat(storage.accountId).isNull()
+    assertThat(storage.encryptedStorage.accessToken).isNull()
+    storage.accountStorage.accountDetails.test {
+      assertThat(awaitItem()).isNull()
+    }
+
+    repository.clearRequestTokenInvoke()
   }
 }

@@ -3,6 +3,7 @@ package com.divinelink.core.data.session.repository
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.mapper.map
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
@@ -52,10 +53,10 @@ class ProdSessionRepository(
 
   override suspend fun retrieveRequestToken(): Result<RequestToken> {
     val token = requestTokenManager.retrieveRequestToken()
-    return if (token != null) {
-      Result.success(token)
+    return if (token == null) {
+      Result.failure(SessionException.RequestTokenNotFound())
     } else {
-      Result.failure(IllegalStateException("No request token found"))
+      Result.success(token)
     }
   }
 }

@@ -982,7 +982,7 @@ class DetailsViewModelTest {
         ),
       )
       .mockAddToWatchlist(
-        response = flowOf(Result.failure(SessionException.InvalidAccountId())),
+        response = flowOf(Result.failure(SessionException.Unauthenticated())),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel().also {

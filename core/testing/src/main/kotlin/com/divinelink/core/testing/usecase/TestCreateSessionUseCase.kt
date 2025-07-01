@@ -22,8 +22,8 @@ class TestCreateSessionUseCase {
     dispatcher = mainDispatcherRule.testDispatcher,
   )
 
-  suspend fun verifySessionInvoked(requestToken: String) {
-    verify(mock).invoke(requestToken)
+  suspend fun verifySessionInvoked() {
+    verify(mock).invoke(Unit)
   }
 
   fun verifyNoSessionInteraction() {

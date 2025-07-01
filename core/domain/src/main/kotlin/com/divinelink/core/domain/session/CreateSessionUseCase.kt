@@ -2,7 +2,6 @@ package com.divinelink.core.domain.session
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
-import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.delay
@@ -16,9 +15,15 @@ class CreateSessionUseCase(
 ) : UseCase<Unit, Unit>(dispatcher.default) {
 
   override suspend fun execute(parameters: Unit) {
-    val requestToken = repository.retrieveRequestToken()
+    val requestToken = repository.retrieveRequestToken().getOrNull()
 
-    repository.createAccessToken(requestToken.data.token).fold(
+    if (requestToken?.token == null) {
+      storage.clearSession()
+      repository.clearRequestToken()
+      return
+    }
+
+    repository.createAccessToken(requestToken.token).fold(
       onSuccess = { accessToken ->
         repository.createSession(accessToken = accessToken.accessToken).fold(
           onSuccess = { session ->
