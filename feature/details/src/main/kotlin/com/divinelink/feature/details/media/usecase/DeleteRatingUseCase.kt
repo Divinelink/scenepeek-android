@@ -4,7 +4,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.repository.DetailsRepository
-import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi

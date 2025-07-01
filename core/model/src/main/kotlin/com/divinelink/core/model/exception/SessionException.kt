@@ -1,4 +1,4 @@
-package com.divinelink.core.data.session.model
+package com.divinelink.core.model.exception
 
 object SessionException {
 

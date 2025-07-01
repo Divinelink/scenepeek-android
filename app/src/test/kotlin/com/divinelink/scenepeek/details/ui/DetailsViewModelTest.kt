@@ -4,7 +4,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory.toMovieWzd
@@ -25,6 +24,7 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab

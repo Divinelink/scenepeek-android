@@ -9,7 +9,7 @@ import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
-import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase

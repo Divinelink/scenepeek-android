@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
-import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.DetailsRoute
