@@ -89,12 +89,14 @@ object MediaItemFactory {
    */
 
   fun moviesPagination() = PaginationData<MediaItem.Media>(
+    page = 1,
     totalPages = 3,
     totalResults = 60,
     list = MoviesList(),
   )
 
   fun tvPagination() = PaginationData<MediaItem.Media>(
+    page = 1,
     totalPages = 3,
     totalResults = 60,
     list = tvAll(),

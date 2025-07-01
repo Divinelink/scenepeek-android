@@ -1,5 +1,6 @@
-package com.divinelink.core.network.account
+package com.divinelink.core.network.account.service
 
+import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow
@@ -33,4 +34,6 @@ interface AccountService {
     accountId: String,
     sessionId: String,
   ): Flow<TvResponseApi>
+
+  fun fetchUserLists(accountId: String): Flow<ListsResponse>
 }

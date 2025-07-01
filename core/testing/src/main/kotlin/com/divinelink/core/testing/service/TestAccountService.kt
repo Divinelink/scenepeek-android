@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.service
 
-import com.divinelink.core.network.account.AccountService
+import com.divinelink.core.network.account.service.AccountService
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import kotlinx.coroutines.flow.Flow

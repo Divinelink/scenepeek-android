@@ -33,4 +33,6 @@ interface AccountRepository {
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  suspend fun fetchUserLists(accountId: String): Flow<Result<PaginationData<Unit>>>
 }

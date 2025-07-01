@@ -1,7 +1,7 @@
 package com.divinelink.core.network.di
 
-import com.divinelink.core.network.account.AccountService
-import com.divinelink.core.network.account.ProdAccountService
+import com.divinelink.core.network.account.service.AccountService
+import com.divinelink.core.network.account.service.ProdAccountService
 import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.OMDbClient
