@@ -37,9 +37,7 @@ fun UserDataErrorContent(
   ) {
     when (error) {
       is UserDataForm.Error.Unauthenticated -> BlankSlate(
-        uiState = BlankSlateState.Custom(
-          icon = com.divinelink.core.model.R.drawable.core_model_ic_tmdb,
-          title = UIText.ResourceText(R.string.feature_user_data_login_title),
+        uiState = BlankSlateState.Unauthenticated(
           description = when (section) {
             UserDataSection.Watchlist -> UIText.ResourceText(
               R.string.feature_user_data_login_watchlist_description,

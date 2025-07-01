@@ -1,13 +1,16 @@
 package com.divinelink.core.network.account.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ListsResponse(
   val page: Int,
   val results: List<ListItemResponse>,
-  val totalPages: Int,
-  val totalResults: Int,
+  @SerialName("total_pages") val totalPages: Int,
+  @SerialName("total_results") val totalResults: Int,
 ) {
+  @Serializable
   data class ListItemResponse(
     @SerialName("account_object_id") val accountObjectId: String,
     val adult: Int,

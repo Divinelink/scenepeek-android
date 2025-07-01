@@ -5,10 +5,14 @@ import androidx.navigation.compose.composable
 import com.divinelink.core.navigation.route.ListsRoute
 import com.divinelink.feature.lists.ui.ListsScreen
 
-fun NavGraphBuilder.listsScreen(onNavigateUp: () -> Unit) {
+fun NavGraphBuilder.listsScreen(
+  onNavigateUp: () -> Unit,
+  onNavigateToTMDBLogin: () -> Unit,
+) {
   composable<ListsRoute> {
     ListsScreen(
       onNavigateUp = onNavigateUp,
+      onNavigateToTMDBLogin = onNavigateToTMDBLogin,
     )
   }
 }

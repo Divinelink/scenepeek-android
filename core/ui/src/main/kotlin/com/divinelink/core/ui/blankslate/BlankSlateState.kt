@@ -19,6 +19,13 @@ sealed class BlankSlateState(
     description = UIText.ResourceText(R.string.core_ui_error_generic_description),
   )
 
+  data class Unauthenticated(override val description: UIText? = null) :
+    BlankSlateState(
+      icon = com.divinelink.core.model.R.drawable.core_model_ic_tmdb,
+      title = UIText.ResourceText(R.string.core_ui_login_title),
+      description = description,
+    )
+
   data class Custom(
     override val icon: Int? = null,
     override val title: UIText,

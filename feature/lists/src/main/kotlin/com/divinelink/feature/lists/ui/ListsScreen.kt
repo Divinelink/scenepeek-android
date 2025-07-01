@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,8 +20,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.NavigateUpButton
 import com.divinelink.feature.lists.ListsUserInteraction
 import com.divinelink.feature.lists.ListsViewModel
@@ -30,6 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AnimatedVisibilityScope.ListsScreen(
   onNavigateUp: () -> Unit,
+  onNavigateToTMDBLogin: () -> Unit,
   viewModel: ListsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -59,11 +64,21 @@ fun AnimatedVisibilityScope.ListsScreen(
         navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
       )
     },
+    floatingActionButton = {
+      if (uiState.error is BlankSlateState.Unauthenticated) {
+        ScaffoldFab(
+          icon = Icons.Default.AccountCircle,
+          text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
+          expanded = true,
+          onClick = onNavigateToTMDBLogin,
+        )
+      }
+    },
     content = {
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-        ListsDataContent(
+        ListsContent(
           uiState = uiState,
           userInteraction = { userInteraction ->
             when (userInteraction) {

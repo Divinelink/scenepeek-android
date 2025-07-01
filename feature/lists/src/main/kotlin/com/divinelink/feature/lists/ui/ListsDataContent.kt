@@ -11,17 +11,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.feature.lists.ListsUiState
 import com.divinelink.feature.lists.ListsUserInteraction
-import com.divinelink.feature.lists.ui.provider.ListsUiStateParameterProvider
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,15 +53,4 @@ fun ListsDataContent(
       },
     )
   }
-}
-
-@Composable
-@Previews
-fun ListsContentPreview(
-  @PreviewParameter(ListsUiStateParameterProvider::class) state: ListsUiState,
-) {
-  ListsDataContent(
-    uiState = state,
-    userInteraction = { },
-  )
 }

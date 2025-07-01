@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="feature_lists_title">Lists</string>
+
+  <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
 </resources>
