@@ -3,6 +3,7 @@ package com.divinelink.feature.lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
 import com.divinelink.core.domain.session.ObserveAccountUseCase
@@ -32,16 +33,7 @@ class ListsViewModel(
               fetchUserLists()
             },
             onFailure = {
-              _uiState.update { uiState ->
-                uiState.copy(
-                  error = BlankSlateState.Unauthenticated(
-                    UIText.ResourceText(R.string.feature_lists_login_description),
-                  ),
-                  isLoading = false,
-                  loadingMore = false,
-                  page = 1,
-                )
-              }
+              setUnauthenticatedError()
             },
           )
         }
@@ -49,7 +41,11 @@ class ListsViewModel(
   }
 
   fun onLoadMore() {
-    fetchUserLists()
+    val lists = uiState.value.lists
+
+    if (lists is ListData.Data && lists.data.canLoadMore()) {
+      fetchUserLists()
+    }
   }
 
   private fun fetchUserLists() {
@@ -67,26 +63,41 @@ class ListsViewModel(
                 isLoading = false,
                 page = uiState.page + 1,
                 error = null,
+                lists = when (uiState.lists) {
+                  ListData.Initial -> ListData.Data(result.data)
+                  is ListData.Data -> ListData.Data(
+                    uiState.lists.data.copy(
+                      page = result.data.page,
+                      list = uiState.lists.data.list + result.data.list,
+                    ),
+                  )
+                },
               )
             }
           },
           onFailure = {
             ErrorHandler.create(it) {
               on<SessionException.Unauthenticated> {
-                _uiState.update { uiState ->
-                  uiState.copy(
-                    error = BlankSlateState.Unauthenticated(
-                      UIText.ResourceText(R.string.feature_lists_login_description),
-                    ),
-                    isLoading = false,
-                    loadingMore = false,
-                  )
-                }
+                setUnauthenticatedError()
               }
             }
           },
         )
       }
+    }
+  }
+
+  private fun setUnauthenticatedError() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        error = BlankSlateState.Unauthenticated(
+          UIText.ResourceText(R.string.feature_lists_login_description),
+        ),
+        page = 1,
+        lists = ListData.Initial,
+        isLoading = false,
+        loadingMore = false,
+      )
     }
   }
 }

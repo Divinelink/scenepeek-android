@@ -7,4 +7,5 @@ data class PaginationData<T>(
   val list: List<T>,
 ) {
   fun canLoadMore(): Boolean = page < totalPages
+  fun isEmpty(): Boolean = list.isEmpty()
 }

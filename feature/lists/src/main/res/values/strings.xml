@@ -3,4 +3,5 @@
   <string name="feature_lists_title">Lists</string>
 
   <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
+  <string name="feature_lists_empty">You haven\'t created any lists.</string>
 </resources>
