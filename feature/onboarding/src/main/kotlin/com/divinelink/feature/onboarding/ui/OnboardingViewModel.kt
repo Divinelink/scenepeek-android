@@ -6,6 +6,7 @@ import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
+import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.feature.onboarding.manager.OnboardingPages
 import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
@@ -84,7 +85,10 @@ class OnboardingViewModel(
           _uiState.update { uiState ->
             uiState.copy(
               pages = uiState.pages.map { page ->
-                if (page.action is OnboardingAction.NavigateToTMDBLogin) {
+                if (
+                  page.action is OnboardingAction.NavigateToTMDBLogin &&
+                  it is TMDBAccount.LoggedIn
+                ) {
                   page.copy(action = OnboardingAction.NavigateToTMDBLogin(true))
                 } else {
                   page
