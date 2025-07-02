@@ -364,6 +364,9 @@ private fun MediaDetailsContent(
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
     onOpenManageModal = onOpenManageModal,
+    onAddToListClick = {
+      TODO("Handle click")
+    },
   ) {
     Column(
       modifier = Modifier
