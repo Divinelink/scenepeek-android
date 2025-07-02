@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="feature_lists_title">Lists</string>
+
+  <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
+  <string name="feature_lists_empty">You haven\'t created any lists.</string>
+
+  <string name="feature_lists_public">Public</string>
+  <string name="feature_lists_private">Private</string>
+
+  <plurals name="feature_lists_item_count">
+    <item quantity="one">%s item</item>
+    <item quantity="other">%s items</item>
+  </plurals>
 </resources>

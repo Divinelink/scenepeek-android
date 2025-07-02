@@ -34,6 +34,7 @@ data class MovieResponseApi(
 )
 
 fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
+  page = page,
   totalPages = totalPages,
   totalResults = totalResults,
   list = this.results.map(MovieResponseApi::toMovie),

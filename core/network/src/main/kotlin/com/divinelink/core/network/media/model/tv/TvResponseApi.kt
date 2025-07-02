@@ -34,9 +34,10 @@ data class TvItemApi(
 )
 
 fun TvResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
+  page = page,
   totalPages = totalPages,
   totalResults = totalResults,
-  list = this.results.map(TvItemApi::toTv),
+  list = results.map(TvItemApi::toTv),
 )
 
 private fun TvItemApi.toTv() = MediaItem.Media.TV(

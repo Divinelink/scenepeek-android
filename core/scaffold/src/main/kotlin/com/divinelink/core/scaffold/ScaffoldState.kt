@@ -49,7 +49,7 @@ fun rememberScaffoldState(animatedVisibilityScope: AnimatedVisibilityScope): Sca
 }
 
 @Composable
-private fun isMediumScreenWidthOrWider(): State<Boolean> {
+fun isMediumScreenWidthOrWider(): State<Boolean> {
   val widthSizeClass = currentWindowAdaptiveInfo()
     .windowSizeClass
     .windowWidthSizeClass

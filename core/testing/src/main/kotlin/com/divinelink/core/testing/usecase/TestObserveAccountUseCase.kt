@@ -14,15 +14,11 @@ class TestObserveAccountUseCase {
     mockFailure()
   }
 
-  fun mockFailure(exception: Exception = Exception()) {
-    whenever(
-      mock.invoke(any()),
-    ).thenReturn(
-      flowOf(Result.failure(exception)),
-    )
+  private fun mockFailure(exception: Exception = Exception()) {
+    whenever(mock.invoke(any())).thenReturn(flowOf(Result.failure(exception)))
   }
 
-  fun mockSuccess(response: Result<Boolean>) {
+  fun mockResponse(response: Result<Boolean>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
   }
 }

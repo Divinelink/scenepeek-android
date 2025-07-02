@@ -209,6 +209,7 @@ val navigationModule = module {
     { navController, _ ->
       listsScreen(
         onNavigateUp = navController::navigateUp,
+        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
       )
     }
   }

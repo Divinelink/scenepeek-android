@@ -8,7 +8,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class TestFetchUseDataUseCase {
+class TestFetchUserDataUseCase {
 
   val mock: FetchUserDataUseCase = mock()
 

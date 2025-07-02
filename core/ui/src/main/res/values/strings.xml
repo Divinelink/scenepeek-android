@@ -131,6 +131,8 @@
   <string name="core_ui_section_ratings">Ratings</string>
   <string name="core_ui_section_lists">Lists</string>
 
+  <string name="core_ui_login_title">Login to your account</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

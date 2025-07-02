@@ -18,7 +18,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.data.UserDataResponseFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
-import com.divinelink.core.testing.usecase.TestFetchUseDataUseCase
+import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
@@ -32,11 +32,11 @@ import com.divinelink.core.ui.R as uiR
 class UserDataScreenTest : ComposeTest() {
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
-  private val fetchWatchlistUseCase = TestFetchUseDataUseCase()
+  private val fetchWatchlistUseCase = TestFetchUserDataUseCase()
 
   @Test
   fun `test unknown error`() = runTest {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
 
     setVisibilityScopeContent {
       UserDataScreen(
@@ -68,7 +68,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test network error`() {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(Result.failure(UnknownHostException())),
     )
@@ -102,7 +102,9 @@ class UserDataScreenTest : ComposeTest() {
   fun `test unauthenticated error`() = runTest {
     var verifyNavigatedToTMDBLogin = false
 
-    observeAccountUseCase.mockSuccess(response = Result.failure(SessionException.Unauthenticated()))
+    observeAccountUseCase.mockResponse(
+      response = Result.failure(SessionException.Unauthenticated()),
+    )
 
     setVisibilityScopeContent {
       UserDataScreen(
@@ -128,7 +130,7 @@ class UserDataScreenTest : ComposeTest() {
     )
 
     val loginToSeeWatchlistString = composeTestRule.activity.getString(
-      R.string.feature_user_data_login_title,
+      R.string.feature_user_data_login_watchlist_description,
     )
 
     composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_ERROR_CONTENT).assertIsDisplayed()
@@ -142,7 +144,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist tabs are visible with movies and tv tabs`() {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
 
     setVisibilityScopeContent {
       UserDataScreen(
@@ -177,7 +179,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with empty content`() {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.emptyMovies()),
@@ -228,7 +230,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test tv watching is loading`() {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = Result.success(UserDataResponseFactory.emptyMovies()),
     )
@@ -272,7 +274,7 @@ class UserDataScreenTest : ComposeTest() {
 
   @Test
   fun `test watchlist with movies and tv content`() {
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.movies()),
@@ -337,7 +339,7 @@ class UserDataScreenTest : ComposeTest() {
     var verifyNavigatedToMediaDetails = false
     var navArgs: DetailsRoute? = null
 
-    observeAccountUseCase.mockSuccess(response = Result.success(true))
+    observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
       response = flowOf(
         Result.success(UserDataResponseFactory.movies()),
