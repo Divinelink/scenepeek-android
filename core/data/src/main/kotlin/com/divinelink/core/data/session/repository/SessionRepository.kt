@@ -1,18 +1,23 @@
 package com.divinelink.core.data.session.repository
 
 import com.divinelink.core.model.account.AccountDetails
+import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
-import com.divinelink.core.network.session.model.CreateSessionRequestApi
-import kotlinx.coroutines.flow.Flow
 
 interface SessionRepository {
 
   suspend fun createRequestToken(): Result<RequestToken>
 
-  suspend fun createSession(token: CreateSessionRequestApi): Result<Session>
+  suspend fun createAccessToken(token: String): Result<AccessToken>
 
-  suspend fun deleteSession(sessionId: String): Result<Boolean>
+  suspend fun createSession(accessToken: String): Result<Session>
 
-  fun getAccountDetails(sessionId: String): Flow<Result<AccountDetails>>
+  suspend fun deleteSession(accessToken: String): Result<Boolean>
+
+  suspend fun getAccountDetails(sessionId: String): Result<AccountDetails>
+
+  suspend fun clearRequestToken()
+  suspend fun setRequestToken(token: RequestToken)
+  suspend fun retrieveRequestToken(): Result<RequestToken>
 }

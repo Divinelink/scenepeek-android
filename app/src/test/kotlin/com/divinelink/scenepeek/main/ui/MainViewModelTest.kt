@@ -125,22 +125,12 @@ class MainViewModelTest {
 
   @Test
   fun `test handleDeepLink with tmdb deeplink with approved redirect`() = runTest {
-    val url = Uri.parse("scenepeek://auth/redirect?request_token=requestToken&approved=true")
+    val url = Uri.parse("scenepeek://auth/redirect")
 
     robot
       .buildViewModel()
       .onHandleDeeplink(url)
-      .verifySessionInvoked("requestToken")
-  }
-
-  @Test
-  fun `test handleDeepLink with tmdb deeplink with denied redirect`() = runTest {
-    val url = Uri.parse("scenepeek://auth/redirect?request_token=requestToken&denied=true")
-
-    robot
-      .buildViewModel()
-      .onHandleDeeplink(url)
-      .verifyNoSessionInteraction()
+      .verifySessionInvoked()
   }
 
   @Test

@@ -24,7 +24,7 @@ class TMDBAuthViewModelTest {
 
     viewModel.openUrlTab.test {
       assertThat(awaitItem()).isEqualTo(
-        "https://www.themoviedb.org/authenticate/requestToken?redirect_to=scenepeek://auth/redirect",
+        "https://www.themoviedb.org/auth/access?request_token=requestToken",
       )
     }
   }

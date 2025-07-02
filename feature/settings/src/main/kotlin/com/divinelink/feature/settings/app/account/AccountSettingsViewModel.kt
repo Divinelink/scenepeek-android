@@ -2,11 +2,13 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.channels.Channel
@@ -19,7 +21,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class AccountSettingsViewModel(
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
@@ -58,9 +59,22 @@ class AccountSettingsViewModel(
       getAccountDetailsUseCase.invoke(Unit).collect { result ->
         result
           .onSuccess { accountDetails ->
-            Timber.d("Updating Ui with account details: $accountDetails")
             _viewState.update {
               it.copy(tmdbAccount = accountDetails)
+            }
+          }
+          .onFailure {
+            ErrorHandler.create(it) {
+              on<SessionException.Unauthenticated> {
+                _viewState.update { uiState ->
+                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
+                }
+              }
+              on(401) {
+                _viewState.update { uiState ->
+                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
+                }
+              }
             }
           }
       }
@@ -89,14 +103,27 @@ class AccountSettingsViewModel(
 
   fun confirmLogout() {
     viewModelScope.launch {
-      logoutUseCase.invoke(Unit).onSuccess {
-        _viewState.update {
-          it.copy(
-            tmdbAccount = TMDBAccount.Anonymous,
-            alertDialogUiState = null,
-          )
+      logoutUseCase.invoke(Unit)
+        .onSuccess {
+          _viewState.update {
+            it.copy(
+              tmdbAccount = TMDBAccount.Anonymous,
+              alertDialogUiState = null,
+            )
+          }
         }
-      }
+        .onFailure { error ->
+          ErrorHandler.create(error) {
+            on(401) {
+              _viewState.update {
+                it.copy(
+                  tmdbAccount = TMDBAccount.Anonymous,
+                  alertDialogUiState = null,
+                )
+              }
+            }
+          }
+        }
     }
   }
 

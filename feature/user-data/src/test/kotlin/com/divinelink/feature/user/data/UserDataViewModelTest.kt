@@ -1,6 +1,6 @@
 package com.divinelink.feature.user.data
 
-import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection

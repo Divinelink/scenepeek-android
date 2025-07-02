@@ -2,18 +2,19 @@ package com.divinelink.core.network.session.service
 
 import com.divinelink.core.network.session.model.AccountDetailsResponseApi
 import com.divinelink.core.network.session.model.CreateRequestTokenResponseApi
-import com.divinelink.core.network.session.model.CreateSessionRequestApi
 import com.divinelink.core.network.session.model.CreateSessionResponseApi
 import com.divinelink.core.network.session.model.DeleteSessionResponseApi
-import kotlinx.coroutines.flow.Flow
+import com.divinelink.core.network.session.model.v4.CreateAccessTokenResponse
 
 interface SessionService {
 
   suspend fun createRequestToken(): Result<CreateRequestTokenResponseApi>
 
-  suspend fun createSession(requestToken: CreateSessionRequestApi): Result<CreateSessionResponseApi>
+  suspend fun createAccessToken(requestToken: String): Result<CreateAccessTokenResponse>
 
-  suspend fun deleteSession(sessionId: String): Result<DeleteSessionResponseApi>
+  suspend fun createSession(accessToken: String): Result<CreateSessionResponseApi>
 
-  fun getAccountDetails(sessionId: String): Flow<AccountDetailsResponseApi>
+  suspend fun logout(accessToken: String): Result<DeleteSessionResponseApi>
+
+  suspend fun getAccountDetails(sessionId: String): Result<AccountDetailsResponseApi>
 }

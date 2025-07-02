@@ -1,10 +1,11 @@
 package com.divinelink.core.domain
 
 import app.cash.turbine.test
-import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.session.AccessTokenFactory
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
@@ -79,7 +80,11 @@ class FetchUserDataUseCaseTest {
   fun `test fetch tv watchlist with success`() = runTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = "123456789"),
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        sessionId = "123456789",
+        tmdbAccountId = AccessTokenFactory.valid().accountId,
+        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
+      ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
@@ -120,7 +125,11 @@ class FetchUserDataUseCaseTest {
   fun `test fetch movies watchlist with success`() = runTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = "123456789"),
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        sessionId = "123456789",
+        tmdbAccountId = AccessTokenFactory.valid().accountId,
+        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
+      ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
@@ -161,7 +170,11 @@ class FetchUserDataUseCaseTest {
   fun `test fetch rated tv with success`() = runTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = "123456789"),
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        sessionId = "123456789",
+        tmdbAccountId = AccessTokenFactory.valid().accountId,
+        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
+      ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
@@ -202,7 +215,11 @@ class FetchUserDataUseCaseTest {
   fun `test fetch rated movies with success`() = runTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = "123456789"),
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        sessionId = "123456789",
+        tmdbAccountId = AccessTokenFactory.valid().accountId,
+        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
+      ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
@@ -243,7 +260,11 @@ class FetchUserDataUseCaseTest {
   fun `test canFetchMore is false when page is greater than total pages`() = runTest {
     sessionStorage = SessionStorage(
       storage = FakePreferenceStorage(),
-      encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = "123456789"),
+      encryptedStorage = FakeEncryptedPreferenceStorage(
+        sessionId = "123456789",
+        tmdbAccountId = AccessTokenFactory.valid().accountId,
+        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
+      ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),

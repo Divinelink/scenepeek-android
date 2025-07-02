@@ -1,9 +1,11 @@
 package com.divinelink.scenepeek.details.domain.usecase
 
-import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.session.AccessTokenFactory
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
@@ -54,7 +56,7 @@ class AddToWatchlistUseCaseTest {
     assertThat(result.first().isFailure).isTrue()
     assertThat(
       result.first().exceptionOrNull(),
-    ).isInstanceOf(SessionException.InvalidAccountId::class.java)
+    ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
@@ -78,7 +80,7 @@ class AddToWatchlistUseCaseTest {
     assertThat(result.first().isFailure).isTrue()
     assertThat(
       result.first().exceptionOrNull(),
-    ).isInstanceOf(SessionException.InvalidAccountId::class.java)
+    ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
@@ -108,7 +110,11 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with account and session id can add to watchlist for tv show`() = runTest {
-    sessionStorage = createSessionStorage(accountId = "123", sessionId = "123")
+    sessionStorage = createSessionStorage(
+      accountId = "123",
+      sessionId = "123",
+      accessToken = AccessTokenFactory.valid(),
+    )
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -156,9 +162,14 @@ class AddToWatchlistUseCaseTest {
   private fun createSessionStorage(
     accountId: String?,
     sessionId: String?,
+    accessToken: AccessToken? = null,
   ) = SessionStorage(
     storage = FakePreferenceStorage(),
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
+    encryptedStorage = FakeEncryptedPreferenceStorage(
+      sessionId = sessionId,
+      accessToken = accessToken?.accessToken,
+      tmdbAccountId = accountId,
+    ),
     accountStorage = FakeAccountStorage(
       accountDetails = accountId?.let {
         AccountDetailsFactory.Pinkman().copy(id = it.toInt())

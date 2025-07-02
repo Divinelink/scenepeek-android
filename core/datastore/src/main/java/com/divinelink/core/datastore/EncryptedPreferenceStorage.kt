@@ -16,6 +16,14 @@ interface EncryptedStorage {
   suspend fun setSessionId(sessionId: String)
   val sessionId: String?
 
+  suspend fun clearAccessToken()
+  suspend fun setAccessToken(accessToken: String)
+  val accessToken: String?
+
+  suspend fun clearTmdbAccountId()
+  suspend fun setTmdbAccountId(accountId: String)
+  val tmdbAccountId: String?
+
   suspend fun clearJellyseerrAuthCookie()
   suspend fun setJellyseerrAuthCookie(cookie: String)
   val jellyseerrAuthCookie: String?
@@ -49,6 +57,9 @@ class EncryptedPreferenceStorage(
     const val SECRET_TMDB_SESSION_ID = "secret.tmdb.token.id"
     const val SECRET_JELLYSEERR_AUTH_COOKIE = "secret.jellyseerr.auth.cookie"
     const val SECRET_JELLYSEERR_PASSWORD = "secret.jellyseerr.password"
+
+    const val SECRET_TMDB_ACCESS_TOKEN = "secret.tmdb.access.token"
+    const val SECRET_TMDB_ACCOUNT_ID = "secret.tmdb.account.id"
   }
 
   override suspend fun setTmdbAuthToken(key: String) {
@@ -77,6 +88,40 @@ class EncryptedPreferenceStorage(
 
   override val sessionId: String?
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_SESSION_ID, null)
+
+  override suspend fun clearAccessToken() {
+    with(encryptedPreferences.edit()) {
+      remove(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN)
+      apply()
+    }
+  }
+
+  override suspend fun setAccessToken(accessToken: String) {
+    with(encryptedPreferences.edit()) {
+      putString(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN, accessToken)
+      apply()
+    }
+  }
+
+  override val accessToken: String?
+    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN, null)
+
+  override suspend fun clearTmdbAccountId() {
+    with(encryptedPreferences.edit()) {
+      remove(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID)
+      apply()
+    }
+  }
+
+  override suspend fun setTmdbAccountId(accountId: String) {
+    with(encryptedPreferences.edit()) {
+      putString(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID, accountId)
+      apply()
+    }
+  }
+
+  override val tmdbAccountId: String?
+    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID, null)
 
   override suspend fun clearJellyseerrAuthCookie() {
     with(encryptedPreferences.edit()) {

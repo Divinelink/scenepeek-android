@@ -3,6 +3,7 @@ package com.divinelink.scenepeek.session
 import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
@@ -57,7 +58,7 @@ class SessionStorageTest {
   }
 
   @Test
-  fun `test setSession sets session`() = runTest {
+  fun `test accessToken sets session and accessToken`() = runTest {
     val preferenceStorage = FakePreferenceStorage()
     val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
 
@@ -67,9 +68,18 @@ class SessionStorageTest {
       accountStorage = FakeAccountStorage(),
     )
 
-    sessionStorage.setSession("session")
+    sessionStorage.setAccessToken(
+      sessionId = "session",
+      accessToken = AccessTokenFactory.valid(),
+    )
 
     assertThat(encryptedPreferenceStorage.sessionId).isEqualTo("session")
+    assertThat(encryptedPreferenceStorage.accessToken).isEqualTo(
+      AccessTokenFactory.valid().accessToken,
+    )
+    assertThat(encryptedPreferenceStorage.tmdbAccountId).isEqualTo(
+      AccessTokenFactory.valid().accountId,
+    )
   }
 
   @Test
@@ -90,16 +100,14 @@ class SessionStorageTest {
 
     assertThat(encryptedPreferenceStorage.sessionId).isNull()
 
-    sessionStorage.accountId.test {
-      assertThat(awaitItem()).isNull()
-    }
+    assertThat(sessionStorage.accountId).isNull()
     sessionStorage.accountStorage.accountDetails.test {
       assertThat(awaitItem()).isNull()
     }
   }
 
   @Test
-  fun `test setAccountId sets accountId`() = runTest {
+  fun `test setAccountDetails does not sets accountId`() = runTest {
     val preferenceStorage = FakePreferenceStorage()
     val accountStorage = FakeAccountStorage()
 
@@ -119,9 +127,9 @@ class SessionStorageTest {
 
     sessionStorage.setTMDbAccountDetails(AccountDetailsFactory.Pinkman())
 
-    sessionStorage.accountId.test {
-      assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman().id.toString())
-    }
+    assertThat(sessionStorage.accountId).isNotEqualTo(
+      AccountDetailsFactory.Pinkman().id.toString(),
+    )
 
     sessionStorage.accountStorage.accountDetails.test {
       assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman())
@@ -159,6 +167,38 @@ class SessionStorageTest {
     assertThat(preferenceStorage.jellyseerrAddress.first()).isNull()
     assertThat(preferenceStorage.jellyseerrAuthMethod.first()).isNull()
     assertThat(encryptedPreferenceStorage.jellyseerrAuthCookie).isNull()
+    assertThat(encryptedPreferenceStorage.jellyseerrPassword).isNull()
+  }
+
+  @Test
+  fun `test setJellyseerrSession`() = runTest {
+    val preferenceStorage = FakePreferenceStorage()
+    val encryptedPreferenceStorage = FakeEncryptedPreferenceStorage()
+
+    val sessionStorage = SessionStorage(
+      storage = preferenceStorage,
+      encryptedStorage = encryptedPreferenceStorage,
+      accountStorage = FakeAccountStorage(),
+    )
+
+    sessionStorage.setJellyseerrSession(
+      username = "Zabaob",
+      address = "http://localhost:5050",
+      authMethod = JellyseerrAuthMethod.JELLYSEERR.name,
+      password = "password",
+    )
+
+    assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("Zabaob")
+    assertThat(preferenceStorage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
+    assertThat(preferenceStorage.jellyseerrAuthMethod.first()).isEqualTo(
+      JellyseerrAuthMethod.JELLYSEERR.name,
+    )
+
+    sessionStorage.clearJellyseerrSession()
+
+    assertThat(preferenceStorage.jellyseerrAccount.first()).isNull()
+    assertThat(preferenceStorage.jellyseerrAddress.first()).isNull()
+    assertThat(preferenceStorage.jellyseerrAuthMethod.first()).isNull()
     assertThat(encryptedPreferenceStorage.jellyseerrPassword).isNull()
   }
 }

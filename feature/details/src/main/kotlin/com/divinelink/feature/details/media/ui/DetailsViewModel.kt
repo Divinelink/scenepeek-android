@@ -9,7 +9,6 @@ import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
-import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
@@ -31,6 +30,7 @@ import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
@@ -446,7 +446,7 @@ class DetailsViewModel(
             }
           }
         }.onFailure {
-          if (it is SessionException.InvalidAccountId) {
+          if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
                 snackbarMessage = SnackbarMessage.from(

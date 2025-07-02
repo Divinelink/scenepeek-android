@@ -2,11 +2,11 @@ package com.divinelink.core.domain
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.commons.domain.data
-import com.divinelink.core.data.session.model.SessionException
+import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.SessionException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class GetAccountDetailsUseCase(
       storage.accountStorage.accountDetails.collect { accountDetails ->
         Timber.i("Details updated: $accountDetails")
         if (accountDetails == null) {
-          send(Result.success(TMDBAccount.Anonymous))
+          send(Result.failure(SessionException.Unauthenticated()))
         } else {
           send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
         }
@@ -36,9 +36,19 @@ class GetAccountDetailsUseCase(
       if (sessionId == null) {
         send(Result.failure(SessionException.Unauthenticated()))
       } else {
-        repository.getAccountDetails(sessionId).collect { details ->
-          storage.accountStorage.setAccountDetails(details.data)
-        }
+        repository.getAccountDetails(sessionId).fold(
+          onSuccess = { details ->
+            storage.accountStorage.setAccountDetails(details)
+          },
+          onFailure = {
+            if (it is InvalidStatusException && it.status == 401) {
+              storage.clearSession()
+              send(Result.failure(SessionException.Unauthenticated()))
+            } else {
+              send(Result.failure(it))
+            }
+          },
+        )
       }
     }
   }

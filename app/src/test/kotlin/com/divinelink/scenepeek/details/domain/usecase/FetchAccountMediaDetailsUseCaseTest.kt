@@ -2,8 +2,8 @@ package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsParams
-import com.divinelink.core.data.session.model.SessionException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
