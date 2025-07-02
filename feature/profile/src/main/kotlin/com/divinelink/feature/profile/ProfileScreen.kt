@@ -46,6 +46,7 @@ fun AnimatedVisibilityScope.ProfileScreen(
               is ProfileUserInteraction.NavigateToUserData -> onNavigateToUserData(
                 userInteraction.section,
               )
+              ProfileUserInteraction.NavigateToLists -> onNavigateToLists()
             }
           },
         )

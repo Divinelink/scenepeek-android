@@ -20,6 +20,7 @@ dependencies {
   kover(projects.feature.tmdbAuth)
   kover(projects.feature.profile)
   kover(projects.feature.userData)
+  kover(projects.feature.lists)
 }
 
 kover {

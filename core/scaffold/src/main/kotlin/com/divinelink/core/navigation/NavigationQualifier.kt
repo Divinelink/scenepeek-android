@@ -17,4 +17,5 @@ enum class NavigationQualifier {
   Onboarding,
   TMDBAuth,
   Profile,
+  Lists,
 }

@@ -3,9 +3,9 @@ package com.divinelink.core.domain
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.account.AccountRepository
-import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters

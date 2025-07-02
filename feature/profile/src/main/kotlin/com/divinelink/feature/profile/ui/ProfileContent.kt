@@ -69,6 +69,13 @@ fun ProfileContent(
         },
       )
     }
+
+//    item {
+//      ProfileSectionItem(
+//        section = ProfileSection.Lists,
+//        onClick = { userInteraction(ProfileUserInteraction.NavigateToLists) },
+//      )
+//    }
   }
 }
 
