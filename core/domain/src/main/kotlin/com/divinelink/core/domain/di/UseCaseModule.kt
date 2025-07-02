@@ -1,7 +1,7 @@
 package com.divinelink.core.domain.di
 
 import com.divinelink.core.domain.CreateRequestTokenUseCase
-import com.divinelink.core.domain.FetchWatchlistUseCase
+import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.GetDetailsActionItemsUseCase
@@ -54,7 +54,7 @@ val useCaseModule = module {
   factoryOf(::ObserveAccountUseCase)
 
   factoryOf(::CreateRequestTokenUseCase)
-  factoryOf(::FetchWatchlistUseCase)
+  factoryOf(::FetchUserDataUseCase)
   factoryOf(::GetAccountDetailsUseCase)
   factoryOf(::GetDropdownMenuItemsUseCase)
   factoryOf(::GetDetailsActionItemsUseCase)

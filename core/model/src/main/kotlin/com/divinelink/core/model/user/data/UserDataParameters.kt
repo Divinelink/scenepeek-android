@@ -6,4 +6,5 @@ data class UserDataParameters(
   val page: Int,
   val sortBy: UserDataSorting = UserDataSorting.DESCENDING,
   val mediaType: MediaType,
+  val section: UserDataSection,
 )

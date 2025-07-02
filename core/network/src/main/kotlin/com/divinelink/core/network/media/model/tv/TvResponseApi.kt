@@ -30,6 +30,7 @@ data class TvItemApi(
   @SerialName("name") val name: String,
   @SerialName("vote_average") val voteAverage: Double,
   @SerialName("vote_count") val voteCount: Int?,
+  @SerialName("rating") val rating: Double? = null,
 )
 
 fun TvResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
@@ -47,4 +48,5 @@ private fun TvItemApi.toTv() = MediaItem.Media.TV(
   voteCount = this.voteCount ?: 0,
   overview = this.overview,
   isFavorite = false,
+  accountRating = rating?.toInt(),
 )

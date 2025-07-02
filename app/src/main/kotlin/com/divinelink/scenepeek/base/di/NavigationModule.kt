@@ -196,7 +196,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named(NavigationQualifier.Profile)) {
     { navController, _ ->
       profileScreen(
-        onNavigateToWatchlist = navController::navigateToUserData,
+        onNavigateToUserData = navController::navigateToUserData,
         onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
         onNavigateToLists = {
           TODO()

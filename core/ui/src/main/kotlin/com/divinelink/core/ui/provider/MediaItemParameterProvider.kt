@@ -8,5 +8,11 @@ class MediaItemParameterProvider : PreviewParameterProvider<MediaItem.Media> {
   override val values: Sequence<MediaItem.Media> = sequenceOf(
     MediaItemFactory.theOffice(),
     MediaItemFactory.FightClub(),
+    MediaItemFactory.theOffice().copy(accountRating = 10),
+    MediaItemFactory.theOffice().copy(
+      name = "The Office with a very long name",
+      accountRating = 10,
+    ),
+    MediaItemFactory.FightClub().copy(accountRating = 8),
   )
 }

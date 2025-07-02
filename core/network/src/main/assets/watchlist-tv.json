@@ -1,0 +1,431 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/ccOzCmrglAjRGtqv5ClTaBEsWt8.jpg",
+      "genre_ids": [
+        9648,
+        80
+      ],
+      "id": 120998,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Poker Face",
+      "overview": "Follow Charlie Cale, a woman with an extraordinary ability to tell when someone is lying, as she hits the road and, at every stop, encounters a new cast of characters and crimes she can't help but solve.",
+      "popularity": 52.6238,
+      "poster_path": "/sQxgo6z2nEzq1kfXdktRIWtje3B.jpg",
+      "first_air_date": "2023-01-26",
+      "name": "Poker Face",
+      "vote_average": 7.613,
+      "vote_count": 382
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/afyjB6cwJnTbo0OmnrGTl1V1pNt.jpg",
+      "genre_ids": [
+        35,
+        18
+      ],
+      "id": 32962,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Louie",
+      "overview": "Louis C.K. stars as a fictionalized version of himself; a comedian and newly divorced father raising his two daughters in New York City.",
+      "popularity": 24.2355,
+      "poster_path": "/ubWj0BLRV1UDP8ELnTr2is2Wl0Y.jpg",
+      "first_air_date": "2010-06-29",
+      "name": "Louie",
+      "vote_average": 7.787,
+      "vote_count": 527
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/52UMX6fg1PHgkgZicP8eBktR7Ay.jpg",
+      "genre_ids": [
+        80,
+        18,
+        9648
+      ],
+      "id": 44264,
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "Endeavour",
+      "overview": "The early days of a young Endeavour Morse, whose experiences as a detective constable with the Oxford City Police will ultimately shape his future.",
+      "popularity": 54.4166,
+      "poster_path": "/suX3F5e8XN9emrb52CQSwt2mRwx.jpg",
+      "first_air_date": "2013-04-14",
+      "name": "Endeavour",
+      "vote_average": 8.089,
+      "vote_count": 254
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/ua4rzxx9DB6xUVZ0cBX6SYZDUXs.jpg",
+      "genre_ids": [
+        16,
+        10765,
+        18
+      ],
+      "id": 86340,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Undone",
+      "overview": "After getting into a near fatal car accident, Alma discovers she has a new relationship with time and uses this ability to find out the truth about her father’s death.",
+      "popularity": 21.3005,
+      "poster_path": "/ucUhydbM7DEHDhFPV3KhKRxJ51l.jpg",
+      "first_air_date": "2019-09-12",
+      "name": "Undone",
+      "vote_average": 7.675,
+      "vote_count": 323
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/gbeldCIJck5L0oyRkyFxHH9xAaG.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "id": 245256,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Say Nothing",
+      "overview": "Through the eyes of various Irish Republican Army (IRA) members, explore the extremes some people will go to in the name of their beliefs, the way a deeply divided society can suddenly tip over into armed conflict, the long shadow of radical violence for both victims and perpetrators, and the emotional and psychological costs of a code of silence.",
+      "popularity": 19.3697,
+      "poster_path": "/bAF3gTGuFNDdzGUIAnDqi5nbFf3.jpg",
+      "first_air_date": "2024-11-14",
+      "name": "Say Nothing",
+      "vote_average": 7.4,
+      "vote_count": 68
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/1FxG2lmDYsCM1svJf7H79HNNwu2.jpg",
+      "genre_ids": [
+        37,
+        18,
+        10759
+      ],
+      "id": 215866,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "American Primeval",
+      "overview": "A mother and son fleeing from their past form a found family while confronting a harsh landscape of freedom and cruelty in the American West.",
+      "popularity": 37.048,
+      "poster_path": "/ff0s9OHGNSZL6cVteIb7LNvTnJD.jpg",
+      "first_air_date": "2025-01-09",
+      "name": "American Primeval",
+      "vote_average": 7.678,
+      "vote_count": 321
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/lrFRykbUEk1Z1lqyiuEykuauZ3x.jpg",
+      "genre_ids": [
+        10764
+      ],
+      "id": 63726,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Alone",
+      "overview": "Hardcore survivalists are put by themselves in the Vancouver Island wilderness, without camera crews, teams, or producers – on a single mission to stay alive for as long as possible.",
+      "popularity": 21.0755,
+      "poster_path": "/mBMiMmcUl6VWGolCKgrkVDtMNx1.jpg",
+      "first_air_date": "2015-06-18",
+      "name": "Alone",
+      "vote_average": 7.112,
+      "vote_count": 89
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/A5lVyejMsP5G7rAJBwU9ug3Wzou.jpg",
+      "genre_ids": [
+        18
+      ],
+      "id": 1104,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Mad Men",
+      "overview": "Set in 1960-1970 New York, this sexy, stylized and provocative drama follows the lives of the ruthlessly competitive men and women of Madison Avenue advertising.",
+      "popularity": 70.9901,
+      "poster_path": "/7v8iCNzKFpdlrCMcqCoJyn74Nsa.jpg",
+      "first_air_date": "2007-07-19",
+      "name": "Mad Men",
+      "vote_average": 8.1,
+      "vote_count": 1319
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/5AvZxT1BtPyP9ua1SjcUyWUMIiz.jpg",
+      "genre_ids": [
+        16,
+        10765,
+        10759
+      ],
+      "id": 261579,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Secret Level",
+      "overview": "Adult animated series of original short stories which are set within the worlds of beloved video games. Each episode serves as a gateway to a new adventure, unlocking exciting worlds from beloved gaming classics and highly anticipated new titles.",
+      "popularity": 42.7701,
+      "poster_path": "/tXMi6tb1owDAALnFFqnWjjd26if.jpg",
+      "first_air_date": "2024-12-10",
+      "name": "Secret Level",
+      "vote_average": 7.411,
+      "vote_count": 370
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/6MVugklRWUCZGijAaqc6um1Rgff.jpg",
+      "genre_ids": [
+        16,
+        10765
+      ],
+      "id": 195339,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Pantheon",
+      "overview": "A bullied teen receives mysterious help from someone online: a stranger soon revealed to be her recently deceased father, David, whose consciousness has been uploaded to the Cloud following an experimental destructive brain scan. David is the first of a new kind of being – an “Uploaded Intelligence” or “UI” – but he will not be the last, as a global conspiracy unfolds that threatens to trigger a new kind of world war.",
+      "popularity": 29.8425,
+      "poster_path": "/aZupC6eJhTe82e5I0JRaOBjFHOd.jpg",
+      "first_air_date": "2022-09-01",
+      "name": "Pantheon",
+      "vote_average": 7.945,
+      "vote_count": 165
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/kkT2B2gmynoh9kZMo1gromLNeqy.jpg",
+      "genre_ids": [
+        16,
+        10759,
+        10765,
+        35
+      ],
+      "id": 138503,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Your Friendly Neighborhood Spider-Man",
+      "overview": "Peter Parker is on his way to becoming a hero, but his path to get there is anything but ordinary.",
+      "popularity": 38.4652,
+      "poster_path": "/kjcsNeqF52YUQ2rUBGLMHwLkxvR.jpg",
+      "first_air_date": "2025-01-29",
+      "name": "Your Friendly Neighborhood Spider-Man",
+      "vote_average": 7.818,
+      "vote_count": 184
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/iIYR1FuBD5ma2L2KjbHHWYgFu6Y.jpg",
+      "genre_ids": [
+        18
+      ],
+      "id": 78154,
+      "origin_country": [
+        "IT"
+      ],
+      "original_language": "it",
+      "original_name": "L'amica geniale",
+      "overview": "When the most important friend in her life seems to have disappeared without a trace, Elena Greco, a now-elderly woman immersed in a house full of books, turns on her computer and starts writing the story of their friendship.",
+      "popularity": 27.3222,
+      "poster_path": "/73JsZG2jXe5yYZ5k49HP8oPh7rq.jpg",
+      "first_air_date": "2018-11-27",
+      "name": "My Brilliant Friend",
+      "vote_average": 8.111,
+      "vote_count": 202
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/qq36sU5xH581RiNEkookMQ9D7yp.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "id": 194764,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Penguin",
+      "overview": "With the city in peril following the seawall's collapse, Oswald \"Oz\" Cobb seeks to fill the power vacuum left by the death of Carmine Falcone and finally give his mother Francis the life he's always promised. But first, Oz must confront his enemies and his own demoralizing reputation as \"the Penguin.\"",
+      "popularity": 49.4454,
+      "poster_path": "/vOWcqC4oDQws1doDWLO7d3dh5qc.jpg",
+      "first_air_date": "2024-09-19",
+      "name": "The Penguin",
+      "vote_average": 8.441,
+      "vote_count": 992
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/ssyZgYScV9eClakZDwu4sPrgMmy.jpg",
+      "genre_ids": [
+        9648,
+        18,
+        10765
+      ],
+      "id": 75191,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Terror",
+      "overview": "A chilling anthology series featuring stories of people in terrifying situations inspired by true historical events.",
+      "popularity": 26.9059,
+      "poster_path": "/bKkOcso0YuCBK7dixkn3VSd0dUr.jpg",
+      "first_air_date": "2018-03-26",
+      "name": "The Terror",
+      "vote_average": 7.347,
+      "vote_count": 887
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/8IC1q0lHFwi5m8VtChLzIfmpaZH.jpg",
+      "genre_ids": [
+        18,
+        9648
+      ],
+      "id": 86941,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The North Water",
+      "overview": "Henry Drax is a harpooner and brutish killer whose amorality has been shaped to fit the harshness of his world, who will set sail on a whaling expedition to the Arctic with Patrick Sumner, a disgraced ex-army surgeon who signs up as the ship’s doctor. Hoping to escape the horrors of his past, Sumner finds himself on an ill-fated journey with a murderous psychopath. In search of redemption, his story becomes a harsh struggle for survival in the Arctic wasteland.",
+      "popularity": 21.8446,
+      "poster_path": "/9CM0ca8pX1os3SJ24hsIc0nN8ph.jpg",
+      "first_air_date": "2021-07-14",
+      "name": "The North Water",
+      "vote_average": 7.417,
+      "vote_count": 144
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/AeVleqwWBMkiliVw6lFZICTTMiO.jpg",
+      "genre_ids": [
+        35,
+        18
+      ],
+      "id": 79410,
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "After Life",
+      "overview": "Tony had a perfect life. But after his wife Lisa suddenly dies, Tony changes. After contemplating taking his own life, he decides instead to live long enough to punish the world by saying and doing whatever he likes from now on.",
+      "popularity": 20.5938,
+      "poster_path": "/6eJf4h9XcvqK64vbx27EFlLVURm.jpg",
+      "first_air_date": "2019-03-08",
+      "name": "After Life",
+      "vote_average": 7.875,
+      "vote_count": 938
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/dQOphbONxlpPsKo30araFr0CYMO.jpg",
+      "genre_ids": [
+        10765,
+        18,
+        10759
+      ],
+      "id": 71912,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Witcher",
+      "overview": "Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.",
+      "popularity": 98.4081,
+      "poster_path": "/cZ0d3rtvXPVvuiX22sP79K3Hmjz.jpg",
+      "first_air_date": "2019-12-20",
+      "name": "The Witcher",
+      "vote_average": 8.023,
+      "vote_count": 6168
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/g97e0jUEjvVBF5Ald9oD7eWNMN4.jpg",
+      "genre_ids": [
+        10765
+      ],
+      "id": 250308,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Earth Abides",
+      "overview": "When a plague of unprecedented virulence sweeps the globe, the human race is all but wiped out. In the aftermath, as the great machine of civilization slowly and inexorably breaks down, only a few shattered survivors remain to struggle against the slide into extinction.",
+      "popularity": 24.3715,
+      "poster_path": "/c8huM0hQ5fCjGFDyUmpQW9x0xmR.jpg",
+      "first_air_date": "2024-12-01",
+      "name": "Earth Abides",
+      "vote_average": 7.464,
+      "vote_count": 96
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/AjdEGHt5GGhe6VWdcYkWdLyfY9D.jpg",
+      "genre_ids": [
+        18,
+        35
+      ],
+      "id": 136315,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Bear",
+      "overview": "Carmy, a young fine-dining chef, comes home to Chicago to run his family sandwich shop. As he fights to transform the shop and himself, he works alongside a rough-around-the-edges crew that ultimately reveal themselves as his chosen family.",
+      "popularity": 120.1716,
+      "poster_path": "/eKfVzzEazSIjJMrw9ADa2x8ksLz.jpg",
+      "first_air_date": "2022-06-23",
+      "name": "The Bear",
+      "vote_average": 8.2,
+      "vote_count": 1364
+    },
+    {
+      "adult": false,
+      "backdrop_path": "/2eX8Lx5VAl7ZKhwd5WOuGYwa3PW.jpg",
+      "genre_ids": [
+        18,
+        9648
+      ],
+      "id": 217667,
+      "origin_country": [
+        "GB"
+      ],
+      "original_language": "en",
+      "original_name": "Eric",
+      "overview": "A desperate father, alongside a tenacious cop, battles his own demons on the streets of 1980s New York as he searches for his missing nine-year-old son.",
+      "popularity": 24.9531,
+      "poster_path": "/9OV6McrRh1BAnrak3yVP9xYuUId.jpg",
+      "first_air_date": "2024-05-30",
+      "name": "Eric",
+      "vote_average": 7.038,
+      "vote_count": 240
+    }
+  ],
+  "total_pages": 3,
+  "total_results": 47
+}

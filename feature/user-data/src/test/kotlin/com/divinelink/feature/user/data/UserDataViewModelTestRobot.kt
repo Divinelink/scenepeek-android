@@ -1,21 +1,34 @@
 package com.divinelink.feature.user.data
 
+import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.model.user.data.UserDataSection
+import com.divinelink.core.navigation.route.UserDataRoute
 import com.divinelink.core.testing.ViewModelTestRobot
-import com.divinelink.core.testing.usecase.FakeFetchWatchlistUseCase
+import com.divinelink.core.testing.usecase.TestFetchUseDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import kotlinx.coroutines.flow.Flow
 
 class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
 
   private lateinit var viewModel: UserDataViewModel
+  private lateinit var navArgs: UserDataRoute
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
-  private val fetchWatchlistUseCase = FakeFetchWatchlistUseCase()
+  private val fetchUserDataUseCase = TestFetchUseDataUseCase()
+
+  fun withSection(section: UserDataSection) = apply {
+    this.navArgs = UserDataRoute(section)
+  }
 
   override fun buildViewModel() = apply {
     viewModel = UserDataViewModel(
       observeAccountUseCase = observeAccountUseCase.mock,
-      fetchWatchlistUseCase = fetchWatchlistUseCase.mock,
+      fetchUserDataUseCase = fetchUserDataUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "userDataSection" to navArgs.userDataSection,
+        ),
+      ),
     )
   }
 
@@ -26,8 +39,8 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
     observeAccountUseCase.response()
   }
 
-  fun mockFetchWatchlist(response: FakeFetchWatchlistUseCase.() -> Unit) = apply {
-    fetchWatchlistUseCase.response()
+  fun mockFetchUserData(response: TestFetchUseDataUseCase.() -> Unit) = apply {
+    fetchUserDataUseCase.response()
   }
 
   fun onLoadMore() = apply {

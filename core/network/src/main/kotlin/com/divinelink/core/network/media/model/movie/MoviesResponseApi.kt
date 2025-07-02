@@ -30,6 +30,7 @@ data class MovieResponseApi(
   val video: Boolean,
   @SerialName("vote_average") val voteAverage: Double,
   @SerialName("vote_count") val voteCount: Int?,
+  val rating: Double? = null,
 )
 
 fun MoviesResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
@@ -50,4 +51,5 @@ private fun MovieResponseApi.toMovie() = MediaItem.Media.Movie(
   voteCount = this.voteCount ?: 0,
   overview = this.overview,
   isFavorite = false,
+  accountRating = rating?.toInt(),
 )

@@ -14,6 +14,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -22,6 +23,7 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 @Composable
 fun UserDataErrorContent(
   error: UserDataForm.Error,
+  section: UserDataSection,
   onRetry: (() -> Unit)? = null,
 ) {
   Column(
@@ -34,11 +36,18 @@ fun UserDataErrorContent(
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     when (error) {
-      UserDataForm.Error.Unauthenticated -> BlankSlate(
+      is UserDataForm.Error.Unauthenticated -> BlankSlate(
         uiState = BlankSlateState.Custom(
           icon = com.divinelink.core.model.R.drawable.core_model_ic_tmdb,
           title = UIText.ResourceText(R.string.feature_user_data_login_title),
-          description = UIText.ResourceText(R.string.feature_user_data_login_description),
+          description = when (section) {
+            UserDataSection.Watchlist -> UIText.ResourceText(
+              R.string.feature_user_data_login_watchlist_description,
+            )
+            UserDataSection.Ratings -> UIText.ResourceText(
+              R.string.feature_user_data_login_rated_description,
+            )
+          },
         ),
       )
       UserDataForm.Error.Network -> BlankSlate(
@@ -62,6 +71,7 @@ private fun WatchlistInvalidSessionErrorContentPreview() {
       Column {
         UserDataErrorContent(
           error = UserDataForm.Error.Unauthenticated,
+          section = UserDataSection.Watchlist,
         )
       }
     }
@@ -76,6 +86,7 @@ private fun WatchlistUnknownErrorContentPreview() {
       Column {
         UserDataErrorContent(
           error = UserDataForm.Error.Unknown,
+          section = UserDataSection.Watchlist,
         )
       }
     }

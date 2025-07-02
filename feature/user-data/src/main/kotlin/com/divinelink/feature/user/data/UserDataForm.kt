@@ -1,6 +1,5 @@
 package com.divinelink.feature.user.data
 
-import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
@@ -18,23 +17,6 @@ sealed interface UserDataForm<out T : MediaItem.Media> {
     val data: List<T>,
     val totalResults: Int,
   ) : UserDataForm<T> {
-    private val isMovie = mediaType == MediaType.MOVIE
-    private val isTvShow = mediaType == MediaType.TV
-
-    val emptyResultsUiText: UIText = if (isMovie) {
-      UIText.ResourceText(R.string.feature_user_data_empty_movies_watchlist)
-    } else {
-      UIText.ResourceText(R.string.feature_user_data_empty_tv_shows_watchlist)
-    }
-
-    val totalResultsUiText: UIText? = if (isMovie) {
-      UIText.ResourceText(R.string.feature_user_data_total_movies_in_watchlist, totalResults)
-    } else if (isTvShow) {
-      UIText.ResourceText(R.string.feature_user_data_total_tv_shows_in_watchlist, totalResults)
-    } else {
-      null
-    }
-
     val isEmpty: Boolean = data.isEmpty()
   }
 }

@@ -19,4 +19,18 @@ interface AccountRepository {
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  suspend fun fetchRatedMovies(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
+
+  suspend fun fetchRatedTvShows(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>>
 }

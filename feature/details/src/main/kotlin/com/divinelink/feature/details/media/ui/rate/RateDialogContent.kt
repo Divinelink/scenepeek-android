@@ -60,7 +60,7 @@ fun RateDialogContent(
       modifier = Modifier
         .fillMaxWidth()
         .padding(bottom = MaterialTheme.dimensions.keyline_8),
-      text = stringResource(id = R.string.details__your_rating),
+      text = stringResource(id = com.divinelink.core.ui.R.string.core_ui_your_rating),
       rating = rating.roundToInt(),
     )
 

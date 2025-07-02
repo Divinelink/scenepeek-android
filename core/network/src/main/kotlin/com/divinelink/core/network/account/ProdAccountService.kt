@@ -39,4 +39,36 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
 
     emit(response)
   }
+
+  override fun fetchRatedMovies(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<MoviesResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account/$accountId/rated/movies" +
+      "?page=$page" +
+      "&session_id=$sessionId" +
+      "&sort_by=created_at.$sortBy"
+
+    val response = restClient.get<MoviesResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchRatedTvShows(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<TvResponseApi> = flow {
+    val url = "${restClient.tmdbUrl}/account/$accountId/rated/tv" +
+      "?page=$page" +
+      "&session_id=$sessionId" +
+      "&sort_by=created_at.$sortBy"
+
+    val response = restClient.get<TvResponseApi>(url = url)
+
+    emit(response)
+  }
 }

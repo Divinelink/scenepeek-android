@@ -1,14 +1,17 @@
 package com.divinelink.feature.user.data
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.data.session.model.SessionException
-import com.divinelink.core.domain.FetchWatchlistUseCase
+import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
+import com.divinelink.core.model.user.data.UserDataSection
+import com.divinelink.core.navigation.route.UserDataRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -19,13 +22,22 @@ import java.net.UnknownHostException
 
 class UserDataViewModel(
   private val observeAccountUseCase: ObserveAccountUseCase,
-  private val fetchWatchlistUseCase: FetchWatchlistUseCase,
+  private val fetchUserDataUseCase: FetchUserDataUseCase,
+  savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+  private val route: UserDataRoute = UserDataRoute(
+    userDataSection = savedStateHandle.get<UserDataSection>("userDataSection")!!,
+  )
 
   private val _uiState: MutableStateFlow<UserDataUiState> = MutableStateFlow(
     UserDataUiState(
+      section = route.userDataSection,
       selectedTabIndex = MediaTab.MOVIE.ordinal,
-      tabs = MediaTab.entries,
+      tabs = mapOf(
+        MediaTab.MOVIE to null,
+        MediaTab.TV to null,
+      ),
       pages = mapOf(
         MediaType.MOVIE to 1,
         MediaType.TV to 1,
@@ -47,8 +59,14 @@ class UserDataViewModel(
       observeAccountUseCase.invoke(Unit)
         .collectLatest { result ->
           result.onSuccess {
-            fetchWatchlist(MediaType.TV)
-            fetchWatchlist(MediaType.MOVIE)
+            fetchUserData(
+              section = route.userDataSection,
+              mediaType = MediaType.TV,
+            )
+            fetchUserData(
+              section = route.userDataSection,
+              mediaType = MediaType.MOVIE,
+            )
           }.onFailure { throwable ->
             updateUiOnFailure(MediaType.TV, throwable)
             updateUiOnFailure(MediaType.MOVIE, throwable)
@@ -61,10 +79,14 @@ class UserDataViewModel(
   fun onLoadMore() {
     val uiState = _uiState.value
     val mediaType = uiState.mediaType
+    val section = uiState.section
     val canFetchMore = uiState.canFetchMore[mediaType] ?: false
 
     if (canFetchMore) {
-      fetchWatchlist(mediaType = mediaType)
+      fetchUserData(
+        section = section,
+        mediaType = mediaType,
+      )
     }
   }
 
@@ -80,14 +102,21 @@ class UserDataViewModel(
     _uiState.update { uiState ->
       uiState.copy(forms = uiState.forms + (mediaType to UserDataForm.Loading))
     }
-    fetchWatchlist(mediaType)
+    fetchUserData(
+      section = uiState.value.section,
+      mediaType = mediaType,
+    )
   }
 
-  private fun fetchWatchlist(mediaType: MediaType) {
+  private fun fetchUserData(
+    section: UserDataSection,
+    mediaType: MediaType,
+  ) {
     viewModelScope.launch {
-      fetchWatchlistUseCase.invoke(
+      fetchUserDataUseCase.invoke(
         UserDataParameters(
           page = uiState.value.pages[mediaType] ?: 1,
+          section = section,
           mediaType = mediaType,
         ),
       ).collectLatest { result ->
@@ -160,6 +189,11 @@ class UserDataViewModel(
           ),
         pages = uiState.pages + (response.type to currentPage + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
+        tabs = uiState.tabs + if (response.type == MediaType.MOVIE) {
+          MediaTab.MOVIE to response.totalResults
+        } else {
+          MediaTab.TV to response.totalResults
+        },
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
         Timber.d("Update page for ${response.type} to ${currentPage + 1}")

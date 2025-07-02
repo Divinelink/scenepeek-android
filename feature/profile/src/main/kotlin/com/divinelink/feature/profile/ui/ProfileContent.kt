@@ -3,7 +3,9 @@ package com.divinelink.feature.profile.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -11,12 +13,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
@@ -45,9 +49,24 @@ fun ProfileContent(
     }
 
     item {
+      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+    }
+
+    item {
       ProfileSectionItem(
         section = ProfileSection.Watchlist,
-        onClick = { userInteraction(ProfileUserInteraction.NavigateToWatchlist) },
+        onClick = {
+          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Watchlist))
+        },
+      )
+    }
+
+    item {
+      ProfileSectionItem(
+        section = ProfileSection.Ratings,
+        onClick = {
+          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Ratings))
+        },
       )
     }
   }
@@ -59,13 +78,13 @@ private fun ProfileSectionItem(
   onClick: () -> Unit,
 ) {
   ElevatedCard(
-    modifier = Modifier
-      .padding(MaterialTheme.dimensions.keyline_16),
+    modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
     onClick = onClick,
   ) {
     Row(
       modifier = Modifier
         .padding(MaterialTheme.dimensions.keyline_16),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       Icon(
         imageVector = section.icon,

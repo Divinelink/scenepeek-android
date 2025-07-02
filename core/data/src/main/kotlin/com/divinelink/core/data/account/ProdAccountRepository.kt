@@ -31,4 +31,26 @@ class ProdAccountRepository(private val remote: AccountService) : AccountReposit
     .map { apiResponse ->
       Result.success(apiResponse.map())
     }
+
+  override suspend fun fetchRatedMovies(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
+    .fetchRatedMovies(page, sortBy, accountId, sessionId)
+    .map { apiResponse ->
+      Result.success(apiResponse.map())
+    }
+
+  override suspend fun fetchRatedTvShows(
+    page: Int,
+    sortBy: String,
+    accountId: String,
+    sessionId: String,
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = remote
+    .fetchRatedTvShows(page, sortBy, accountId, sessionId)
+    .map { apiResponse ->
+      Result.success(apiResponse.map())
+    }
 }
