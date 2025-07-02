@@ -15,7 +15,7 @@ object ListItemFactory {
     numberOfItems = 3,
   )
 
-  fun paginationData() = PaginationData(
+  fun page1() = PaginationData(
     list = listOf(
       nonPrivateList(),
       nonPrivateList().copy(
@@ -32,7 +32,31 @@ object ListItemFactory {
       ),
     ),
     page = 1,
-    totalPages = 1,
-    totalResults = 3,
+    totalPages = 2,
+    totalResults = 6,
+  )
+
+  fun page2() = PaginationData(
+    list = listOf(
+      nonPrivateList().copy(
+        id = 8452390,
+        name = "List 4",
+      ),
+      nonPrivateList().copy(
+        id = 8452391,
+        name = "List 5",
+        numberOfItems = 5,
+        public = true,
+      ),
+      nonPrivateList().copy(
+        id = 8452392,
+        name = "List 6",
+        numberOfItems = 10,
+        public = false,
+      ),
+    ),
+    page = 2,
+    totalPages = 2,
+    totalResults = 6,
   )
 }

@@ -29,7 +29,7 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       isLoading = false,
       loadingMore = true,
       error = null,
-      lists = ListData.Data(ListItemFactory.paginationData()),
+      lists = ListData.Data(ListItemFactory.page1()),
     ),
     ListsUiState(
       page = 1,

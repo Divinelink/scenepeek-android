@@ -49,41 +49,58 @@ class ListsViewModel(
   }
 
   private fun fetchUserLists() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        loadingMore = uiState.lists !is ListData.Initial,
+      )
+    }
     viewModelScope.launch {
       fetchUserListsUseCase(
         UserListsParameters(
           page = uiState.value.page,
         ),
-      ).collect { result ->
-        result.fold(
-          onSuccess = {
-            _uiState.update { uiState ->
-              uiState.copy(
-                loadingMore = false,
-                isLoading = false,
-                page = uiState.page + 1,
-                error = null,
-                lists = when (uiState.lists) {
-                  ListData.Initial -> ListData.Data(result.data)
-                  is ListData.Data -> ListData.Data(
-                    uiState.lists.data.copy(
-                      page = result.data.page,
-                      list = uiState.lists.data.list + result.data.list,
-                    ),
-                  )
-                },
-              )
-            }
-          },
-          onFailure = {
-            ErrorHandler.create(it) {
-              on<SessionException.Unauthenticated> {
-                setUnauthenticatedError()
+      )
+        .collect { result ->
+          result.fold(
+            onSuccess = {
+              _uiState.update { uiState ->
+                uiState.copy(
+                  loadingMore = false,
+                  isLoading = false,
+                  page = uiState.page + 1,
+                  error = null,
+                  lists = when (uiState.lists) {
+                    ListData.Initial -> ListData.Data(result.data)
+                    is ListData.Data -> ListData.Data(
+                      uiState.lists.data.copy(
+                        page = result.data.page,
+                        list = buildList {
+                          addAll(uiState.lists.data.list)
+                          addAll(result.data.list)
+                        },
+                      ),
+                    )
+                  },
+                )
               }
-            }
-          },
-        )
-      }
+            },
+            onFailure = {
+              ErrorHandler.create(it) {
+                on<SessionException.Unauthenticated> {
+                  setUnauthenticatedError()
+                }
+                otherwise {
+                  _uiState.update { uiState ->
+                    uiState.copy(
+                      isLoading = false,
+                      loadingMore = false,
+                    )
+                  }
+                }
+              }
+            },
+          )
+        }
     }
   }
 

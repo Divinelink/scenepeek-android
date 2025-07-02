@@ -25,7 +25,7 @@ class UserDataViewModelTest {
     runTest {
       testRobot
         .mockObserveAccount {
-          mockFailure(SessionException.Unauthenticated())
+          mockResponse(Result.failure(SessionException.Unauthenticated()))
         }
         .withSection(UserDataSection.Watchlist)
         .buildViewModel()
@@ -44,7 +44,7 @@ class UserDataViewModelTest {
   fun `given generic error when view model is created then show generic error`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockFailure(Exception())
+        mockResponse(Result.failure(Exception()))
       }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
@@ -63,7 +63,7 @@ class UserDataViewModelTest {
   fun `given user is authenticated when view model is created then fetch watchlist`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockSuccess(Result.success(true))
+        mockResponse(Result.success(true))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -110,7 +110,7 @@ class UserDataViewModelTest {
   fun `test fetch rated movies with success`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockSuccess(Result.success(true))
+        mockResponse(Result.success(true))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -212,7 +212,7 @@ class UserDataViewModelTest {
 
     testRobot
       .mockObserveAccount {
-        mockSuccess(Result.success(true))
+        mockResponse(Result.success(true))
       }
       .mockFetchUserData {
         mockSuccess(
@@ -240,7 +240,7 @@ class UserDataViewModelTest {
   fun `test fetchWatchlist with generic error`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockSuccess(Result.success(true))
+        mockResponse(Result.success(true))
       }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
@@ -258,7 +258,7 @@ class UserDataViewModelTest {
   @Test
   fun `test onLoadMore`() = runTest {
     testRobot
-      .mockObserveAccount { mockSuccess(Result.success(true)) }
+      .mockObserveAccount { mockResponse(Result.success(true)) }
       .mockFetchUserData { mockSuccess(Result.success(UserDataResponseFactory.movies())) }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
@@ -330,7 +330,7 @@ class UserDataViewModelTest {
   fun `test onRefresh when state is unknown error for movie`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockFailure(Exception())
+        mockResponse(Result.failure(Exception()))
       }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()
@@ -376,7 +376,7 @@ class UserDataViewModelTest {
   fun `test onRefresh when state is unknown error for tv`() = runTest {
     testRobot
       .mockObserveAccount {
-        mockFailure(Exception())
+        mockResponse(Result.failure(Exception()))
       }
       .withSection(UserDataSection.Watchlist)
       .buildViewModel()

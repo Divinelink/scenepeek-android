@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.UserDataRoute
 import com.divinelink.core.testing.ViewModelTestRobot
-import com.divinelink.core.testing.usecase.TestFetchUseDataUseCase
+import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import kotlinx.coroutines.flow.Flow
 
@@ -14,7 +14,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
   private lateinit var navArgs: UserDataRoute
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
-  private val fetchUserDataUseCase = TestFetchUseDataUseCase()
+  private val fetchUserDataUseCase = TestFetchUserDataUseCase()
 
   fun withSection(section: UserDataSection) = apply {
     this.navArgs = UserDataRoute(section)
@@ -39,7 +39,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
     observeAccountUseCase.response()
   }
 
-  fun mockFetchUserData(response: TestFetchUseDataUseCase.() -> Unit) = apply {
+  fun mockFetchUserData(response: TestFetchUserDataUseCase.() -> Unit) = apply {
     fetchUserDataUseCase.response()
   }
 
