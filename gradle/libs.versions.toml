@@ -2,6 +2,10 @@
 version-name = "0.14.0"
 version-code = "21"
 
+compile-sdk = "35"
+target-sdk = "35"
+min-sdk = "26"
+
 firebase-appdistribution-gradle = "5.0.0"
 firebase-crashlytics-gradle = "3.0.2"
 google-services = "4.4.2"
