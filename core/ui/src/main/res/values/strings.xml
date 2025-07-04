@@ -133,6 +133,14 @@
 
   <string name="core_ui_login_title">Login to your account</string>
 
+  <plurals name="core_ui_item_count">
+    <item quantity="one">%s item</item>
+    <item quantity="other">%s items</item>
+  </plurals>
+
+  <string name="core_ui_public">Public</string>
+  <string name="core_ui_private">Private</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>

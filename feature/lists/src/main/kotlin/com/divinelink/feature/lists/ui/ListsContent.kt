@@ -14,7 +14,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.feature.lists.ListData
+import com.divinelink.core.model.list.ListData
 import com.divinelink.feature.lists.ListsUiState
 import com.divinelink.feature.lists.ListsUserInteraction
 import com.divinelink.feature.lists.R

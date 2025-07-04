@@ -1,7 +1,6 @@
-package com.divinelink.feature.lists
+package com.divinelink.core.model.list
 
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.list.ListItem
 
 sealed interface ListData<out T> {
   data object Initial : ListData<Nothing>

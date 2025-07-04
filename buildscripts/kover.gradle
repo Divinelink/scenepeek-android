@@ -12,6 +12,7 @@ dependencies {
   kover(projects.core.network)
   kover(projects.core.ui)
 
+  kover(projects.feature.addToAccount)
   kover(projects.feature.credits)
   kover(projects.feature.details)
   kover(projects.feature.onboarding)

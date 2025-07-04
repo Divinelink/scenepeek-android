@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="feature_add_to_account_list_login_description">You need to be logged in to add to your lists.</string>
+  <string name="feature_add_to_account_empty_lists">You haven\'t created any lists.</string>
+  <string name="feature_add_to_account_list_title">Add to list</string>
+  <string name="feature_add_to_account_list_create">Create a new list</string>
+</resources>

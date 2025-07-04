@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.add.to.account.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,47 +6,24 @@ import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
-import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.feature.add.to.account.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ListsViewModel(
-  private val observeAccountUseCase: ObserveAccountUseCase,
-  private val fetchUserListsUseCase: FetchUserListsUseCase,
-) : ViewModel() {
-
-  private val _uiState: MutableStateFlow<ListsUiState> = MutableStateFlow(ListsUiState.initial)
-  val uiState: StateFlow<ListsUiState> = _uiState
+class AddToListViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
+  private val _uiState: MutableStateFlow<AddToListUiState> = MutableStateFlow(
+    AddToListUiState.initial,
+  )
+  val uiState: StateFlow<AddToListUiState> = _uiState
 
   init {
-    viewModelScope.launch {
-      observeAccountUseCase.invoke(Unit)
-        .collectLatest { result ->
-          result.fold(
-            onSuccess = {
-              fetchUserLists()
-            },
-            onFailure = {
-              setUnauthenticatedError()
-            },
-          )
-        }
-    }
-  }
-
-  fun onLoadMore() {
-    val lists = uiState.value.lists
-
-    if (lists is ListData.Data && lists.data.canLoadMore()) {
-      fetchUserLists()
-    }
+    fetchUserLists()
   }
 
   private fun fetchUserLists() {
@@ -105,11 +82,23 @@ class ListsViewModel(
     }
   }
 
+  fun onUserInteraction(userInteraction: AddToListUserInteraction) {
+    when (userInteraction) {
+      is AddToListUserInteraction.LoadMore -> {
+        if (_uiState.value.lists is ListData.Data && !_uiState.value.loadingMore) {
+          fetchUserLists()
+        }
+      }
+      is AddToListUserInteraction.OnListClick -> {
+      }
+    }
+  }
+
   private fun setUnauthenticatedError() {
     _uiState.update { uiState ->
       uiState.copy(
         error = BlankSlateState.Unauthenticated(
-          UIText.ResourceText(R.string.feature_lists_login_description),
+          UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
         ),
         page = 1,
         lists = ListData.Initial,

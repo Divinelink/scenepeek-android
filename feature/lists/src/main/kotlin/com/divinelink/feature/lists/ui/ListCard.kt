@@ -1,6 +1,5 @@
 package com.divinelink.feature.lists.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -24,7 +21,8 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.coil.ListItemBackdropImage
-import com.divinelink.feature.lists.R
+import com.divinelink.core.ui.components.VisibilityBadge
+import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun ListCard(
@@ -56,7 +54,7 @@ fun ListCard(
 
         Text(
           text = pluralStringResource(
-            R.plurals.feature_lists_item_count,
+            uiR.plurals.core_ui_item_count,
             listItem.numberOfItems,
             listItem.numberOfItems,
           ),
@@ -70,35 +68,6 @@ fun ListCard(
         isPublic = listItem.public,
       )
     }
-  }
-}
-
-@Composable
-private fun VisibilityBadge(
-  modifier: Modifier = Modifier,
-  isPublic: Boolean,
-) {
-  Box(
-    modifier = modifier
-      .wrapContentHeight()
-      .graphicsLayer { alpha = 0.8f }
-      .background(
-        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.95f),
-        shape = MaterialTheme.shapes.extraLarge,
-      )
-      .padding(MaterialTheme.dimensions.keyline_4),
-    contentAlignment = Alignment.Center,
-  ) {
-    Text(
-      modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
-      text = if (isPublic) {
-        stringResource(R.string.feature_lists_public)
-      } else {
-        stringResource(R.string.feature_lists_private)
-      },
-      style = MaterialTheme.typography.labelSmall,
-      color = MaterialTheme.colorScheme.primary,
-    )
   }
 }
 

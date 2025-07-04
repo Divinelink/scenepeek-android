@@ -1,10 +1,10 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.add.to.account.list
 
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
-data class ListsUiState(
+data class AddToListUiState(
   val page: Int,
   val lists: ListData<ListItem>,
   val isLoading: Boolean,
@@ -12,7 +12,7 @@ data class ListsUiState(
   val error: BlankSlateState?,
 ) {
   companion object {
-    val initial = ListsUiState(
+    val initial = AddToListUiState(
       page = 1,
       lists = ListData.Initial,
       isLoading = true,
