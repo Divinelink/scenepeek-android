@@ -20,6 +20,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListUiState
@@ -38,6 +39,16 @@ fun AddToListContent(
       modifier = Modifier
         .testTag(TestTags.LINEAR_LOADING_INDICATOR)
         .fillMaxWidth(),
+    )
+  }
+
+  AnimatedVisibility(
+    modifier = Modifier.fillMaxWidth(),
+    visible = uiState.displayMessage != null,
+  ) {
+    DisplayMessageSection(
+      message = uiState.displayMessage,
+      onTimeout = { userInteraction(AddToListUserInteraction.ConsumeDisplayMessage) },
     )
   }
 

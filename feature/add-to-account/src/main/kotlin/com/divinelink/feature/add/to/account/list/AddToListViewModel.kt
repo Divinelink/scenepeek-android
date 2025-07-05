@@ -9,6 +9,7 @@ import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
 import com.divinelink.core.domain.list.AddItemParameters
 import com.divinelink.core.domain.list.AddItemToListUseCase
+import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
@@ -100,10 +101,15 @@ class AddToListViewModel(
 
   fun onUserInteraction(userInteraction: AddToListUserInteraction) {
     when (userInteraction) {
-      is AddToListUserInteraction.LoadMore -> {
+      AddToListUserInteraction.LoadMore -> {
         if (_uiState.value.lists is ListData.Data && !_uiState.value.loadingMore) {
           fetchUserLists()
         }
+      }
+      AddToListUserInteraction.ConsumeDisplayMessage -> _uiState.update { uiState ->
+        uiState.copy(
+          displayMessage = null,
+        )
       }
       is AddToListUserInteraction.OnListClick -> addToList(userInteraction.id)
     }
@@ -113,6 +119,7 @@ class AddToListViewModel(
     _uiState.update { uiState ->
       uiState.copy(
         isLoading = true,
+        displayMessage = null,
       )
     }
     viewModelScope.launch {
@@ -144,6 +151,12 @@ class AddToListViewModel(
                       },
                     ),
                   ),
+                  displayMessage = DisplayMessage.Success(
+                    UIText.ResourceText(
+                      R.string.feature_add_to_account_item_added_to_list_success,
+                      lists.data.list.first { it.id == listId }.name,
+                    ),
+                  ),
                 )
               }
             },
@@ -156,6 +169,14 @@ class AddToListViewModel(
                   _uiState.update { uiState ->
                     uiState.copy(
                       isLoading = false,
+                      displayMessage = DisplayMessage.Error(
+                        UIText.ResourceText(
+                          R.string.feature_add_to_account_item_added_to_list_failure,
+                          (uiState.lists as ListData.Data).data.list.first { list ->
+                            list.id == listId
+                          }.name,
+                        ),
+                      ),
                     )
                   }
                 }
