@@ -5,11 +5,13 @@ import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -24,8 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DisplayMessage
+import com.divinelink.core.model.UIText
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.getString
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -93,7 +98,8 @@ fun DisplayMessageSection(
   ) {
     Text(
       text = AnnotatedString.fromHtml(message?.message?.getString() ?: ""),
-      modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+      modifier = Modifier
+        .padding(MaterialTheme.dimensions.keyline_16),
       color = color,
       style = MaterialTheme.typography.bodySmall,
     )
@@ -103,5 +109,30 @@ fun DisplayMessageSection(
       color = primary,
       trackColor = containerColor,
     )
+  }
+}
+
+@Composable
+@Previews
+fun DisplayMessageSectionPreview() {
+  AppTheme {
+    Surface {
+      Column(
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      ) {
+        DisplayMessageSection(
+          message = DisplayMessage.Success(UIText.StringText("This is a <b>success message</b>")),
+          onTimeout = {},
+        )
+        DisplayMessageSection(
+          message = DisplayMessage.Error(UIText.StringText("This is an <b>error message</b>")),
+          onTimeout = {},
+        )
+        DisplayMessageSection(
+          message = null,
+          onTimeout = {},
+        )
+      }
+    }
   }
 }
