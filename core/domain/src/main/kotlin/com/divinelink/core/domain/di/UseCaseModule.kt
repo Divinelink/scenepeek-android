@@ -19,6 +19,7 @@ import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
+import com.divinelink.core.domain.list.AddItemToListUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
@@ -69,6 +70,9 @@ val useCaseModule = module {
 
   // Onboarding
   factoryOf(::MarkOnboardingCompleteUseCase)
+
+  // ListsA
+  factoryOf(::AddItemToListUseCase)
 
   singleOf(::SearchStateManager)
 }

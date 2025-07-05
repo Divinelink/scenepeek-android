@@ -1,14 +1,20 @@
 package com.divinelink.feature.add.to.account.list
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
+import com.divinelink.core.domain.list.AddItemParameters
+import com.divinelink.core.domain.list.AddItemToListUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.list.ListException
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +22,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AddToListViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
+class AddToListViewModel(
+  private val fetchUserListsUseCase: FetchUserListsUseCase,
+  private val addItemToListUseCase: AddItemToListUseCase,
+  savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+  private val route: AddToListRoute = AddToListRoute(
+    mediaId = savedStateHandle.get<Int>("id")!!,
+    mediaType = savedStateHandle.get<MediaType>("mediaType")!!,
+  )
+
   private val _uiState: MutableStateFlow<AddToListUiState> = MutableStateFlow(
     AddToListUiState.initial,
   )
@@ -89,8 +105,71 @@ class AddToListViewModel(private val fetchUserListsUseCase: FetchUserListsUseCas
           fetchUserLists()
         }
       }
-      is AddToListUserInteraction.OnListClick -> {
-      }
+      is AddToListUserInteraction.OnListClick -> addToList(userInteraction.id)
+    }
+  }
+
+  private fun addToList(listId: Int) {
+    _uiState.update { uiState ->
+      uiState.copy(
+        isLoading = true,
+      )
+    }
+    viewModelScope.launch {
+      addItemToListUseCase(
+        parameters = AddItemParameters(
+          mediaId = route.mediaId,
+          mediaType = route.mediaType,
+          listId = listId,
+        ),
+      )
+        .collect { result ->
+          result.fold(
+            onSuccess = {
+              _uiState.update { uiState ->
+                val lists = uiState.lists as ListData.Data
+
+                uiState.copy(
+                  isLoading = false,
+                  lists = ListData.Data(
+                    lists.data.copy(
+                      list = lists.data.list.map { listItem ->
+                        if (listItem.id == listId) {
+                          listItem.copy(
+                            numberOfItems = listItem.numberOfItems + 1,
+                          )
+                        } else {
+                          listItem
+                        }
+                      },
+                    ),
+                  ),
+                )
+              }
+            },
+            onFailure = {
+              ErrorHandler.create(it) {
+                on<SessionException.Unauthenticated> {
+                  setUnauthenticatedError()
+                }
+                on<ListException.ItemAlreadyExists> {
+                  _uiState.update { uiState ->
+                    uiState.copy(
+                      isLoading = false,
+                    )
+                  }
+                }
+                otherwise {
+                  _uiState.update { uiState ->
+                    uiState.copy(
+                      isLoading = false,
+                    )
+                  }
+                }
+              }
+            },
+          )
+        }
     }
   }
 

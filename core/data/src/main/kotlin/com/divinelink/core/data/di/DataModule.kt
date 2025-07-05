@@ -4,6 +4,8 @@ import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.account.ProdAccountRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
+import com.divinelink.core.data.list.ListRepository
+import com.divinelink.core.data.list.ProdListRepository
 import com.divinelink.core.data.network.ConnectivityManagerNetworkMonitor
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.person.repository.PersonRepository
@@ -15,6 +17,7 @@ import org.koin.dsl.module
 val dataModule = module {
 
   singleOf(::ProdAccountRepository) { bind<AccountRepository>() }
+  singleOf(::ProdListRepository) { bind<ListRepository>() }
   singleOf(::ProdJellyseerrRepository) { bind<JellyseerrRepository>() }
   singleOf(::ProdPersonRepository) { bind<PersonRepository>() }
 
