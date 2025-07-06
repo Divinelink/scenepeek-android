@@ -31,7 +31,6 @@ class FetchUserListsUseCaseTest {
     val storage = createSessionStorage(
       accountDetailsId = null,
       v4AccountId = "1234",
-      sessionId = "123",
       accessToken = AccessTokenFactory.valid(),
     )
 
@@ -59,7 +58,6 @@ class FetchUserListsUseCaseTest {
     val storage = createSessionStorage(
       accountDetailsId = null,
       v4AccountId = "1234",
-      sessionId = "123",
       accessToken = AccessTokenFactory.valid(),
     )
 
@@ -95,7 +93,6 @@ class FetchUserListsUseCaseTest {
     val storage = createSessionStorage(
       accountDetailsId = "12345",
       v4AccountId = null,
-      sessionId = "123",
       accessToken = AccessTokenFactory.valid(),
     )
 
@@ -129,7 +126,6 @@ class FetchUserListsUseCaseTest {
     val storage = createSessionStorage(
       accountDetailsId = "12345",
       v4AccountId = "1234",
-      sessionId = "123",
       accessToken = null,
     )
 
@@ -163,7 +159,6 @@ class FetchUserListsUseCaseTest {
     val storage = createSessionStorage(
       accountDetailsId = "12345",
       v4AccountId = "1234",
-      sessionId = "123",
       accessToken = AccessTokenFactory.valid(),
     )
 
@@ -193,12 +188,11 @@ class FetchUserListsUseCaseTest {
   private fun createSessionStorage(
     v4AccountId: String?,
     accountDetailsId: String?,
-    sessionId: String?,
     accessToken: AccessToken? = null,
   ) = SessionStorage(
     storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(
-      sessionId = sessionId,
+      sessionId = "123",
       accessToken = accessToken?.accessToken,
       tmdbAccountId = v4AccountId,
     ),
