@@ -42,11 +42,11 @@ fun AnimatedVisibilityScope.ProfileScreen(
           uiState = uiState,
           userInteraction = { userInteraction ->
             when (userInteraction) {
-              ProfileUserInteraction.Login -> onNavigateToTMDBAuth()
-              is ProfileUserInteraction.NavigateToUserData -> onNavigateToUserData(
+              ProfileAction.Login -> onNavigateToTMDBAuth()
+              is ProfileAction.NavigateToUserData -> onNavigateToUserData(
                 userInteraction.section,
               )
-              ProfileUserInteraction.NavigateToLists -> onNavigateToLists()
+              ProfileAction.NavigateToLists -> onNavigateToLists()
             }
           },
         )

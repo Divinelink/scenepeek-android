@@ -27,18 +27,18 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.VisibilityBadge
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.feature.add.to.account.R
-import com.divinelink.feature.add.to.account.list.AddToListUserInteraction
+import com.divinelink.feature.add.to.account.list.AddToListAction
 
 @Composable
 fun ListsDataContent(
   data: PaginationData<ListItem>,
-  userInteraction: (AddToListUserInteraction) -> Unit,
+  userInteraction: (AddToListAction) -> Unit,
 ) {
   val scrollState = rememberLazyListState()
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
-    onLoadMore = { userInteraction(AddToListUserInteraction.LoadMore) },
+    onLoadMore = { userInteraction(AddToListAction.LoadMore) },
   )
 
   LazyColumn(
@@ -67,7 +67,7 @@ fun ListsDataContent(
         modifier = Modifier
           .fillMaxWidth()
           .clickable {
-            userInteraction(AddToListUserInteraction.OnListClick(listItem.id))
+            userInteraction(AddToListAction.OnListClick(listItem.id))
           }
           .padding(
             vertical = MaterialTheme.dimensions.keyline_8,

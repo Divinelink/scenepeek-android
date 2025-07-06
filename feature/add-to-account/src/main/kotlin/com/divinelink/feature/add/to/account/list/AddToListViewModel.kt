@@ -99,19 +99,19 @@ class AddToListViewModel(
     }
   }
 
-  fun onUserInteraction(userInteraction: AddToListUserInteraction) {
+  fun onUserInteraction(userInteraction: AddToListAction) {
     when (userInteraction) {
-      AddToListUserInteraction.LoadMore -> {
+      AddToListAction.LoadMore -> {
         if (_uiState.value.lists is ListData.Data && !_uiState.value.loadingMore) {
           fetchUserLists()
         }
       }
-      AddToListUserInteraction.ConsumeDisplayMessage -> _uiState.update { uiState ->
+      AddToListAction.ConsumeDisplayMessage -> _uiState.update { uiState ->
         uiState.copy(
           displayMessage = null,
         )
       }
-      is AddToListUserInteraction.OnListClick -> addToList(userInteraction.id)
+      is AddToListAction.OnListClick -> addToList(userInteraction.id)
     }
   }
 

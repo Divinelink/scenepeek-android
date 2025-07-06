@@ -25,7 +25,7 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.feature.lists.ListsUserInteraction
+import com.divinelink.feature.lists.ListsAction
 import com.divinelink.feature.lists.ListsViewModel
 import com.divinelink.feature.lists.R
 import org.koin.androidx.compose.koinViewModel
@@ -82,8 +82,8 @@ fun AnimatedVisibilityScope.ListsScreen(
           uiState = uiState,
           userInteraction = { userInteraction ->
             when (userInteraction) {
-              ListsUserInteraction.LoadMore -> viewModel.onLoadMore()
-              is ListsUserInteraction.OnListClick -> {
+              ListsAction.LoadMore -> viewModel.onLoadMore()
+              is ListsAction.OnListClick -> {
               }
             }
           },

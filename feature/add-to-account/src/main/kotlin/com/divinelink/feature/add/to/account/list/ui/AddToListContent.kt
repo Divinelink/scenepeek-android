@@ -28,14 +28,14 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.feature.add.to.account.R
+import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListUiState
-import com.divinelink.feature.add.to.account.list.AddToListUserInteraction
 import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStateParameterProvider
 
 @Composable
 fun AddToListContent(
   uiState: AddToListUiState,
-  userInteraction: (AddToListUserInteraction) -> Unit,
+  userInteraction: (AddToListAction) -> Unit,
 ) {
   Column {
     AnimatedVisibility(
@@ -55,7 +55,7 @@ fun AddToListContent(
     ) {
       DisplayMessageSection(
         message = uiState.displayMessage,
-        onTimeout = { userInteraction(AddToListUserInteraction.ConsumeDisplayMessage) },
+        onTimeout = { userInteraction(AddToListAction.ConsumeDisplayMessage) },
       )
     }
 

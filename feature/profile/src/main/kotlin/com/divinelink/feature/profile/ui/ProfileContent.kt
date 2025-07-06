@@ -24,15 +24,15 @@ import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
+import com.divinelink.feature.profile.ProfileAction
 import com.divinelink.feature.profile.ProfileSection
 import com.divinelink.feature.profile.ProfileUiState
-import com.divinelink.feature.profile.ProfileUserInteraction
 import com.divinelink.feature.profile.ui.provider.ProfileUiStateParameterProvider
 
 @Composable
 fun ProfileContent(
   uiState: ProfileUiState,
-  userInteraction: (ProfileUserInteraction) -> Unit,
+  userInteraction: (ProfileAction) -> Unit,
 ) {
   ScenePeekLazyColumn(
     modifier = Modifier
@@ -44,7 +44,7 @@ fun ProfileContent(
     item {
       ProfileItem(
         tmdbAccount = uiState.accountUiState,
-        onLoginClick = { userInteraction(ProfileUserInteraction.Login) },
+        onLoginClick = { userInteraction(ProfileAction.Login) },
       )
     }
 
@@ -56,7 +56,7 @@ fun ProfileContent(
       ProfileSectionItem(
         section = ProfileSection.Watchlist,
         onClick = {
-          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Watchlist))
+          userInteraction(ProfileAction.NavigateToUserData(UserDataSection.Watchlist))
         },
       )
     }
@@ -65,7 +65,7 @@ fun ProfileContent(
       ProfileSectionItem(
         section = ProfileSection.Ratings,
         onClick = {
-          userInteraction(ProfileUserInteraction.NavigateToUserData(UserDataSection.Ratings))
+          userInteraction(ProfileAction.NavigateToUserData(UserDataSection.Ratings))
         },
       )
     }
@@ -73,7 +73,7 @@ fun ProfileContent(
     item {
       ProfileSectionItem(
         section = ProfileSection.Lists,
-        onClick = { userInteraction(ProfileUserInteraction.NavigateToLists) },
+        onClick = { userInteraction(ProfileAction.NavigateToLists) },
       )
     }
   }

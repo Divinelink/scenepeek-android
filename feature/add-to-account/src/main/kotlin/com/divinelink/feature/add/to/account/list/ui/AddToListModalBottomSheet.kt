@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.add.to.account.list.AddToListUserInteraction
+import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -28,7 +28,7 @@ fun AddToListModalBottomSheet(
       .testTag(TestTags.Modal.BOTTOM_SHEET),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = {
-      viewModel.onUserInteraction(AddToListUserInteraction.ConsumeDisplayMessage)
+      viewModel.onUserInteraction(AddToListAction.ConsumeDisplayMessage)
       onDismissRequest()
     },
     sheetState = sheetState,
