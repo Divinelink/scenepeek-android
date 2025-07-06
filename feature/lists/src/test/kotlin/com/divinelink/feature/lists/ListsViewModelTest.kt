@@ -22,9 +22,7 @@ class ListsViewModelTest {
   @Test
   fun `test fetch lists when unauthenticated`() = runTest {
     robot
-      .mockObserveAccount {
-        mockResponse(Result.failure(Exception("Foo")))
-      }
+      .mockFetchUserData(Result.failure(SessionException.Unauthenticated()))
       .buildViewModel()
       .assertUiState(
         ListsUiState.initial.copy(
@@ -42,9 +40,6 @@ class ListsViewModelTest {
   @Test
   fun `test fetch lists when authenticated`() = runTest {
     robot
-      .mockObserveAccount {
-        mockResponse(Result.success(true))
-      }
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
       )
@@ -62,9 +57,6 @@ class ListsViewModelTest {
   @Test
   fun `test loadMore lists when page is less than total pages`() = runTest {
     robot
-      .mockObserveAccount {
-        mockResponse(Result.success(true))
-      }
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
       )
@@ -115,9 +107,6 @@ class ListsViewModelTest {
   @Test
   fun `test loadMore lists with generic error does not remove pages`() = runTest {
     robot
-      .mockObserveAccount {
-        mockResponse(Result.success(true))
-      }
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
       )
@@ -161,9 +150,6 @@ class ListsViewModelTest {
   @Test
   fun `test loadMore lists with unauthenticated error clears lists`() = runTest {
     robot
-      .mockObserveAccount {
-        mockResponse(Result.success(true))
-      }
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
       )

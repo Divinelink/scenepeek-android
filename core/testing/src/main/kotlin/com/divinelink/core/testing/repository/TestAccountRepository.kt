@@ -2,6 +2,7 @@ package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
@@ -52,6 +53,12 @@ class TestAccountRepository {
         accountId = any(),
         sessionId = any(),
       ),
+    ).thenReturn(response)
+  }
+
+  suspend fun mockFetchUserLists(response: Flow<Result<PaginationData<ListItem>>>) {
+    whenever(
+      mock.fetchUserLists(accountId = any()),
     ).thenReturn(response)
   }
 }

@@ -75,6 +75,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -113,6 +114,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -149,6 +151,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -185,6 +188,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -221,6 +225,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -267,6 +272,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -306,6 +312,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -356,6 +363,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -398,6 +406,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -439,6 +448,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -490,6 +500,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -543,6 +554,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -582,6 +594,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -618,6 +631,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -659,6 +673,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -709,6 +724,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -759,6 +775,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -807,6 +824,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -851,6 +869,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
@@ -896,6 +915,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -942,6 +962,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -987,6 +1008,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1032,6 +1054,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1079,6 +1102,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1122,6 +1146,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1158,6 +1183,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1194,6 +1220,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1230,6 +1257,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1272,6 +1300,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1311,6 +1340,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1347,6 +1377,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1384,6 +1415,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1421,6 +1453,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1457,6 +1490,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1500,6 +1534,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1536,6 +1571,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
+        onNavigateToTMDBAuth = {},
         animatedVisibilityScope = this,
       )
     }
