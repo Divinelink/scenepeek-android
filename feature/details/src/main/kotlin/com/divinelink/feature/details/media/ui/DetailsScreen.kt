@@ -139,6 +139,7 @@ fun DetailsScreen(
       onPlayTrailerClick = { videoUrl = it },
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
+      onNavigateToTMDBAuth = onNavigateToTMDBLogin,
     )
 
     OverlayScreen(

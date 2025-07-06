@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -18,24 +19,31 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AddToListModalBottomSheet(
   onDismissRequest: () -> Unit,
+  onNavigateToTMDBAuth: () -> Unit,
   viewModel: AddToListViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+  LaunchedEffect(Unit) {
+    viewModel.navigateToTMDBAuth.collect {
+      onNavigateToTMDBAuth()
+    }
+  }
 
   ModalBottomSheet(
     modifier = Modifier
       .testTag(TestTags.Modal.BOTTOM_SHEET),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = {
-      viewModel.onUserInteraction(AddToListAction.ConsumeDisplayMessage)
+      viewModel.onAction(AddToListAction.ConsumeDisplayMessage)
       onDismissRequest()
     },
     sheetState = sheetState,
     content = {
       AddToListContent(
         uiState = uiState,
-        userInteraction = viewModel::onUserInteraction,
+        action = viewModel::onAction,
       )
     },
   )

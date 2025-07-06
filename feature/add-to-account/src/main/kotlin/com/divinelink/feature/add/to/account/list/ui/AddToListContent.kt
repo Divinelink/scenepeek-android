@@ -21,21 +21,24 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListUiState
 import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStateParameterProvider
+import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun AddToListContent(
   uiState: AddToListUiState,
-  userInteraction: (AddToListAction) -> Unit,
+  action: (AddToListAction) -> Unit,
 ) {
   Column {
     AnimatedVisibility(
@@ -55,7 +58,7 @@ fun AddToListContent(
     ) {
       DisplayMessageSection(
         message = uiState.displayMessage,
-        onTimeout = { userInteraction(AddToListAction.ConsumeDisplayMessage) },
+        onTimeout = { action(AddToListAction.ConsumeDisplayMessage) },
       )
     }
 
@@ -65,6 +68,18 @@ fun AddToListContent(
           .padding(horizontal = MaterialTheme.dimensions.keyline_16)
           .padding(bottom = LocalBottomNavigationPadding.current),
         uiState = uiState.error,
+        actionText = if (uiState.error is BlankSlateState.Unauthenticated) {
+          UIText.ResourceText(uiR.string.core_ui_login)
+        } else {
+          null
+        },
+        onRetry = {
+          if (uiState.error is BlankSlateState.Unauthenticated) {
+            action(AddToListAction.Login)
+          } else {
+            // Do nothing
+          }
+        },
       )
 
       uiState.lists is ListData.Initial -> Box(
@@ -91,7 +106,7 @@ fun AddToListContent(
 
       uiState.lists is ListData.Data -> ListsDataContent(
         data = uiState.lists.data,
-        userInteraction = userInteraction,
+        action = action,
       )
     }
   }
@@ -106,7 +121,7 @@ fun AddToListContentPreview(
     Surface {
       AddToListContent(
         uiState = state,
-        userInteraction = { },
+        action = { },
       )
     }
   }

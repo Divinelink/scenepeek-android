@@ -18,8 +18,11 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -38,6 +41,9 @@ class AddToListViewModel(
     AddToListUiState.initial,
   )
   val uiState: StateFlow<AddToListUiState> = _uiState
+
+  private val _navigateToTMDBAuth = Channel<Unit>()
+  val navigateToTMDBAuth: Flow<Unit> = _navigateToTMDBAuth.receiveAsFlow()
 
   init {
     fetchUserLists()
@@ -99,19 +105,23 @@ class AddToListViewModel(
     }
   }
 
-  fun onUserInteraction(userInteraction: AddToListAction) {
-    when (userInteraction) {
+  fun onAction(action: AddToListAction) {
+    when (action) {
       AddToListAction.LoadMore -> {
         if (_uiState.value.lists is ListData.Data && !_uiState.value.loadingMore) {
           fetchUserLists()
         }
       }
+      is AddToListAction.OnListClick -> addToList(action.id)
+
       AddToListAction.ConsumeDisplayMessage -> _uiState.update { uiState ->
         uiState.copy(
           displayMessage = null,
         )
       }
-      is AddToListAction.OnListClick -> addToList(userInteraction.id)
+      AddToListAction.Login -> viewModelScope.launch {
+        _navigateToTMDBAuth.send(Unit)
+      }
     }
   }
 
