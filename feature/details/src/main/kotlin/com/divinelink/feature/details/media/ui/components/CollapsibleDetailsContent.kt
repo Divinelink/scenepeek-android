@@ -30,12 +30,13 @@ import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.AddToListButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.WatchTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.conditional
-import com.divinelink.core.ui.rating.YourRatingText
 import com.divinelink.core.ui.rating.MediaRatingItem
+import com.divinelink.core.ui.rating.YourRatingText
 import com.divinelink.feature.details.R
 
 @Composable
@@ -49,6 +50,7 @@ fun CollapsibleDetailsContent(
   ratingSource: RatingSource,
   hasTrailer: Boolean,
   onAddToWatchListClick: () -> Unit,
+  onAddToListClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
   onWatchTrailerClick: () -> Unit,
@@ -127,9 +129,14 @@ fun CollapsibleDetailsContent(
       )
 
       WatchlistButton(
-        modifier = Modifier.weight(2f),
+        modifier = Modifier.weight(1f),
         onWatchlist = isOnWatchlist,
         onClick = onAddToWatchListClick,
+      )
+
+      AddToListButton(
+        modifier = Modifier.weight(1f),
+        onClick = onAddToListClick,
       )
     }
   }

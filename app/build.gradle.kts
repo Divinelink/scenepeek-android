@@ -95,6 +95,7 @@ dependencies {
   implementation(projects.core.ui)
   implementation(projects.core.scaffold)
 
+  implementation(projects.feature.addToAccount)
   implementation(projects.feature.details)
   implementation(projects.feature.search)
   implementation(projects.feature.settings)

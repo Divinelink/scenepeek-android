@@ -28,13 +28,13 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
-import com.divinelink.feature.lists.ListsUserInteraction
+import com.divinelink.feature.lists.ListsAction
 import kotlinx.coroutines.launch
 
 @Composable
 fun ListsDataContent(
   data: PaginationData<ListItem>,
-  userInteraction: (ListsUserInteraction) -> Unit,
+  userInteraction: (ListsAction) -> Unit,
 ) {
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
@@ -43,7 +43,7 @@ fun ListsDataContent(
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
-    onLoadMore = { userInteraction(ListsUserInteraction.LoadMore) },
+    onLoadMore = { userInteraction(ListsAction.LoadMore) },
   )
 
   LaunchedEffect(isMediumScreenWidthOrWider) {
@@ -73,7 +73,7 @@ fun ListsDataContent(
       ) { listItem ->
         ListCard(
           listItem = listItem,
-          onClick = { userInteraction(ListsUserInteraction.OnListClick(listItem.id)) },
+          onClick = { userInteraction(ListsAction.OnListClick(listItem.id)) },
         )
       }
     }

@@ -75,6 +75,7 @@ import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasons
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
+import com.divinelink.feature.add.to.account.list.ui.AddToListModalBottomSheet
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
 import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
@@ -95,6 +96,7 @@ fun DetailsContent(
   viewState: DetailsViewState,
   modifier: Modifier = Modifier,
   animatedVisibilityScope: AnimatedVisibilityScope,
+  onNavigateToTMDBAuth: () -> Unit,
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
@@ -121,6 +123,7 @@ fun DetailsContent(
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
   var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
+  var showAddToListModal by rememberSaveable { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -149,6 +152,13 @@ fun DetailsContent(
         // Do nothing
       }
     }
+  }
+
+  if (showAddToListModal) {
+    AddToListModalBottomSheet(
+      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
+      onDismissRequest = { showAddToListModal = false },
+    )
   }
 
   LaunchedEffect(viewState.jellyseerrMediaInfo) {
@@ -295,6 +305,7 @@ fun DetailsContent(
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
+            onOpenAddToListModal = { showAddToListModal = true },
             scope = scope,
           )
           null -> {
@@ -332,6 +343,7 @@ private fun MediaDetailsContent(
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
+  onOpenAddToListModal: () -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -364,6 +376,7 @@ private fun MediaDetailsContent(
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
     onOpenManageModal = onOpenManageModal,
+    onAddToListClick = onOpenAddToListModal,
   ) {
     Column(
       modifier = Modifier
@@ -479,6 +492,7 @@ fun DetailsContentPreview(
               onPlayTrailerClick = {},
               onDeleteRequest = {},
               onDeleteMedia = {},
+              onNavigateToTMDBAuth = {},
             )
           }
         }

@@ -133,6 +133,14 @@
 
   <string name="core_ui_login_title">Login to your account</string>
 
+  <plurals name="core_ui_item_count">
+    <item quantity="one">%s item</item>
+    <item quantity="other">%s items</item>
+  </plurals>
+
+  <string name="core_ui_public">Public</string>
+  <string name="core_ui_private">Private</string>
+
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>
@@ -142,6 +150,7 @@
   <string name="clear_search_button_content_description">Clear Search Button</string>
   <string name="clear_filters_button_content_description">Clear Filters Button</string>
   <string name="core_ui_add_to_watchlist_content_desc">Add to watchlist</string>
+  <string name="core_ui_add_to_list_content_desc">Add to list</string>
   <string name="core_ui_remove_from_watchlist_content_desc">Remove from watchlist</string>
   <string name="core_ui_scroll_to_top_button">Scroll to top</string>
   <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>

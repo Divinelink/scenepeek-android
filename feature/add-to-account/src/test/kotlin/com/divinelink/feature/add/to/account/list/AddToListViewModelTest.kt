@@ -1,0 +1,438 @@
+package com.divinelink.feature.add.to.account.list
+
+import com.divinelink.core.fixtures.model.list.ListItemFactory
+import com.divinelink.core.fixtures.model.list.ListItemFactory.nonPrivateList
+import com.divinelink.core.model.DisplayMessage
+import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.UIText
+import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.list.ListException
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.AddToListRoute
+import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.expectUiStates
+import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.feature.add.to.account.R
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import kotlin.test.Test
+
+class AddToListViewModelTest {
+
+  object AddToListRouteFactory {
+    fun movie() = AddToListRoute(
+      mediaId = 1234,
+      mediaType = MediaType.MOVIE,
+    )
+
+    fun tv() = AddToListRoute(
+      mediaId = 1234,
+      mediaType = MediaType.TV,
+    )
+  }
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+
+  private val robot = AddToListViewModelTestRobot()
+
+  @Test
+  fun `test loadMore lists when page is less than total pages`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserLists(response = Result.success(ListItemFactory.page2()))
+      .expectUiStates(
+        action = {
+          onLoadMore()
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = true,
+          ),
+          AddToListUiState.initial.copy(
+            page = 3,
+            lists = ListData.Data(
+              PaginationData(
+                page = 2,
+                totalPages = 2,
+                totalResults = 6,
+                list = ListItemFactory.page1().list + ListItemFactory.page2().list,
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test loadMore lists with generic error does not remove pages`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserLists(response = Result.failure(Exception("Foo")))
+      .expectUiStates(
+        action = {
+          onLoadMore()
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = true,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test loadMore lists with unauthenticated error clears lists`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserLists(response = Result.failure(SessionException.Unauthenticated()))
+      .expectUiStates(
+        action = {
+          onLoadMore()
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = true,
+          ),
+          AddToListUiState.initial.copy(
+            isLoading = false,
+            error = BlankSlateState.Unauthenticated(
+              UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onAddToList with success`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .mockAddItemToList(Result.success(true))
+      .expectUiStates(
+        action = {
+          // Add to first item in the list
+          onListClick(ListItemFactory.page1().list.first().id)
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = true,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(
+              PaginationData(
+                page = 1,
+                totalPages = 2,
+                totalResults = 6,
+                list = listOf(
+                  nonPrivateList().copy(
+                    numberOfItems = 4,
+                  ),
+                  nonPrivateList().copy(
+                    id = 8452378,
+                    name = "Elsolist 2",
+                    numberOfItems = 5,
+                    public = true,
+                  ),
+                  nonPrivateList().copy(
+                    id = 8452379,
+                    name = "Elsolist 3",
+                    numberOfItems = 10,
+                    public = false,
+                  ),
+                ),
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+            displayMessage = DisplayMessage.Success(
+              UIText.ResourceText(
+                R.string.feature_add_to_account_item_added_to_list_success,
+                ListItemFactory.page1().list.first().name,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onAddToList when item already exists`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .mockAddItemToList(
+        Result.failure(ListException.ItemAlreadyExists()),
+      )
+      .expectUiStates(
+        action = {
+          // Add to first item in the list
+          onListClick(ListItemFactory.page1().list.first().id)
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = true,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+            displayMessage = DisplayMessage.Error(
+              UIText.ResourceText(
+                R.string.feature_add_to_account_item_added_to_list_failure,
+                ListItemFactory.page1().list.first().name,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onAddToList with unexpected error`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .mockAddItemToList(
+        Result.failure(ListException.UnexpectedError()),
+      )
+      .expectUiStates(
+        action = {
+          // Add to first item in the list
+          onListClick(ListItemFactory.page1().list.first().id)
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = true,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+            displayMessage = DisplayMessage.Error(
+              UIText.ResourceText(
+                R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+                ListItemFactory.page1().list.first().name,
+              ),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test ConsumeDisplayMessage clears displayMessage`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .mockAddItemToList(
+        Result.failure(ListException.UnexpectedError()),
+      )
+      .onListClick(ListItemFactory.page1().list.first().id)
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+          displayMessage = DisplayMessage.Error(
+            UIText.ResourceText(
+              R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+              ListItemFactory.page1().list.first().name,
+            ),
+          ),
+        ),
+      )
+      .onConsumeDisplayMessage()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+          displayMessage = null,
+        ),
+      )
+  }
+
+  @Test
+  fun `test onAddToList with unauthenticated error`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .mockAddItemToList(
+        Result.failure(SessionException.Unauthenticated()),
+      )
+      .expectUiStates(
+        action = {
+          // Add to first item in the list
+          onListClick(ListItemFactory.page1().list.first().id)
+        },
+        uiStates = listOf(
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = true,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 1,
+            lists = ListData.Initial,
+            isLoading = false,
+            loadingMore = false,
+            error = BlankSlateState.Unauthenticated(
+              UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test onLogin emits navigateToTMDBAuth`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(
+        Result.failure(SessionException.Unauthenticated()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 1,
+          lists = ListData.Initial,
+          isLoading = false,
+          loadingMore = false,
+          error = BlankSlateState.Unauthenticated(
+            UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+          ),
+        ),
+      )
+      .expectNoNavigateToTMDBAuth()
+      .onLogin()
+      .awaitNavigateToTMDBAuth()
+  }
+}

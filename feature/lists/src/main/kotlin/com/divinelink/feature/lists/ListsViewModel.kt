@@ -6,37 +6,23 @@ import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
-import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ListsViewModel(
-  private val observeAccountUseCase: ObserveAccountUseCase,
-  private val fetchUserListsUseCase: FetchUserListsUseCase,
-) : ViewModel() {
+class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ListsUiState> = MutableStateFlow(ListsUiState.initial)
   val uiState: StateFlow<ListsUiState> = _uiState
 
   init {
     viewModelScope.launch {
-      observeAccountUseCase.invoke(Unit)
-        .collectLatest { result ->
-          result.fold(
-            onSuccess = {
-              fetchUserLists()
-            },
-            onFailure = {
-              setUnauthenticatedError()
-            },
-          )
-        }
+      fetchUserLists()
     }
   }
 

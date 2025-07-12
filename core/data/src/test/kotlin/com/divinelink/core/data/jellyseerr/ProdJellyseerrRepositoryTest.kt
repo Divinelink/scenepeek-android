@@ -30,8 +30,8 @@ import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Rule
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class ProdJellyseerrRepositoryTest {
@@ -46,7 +46,7 @@ class ProdJellyseerrRepositoryTest {
 
   private lateinit var database: Database
 
-  @Before
+  @BeforeTest
   fun setUp() {
     database = TestDatabaseFactory.createInMemoryDatabase()
 

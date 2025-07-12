@@ -1,5 +1,6 @@
 package com.divinelink.scenepeek.base.di
 
+import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
@@ -34,4 +35,5 @@ val appViewModelModule = module {
   viewModelOf(::OnboardingViewModel)
   viewModelOf(::ProfileViewModel)
   viewModelOf(::ListsViewModel)
+  viewModelOf(::AddToListViewModel)
 }

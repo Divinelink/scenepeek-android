@@ -12,6 +12,8 @@ import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.details.person.service.ProdPersonService
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.network.jellyseerr.service.ProdJellyseerrService
+import com.divinelink.core.network.list.service.ListService
+import com.divinelink.core.network.list.service.ProdListService
 import com.divinelink.core.network.omdb.service.OMDbService
 import com.divinelink.core.network.omdb.service.ProdOMDbService
 import com.divinelink.core.network.trakt.service.ProdTraktService
@@ -33,6 +35,8 @@ val remoteModule = module {
   singleOf(::TraktClient) { bind<TraktClient>() }
 
   singleOf(::ProdAccountService) { bind<AccountService>() }
+
+  singleOf(::ProdListService) { bind<ListService>() }
 
   singleOf(::ProdJellyseerrService) { bind<JellyseerrService>() }
 

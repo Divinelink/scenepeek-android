@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists
 
+import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.ui.blankslate.BlankSlateState
 

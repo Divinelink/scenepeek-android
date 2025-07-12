@@ -24,23 +24,29 @@ class FetchUserListsUseCase(
 
   override fun execute(parameters: UserListsParameters): Flow<Result<PaginationData<ListItem>>> =
     flow {
-      val accountId = storage.accountId
-      val accessToken = storage.encryptedStorage.accessToken
+      storage.accountStorage.accountId.collect { accountId ->
+        if (accountId == null) {
+          emit(Result.failure(SessionException.Unauthenticated()))
+        } else {
+          val v4AccountId = storage.accountId
+          val accessToken = storage.encryptedStorage.accessToken
 
-      if (accountId == null || accessToken == null) {
-        emit(Result.failure(SessionException.Unauthenticated()))
-        return@flow
-      }
+          if (v4AccountId == null || accessToken == null) {
+            emit(Result.failure(SessionException.Unauthenticated()))
+            return@collect
+          }
 
-      repository.fetchUserLists(accountId).collect { result ->
-        result.fold(
-          onSuccess = {
-            emit(Result.success(it))
-          },
-          onFailure = {
-            emit(Result.failure(it))
-          },
-        )
+          repository.fetchUserLists(v4AccountId).collect { result ->
+            result.fold(
+              onSuccess = {
+                emit(Result.success(it))
+              },
+              onFailure = {
+                emit(Result.failure(it))
+              },
+            )
+          }
+        }
       }
     }
 }

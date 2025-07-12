@@ -34,6 +34,7 @@ include(":core:scaffold")
 include(":core:testing")
 include(":core:fixtures")
 
+include(":feature:add-to-account")
 include(":feature:details")
 include(":feature:search")
 include(":feature:settings")

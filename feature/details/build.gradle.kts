@@ -10,6 +10,8 @@ dependencies {
   implementation(projects.core.domain)
   implementation(projects.core.model)
 
+  implementation(projects.feature.addToAccount)
+
   implementation(projects.core.scaffold)
 
   implementation(libs.androidx.browser)
