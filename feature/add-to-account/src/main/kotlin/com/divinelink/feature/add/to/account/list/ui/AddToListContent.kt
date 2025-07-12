@@ -1,5 +1,6 @@
 package com.divinelink.feature.add.to.account.list.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,52 +63,64 @@ fun AddToListContent(
       )
     }
 
-    when {
-      uiState.error != null -> BlankSlate(
-        modifier = Modifier
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-          .padding(bottom = LocalBottomNavigationPadding.current),
-        uiState = uiState.error,
-        actionText = if (uiState.error is BlankSlateState.Unauthenticated) {
-          UIText.ResourceText(uiR.string.core_ui_login)
-        } else {
-          null
-        },
-        onRetry = {
-          if (uiState.error is BlankSlateState.Unauthenticated) {
-            action(AddToListAction.Login)
-          } else {
-            // Do nothing
-          }
-        },
-      )
-
-      uiState.lists is ListData.Initial -> Box(
-        modifier = Modifier
-          .testTag(TestTags.LOADING_CONTENT)
-          .fillMaxWidth()
-          .height(MaterialTheme.dimensions.keyline_96),
-      ) {
-        Material3CircularProgressIndicator(
+    AnimatedContent(
+      targetState = uiState,
+      contentKey = { uiState ->
+        when {
+          uiState.error != null -> "error"
+          uiState.lists is ListData.Initial -> "loading"
+          uiState.lists is ListData.Data && uiState.lists.isEmpty -> "empty"
+          else -> "data"
+        }
+      },
+    ) { uiState ->
+      when {
+        uiState.error != null -> BlankSlate(
           modifier = Modifier
-            .wrapContentSize()
-            .align(Alignment.Center),
+            .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+            .padding(bottom = LocalBottomNavigationPadding.current),
+          uiState = uiState.error,
+          actionText = if (uiState.error is BlankSlateState.Unauthenticated) {
+            UIText.ResourceText(uiR.string.core_ui_login)
+          } else {
+            null
+          },
+          onRetry = {
+            if (uiState.error is BlankSlateState.Unauthenticated) {
+              action(AddToListAction.Login)
+            } else {
+              // Do nothing
+            }
+          },
+        )
+
+        uiState.lists is ListData.Initial -> Box(
+          modifier = Modifier
+            .testTag(TestTags.LOADING_CONTENT)
+            .fillMaxWidth()
+            .height(MaterialTheme.dimensions.keyline_96),
+        ) {
+          Material3CircularProgressIndicator(
+            modifier = Modifier
+              .wrapContentSize()
+              .align(Alignment.Center),
+          )
+        }
+
+        uiState.lists is ListData.Data && uiState.lists.isEmpty -> Text(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.dimensions.keyline_32),
+          text = stringResource(R.string.feature_add_to_account_empty_lists),
+          textAlign = TextAlign.Center,
+          style = MaterialTheme.typography.bodyLarge,
+        )
+
+        uiState.lists is ListData.Data -> ListsDataContent(
+          data = uiState.lists.data,
+          action = action,
         )
       }
-
-      uiState.lists is ListData.Data && uiState.lists.isEmpty -> Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(MaterialTheme.dimensions.keyline_32),
-        text = stringResource(R.string.feature_add_to_account_empty_lists),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodyLarge,
-      )
-
-      uiState.lists is ListData.Data -> ListsDataContent(
-        data = uiState.lists.data,
-        action = action,
-      )
     }
   }
 }
