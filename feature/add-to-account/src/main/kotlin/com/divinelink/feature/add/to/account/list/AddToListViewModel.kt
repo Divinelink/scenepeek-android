@@ -194,6 +194,14 @@ class AddToListViewModel(
                   _uiState.update { uiState ->
                     uiState.copy(
                       isLoading = false,
+                      displayMessage = DisplayMessage.Error(
+                        UIText.ResourceText(
+                          R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+                          (uiState.lists as ListData.Data).data.list.first { list ->
+                            list.id == listId
+                          }.name,
+                        ),
+                      ),
                     )
                   }
                 }

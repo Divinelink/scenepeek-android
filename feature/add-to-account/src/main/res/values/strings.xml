@@ -7,4 +7,5 @@
 
   <string name="feature_add_to_account_item_added_to_list_success"><![CDATA[Item successfully added to <b>%s</b>]]></string>
   <string name="feature_add_to_account_item_added_to_list_failure"><![CDATA[Item already exists in <b>%s</b>]]></string>
+  <string name="feature_add_to_account_item_add_to_list_unexpected_failure"><![CDATA[Failed to add item in <b>%s</b>]]></string>
 </resources>
