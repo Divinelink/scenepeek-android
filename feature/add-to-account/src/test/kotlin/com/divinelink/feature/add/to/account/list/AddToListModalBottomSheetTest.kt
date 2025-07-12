@@ -1,0 +1,169 @@
+package com.divinelink.feature.add.to.account.list
+
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.fixtures.model.list.ListItemFactory
+import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
+import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
+import com.divinelink.core.ui.TestTags
+import com.divinelink.feature.add.to.account.R
+import com.divinelink.feature.add.to.account.list.ui.AddToListModalBottomSheet
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertTrue
+
+class AddToListModalBottomSheetTest : ComposeTest() {
+
+  private val fetchUserListsUseCase = TestFetchUserListsUseCase()
+  private val addItemToListUseCase = TestAddItemToListUseCase()
+  private val savedStateHandle = SavedStateHandle(
+    mapOf(
+      "id" to 1234,
+      "mediaType" to MediaType.MOVIE,
+    ),
+  )
+
+  @Test
+  fun `test AddToListModalBottomSheet`() {
+    fetchUserListsUseCase.mockResponse(
+      Result.success(ListItemFactory.page1()),
+    )
+
+    val viewModel = AddToListViewModel(
+      fetchUserListsUseCase = fetchUserListsUseCase.mock,
+      addItemToListUseCase = addItemToListUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      AddToListModalBottomSheet(
+        onDismissRequest = {},
+        onNavigateToTMDBAuth = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test AddToListModalBottomSheet with empty data`() {
+    fetchUserListsUseCase.mockResponse(
+      Result.success(
+        ListItemFactory.page1().copy(
+          list = emptyList(),
+        ),
+      ),
+    )
+
+    val viewModel = AddToListViewModel(
+      fetchUserListsUseCase = fetchUserListsUseCase.mock,
+      addItemToListUseCase = addItemToListUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      AddToListModalBottomSheet(
+        onDismissRequest = {},
+        onNavigateToTMDBAuth = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithText(getString(R.string.feature_add_to_account_empty_lists)).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test login when unauthenticated`() {
+    var navigatedToTMDBAuth = false
+
+    val channel = Channel<Result<PaginationData<ListItem>>>()
+    fetchUserListsUseCase.mockResponse(channel)
+
+    val viewModel = AddToListViewModel(
+      fetchUserListsUseCase = fetchUserListsUseCase.mock,
+      addItemToListUseCase = addItemToListUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      AddToListModalBottomSheet(
+        onDismissRequest = {},
+        onNavigateToTMDBAuth = {
+          navigatedToTMDBAuth = true
+        },
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      channel.trySend(
+        Result.failure(SessionException.Unauthenticated()),
+      )
+
+      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+      onNodeWithText(getString(com.divinelink.core.ui.R.string.core_ui_login))
+        .assertIsDisplayed()
+        .performClick()
+
+      assertTrue { navigatedToTMDBAuth }
+
+      channel.trySend(
+        Result.success(ListItemFactory.page1()),
+      )
+
+      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test add to list with success`() = runTest {
+    fetchUserListsUseCase.mockResponse(
+      Result.success(ListItemFactory.page1()),
+    )
+
+    addItemToListUseCase.mockResponse(Result.success(true))
+
+    val viewModel = AddToListViewModel(
+      fetchUserListsUseCase = fetchUserListsUseCase.mock,
+      addItemToListUseCase = addItemToListUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      AddToListModalBottomSheet(
+        onDismissRequest = {},
+        onNavigateToTMDBAuth = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+
+      onNodeWithText("3 items").assertIsDisplayed()
+      onNodeWithText("4 items").assertIsNotDisplayed()
+      onNodeWithText("Elsolist").assertIsDisplayed().performClick()
+
+      onNodeWithText("4 items").assertIsDisplayed()
+      onNodeWithText("3 items").assertIsNotDisplayed()
+    }
+  }
+}
