@@ -8,13 +8,16 @@ import com.divinelink.core.model.person.Gender
 object MediaItemFactory {
 
   fun FightClub(): MediaItem.Media.Movie = MediaItem.Media.Movie(
-    id = 1123,
-    posterPath = "123456",
-    releaseDate = "2022",
-    name = "Flight Club",
-    voteAverage = 7.3,
-    voteCount = 123_456,
-    overview = "This movie is good.",
+    id = 550,
+    posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+    releaseDate = "1999-10-15",
+    name = "Fight Club",
+    voteAverage = 8.4,
+    voteCount = 30_452,
+    overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel " +
+      "primal male aggression into a shocking new form of therapy." +
+      " Their concept catches on, with underground \"fight clubs\" forming in every town, " +
+      "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
     isFavorite = false,
   )
 
