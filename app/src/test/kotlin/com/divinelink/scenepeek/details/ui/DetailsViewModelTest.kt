@@ -2016,7 +2016,7 @@ class DetailsViewModelTest {
       )
       .assertOpenUrlTab {
         assertThat(awaitItem()).isEqualTo(
-          "https://www.themoviedb.org/movie/1123-flight-club",
+          "https://www.themoviedb.org/movie/550-fight-club",
         )
       }
       .onMediaSourceClick(RatingSource.IMDB)
@@ -2060,7 +2060,7 @@ class DetailsViewModelTest {
       )
       .assertOpenUrlTab {
         assertThat(awaitItem()).isEqualTo(
-          "https://www.themoviedb.org/movie/1123-flight-club",
+          "https://www.themoviedb.org/movie/550-fight-club",
         )
       }
       .onMediaSourceClick(RatingSource.IMDB)
@@ -2794,7 +2794,7 @@ class DetailsViewModelTest {
             snackbarMessage = SnackbarMessage.from(
               text = UIText.ResourceText(
                 R.string.feature_details_jellyseerr_success_media_delete,
-                "Flight Club",
+                "Fight Club",
               ),
             ),
           ),

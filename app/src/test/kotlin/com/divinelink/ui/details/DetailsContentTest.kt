@@ -324,7 +324,7 @@ class DetailsContentTest : ComposeTest() {
         .onLast()
         .assertExists()
 
-      onAllNodesWithText("123.4k")
+      onAllNodesWithText("30.4k")
         .onLast()
         .assertExists()
 

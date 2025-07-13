@@ -11,14 +11,17 @@ import com.divinelink.core.model.details.rating.RatingCount
 object MediaDetailsFactory {
 
   fun FightClub() = Movie(
-    id = 1123,
-    posterPath = "123456",
-    backdropPath = "backdropUrl",
-    releaseDate = "2022",
-    title = "Flight Club",
-    ratingCount = RatingCount.tmdb(7.3, 123_456),
+    id = 550,
+    posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+    backdropPath = "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
+    releaseDate = "1999-10-15",
+    title = "Fight Club",
+    ratingCount = RatingCount.tmdb(8.4, 30452),
     isFavorite = false,
-    overview = "This movie is good.",
+    overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel " +
+      "primal male aggression into a shocking new form of therapy." +
+      " Their concept catches on, with underground \"fight clubs\" forming in every town, " +
+      "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
     creators = listOf(
       Person(
         id = 123443321,
