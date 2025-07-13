@@ -1,4 +1,4 @@
-package com.divinelink.core.network.list
+package com.divinelink.core.network.list.mapper
 
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.network.list.model.AddToListResponse

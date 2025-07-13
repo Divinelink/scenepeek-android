@@ -2,7 +2,6 @@ package com.divinelink.core.network.list.mapper
 
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.network.client.localJson
-import com.divinelink.core.network.list.map
 import com.divinelink.core.network.list.model.AddToListResponse
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
