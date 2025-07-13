@@ -1,7 +1,7 @@
-package com.divinelink.core.network.list.mapper
+package com.divinelink.core.network.list.mapper.add
 
 import com.divinelink.core.model.list.AddToListResult
-import com.divinelink.core.network.list.model.AddToListResponse
+import com.divinelink.core.network.list.model.add.AddToListResponse
 
 fun AddToListResponse.map(): AddToListResult = when {
   results.any {

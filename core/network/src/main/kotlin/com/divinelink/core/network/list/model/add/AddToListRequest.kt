@@ -1,5 +1,6 @@
-package com.divinelink.core.network.list.model
+package com.divinelink.core.network.list.model.add
 
+import com.divinelink.core.network.list.model.MediaItemRequest
 import kotlinx.serialization.Serializable
 
 @Serializable

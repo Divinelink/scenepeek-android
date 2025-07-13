@@ -1,8 +1,9 @@
 package com.divinelink.core.network.list.service
 
-import com.divinelink.core.network.list.model.AddToListRequest
-import com.divinelink.core.network.list.model.AddToListResponse
 import com.divinelink.core.network.list.model.MediaItemRequest
+import com.divinelink.core.network.list.model.add.AddToListRequest
+import com.divinelink.core.network.list.model.add.AddToListResponse
+import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.testing.network.TestAuthTMDbClient
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -95,6 +96,23 @@ class ProdListServiceTest {
       listId = 12345,
       mediaId = 67890,
       mediaType = "movie",
+    )
+
+    assertThat(result.isSuccess).isTrue()
+  }
+
+  @Test
+  fun `test fetch list details with success`() = runTest {
+    testRestClient.mockGet<ListDetailsResponse>(
+      url = "https://api.themoviedb.org/4/list/12345",
+      jsonFileName = "list-details.json",
+    )
+
+    service = ProdListService(testRestClient.restClient)
+
+    val result = service.fetchListDetails(
+      listId = 12345,
+      page = 1,
     )
 
     assertThat(result.isSuccess).isTrue()

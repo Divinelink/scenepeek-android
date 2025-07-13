@@ -4,7 +4,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.localJson
-import com.divinelink.core.network.list.model.AddToListResponse
+import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.testing.service.TestListService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
