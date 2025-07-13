@@ -1,6 +1,7 @@
 package com.divinelink.core.network.list.service
 
-import com.divinelink.core.network.list.model.AddToListResponse
+import com.divinelink.core.network.list.model.add.AddToListResponse
+import com.divinelink.core.network.list.model.details.ListDetailsResponse
 
 interface ListService {
   suspend fun addItemToList(
@@ -8,4 +9,9 @@ interface ListService {
     mediaId: Int,
     mediaType: String,
   ): Result<AddToListResponse>
+
+  suspend fun fetchListDetails(
+    listId: Int,
+    page: Int,
+  ): Result<ListDetailsResponse>
 }

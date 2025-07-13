@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.service
 
-import com.divinelink.core.network.list.model.AddToListResponse
+import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.service.ListService
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

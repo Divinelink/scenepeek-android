@@ -5,7 +5,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
 import io.ktor.http.encodedPath
 
-fun buildFetchListsUrl(accountId: String): String = buildUrl {
+internal fun buildFetchListsUrl(accountId: String): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/account/$accountId/lists"
