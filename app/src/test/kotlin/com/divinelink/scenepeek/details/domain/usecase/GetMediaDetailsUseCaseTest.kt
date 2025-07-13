@@ -137,8 +137,8 @@ class GetMediaDetailsUseCaseTest {
             RatingCount(
               ratings = mapOf(
                 RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 7.3,
-                  voteCount = 123_456,
+                  voteAverage = 8.4,
+                  voteCount = 30_452,
                 ),
                 RatingSource.IMDB to RatingDetails.Initial,
                 RatingSource.TRAKT to RatingDetails.Score(
@@ -178,8 +178,8 @@ class GetMediaDetailsUseCaseTest {
             RatingCount(
               ratings = mapOf(
                 RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 7.3,
-                  voteCount = 123_456,
+                  voteAverage = 8.4,
+                  voteCount = 30_452,
                 ),
                 RatingSource.IMDB to RatingDetails.Initial,
                 RatingSource.TRAKT to RatingDetails.Unavailable,
@@ -224,8 +224,8 @@ class GetMediaDetailsUseCaseTest {
             RatingCount(
               ratings = mapOf(
                 RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 7.3,
-                  voteCount = 123_456,
+                  voteAverage = 8.4,
+                  voteCount = 30_452,
                 ),
                 RatingSource.IMDB to RatingDetails.Score(
                   voteAverage = 8.7,
@@ -265,8 +265,8 @@ class GetMediaDetailsUseCaseTest {
             RatingCount(
               ratings = mapOf(
                 RatingSource.TMDB to RatingDetails.Score(
-                  voteAverage = 7.3,
-                  voteCount = 123_456,
+                  voteAverage = 8.4,
+                  voteCount = 30_452,
                 ),
                 RatingSource.IMDB to RatingDetails.Unavailable,
                 RatingSource.TRAKT to RatingDetails.Initial,

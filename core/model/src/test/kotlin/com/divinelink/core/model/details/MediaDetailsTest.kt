@@ -17,7 +17,7 @@ class MediaDetailsTest {
 
     assertThat(
       shareUrl,
-    ).isEqualTo("https://www.themoviedb.org/movie/1123-godzilla-x-kong-the-new-empire")
+    ).isEqualTo("https://www.themoviedb.org/movie/550-godzilla-x-kong-the-new-empire")
   }
 
   @Test

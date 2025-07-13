@@ -1,10 +1,13 @@
 package com.divinelink.core.data.list
 
+import JvmUnitTestDemoAssetManager
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.list.model.add.AddToListResponse
+import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.testing.service.TestListService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -101,6 +104,34 @@ class ProdListRepositoryTest {
       result.data,
     ).isEqualTo(
       AddToListResult.Success,
+    )
+  }
+
+  @Test
+  fun `test fetch list details with success`() = runTest {
+    val listId = 123
+
+    val response = JvmUnitTestDemoAssetManager
+      .open("list-details.json")
+      .use { inputStream ->
+        val json = inputStream.readBytes().decodeToString().trimIndent()
+        val serializer = ListDetailsResponse.serializer()
+        localJson.decodeFromString(serializer, json)
+      }
+
+    service.mockFetchListDetails(
+      Result.success(response),
+    )
+
+    val result = repository.fetchListDetails(
+      listId = listId,
+      page = 1,
+    )
+
+    assertThat(
+      result.data,
+    ).isEqualTo(
+      ListDetailsFactory.mustWatch(),
     )
   }
 }

@@ -144,7 +144,7 @@ class MainViewModelTest {
       .assertUiEvent(
         MainUiEvent.NavigateToDetails(
           DetailsRoute(
-            id = 1123,
+            id = 550,
             mediaType = MediaType.MOVIE,
             isFavorite = false,
           ),
