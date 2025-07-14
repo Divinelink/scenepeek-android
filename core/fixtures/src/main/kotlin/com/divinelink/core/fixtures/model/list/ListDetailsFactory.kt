@@ -6,11 +6,14 @@ import com.divinelink.core.model.list.ListDetails
 object ListDetailsFactory {
 
   fun mustWatch() = ListDetails(
+    page = 1,
     name = "Must watch",
     media = listOf(
       MediaItemFactory.theWire(),
       MediaItemFactory.FightClub(),
       MediaItemFactory.theOffice(),
     ),
+    totalPages = 1,
+    totalResults = 3,
   )
 }

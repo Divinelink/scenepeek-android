@@ -11,8 +11,16 @@ internal fun buildAddItemsToListUrl(listId: Int): String = buildUrl {
   encodedPath = Routes.TMDb.V4 + "/list/$listId/items"
 }.toString()
 
-internal fun buildFetchListDetailsUrl(listId: Int): String = buildUrl {
+internal fun buildFetchListDetailsUrl(
+  listId: Int,
+  page: Int,
+): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/list/$listId"
+
+  parameters.apply {
+    append("language", "en-US")
+    append("page", page.toString())
+  }
 }.toString()
