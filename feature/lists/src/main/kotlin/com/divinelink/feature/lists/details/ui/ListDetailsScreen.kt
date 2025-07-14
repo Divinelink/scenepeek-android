@@ -1,11 +1,9 @@
-package com.divinelink.feature.lists.user
+package com.divinelink.feature.lists.details.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,28 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
-import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
-import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.feature.lists.R
-import com.divinelink.feature.lists.user.ui.ListsContent
+import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimatedVisibilityScope.ListsScreen(
+fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateUp: () -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
-  onNavigateToList: (ListDetailsRoute) -> Unit,
-  viewModel: ListsViewModel = koinViewModel(),
+  viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -48,7 +38,7 @@ fun AnimatedVisibilityScope.ListsScreen(
   rememberScaffoldState(
     animatedVisibilityScope = this,
   ).PersistentScaffold(
-    modifier = Modifier.testTag(TestTags.Lists.SCREEN),
+    modifier = Modifier.testTag("TODO"),
     navigationRail = {
       PersistentNavigationRail()
     },
@@ -60,37 +50,20 @@ fun AnimatedVisibilityScope.ListsScreen(
         colors = topAppBarColor,
         scrollBehavior = scrollBehavior,
         title = {
-          Text(text = stringResource(R.string.feature_lists_title))
+          Text(text = uiState.name)
         },
         navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
       )
     },
     floatingActionButton = {
-      if (uiState.error is BlankSlateState.Unauthenticated) {
-        ScaffoldFab(
-          icon = Icons.Default.AccountCircle,
-          text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
-          expanded = true,
-          onClick = onNavigateToTMDBLogin,
-        )
-      }
     },
     content = {
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
-        ListsContent(
+        ListDetailsContent(
           uiState = uiState,
-          userInteraction = { userInteraction ->
-            when (userInteraction) {
-              ListsAction.LoadMore -> viewModel.onLoadMore()
-              is ListsAction.OnListClick -> onNavigateToList(
-                ListDetailsRoute(
-                  id = userInteraction.id,
-                  name = userInteraction.name,
-                ),
-              )
-            }
+          action = { action ->
           },
         )
       }

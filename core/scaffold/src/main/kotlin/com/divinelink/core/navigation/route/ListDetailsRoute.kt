@@ -4,8 +4,11 @@ import androidx.navigation.NavController
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ListDetailsRoute
+data class ListDetailsRoute(
+  val id: Int,
+  val name: String,
+)
 
-fun NavController.navigateToListDetails() = navigate(
-  route = ListDetailsRoute,
+fun NavController.navigateToListDetails(route: ListDetailsRoute) = navigate(
+  route = route,
 )
