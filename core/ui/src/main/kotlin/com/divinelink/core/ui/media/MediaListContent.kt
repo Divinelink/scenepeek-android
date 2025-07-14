@@ -1,4 +1,4 @@
-package com.divinelink.feature.user.data
+package com.divinelink.core.ui.media
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +27,7 @@ import com.divinelink.core.ui.components.extensions.canScrollToTop
 import kotlinx.coroutines.launch
 
 @Composable
-fun UserDataContent(
+fun MediaListContent(
   list: List<MediaItem.Media>,
   onMediaClick: (MediaItem.Media) -> Unit,
   onLoadMore: () -> Unit,
@@ -74,7 +74,7 @@ fun UserDataContent(
 fun UserDataContentPreview() {
   AppTheme {
     Surface {
-      UserDataContent(
+      MediaListContent(
         list = MediaItemFactory.MoviesList(range = 1..30),
         onMediaClick = {},
         onLoadMore = {},

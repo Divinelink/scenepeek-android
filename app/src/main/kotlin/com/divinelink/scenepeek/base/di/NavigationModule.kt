@@ -223,6 +223,7 @@ val navigationModule = module {
     { navController, _ ->
       listDetailsScreen(
         onNavigateUp = navController::navigateUp,
+        onNavigateToDetails = navController::navigateToDetails,
       )
     }
   }

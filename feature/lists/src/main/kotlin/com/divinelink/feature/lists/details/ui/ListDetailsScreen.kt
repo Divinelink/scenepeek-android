@@ -14,11 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.NavigateUpButton
+import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -26,6 +29,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateUp: () -> Unit,
+  onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -38,7 +42,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   rememberScaffoldState(
     animatedVisibilityScope = this,
   ).PersistentScaffold(
-    modifier = Modifier.testTag("TODO"),
+    modifier = Modifier.testTag(TestTags.Lists.DETAILS_SCREEN),
     navigationRail = {
       PersistentNavigationRail()
     },
@@ -56,14 +60,27 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       )
     },
     floatingActionButton = {
+      // TODO implement FAB for searching/adding media to the list
     },
     content = {
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         ListDetailsContent(
-          uiState = uiState,
+          state = uiState,
           action = { action ->
+            when (action) {
+              ListDetailsAction.LoadMore,
+              ListDetailsAction.Refresh,
+              -> viewModel.onAction(action)
+              is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
+                DetailsRoute(
+                  id = action.mediaId,
+                  mediaType = action.mediaType,
+                  isFavorite = null,
+                ),
+              )
+            }
           },
         )
       }

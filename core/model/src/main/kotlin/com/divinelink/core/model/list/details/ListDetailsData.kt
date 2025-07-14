@@ -7,5 +7,6 @@ sealed interface ListDetailsData<out T> {
 
   data class Data(val data: ListDetails) : ListDetailsData<ListDetails> {
     val isEmpty: Boolean = data.isEmpty()
+    val canLoadMore: Boolean = data.canLoadMore()
   }
 }

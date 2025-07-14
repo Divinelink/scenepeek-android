@@ -5,7 +5,7 @@ import com.divinelink.core.model.media.MediaItem
 data class ListDetails(
   val page: Int,
   val name: String,
-  val media: List<MediaItem>,
+  val media: List<MediaItem.Media>,
   val totalPages: Int,
   val totalResults: Int,
 ) {
