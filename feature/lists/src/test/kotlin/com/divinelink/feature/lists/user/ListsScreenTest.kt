@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.lists.user
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
@@ -9,7 +9,6 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.lists.ui.ListsScreen
 import kotlin.test.Test
 
 class ListsScreenTest : ComposeTest() {

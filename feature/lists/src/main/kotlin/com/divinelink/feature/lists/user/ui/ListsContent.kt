@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists.ui
+package com.divinelink.feature.lists.user.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -15,10 +15,10 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.feature.lists.ListsAction
-import com.divinelink.feature.lists.ListsUiState
 import com.divinelink.feature.lists.R
-import com.divinelink.feature.lists.ui.provider.ListsUiStateParameterProvider
+import com.divinelink.feature.lists.user.ListsAction
+import com.divinelink.feature.lists.user.ListsUiState
+import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvider
 
 @Composable
 fun ListsContent(

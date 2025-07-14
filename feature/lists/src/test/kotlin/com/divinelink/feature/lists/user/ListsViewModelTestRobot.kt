@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.lists.user
 
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem

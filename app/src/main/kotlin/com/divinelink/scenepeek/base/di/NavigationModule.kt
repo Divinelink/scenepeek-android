@@ -11,7 +11,7 @@ import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
-import com.divinelink.feature.lists.ui.navigation.listsScreen
+import com.divinelink.feature.lists.user.navigation.listsScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.search.navigation.searchScreen

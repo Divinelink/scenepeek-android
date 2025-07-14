@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.lists.user
 
 sealed interface ListsAction {
   data object LoadMore : ListsAction

@@ -1,11 +1,11 @@
-package com.divinelink.feature.lists.ui.provider
+package com.divinelink.feature.lists.user.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.model.list.ListData
-import com.divinelink.feature.lists.ListsUiState
+import com.divinelink.feature.lists.user.ListsUiState
 import com.divinelink.feature.lists.R
 
 class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
