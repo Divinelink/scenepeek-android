@@ -1,9 +1,9 @@
-package com.divinelink.feature.lists.ui.navigation
+package com.divinelink.feature.lists.user.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.divinelink.core.navigation.route.ListsRoute
-import com.divinelink.feature.lists.ui.ListsScreen
+import com.divinelink.feature.lists.user.ListsScreen
 
 fun NavGraphBuilder.listsScreen(
   onNavigateUp: () -> Unit,

@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists.ui
+package com.divinelink.feature.lists.user
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
@@ -25,9 +25,8 @@ import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.NavigateUpButton
-import com.divinelink.feature.lists.ListsAction
-import com.divinelink.feature.lists.ListsViewModel
 import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.user.ui.ListsContent
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

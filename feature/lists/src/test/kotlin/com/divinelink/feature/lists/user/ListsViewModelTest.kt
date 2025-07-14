@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists
+package com.divinelink.feature.lists.user
 
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
@@ -8,6 +8,7 @@ import com.divinelink.core.model.list.ListData
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.feature.lists.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test

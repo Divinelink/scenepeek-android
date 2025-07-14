@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists.ui
+package com.divinelink.feature.lists.user.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

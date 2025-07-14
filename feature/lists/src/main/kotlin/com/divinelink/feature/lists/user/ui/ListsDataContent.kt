@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists.ui
+package com.divinelink.feature.lists.user.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +28,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
-import com.divinelink.feature.lists.ListsAction
+import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 
 @Composable
