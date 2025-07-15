@@ -32,6 +32,11 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
     listId: Int,
     page: Int,
   ): Result<ListDetailsResponse> = runCatching {
-    client.get<ListDetailsResponse>(url = buildFetchListDetailsUrl(listId))
+    client.get<ListDetailsResponse>(
+      url = buildFetchListDetailsUrl(
+        listId = listId,
+        page = page,
+      ),
+    )
   }
 }

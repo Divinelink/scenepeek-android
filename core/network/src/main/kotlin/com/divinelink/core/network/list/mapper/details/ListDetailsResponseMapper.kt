@@ -5,6 +5,9 @@ import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.network.media.model.search.multi.mapper.mapToMedia
 
 fun ListDetailsResponse.map() = ListDetails(
+  page = page,
+  totalPages = totalPages,
+  totalResults = totalResults,
   name = name,
   media = results.mapToMedia(),
 )

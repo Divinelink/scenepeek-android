@@ -73,7 +73,14 @@ fun ListsDataContent(
       ) { listItem ->
         ListCard(
           listItem = listItem,
-          onClick = { userInteraction(ListsAction.OnListClick(listItem.id)) },
+          onClick = {
+            userInteraction(
+              ListsAction.OnListClick(
+                id = listItem.id,
+                name = listItem.name,
+              ),
+            )
+          },
         )
       }
     }

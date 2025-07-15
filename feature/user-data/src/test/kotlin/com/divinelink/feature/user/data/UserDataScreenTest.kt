@@ -313,7 +313,7 @@ class UserDataScreenTest : ComposeTest() {
     composeTestRule.onNodeWithText(movieList.last().name).assertDoesNotExist()
 
     // Scroll to the end of the list
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_CONTENT)
+    composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
       .performScrollToNode(
         matcher = hasText(text = movieList.last().name),
       )
@@ -322,7 +322,7 @@ class UserDataScreenTest : ComposeTest() {
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
     // Scroll up to display the ScrollToTopButton
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.WATCHLIST_CONTENT)
+    composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
       .performScrollToNode(
         matcher = hasText(text = movieList[movieList.lastIndex - 1].name),
       )

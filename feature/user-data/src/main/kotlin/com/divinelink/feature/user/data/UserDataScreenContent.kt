@@ -30,6 +30,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.media.MediaListContent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -91,7 +92,7 @@ fun UserDataScreenContent(
                 ),
               )
             } else {
-              UserDataContent(
+              MediaListContent(
                 list = it.data,
                 onMediaClick = { media ->
                   onNavigateToMediaDetails(

@@ -7,6 +7,7 @@ object TestTags {
   object Components {
 
     const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
+    const val MEDIA_LIST_CONTENT = "Media List Content"
 
     object SearchBar {
       const val CLICKABLE_SEARCH_BAR = "Clickable Search Bar"
@@ -198,7 +199,6 @@ object TestTags {
 
   object Watchlist {
     const val TAB_BAR = "Watchlist Tab Bar $%s"
-    const val WATCHLIST_CONTENT = "Watchlist Content with data"
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }
@@ -208,6 +208,13 @@ object TestTags {
     const val CONTENT = "Lists Content"
     const val SCREEN = "Lists Screen"
     const val ERROR_CONTENT = "Lists Error Content"
+
+    const val DETAILS_SCREEN = "List Details Screen"
+
+    object Details {
+      const val EMPTY_ITEM = "List Details Empty Item"
+      const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+    }
   }
 
   object Search {
