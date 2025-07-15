@@ -40,7 +40,7 @@ class ListDetailsViewModel(
   private fun fetchListDetails(isRefreshing: Boolean) {
     _uiState.update { uiState ->
       uiState.copy(
-        loadingMore = uiState.details !is ListDetailsData.Initial,
+        loadingMore = uiState.details !is ListDetailsData.Initial && !isRefreshing,
       )
     }
 
@@ -55,6 +55,7 @@ class ListDetailsViewModel(
           onSuccess = { listDetails ->
             _uiState.update { uiState ->
               uiState.copy(
+                name = listDetails.name,
                 page = listDetails.page + 1,
                 details = if (isRefreshing) {
                   ListDetailsData.Data(

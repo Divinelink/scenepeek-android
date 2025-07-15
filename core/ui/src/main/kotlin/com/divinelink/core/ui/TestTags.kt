@@ -210,6 +210,12 @@ object TestTags {
     const val ERROR_CONTENT = "Lists Error Content"
 
     const val DETAILS_SCREEN = "List Details Screen"
+
+    object Details {
+      const val CONTENT = "List Details Content"
+      const val EMPTY_ITEM = "List Details Empty Item"
+      const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+    }
   }
 
   object Search {

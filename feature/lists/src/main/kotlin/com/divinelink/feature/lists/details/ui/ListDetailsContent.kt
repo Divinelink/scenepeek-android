@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -20,6 +21,7 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
@@ -39,7 +41,9 @@ fun ListDetailsContent(
   PullToRefreshBox(
     isRefreshing = state.refreshing,
     onRefresh = { action(ListDetailsAction.Refresh) },
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier
+      .fillMaxSize()
+      .testTag(TestTags.Lists.Details.PULL_TO_REFRESH),
   ) {
     when {
       state.error != null -> BlankSlate(
@@ -67,6 +71,7 @@ fun ListDetailsContent(
           Text(
             modifier = Modifier
               .fillMaxWidth()
+              .testTag(TestTags.Lists.Details.EMPTY_ITEM)
               .padding(MaterialTheme.dimensions.keyline_32),
             text = stringResource(R.string.feature_lists_empty_list),
             textAlign = TextAlign.Center,
