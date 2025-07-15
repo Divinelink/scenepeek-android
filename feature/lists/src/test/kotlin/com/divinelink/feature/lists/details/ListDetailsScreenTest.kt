@@ -95,7 +95,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsNotDisplayed()
 
       fetchListDetailsUseCase.mockResponse(
         Result.success(ListDetailsFactory.mustWatch()),
@@ -106,7 +106,7 @@ class ListDetailsScreenTest : ComposeTest() {
       }
 
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
 
       onNodeWithText("The Wire").assertIsDisplayed()
 
@@ -119,7 +119,7 @@ class ListDetailsScreenTest : ComposeTest() {
       }
 
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsNotDisplayed()
     }
   }
 
@@ -147,7 +147,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
 
       assertThat(detailsRoute).isNull()
 
@@ -184,7 +184,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
 
       onNodeWithText("Fight club 1").assertIsDisplayed()
       onNodeWithText("Fight club 16").assertIsNotDisplayed()
@@ -194,13 +194,13 @@ class ListDetailsScreenTest : ComposeTest() {
         Result.success(ListDetailsFactory.page2()),
       )
 
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).performScrollToIndex(16)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(16)
 
       onNodeWithText("Fight club 1").assertIsNotDisplayed()
       onNodeWithText("Fight club 40").assertIsNotDisplayed()
       onNodeWithText("Fight club 16").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).performScrollToIndex(39)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(39)
       onNodeWithText("Fight club 40").assertIsDisplayed()
     }
   }
@@ -234,7 +234,7 @@ class ListDetailsScreenTest : ComposeTest() {
       onNodeWithText("Retry").assertIsDisplayed().performClick()
 
       onNodeWithTag(TestTags.BLANK_SLATE).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
     }
   }
 
@@ -267,7 +267,7 @@ class ListDetailsScreenTest : ComposeTest() {
       onNodeWithText("Retry").assertIsDisplayed().performClick()
 
       onNodeWithTag(TestTags.BLANK_SLATE).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Lists.Details.CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
     }
   }
 }

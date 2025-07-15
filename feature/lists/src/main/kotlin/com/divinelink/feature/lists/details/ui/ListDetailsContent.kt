@@ -46,7 +46,7 @@ fun ListDetailsContent(
       .testTag(TestTags.Lists.Details.PULL_TO_REFRESH),
   ) {
     when {
-      state.error != null -> BlankSlate(
+      state.error != null && state.details is ListDetailsData.Initial -> BlankSlate(
         modifier = Modifier
           .padding(horizontal = MaterialTheme.dimensions.keyline_16)
           .padding(bottom = LocalBottomNavigationPadding.current),

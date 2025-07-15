@@ -41,7 +41,7 @@ fun MediaListContent(
   )
   Box(Modifier.fillMaxSize()) {
     ScenePeekLazyColumn(
-      modifier = Modifier.testTag(TestTags.Lists.Details.CONTENT),
+      modifier = Modifier.testTag(TestTags.Components.MEDIA_LIST_CONTENT),
       state = scrollState,
       contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_12),
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
