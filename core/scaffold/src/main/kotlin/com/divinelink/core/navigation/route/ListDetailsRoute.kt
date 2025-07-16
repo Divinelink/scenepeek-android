@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 data class ListDetailsRoute(
   val id: Int,
   val name: String,
+  val backdropPath: String?,
 )
 
 fun NavController.navigateToListDetails(route: ListDetailsRoute) = navigate(

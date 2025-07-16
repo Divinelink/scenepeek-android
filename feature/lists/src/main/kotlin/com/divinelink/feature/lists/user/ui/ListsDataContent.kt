@@ -78,6 +78,7 @@ fun ListsDataContent(
               ListsAction.OnListClick(
                 id = listItem.id,
                 name = listItem.name,
+                backdropPath = listItem.backdropPath,
               ),
             )
           },

@@ -24,6 +24,7 @@ import coil3.request.crossfade
 import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.conditional
 
 @Composable
 fun BackdropImage(
@@ -31,13 +32,19 @@ fun BackdropImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.FillWidth,
   onBackdropLoaded: () -> Unit,
+  applyOffset: Boolean = true,
 ) {
   val backdropOffset = WindowInsets.statusBars.asPaddingValues()
     .calculateTopPadding() + MaterialTheme.dimensions.keyline_64
 
   AsyncImage(
     modifier = modifier
-      .offset(y = -backdropOffset)
+      .conditional(
+        condition = applyOffset,
+        ifTrue = {
+          offset(y = -backdropOffset)
+        },
+      )
       .bottomFadeOut()
       .fillMaxWidth(),
     model = ImageRequest.Builder(LocalContext.current)

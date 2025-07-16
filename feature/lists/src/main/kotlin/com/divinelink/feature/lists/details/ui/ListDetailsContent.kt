@@ -1,20 +1,16 @@
 package com.divinelink.feature.lists.details.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -24,9 +20,6 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.media.MediaListContent
-import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
 import com.divinelink.feature.lists.details.ui.provider.ListDetailsUiStateParameterProvider
@@ -37,12 +30,14 @@ import com.divinelink.core.ui.R as uiR
 fun ListDetailsContent(
   state: ListDetailsUiState,
   action: (ListDetailsAction) -> Unit,
+  onShowTitle: (Boolean) -> Unit,
+  onBackdropLoaded: () -> Unit,
 ) {
   PullToRefreshBox(
     isRefreshing = state.refreshing,
     onRefresh = { action(ListDetailsAction.Refresh) },
     modifier = Modifier
-      .fillMaxSize()
+      .wrapContentSize()
       .testTag(TestTags.Lists.Details.PULL_TO_REFRESH),
   ) {
     when {
@@ -62,36 +57,21 @@ fun ListDetailsContent(
         },
       )
 
-      state.details is ListDetailsData.Initial -> LoadingContent()
-
-      state.details is ListDetailsData.Data && state.details.isEmpty -> ScenePeekLazyColumn(
-        modifier = Modifier.fillMaxSize(),
-      ) {
-        item {
-          Text(
-            modifier = Modifier
-              .fillMaxWidth()
-              .testTag(TestTags.Lists.Details.EMPTY_ITEM)
-              .padding(MaterialTheme.dimensions.keyline_32),
-            text = stringResource(R.string.feature_lists_empty_list),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
-          )
-        }
-      }
-
-      state.details is ListDetailsData.Data -> MediaListContent(
-        list = state.details.data.media,
-        onMediaClick = {
-          action(
-            ListDetailsAction.OnItemClick(
-              mediaId = it.id,
-              mediaType = it.mediaType,
-            ),
-          )
-        },
-        onLoadMore = { action(ListDetailsAction.LoadMore) },
-      )
+      state.details is ListDetailsData.Initial || state.details is ListDetailsData.Data ->
+        ListScrollableContent(
+          state = state,
+          onMediaClick = {
+            action(
+              ListDetailsAction.OnItemClick(
+                mediaId = it.id,
+                mediaType = it.mediaType,
+              ),
+            )
+          },
+          onLoadMore = { action(ListDetailsAction.LoadMore) },
+          onShowTitle = onShowTitle,
+          onBackdropLoaded = onBackdropLoaded,
+        )
     }
   }
 }
@@ -105,7 +85,9 @@ fun ListDetailsContentPreview(
     Surface {
       ListDetailsContent(
         state = state,
-        action = { },
+        action = {},
+        onShowTitle = {},
+        onBackdropLoaded = {},
       )
     }
   }

@@ -5,5 +5,6 @@ sealed interface ListsAction {
   data class OnListClick(
     val id: Int,
     val name: String,
+    val backdropPath: String?,
   ) : ListsAction
 }

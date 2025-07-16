@@ -23,12 +23,14 @@ class ListDetailsViewModel(
   private val route: ListDetailsRoute = ListDetailsRoute(
     id = savedStateHandle.get<Int>("id") ?: -1,
     name = savedStateHandle.get<String>("name") ?: "",
+    backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
   )
 
   private val _uiState: MutableStateFlow<ListDetailsUiState> = MutableStateFlow(
     ListDetailsUiState.initial(
       id = route.id,
       name = route.name,
+      backdropPath = route.backdropPath,
     ),
   )
   val uiState: StateFlow<ListDetailsUiState> = _uiState
@@ -55,7 +57,6 @@ class ListDetailsViewModel(
           onSuccess = { listDetails ->
             _uiState.update { uiState ->
               uiState.copy(
-                name = listDetails.name,
                 page = listDetails.page + 1,
                 details = if (isRefreshing) {
                   ListDetailsData.Data(
@@ -63,7 +64,7 @@ class ListDetailsViewModel(
                   )
                 } else {
                   when (uiState.details) {
-                    ListDetailsData.Initial -> ListDetailsData.Data(
+                    is ListDetailsData.Initial -> ListDetailsData.Data(
                       data = listDetails,
                     )
                     is ListDetailsData.Data -> ListDetailsData.Data(
@@ -102,7 +103,13 @@ class ListDetailsViewModel(
                 }
               }
             } else {
-              // TODO Handle error when loading more
+              _uiState.update { uiState ->
+                // TODO Maybe show a snackbar that loading more failed?
+                uiState.copy(
+                  loadingMore = false,
+                  refreshing = false,
+                )
+              }
             }
           },
         )

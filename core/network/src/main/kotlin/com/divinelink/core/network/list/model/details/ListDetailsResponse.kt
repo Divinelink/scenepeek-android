@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ListDetailsResponse(
   val id: Int,
+  @SerialName("backdrop_path") val backdropPath: String?,
   @SerialName("average_rating") val averageRating: Double,
   val results: List<MultiSearchResultApi>,
   val name: String,
