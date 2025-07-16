@@ -13,6 +13,7 @@ data class ListDetailsResponse(
   val name: String,
   val description: String,
   val page: Int,
+  val public: Boolean,
   @SerialName("total_pages") val totalPages: Int,
   @SerialName("total_results") val totalResults: Int,
 )

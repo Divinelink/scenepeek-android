@@ -89,6 +89,8 @@ fun AnimatedVisibilityScope.ListsScreen(
                   id = userInteraction.id,
                   name = userInteraction.name,
                   backdropPath = userInteraction.backdropPath,
+                  description = userInteraction.description,
+                  public = userInteraction.public,
                 ),
               )
             }

@@ -12,12 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
 @Composable
+@Previews
 fun VisibilityBadge(
   modifier: Modifier = Modifier,
-  isPublic: Boolean,
+  isPublic: Boolean = false,
 ) {
   Box(
     modifier = modifier
@@ -27,11 +29,13 @@ fun VisibilityBadge(
         color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.95f),
         shape = MaterialTheme.shapes.extraLarge,
       )
-      .padding(MaterialTheme.dimensions.keyline_4),
+      .padding(
+        vertical = MaterialTheme.dimensions.keyline_2,
+        horizontal = MaterialTheme.dimensions.keyline_12,
+      ),
     contentAlignment = Alignment.Center,
   ) {
     Text(
-      modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
       text = if (isPublic) {
         stringResource(R.string.core_ui_public)
       } else {

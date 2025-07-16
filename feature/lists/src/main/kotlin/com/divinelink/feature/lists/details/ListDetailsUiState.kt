@@ -17,12 +17,16 @@ data class ListDetailsUiState(
       id: Int,
       name: String,
       backdropPath: String?,
+      description: String,
+      public: Boolean,
     ) = ListDetailsUiState(
       id = id,
       page = 1,
       details = ListDetailsData.Initial(
         name = name,
         backdropPath = backdropPath,
+        description = description,
+        public = public
       ),
       error = null,
       refreshing = false,

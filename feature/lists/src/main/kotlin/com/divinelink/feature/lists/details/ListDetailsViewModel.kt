@@ -24,6 +24,8 @@ class ListDetailsViewModel(
     id = savedStateHandle.get<Int>("id") ?: -1,
     name = savedStateHandle.get<String>("name") ?: "",
     backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
+    description = savedStateHandle.get<String>("description") ?: "",
+    public = savedStateHandle.get<Boolean>("public") ?: false,
   )
 
   private val _uiState: MutableStateFlow<ListDetailsUiState> = MutableStateFlow(
@@ -31,6 +33,8 @@ class ListDetailsViewModel(
       id = route.id,
       name = route.name,
       backdropPath = route.backdropPath,
+      description = route.description,
+      public = route.public,
     ),
   )
   val uiState: StateFlow<ListDetailsUiState> = _uiState

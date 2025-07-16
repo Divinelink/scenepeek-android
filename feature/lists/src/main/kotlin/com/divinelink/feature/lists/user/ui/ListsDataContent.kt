@@ -79,6 +79,8 @@ fun ListsDataContent(
                 id = listItem.id,
                 name = listItem.name,
                 backdropPath = listItem.backdropPath,
+                description = listItem.description,
+                public = listItem.public,
               ),
             )
           },

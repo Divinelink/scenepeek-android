@@ -6,5 +6,7 @@ sealed interface ListsAction {
     val id: Int,
     val name: String,
     val backdropPath: String?,
+    val description: String,
+    val public: Boolean,
   ) : ListsAction
 }

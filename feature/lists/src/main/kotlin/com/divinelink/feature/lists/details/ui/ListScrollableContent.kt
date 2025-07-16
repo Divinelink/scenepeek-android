@@ -29,6 +29,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.VisibilityBadge
 import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
@@ -89,12 +90,35 @@ fun ListScrollableContent(
             .fillMaxWidth()
             .padding(
               horizontal = MaterialTheme.dimensions.keyline_16,
-              vertical = MaterialTheme.dimensions.keyline_8,
+              vertical = MaterialTheme.dimensions.keyline_4,
             ),
           text = state.details.name,
           style = MaterialTheme.typography.titleLarge,
           color = MaterialTheme.colorScheme.onSurface,
         )
+      }
+
+      item {
+        VisibilityBadge(
+          modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+          isPublic = state.details.public,
+        )
+      }
+
+      item {
+        if (state.details.description.isNotBlank()) {
+          Text(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(
+                horizontal = MaterialTheme.dimensions.keyline_16,
+                vertical = MaterialTheme.dimensions.keyline_4,
+              ),
+            text = state.details.description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface,
+          )
+        }
       }
 
       when (state.details) {

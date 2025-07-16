@@ -11,4 +11,6 @@ fun ListDetailsResponse.map() = ListDetails(
   totalResults = totalResults,
   name = name,
   media = results.mapToMedia(),
+  description = description,
+  public = public,
 )
