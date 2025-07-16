@@ -88,6 +88,9 @@ class ListsScreenTest : ComposeTest() {
       ListDetailsRoute(
         id = 8452378,
         name = "Elsolist 2",
+        backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+        description = "This is a new list to test v4 lists",
+        public = true,
       ),
     )
   }

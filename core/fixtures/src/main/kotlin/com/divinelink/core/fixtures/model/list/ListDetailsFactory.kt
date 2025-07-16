@@ -28,7 +28,7 @@ object ListDetailsFactory {
     ),
     totalPages = 1,
     totalResults = 3,
-    public = true,
+    public = false,
   )
 
   fun page1() = ListDetails(

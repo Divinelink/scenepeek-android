@@ -26,13 +26,18 @@ class ListDetailsScreenTest : ComposeTest() {
   private val savedStateHandle = SavedStateHandle(
     mapOf(
       "id" to 1,
-      "name" to "Test List",
+      "name" to ListDetailsFactory.mustWatch().name,
+      "backdropPath" to ListDetailsFactory.mustWatch().backdropPath,
+      "description" to ListDetailsFactory.mustWatch().description,
+      "public" to ListDetailsFactory.mustWatch().public,
     ),
   )
 
   @Test
-  fun `test top app bar is displayed`() {
+  fun `test top app bar is displayed but title is hidden initially`() {
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
+
+    fetchListDetailsUseCase.mockResponse(Result.success(ListDetailsFactory.page1()))
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigateUp = {},
@@ -45,7 +50,12 @@ class ListDetailsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithText("Test List").assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
+
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(12)
+
+      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsDisplayed()
     }
   }
 
@@ -69,7 +79,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       assertThat(navigatedUp).isFalse()
-      onNodeWithTag(TestTags.Settings.NAVIGATION_ICON).performClick()
+      onNodeWithTag(TestTags.Components.TopAppBar.NAVIGATE_UP).performClick()
       assertThat(navigatedUp).isTrue()
     }
   }
@@ -95,7 +105,6 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsNotDisplayed()
 
       fetchListDetailsUseCase.mockResponse(
         Result.success(ListDetailsFactory.mustWatch()),
@@ -106,7 +115,6 @@ class ListDetailsScreenTest : ComposeTest() {
       }
 
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
 
       onNodeWithText("The Wire").assertIsDisplayed()
 
@@ -119,7 +127,6 @@ class ListDetailsScreenTest : ComposeTest() {
       }
 
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsNotDisplayed()
     }
   }
 
@@ -194,13 +201,13 @@ class ListDetailsScreenTest : ComposeTest() {
         Result.success(ListDetailsFactory.page2()),
       )
 
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(16)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(18)
 
       onNodeWithText("Fight club 1").assertIsNotDisplayed()
       onNodeWithText("Fight club 40").assertIsNotDisplayed()
-      onNodeWithText("Fight club 16").assertIsDisplayed()
+      onNodeWithText("Fight club 17").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(39)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(42)
       onNodeWithText("Fight club 40").assertIsDisplayed()
     }
   }

@@ -27,6 +27,9 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
         mapOf(
           "id" to navArgs.id,
           "name" to navArgs.name,
+          "backdropPath" to navArgs.backdropPath,
+          "description" to navArgs.description,
+          "public" to navArgs.public,
         ),
       ),
     )

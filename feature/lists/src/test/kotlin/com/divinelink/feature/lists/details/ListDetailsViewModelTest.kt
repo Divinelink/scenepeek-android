@@ -18,7 +18,13 @@ class ListDetailsViewModelTest {
 
   private val robot = ListDetailsViewModelTestRobot()
 
-  private val listDetailsRoute = ListDetailsRoute(id = 1, name = "Test List")
+  private val listDetailsRoute = ListDetailsRoute(
+    id = 1,
+    name = "Test List",
+    backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+    description = ListDetailsFactory.mustWatch().description,
+    public = ListDetailsFactory.mustWatch().public,
+  )
 
   @Test
   fun `test fetch data`() {
@@ -31,7 +37,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = "Must watch",
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
           ),
@@ -54,7 +59,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = ListDetailsFactory.page1().name,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.page1(),
           ),
@@ -71,7 +75,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = ListDetailsFactory.page1().name,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.page1().copy(
               page = 2,
@@ -94,7 +97,6 @@ class ListDetailsViewModelTest {
         uiStates = listOf(
           ListDetailsUiState(
             id = 1,
-            name = ListDetailsFactory.page1().name,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1().copy(
                 page = 2,
@@ -108,7 +110,6 @@ class ListDetailsViewModelTest {
           ),
           ListDetailsUiState(
             id = 1,
-            name = ListDetailsFactory.page1().name,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1().copy(
                 page = 2,
@@ -122,7 +123,6 @@ class ListDetailsViewModelTest {
           ),
           ListDetailsUiState(
             id = 1,
-            name = "Must watch",
             details = ListDetailsData.Data(
               data = ListDetailsFactory.mustWatch(),
             ),
@@ -146,7 +146,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = ListDetailsFactory.mustWatch().name,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
           ),
@@ -160,7 +159,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = ListDetailsFactory.mustWatch().name,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
           ),
@@ -183,7 +181,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = ListDetailsFactory.page1().name,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.page1(),
           ),
@@ -203,7 +200,6 @@ class ListDetailsViewModelTest {
         uiStates = listOf(
           ListDetailsUiState(
             id = 1,
-            name = ListDetailsFactory.page1().name,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1(),
             ),
@@ -214,7 +210,6 @@ class ListDetailsViewModelTest {
           ),
           ListDetailsUiState(
             id = 1,
-            name = ListDetailsFactory.page1().name,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1(),
             ),
@@ -225,7 +220,6 @@ class ListDetailsViewModelTest {
           ),
           ListDetailsUiState(
             id = 1,
-            name = ListDetailsFactory.page1().name,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1().copy(
                 page = 2,
@@ -252,7 +246,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = "Must watch",
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
           ),
@@ -269,7 +262,6 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = "Must watch",
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
           ),
@@ -282,7 +274,7 @@ class ListDetailsViewModelTest {
   }
 
   @Test
-  fun `test initial with error `() {
+  fun `test initial with error`() {
     robot
       .withArgs(listDetailsRoute)
       .mockListDetails(
@@ -292,8 +284,12 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = "Test List",
-          details = ListDetailsData.Initial,
+          details = ListDetailsData.Initial(
+            name = "Test List",
+            backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+            description = ListDetailsFactory.mustWatch().description,
+            public = ListDetailsFactory.mustWatch().public,
+          ),
           page = 1,
           error = BlankSlateState.Generic,
           refreshing = false,
@@ -313,8 +309,12 @@ class ListDetailsViewModelTest {
       .assertUiState(
         ListDetailsUiState(
           id = 1,
-          name = "Test List",
-          details = ListDetailsData.Initial,
+          details = ListDetailsData.Initial(
+            name = "Test List",
+            backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+            description = ListDetailsFactory.mustWatch().description,
+            public = ListDetailsFactory.mustWatch().public,
+          ),
           page = 1,
           error = BlankSlateState.Offline,
           refreshing = false,

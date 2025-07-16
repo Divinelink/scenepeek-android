@@ -26,7 +26,7 @@ data class ListDetailsUiState(
         name = name,
         backdropPath = backdropPath,
         description = description,
-        public = public
+        public = public,
       ),
       error = null,
       refreshing = false,

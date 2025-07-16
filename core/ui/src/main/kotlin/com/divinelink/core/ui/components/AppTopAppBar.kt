@@ -60,7 +60,10 @@ fun AppTopAppBar(
       }
     },
     navigationIcon = {
-      IconButton(onClick = onNavigateUp) {
+      IconButton(
+        modifier = Modifier.testTag(TestTags.Components.TopAppBar.NAVIGATE_UP),
+        onClick = onNavigateUp,
+      ) {
         Icon(
           imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
           contentDescription = stringResource(
