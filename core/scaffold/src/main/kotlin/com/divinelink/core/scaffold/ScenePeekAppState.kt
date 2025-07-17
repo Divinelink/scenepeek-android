@@ -13,7 +13,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.divinelink.core.data.network.NetworkMonitor
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.onboarding.OnboardingManager
+import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.navigation.route.navigateToHome
 import com.divinelink.core.navigation.route.navigateToProfile
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
@@ -27,6 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 fun rememberScenePeekAppState(
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager,
+  preferencesRepository: PreferencesRepository,
   navigationProvider: List<NavGraphExtension>,
   scope: CoroutineScope = rememberCoroutineScope(),
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -39,6 +42,7 @@ fun rememberScenePeekAppState(
     networkMonitor = networkMonitor,
     onboardingManager = onboardingManager,
     snackbarHostState = snackbarHostState,
+    preferencesRepository = preferencesRepository,
   )
 }
 
@@ -48,6 +52,7 @@ class ScenePeekAppState internal constructor(
   val scope: CoroutineScope,
   val navigationExtension: List<NavGraphExtension>,
   val snackbarHostState: SnackbarHostState,
+  preferencesRepository: PreferencesRepository,
   networkMonitor: NetworkMonitor,
   onboardingManager: OnboardingManager, // This could go on MainViewModel
 ) {
@@ -68,6 +73,12 @@ class ScenePeekAppState internal constructor(
       started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
       initialValue = false,
     )
+
+  val uiPreferences = preferencesRepository.uiPreferences.stateIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+    initialValue = UiPreferences.Initial,
+  )
 
   val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 

@@ -4,13 +4,13 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
+import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.core.testing.MainDispatcherRule
@@ -279,7 +279,7 @@ class PersonViewModelTest {
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           credits = PersonCastCreditFactory.knownFor(),
-          layoutStyle = LayoutStyle.LIST,
+          viewMode = ViewMode.LIST,
         ),
       )
       .onTabSelected(PersonTab.TVShows)
@@ -297,7 +297,7 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          layoutStyle = LayoutStyle.GRID,
+          viewMode = ViewMode.GRID,
         ),
       )
       .onUpdateLayoutStyle()
@@ -314,7 +314,7 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          layoutStyle = LayoutStyle.LIST,
+          viewMode = ViewMode.LIST,
         ),
       )
   }
@@ -538,7 +538,7 @@ class PersonViewModelTest {
       PersonTab.Movies.order to emptyMap(),
       PersonTab.TVShows.order to emptyMap(),
     ),
-    layoutStyle: LayoutStyle = LayoutStyle.LIST,
+    viewMode: ViewMode = ViewMode.LIST,
   ): PersonUiState {
     val forms = mapOf(
       PersonTab.About.order to PersonForm.About(personDetails),
@@ -556,7 +556,7 @@ class PersonViewModelTest {
       forms = forms,
       filters = filters,
       filteredCredits = filteredCredits,
-      layoutStyle = layoutStyle,
+      viewMode = viewMode,
     )
   }
 }

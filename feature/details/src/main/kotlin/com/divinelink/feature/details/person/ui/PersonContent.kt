@@ -55,11 +55,11 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -92,7 +92,7 @@ fun PersonContent(
   onShowTitle: (Boolean) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
-  val isGrid = uiState.layoutStyle == LayoutStyle.GRID
+  val isGrid = uiState.viewMode == ViewMode.GRID // TODO Get from LocalSettings
   val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
   val grid = if (isGrid) {
     GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)

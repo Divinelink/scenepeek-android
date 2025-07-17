@@ -10,6 +10,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import com.divinelink.core.data.network.NetworkMonitor
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.domain.onboarding.OnboardingManager
@@ -30,6 +31,7 @@ class MainActivity :
 
   private val networkMonitor: NetworkMonitor by inject<NetworkMonitor>()
   private val onboardingManager: OnboardingManager by inject<OnboardingManager>()
+  private val preferencesRepository: PreferencesRepository by inject<PreferencesRepository>()
   private val navigationProviders: List<NavGraphExtension> by inject()
 
   override fun onNewIntent(intent: Intent) {
@@ -50,6 +52,7 @@ class MainActivity :
       val appState = rememberScenePeekAppState(
         onboardingManager = onboardingManager,
         networkMonitor = networkMonitor,
+        preferencesRepository = preferencesRepository,
         navigationProvider = navigationProviders,
       )
 

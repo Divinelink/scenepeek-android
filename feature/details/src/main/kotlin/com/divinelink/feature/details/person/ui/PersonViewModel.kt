@@ -7,9 +7,9 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
-import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -129,13 +129,13 @@ class PersonViewModel(
   }
 
   fun onUpdateLayoutStyle() {
-    val layoutStyle = when (_uiState.value.layoutStyle) {
-      LayoutStyle.GRID -> LayoutStyle.LIST
-      LayoutStyle.LIST -> LayoutStyle.GRID
+    val viewMode = when (_uiState.value.viewMode) {
+      ViewMode.GRID -> ViewMode.LIST
+      ViewMode.LIST -> ViewMode.GRID
     }
 
     _uiState.update { uiState ->
-      uiState.copy(layoutStyle = layoutStyle)
+      uiState.copy(viewMode = viewMode)
     }
   }
 
