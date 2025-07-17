@@ -10,7 +10,6 @@ import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
-import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.core.testing.MainDispatcherRule
@@ -279,7 +278,6 @@ class PersonViewModelTest {
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
           credits = PersonCastCreditFactory.knownFor(),
-          viewMode = ViewMode.LIST,
         ),
       )
       .onTabSelected(PersonTab.TVShows)
@@ -297,7 +295,6 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          viewMode = ViewMode.GRID,
         ),
       )
       .onUpdateLayoutStyle()
@@ -314,7 +311,6 @@ class PersonViewModelTest {
             PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
             PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
           ),
-          viewMode = ViewMode.LIST,
         ),
       )
   }
@@ -538,7 +534,6 @@ class PersonViewModelTest {
       PersonTab.Movies.order to emptyMap(),
       PersonTab.TVShows.order to emptyMap(),
     ),
-    viewMode: ViewMode = ViewMode.LIST,
   ): PersonUiState {
     val forms = mapOf(
       PersonTab.About.order to PersonForm.About(personDetails),
@@ -556,7 +551,6 @@ class PersonViewModelTest {
       forms = forms,
       filters = filters,
       filteredCredits = filteredCredits,
-      viewMode = viewMode,
     )
   }
 }

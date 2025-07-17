@@ -4,12 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.change.FetchChangesUseCase
 import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.tab.PersonTab
-import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -23,6 +24,7 @@ import timber.log.Timber
 class PersonViewModel(
   fetchPersonDetailsUseCase: FetchPersonDetailsUseCase,
   fetchChangesUseCase: FetchChangesUseCase,
+  private val preferencesRepository: PreferencesRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -129,13 +131,8 @@ class PersonViewModel(
   }
 
   fun onUpdateLayoutStyle() {
-    val viewMode = when (_uiState.value.viewMode) {
-      ViewMode.GRID -> ViewMode.LIST
-      ViewMode.LIST -> ViewMode.GRID
-    }
-
-    _uiState.update { uiState ->
-      uiState.copy(viewMode = viewMode)
+    viewModelScope.launch {
+      preferencesRepository.switchViewMode(ViewableSection.PERSON_CREDITS)
     }
   }
 

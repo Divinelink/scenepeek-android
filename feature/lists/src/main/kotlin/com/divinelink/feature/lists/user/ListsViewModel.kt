@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.account.FetchUserListsUseCase
 import com.divinelink.core.domain.account.UserListsParameters
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.R
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
+class ListsViewModel(
+  private val fetchUserListsUseCase: FetchUserListsUseCase,
+  private val preferencesRepository: PreferencesRepository,
+) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ListsUiState> = MutableStateFlow(ListsUiState.initial)
   val uiState: StateFlow<ListsUiState> = _uiState
@@ -32,6 +37,14 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
 
     if (lists is ListData.Data && lists.data.canLoadMore()) {
       fetchUserLists()
+    }
+  }
+
+  fun updateViewMode() {
+    viewModelScope.launch {
+      preferencesRepository.switchViewMode(
+        section = ViewableSection.LISTS,
+      )
     }
   }
 

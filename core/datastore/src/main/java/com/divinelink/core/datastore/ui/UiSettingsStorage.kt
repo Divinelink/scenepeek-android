@@ -4,20 +4,18 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.divinelink.core.model.ui.SectionPreferences
+import com.divinelink.core.datastore.ui.DatastoreUiStorage.PreferencesKeys.viewModeKey
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.model.ui.other
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 interface UiSettingsStorage {
   val uiPreferences: Flow<UiPreferences>
 
-  suspend fun updateViewMode(
-    section: ViewableSection,
-    viewMode: ViewMode,
-  )
+  suspend fun updateViewMode(section: ViewableSection)
 }
 
 class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSettingsStorage {
@@ -30,26 +28,21 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
     fun viewModeKey(section: ViewableSection) = stringPreferencesKey("${section.key}_view_mode")
   }
 
-  override val uiPreferences: Flow<UiPreferences> = dataStore.data.map { preferences ->
-    val sections = ViewableSection.entries.associateWith { section ->
-      SectionPreferences(
-        viewMode = ViewMode.valueOf(
-          preferences[PreferencesKeys.viewModeKey(section)] ?: ViewMode.LIST.name,
-        ),
-      )
-    }
-
+  override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
     UiPreferences(
-      sections = sections,
+      personCreditsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.PERSON_CREDITS)]),
+      listsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.LISTS)]),
     )
   }
 
-  override suspend fun updateViewMode(
-    section: ViewableSection,
-    viewMode: ViewMode,
-  ) {
+  override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
-      preferences[PreferencesKeys.viewModeKey(section)] = viewMode.name
+      val currentViewMode = when (section) {
+        ViewableSection.PERSON_CREDITS -> preferences[viewModeKey(ViewableSection.PERSON_CREDITS)]
+        ViewableSection.LISTS -> preferences[viewModeKey(ViewableSection.LISTS)]
+      }
+
+      preferences[viewModeKey(section)] = ViewMode.from(currentViewMode).other().value
     }
   }
 }

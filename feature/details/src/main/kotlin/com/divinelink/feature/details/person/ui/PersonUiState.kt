@@ -5,7 +5,6 @@ import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.credits.PersonCredit
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
-import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 
 data class PersonUiState(
@@ -28,7 +27,6 @@ data class PersonUiState(
   ),
   val knownForCredits: List<PersonCredit>? = null,
   val dropdownMenuItems: List<DetailsMenuOptions> = listOf(DetailsMenuOptions.SHARE),
-  val viewMode: ViewMode = ViewMode.LIST, // TODO Remove
 ) {
   val aboutForm = forms.getOrElse(PersonTab.About.order) { null } as? PersonForm.About
 }

@@ -22,7 +22,6 @@ import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.local.LocalUiPreferences
 import com.divinelink.core.ui.network.NetworkStatusIndicator
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import kotlinx.coroutines.delay
@@ -40,7 +39,6 @@ fun ScenePeekApp(
 ) {
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
-  val uiPreferences by state.uiPreferences.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
@@ -99,7 +97,6 @@ fun ScenePeekApp(
       ProvideScenePeekAppState(
         appState = state,
       ) {
-        LocalUiPreferences provides uiPreferences
         ProvideSnackbarController(
           snackbarHostState = state.snackbarHostState,
           coroutineScope = state.scope,

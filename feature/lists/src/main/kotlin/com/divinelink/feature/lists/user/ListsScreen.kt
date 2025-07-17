@@ -93,6 +93,7 @@ fun AnimatedVisibilityScope.ListsScreen(
                   public = userInteraction.public,
                 ),
               )
+              is ListsAction.UpdateViewMode -> viewModel.updateViewMode()
             }
           },
         )

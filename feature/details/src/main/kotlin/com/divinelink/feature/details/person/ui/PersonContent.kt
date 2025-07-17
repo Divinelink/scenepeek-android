@@ -67,6 +67,7 @@ import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.local.LocalUiPreferences
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -92,7 +93,8 @@ fun PersonContent(
   onShowTitle: (Boolean) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
-  val isGrid = uiState.viewMode == ViewMode.GRID // TODO Get from LocalSettings
+  val isGrid = LocalUiPreferences.current.personCreditsViewMode == ViewMode.GRID
+
   val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
   val grid = if (isGrid) {
     GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)
