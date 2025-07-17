@@ -1,5 +1,6 @@
 package com.divinelink.scenepeek.base.di
 
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
@@ -38,4 +39,7 @@ val appViewModelModule = module {
   viewModelOf(::ListsViewModel)
   viewModelOf(::AddToListViewModel)
   viewModelOf(::ListDetailsViewModel)
+
+  // Components
+  viewModelOf(::SwitchViewButtonViewModel)
 }

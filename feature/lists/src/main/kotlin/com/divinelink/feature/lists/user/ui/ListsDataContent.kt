@@ -3,7 +3,9 @@ package com.divinelink.feature.lists.user.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -23,12 +25,16 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.scaffold.isMediumScreenWidthOrWider
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.button.switchview.SwitchViewButton
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.list.ListItemCard
+import com.divinelink.core.ui.local.rememberViewModePreferences
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 
@@ -41,6 +47,8 @@ fun ListsDataContent(
   val scope = rememberCoroutineScope()
   val isMediumScreenWidthOrWider = isMediumScreenWidthOrWider()
   var numberOfCells by rememberSaveable { mutableIntStateOf(1) }
+
+  val isGrid = rememberViewModePreferences(ViewableSection.LISTS) == ViewMode.GRID
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
@@ -66,6 +74,13 @@ fun ListsDataContent(
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
+      item {
+        ListSettingsRow(
+          onSwitchViewMode = {
+            userInteraction.invoke(ListsAction.SwitchViewMode)
+          },
+        )
+      }
       items(
         key = { list -> list.id },
         items = data.list,
@@ -95,6 +110,19 @@ fun ListsDataContent(
           scrollState.animateScrollToItem(0)
         }
       },
+    )
+  }
+}
+
+@Composable
+fun ListSettingsRow(onSwitchViewMode: () -> Unit) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.End,
+  ) {
+    SwitchViewButton(
+      section = ViewableSection.LISTS,
+      onClick = onSwitchViewMode,
     )
   }
 }

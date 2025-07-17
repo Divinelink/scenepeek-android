@@ -29,7 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -46,6 +48,7 @@ fun PersonScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: PersonViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -133,7 +136,9 @@ fun PersonScreen(
               )
             },
             onTabSelected = viewModel::onTabSelected,
-            onUpdateLayoutStyle = viewModel::onUpdateLayoutStyle,
+            onUpdateViewMode = {
+              switchViewButtonViewModel.switchViewMode(ViewableSection.PERSON_CREDITS)
+            },
             onApplyFilter = viewModel::onApplyFilter,
             onShowTitle = { isAppBarVisible = it },
           )
