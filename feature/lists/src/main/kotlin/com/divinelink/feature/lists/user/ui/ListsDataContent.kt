@@ -28,6 +28,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.list.ListItemCard
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 
@@ -60,18 +61,16 @@ fun ListsDataContent(
       columns = GridCells.Fixed(numberOfCells),
       contentPadding = PaddingValues(
         top = MaterialTheme.dimensions.keyline_16,
-        start = MaterialTheme.dimensions.keyline_16,
-        end = MaterialTheme.dimensions.keyline_16,
         bottom = LocalBottomNavigationPadding.current,
       ),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
       items(
         key = { list -> list.id },
         items = data.list,
       ) { listItem ->
-        ListCard(
+        ListItemCard(
           listItem = listItem,
           onClick = {
             userInteraction(
