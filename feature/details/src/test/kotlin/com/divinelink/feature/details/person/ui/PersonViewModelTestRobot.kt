@@ -54,10 +54,6 @@ class PersonViewModelTestRobot : ViewModelTestRobot<PersonUiState>() {
     viewModel.onTabSelected(tab.order)
   }
 
-  fun onUpdateLayoutStyle() = apply {
-    viewModel.onUpdateLayoutStyle()
-  }
-
   fun onApplyFilter(filter: CreditFilter) = apply {
     viewModel.onApplyFilter(filter)
   }

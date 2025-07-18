@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
@@ -31,12 +32,14 @@ fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
 }
 
 fun ComposeTest.setVisibilityScopeContent(
+  preferencesRepository: TestPreferencesRepository = TestPreferencesRepository(),
   content: @Composable AnimatedVisibilityScope.(transitionScope: SharedTransitionScope) -> Unit,
 ) {
   composeTestRule.setContent {
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
+      preferencesRepository = preferencesRepository,
       navigationProvider = listOf(),
     )
     val snackbarHostState = remember { SnackbarHostState() }
@@ -63,6 +66,7 @@ fun ComposeTest.setScaffoldContent(
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
+      preferencesRepository = TestPreferencesRepository(),
       navigationProvider = navigationProvider,
     )
 

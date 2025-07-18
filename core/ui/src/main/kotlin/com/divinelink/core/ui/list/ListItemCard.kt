@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
-import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.list.ListItem
@@ -46,7 +45,7 @@ fun ListItemCard(
     ) {
       ListItemBackdropImage(
         modifier = Modifier.weight(3f),
-        url = ApiConstants.TMDB_BACKDROP_URL + listItem.backdropPath,
+        url = listItem.backdropPath,
       )
 
       Column(

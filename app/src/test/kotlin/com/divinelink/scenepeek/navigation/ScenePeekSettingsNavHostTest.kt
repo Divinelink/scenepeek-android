@@ -18,6 +18,7 @@ import androidx.navigation.testing.TestNavHostController
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.scaffold.ProvideScenePeekAppState
@@ -129,6 +130,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
         networkMonitor = TestNetworkMonitor(),
         onboardingManager = TestOnboardingManager(),
         navController = navController,
+        preferencesRepository = TestPreferencesRepository(),
         navigationProvider = get<List<NavGraphExtension>>(),
       )
 

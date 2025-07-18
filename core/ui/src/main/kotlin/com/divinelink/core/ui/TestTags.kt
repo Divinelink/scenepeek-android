@@ -208,7 +208,7 @@ object TestTags {
   }
 
   object Lists {
-    const val SCROLLABLE_CONTENT = "Lists Scrollable Content"
+    const val SCROLLABLE_CONTENT = "Lists Scrollable Content View Mode %s"
     const val CONTENT = "Lists Content"
     const val SCREEN = "Lists Screen"
     const val ERROR_CONTENT = "Lists Error Content"

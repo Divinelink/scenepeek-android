@@ -20,9 +20,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -91,7 +88,6 @@ fun PersonContent(
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
 
-  val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
   val grid = if (isGrid) {
     GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)
   } else {

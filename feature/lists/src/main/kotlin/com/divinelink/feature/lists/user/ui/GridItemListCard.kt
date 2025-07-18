@@ -13,18 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
-import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.coil.ListItemBackdropImage
+import com.divinelink.core.ui.coil.GridItemBackdropImage
 import com.divinelink.core.ui.components.VisibilityBadge
 import com.divinelink.core.ui.R as uiR
 
 @Composable
-fun ListCard(
+fun GridItemListCard(
   modifier: Modifier = Modifier,
   listItem: ListItem,
   onClick: (ListItem) -> Unit,
@@ -35,9 +34,9 @@ fun ListCard(
     onClick = { onClick(listItem) },
   ) {
     Box {
-      ListItemBackdropImage(
+      GridItemBackdropImage(
         modifier = Modifier,
-        url = ApiConstants.TMDB_BACKDROP_URL + listItem.backdropPath,
+        url = listItem.backdropPath,
       )
 
       Column(
@@ -74,7 +73,7 @@ fun ListCard(
 fun ListCardPreview() {
   AppTheme {
     Surface {
-      ListCard(
+      GridItemListCard(
         listItem = ListItemFactory.nonPrivateList(),
         onClick = {},
       )
