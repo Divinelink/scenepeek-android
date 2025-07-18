@@ -72,11 +72,12 @@ fun ListsDataContent(
 
   Box(Modifier.fillMaxSize()) {
     LazyVerticalGrid(
-      modifier = Modifier.testTag(TestTags.Lists.SCROLLABLE_CONTENT.format(viewMode.value)),
+      modifier = Modifier
+        .testTag(TestTags.Lists.SCROLLABLE_CONTENT.format(viewMode.value)),
       columns = GridCells.Fixed(numberOfCells),
       contentPadding = PaddingValues(
-        start = padding,
-        end = padding,
+        start = MaterialTheme.dimensions.keyline_8,
+        end = MaterialTheme.dimensions.keyline_8,
         top = MaterialTheme.dimensions.keyline_16,
         bottom = LocalBottomNavigationPadding.current,
       ),
@@ -90,6 +91,7 @@ fun ListsDataContent(
           },
         )
       }
+
       items(
         key = { list -> list.id },
         items = data.list,

@@ -15,18 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.list.ListItem
-import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.coil.ListItemBackdropImage
 import com.divinelink.core.ui.components.VisibilityBadge
 
 @Composable
-@Previews
 fun ListItemCard(
   modifier: Modifier = Modifier,
-  listItem: ListItem = ListItemFactory.nonPrivateList(),
-  onClick: (ListItem) -> Unit = {},
+  listItem: ListItem,
+  onClick: (ListItem) -> Unit,
 ) {
   Card(
     modifier = modifier.fillMaxWidth(),
@@ -38,7 +35,7 @@ fun ListItemCard(
   ) {
     Row(
       modifier = Modifier
-        .padding(MaterialTheme.dimensions.keyline_16)
+        .padding(MaterialTheme.dimensions.keyline_8)
         .fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
       verticalAlignment = Alignment.CenterVertically,

@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.lists.user.ListsUiState
-import com.divinelink.feature.lists.user.ui.ListsContentPreview
+import com.divinelink.feature.lists.user.ui.ListsContentGridPreview
+import com.divinelink.feature.lists.user.ui.ListsContentListPreview
 import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvider
 
 @Composable
@@ -12,5 +13,11 @@ import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvid
 fun UserListsContentScreenshots(
   @PreviewParameter(ListsUiStateParameterProvider::class) state: ListsUiState,
 ) {
-  ListsContentPreview(state)
+  ListsContentListPreview(state)
+}
+
+@Composable
+@Previews
+fun UserListsGridContentScreenshots() {
+  ListsContentGridPreview()
 }

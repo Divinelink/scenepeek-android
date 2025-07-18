@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -46,10 +47,14 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.MovieImage
@@ -60,6 +65,7 @@ import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.local.LocalUiPreferences
 import com.divinelink.core.ui.local.rememberViewModePreferences
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
@@ -378,25 +384,72 @@ private fun CollapsiblePersonContent(
 
 @Previews
 @Composable
-fun PersonContentPreview(
+fun PersonContentListPreview(
   @PreviewParameter(PersonUiStatePreviewParameterProvider::class) uiState: PersonUiState,
 ) {
   val lazyListState = rememberLazyListState()
   LaunchedEffect(Unit) {
     lazyListState.scrollToItem(0)
   }
-  AppTheme {
-    Surface {
-      PersonContent(
-        uiState = uiState,
-        lazyListState = lazyListState,
-        scope = rememberCoroutineScope(),
-        onMediaClick = {},
-        onTabSelected = {},
-        onUpdateViewMode = {},
-        onApplyFilter = {},
-        onShowTitle = {},
-      )
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial,
+  ) {
+    AppTheme {
+      Surface {
+        PersonContent(
+          uiState = uiState,
+          lazyListState = lazyListState,
+          scope = rememberCoroutineScope(),
+          onMediaClick = {},
+          onTabSelected = {},
+          onUpdateViewMode = {},
+          onApplyFilter = {},
+          onShowTitle = {},
+        )
+      }
+    }
+  }
+}
+
+@Previews
+@Composable
+fun PersonContentGridPreview() {
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial.copy(
+      personCreditsViewMode = ViewMode.GRID,
+    ),
+  ) {
+    AppTheme {
+      Surface {
+        PersonContent(
+          uiState = PersonUiState(
+            selectedTabIndex = 2,
+            forms = mapOf(
+              0 to PersonForm.About(
+                PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+              ),
+              1 to PersonForm.Movies(emptyMap()),
+              2 to PersonForm.TvShows(GroupedPersonCreditsSample.tvShows()),
+            ),
+            filteredCredits = mapOf(
+              2 to GroupedPersonCreditsSample.tvShows(),
+            ),
+            filters = mapOf(
+              1 to emptyList(),
+              2 to emptyList(),
+            ),
+            tabs = PersonTab.entries,
+            knownForCredits = PersonCastCreditFactory.all(),
+          ),
+          lazyListState = rememberLazyListState(),
+          scope = rememberCoroutineScope(),
+          onMediaClick = {},
+          onTabSelected = {},
+          onUpdateViewMode = {},
+          onApplyFilter = {},
+          onShowTitle = {},
+        )
+      }
     }
   }
 }

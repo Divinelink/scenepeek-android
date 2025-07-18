@@ -4,17 +4,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.ui.UiPreferences
+import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.local.LocalUiPreferences
 import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.user.ListsAction
 import com.divinelink.feature.lists.user.ListsUiState
@@ -50,15 +55,44 @@ fun ListsContent(
 
 @Composable
 @Previews
-fun ListsContentPreview(
+fun ListsContentListPreview(
   @PreviewParameter(ListsUiStateParameterProvider::class) state: ListsUiState,
 ) {
-  AppTheme {
-    Surface {
-      ListsContent(
-        uiState = state,
-        userInteraction = { },
-      )
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial,
+  ) {
+    AppTheme {
+      Surface {
+        ListsContent(
+          uiState = state,
+          userInteraction = { },
+        )
+      }
+    }
+  }
+}
+
+@Composable
+@Previews
+fun ListsContentGridPreview() {
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial.copy(
+      listsViewMode = ViewMode.GRID,
+    ),
+  ) {
+    AppTheme {
+      Surface {
+        ListsContent(
+          uiState = ListsUiState(
+            page = 1,
+            isLoading = false,
+            loadingMore = true,
+            error = null,
+            lists = ListData.Data(ListItemFactory.page1()),
+          ),
+          userInteraction = { },
+        )
+      }
     }
   }
 }
