@@ -2,7 +2,7 @@ package com.divinelink.core.domain.account
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
-import com.divinelink.core.data.account.AccountRepository
+import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
@@ -18,7 +18,7 @@ data class UserListsParameters(
 
 class FetchUserListsUseCase(
   private val storage: SessionStorage,
-  private val repository: AccountRepository,
+  private val repository: ListRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<UserListsParameters, PaginationData<ListItem>>(dispatcher.default) {
 

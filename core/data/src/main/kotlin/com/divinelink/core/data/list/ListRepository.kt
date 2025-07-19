@@ -1,9 +1,12 @@
 package com.divinelink.core.data.list
 
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
+import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.network.list.model.CreateListRequest
+import kotlinx.coroutines.flow.Flow
 
 interface ListRepository {
 
@@ -19,4 +22,9 @@ interface ListRepository {
   ): Result<ListDetails>
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResult>
+
+  suspend fun fetchUserLists(
+    accountId: String,
+    page: Int,
+  ): Flow<Result<PaginationData<ListItem>>>
 }

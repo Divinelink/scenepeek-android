@@ -1,7 +1,5 @@
 package com.divinelink.core.network.account.service
 
-import com.divinelink.core.network.account.model.ListsResponse
-import com.divinelink.core.network.account.util.buildFetchListsUrl
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
@@ -72,19 +70,5 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
     val response = restClient.get<TvResponseApi>(url = url)
 
     emit(response)
-  }
-
-  override fun fetchUserLists(
-    accountId: String,
-    page: Int,
-  ): Flow<ListsResponse> {
-    val url = buildFetchListsUrl(
-      accountId = accountId,
-      page = page,
-    )
-
-    return flow {
-      emit(restClient.get<ListsResponse>(url = url))
-    }
   }
 }

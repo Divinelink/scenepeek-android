@@ -1,7 +1,6 @@
 package com.divinelink.core.data.account
 
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
 
@@ -34,9 +33,4 @@ interface AccountRepository {
     accountId: String,
     sessionId: String,
   ): Flow<Result<PaginationData<MediaItem.Media>>>
-
-  suspend fun fetchUserLists(
-    accountId: String,
-    page: Int,
-  ): Flow<Result<PaginationData<ListItem>>>
 }

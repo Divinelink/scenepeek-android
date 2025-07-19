@@ -1,13 +1,22 @@
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.list.ListRepository
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
+import com.divinelink.core.model.list.ListItem
+import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class TestListRepository {
   val mock: ListRepository = mock()
+
+  suspend fun mockFetchUserLists(response: Flow<Result<PaginationData<ListItem>>>) {
+    whenever(
+      mock.fetchUserLists(accountId = any(), page = any()),
+    ).thenReturn(response)
+  }
 
   suspend fun mockAddItemToList(result: Result<AddToListResult>) {
     whenever(

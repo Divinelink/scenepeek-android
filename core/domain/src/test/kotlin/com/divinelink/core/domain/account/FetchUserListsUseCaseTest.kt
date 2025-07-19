@@ -8,7 +8,7 @@ import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.repository.TestAccountRepository
+import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
@@ -24,7 +24,7 @@ class FetchUserListsUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private val repository = TestAccountRepository()
+  private val repository = TestListRepository()
 
   @Test
   fun `test fetch lists when account storage account id is null emits unauthenticated`() = runTest {
