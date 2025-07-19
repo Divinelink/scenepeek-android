@@ -17,9 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
 
@@ -27,8 +25,7 @@ import com.divinelink.core.ui.getString
 fun BlankSlate(
   modifier: Modifier = Modifier,
   uiState: BlankSlateState,
-  onRetry: ((() -> Unit))? = null,
-  actionText: UIText? = null,
+  onRetry: (() -> Unit) = {},
 ) {
   Column(
     modifier = modifier
@@ -61,14 +58,12 @@ fun BlankSlate(
       )
     }
 
-    onRetry?.let {
+    uiState.retryText?.let { retryText ->
       Button(
-        onClick = it,
+        onClick = onRetry,
         modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_16),
       ) {
-        actionText?.let { actionText ->
-          Text(text = actionText.getString())
-        } ?: Text(text = UIText.ResourceText(R.string.core_ui_retry).getString())
+        Text(text = retryText.getString())
       }
     }
   }
@@ -81,7 +76,6 @@ private fun BlankSlatePreview() {
     Surface {
       BlankSlate(
         uiState = BlankSlateState.Offline,
-        onRetry = {},
       )
     }
   }

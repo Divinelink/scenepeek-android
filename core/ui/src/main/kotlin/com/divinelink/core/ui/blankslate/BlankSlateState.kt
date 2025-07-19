@@ -7,16 +7,19 @@ sealed class BlankSlateState(
   open val icon: Int? = null,
   open val title: UIText,
   open val description: UIText? = null,
+  open val retryText: UIText? = null,
 ) {
   data object Offline : BlankSlateState(
     icon = R.drawable.core_ui_feeling_blue,
     title = UIText.ResourceText(R.string.core_ui_offline_title),
     description = UIText.ResourceText(R.string.core_ui_offline_description),
+    retryText = UIText.ResourceText(R.string.core_ui_retry),
   )
 
   data object Generic : BlankSlateState(
     title = UIText.ResourceText(R.string.core_ui_error_generic_title),
     description = UIText.ResourceText(R.string.core_ui_error_generic_description),
+    retryText = UIText.ResourceText(R.string.core_ui_retry),
   )
 
   data class Unauthenticated(override val description: UIText? = null) :
@@ -30,5 +33,6 @@ sealed class BlankSlateState(
     override val icon: Int? = null,
     override val title: UIText,
     override val description: UIText? = null,
-  ) : BlankSlateState(icon, title, description)
+    override val retryText: UIText? = null,
+  ) : BlankSlateState(icon, title, description, retryText)
 }
