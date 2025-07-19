@@ -58,7 +58,7 @@ class TestAccountRepository {
 
   suspend fun mockFetchUserLists(response: Flow<Result<PaginationData<ListItem>>>) {
     whenever(
-      mock.fetchUserLists(accountId = any()),
+      mock.fetchUserLists(accountId = any(), page = any()),
     ).thenReturn(response)
   }
 }

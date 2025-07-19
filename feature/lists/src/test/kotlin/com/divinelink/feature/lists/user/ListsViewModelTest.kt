@@ -266,4 +266,92 @@ class ListsViewModelTest {
         ),
       )
   }
+
+  @Test
+  fun `test refresh resets pages`() = runTest {
+    robot
+      .mockFetchUserData(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        ListsUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserData(response = Result.success(ListItemFactory.page2()))
+      .onLoadMore()
+      .assertUiState(
+        ListsUiState.initial.copy(
+          page = 3,
+          lists = ListData.Data(
+            PaginationData(
+              page = 2,
+              totalPages = 2,
+              totalResults = 6,
+              list = ListItemFactory.page1().list + ListItemFactory.page2().list,
+            ),
+          ),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserData(
+        Result.success(ListItemFactory.page1()),
+      )
+//      .onRefresh()
+//      .assertUiState(
+//        ListsUiState.initial.copy(
+//          page = 2,
+//          lists = ListData.Data(ListItemFactory.page1()),
+//          isLoading = false,
+//          loadingMore = false,
+//        ),
+//      )
+      .expectUiStates(
+        action = {
+          onRefresh()
+        },
+        uiStates = listOf(
+          ListsUiState.initial.copy(
+            page = 3,
+            lists = ListData.Data(
+              PaginationData(
+                page = 2,
+                totalPages = 2,
+                totalResults = 6,
+                list = ListItemFactory.page1().list + ListItemFactory.page2().list,
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+            refreshing = false,
+          ),
+          ListsUiState.initial.copy(
+            page = 3,
+            lists = ListData.Data(
+              PaginationData(
+                page = 2,
+                totalPages = 2,
+                totalResults = 6,
+                list = ListItemFactory.page1().list + ListItemFactory.page2().list,
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+            refreshing = true,
+          ),
+          ListsUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+            refreshing = false,
+          ),
+        ),
+      )
+  }
 }

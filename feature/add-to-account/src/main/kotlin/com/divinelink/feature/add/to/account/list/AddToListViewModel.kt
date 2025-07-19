@@ -216,7 +216,8 @@ class AddToListViewModel(
     _uiState.update { uiState ->
       uiState.copy(
         error = BlankSlateState.Unauthenticated(
-          UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+          description = UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+          retryText = UIText.ResourceText(com.divinelink.core.ui.R.string.core_ui_login),
         ),
         page = 1,
         lists = ListData.Initial,

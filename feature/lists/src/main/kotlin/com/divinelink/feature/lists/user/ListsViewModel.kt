@@ -48,7 +48,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
   private fun fetchUserLists(isRefreshing: Boolean) {
     _uiState.update { uiState ->
       uiState.copy(
-        loadingMore = uiState.lists !is ListData.Initial,
+        loadingMore = uiState.lists !is ListData.Initial && !isRefreshing,
       )
     }
     viewModelScope.launch {
@@ -65,7 +65,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
                   loadingMore = false,
                   isLoading = false,
                   refreshing = false,
-                  page = uiState.page + 1,
+                  page = result.data.page + 1,
                   error = null,
                   lists = if (isRefreshing) {
                     ListData.Data(result.data)
