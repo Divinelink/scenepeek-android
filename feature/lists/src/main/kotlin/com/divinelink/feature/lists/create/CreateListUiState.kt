@@ -1,13 +1,21 @@
 package com.divinelink.feature.lists.create
 
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+
 data class CreateListUiState(
-  val todo: Int,
-  val todo2: Int,
+  val name: String,
+  val description: String,
+  val public: Boolean,
+  val editMode: Boolean,
+  val snackbarMessage: SnackbarMessage?,
 ) {
   companion object {
     val initial = CreateListUiState(
-      todo = 0,
-      todo2 = 0,
+      name = "",
+      description = "",
+      public = true,
+      editMode = false,
+      snackbarMessage = null,
     )
   }
 }

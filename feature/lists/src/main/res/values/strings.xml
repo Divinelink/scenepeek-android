@@ -7,4 +7,11 @@
   <string name="feature_lists_empty_list">There are no items added to this list.</string>
 
   <string name="feature_lists_add_list">Create list</string>
+
+  <string name="feature_lists_name">Name</string>
+  <string name="feature_lists_description">Description</string>
+  <string name="feature_lists_public_description">Public lists can be viewed by other users.</string>
+
+  <string name='feature_lists_create_successfully'>%s created successfully.</string>
+  <string name='feature_lists_create_failure'>Failed to create %s</string>
 </resources>

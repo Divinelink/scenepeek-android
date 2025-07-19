@@ -47,6 +47,9 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
     runCatching {
       val url = buildListUrl()
 
-      client.post<CreateListRequest, CreateListResponse>(url = url, body = request)
+      client.post<CreateListRequest, CreateListResponse>(
+        url = url,
+        body = request,
+      )
     }
 }

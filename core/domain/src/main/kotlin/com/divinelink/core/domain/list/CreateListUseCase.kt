@@ -20,7 +20,7 @@ class CreateListUseCase(
 
   override fun execute(parameters: CreateListParameters): Flow<Result<Int>> = flow {
     val result = repository.createList(
-      request = CreateListRequest(
+      request = CreateListRequest.create(
         name = parameters.name,
         description = parameters.description,
         public = parameters.public,
