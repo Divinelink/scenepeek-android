@@ -5,4 +5,6 @@
   <string name="feature_lists_login_description">You need to be logged in to view your lists.</string>
   <string name="feature_lists_empty">You haven\'t created any lists.</string>
   <string name="feature_lists_empty_list">There are no items added to this list.</string>
+
+  <string name="feature_lists_add_list">Create list</string>
 </resources>

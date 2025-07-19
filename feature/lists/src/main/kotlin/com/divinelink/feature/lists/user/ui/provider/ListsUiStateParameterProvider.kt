@@ -70,5 +70,13 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       refreshing = true,
       lists = ListData.Data(ListItemFactory.page1()),
     ),
+    ListsUiState(
+      page = 1,
+      isLoading = false,
+      loadingMore = false,
+      error = null,
+      refreshing = false,
+      lists = ListData.Data(ListItemFactory.empty()),
+    ),
   )
 }
