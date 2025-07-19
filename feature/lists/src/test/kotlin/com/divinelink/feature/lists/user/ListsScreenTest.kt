@@ -42,6 +42,7 @@ class ListsScreenTest : ComposeTest() {
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
         onNavigateToList = {},
+        onNavigateToCreateList = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -66,6 +67,7 @@ class ListsScreenTest : ComposeTest() {
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
         onNavigateToList = {},
+        onNavigateToCreateList = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -94,6 +96,7 @@ class ListsScreenTest : ComposeTest() {
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
         onNavigateToList = {},
+        onNavigateToCreateList = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -126,6 +129,7 @@ class ListsScreenTest : ComposeTest() {
       ListsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
+        onNavigateToCreateList = {},
         onNavigateToList = {
           navigateRoute = it
         },
@@ -169,6 +173,7 @@ class ListsScreenTest : ComposeTest() {
       ListsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
+        onNavigateToCreateList = {},
         onNavigateToList = {
           navigateRoute = it
         },
@@ -209,6 +214,7 @@ class ListsScreenTest : ComposeTest() {
       ListsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateUp = {},
+        onNavigateToCreateList = {},
         onNavigateToList = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,

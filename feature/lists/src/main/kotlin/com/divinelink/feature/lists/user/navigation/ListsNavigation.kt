@@ -10,12 +10,14 @@ fun NavGraphBuilder.listsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
   onNavigateToList: (ListDetailsRoute) -> Unit,
+  onNavigateToCreateList: () -> Unit,
 ) {
   composable<ListsRoute> {
     ListsScreen(
       onNavigateUp = onNavigateUp,
       onNavigateToTMDBLogin = onNavigateToTMDBLogin,
       onNavigateToList = onNavigateToList,
+      onNavigateToCreateList = onNavigateToCreateList,
     )
   }
 }

@@ -214,6 +214,9 @@ val navigationModule = module {
         onNavigateUp = navController::navigateUp,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
         onNavigateToList = navController::navigateToListDetails,
+        onNavigateToCreateList = {
+//          navController::navigateToCreateList
+        },
       )
     }
   }
