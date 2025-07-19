@@ -1,9 +1,12 @@
 package com.divinelink.feature.lists.user
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.list.ListItemFactory
@@ -75,6 +78,40 @@ class ListsScreenTest : ComposeTest() {
         TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
       ).assertIsDisplayed()
       onNodeWithText("Elsolist 2").assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test refresh list`() {
+    fetchUserListsUseCase.mockResponse(
+      Result.success(ListItemFactory.page2()),
+    )
+
+    setVisibilityScopeContent(
+      preferencesRepository = preferencesRepository,
+    ) {
+      ListsScreen(
+        onNavigateToTMDBLogin = {},
+        onNavigateUp = {},
+        onNavigateToList = {},
+        viewModel = ListsViewModel(
+          fetchUserListsUseCase = fetchUserListsUseCase.mock,
+        ),
+        switchViewButtonViewModel = switchViewButtonViewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText("Elsolist").assertIsNotDisplayed()
+      fetchUserListsUseCase.mockResponse(
+        Result.success(ListItemFactory.page1()),
+      )
+
+      onNodeWithTag(TestTags.Lists.PULL_TO_REFRESH).performTouchInput {
+        swipeDown()
+      }
+
+      onNodeWithText("Elsolist").assertIsDisplayed()
     }
   }
 

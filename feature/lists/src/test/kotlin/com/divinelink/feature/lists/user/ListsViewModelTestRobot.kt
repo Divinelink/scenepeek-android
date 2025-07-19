@@ -31,6 +31,10 @@ class ListsViewModelTestRobot : ViewModelTestRobot<ListsUiState>() {
     viewModel.onLoadMore()
   }
 
+  fun onRefresh() = apply {
+    viewModel.onRefresh()
+  }
+
   fun assertUiState(expectedUiState: ListsUiState) = apply {
     assertThat(viewModel.uiState.value).isEqualTo(expectedUiState)
   }

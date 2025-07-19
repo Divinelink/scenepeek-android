@@ -57,7 +57,7 @@ fun HomeContent(
           BlankSlate(
             modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
             uiState = viewState.blankSlate,
-            onRetry = viewState.retryAction?.let { onRetryClick },
+            onRetry = onRetryClick,
           )
         }
         false -> AnimatedContent(

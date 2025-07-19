@@ -56,8 +56,13 @@ class ProdAccountRepository(private val remote: AccountService) : AccountReposit
       Result.success(apiResponse.map())
     }
 
-  override suspend fun fetchUserLists(accountId: String): Flow<Result<PaginationData<ListItem>>> =
-    remote
-      .fetchUserLists(accountId)
-      .map { Result.success(it.map()) }
+  override suspend fun fetchUserLists(
+    accountId: String,
+    page: Int,
+  ): Flow<Result<PaginationData<ListItem>>> = remote
+    .fetchUserLists(
+      accountId = accountId,
+      page = page,
+    )
+    .map { Result.success(it.map()) }
 }

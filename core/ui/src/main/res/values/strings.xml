@@ -26,6 +26,8 @@
   <string name="core_ui_password">Password</string>
   <string name="core_ui_view_all">View all</string>
 
+  <string name="core_ui_create_list">Create list</string>
+
   <plurals name="core_ui_character_episode_episodes">
     <item quantity="one">(%s Episode)</item>
     <item quantity="other">(%s Episodes)</item>

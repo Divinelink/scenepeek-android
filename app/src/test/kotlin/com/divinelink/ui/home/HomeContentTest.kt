@@ -74,9 +74,9 @@ class HomeContentTest : ComposeTest() {
   }
 
   @Test
-  fun `test blank slate retry is not visible when retry is null`() {
+  fun `test blank slate retry is not visible when retryText is null`() {
     val uiState = HomeViewState.initial().copy(
-      error = BlankSlateState.Offline,
+      error = BlankSlateState.Unauthenticated(),
       retryAction = null,
     )
 

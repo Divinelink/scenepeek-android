@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -34,7 +33,6 @@ import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListUiState
 import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStateParameterProvider
-import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun AddToListContent(
@@ -80,11 +78,6 @@ fun AddToListContent(
             .padding(horizontal = MaterialTheme.dimensions.keyline_16)
             .padding(bottom = LocalBottomNavigationPadding.current),
           uiState = uiState.error,
-          actionText = if (uiState.error is BlankSlateState.Unauthenticated) {
-            UIText.ResourceText(uiR.string.core_ui_login)
-          } else {
-            null
-          },
           onRetry = {
             if (uiState.error is BlankSlateState.Unauthenticated) {
               action(AddToListAction.Login)

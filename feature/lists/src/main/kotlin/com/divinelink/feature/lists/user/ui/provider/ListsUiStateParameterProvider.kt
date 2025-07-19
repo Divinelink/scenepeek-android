@@ -3,10 +3,10 @@ package com.divinelink.feature.lists.user.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.UIText
-import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.model.list.ListData
-import com.divinelink.feature.lists.user.ListsUiState
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.user.ListsUiState
 
 class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
   override val values: Sequence<ListsUiState> = sequenceOf(
@@ -15,6 +15,7 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       isLoading = true,
       loadingMore = false,
       error = null,
+      refreshing = false,
       lists = ListData.Initial,
     ),
     ListsUiState(
@@ -22,6 +23,7 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       isLoading = false,
       loadingMore = false,
       error = null,
+      refreshing = false,
       lists = ListData.Initial,
     ),
     ListsUiState(
@@ -29,6 +31,7 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
       isLoading = false,
       loadingMore = true,
       error = null,
+      refreshing = false,
       lists = ListData.Data(ListItemFactory.page1()),
     ),
     ListsUiState(
@@ -40,7 +43,40 @@ class ListsUiStateParameterProvider : PreviewParameterProvider<ListsUiState> {
           R.string.feature_lists_login_description,
         ),
       ),
+      refreshing = false,
       lists = ListData.Initial,
+    ),
+    ListsUiState(
+      page = 1,
+      isLoading = false,
+      loadingMore = false,
+      error = BlankSlateState.Offline,
+      refreshing = false,
+      lists = ListData.Initial,
+    ),
+    ListsUiState(
+      page = 1,
+      isLoading = false,
+      loadingMore = false,
+      error = BlankSlateState.Generic,
+      refreshing = false,
+      lists = ListData.Initial,
+    ),
+    ListsUiState(
+      page = 1,
+      isLoading = false,
+      loadingMore = true,
+      error = null,
+      refreshing = true,
+      lists = ListData.Data(ListItemFactory.page1()),
+    ),
+    ListsUiState(
+      page = 1,
+      isLoading = false,
+      loadingMore = false,
+      error = null,
+      refreshing = false,
+      lists = ListData.Data(ListItemFactory.empty()),
     ),
   )
 }

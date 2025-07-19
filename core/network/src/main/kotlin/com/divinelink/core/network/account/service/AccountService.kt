@@ -35,5 +35,8 @@ interface AccountService {
     sessionId: String,
   ): Flow<TvResponseApi>
 
-  fun fetchUserLists(accountId: String): Flow<ListsResponse>
+  fun fetchUserLists(
+    accountId: String,
+    page: Int,
+  ): Flow<ListsResponse>
 }

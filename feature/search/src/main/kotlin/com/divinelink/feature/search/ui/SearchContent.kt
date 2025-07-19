@@ -36,7 +36,6 @@ fun SearchContent(
         title = UIText.ResourceText(R.string.search__empty_result_title),
         description = UIText.ResourceText(R.string.search__empty_result_description),
       ),
-      onRetry = null,
     )
 
     uiState.searchResults?.data?.isNotEmpty() == true -> MediaContent(
@@ -78,7 +77,6 @@ fun SearchContent(
         title = UIText.ResourceText(R.string.feature_search__initial_title),
         description = UIText.ResourceText(R.string.feature_search__initial_description),
       ),
-      onRetry = null,
     )
   }
 }

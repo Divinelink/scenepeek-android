@@ -24,7 +24,7 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 fun UserDataErrorContent(
   error: UserDataForm.Error,
   section: UserDataSection,
-  onRetry: (() -> Unit)? = null,
+  onRetry: (() -> Unit),
 ) {
   Column(
     modifier = Modifier
@@ -70,6 +70,7 @@ private fun WatchlistInvalidSessionErrorContentPreview() {
         UserDataErrorContent(
           error = UserDataForm.Error.Unauthenticated,
           section = UserDataSection.Watchlist,
+          onRetry = { /* No-op */ },
         )
       }
     }
@@ -85,6 +86,7 @@ private fun WatchlistUnknownErrorContentPreview() {
         UserDataErrorContent(
           error = UserDataForm.Error.Unknown,
           section = UserDataSection.Watchlist,
+          onRetry = { /* No-op */ },
         )
       }
     }

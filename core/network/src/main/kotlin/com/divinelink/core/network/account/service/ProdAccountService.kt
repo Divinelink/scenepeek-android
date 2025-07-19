@@ -74,8 +74,14 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
     emit(response)
   }
 
-  override fun fetchUserLists(accountId: String): Flow<ListsResponse> {
-    val url = buildFetchListsUrl(accountId)
+  override fun fetchUserLists(
+    accountId: String,
+    page: Int,
+  ): Flow<ListsResponse> {
+    val url = buildFetchListsUrl(
+      accountId = accountId,
+      page = page,
+    )
 
     return flow {
       emit(restClient.get<ListsResponse>(url = url))

@@ -169,7 +169,10 @@ class AddToListViewModelTest {
           AddToListUiState.initial.copy(
             isLoading = false,
             error = BlankSlateState.Unauthenticated(
-              UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+              description = UIText.ResourceText(
+                R.string.feature_add_to_account_list_login_description,
+              ),
+              retryText = UIText.ResourceText(com.divinelink.core.ui.R.string.core_ui_login),
             ),
           ),
         ),
@@ -405,7 +408,10 @@ class AddToListViewModelTest {
             isLoading = false,
             loadingMore = false,
             error = BlankSlateState.Unauthenticated(
-              UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+              description = UIText.ResourceText(
+                R.string.feature_add_to_account_list_login_description,
+              ),
+              retryText = UIText.ResourceText(com.divinelink.core.ui.R.string.core_ui_login),
             ),
           ),
         ),
@@ -427,7 +433,10 @@ class AddToListViewModelTest {
           isLoading = false,
           loadingMore = false,
           error = BlankSlateState.Unauthenticated(
-            UIText.ResourceText(R.string.feature_add_to_account_list_login_description),
+            description = UIText.ResourceText(
+              R.string.feature_add_to_account_list_login_description,
+            ),
+            retryText = UIText.ResourceText(com.divinelink.core.ui.R.string.core_ui_login),
           ),
         ),
       )

@@ -15,6 +15,13 @@ object ListItemFactory {
     numberOfItems = 3,
   )
 
+  fun empty() = PaginationData<ListItem>(
+    list = emptyList(),
+    page = 1,
+    totalPages = 0,
+    totalResults = 0,
+  )
+
   fun page1() = PaginationData(
     list = listOf(
       nonPrivateList(),

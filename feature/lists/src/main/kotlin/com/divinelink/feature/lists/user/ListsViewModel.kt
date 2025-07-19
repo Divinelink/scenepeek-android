@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 
 class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
 
@@ -23,7 +24,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
 
   init {
     viewModelScope.launch {
-      fetchUserLists()
+      fetchUserLists(isRefreshing = false)
     }
   }
 
@@ -31,20 +32,29 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
     val lists = uiState.value.lists
 
     if (lists is ListData.Data && lists.data.canLoadMore()) {
-      fetchUserLists()
+      fetchUserLists(isRefreshing = false)
     }
   }
 
-  private fun fetchUserLists() {
+  fun onRefresh() {
     _uiState.update { uiState ->
       uiState.copy(
-        loadingMore = uiState.lists !is ListData.Initial,
+        refreshing = true,
+      )
+    }
+    fetchUserLists(isRefreshing = true)
+  }
+
+  private fun fetchUserLists(isRefreshing: Boolean) {
+    _uiState.update { uiState ->
+      uiState.copy(
+        loadingMore = uiState.lists !is ListData.Initial && !isRefreshing,
       )
     }
     viewModelScope.launch {
       fetchUserListsUseCase(
         UserListsParameters(
-          page = uiState.value.page,
+          page = if (isRefreshing) 1 else uiState.value.page,
         ),
       )
         .collect { result ->
@@ -54,35 +64,62 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
                 uiState.copy(
                   loadingMore = false,
                   isLoading = false,
-                  page = uiState.page + 1,
+                  refreshing = false,
+                  page = result.data.page + 1,
                   error = null,
-                  lists = when (uiState.lists) {
-                    ListData.Initial -> ListData.Data(result.data)
-                    is ListData.Data -> ListData.Data(
-                      uiState.lists.data.copy(
-                        page = result.data.page,
-                        list = buildList {
-                          addAll(uiState.lists.data.list)
-                          addAll(result.data.list)
-                        },
-                      ),
-                    )
+                  lists = if (isRefreshing) {
+                    ListData.Data(result.data)
+                  } else {
+                    when (uiState.lists) {
+                      ListData.Initial -> ListData.Data(result.data)
+                      is ListData.Data -> ListData.Data(
+                        uiState.lists.data.copy(
+                          page = result.data.page,
+                          list = buildList {
+                            addAll(uiState.lists.data.list)
+                            addAll(result.data.list)
+                          },
+                        ),
+                      )
+                    }
                   },
                 )
               }
             },
             onFailure = {
-              ErrorHandler.create(it) {
-                on<SessionException.Unauthenticated> {
-                  setUnauthenticatedError()
-                }
-                otherwise {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      isLoading = false,
-                      loadingMore = false,
-                    )
+              if (uiState.value.lists is ListData.Initial) {
+                ErrorHandler.create(it) {
+                  on<SessionException.Unauthenticated> {
+                    setUnauthenticatedError()
                   }
+                  on<UnknownHostException> {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Offline,
+                        isLoading = false,
+                        loadingMore = false,
+                        refreshing = false,
+                      )
+                    }
+                  }
+                  otherwise {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Generic,
+                        isLoading = false,
+                        loadingMore = false,
+                        refreshing = false,
+                      )
+                    }
+                  }
+                }
+              } else {
+                _uiState.update { uiState ->
+                  uiState.copy(
+                    loadingMore = false,
+                    isLoading = false,
+                    refreshing = false,
+                  )
                 }
               }
             },
