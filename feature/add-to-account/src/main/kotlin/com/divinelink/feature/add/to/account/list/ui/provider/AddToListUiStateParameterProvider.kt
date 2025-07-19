@@ -109,6 +109,9 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
         description = UIText.ResourceText(
           R.string.feature_add_to_account_list_login_description,
         ),
+        retryText = UIText.ResourceText(
+          com.divinelink.core.ui.R.string.core_ui_login,
+        ),
       ),
       page = 2,
       loadingMore = false,
