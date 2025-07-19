@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 
 class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
 
@@ -72,17 +73,36 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
               }
             },
             onFailure = {
-              ErrorHandler.create(it) {
-                on<SessionException.Unauthenticated> {
-                  setUnauthenticatedError()
-                }
-                otherwise {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      isLoading = false,
-                      loadingMore = false,
-                    )
+              if (uiState.value.lists is ListData.Initial) {
+                ErrorHandler.create(it) {
+                  on<SessionException.Unauthenticated> {
+                    setUnauthenticatedError()
                   }
+                  on<UnknownHostException> {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Offline,
+                        isLoading = false,
+                        loadingMore = false,
+                      )
+                    }
+                  }
+                  otherwise {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Generic,
+                        isLoading = false,
+                        loadingMore = false,
+                      )
+                    }
+                  }
+                }
+              } else {
+                _uiState.update { uiState ->
+                  uiState.copy(
+                    loadingMore = false,
+                    isLoading = false,
+                  )
                 }
               }
             },

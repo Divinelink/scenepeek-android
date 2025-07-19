@@ -11,6 +11,7 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import java.net.UnknownHostException
 import kotlin.test.Test
 
 class ListsViewModelTest {
@@ -30,6 +31,38 @@ class ListsViewModelTest {
           error = BlankSlateState.Unauthenticated(
             UIText.ResourceText(R.string.feature_lists_login_description),
           ),
+          page = 1,
+          lists = ListData.Initial,
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch lists with failure`() = runTest {
+    robot
+      .mockFetchUserData(Result.failure(Exception("Foo")))
+      .buildViewModel()
+      .assertUiState(
+        ListsUiState.initial.copy(
+          error = BlankSlateState.Generic,
+          page = 1,
+          lists = ListData.Initial,
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch lists when offline`() = runTest {
+    robot
+      .mockFetchUserData(Result.failure(UnknownHostException()))
+      .buildViewModel()
+      .assertUiState(
+        ListsUiState.initial.copy(
+          error = BlankSlateState.Offline,
           page = 1,
           lists = ListData.Initial,
           isLoading = false,
@@ -149,7 +182,7 @@ class ListsViewModelTest {
   }
 
   @Test
-  fun `test loadMore lists with unauthenticated error clears lists`() = runTest {
+  fun `test loadMore lists with unauthenticated does not clears lists`() = runTest {
     robot
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
@@ -182,10 +215,53 @@ class ListsViewModelTest {
             loadingMore = true,
           ),
           ListsUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
-            error = BlankSlateState.Unauthenticated(
-              UIText.ResourceText(R.string.feature_lists_login_description),
-            ),
+            loadingMore = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test loadMore lists with generic error does not clears lists`() = runTest {
+    robot
+      .mockFetchUserData(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        ListsUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+        ),
+      )
+      .mockFetchUserData(response = Result.failure(Exception("Foo")))
+      .expectUiStates(
+        action = {
+          onLoadMore()
+        },
+        uiStates = listOf(
+          ListsUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          ListsUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = true,
+          ),
+          ListsUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
           ),
         ),
       )
