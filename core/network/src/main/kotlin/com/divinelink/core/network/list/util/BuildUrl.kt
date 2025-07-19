@@ -24,3 +24,9 @@ internal fun buildFetchListDetailsUrl(
     append("page", page.toString())
   }
 }.toString()
+
+internal fun buildListUrl(): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V4 + "/list"
+}.toString()
