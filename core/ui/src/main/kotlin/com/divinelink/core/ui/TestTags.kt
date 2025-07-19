@@ -17,6 +17,7 @@ object TestTags {
     }
 
     object TopAppBar {
+      const val NAVIGATE_UP = "Top App Bar Navigate Up Button"
       const val TOP_APP_BAR = "Top App Bar"
       const val TOP_APP_BAR_TITLE = "Top App Bar Title"
     }

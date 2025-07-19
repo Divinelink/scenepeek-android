@@ -10,16 +10,32 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
   override val values: Sequence<ListDetailsUiState> = sequenceOf(
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
-      details = ListDetailsData.Initial,
+      details = ListDetailsData.Initial(
+        name = ListDetailsFactory.mustWatch().name,
+        backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+        description = ListDetailsFactory.mustWatch().description,
+        public = ListDetailsFactory.mustWatch().public,
+      ),
       error = null,
       refreshing = false,
       loadingMore = false,
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
+      page = 1,
+      details = ListDetailsData.Initial(
+        name = ListDetailsFactory.mustWatch().name,
+        backdropPath = "",
+        description = ListDetailsFactory.mustWatch().description,
+        public = ListDetailsFactory.mustWatch().public,
+      ),
+      error = null,
+      refreshing = false,
+      loadingMore = false,
+    ),
+    ListDetailsUiState(
+      id = 1,
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
@@ -30,7 +46,6 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
@@ -41,25 +56,32 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
-      details = ListDetailsData.Initial,
+      details = ListDetailsData.Initial(
+        name = ListDetailsFactory.mustWatch().name,
+        backdropPath = ListDetailsFactory.mustWatch().backdropPath,
+        description = ListDetailsFactory.mustWatch().description,
+        public = ListDetailsFactory.mustWatch().public,
+      ),
       error = BlankSlateState.Offline,
       refreshing = false,
       loadingMore = false,
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
-      details = ListDetailsData.Initial,
+      details = ListDetailsData.Initial(
+        name = ListDetailsFactory.mustWatch().name,
+        backdropPath = "",
+        description = ListDetailsFactory.mustWatch().description,
+        public = false,
+      ),
       error = BlankSlateState.Generic,
       refreshing = false,
       loadingMore = false,
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
@@ -70,13 +92,35 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
     ),
     ListDetailsUiState(
       id = 1,
-      name = ListDetailsFactory.mustWatch().name,
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
       ),
       error = BlankSlateState.Offline,
       refreshing = true,
+      loadingMore = true,
+    ),
+    ListDetailsUiState(
+      id = 1,
+      page = 1,
+      details = ListDetailsData.Data(
+        data = ListDetailsFactory.mustWatch().copy(
+          public = false,
+          description = "",
+        ),
+      ),
+      error = null,
+      refreshing = false,
+      loadingMore = false,
+    ),
+    ListDetailsUiState(
+      id = 1,
+      page = 1,
+      details = ListDetailsData.Data(
+        data = ListDetailsFactory.page1(),
+      ),
+      error = null,
+      refreshing = false,
       loadingMore = true,
     ),
   )

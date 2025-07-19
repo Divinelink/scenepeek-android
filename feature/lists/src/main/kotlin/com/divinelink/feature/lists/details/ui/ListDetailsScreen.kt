@@ -1,26 +1,37 @@
 package com.divinelink.feature.lists.details.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
+import com.divinelink.core.designsystem.theme.updateStatusBarColor
+import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.NavigateUpButton
+import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -32,12 +43,52 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
+  val view = LocalView.current
+  val isDarkTheme = LocalDarkThemeProvider.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-  val topAppBarColor = TopAppBarDefaults.topAppBarColors(
-    scrolledContainerColor = MaterialTheme.colorScheme.surface,
+
+  var isAppBarVisible by remember { mutableStateOf(false) }
+  var onBackdropLoaded by remember { mutableStateOf(false) }
+
+  val containerColor by animateColorAsState(
+    targetValue = when (isAppBarVisible) {
+      true -> MaterialTheme.colorScheme.surface
+      false -> Color.Transparent
+    },
+    animationSpec = tween(durationMillis = 0),
+    label = "TopAppBar Container Color",
   )
+
+  val textColor = when {
+    // When app bar is visible, we want to contrast against the app bar background
+    isAppBarVisible -> MaterialTheme.colorScheme.onSurface
+
+    // When backdrop has loaded, determine color based on theme
+    onBackdropLoaded -> if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurface
+    } else {
+      MaterialTheme.colorScheme.surface
+    }
+
+    // When backdrop hasn't loaded yet, use default text colors
+    else -> if (LocalDarkThemeProvider.current) {
+      MaterialTheme.colorScheme.onSurface
+    } else {
+      MaterialTheme.colorScheme.onSurface // Changed this to onSurface to ensure contrast
+    }
+  }
+
+  val surfaceColor = MaterialTheme.colorScheme.surface
+  DisposableEffect(textColor) {
+    val isLight = textColor == surfaceColor
+    updateStatusBarColor(view = view, setLight = !isLight && !isDarkTheme)
+
+    onDispose {
+      // Reset the status bar color when the composable is disposed
+      updateStatusBarColor(view = view, setLight = !isDarkTheme)
+    }
+  }
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
@@ -50,21 +101,27 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       PersistentNavigationBar()
     },
     topBar = {
-      TopAppBar(
-        colors = topAppBarColor,
+      AppTopAppBar(
+        modifier = Modifier.background(containerColor),
         scrollBehavior = scrollBehavior,
-        title = {
-          Text(text = uiState.name)
-        },
-        navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
+        topAppBarColors = TopAppBarDefaults.topAppBarColors(
+          scrolledContainerColor = Color.Transparent,
+          containerColor = Color.Transparent,
+        ),
+        contentColor = textColor,
+        text = UIText.StringText(uiState.details.name),
+        isVisible = isAppBarVisible,
+        onNavigateUp = onNavigateUp,
       )
     },
     floatingActionButton = {
       // TODO implement FAB for searching/adding media to the list
     },
-    content = {
+    content = { paddingValues ->
       Column {
-        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+        AnimatedVisibility(!onBackdropLoaded) {
+          Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+        }
 
         ListDetailsContent(
           state = uiState,
@@ -81,6 +138,12 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
                 ),
               )
             }
+          },
+          onShowTitle = { show ->
+            isAppBarVisible = show
+          },
+          onBackdropLoaded = {
+            onBackdropLoaded = true
           },
         )
       }

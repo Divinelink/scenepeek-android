@@ -6,7 +6,6 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class ListDetailsUiState(
   val id: Int,
-  val name: String,
   val page: Int,
   val details: ListDetailsData<ListDetails>,
   val error: BlankSlateState?,
@@ -17,11 +16,18 @@ data class ListDetailsUiState(
     fun initial(
       id: Int,
       name: String,
+      backdropPath: String?,
+      description: String,
+      public: Boolean,
     ) = ListDetailsUiState(
       id = id,
-      name = name,
       page = 1,
-      details = ListDetailsData.Initial,
+      details = ListDetailsData.Initial(
+        name = name,
+        backdropPath = backdropPath,
+        description = description,
+        public = public,
+      ),
       error = null,
       refreshing = false,
       loadingMore = false,
