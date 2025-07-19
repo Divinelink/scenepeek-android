@@ -1,11 +1,15 @@
 package com.divinelink.feature.lists.user.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
@@ -16,6 +20,7 @@ import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
@@ -25,31 +30,42 @@ import com.divinelink.feature.lists.user.ListsAction
 import com.divinelink.feature.lists.user.ListsUiState
 import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvider
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListsContent(
   uiState: ListsUiState,
-  userInteraction: (ListsAction) -> Unit,
+  action: (ListsAction) -> Unit,
 ) {
-  when {
-    uiState.error != null -> BlankSlate(
-      modifier = Modifier
-        .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-        .padding(bottom = LocalBottomNavigationPadding.current),
-      uiState = uiState.error,
-    )
-    uiState.isLoading -> LoadingContent()
-    uiState.lists is ListData.Data && uiState.lists.isEmpty -> BlankSlate(
-      modifier = Modifier
-        .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-        .padding(bottom = LocalBottomNavigationPadding.current),
-      uiState = BlankSlateState.Custom(
-        title = UIText.ResourceText(R.string.feature_lists_empty),
-      ),
-    )
-    uiState.lists is ListData.Data -> ListsDataContent(
-      data = uiState.lists.data,
-      userInteraction = userInteraction,
-    )
+  PullToRefreshBox(
+    isRefreshing = uiState.refreshing,
+    onRefresh = { action(ListsAction.Refresh) },
+    modifier = Modifier
+      .wrapContentSize()
+      .testTag(TestTags.Lists.PULL_TO_REFRESH),
+  ) {
+    when {
+      uiState.error != null -> BlankSlate(
+        modifier = Modifier
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = uiState.error,
+        onRetry = { action(ListsAction.Refresh) },
+      )
+      uiState.isLoading
+      -> LoadingContent()
+      uiState.lists is ListData.Data && uiState.lists.isEmpty -> BlankSlate(
+        modifier = Modifier
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = BlankSlateState.Custom(
+          title = UIText.ResourceText(R.string.feature_lists_empty),
+        ),
+      )
+      uiState.lists is ListData.Data -> ListsDataContent(
+        data = uiState.lists.data,
+        userInteraction = action,
+      )
+    }
   }
 }
 
@@ -65,7 +81,7 @@ fun ListsContentListPreview(
       Surface {
         ListsContent(
           uiState = state,
-          userInteraction = { },
+          action = { },
         )
       }
     }
@@ -88,9 +104,10 @@ fun ListsContentGridPreview() {
             isLoading = false,
             loadingMore = true,
             error = null,
+            refreshing = false,
             lists = ListData.Data(ListItemFactory.page1()),
           ),
-          userInteraction = { },
+          action = { },
         )
       }
     }

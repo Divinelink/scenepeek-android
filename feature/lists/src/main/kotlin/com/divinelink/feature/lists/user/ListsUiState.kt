@@ -9,6 +9,7 @@ data class ListsUiState(
   val lists: ListData<ListItem>,
   val isLoading: Boolean,
   val loadingMore: Boolean,
+  val refreshing: Boolean,
   val error: BlankSlateState?,
 ) {
   companion object {
@@ -17,6 +18,7 @@ data class ListsUiState(
       lists = ListData.Initial,
       isLoading = true,
       loadingMore = false,
+      refreshing = false,
       error = null,
     )
   }

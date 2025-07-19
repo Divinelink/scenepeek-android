@@ -84,9 +84,10 @@ fun AnimatedVisibilityScope.ListsScreen(
 
         ListsContent(
           uiState = uiState,
-          userInteraction = { userInteraction ->
+          action = { userInteraction ->
             when (userInteraction) {
               ListsAction.LoadMore -> viewModel.onLoadMore()
+              ListsAction.Refresh -> viewModel.onRefresh()
               is ListsAction.OnListClick -> onNavigateToList(
                 ListDetailsRoute(
                   id = userInteraction.id,

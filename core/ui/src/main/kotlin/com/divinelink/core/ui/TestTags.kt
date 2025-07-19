@@ -213,6 +213,7 @@ object TestTags {
     const val SCREEN = "Lists Screen"
     const val ERROR_CONTENT = "Lists Error Content"
 
+    const val PULL_TO_REFRESH = "List Pull To Refresh"
     const val DETAILS_SCREEN = "List Details Screen"
 
     object Details {
