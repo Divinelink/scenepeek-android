@@ -220,6 +220,10 @@ object TestTags {
       const val EMPTY_ITEM = "List Details Empty Item"
       const val PULL_TO_REFRESH = "List Details Pull To Refresh"
     }
+
+    object Create {
+      const val SCREEN = "Create List Screen"
+    }
   }
 
   object Search {

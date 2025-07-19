@@ -19,4 +19,5 @@ enum class NavigationQualifier {
   Profile,
   Lists,
   ListDetails,
+  CreateList,
 }

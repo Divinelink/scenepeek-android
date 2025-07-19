@@ -5,6 +5,7 @@ import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import com.divinelink.feature.credits.ui.CreditsViewModel
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.person.ui.PersonViewModel
+import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import com.divinelink.feature.lists.user.ListsViewModel
 import com.divinelink.feature.onboarding.ui.OnboardingViewModel
@@ -39,6 +40,7 @@ val appViewModelModule = module {
   viewModelOf(::ListsViewModel)
   viewModelOf(::AddToListViewModel)
   viewModelOf(::ListDetailsViewModel)
+  viewModelOf(::CreateListViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)
