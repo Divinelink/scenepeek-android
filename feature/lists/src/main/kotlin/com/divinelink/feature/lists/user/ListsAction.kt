@@ -9,4 +9,6 @@ sealed interface ListsAction {
     val description: String,
     val public: Boolean,
   ) : ListsAction
+
+  data object SwitchViewMode : ListsAction
 }

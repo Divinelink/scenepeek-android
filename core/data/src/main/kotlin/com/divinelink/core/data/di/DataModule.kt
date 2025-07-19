@@ -10,6 +10,8 @@ import com.divinelink.core.data.network.ConnectivityManagerNetworkMonitor
 import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
+import com.divinelink.core.data.preferences.PreferencesRepository
+import com.divinelink.core.data.preferences.ProdPreferencesRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -20,6 +22,7 @@ val dataModule = module {
   singleOf(::ProdListRepository) { bind<ListRepository>() }
   singleOf(::ProdJellyseerrRepository) { bind<JellyseerrRepository>() }
   singleOf(::ProdPersonRepository) { bind<PersonRepository>() }
+  singleOf(::ProdPreferencesRepository) { bind<PreferencesRepository>() }
 
   singleOf(::ConnectivityManagerNetworkMonitor) { bind<NetworkMonitor>() }
 }

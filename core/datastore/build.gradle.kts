@@ -25,4 +25,6 @@ dependencies {
   implementation(libs.timber)
 
   testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(projects.core.testing)
+  testImplementation(libs.robolectric)
 }

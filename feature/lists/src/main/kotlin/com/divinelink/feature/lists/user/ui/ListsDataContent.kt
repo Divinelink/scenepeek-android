@@ -1,10 +1,14 @@
 package com.divinelink.feature.lists.user.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,11 +27,16 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.scaffold.isMediumScreenWidthOrWider
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.button.switchview.SwitchViewButton
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.list.ListItemCard
+import com.divinelink.core.ui.local.rememberViewModePreferences
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch
 
@@ -40,6 +49,13 @@ fun ListsDataContent(
   val scope = rememberCoroutineScope()
   val isMediumScreenWidthOrWider = isMediumScreenWidthOrWider()
   var numberOfCells by rememberSaveable { mutableIntStateOf(1) }
+
+  val viewMode = rememberViewModePreferences(ViewableSection.LISTS)
+
+  val padding = when (viewMode) {
+    ViewMode.GRID -> MaterialTheme.dimensions.keyline_16
+    ViewMode.LIST -> MaterialTheme.dimensions.keyline_4
+  }
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
@@ -56,35 +72,67 @@ fun ListsDataContent(
 
   Box(Modifier.fillMaxSize()) {
     LazyVerticalGrid(
-      modifier = Modifier.testTag(TestTags.Lists.SCROLLABLE_CONTENT),
+      modifier = Modifier
+        .testTag(TestTags.Lists.SCROLLABLE_CONTENT.format(viewMode.value)),
       columns = GridCells.Fixed(numberOfCells),
       contentPadding = PaddingValues(
+        start = MaterialTheme.dimensions.keyline_8,
+        end = MaterialTheme.dimensions.keyline_8,
         top = MaterialTheme.dimensions.keyline_16,
-        start = MaterialTheme.dimensions.keyline_16,
-        end = MaterialTheme.dimensions.keyline_16,
         bottom = LocalBottomNavigationPadding.current,
       ),
-      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+      verticalArrangement = Arrangement.spacedBy(padding),
+      horizontalArrangement = Arrangement.spacedBy(padding),
     ) {
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        ListSettingsRow(
+          onSwitchViewMode = {
+            userInteraction.invoke(ListsAction.SwitchViewMode)
+          },
+        )
+      }
+
       items(
         key = { list -> list.id },
         items = data.list,
       ) { listItem ->
-        ListCard(
-          listItem = listItem,
-          onClick = {
-            userInteraction(
-              ListsAction.OnListClick(
-                id = listItem.id,
-                name = listItem.name,
-                backdropPath = listItem.backdropPath,
-                description = listItem.description,
-                public = listItem.public,
-              ),
-            )
-          },
-        )
+        when (viewMode) {
+          ViewMode.GRID -> GridItemListCard(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize()
+              .fillMaxWidth(),
+            listItem = listItem,
+            onClick = {
+              userInteraction(
+                ListsAction.OnListClick(
+                  id = listItem.id,
+                  name = listItem.name,
+                  backdropPath = listItem.backdropPath,
+                  description = listItem.description,
+                  public = listItem.public,
+                ),
+              )
+            },
+          )
+          ViewMode.LIST -> ListItemCard(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            listItem = listItem,
+            onClick = {
+              userInteraction(
+                ListsAction.OnListClick(
+                  id = listItem.id,
+                  name = listItem.name,
+                  backdropPath = listItem.backdropPath,
+                  description = listItem.description,
+                  public = listItem.public,
+                ),
+              )
+            },
+          )
+        }
       }
     }
 
@@ -96,6 +144,19 @@ fun ListsDataContent(
           scrollState.animateScrollToItem(0)
         }
       },
+    )
+  }
+}
+
+@Composable
+fun ListSettingsRow(onSwitchViewMode: () -> Unit) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.End,
+  ) {
+    SwitchViewButton(
+      section = ViewableSection.LISTS,
+      onClick = onSwitchViewMode,
     )
   }
 }

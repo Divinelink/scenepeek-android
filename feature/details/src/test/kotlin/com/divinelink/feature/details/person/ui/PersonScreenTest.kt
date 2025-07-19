@@ -16,6 +16,8 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.person.details.model.PersonDetailsResult
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
@@ -50,6 +52,11 @@ class PersonScreenTest : ComposeTest() {
   private lateinit var savedStateHandle: SavedStateHandle
 
   private lateinit var navArgs: PersonRoute
+
+  private val preferencesRepository = TestPreferencesRepository()
+  private val switchViewButtonViewModel = SwitchViewButtonViewModel(
+    repository = preferencesRepository,
+  )
 
   @BeforeTest
   fun setUp() {
@@ -100,6 +107,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -124,6 +132,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -156,6 +165,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -181,6 +191,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -208,6 +219,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -237,6 +249,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -272,6 +285,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -318,6 +332,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -411,6 +426,7 @@ class PersonScreenTest : ComposeTest() {
           onNavigateUp = {},
           onNavigateToDetails = {},
           viewModel = viewModel,
+          switchViewButtonViewModel = switchViewButtonViewModel,
           animatedVisibilityScope = this,
         )
       }
@@ -457,6 +473,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -508,6 +525,7 @@ class PersonScreenTest : ComposeTest() {
           detailsRoute = it
         },
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -571,6 +589,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -609,6 +628,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -658,6 +678,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -684,11 +705,14 @@ class PersonScreenTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setVisibilityScopeContent {
+    setVisibilityScopeContent(
+      preferencesRepository = preferencesRepository,
+    ) {
       PersonScreen(
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -716,7 +740,7 @@ class PersonScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsNotDisplayed()
 
-      onNodeWithTag(TestTags.Person.LAYOUT_SWITCHER).performClick()
+      onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 
       onNodeWithTag(TestTags.Person.MOVIES_FORM.format(true)).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.MOVIES_FORM.format(false)).assertIsNotDisplayed()
@@ -739,6 +763,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -798,6 +823,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -850,6 +876,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -904,6 +931,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -958,6 +986,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -1015,6 +1044,7 @@ class PersonScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }

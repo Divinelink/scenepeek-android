@@ -5,7 +5,6 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.feature.details.person.ui.PersonDetailsUiState
 import com.divinelink.feature.details.person.ui.PersonForm
@@ -118,7 +117,6 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       ),
       tabs = PersonTab.entries,
       knownForCredits = PersonCastCreditFactory.all(),
-      layoutStyle = LayoutStyle.GRID,
     ),
     // Filtered Movies
     PersonUiState(
@@ -184,7 +182,6 @@ class PersonUiStatePreviewParameterProvider : PreviewParameterProvider<PersonUiS
       ),
       tabs = PersonTab.entries,
       knownForCredits = PersonCastCreditFactory.all(),
-      layoutStyle = LayoutStyle.GRID,
     ),
     // Filtered TV Shows
     PersonUiState(

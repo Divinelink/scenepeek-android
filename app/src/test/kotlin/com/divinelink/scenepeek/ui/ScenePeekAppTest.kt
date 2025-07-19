@@ -20,6 +20,7 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
@@ -86,6 +87,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   private val networkMonitor = TestNetworkMonitor()
   private val onboardingManager = TestOnboardingManager()
+  private val preferencesRepository = TestPreferencesRepository()
   private lateinit var navigationProvider: List<NavGraphExtension>
 
   private lateinit var state: ScenePeekAppState
@@ -178,6 +180,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -240,6 +243,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -311,6 +315,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -392,6 +397,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -486,6 +492,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -556,6 +563,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -683,6 +691,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -722,6 +731,7 @@ class ScenePeekAppTest : ComposeTest() {
             onboardingManager = onboardingManager,
             networkMonitor = networkMonitor,
             navigationProvider = navigationProvider,
+            preferencesRepository = preferencesRepository,
           ),
           uiState = uiState,
           uiEvent = uiEvent,
@@ -740,13 +750,12 @@ class ScenePeekAppTest : ComposeTest() {
     MainDispatcherRule().testDispatcher.unconfined,
   ) {
     setContentWithTheme {
-      val navController = rememberTestNavController()
       state = rememberScenePeekAppState(
-        navController = navController,
         scope = backgroundScope,
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
     }
 
@@ -777,11 +786,12 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     setContentWithTheme {
-      val state = rememberScenePeekAppState(
-        networkMonitor = networkMonitor,
+      state = rememberScenePeekAppState(
         scope = backgroundScope,
+        networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {
@@ -816,11 +826,11 @@ class ScenePeekAppTest : ComposeTest() {
     setContentWithTheme {
       val navController = rememberTestNavController()
       state = rememberScenePeekAppState(
-        navController = navController,
         scope = backgroundScope,
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       currentDestination = state.currentDestination?.route
@@ -839,9 +849,11 @@ class ScenePeekAppTest : ComposeTest() {
 
     setContentWithTheme {
       state = rememberScenePeekAppState(
+        scope = backgroundScope,
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
     }
 
@@ -882,6 +894,7 @@ class ScenePeekAppTest : ComposeTest() {
         networkMonitor = networkMonitor,
         onboardingManager = onboardingManager,
         navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
       )
 
       KoinContext {

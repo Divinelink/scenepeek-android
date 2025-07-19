@@ -3,8 +3,6 @@ package com.divinelink.feature.details.person.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +20,13 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -44,29 +39,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.LayoutStyle
+import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.model.ui.UiPreferences
+import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.button.switchview.SwitchViewButton
 import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.local.LocalUiPreferences
+import com.divinelink.core.ui.local.rememberViewModePreferences
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
@@ -87,13 +87,13 @@ fun PersonContent(
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
-  onUpdateLayoutStyle: () -> Unit,
+  onUpdateViewMode: () -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
   onShowTitle: (Boolean) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
-  val isGrid = uiState.layoutStyle == LayoutStyle.GRID
-  val icon = if (isGrid) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView
+  val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
+
   val grid = if (isGrid) {
     GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)
   } else {
@@ -243,9 +243,9 @@ fun PersonContent(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                LayoutStyleButton(
-                  onUpdateLayoutStyle = onUpdateLayoutStyle,
-                  icon = icon,
+                SwitchViewButton(
+                  onClick = onUpdateViewMode,
+                  section = ViewableSection.PERSON_CREDITS,
                 )
               }
             }
@@ -349,35 +349,6 @@ fun PersonContent(
 }
 
 @Composable
-private fun LayoutStyleButton(
-  onUpdateLayoutStyle: () -> Unit,
-  icon: ImageVector,
-) {
-  Row(
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-    modifier = Modifier
-      .clip(shape = MaterialTheme.shapes.large)
-      .testTag(TestTags.Person.LAYOUT_SWITCHER)
-      .clickable(onClick = onUpdateLayoutStyle)
-      .padding(
-        vertical = MaterialTheme.dimensions.keyline_8,
-        horizontal = MaterialTheme.dimensions.keyline_16,
-      ),
-  ) {
-    Text(
-      text = stringResource(uiR.string.core_ui_view),
-      color = MaterialTheme.colorScheme.primary,
-    )
-    Icon(
-      imageVector = icon,
-      contentDescription = stringResource(uiR.string.core_ui_change_layout_button),
-      tint = MaterialTheme.colorScheme.primary,
-    )
-  }
-}
-
-@Composable
 private fun CollapsiblePersonContent(
   modifier: Modifier = Modifier,
   personDetails: PersonDetailsUiState.Data,
@@ -413,25 +384,72 @@ private fun CollapsiblePersonContent(
 
 @Previews
 @Composable
-fun PersonContentPreview(
+fun PersonContentListPreview(
   @PreviewParameter(PersonUiStatePreviewParameterProvider::class) uiState: PersonUiState,
 ) {
   val lazyListState = rememberLazyListState()
   LaunchedEffect(Unit) {
     lazyListState.scrollToItem(0)
   }
-  AppTheme {
-    Surface {
-      PersonContent(
-        uiState = uiState,
-        lazyListState = lazyListState,
-        scope = rememberCoroutineScope(),
-        onMediaClick = {},
-        onTabSelected = {},
-        onUpdateLayoutStyle = {},
-        onApplyFilter = {},
-        onShowTitle = {},
-      )
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial,
+  ) {
+    AppTheme {
+      Surface {
+        PersonContent(
+          uiState = uiState,
+          lazyListState = lazyListState,
+          scope = rememberCoroutineScope(),
+          onMediaClick = {},
+          onTabSelected = {},
+          onUpdateViewMode = {},
+          onApplyFilter = {},
+          onShowTitle = {},
+        )
+      }
+    }
+  }
+}
+
+@Previews
+@Composable
+fun PersonContentGridPreview() {
+  CompositionLocalProvider(
+    LocalUiPreferences provides UiPreferences.Initial.copy(
+      personCreditsViewMode = ViewMode.GRID,
+    ),
+  ) {
+    AppTheme {
+      Surface {
+        PersonContent(
+          uiState = PersonUiState(
+            selectedTabIndex = 2,
+            forms = mapOf(
+              0 to PersonForm.About(
+                PersonDetailsUiState.Data.Visible(PersonDetailsFactory.steveCarell()),
+              ),
+              1 to PersonForm.Movies(emptyMap()),
+              2 to PersonForm.TvShows(GroupedPersonCreditsSample.tvShows()),
+            ),
+            filteredCredits = mapOf(
+              2 to GroupedPersonCreditsSample.tvShows(),
+            ),
+            filters = mapOf(
+              1 to emptyList(),
+              2 to emptyList(),
+            ),
+            tabs = PersonTab.entries,
+            knownForCredits = PersonCastCreditFactory.all(),
+          ),
+          lazyListState = rememberLazyListState(),
+          scope = rememberCoroutineScope(),
+          onMediaClick = {},
+          onTabSelected = {},
+          onUpdateViewMode = {},
+          onApplyFilter = {},
+          onShowTitle = {},
+        )
+      }
     }
   }
 }

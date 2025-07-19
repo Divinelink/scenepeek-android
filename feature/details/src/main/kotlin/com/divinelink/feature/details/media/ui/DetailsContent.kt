@@ -44,6 +44,7 @@ import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Movie
@@ -460,6 +461,7 @@ fun DetailsContentPreview(
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
+      preferencesRepository = TestPreferencesRepository(),
       navigationProvider = emptyList(),
     )
 

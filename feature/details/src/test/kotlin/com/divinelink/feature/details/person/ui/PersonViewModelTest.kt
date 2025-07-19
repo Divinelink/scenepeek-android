@@ -4,7 +4,6 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
-import com.divinelink.core.model.LayoutStyle
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.person.KnownForDepartment
@@ -255,71 +254,6 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `test onUpdateLayoutStyle switches between List and Grid`() = runTest {
-    robot
-      .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
-      .mockFetchPersonDetailsUseCaseSuccess(
-        PersonDetailsResult.CreditsSuccess(
-          knownForCredits = PersonCastCreditFactory.knownFor(),
-          knownForDepartment = KnownForDepartment.Acting.value,
-          movies = GroupedPersonCreditsSample.movies(),
-          tvShows = GroupedPersonCreditsSample.tvShows(),
-        ),
-      )
-      .buildViewModel()
-      .assertUiState(
-        createState(
-          personDetails = PersonDetailsUiState.Data.Prefetch(
-            PersonDetailsFactory.steveCarell().person,
-          ),
-          movies = GroupedPersonCreditsSample.movies(),
-          tvShows = GroupedPersonCreditsSample.tvShows(),
-          filteredCredits = mapOf(
-            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
-          ),
-          credits = PersonCastCreditFactory.knownFor(),
-          layoutStyle = LayoutStyle.LIST,
-        ),
-      )
-      .onTabSelected(PersonTab.TVShows)
-      .onUpdateLayoutStyle()
-      .assertUiState(
-        createState(
-          selectedTabIndex = PersonTab.TVShows.order,
-          personDetails = PersonDetailsUiState.Data.Prefetch(
-            PersonDetailsFactory.steveCarell().person,
-          ),
-          credits = PersonCastCreditFactory.knownFor(),
-          movies = GroupedPersonCreditsSample.movies(),
-          tvShows = GroupedPersonCreditsSample.tvShows(),
-          filteredCredits = mapOf(
-            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
-          ),
-          layoutStyle = LayoutStyle.GRID,
-        ),
-      )
-      .onUpdateLayoutStyle()
-      .assertUiState(
-        createState(
-          selectedTabIndex = PersonTab.TVShows.order,
-          personDetails = PersonDetailsUiState.Data.Prefetch(
-            PersonDetailsFactory.steveCarell().person,
-          ),
-          credits = PersonCastCreditFactory.knownFor(),
-          movies = GroupedPersonCreditsSample.movies(),
-          tvShows = GroupedPersonCreditsSample.tvShows(),
-          filteredCredits = mapOf(
-            PersonTab.Movies.order to GroupedPersonCreditsSample.movies(),
-            PersonTab.TVShows.order to GroupedPersonCreditsSample.tvShows(),
-          ),
-          layoutStyle = LayoutStyle.LIST,
-        ),
-      )
-  }
-
-  @Test
   fun `test onApplyFilter with Directing Department shows only data with Directing`() {
     robot
       .withNavArgs(PersonDetailsFactory.steveCarell().person.map())
@@ -538,7 +472,6 @@ class PersonViewModelTest {
       PersonTab.Movies.order to emptyMap(),
       PersonTab.TVShows.order to emptyMap(),
     ),
-    layoutStyle: LayoutStyle = LayoutStyle.LIST,
   ): PersonUiState {
     val forms = mapOf(
       PersonTab.About.order to PersonForm.About(personDetails),
@@ -556,7 +489,6 @@ class PersonViewModelTest {
       forms = forms,
       filters = filters,
       filteredCredits = filteredCredits,
-      layoutStyle = layoutStyle,
     )
   }
 }

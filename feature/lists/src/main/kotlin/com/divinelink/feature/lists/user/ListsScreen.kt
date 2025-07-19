@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -37,6 +39,7 @@ fun AnimatedVisibilityScope.ListsScreen(
   onNavigateToTMDBLogin: () -> Unit,
   onNavigateToList: (ListDetailsRoute) -> Unit,
   viewModel: ListsViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -92,6 +95,9 @@ fun AnimatedVisibilityScope.ListsScreen(
                   description = userInteraction.description,
                   public = userInteraction.public,
                 ),
+              )
+              ListsAction.SwitchViewMode -> switchViewButtonViewModel.switchViewMode(
+                section = ViewableSection.LISTS,
               )
             }
           },

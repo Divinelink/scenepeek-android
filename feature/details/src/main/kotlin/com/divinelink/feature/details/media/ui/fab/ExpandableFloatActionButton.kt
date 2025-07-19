@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.UIText
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -222,6 +223,7 @@ private fun ExpandableFloatingActionButton() {
   val state = rememberScenePeekAppState(
     networkMonitor = TestNetworkMonitor(),
     onboardingManager = TestOnboardingManager(),
+    preferencesRepository = TestPreferencesRepository(),
     navigationProvider = emptyList(),
   )
 
