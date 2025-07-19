@@ -36,7 +36,10 @@ class FetchUserListsUseCase(
             return@collect
           }
 
-          repository.fetchUserLists(v4AccountId).collect { result ->
+          repository.fetchUserLists(
+            accountId = v4AccountId,
+            page = parameters.page,
+          ).collect { result ->
             result.fold(
               onSuccess = {
                 emit(Result.success(it))
