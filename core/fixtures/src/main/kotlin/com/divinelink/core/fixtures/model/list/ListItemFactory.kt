@@ -13,6 +13,7 @@ object ListItemFactory {
     description = "This is a new list to test v4 lists",
     public = false,
     numberOfItems = 3,
+    updatedAt = "2025-07-19 16:03:41 UTC",
   )
 
   fun empty() = PaginationData<ListItem>(
@@ -30,12 +31,14 @@ object ListItemFactory {
         name = "Elsolist 2",
         numberOfItems = 5,
         public = true,
+        updatedAt = "2025-07-19 15:03:41 UTC",
       ),
       nonPrivateList().copy(
         id = 8452379,
         name = "Elsolist 3",
         numberOfItems = 10,
         public = false,
+        updatedAt = "2025-07-19 14:03:41 UTC",
       ),
     ),
     page = 1,

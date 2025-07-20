@@ -1,0 +1,44 @@
+CREATE TABLE ListItemEntity (
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  isPublic INTEGER NOT NULL,
+  numberOfItems INTEGER NOT NULL,
+  posterPath TEXT,
+  backdropPath TEXT,
+  page INTEGER NOT NULL,
+  accountId TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
+  itemIndex INTEGER NOT NULL,
+
+  UNIQUE(accountId, itemIndex) ON CONFLICT REPLACE
+);
+
+insertListItem:
+INSERT OR REPLACE INTO ListItemEntity(
+  id,
+  name,
+  description,
+  isPublic,
+  numberOfItems,
+  posterPath,
+  backdropPath,
+  page,
+  accountId,
+  updatedAt,
+  itemIndex
+)
+VALUES ?;
+
+fetchUserLists:
+SELECT *
+FROM ListItemEntity
+WHERE accountId = :accountId
+AND itemIndex >= :startIndex
+AND itemIndex < :startIndex + :limit
+ORDER BY itemIndex ASC;
+
+-- SQLDelight query to delete items beyond a certain index
+deleteItemsAfterIndex:
+DELETE FROM ListItemEntity
+WHERE accountId = :accountId AND itemIndex >= :startIndex;

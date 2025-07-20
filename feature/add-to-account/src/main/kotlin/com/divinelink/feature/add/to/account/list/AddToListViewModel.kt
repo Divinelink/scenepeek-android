@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.domain.account.FetchUserListsUseCase
-import com.divinelink.core.domain.account.UserListsParameters
 import com.divinelink.core.domain.list.AddItemParameters
 import com.divinelink.core.domain.list.AddItemToListUseCase
+import com.divinelink.core.domain.list.FetchUserListsUseCase
+import com.divinelink.core.domain.list.UserListsParameters
+import com.divinelink.core.domain.list.mergeListItems
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
@@ -75,10 +76,11 @@ class AddToListViewModel(
                     is ListData.Data -> ListData.Data(
                       uiState.lists.data.copy(
                         page = result.data.page,
-                        list = buildList {
-                          addAll(uiState.lists.data.list)
-                          addAll(result.data.list)
-                        },
+                        list = mergeListItems(
+                          page = uiState.page,
+                          existingItems = uiState.lists.data.list,
+                          newItems = result.data.list,
+                        ),
                       ),
                     )
                   },

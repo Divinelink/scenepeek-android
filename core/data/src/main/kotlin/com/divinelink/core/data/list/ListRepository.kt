@@ -5,6 +5,7 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.CreateListRequest
 import kotlinx.coroutines.flow.Flow
 
@@ -26,5 +27,5 @@ interface ListRepository {
   suspend fun fetchUserLists(
     accountId: String,
     page: Int,
-  ): Flow<Result<PaginationData<ListItem>>>
+  ): Flow<Resource<PaginationData<ListItem>?>>
 }

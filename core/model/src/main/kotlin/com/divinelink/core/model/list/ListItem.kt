@@ -8,4 +8,5 @@ data class ListItem(
   val description: String,
   val public: Boolean,
   val numberOfItems: Int,
+  val updatedAt: String,
 )

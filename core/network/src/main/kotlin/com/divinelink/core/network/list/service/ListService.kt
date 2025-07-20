@@ -8,6 +8,7 @@ import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import kotlinx.coroutines.flow.Flow
 
 interface ListService {
+
   suspend fun addItemToList(
     listId: Int,
     mediaId: Int,

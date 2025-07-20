@@ -42,6 +42,7 @@ fun ListsDataContent(
       top = MaterialTheme.dimensions.keyline_16,
       bottom = LocalBottomNavigationPadding.current,
     ),
+    state = scrollState,
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
   ) {
     item {

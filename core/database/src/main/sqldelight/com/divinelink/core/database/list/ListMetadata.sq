@@ -1,0 +1,19 @@
+CREATE TABLE ListMetadata (
+  accountId TEXT NOT NULL,
+  totalPages INTEGER NOT NULL,
+  totalResults INTEGER NOT NULL,
+  PRIMARY KEY (accountId)
+);
+
+insertListMetadata:
+INSERT OR REPLACE INTO ListMetadata (
+  accountId,
+  totalPages,
+  totalResults
+)
+VALUES (?, ?, ?);
+
+fetchListMetadata:
+SELECT *
+FROM ListMetadata
+WHERE accountId = :accountId;

@@ -1,4 +1,4 @@
-package com.divinelink.core.domain.account
+package com.divinelink.core.domain.list
 
 import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage

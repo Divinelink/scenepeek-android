@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -55,7 +55,7 @@ fun ListsDataContent(
   data: PaginationData<ListItem>,
   userInteraction: (ListsAction) -> Unit,
 ) {
-  val scrollState = rememberLazyListState()
+  val scrollState = rememberLazyGridState()
   val scope = rememberCoroutineScope()
   val isMediumScreenWidthOrWider = isMediumScreenWidthOrWider()
   var numberOfCells by rememberSaveable { mutableIntStateOf(1) }
@@ -104,6 +104,7 @@ fun ListsDataContent(
           top = MaterialTheme.dimensions.keyline_16,
           bottom = LocalBottomNavigationPadding.current,
         ),
+        state = scrollState,
         verticalArrangement = Arrangement.spacedBy(padding),
         horizontalArrangement = Arrangement.spacedBy(padding),
       ) {
