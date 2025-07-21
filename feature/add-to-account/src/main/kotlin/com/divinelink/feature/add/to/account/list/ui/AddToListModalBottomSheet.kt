@@ -20,6 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AddToListModalBottomSheet(
   onDismissRequest: () -> Unit,
   onNavigateToTMDBAuth: () -> Unit,
+  onNavigateToCreateList: () -> Unit,
   viewModel: AddToListViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -28,6 +29,12 @@ fun AddToListModalBottomSheet(
   LaunchedEffect(Unit) {
     viewModel.navigateToTMDBAuth.collect {
       onNavigateToTMDBAuth()
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.navigateToCreateList.collect {
+      onNavigateToCreateList()
     }
   }
 

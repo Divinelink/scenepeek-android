@@ -46,6 +46,9 @@ class AddToListViewModel(
   private val _navigateToTMDBAuth = Channel<Unit>()
   val navigateToTMDBAuth: Flow<Unit> = _navigateToTMDBAuth.receiveAsFlow()
 
+  private val _navigateToCreateList = Channel<Unit>()
+  val navigateToCreateList: Flow<Unit> = _navigateToCreateList.receiveAsFlow()
+
   init {
     fetchUserLists()
   }
@@ -69,7 +72,7 @@ class AddToListViewModel(
                 uiState.copy(
                   loadingMore = false,
                   isLoading = false,
-                  page = uiState.page + 1,
+                  page = result.data.page + 1,
                   error = null,
                   lists = when (uiState.lists) {
                     ListData.Initial -> ListData.Data(result.data)
@@ -77,7 +80,7 @@ class AddToListViewModel(
                       uiState.lists.data.copy(
                         page = result.data.page,
                         list = mergeListItems(
-                          page = uiState.page,
+                          page = result.data.page - 1,
                           existingItems = uiState.lists.data.list,
                           newItems = result.data.list,
                         ),
@@ -109,11 +112,7 @@ class AddToListViewModel(
 
   fun onAction(action: AddToListAction) {
     when (action) {
-      AddToListAction.LoadMore -> {
-        if (_uiState.value.lists is ListData.Data && !_uiState.value.loadingMore) {
-          fetchUserLists()
-        }
-      }
+      AddToListAction.LoadMore -> onLoadMore()
       is AddToListAction.OnListClick -> addToList(action.id)
 
       AddToListAction.ConsumeDisplayMessage -> _uiState.update { uiState ->
@@ -124,6 +123,18 @@ class AddToListViewModel(
       AddToListAction.Login -> viewModelScope.launch {
         _navigateToTMDBAuth.send(Unit)
       }
+
+      AddToListAction.OnCreateListClick -> viewModelScope.launch {
+        _navigateToCreateList.send(Unit)
+      }
+    }
+  }
+
+  private fun onLoadMore() {
+    val lists = uiState.value.lists
+
+    if (lists is ListData.Data && lists.data.canLoadMore()) {
+      fetchUserLists()
     }
   }
 

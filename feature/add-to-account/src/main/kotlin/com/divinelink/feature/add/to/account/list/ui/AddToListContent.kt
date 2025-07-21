@@ -11,13 +11,10 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
@@ -29,7 +26,6 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.DisplayMessageSection
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
-import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListAction
 import com.divinelink.feature.add.to.account.list.AddToListUiState
 import com.divinelink.feature.add.to.account.list.ui.provider.AddToListUiStateParameterProvider
@@ -99,15 +95,6 @@ fun AddToListContent(
               .align(Alignment.Center),
           )
         }
-
-        uiState.lists is ListData.Data && uiState.lists.isEmpty -> Text(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(MaterialTheme.dimensions.keyline_32),
-          text = stringResource(R.string.feature_add_to_account_empty_lists),
-          textAlign = TextAlign.Center,
-          style = MaterialTheme.typography.bodyLarge,
-        )
 
         uiState.lists is ListData.Data -> ListsDataContent(
           data = uiState.lists.data,

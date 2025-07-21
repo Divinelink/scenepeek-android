@@ -72,6 +72,7 @@ val navigationModule = module {
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigateToCreateList = navController::navigateToCreateList,
       )
     }
   }

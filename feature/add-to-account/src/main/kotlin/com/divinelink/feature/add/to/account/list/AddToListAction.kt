@@ -5,5 +5,7 @@ sealed interface AddToListAction {
   data object LoadMore : AddToListAction
   data class OnListClick(val id: Int) : AddToListAction
 
+  data object OnCreateListClick : AddToListAction
+
   data object ConsumeDisplayMessage : AddToListAction
 }
