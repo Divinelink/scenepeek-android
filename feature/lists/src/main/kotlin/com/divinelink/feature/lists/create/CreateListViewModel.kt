@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -54,36 +55,38 @@ class CreateListViewModel(private val createListUseCase: CreateListUseCase) : Vi
           description = _uiState.value.description,
           public = _uiState.value.public,
         ),
-      ).collect {
-        it.fold(
-          onSuccess = {
-            _uiState.update { state ->
-              state.copy(
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    R.string.feature_lists_create_successfully,
-                    uiState.value.name,
+      )
+        .distinctUntilChanged()
+        .collect {
+          it.fold(
+            onSuccess = {
+              _uiState.update { state ->
+                state.copy(
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_lists_create_successfully,
+                      uiState.value.name,
+                    ),
                   ),
-                ),
-              )
-            }
+                )
+              }
 
-            _onNavigateUp.send(Unit)
-          },
-          onFailure = {
-            _uiState.update { state ->
-              state.copy(
-                snackbarMessage = SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    R.string.feature_lists_create_failure,
-                    uiState.value.name,
+              _onNavigateUp.send(Unit)
+            },
+            onFailure = {
+              _uiState.update { state ->
+                state.copy(
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_lists_create_failure,
+                      uiState.value.name,
+                    ),
                   ),
-                ),
-              )
-            }
-          },
-        )
-      }
+                )
+              }
+            },
+          )
+        }
     }
   }
 }

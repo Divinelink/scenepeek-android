@@ -24,9 +24,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
   val uiState: StateFlow<ListsUiState> = _uiState
 
   init {
-    viewModelScope.launch {
-      fetchUserLists(isRefreshing = false)
-    }
+    fetchUserLists(isRefreshing = false)
   }
 
   fun onLoadMore() {
