@@ -158,12 +158,12 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      onNodeWithText("3 items").assertIsDisplayed()
-      onNodeWithText("4 items").assertIsNotDisplayed()
-      onNodeWithText("Elsolist").assertIsDisplayed().performClick()
+      onNodeWithText("5 items").assertIsDisplayed()
+      onNodeWithText("6 items").assertIsNotDisplayed()
+      onNodeWithText("Top Movies").assertIsDisplayed().performClick()
 
-      onNodeWithText("4 items").assertIsDisplayed()
-      onNodeWithText("3 items").assertIsNotDisplayed()
+      onNodeWithText("6 items").assertIsDisplayed()
+      onNodeWithText("5 items").assertIsNotDisplayed()
     }
   }
 }

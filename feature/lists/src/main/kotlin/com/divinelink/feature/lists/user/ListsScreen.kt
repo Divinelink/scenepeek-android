@@ -81,6 +81,7 @@ fun AnimatedVisibilityScope.ListsScreen(
         )
       } else if (uiState.lists is ListData.Data) {
         ScaffoldFab(
+          modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
           icon = Icons.Default.Add,
           text = null,
           expanded = false,

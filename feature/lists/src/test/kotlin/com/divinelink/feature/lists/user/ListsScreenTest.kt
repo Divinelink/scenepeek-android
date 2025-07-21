@@ -10,7 +10,9 @@ import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.model.list.ListItemFactory
+import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.navigation.route.ListDetailsRoute
@@ -19,6 +21,7 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import kotlin.test.Test
 
 class ListsScreenTest : ComposeTest() {
@@ -79,7 +82,7 @@ class ListsScreenTest : ComposeTest() {
       onNodeWithTag(
         TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
       ).assertIsDisplayed()
-      onNodeWithText("Elsolist 2").assertIsDisplayed()
+      onNodeWithText(ListItemFactory.recommended().name).assertIsDisplayed()
     }
   }
 
@@ -105,7 +108,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithText("Elsolist").assertIsNotDisplayed()
+      onNodeWithText(ListItemFactory.movies().name).assertIsNotDisplayed()
       fetchUserListsUseCase.mockResponse(
         Result.success(ListItemFactory.page1()),
       )
@@ -114,7 +117,7 @@ class ListsScreenTest : ComposeTest() {
         swipeDown()
       }
 
-      onNodeWithText("Elsolist").assertIsDisplayed()
+      onNodeWithText(ListItemFactory.movies().name).assertIsDisplayed()
     }
   }
 
@@ -144,16 +147,16 @@ class ListsScreenTest : ComposeTest() {
       onNodeWithTag(
         TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.LIST.value),
       ).assertIsDisplayed()
-      onNodeWithText("Elsolist 2").assertIsDisplayed().performClick()
+      onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
     }
 
     assertThat(navigateRoute).isEqualTo(
       ListDetailsRoute(
-        id = 8452378,
-        name = "Elsolist 2",
-        backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
-        description = "This is a new list to test v4 lists",
-        public = true,
+        id = 8452377,
+        name = ListItemFactory.shows().name,
+        backdropPath = ListItemFactory.shows().backdropPath,
+        description = ListItemFactory.shows().description,
+        public = false,
       ),
     )
   }
@@ -188,16 +191,16 @@ class ListsScreenTest : ComposeTest() {
       onNodeWithTag(
         TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
       ).assertIsDisplayed()
-      onNodeWithText("Elsolist 2").assertIsDisplayed().performClick()
+      onNodeWithText(ListItemFactory.shows().name).assertIsDisplayed().performClick()
     }
 
     assertThat(navigateRoute).isEqualTo(
       ListDetailsRoute(
-        id = 8452378,
-        name = "Elsolist 2",
-        backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
-        description = "This is a new list to test v4 lists",
-        public = true,
+        id = 8452377,
+        name = ListItemFactory.shows().name,
+        backdropPath = ListItemFactory.shows().backdropPath,
+        description = ListItemFactory.shows().description,
+        public = false,
       ),
     )
   }
@@ -234,5 +237,42 @@ class ListsScreenTest : ComposeTest() {
         TestTags.Lists.SCROLLABLE_CONTENT.format(ViewMode.GRID.value),
       ).assertIsDisplayed()
     }
+  }
+
+  @Test
+  fun `test on navigate to create list screen`() {
+    val channel = Channel<Result<PaginationData<ListItem>>>()
+    var isCreateListScreenNavigated = false
+
+    fetchUserListsUseCase.mockResponse(channel)
+
+    setVisibilityScopeContent(
+      preferencesRepository = preferencesRepository,
+    ) {
+      ListsScreen(
+        onNavigateToTMDBLogin = {},
+        onNavigateUp = {},
+        onNavigateToCreateList = {
+          isCreateListScreenNavigated = true
+        },
+        onNavigateToList = {},
+        viewModel = ListsViewModel(
+          fetchUserListsUseCase = fetchUserListsUseCase.mock,
+        ),
+        switchViewButtonViewModel = switchViewButtonViewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsNotDisplayed()
+
+      channel.trySend(
+        Result.success(ListItemFactory.page1()),
+      )
+
+      onNodeWithTag(TestTags.Lists.CREATE_LIST_FAB).assertIsDisplayed().performClick()
+    }
+
+    assertThat(isCreateListScreenNavigated).isTrue()
   }
 }

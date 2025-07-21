@@ -8,6 +8,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
+import com.divinelink.core.testing.dao.TestListDao
 import com.divinelink.core.testing.service.TestListService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -19,10 +20,12 @@ class ProdListRepositoryTest {
   private lateinit var repository: ListRepository
 
   private val service = TestListService()
+  private val dao = TestListDao()
 
   @Before
   fun setUp() {
     repository = ProdListRepository(
+      dao = dao.mock,
       service = service.mock,
     )
   }

@@ -1,7 +1,6 @@
 package com.divinelink.feature.add.to.account.list
 
 import com.divinelink.core.fixtures.model.list.ListItemFactory
-import com.divinelink.core.fixtures.model.list.ListItemFactory.nonPrivateList
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.UIText
@@ -191,7 +190,7 @@ class AddToListViewModelTest {
       .expectUiStates(
         action = {
           // Add to first item in the list
-          onListClick(ListItemFactory.page1().list.first().id)
+          onListClick(ListItemFactory.movies().id)
         },
         uiStates = listOf(
           AddToListUiState.initial.copy(
@@ -214,21 +213,9 @@ class AddToListViewModelTest {
                 totalPages = 2,
                 totalResults = 6,
                 list = listOf(
-                  nonPrivateList().copy(
-                    numberOfItems = 4,
-                  ),
-                  nonPrivateList().copy(
-                    id = 8452378,
-                    name = "Elsolist 2",
-                    numberOfItems = 5,
-                    public = true,
-                  ),
-                  nonPrivateList().copy(
-                    id = 8452379,
-                    name = "Elsolist 3",
-                    numberOfItems = 10,
-                    public = false,
-                  ),
+                  ListItemFactory.movies().copy(numberOfItems = 6),
+                  ListItemFactory.shows(),
+                  ListItemFactory.recommended(),
                 ),
               ),
             ),

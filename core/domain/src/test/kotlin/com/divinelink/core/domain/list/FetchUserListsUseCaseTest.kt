@@ -7,6 +7,7 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.AccessToken
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
@@ -62,7 +63,7 @@ class FetchUserListsUseCaseTest {
     )
 
     repository.mockFetchUserLists(
-      flowOf(Result.success(ListItemFactory.page1())),
+      flowOf(Resource.Success(ListItemFactory.page1())),
     )
 
     val useCase = FetchUserListsUseCase(
@@ -89,6 +90,87 @@ class FetchUserListsUseCaseTest {
   }
 
   @Test
+  fun `test fetch lists with loading resource`() = runTest {
+    val storage = createSessionStorage(
+      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
+      v4AccountId = "1234",
+      accessToken = AccessTokenFactory.valid(),
+    )
+
+    repository.mockFetchUserLists(
+      flowOf(Resource.Loading(ListItemFactory.page1())),
+    )
+
+    val useCase = FetchUserListsUseCase(
+      storage = storage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(
+      UserListsParameters(
+        page = 1,
+      ),
+    ).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(ListItemFactory.page1()))
+    }
+  }
+
+  @Test
+  fun `test fetch lists with loading resource with null content`() = runTest {
+    val storage = createSessionStorage(
+      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
+      v4AccountId = "1234",
+      accessToken = AccessTokenFactory.valid(),
+    )
+
+    repository.mockFetchUserLists(
+      flowOf(Resource.Loading(null)),
+    )
+
+    val useCase = FetchUserListsUseCase(
+      storage = storage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(
+      UserListsParameters(
+        page = 1,
+      ),
+    ).test {
+      expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test fetch lists with success resource with null content`() = runTest {
+    val storage = createSessionStorage(
+      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
+      v4AccountId = "1234",
+      accessToken = AccessTokenFactory.valid(),
+    )
+
+    repository.mockFetchUserLists(
+      flowOf(Resource.Success(null)),
+    )
+
+    val useCase = FetchUserListsUseCase(
+      storage = storage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(
+      UserListsParameters(
+        page = 1,
+      ),
+    ).test {
+      expectNoEvents()
+    }
+  }
+
+  @Test
   fun `test fetch lists when v4 account id is null`() = runTest {
     val storage = createSessionStorage(
       accountDetailsId = "12345",
@@ -97,7 +179,7 @@ class FetchUserListsUseCaseTest {
     )
 
     repository.mockFetchUserLists(
-      flowOf(Result.success(ListItemFactory.page1())),
+      flowOf(Resource.Success(ListItemFactory.page1())),
     )
 
     val useCase = FetchUserListsUseCase(
@@ -130,7 +212,7 @@ class FetchUserListsUseCaseTest {
     )
 
     repository.mockFetchUserLists(
-      flowOf(Result.success(ListItemFactory.page1())),
+      flowOf(Resource.Success(ListItemFactory.page1())),
     )
 
     val useCase = FetchUserListsUseCase(
@@ -163,7 +245,7 @@ class FetchUserListsUseCaseTest {
     )
 
     repository.mockFetchUserLists(
-      flowOf(Result.failure(Exception("Failed to fetch lists"))),
+      flowOf(Resource.Error(Exception("Failed to fetch lists"))),
     )
 
     val useCase = FetchUserListsUseCase(
