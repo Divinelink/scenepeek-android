@@ -70,7 +70,11 @@ fun AnimatedVisibilityScope.CreateListScaffold(
       AppTopAppBar(
         scrollBehavior = scrollBehavior,
         topAppBarColors = topAppBarColor,
-        text = UIText.ResourceText(R.string.feature_lists_add_list),
+        text = if (uiState.editMode) {
+          UIText.ResourceText(R.string.feature_lists_edit_list)
+        } else {
+          UIText.ResourceText(R.string.feature_lists_add_list)
+        },
         actions = {
           TextButton(
             onClick = { action(CreateListAction.CreateOrEditList) },

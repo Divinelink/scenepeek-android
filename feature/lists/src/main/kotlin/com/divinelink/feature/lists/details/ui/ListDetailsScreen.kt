@@ -8,6 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
@@ -26,9 +28,11 @@ import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.EditListRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
@@ -41,6 +45,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
+  onNavigateToEdit: (EditListRoute) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val view = LocalView.current
@@ -115,7 +120,23 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       )
     },
     floatingActionButton = {
-      // TODO implement FAB for searching/adding media to the list
+      ScaffoldFab(
+        modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
+        icon = Icons.Default.Edit,
+        text = null,
+        expanded = false,
+        onClick = {
+          onNavigateToEdit(
+            EditListRoute(
+              id = uiState.id,
+              name = uiState.details.name,
+              backdropPath = uiState.details.backdropPath,
+              description = uiState.details.description,
+              public = uiState.details.public,
+            ),
+          )
+        },
+      )
     },
     content = { paddingValues ->
       Column {

@@ -28,7 +28,7 @@
 
   <string name="core_ui_create_list">Create list</string>
   <string name="core_ui_create">Create</string>
-  <string name="core_ui_edit">Edit</string>
+  <string name="core_ui_edit">Save</string>
 
   <plurals name="core_ui_character_episode_episodes">
     <item quantity="one">(%s Episode)</item>
@@ -142,6 +142,7 @@
     <item quantity="other">%s items</item>
   </plurals>
 
+  <string name="core_ui_backdrop">Backdrop</string>
   <string name="core_ui_public">Public</string>
   <string name="core_ui_private">Private</string>
 

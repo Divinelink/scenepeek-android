@@ -1,10 +1,13 @@
 package com.divinelink.feature.lists.create
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.list.CreateListParameters
 import com.divinelink.core.domain.list.CreateListUseCase
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.CreateListRoute
+import com.divinelink.core.navigation.route.EditListRoute
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.R
 import kotlinx.coroutines.channels.Channel
@@ -16,10 +19,35 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreateListViewModel(private val createListUseCase: CreateListUseCase) : ViewModel() {
+class CreateListViewModel(
+  private val createListUseCase: CreateListUseCase,
+  savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+  private val route: Any = if (savedStateHandle.get<Int>("id") != null) {
+    EditListRoute(
+      id = savedStateHandle.get<Int>("id") ?: 0,
+      name = savedStateHandle.get<String>("name") ?: "",
+      backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
+      description = savedStateHandle.get<String>("description") ?: "",
+      public = savedStateHandle.get<Boolean>("public") ?: false,
+    )
+  } else {
+    CreateListRoute
+  }
 
   private val _uiState: MutableStateFlow<CreateListUiState> = MutableStateFlow(
-    CreateListUiState.initial,
+    if (route is EditListRoute) {
+      CreateListUiState.initial.copy(
+        name = route.name,
+        description = route.description,
+        backdrop = route.backdropPath ?: "",
+        public = route.public,
+        editMode = true,
+      )
+    } else {
+      CreateListUiState.initial
+    },
   )
   val uiState: StateFlow<CreateListUiState> = _uiState
 
@@ -37,6 +65,9 @@ class CreateListViewModel(private val createListUseCase: CreateListUseCase) : Vi
       }
       is CreateListAction.DescriptionChanged -> _uiState.update {
         it.copy(description = action.description)
+      }
+      is CreateListAction.BackdropChanged -> {
+        // TODO Update the backdrop path
       }
       is CreateListAction.PublicChanged -> _uiState.update {
         it.copy(public = !it.public)

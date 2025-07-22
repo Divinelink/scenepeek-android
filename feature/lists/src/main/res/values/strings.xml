@@ -6,6 +6,10 @@
   <string name="feature_lists_empty">You haven\'t created any lists.</string>
   <string name="feature_lists_empty_list">There are no items added to this list.</string>
 
+  <string name="feature_lists_delete_list">Delete list</string>
+  <string name="feature_lists_delete_list_alert_message">Are you sure you want to delete this list? This action cannot be undone.</string>
+
+  <string name="feature_lists_edit_list">Edit list</string>
   <string name="feature_lists_add_list">Create list</string>
 
   <string name="feature_lists_name">Name</string>

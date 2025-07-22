@@ -7,6 +7,7 @@ data class CreateListUiState(
   val description: String,
   val public: Boolean,
   val editMode: Boolean,
+  val backdrop: String?,
   val snackbarMessage: SnackbarMessage?,
 ) {
   companion object {
@@ -14,6 +15,7 @@ data class CreateListUiState(
       name = "",
       description = "",
       public = true,
+      backdrop = "",
       editMode = false,
       snackbarMessage = null,
     )

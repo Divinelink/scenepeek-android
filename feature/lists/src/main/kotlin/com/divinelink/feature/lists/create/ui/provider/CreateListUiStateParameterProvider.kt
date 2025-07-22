@@ -14,6 +14,7 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       description = "A collection of my all-time favorite movies.",
       public = true,
       editMode = false,
+      backdrop = null,
       snackbarMessage = null,
     ),
     CreateListUiState(
@@ -21,6 +22,7 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       description = "A collection of my all-time favorite movies.",
       public = false,
       editMode = true,
+      backdrop = "/ew5FcYiRhTYNJAkxoVPMNlCOdVn.jpg",
       snackbarMessage = null,
     ),
     CreateListUiState(
@@ -28,6 +30,7 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       description = "A collection of my all-time favorite movies.",
       public = false,
       editMode = false,
+      backdrop = "",
       snackbarMessage = SnackbarMessage.from(
         text = UIText.ResourceText(
           R.string.feature_lists_create_successfully,
