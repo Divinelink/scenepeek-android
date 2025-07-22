@@ -1,5 +1,5 @@
 CREATE TABLE ListItemEntity (
-  id INTEGER NOT NULL PRIMARY KEY,
+  id INTEGER NOT NULL,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   isPublic INTEGER NOT NULL,
@@ -38,7 +38,10 @@ AND itemIndex >= :startIndex
 AND itemIndex < :startIndex + :limit
 ORDER BY itemIndex ASC;
 
--- SQLDelight query to delete items beyond a certain index
 deleteItemsAfterIndex:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId AND itemIndex >= :startIndex;
+
+clearListItems:
+DELETE FROM ListItemEntity
+WHERE accountId = :accountId;

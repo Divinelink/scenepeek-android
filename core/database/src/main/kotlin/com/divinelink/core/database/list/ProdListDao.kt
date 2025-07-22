@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.model.list.ListItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ProdListDao(
@@ -50,17 +51,17 @@ class ProdListDao(
     totalPages: Int,
     totalResults: Int,
   ) {
-    database.listMetadataQueries.insertListMetadata(
+    database.listMetadataEntityQueries.insertListMetadata(
       accountId = accountId,
       totalPages = totalPages.toLong(),
       totalResults = totalResults.toLong(),
     )
   }
 
-  override fun fetchListsMetadata(accountId: String): ListMetadata? = database
+  override fun fetchListsMetadata(accountId: String): ListMetadataEntity? = database
     .transactionWithResult {
       database
-        .listMetadataQueries
+        .listMetadataEntityQueries
         .fetchListMetadata(accountId)
         .executeAsOneOrNull()
     }
@@ -68,7 +69,7 @@ class ProdListDao(
   override fun fetchUserLists(
     accountId: String,
     fromIndex: Int,
-  ) = database.transactionWithResult {
+  ): Flow<List<ListItem>> = database.transactionWithResult {
     database
       .listItemEntityQueries
       .fetchUserLists(
@@ -92,5 +93,12 @@ class ProdListDao(
           )
         }
       }
+  }
+
+  override fun clearUserLists(accountId: String) {
+    database.transaction {
+      database.listItemEntityQueries.clearListItems(accountId)
+      database.listMetadataEntityQueries.clearListMetadata(accountId)
+    }
   }
 }

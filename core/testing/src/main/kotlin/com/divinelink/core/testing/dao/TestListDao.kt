@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.dao
 
 import com.divinelink.core.database.list.ListDao
-import com.divinelink.core.database.list.ListMetadata
+import com.divinelink.core.database.list.ListMetadataEntity
 import com.divinelink.core.model.list.ListItem
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -12,7 +12,7 @@ class TestListDao {
 
   val mock: ListDao = mock()
 
-  fun mockFetchListsMetadata(metadata: ListMetadata?) {
+  fun mockFetchListsMetadata(metadata: ListMetadataEntity?) {
     whenever(
       mock.fetchListsMetadata(any()),
     ).thenReturn(

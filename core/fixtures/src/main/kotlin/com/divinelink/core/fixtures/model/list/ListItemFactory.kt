@@ -99,4 +99,40 @@ object ListItemFactory {
     totalPages = 2,
     totalResults = 6,
   )
+
+  fun page1Many() = PaginationData(
+    list = (0..<20).map {
+      ListItem(
+        id = it,
+        name = "List Item $it",
+        posterPath = "/poster_path_$it.jpg",
+        backdropPath = "/backdrop_path_$it.jpg",
+        description = "Description for List Item $it",
+        public = it % 2 == 0,
+        numberOfItems = it * 2,
+        updatedAt = "2025-07-19 17:03:41 UTC",
+      )
+    },
+    page = 1,
+    totalPages = 2,
+    totalResults = 30,
+  )
+
+  fun page2Many() = PaginationData(
+    list = (20..<30).map {
+      ListItem(
+        id = it,
+        name = "List Item $it",
+        posterPath = "/poster_path_$it.jpg",
+        backdropPath = "/backdrop_path_$it.jpg",
+        description = "Description for List Item $it",
+        public = it % 2 == 0,
+        numberOfItems = it * 2,
+        updatedAt = "2025-07-19 17:03:41 UTC",
+      )
+    },
+    page = 2,
+    totalPages = 2,
+    totalResults = 30,
+  )
 }

@@ -29,6 +29,18 @@ object SessionStorageFactory {
     ),
   )
 
+  fun full() = SessionStorage(
+    storage = FakePreferenceStorage(),
+    encryptedStorage = FakeEncryptedPreferenceStorage(
+      sessionId = "123456789",
+      tmdbAccountId = AccessTokenFactory.valid().accountId,
+      accessToken = AccessTokenFactory.valid().accessToken,
+    ),
+    accountStorage = FakeAccountStorage(
+      accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
+    ),
+  )
+
   fun empty(
     storage: FakePreferenceStorage = FakePreferenceStorage(),
     encryptedStorage: FakeEncryptedPreferenceStorage = FakeEncryptedPreferenceStorage(),

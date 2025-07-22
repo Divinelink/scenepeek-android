@@ -17,10 +17,12 @@ interface ListDao {
     totalResults: Int,
   )
 
-  fun fetchListsMetadata(accountId: String): ListMetadata?
+  fun fetchListsMetadata(accountId: String): ListMetadataEntity?
 
   fun fetchUserLists(
     accountId: String,
     fromIndex: Int,
   ): Flow<List<ListItem>>
+
+  fun clearUserLists(accountId: String)
 }

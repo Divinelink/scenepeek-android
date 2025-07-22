@@ -1,4 +1,4 @@
-CREATE TABLE ListMetadata (
+CREATE TABLE ListMetadataEntity (
   accountId TEXT NOT NULL,
   totalPages INTEGER NOT NULL,
   totalResults INTEGER NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE ListMetadata (
 );
 
 insertListMetadata:
-INSERT OR REPLACE INTO ListMetadata (
+INSERT OR REPLACE INTO ListMetadataEntity (
   accountId,
   totalPages,
   totalResults
@@ -15,5 +15,9 @@ VALUES (?, ?, ?);
 
 fetchListMetadata:
 SELECT *
-FROM ListMetadata
+FROM ListMetadataEntity
+WHERE accountId = :accountId;
+
+clearListMetadata:
+DELETE FROM ListMetadataEntity
 WHERE accountId = :accountId;

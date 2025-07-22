@@ -1,4 +1,4 @@
-CREATE TABLE ListMetadata (
+CREATE TABLE ListMetadataEntity (
   accountId TEXT NOT NULL,
   totalPages INTEGER NOT NULL,
   totalResults INTEGER NOT NULL,

@@ -431,4 +431,26 @@ class AddToListViewModelTest {
       .onLogin()
       .awaitNavigateToTMDBAuth()
   }
+
+  @Test
+  fun `test onCreateList emits navigateToTMDBAuth`() = runTest {
+    robot
+      .withArgs(AddToListRouteFactory.tv())
+      .mockFetchUserLists(
+        Result.success(ListItemFactory.page1()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial.copy(
+          page = 2,
+          lists = ListData.Data(ListItemFactory.page1()),
+          isLoading = false,
+          loadingMore = false,
+          error = null,
+        ),
+      )
+      .expectNoNavigateToCreateList()
+      .onCreateListClick()
+      .awaitNavigateToCreateList()
+  }
 }
