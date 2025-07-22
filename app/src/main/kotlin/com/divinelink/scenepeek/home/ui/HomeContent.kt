@@ -103,6 +103,7 @@ fun HomeContentPreview() {
               MediaItem.Media.Movie(
                 id = it,
                 name = "Movie 1",
+                backdropPath = "/backdrop1",
                 posterPath = "/poster1",
                 overview = "Overview 1",
                 releaseDate = "2021-01-01",

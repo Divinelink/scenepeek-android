@@ -29,6 +29,7 @@ data class PersonTVCastCredit(
     id = id.toInt(),
     name = name,
     posterPath = posterPath,
+    backdropPath = backdropPath,
     releaseDate = firstAirDate,
     voteAverage = voteAverage,
     voteCount = voteCount.toInt(),

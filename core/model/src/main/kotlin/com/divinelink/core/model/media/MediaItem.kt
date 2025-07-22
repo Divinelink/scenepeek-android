@@ -6,6 +6,7 @@ sealed class MediaItem(
   open val id: Int,
   open val name: String,
   open val posterPath: String?,
+  open val backdropPath: String?,
   open val mediaType: MediaType,
 ) {
 
@@ -13,6 +14,7 @@ sealed class MediaItem(
     override val id: Int,
     override val name: String,
     override val posterPath: String?,
+    override val backdropPath: String?,
     open val releaseDate: String,
     open val voteAverage: Double,
     open val voteCount: Int,
@@ -23,6 +25,7 @@ sealed class MediaItem(
   ) : MediaItem(
     id = id,
     posterPath = posterPath,
+    backdropPath = backdropPath,
     name = name,
     mediaType = mediaType,
   ) {
@@ -31,6 +34,7 @@ sealed class MediaItem(
       override val id: Int,
       override val name: String,
       override val posterPath: String?,
+      override val backdropPath: String?,
       override val releaseDate: String,
       override val voteAverage: Double,
       override val voteCount: Int,
@@ -48,12 +52,14 @@ sealed class MediaItem(
       isFavorite = isFavorite,
       mediaType = MediaType.TV,
       accountRating = accountRating,
+      backdropPath = backdropPath,
     )
 
     data class Movie(
       override val id: Int,
       override val name: String,
       override val posterPath: String?,
+      override val backdropPath: String?,
       override val releaseDate: String,
       override val voteAverage: Double,
       override val voteCount: Int,
@@ -63,6 +69,7 @@ sealed class MediaItem(
     ) : Media(
       id = id,
       posterPath = posterPath,
+      backdropPath = backdropPath,
       name = name,
       releaseDate = releaseDate,
       voteAverage = voteAverage,
@@ -71,6 +78,7 @@ sealed class MediaItem(
       isFavorite = isFavorite == true,
       mediaType = MediaType.MOVIE,
       accountRating = accountRating,
+
     )
   }
 
@@ -85,6 +93,7 @@ sealed class MediaItem(
     name = name,
     posterPath = profilePath,
     mediaType = MediaType.PERSON,
+    backdropPath = null,
   )
 
   data object Unknown : MediaItem(
@@ -92,5 +101,6 @@ sealed class MediaItem(
     posterPath = null,
     name = "",
     mediaType = MediaType.UNKNOWN,
+    backdropPath = null,
   )
 }

@@ -28,6 +28,7 @@ data class PersonMovieCrewCredit(
     id = id.toInt(),
     name = title,
     posterPath = posterPath,
+    backdropPath = backdropPath,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
     voteCount = voteCount.toInt(),
