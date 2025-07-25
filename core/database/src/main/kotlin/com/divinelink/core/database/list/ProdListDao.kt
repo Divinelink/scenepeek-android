@@ -195,7 +195,7 @@ class ProdListDao(
     )
   }
 
-  override fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>> = database
+  override fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = database
     .transactionWithResult {
       database
         .listMediaItemEntityQueries
@@ -203,13 +203,11 @@ class ProdListDao(
         .asFlow()
         .mapToList(dispatcher.io)
         .map { list ->
-          list.mapNotNull {
-            if (it.backdropPath != null && it.name != null) {
-              it.name to it.backdropPath
-            } else {
-              null
+          list
+            .filter { it.backdropPath != null && it.name != null }
+            .associate {
+              it.name!! to it.backdropPath!!
             }
-          }
         }
     }
 }

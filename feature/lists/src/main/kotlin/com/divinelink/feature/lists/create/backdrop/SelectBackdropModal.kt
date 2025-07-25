@@ -1,4 +1,4 @@
-package com.divinelink.feature.lists.create.ui
+package com.divinelink.feature.lists.create.backdrop
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,21 +14,28 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.ListItemBackdropImage
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectBackdropModal(
+  id: Int,
+  viewModel: SelectBackdropViewModel = koinViewModel { parametersOf(id) },
   onDismissRequest: () -> Unit,
   onBackdropSelected: (String) -> Unit,
-  backdrops: List<Pair<String, String>>,
 ) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   ModalBottomSheet(
     modifier = Modifier
@@ -43,7 +50,7 @@ fun SelectBackdropModal(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
         itemsIndexed(
-          items = backdrops,
+          items = uiState.backdrops.toList(),
           key = { index, backdrop ->
             backdrop.first + index
           },

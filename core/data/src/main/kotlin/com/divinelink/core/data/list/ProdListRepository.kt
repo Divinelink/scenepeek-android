@@ -135,6 +135,6 @@ class ProdListRepository(
       )
     }
 
-  override suspend fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>> = listDao
+  override suspend fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = listDao
     .fetchListsBackdrops(listId)
 }

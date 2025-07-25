@@ -43,6 +43,7 @@ import com.divinelink.core.ui.coil.ListItemBackdropImage
 import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.create.CreateListAction
 import com.divinelink.feature.lists.create.CreateListUiState
+import com.divinelink.feature.lists.create.backdrop.SelectBackdropModal
 import com.divinelink.feature.lists.create.ui.provider.CreateListUiStateParameterProvider
 import com.divinelink.core.ui.R as uiR
 
@@ -66,12 +67,12 @@ fun CreateListContent(
 
   if (showBackdropModal) {
     SelectBackdropModal(
+      id = uiState.id,
       onDismissRequest = { showBackdropModal = false },
       onBackdropSelected = { backdrop ->
         action.invoke(CreateListAction.BackdropChanged(backdrop))
         showBackdropModal = false
       },
-      backdrops = uiState.availableBackdrops,
     )
   }
 
@@ -165,7 +166,6 @@ fun CreateListContent(
             modifier = Modifier
               .width(160.dp)
               .clickable {
-                action.invoke(CreateListAction.OnFetchAvailableBackdrops)
                 showBackdropModal = true
               },
             url = uiState.backdrop,

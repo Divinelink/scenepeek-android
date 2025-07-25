@@ -18,7 +18,6 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       backdrop = null,
       snackbarMessage = null,
       loading = false,
-      availableBackdrops = emptyList(),
     ),
     CreateListUiState(
       id = 2,
@@ -29,7 +28,6 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       backdrop = "/ew5FcYiRhTYNJAkxoVPMNlCOdVn.jpg",
       snackbarMessage = null,
       loading = false,
-      availableBackdrops = emptyList(),
     ),
     CreateListUiState(
       id = 3,
@@ -45,7 +43,6 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
         ),
       ),
       loading = false,
-      availableBackdrops = emptyList(),
     ),
     CreateListUiState(
       id = 3,
@@ -56,7 +53,6 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
       backdrop = "",
       snackbarMessage = null,
       loading = true,
-      availableBackdrops = emptyList(),
     ),
   )
 }

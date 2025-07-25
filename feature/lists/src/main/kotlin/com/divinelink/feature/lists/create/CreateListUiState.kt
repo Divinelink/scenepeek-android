@@ -9,7 +9,6 @@ data class CreateListUiState(
   val public: Boolean,
   val editMode: Boolean,
   val backdrop: String?,
-  val availableBackdrops: List<Pair<String, String>>,
   val snackbarMessage: SnackbarMessage?,
   val loading: Boolean,
 ) {
@@ -20,7 +19,6 @@ data class CreateListUiState(
       description = "",
       public = true,
       backdrop = "",
-      availableBackdrops = emptyList(),
       editMode = false,
       snackbarMessage = null,
       loading = false,

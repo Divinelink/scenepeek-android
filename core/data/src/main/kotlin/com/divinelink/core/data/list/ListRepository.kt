@@ -26,7 +26,7 @@ interface ListRepository {
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResult>
 
-  suspend fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>>
+  suspend fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>>
 
   suspend fun fetchUserLists(
     accountId: String,

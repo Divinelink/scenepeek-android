@@ -84,17 +84,6 @@ class CreateListViewModel(
       CreateListAction.DismissSnackbar -> _uiState.update {
         it.copy(snackbarMessage = null)
       }
-      CreateListAction.OnFetchAvailableBackdrops -> viewModelScope.launch {
-        repository
-          .fetchListsBackdrops(uiState.value.id)
-          .collect { backdrops ->
-            _uiState.update { state ->
-              state.copy(
-                availableBackdrops = backdrops,
-              )
-            }
-          }
-      }
     }
   }
 
