@@ -24,26 +24,32 @@
     objectIdsJson TEXT -- JSON string of the object_ids object
 );
 
--- Insert queries
 insertListDetails:
 INSERT OR REPLACE INTO ListDetailsEntity (
-    id, name, description, averageRating, backdropPath, posterPath,
-    itemCount, page, totalPages, totalResults, isPublic, revenue, runtime,
-    sortBy, iso31661, iso6391, createdById, createdByUsername,
-    createdByName, createdByAvatarPath, createdByGravatarHash,
-    commentsJson, objectIdsJson
+  id, name, description, averageRating, backdropPath, posterPath,
+  itemCount, page, totalPages, totalResults, isPublic, revenue, runtime,
+  sortBy, iso31661, iso6391, createdById, createdByUsername,
+  createdByName, createdByAvatarPath, createdByGravatarHash,
+  commentsJson, objectIdsJson
 )
 VALUES ?;
 
--- Update queries
 updateListDetails:
 UPDATE ListDetailsEntity SET
-    name = ?, description = ?, averageRating = ?, backdropPath = ?,
-    posterPath = ?, itemCount = ?, page = ?, totalPages = ?,
-    totalResults = ?, isPublic = ?, revenue = ?, runtime = ?, sortBy = ?,
-    iso31661 = ?, iso6391 = ?, createdById = ?, createdByUsername = ?,
-    createdByName = ?, createdByAvatarPath = ?, createdByGravatarHash = ?,
-    commentsJson = ?, objectIdsJson = ?
+  name = ?,
+  description = ?,
+  backdropPath = ?,
+  isPublic = ?
+WHERE id = ?;
+
+increaseListItemCount:
+UPDATE ListDetailsEntity SET
+    itemCount = itemCount + 1
+WHERE id = ?;
+
+decreaseListItemCount:
+UPDATE ListDetailsEntity SET
+    itemCount = itemCount - 1
 WHERE id = ?;
 
 selectListDetailsById:

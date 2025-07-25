@@ -178,4 +178,20 @@ class ProdListDao(
     database.listDetailsEntityQueries.deleteListDetails(listId.toLong())
     database.listMediaItemEntityQueries.deleteListMediaItem(listId.toLong())
   }
+
+  override fun updateList(
+    listId: Int,
+    name: String,
+    description: String,
+    backdropPath: String,
+    isPublic: Boolean,
+  ) = database.transaction {
+    database.listDetailsEntityQueries.updateListDetails(
+      id = listId.toLong(),
+      name = name,
+      description = description,
+      backdropPath = backdropPath,
+      isPublic = if (isPublic) 1 else 0,
+    )
+  }
 }

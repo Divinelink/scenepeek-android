@@ -13,7 +13,7 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.client.localJson
-import com.divinelink.core.network.list.model.CreateListRequest
+import com.divinelink.core.network.list.model.create.CreateListRequest
 import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.testing.MainDispatcherRule

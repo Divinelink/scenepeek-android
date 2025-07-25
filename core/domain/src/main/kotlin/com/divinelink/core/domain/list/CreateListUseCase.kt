@@ -6,7 +6,7 @@ import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.network.Resource
-import com.divinelink.core.network.list.model.CreateListRequest
+import com.divinelink.core.network.list.model.create.CreateListRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow

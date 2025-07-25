@@ -9,6 +9,7 @@ import com.divinelink.core.domain.list.CreateListUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.CreateListRoute
 import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.R
 import kotlinx.coroutines.channels.Channel
@@ -62,7 +63,11 @@ class CreateListViewModel(
 
   fun onAction(action: CreateListAction) {
     when (action) {
-      CreateListAction.CreateOrEditList -> createList()
+      CreateListAction.CreateOrEditList -> if (uiState.value.editMode) {
+        editList()
+      } else {
+        createList()
+      }
       CreateListAction.DeleteList -> deleteList()
       is CreateListAction.NameChanged -> _uiState.update {
         it.copy(name = action.name)
@@ -71,7 +76,7 @@ class CreateListViewModel(
         it.copy(description = action.description)
       }
       is CreateListAction.BackdropChanged -> {
-        // TODO Update the backdrop path
+        // TODO Update the backdropPath path
       }
       is CreateListAction.PublicChanged -> _uiState.update {
         it.copy(public = !it.public)
@@ -112,6 +117,53 @@ class CreateListViewModel(
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.feature_lists_delete_failure,
+                  uiState.value.name,
+                ),
+              ),
+              loading = false,
+            )
+          }
+        }
+    }
+  }
+
+  private fun editList() {
+    _uiState.update { state ->
+      state.copy(
+        loading = true,
+      )
+    }
+
+    viewModelScope.launch {
+      repository.updateList(
+        listId = uiState.value.id,
+        request = UpdateListRequest.create(
+          name = uiState.value.name,
+          description = uiState.value.description,
+          public = uiState.value.public,
+          backdrop = uiState.value.backdrop?.ifBlank { null },
+        ),
+      )
+        .onSuccess {
+          _uiState.update { state ->
+            state.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_lists_update_successfully,
+                  uiState.value.name,
+                ),
+              ),
+              loading = false,
+            )
+          }
+          _onNavigateUp.send(Unit)
+        }
+        .onFailure {
+          _uiState.update { state ->
+            state.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_lists_update_failure,
                   uiState.value.name,
                 ),
               ),

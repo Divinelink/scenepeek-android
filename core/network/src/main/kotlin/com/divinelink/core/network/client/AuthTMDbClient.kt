@@ -39,10 +39,10 @@ class AuthTMDbClient(
 
   suspend inline fun <reified T : Any> delete(url: String): T = client.delete(url)
 
-  suspend fun put(
+  suspend inline fun <reified T : Any, reified V : Any> put(
     url: String,
-    body: String,
-  ): HttpResponse = client.put(url, body)
+    body: T,
+  ): V = client.put(url, body)
 
   fun close() {
     client.close()

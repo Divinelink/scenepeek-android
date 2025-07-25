@@ -23,7 +23,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.utils.io.InternalAPI
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
@@ -119,12 +118,21 @@ suspend inline fun <reified T : Any> HttpClient.delete(url: String): T {
   }
 }
 
-@OptIn(InternalAPI::class)
-suspend fun HttpClient.put(
+@OptIn(InternalSerializationApi::class)
+suspend inline fun <reified T : Any, reified V : Any> HttpClient.put(
   url: String,
-  body: String,
-): HttpResponse = this.put(url) {
-  this.body = body
+  body: T,
+): V {
+  try {
+    val response = this.put(url) { setBody(body) }
+
+    val json = response.bodyAsText()
+    return localJson.decodeFromString(V::class.serializer(), json)
+  } catch (e: ResponseException) {
+    throw e
+  } catch (e: Exception) {
+    throw e
+  }
 }
 
 suspend inline fun HttpResponse.bodyAsTextOrNull(): String? = when (status) {

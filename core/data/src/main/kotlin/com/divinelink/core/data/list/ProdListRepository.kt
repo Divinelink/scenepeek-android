@@ -12,13 +12,17 @@ import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.list.mapper.add.map
 import com.divinelink.core.network.list.mapper.details.map
-import com.divinelink.core.network.list.model.CreateListRequest
+import com.divinelink.core.network.list.model.create.CreateListRequest
+import com.divinelink.core.network.list.model.create.CreateListResponse
+import com.divinelink.core.network.list.model.update.UpdateListRequest
+import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.service.ListService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import timber.log.Timber
 
 class ProdListRepository(
   private val listDao: ListDao,
@@ -113,5 +117,27 @@ class ProdListRepository(
     .deleteList(listId)
     .onSuccess {
       listDao.deleteList(listId)
+    }
+
+  override suspend fun updateList(
+    listId: Int,
+    request: UpdateListRequest,
+  ): Result<UpdateListResponse> = service
+    .updateList(
+      listId = listId,
+      request = request,
+    )
+    .onSuccess {
+      listDao.updateList(
+        listId = listId,
+        name = request.name,
+        description = request.description,
+        backdropPath = request.backdropPath ?: "",
+        isPublic = request.public,
+      )
+    }
+    .onFailure {
+      // Handle failure if needed
+      Timber.d("Failed to update list: $it")
     }
 }

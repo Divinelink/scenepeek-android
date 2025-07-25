@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.account.model.ListsResponse
-import com.divinelink.core.network.list.model.CreateListResponse
+import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.network.list.service.ListService

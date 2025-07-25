@@ -38,4 +38,12 @@ interface ListDao {
   fun clearUserLists(accountId: String)
 
   fun deleteList(listId: Int)
+
+  fun updateList(
+    listId: Int,
+    name: String,
+    description: String,
+    backdropPath: String,
+    isPublic: Boolean,
+  )
 }
