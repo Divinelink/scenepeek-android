@@ -36,4 +36,6 @@ interface ListDao {
   ): Flow<List<ListItem>>
 
   fun clearUserLists(accountId: String)
+
+  fun deleteList(listId: Int)
 }

@@ -27,7 +27,7 @@ class ProdListDao(
       database.listDetailsEntityQueries.insertListDetails(details.map())
 
       details.media.forEachIndexed { index, mediaItem ->
-        database.listDetailsEntityQueries.insertListMediaItem(
+        database.listMediaItemEntityQueries.insertListMediaItem(
           listId = details.id.toLong(),
           mediaItemId = mediaItem.id.toLong(),
           itemOrder = (page - 1) * 20L + index.toLong(),
@@ -67,7 +67,7 @@ class ProdListDao(
     id: Long,
     page: Long,
   ): Flow<List<MediaItem.Media>> = database
-    .listDetailsEntityQueries
+    .listMediaItemEntityQueries
     .fetchListMediaItemsByListId(
       listId = id,
       page = page,
@@ -171,5 +171,11 @@ class ProdListDao(
       database.listItemEntityQueries.clearListItems(accountId)
       database.listMetadataEntityQueries.clearListMetadata(accountId)
     }
+  }
+
+  override fun deleteList(listId: Int) = database.transaction {
+    database.listItemEntityQueries.deleteList(listId.toLong())
+    database.listDetailsEntityQueries.deleteListDetails(listId.toLong())
+    database.listMediaItemEntityQueries.deleteListMediaItem(listId.toLong())
   }
 }

@@ -10,14 +10,19 @@ fun NavGraphBuilder.createListScreen(onNavigateUp: () -> Unit) {
   composable<CreateListRoute> {
     CreateListScreen(
       onNavigateUp = onNavigateUp,
+      onNavigateBackToLists = {},
     )
   }
 }
 
-fun NavGraphBuilder.editListScreen(onNavigateUp: () -> Unit) {
+fun NavGraphBuilder.editListScreen(
+  onNavigateUp: () -> Unit,
+  onNavigateBackToLists: () -> Unit,
+) {
   composable<EditListRoute> {
     CreateListScreen(
       onNavigateUp = onNavigateUp,
+      onNavigateBackToLists = onNavigateBackToLists,
     )
   }
 }

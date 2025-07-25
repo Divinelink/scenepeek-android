@@ -15,7 +15,7 @@ fun mergeListItems(
   val itemsAfterRange = existingItems.drop(endIndex)
 
   // Replace the page range with new items
-  return itemsBeforeRange + newItems + itemsAfterRange
+  return (itemsBeforeRange + newItems + itemsAfterRange).distinctBy { it.id }
 }
 
 val listsComparator: Comparator<ListItem> = compareByDescending<ListItem> { item ->

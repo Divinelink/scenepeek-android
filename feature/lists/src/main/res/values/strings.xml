@@ -16,6 +16,9 @@
   <string name="feature_lists_description">Description</string>
   <string name="feature_lists_public_description">Public lists can be viewed by other users.</string>
 
+  <string name='feature_lists_delete_successfully'>%s deleted successfully</string>
+  <string name='feature_lists_delete_failure'>Failed to delete %s</string>
+
   <string name='feature_lists_create_successfully'>%s created successfully</string>
   <string name='feature_lists_create_failure'>Failed to create %s</string>
 </resources>

@@ -108,4 +108,10 @@ class ProdListRepository(
       )
     },
   )
+
+  override suspend fun deleteList(listId: Int): Result<Unit> = service
+    .deleteList(listId)
+    .onSuccess {
+      listDao.deleteList(listId)
+    }
 }

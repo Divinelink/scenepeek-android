@@ -10,22 +10,27 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
   override val values: Sequence<CreateListUiState> = sequenceOf(
     CreateListUiState.initial,
     CreateListUiState(
+      id = 1,
       name = "My Favorite Movies",
       description = "A collection of my all-time favorite movies.",
       public = true,
       editMode = false,
       backdrop = null,
       snackbarMessage = null,
+      loading = false,
     ),
     CreateListUiState(
+      id = 2,
       name = "My Favorite Movies",
       description = "A collection of my all-time favorite movies.",
       public = false,
       editMode = true,
       backdrop = "/ew5FcYiRhTYNJAkxoVPMNlCOdVn.jpg",
       snackbarMessage = null,
+      loading = false,
     ),
     CreateListUiState(
+      id = 3,
       name = "My Favorite Movies",
       description = "A collection of my all-time favorite movies.",
       public = false,
@@ -37,6 +42,17 @@ class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUi
           "My Favorite Movies",
         ),
       ),
+      loading = false,
+    ),
+    CreateListUiState(
+      id = 3,
+      name = "My Favorite Movies",
+      description = "A collection of my all-time favorite movies.",
+      public = false,
+      editMode = false,
+      backdrop = "",
+      snackbarMessage = null,
+      loading = true,
     ),
   )
 }

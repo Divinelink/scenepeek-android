@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.create.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -58,6 +60,17 @@ fun CreateListContent(
         action.invoke(CreateListAction.DeleteList)
         deleteDialog = false
       },
+    )
+  }
+
+  AnimatedVisibility(
+    visible = uiState.loading,
+    modifier = Modifier.fillMaxWidth(),
+  ) {
+    LinearProgressIndicator(
+      modifier = Modifier
+        .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+        .fillMaxWidth(),
     )
   }
 

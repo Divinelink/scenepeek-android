@@ -28,4 +28,6 @@ interface ListRepository {
     accountId: String,
     page: Int,
   ): Flow<Resource<PaginationData<ListItem>?>>
+
+  suspend fun deleteList(listId: Int): Result<Unit>
 }

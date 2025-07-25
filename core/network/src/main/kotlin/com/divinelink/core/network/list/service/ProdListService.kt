@@ -12,6 +12,7 @@ import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.network.list.util.buildAddItemsToListUrl
 import com.divinelink.core.network.list.util.buildFetchListDetailsUrl
 import com.divinelink.core.network.list.util.buildListUrl
+import com.divinelink.core.network.list.util.buildListWithIdUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -70,4 +71,10 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
         body = request,
       )
     }
+
+  override suspend fun deleteList(listId: Int): Result<Unit> = runCatching {
+    val url = buildListWithIdUrl(listId)
+
+    client.delete<Unit>(url)
+  }
 }

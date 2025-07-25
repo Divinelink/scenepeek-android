@@ -26,4 +26,6 @@ interface ListService {
   ): Flow<ListsResponse>
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResponse>
+
+  suspend fun deleteList(listId: Int): Result<Unit>
 }

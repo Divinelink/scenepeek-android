@@ -45,3 +45,6 @@ WHERE accountId = :accountId AND itemIndex >= :startIndex;
 clearListItems:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId;
+
+deleteList:
+DELETE FROM ListItemEntity WHERE id = ?;

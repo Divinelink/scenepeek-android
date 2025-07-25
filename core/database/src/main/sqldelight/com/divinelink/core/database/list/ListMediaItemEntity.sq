@@ -1,0 +1,23 @@
+CREATE TABLE ListMediaItemEntity (
+    listId INTEGER NOT NULL,
+    mediaItemId INTEGER NOT NULL,
+    page INTEGER NOT NULL,
+    itemOrder INTEGER NOT NULL, -- To maintain order within the list
+    FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
+    FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
+    UNIQUE(listId, mediaItemId)
+);
+
+insertListMediaItem:
+INSERT OR REPLACE INTO ListMediaItemEntity (
+    listId, mediaItemId, itemOrder, page
+) VALUES (?, ?, ?, ?);
+
+fetchListMediaItemsByListId:
+SELECT * FROM ListMediaItemEntity
+WHERE listId = ?
+AND page = ?
+ORDER BY itemOrder;
+
+deleteListMediaItem:
+DELETE FROM ListMediaItemEntity WHERE listId = ?;

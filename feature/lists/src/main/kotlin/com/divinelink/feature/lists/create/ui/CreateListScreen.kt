@@ -11,6 +11,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AnimatedVisibilityScope.CreateListScreen(
   onNavigateUp: () -> Unit,
+  onNavigateBackToLists: () -> Unit,
   viewModel: CreateListViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -18,6 +19,12 @@ fun AnimatedVisibilityScope.CreateListScreen(
   LaunchedEffect(Unit) {
     viewModel.onNavigateUp.collect {
       onNavigateUp()
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.onNavigateBackToLists.collect {
+      onNavigateBackToLists()
     }
   }
 

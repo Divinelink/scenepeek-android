@@ -1,6 +1,7 @@
 package com.divinelink.scenepeek.base.di
 
 import com.divinelink.core.navigation.NavigationQualifier
+import com.divinelink.core.navigation.route.ListsRoute
 import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToEditList
@@ -249,6 +250,12 @@ val navigationModule = module {
     { navController, _ ->
       editListScreen(
         onNavigateUp = navController::navigateUp,
+        onNavigateBackToLists = {
+          navController.popBackStack(
+            route = ListsRoute,
+            inclusive = false,
+          )
+        },
       )
     }
   }
