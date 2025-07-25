@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
@@ -20,6 +21,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.ui.AddToListModalBottomSheet
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -51,6 +53,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       AddToListModalBottomSheet(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
+        onNavigateToCreateList = {},
         viewModel = viewModel,
       )
     }
@@ -80,6 +83,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       AddToListModalBottomSheet(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
+        onNavigateToCreateList = {},
         viewModel = viewModel,
       )
     }
@@ -109,6 +113,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
         onNavigateToTMDBAuth = {
           navigatedToTMDBAuth = true
         },
+        onNavigateToCreateList = {},
         viewModel = viewModel,
       )
     }
@@ -136,7 +141,10 @@ class AddToListModalBottomSheetTest : ComposeTest() {
   @Test
   fun `test add to list with success`() = runTest {
     fetchUserListsUseCase.mockResponse(
-      Result.success(ListItemFactory.page1()),
+      flowOf(
+        Result.success(ListItemFactory.page1()),
+        Result.success(ListItemFactory.page2()),
+      ),
     )
 
     addItemToListUseCase.mockResponse(Result.success(true))
@@ -151,6 +159,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       AddToListModalBottomSheet(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
+        onNavigateToCreateList = {},
         viewModel = viewModel,
       )
     }
@@ -158,12 +167,51 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      onNodeWithText("3 items").assertIsDisplayed()
-      onNodeWithText("4 items").assertIsNotDisplayed()
-      onNodeWithText("Elsolist").assertIsDisplayed().performClick()
+      onNodeWithText("5 items").assertIsDisplayed()
+      onNodeWithText("6 items").assertIsNotDisplayed()
+      onNodeWithText("Top Movies").assertIsDisplayed().performClick()
 
-      onNodeWithText("4 items").assertIsDisplayed()
-      onNodeWithText("3 items").assertIsNotDisplayed()
+      onNodeWithText("6 items").assertIsDisplayed()
+      onNodeWithText("5 items").assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `test onLoadMore with success`() = runTest {
+    val channel = Channel<Result<PaginationData<ListItem>>>()
+    fetchUserListsUseCase.mockResponse(channel)
+
+    val viewModel = AddToListViewModel(
+      fetchUserListsUseCase = fetchUserListsUseCase.mock,
+      addItemToListUseCase = addItemToListUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setContentWithTheme {
+      AddToListModalBottomSheet(
+        onDismissRequest = {},
+        onNavigateToTMDBAuth = {},
+        onNavigateToCreateList = {},
+        viewModel = viewModel,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
+      channel.trySend(Result.success(ListItemFactory.page1Many()))
+      onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
+
+      onNodeWithText(ListItemFactory.page1Many().list.first().name).assertIsDisplayed()
+
+      channel.trySend(Result.success(ListItemFactory.page2Many()))
+
+      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(21)
+
+      onNodeWithText(ListItemFactory.page1Many().list.last().name).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(30)
+
+      onNodeWithText(ListItemFactory.page2Many().list.last().name).assertIsDisplayed()
     }
   }
 }

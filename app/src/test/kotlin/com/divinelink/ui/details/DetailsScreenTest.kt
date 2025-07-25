@@ -120,6 +120,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -198,6 +199,7 @@ class DetailsScreenTest : ComposeTest() {
           navigatedToDetails = true
         },
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -281,6 +283,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -345,6 +348,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -439,6 +443,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -516,6 +521,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -583,6 +589,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -646,6 +653,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         animatedVisibilityScope = this,
@@ -742,6 +750,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         animatedVisibilityScope = this,
@@ -845,6 +854,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
+        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
         animatedVisibilityScope = this,

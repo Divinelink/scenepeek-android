@@ -216,9 +216,15 @@ object TestTags {
     const val PULL_TO_REFRESH = "List Pull To Refresh"
     const val DETAILS_SCREEN = "List Details Screen"
 
+    const val CREATE_LIST_FAB = "Create List FAB"
+
     object Details {
       const val EMPTY_ITEM = "List Details Empty Item"
       const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+    }
+
+    object Create {
+      const val SCREEN = "Create List Screen"
     }
   }
 

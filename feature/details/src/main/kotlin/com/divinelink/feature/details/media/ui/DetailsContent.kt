@@ -98,6 +98,7 @@ fun DetailsContent(
   modifier: Modifier = Modifier,
   animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateToTMDBAuth: () -> Unit,
+  onNavigateToCreateList: () -> Unit,
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
@@ -158,6 +159,7 @@ fun DetailsContent(
   if (showAddToListModal) {
     AddToListModalBottomSheet(
       onNavigateToTMDBAuth = onNavigateToTMDBAuth,
+      onNavigateToCreateList = onNavigateToCreateList,
       onDismissRequest = { showAddToListModal = false },
     )
   }
@@ -495,6 +497,7 @@ fun DetailsContentPreview(
               onDeleteRequest = {},
               onDeleteMedia = {},
               onNavigateToTMDBAuth = {},
+              onNavigateToCreateList = {},
             )
           }
         }

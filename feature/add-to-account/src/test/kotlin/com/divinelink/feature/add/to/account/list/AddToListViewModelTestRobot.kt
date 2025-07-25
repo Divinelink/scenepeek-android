@@ -52,6 +52,10 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
     viewModel.onAction(AddToListAction.ConsumeDisplayMessage)
   }
 
+  fun onCreateListClick() = apply {
+    viewModel.onAction(AddToListAction.OnCreateListClick)
+  }
+
   fun onListClick(id: Int) = apply {
     viewModel.onAction(AddToListAction.OnListClick(id = id))
   }
@@ -72,6 +76,18 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
 
   suspend fun awaitNavigateToTMDBAuth() = apply {
     viewModel.navigateToTMDBAuth.test {
+      awaitItem()
+    }
+  }
+
+  suspend fun expectNoNavigateToCreateList() = apply {
+    viewModel.navigateToCreateList.test {
+      expectNoEvents()
+    }
+  }
+
+  suspend fun awaitNavigateToCreateList() = apply {
+    viewModel.navigateToCreateList.test {
       awaitItem()
     }
   }

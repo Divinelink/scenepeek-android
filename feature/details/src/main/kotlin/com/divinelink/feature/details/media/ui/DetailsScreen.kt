@@ -36,6 +36,7 @@ fun DetailsScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
+  onNavigateToCreateList: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: DetailsViewModel = koinViewModel(),
@@ -140,6 +141,7 @@ fun DetailsScreen(
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
       onNavigateToTMDBAuth = onNavigateToTMDBLogin,
+      onNavigateToCreateList = onNavigateToCreateList,
     )
 
     OverlayScreen(

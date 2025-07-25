@@ -302,15 +302,6 @@ class ListsViewModelTest {
       .mockFetchUserData(
         Result.success(ListItemFactory.page1()),
       )
-//      .onRefresh()
-//      .assertUiState(
-//        ListsUiState.initial.copy(
-//          page = 2,
-//          lists = ListData.Data(ListItemFactory.page1()),
-//          isLoading = false,
-//          loadingMore = false,
-//        ),
-//      )
       .expectUiStates(
         action = {
           onRefresh()

@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.domain.account.FetchUserListsUseCase
-import com.divinelink.core.domain.account.UserListsParameters
+import com.divinelink.core.domain.list.FetchUserListsUseCase
+import com.divinelink.core.domain.list.UserListsParameters
+import com.divinelink.core.domain.list.mergeListItems
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
@@ -23,9 +24,7 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
   val uiState: StateFlow<ListsUiState> = _uiState
 
   init {
-    viewModelScope.launch {
-      fetchUserLists(isRefreshing = false)
-    }
+    fetchUserLists(isRefreshing = false)
   }
 
   fun onLoadMore() {
@@ -75,10 +74,11 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
                       is ListData.Data -> ListData.Data(
                         uiState.lists.data.copy(
                           page = result.data.page,
-                          list = buildList {
-                            addAll(uiState.lists.data.list)
-                            addAll(result.data.list)
-                          },
+                          list = mergeListItems(
+                            existingItems = uiState.lists.data.list,
+                            newItems = result.data.list,
+                            page = result.data.page - 1,
+                          ),
                         ),
                       )
                     }

@@ -1,9 +1,7 @@
 package com.divinelink.core.data.account
 
 import com.divinelink.core.model.PaginationData
-import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.account.service.AccountService
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map
@@ -55,14 +53,4 @@ class ProdAccountRepository(private val remote: AccountService) : AccountReposit
     .map { apiResponse ->
       Result.success(apiResponse.map())
     }
-
-  override suspend fun fetchUserLists(
-    accountId: String,
-    page: Int,
-  ): Flow<Result<PaginationData<ListItem>>> = remote
-    .fetchUserLists(
-      accountId = accountId,
-      page = page,
-    )
-    .map { Result.success(it.map()) }
 }

@@ -13,6 +13,7 @@ dependencies {
   api(libs.kotlin.test.junit)
   api(libs.kotlinx.coroutines.test)
   api(libs.truth)
+  api(libs.kotest.assertions)
   api(libs.turbine)
 
   api(libs.androidx.navigation.testing)

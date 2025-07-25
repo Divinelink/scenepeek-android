@@ -5,14 +5,70 @@ import com.divinelink.core.model.list.ListItem
 
 object ListItemFactory {
 
-  fun nonPrivateList() = ListItem(
-    id = 8452377,
-    name = "Elsolist",
-    posterPath = null,
+  fun movies() = ListItem(
+    id = 8452376,
+    name = "Top Movies",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
     backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
-    description = "This is a new list to test v4 lists",
+    description = "A collection of the top favorite movies.",
+    public = true,
+    numberOfItems = 5,
+    updatedAt = "2025-07-19 17:03:41 UTC",
+  )
+
+  fun shows() = ListItem(
+    id = 8452377,
+    name = "Top TV Shows",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+    description = "A collection of the top favorite TV shows.",
     public = false,
-    numberOfItems = 3,
+    numberOfItems = 10,
+    updatedAt = "2025-07-19 16:03:41 UTC",
+  )
+
+  fun recommended() = ListItem(
+    id = 8452378,
+    name = "Recommended for You",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+    description = "A collection of recommended items based on your preferences.",
+    public = true,
+    numberOfItems = 15,
+    updatedAt = "2025-07-19 15:03:41 UTC",
+  )
+
+  fun friends() = ListItem(
+    id = 8452379,
+    name = "Friends' Favorites",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+    description = "A collection of items liked by your friends.",
+    public = false,
+    numberOfItems = 20,
+    updatedAt = "2025-07-19 14:03:41 UTC",
+  )
+
+  fun recommendedFriends() = ListItem(
+    id = 8452380,
+    name = "Recommended by Friends",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+    description = "A collection of items recommended by your friends.",
+    public = true,
+    numberOfItems = 25,
+    updatedAt = "2025-07-19 13:03:41 UTC",
+  )
+
+  fun premium() = ListItem(
+    id = 8452381,
+    name = "Premium Picks",
+    posterPath = "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    backdropPath = "/4JNggqfyJWREqb0enzpUMbvIniV.jpg",
+    description = "A collection of premium items curated for you.",
+    public = true,
+    numberOfItems = 30,
+    updatedAt = "2025-07-19 12:03:41 UTC",
   )
 
   fun empty() = PaginationData<ListItem>(
@@ -24,19 +80,9 @@ object ListItemFactory {
 
   fun page1() = PaginationData(
     list = listOf(
-      nonPrivateList(),
-      nonPrivateList().copy(
-        id = 8452378,
-        name = "Elsolist 2",
-        numberOfItems = 5,
-        public = true,
-      ),
-      nonPrivateList().copy(
-        id = 8452379,
-        name = "Elsolist 3",
-        numberOfItems = 10,
-        public = false,
-      ),
+      movies(),
+      shows(),
+      recommended(),
     ),
     page = 1,
     totalPages = 2,
@@ -45,25 +91,48 @@ object ListItemFactory {
 
   fun page2() = PaginationData(
     list = listOf(
-      nonPrivateList().copy(
-        id = 8452390,
-        name = "List 4",
-      ),
-      nonPrivateList().copy(
-        id = 8452391,
-        name = "List 5",
-        numberOfItems = 5,
-        public = true,
-      ),
-      nonPrivateList().copy(
-        id = 8452392,
-        name = "List 6",
-        numberOfItems = 10,
-        public = false,
-      ),
+      friends(),
+      recommendedFriends(),
+      premium(),
     ),
     page = 2,
     totalPages = 2,
     totalResults = 6,
+  )
+
+  fun page1Many() = PaginationData(
+    list = (0..<20).map {
+      ListItem(
+        id = it,
+        name = "List Item $it",
+        posterPath = "/poster_path_$it.jpg",
+        backdropPath = "/backdrop_path_$it.jpg",
+        description = "Description for List Item $it",
+        public = it % 2 == 0,
+        numberOfItems = it * 2,
+        updatedAt = "2025-07-19 17:03:41 UTC",
+      )
+    },
+    page = 1,
+    totalPages = 2,
+    totalResults = 30,
+  )
+
+  fun page2Many() = PaginationData(
+    list = (20..<30).map {
+      ListItem(
+        id = it,
+        name = "List Item $it",
+        posterPath = "/poster_path_$it.jpg",
+        backdropPath = "/backdrop_path_$it.jpg",
+        description = "Description for List Item $it",
+        public = it % 2 == 0,
+        numberOfItems = it * 2,
+        updatedAt = "2025-07-19 17:03:41 UTC",
+      )
+    },
+    page = 2,
+    totalPages = 2,
+    totalResults = 30,
   )
 }

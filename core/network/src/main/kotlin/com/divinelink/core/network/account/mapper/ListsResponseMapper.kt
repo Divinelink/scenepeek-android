@@ -19,4 +19,5 @@ fun ListsResponse.ListItemResponse.map() = ListItem(
   description = description,
   public = public == 1,
   numberOfItems = numberOfItems,
+  updatedAt = updatedAt,
 )

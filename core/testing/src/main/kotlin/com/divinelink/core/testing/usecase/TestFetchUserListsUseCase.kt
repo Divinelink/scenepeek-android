@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.usecase
 
-import com.divinelink.core.domain.account.FetchUserListsUseCase
+import com.divinelink.core.domain.list.FetchUserListsUseCase
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem
 import kotlinx.coroutines.channels.Channel

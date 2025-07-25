@@ -1,6 +1,7 @@
 package com.divinelink.scenepeek.base.di
 
 import com.divinelink.core.navigation.NavigationQualifier
+import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
@@ -12,6 +13,7 @@ import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
+import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
 import com.divinelink.feature.lists.user.navigation.listsScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
@@ -70,6 +72,7 @@ val navigationModule = module {
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigateToCreateList = navController::navigateToCreateList,
       )
     }
   }
@@ -214,6 +217,7 @@ val navigationModule = module {
         onNavigateUp = navController::navigateUp,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
         onNavigateToList = navController::navigateToListDetails,
+        onNavigateToCreateList = navController::navigateToCreateList,
       )
     }
   }
@@ -224,6 +228,15 @@ val navigationModule = module {
       listDetailsScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
+      )
+    }
+  }
+
+  // Create List Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.CreateList)) {
+    { navController, _ ->
+      createListScreen(
+        onNavigateUp = navController::navigateUp,
       )
     }
   }

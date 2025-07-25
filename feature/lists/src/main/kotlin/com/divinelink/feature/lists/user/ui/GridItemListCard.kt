@@ -74,7 +74,7 @@ fun ListCardPreview() {
   AppTheme {
     Surface {
       GridItemListCard(
-        listItem = ListItemFactory.nonPrivateList(),
+        listItem = ListItemFactory.movies(),
         onClick = {},
       )
     }

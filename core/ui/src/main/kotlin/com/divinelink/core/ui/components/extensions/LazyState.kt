@@ -79,6 +79,37 @@ fun LazyListState.EndlessScrollHandler(
 }
 
 @Composable
+fun LazyGridState.EndlessScrollHandler(
+  buffer: Int = 6,
+  onLoadMore: () -> Unit,
+) {
+  val loadMore = remember {
+    derivedStateOf {
+      val layoutInfo = this.layoutInfo
+      val visibleItemsInfo = layoutInfo.visibleItemsInfo
+      val totalItems = layoutInfo.totalItemsCount
+      val totalItemsFitInScreen = totalItems == visibleItemsInfo.size
+
+      if (totalItemsFitInScreen) {
+        false
+      } else {
+        val lastVisibleItemIndex = (visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+        lastVisibleItemIndex > (totalItems - buffer)
+      }
+    }
+  }
+
+  LaunchedEffect(loadMore) {
+    snapshotFlow { loadMore.value to this@EndlessScrollHandler.layoutInfo.totalItemsCount }
+      .distinctUntilChanged()
+      .filter { it.first }
+      .collect {
+        onLoadMore()
+      }
+  }
+}
+
+@Composable
 fun LazyGridState.canScrollToTop(): Boolean {
   val scrollToTop = remember {
     derivedStateOf {

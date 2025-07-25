@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,6 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -37,6 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimatedVisibilityScope.ListsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
+  onNavigateToCreateList: () -> Unit,
   onNavigateToList: (ListDetailsRoute) -> Unit,
   viewModel: ListsViewModel = koinViewModel(),
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
@@ -75,6 +78,14 @@ fun AnimatedVisibilityScope.ListsScreen(
           text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
           expanded = true,
           onClick = onNavigateToTMDBLogin,
+        )
+      } else if (uiState.lists is ListData.Data) {
+        ScaffoldFab(
+          modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
+          icon = Icons.Default.Add,
+          text = null,
+          expanded = false,
+          onClick = onNavigateToCreateList,
         )
       }
     },

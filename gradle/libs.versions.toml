@@ -67,6 +67,7 @@ screenshot = "0.0.1-alpha09"
 androidx-test = "1.6.1"
 truth = "1.4.2"
 turbine = "1.1.0"
+kotest = "6.0.0.M5"
 
 # UI
 robolectric = "4.14"
@@ -167,14 +168,13 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 # Testing
-
-# Core
 androidx-test = { module = "androidx.test:core", version.ref = "androidx-test" }
 androidx-test-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidx-test" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 
 # UI
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }

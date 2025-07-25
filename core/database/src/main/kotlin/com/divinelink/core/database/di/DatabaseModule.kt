@@ -5,6 +5,8 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.credits.dao.CreditsDao
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
+import com.divinelink.core.database.list.ListDao
+import com.divinelink.core.database.list.ProdListDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import org.koin.core.module.dsl.bind
@@ -26,6 +28,8 @@ val databaseModule = module {
   singleOf(::ProdCreditsDao) { bind<CreditsDao>() }
 
   singleOf(::ProdPersonDao) { bind<PersonDao>() }
+
+  singleOf(::ProdListDao) { bind<ListDao>() }
 
   single { get<Database>().jellyseerrAccountDetailsQueries }
 }

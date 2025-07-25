@@ -1,0 +1,23 @@
+CREATE TABLE ListMetadataEntity (
+  accountId TEXT NOT NULL,
+  totalPages INTEGER NOT NULL,
+  totalResults INTEGER NOT NULL,
+  PRIMARY KEY (accountId)
+);
+
+insertListMetadata:
+INSERT OR REPLACE INTO ListMetadataEntity (
+  accountId,
+  totalPages,
+  totalResults
+)
+VALUES (?, ?, ?);
+
+fetchListMetadata:
+SELECT *
+FROM ListMetadataEntity
+WHERE accountId = :accountId;
+
+clearListMetadata:
+DELETE FROM ListMetadataEntity
+WHERE accountId = :accountId;

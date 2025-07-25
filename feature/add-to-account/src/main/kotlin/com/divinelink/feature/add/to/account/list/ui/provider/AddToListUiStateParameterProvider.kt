@@ -116,5 +116,13 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       page = 2,
       loadingMore = false,
     ),
+    AddToListUiState(
+      isLoading = false,
+      lists = ListData.Data(ListItemFactory.empty()),
+      displayMessage = null,
+      error = null,
+      page = 1,
+      loadingMore = false,
+    ),
   )
 }
