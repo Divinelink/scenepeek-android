@@ -1,9 +1,20 @@
 package com.divinelink.core.database.list
 
+import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
 import kotlinx.coroutines.flow.Flow
 
 interface ListDao {
+
+  fun insertListDetails(
+    page: Int,
+    details: ListDetails,
+  )
+
+  fun fetchListDetails(
+    listId: Int,
+    page: Int,
+  ): Flow<ListDetails?>
 
   fun insertListItem(
     page: Int,

@@ -19,3 +19,54 @@ CREATE TABLE ListItemEntity (
 
   UNIQUE(accountId, itemIndex) ON CONFLICT REPLACE
 );
+
+CREATE TABLE ListDetailsEntity (
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    averageRating REAL NOT NULL,
+    backdropPath TEXT,
+    posterPath TEXT,
+    itemCount INTEGER NOT NULL,
+    page INTEGER NOT NULL,
+    totalPages INTEGER NOT NULL,
+    totalResults INTEGER NOT NULL,
+    isPublic INTEGER,
+    revenue INTEGER NOT NULL,
+    runtime INTEGER NOT NULL,
+    sortBy TEXT NOT NULL,
+    iso31661 TEXT NOT NULL,
+    iso6391 TEXT NOT NULL,
+    createdById TEXT NOT NULL,
+    createdByUsername TEXT NOT NULL,
+    createdByName TEXT,
+    createdByAvatarPath TEXT,
+    createdByGravatarHash TEXT,
+    commentsJson TEXT, -- JSON string of the comments object
+    objectIdsJson TEXT -- JSON string of the object_ids object
+);
+
+CREATE TABLE MediaItemEntity (
+  id INTEGER PRIMARY KEY NOT NULL,
+  adult INTEGER NOT NULL DEFAULT 0,
+  backdropPath TEXT,
+  posterPath TEXT,
+  mediaType TEXT NOT NULL, -- "tv" or "movie"
+  originalLanguage TEXT NOT NULL,
+  popularity REAL NOT NULL,
+  voteAverage REAL NOT NULL,
+  voteCount INTEGER NOT NULL,
+  overview TEXT NOT NULL,
+  -- Movie specific fields
+  title TEXT, -- Only for movies
+  originalTitle TEXT, -- Only for movies
+  releaseDate TEXT, -- Only for movies
+  video INTEGER, -- Only for movies
+  -- TV show specific fields
+  name TEXT, -- Only for TV shows
+  originalName TEXT, -- Only for TV shows
+  firstAirDate TEXT, -- Only for TV shows
+  originCountryJson TEXT, -- JSON array of origin countries for TV shows
+  -- Common fields stored as JSON
+  genreIdsJson TEXT NOT NULL -- JSON array of genre IDs
+);

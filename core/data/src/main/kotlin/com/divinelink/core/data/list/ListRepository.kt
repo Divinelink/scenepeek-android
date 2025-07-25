@@ -20,7 +20,7 @@ interface ListRepository {
   suspend fun fetchListDetails(
     listId: Int,
     page: Int,
-  ): Result<ListDetails>
+  ): Flow<Resource<ListDetails?>>
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResult>
 

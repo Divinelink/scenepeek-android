@@ -1,0 +1,37 @@
+CREATE TABLE MediaItemEntity (
+  id INTEGER PRIMARY KEY NOT NULL,
+  adult INTEGER NOT NULL DEFAULT 0,
+  backdropPath TEXT,
+  posterPath TEXT,
+  mediaType TEXT NOT NULL, -- "tv" or "movie"
+  originalLanguage TEXT NOT NULL,
+  popularity REAL NOT NULL,
+  voteAverage REAL NOT NULL,
+  voteCount INTEGER NOT NULL,
+  overview TEXT NOT NULL,
+  -- Movie specific fields
+  title TEXT, -- Only for movies
+  originalTitle TEXT, -- Only for movies
+  releaseDate TEXT, -- Only for movies
+  video INTEGER, -- Only for movies
+  -- TV show specific fields
+  name TEXT, -- Only for TV shows
+  originalName TEXT, -- Only for TV shows
+  firstAirDate TEXT, -- Only for TV shows
+  originCountryJson TEXT, -- JSON array of origin countries for TV shows
+  -- Common fields stored as JSON
+  genreIdsJson TEXT NOT NULL -- JSON array of genre IDs
+);
+
+insertMediaItem:
+INSERT OR REPLACE INTO MediaItemEntity (
+    id, adult, backdropPath, posterPath, mediaType, originalLanguage,
+    popularity, voteAverage, voteCount, overview, title, originalTitle,
+    releaseDate, video, name, originalName, firstAirDate, originCountryJson,
+    genreIdsJson
+)
+VALUES ?;
+
+selectMediaItemById:
+SELECT * FROM MediaItemEntity
+WHERE id = ?;

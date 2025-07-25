@@ -11,6 +11,7 @@ import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -56,68 +57,71 @@ class ListDetailsViewModel(
           listId = uiState.value.id,
           page = if (isRefreshing) 1 else uiState.value.page,
         ),
-      ).collect { result ->
-        result.fold(
-          onSuccess = { listDetails ->
-            _uiState.update { uiState ->
-              uiState.copy(
-                page = listDetails.page + 1,
-                details = if (isRefreshing) {
-                  ListDetailsData.Data(
-                    data = listDetails,
-                  )
-                } else {
-                  when (uiState.details) {
-                    is ListDetailsData.Initial -> ListDetailsData.Data(
+      )
+        .distinctUntilChanged()
+        .collect { result ->
+          result.fold(
+            onSuccess = { listDetails ->
+              _uiState.update { uiState ->
+                uiState.copy(
+                  page = listDetails.page + 1,
+                  details = if (isRefreshing) {
+                    ListDetailsData.Data(
                       data = listDetails,
                     )
-                    is ListDetailsData.Data -> ListDetailsData.Data(
-                      data = listDetails.copy(
-                        media = uiState.details.data.media + listDetails.media,
-                      ),
-                    )
-                  }
-                },
-                loadingMore = false,
-                refreshing = false,
-                error = null,
-              )
-            }
-          },
-          onFailure = { error ->
-            if (uiState.value.details is ListDetailsData.Initial) {
-              ErrorHandler.create(error) {
-                on<UnknownHostException> {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      error = BlankSlateState.Offline,
-                      loadingMore = false,
-                      refreshing = false,
-                    )
-                  }
-                }
-                otherwise {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      error = BlankSlateState.Generic,
-                      loadingMore = false,
-                      refreshing = false,
-                    )
-                  }
-                }
-              }
-            } else {
-              _uiState.update { uiState ->
-                // TODO Maybe show a snackbar that loading more failed?
-                uiState.copy(
+                  } else {
+                    when (uiState.details) {
+                      is ListDetailsData.Initial -> ListDetailsData.Data(
+                        data = listDetails,
+                      )
+                      is ListDetailsData.Data -> ListDetailsData.Data(
+                        data = listDetails.copy(
+                          media = (uiState.details.data.media + listDetails.media)
+                            .distinctBy { it.id },
+                        ),
+                      )
+                    }
+                  },
                   loadingMore = false,
                   refreshing = false,
+                  error = null,
                 )
               }
-            }
-          },
-        )
-      }
+            },
+            onFailure = { error ->
+              if (uiState.value.details is ListDetailsData.Initial) {
+                ErrorHandler.create(error) {
+                  on<UnknownHostException> {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Offline,
+                        loadingMore = false,
+                        refreshing = false,
+                      )
+                    }
+                  }
+                  otherwise {
+                    _uiState.update { uiState ->
+                      uiState.copy(
+                        error = BlankSlateState.Generic,
+                        loadingMore = false,
+                        refreshing = false,
+                      )
+                    }
+                  }
+                }
+              } else {
+                _uiState.update { uiState ->
+                  // TODO Maybe show a snackbar that loading more failed?
+                  uiState.copy(
+                    loadingMore = false,
+                    refreshing = false,
+                  )
+                }
+              }
+            },
+          )
+        }
     }
   }
 

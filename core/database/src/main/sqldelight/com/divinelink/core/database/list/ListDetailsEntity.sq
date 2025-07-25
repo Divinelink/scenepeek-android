@@ -1,0 +1,73 @@
+ CREATE TABLE ListDetailsEntity (
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    averageRating REAL NOT NULL,
+    backdropPath TEXT,
+    posterPath TEXT,
+    itemCount INTEGER NOT NULL,
+    page INTEGER NOT NULL,
+    totalPages INTEGER NOT NULL,
+    totalResults INTEGER NOT NULL,
+    isPublic INTEGER,
+    revenue INTEGER NOT NULL,
+    runtime INTEGER NOT NULL,
+    sortBy TEXT NOT NULL,
+    iso31661 TEXT NOT NULL,
+    iso6391 TEXT NOT NULL,
+    createdById TEXT NOT NULL,
+    createdByUsername TEXT NOT NULL,
+    createdByName TEXT,
+    createdByAvatarPath TEXT,
+    createdByGravatarHash TEXT,
+    commentsJson TEXT, -- JSON string of the comments object
+    objectIdsJson TEXT -- JSON string of the object_ids object
+);
+
+CREATE TABLE ListMediaItemEntity (
+    listId INTEGER NOT NULL,
+    mediaItemId INTEGER NOT NULL,
+    page INTEGER NOT NULL, -- The page number this item belongs to
+    itemOrder INTEGER NOT NULL, -- To maintain order within the list
+    --comment TEXT, -- Optional comment for this specific media item in this list
+    --dateAdded TEXT NOT NULL, -- When this item was added to the list
+    FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
+    FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
+    UNIQUE(listId, mediaItemId)
+);
+
+-- Insert queries
+insertListDetails:
+INSERT OR REPLACE INTO ListDetailsEntity (
+    id, name, description, averageRating, backdropPath, posterPath,
+    itemCount, page, totalPages, totalResults, isPublic, revenue, runtime,
+    sortBy, iso31661, iso6391, createdById, createdByUsername,
+    createdByName, createdByAvatarPath, createdByGravatarHash,
+    commentsJson, objectIdsJson
+)
+VALUES ?;
+
+insertListMediaItem:
+INSERT OR REPLACE INTO ListMediaItemEntity (
+    listId, mediaItemId, itemOrder, page
+) VALUES (?, ?, ?, ?);
+
+-- Update queries
+updateListDetails:
+UPDATE ListDetailsEntity SET
+    name = ?, description = ?, averageRating = ?, backdropPath = ?,
+    posterPath = ?, itemCount = ?, page = ?, totalPages = ?,
+    totalResults = ?, isPublic = ?, revenue = ?, runtime = ?, sortBy = ?,
+    iso31661 = ?, iso6391 = ?, createdById = ?, createdByUsername = ?,
+    createdByName = ?, createdByAvatarPath = ?, createdByGravatarHash = ?,
+    commentsJson = ?, objectIdsJson = ?
+WHERE id = ?;
+
+selectListDetailsById:
+SELECT * FROM ListDetailsEntity WHERE id = ?;
+
+fetchListMediaItemsByListId:
+SELECT * FROM ListMediaItemEntity
+WHERE listId = ?
+AND page = ?
+ORDER BY itemOrder;
