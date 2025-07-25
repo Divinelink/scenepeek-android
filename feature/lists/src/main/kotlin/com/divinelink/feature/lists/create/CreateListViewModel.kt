@@ -75,8 +75,8 @@ class CreateListViewModel(
       is CreateListAction.DescriptionChanged -> _uiState.update {
         it.copy(description = action.description)
       }
-      is CreateListAction.BackdropChanged -> {
-        // TODO Update the backdropPath path
+      is CreateListAction.BackdropChanged -> _uiState.update {
+        it.copy(backdrop = action.path)
       }
       is CreateListAction.PublicChanged -> _uiState.update {
         it.copy(public = !it.public)

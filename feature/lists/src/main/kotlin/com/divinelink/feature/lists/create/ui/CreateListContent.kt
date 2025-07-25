@@ -52,6 +52,7 @@ fun CreateListContent(
   action: (CreateListAction) -> Unit,
 ) {
   var deleteDialog by rememberSaveable { mutableStateOf(false) }
+  var showBackdropModal by rememberSaveable { mutableStateOf(false) }
 
   if (deleteDialog) {
     DeleteListDialog(
@@ -60,6 +61,17 @@ fun CreateListContent(
         action.invoke(CreateListAction.DeleteList)
         deleteDialog = false
       },
+    )
+  }
+
+  if (showBackdropModal) {
+    SelectBackdropModal(
+      onDismissRequest = { showBackdropModal = false },
+      onBackdropSelected = { backdrop ->
+        action.invoke(CreateListAction.BackdropChanged(backdrop))
+        showBackdropModal = false
+      },
+      backdrops = uiState.availableBackdrops,
     )
   }
 
@@ -154,6 +166,7 @@ fun CreateListContent(
               .width(160.dp)
               .clickable {
                 action.invoke(CreateListAction.OnFetchAvailableBackdrops)
+                showBackdropModal = true
               },
             url = uiState.backdrop,
           )
