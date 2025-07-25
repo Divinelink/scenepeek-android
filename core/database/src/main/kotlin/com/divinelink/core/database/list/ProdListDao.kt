@@ -193,6 +193,14 @@ class ProdListDao(
       backdropPath = backdropPath,
       isPublic = if (isPublic) 1 else 0,
     )
+
+    database.listItemEntityQueries.updateListItem(
+      id = listId.toLong(),
+      name = name,
+      description = description,
+      backdropPath = backdropPath,
+      isPublic = if (isPublic) 1 else 0,
+    )
   }
 
   override fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = database

@@ -38,6 +38,19 @@ AND itemIndex >= :startIndex
 AND itemIndex < :startIndex + :limit
 ORDER BY itemIndex ASC;
 
+updateListItem:
+UPDATE ListItemEntity SET
+  name = ?,
+  description = ?,
+  backdropPath = ?,
+  isPublic = ?
+WHERE id = ?;
+
+increaseListItemCount:
+UPDATE ListItemEntity SET
+  numberOfItems = numberOfItems + 1
+WHERE id = ?;
+
 deleteItemsAfterIndex:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId AND itemIndex >= :startIndex;
