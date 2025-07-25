@@ -2,7 +2,7 @@ CREATE TABLE ListMediaItemEntity (
     listId INTEGER NOT NULL,
     mediaItemId INTEGER NOT NULL,
     page INTEGER NOT NULL,
-    itemOrder INTEGER NOT NULL, -- To maintain order within the list
+    itemOrder INTEGER NOT NULL,
     FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
     FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
     UNIQUE(listId, mediaItemId)
@@ -18,6 +18,13 @@ SELECT * FROM ListMediaItemEntity
 WHERE listId = ?
 AND page = ?
 ORDER BY itemOrder;
+
+fetchAllBackdropPathsByListId:
+SELECT m.backdropPath, m.name
+FROM ListMediaItemEntity lmi
+JOIN MediaItemEntity m ON lmi.mediaItemId = m.id
+WHERE lmi.listId = ?
+ORDER BY lmi.page, lmi.itemOrder;
 
 deleteListMediaItem:
 DELETE FROM ListMediaItemEntity WHERE listId = ?;

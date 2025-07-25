@@ -194,4 +194,22 @@ class ProdListDao(
       isPublic = if (isPublic) 1 else 0,
     )
   }
+
+  override fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>> = database
+    .transactionWithResult {
+      database
+        .listMediaItemEntityQueries
+        .fetchAllBackdropPathsByListId(listId = listId.toLong())
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { list ->
+          list.mapNotNull {
+            if (it.backdropPath != null && it.name != null) {
+              it.name to it.backdropPath
+            } else {
+              null
+            }
+          }
+        }
+    }
 }

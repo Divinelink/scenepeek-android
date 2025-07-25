@@ -7,7 +7,6 @@ import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.create.CreateListRequest
-import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +25,8 @@ interface ListRepository {
   ): Flow<Resource<ListDetails?>>
 
   suspend fun createList(request: CreateListRequest): Result<CreateListResult>
+
+  suspend fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>>
 
   suspend fun fetchUserLists(
     accountId: String,

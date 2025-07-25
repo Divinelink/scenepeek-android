@@ -150,7 +150,11 @@ fun CreateListContent(
           )
 
           ListItemBackdropImage(
-            modifier = Modifier.width(160.dp),
+            modifier = Modifier
+              .width(160.dp)
+              .clickable {
+                action.invoke(CreateListAction.OnFetchAvailableBackdrops)
+              },
             url = uiState.backdrop,
           )
         }

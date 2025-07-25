@@ -10,5 +10,7 @@ sealed interface CreateListAction {
   data object CreateOrEditList : CreateListAction
   data object DeleteList : CreateListAction
 
+  data object OnFetchAvailableBackdrops : CreateListAction
+
   data object DismissSnackbar : CreateListAction
 }

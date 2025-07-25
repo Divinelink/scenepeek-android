@@ -13,7 +13,6 @@ import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.list.mapper.add.map
 import com.divinelink.core.network.list.mapper.details.map
 import com.divinelink.core.network.list.model.create.CreateListRequest
-import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.service.ListService
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import timber.log.Timber
 
 class ProdListRepository(
   private val listDao: ListDao,
@@ -136,8 +134,7 @@ class ProdListRepository(
         isPublic = request.public,
       )
     }
-    .onFailure {
-      // Handle failure if needed
-      Timber.d("Failed to update list: $it")
-    }
+
+  override suspend fun fetchListsBackdrops(listId: Int): Flow<List<Pair<String, String>>> = listDao
+    .fetchListsBackdrops(listId)
 }
