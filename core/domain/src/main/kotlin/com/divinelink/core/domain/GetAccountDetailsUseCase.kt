@@ -24,8 +24,9 @@ class GetAccountDetailsUseCase(
     launch(dispatcher.default) {
       storage.accountStorage.accountDetails.collect { accountDetails ->
         Timber.i("Details updated: $accountDetails")
-        if (accountDetails == null) {
+        if (accountDetails == null || storage.accountId == null || storage.sessionId == null) {
           send(Result.failure(SessionException.Unauthenticated()))
+          storage.clearSession()
         } else {
           send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
         }
