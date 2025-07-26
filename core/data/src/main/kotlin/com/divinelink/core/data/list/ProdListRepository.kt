@@ -1,9 +1,12 @@
 package com.divinelink.core.data.list
 
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.database.currentTimeInUTC
 import com.divinelink.core.database.list.ListDao
 import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.PaginationData
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
@@ -21,11 +24,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.Clock
 
 class ProdListRepository(
+  private val sessionStorage: SessionStorage,
   private val listDao: ListDao,
   private val mediaDao: SqlMediaDao,
   private val service: ListService,
+  private val clock: Clock,
 ) : ListRepository {
 
   override suspend fun addItemToList(
@@ -63,10 +69,26 @@ class ProdListRepository(
 
   override suspend fun createList(request: CreateListRequest): Result<CreateListResult> = service
     .createList(request)
-    .map {
+    .map { response ->
+      if (response.success) {
+        listDao.insertAtTheTopOfList(
+          accountId = sessionStorage.accountId ?: throw SessionException.Unauthenticated(),
+          item = ListItem(
+            id = response.id,
+            name = request.name,
+            description = request.description,
+            backdropPath = null,
+            posterPath = null,
+            public = request.public == 1,
+            numberOfItems = 0,
+            updatedAt = clock.currentTimeInUTC(),
+          ),
+        )
+      }
+
       CreateListResult(
-        id = it.id,
-        success = it.success,
+        id = response.id,
+        success = response.success,
       )
     }
 

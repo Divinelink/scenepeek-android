@@ -1,7 +1,6 @@
 CREATE TABLE ListMediaItemEntity (
     listId INTEGER NOT NULL,
     mediaItemId INTEGER NOT NULL,
-    page INTEGER NOT NULL,
     itemOrder INTEGER NOT NULL,
     FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
     FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
@@ -10,21 +9,21 @@ CREATE TABLE ListMediaItemEntity (
 
 insertListMediaItem:
 INSERT OR REPLACE INTO ListMediaItemEntity (
-    listId, mediaItemId, itemOrder, page
-) VALUES (?, ?, ?, ?);
+    listId, mediaItemId, itemOrder
+) VALUES (?, ?, ?);
 
 fetchListMediaItemsByListId:
 SELECT * FROM ListMediaItemEntity
 WHERE listId = ?
-AND page = ?
-ORDER BY itemOrder;
+ORDER BY itemOrder
+LIMIT 20 OFFSET ?;
 
 fetchAllBackdropPathsByListId:
 SELECT m.backdropPath, m.name
 FROM ListMediaItemEntity lmi
 JOIN MediaItemEntity m ON lmi.mediaItemId = m.id
 WHERE lmi.listId = ?
-ORDER BY lmi.page, lmi.itemOrder;
+ORDER BY lmi.itemOrder;
 
 deleteListMediaItem:
 DELETE FROM ListMediaItemEntity WHERE listId = ?;

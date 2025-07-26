@@ -22,6 +22,11 @@ interface ListDao {
     items: List<ListItem>,
   )
 
+  fun insertAtTheTopOfList(
+    accountId: String,
+    item: ListItem,
+  )
+
   fun insertListMetadata(
     accountId: String,
     totalPages: Int,

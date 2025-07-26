@@ -4,6 +4,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 const val CACHE_DURATION_IN_MONTHS = 1
 
@@ -17,3 +18,19 @@ fun Clock.cacheExpiresAtToEpochSeconds(): String {
 }
 
 fun Clock.currentEpochSeconds(): String = now().epochSeconds.toString()
+
+fun Clock.currentTimeInUTC(): String {
+  val utcTimeZone = TimeZone.UTC
+  val currentInstant = now()
+  val utcDateTime = currentInstant.toLocalDateTime(utcTimeZone)
+
+  // Format as "yyyy-MM-dd HH:mm:ss UTC"
+  val year = utcDateTime.year
+  val month = utcDateTime.monthNumber.toString().padStart(2, '0')
+  val day = utcDateTime.dayOfMonth.toString().padStart(2, '0')
+  val hour = utcDateTime.hour.toString().padStart(2, '0')
+  val minute = utcDateTime.minute.toString().padStart(2, '0')
+  val second = utcDateTime.second.toString().padStart(2, '0')
+
+  return "$year-$month-$day $hour:$minute:$second UTC"
+}

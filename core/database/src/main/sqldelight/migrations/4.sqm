@@ -13,7 +13,6 @@ CREATE TABLE ListItemEntity (
   numberOfItems INTEGER NOT NULL,
   posterPath TEXT,
   backdropPath TEXT,
-  page INTEGER NOT NULL,
   accountId TEXT NOT NULL,
   itemIndex INTEGER NOT NULL,
 
@@ -28,7 +27,6 @@ CREATE TABLE ListDetailsEntity (
     backdropPath TEXT,
     posterPath TEXT,
     itemCount INTEGER NOT NULL,
-    page INTEGER NOT NULL,
     totalPages INTEGER NOT NULL,
     totalResults INTEGER NOT NULL,
     isPublic INTEGER,

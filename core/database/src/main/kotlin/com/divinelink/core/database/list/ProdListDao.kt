@@ -31,7 +31,6 @@ class ProdListDao(
           listId = details.id.toLong(),
           mediaItemId = mediaItem.id.toLong(),
           itemOrder = (page - 1) * 20L + index.toLong(),
-          page = page.toLong(),
         )
       }
     }
@@ -70,7 +69,7 @@ class ProdListDao(
     .listMediaItemEntityQueries
     .fetchListMediaItemsByListId(
       listId = id,
-      page = page,
+      value_ = (page - 1) * 20L,
     )
     .asFlow()
     .mapToList(context = dispatcher.io)
@@ -101,7 +100,6 @@ class ProdListDao(
             description = listItem.description,
             isPublic = if (listItem.public) 1 else 0,
             numberOfItems = listItem.numberOfItems.toLong(),
-            page = page.toLong(),
             accountId = accountId,
             updatedAt = listItem.updatedAt,
             itemIndex = (page - 1) * 20 + index.toLong(),
@@ -115,6 +113,21 @@ class ProdListDao(
         return@transaction
       }
     }
+  }
+
+  override fun insertAtTheTopOfList(
+    accountId: String,
+    item: ListItem,
+  ) = database.transaction {
+    database.listItemEntityQueries.shiftItemsToNegative(accountId)
+    database.listItemEntityQueries.flipNegativeIndices(accountId)
+
+    database.listItemEntityQueries.insertListItem(
+      ListItemEntity = item.map(
+        accountId = accountId,
+        index = 0L,
+      ),
+    )
   }
 
   override fun insertListMetadata(
