@@ -42,7 +42,13 @@ class ProdListRepository(
     listId = listId,
     mediaId = mediaId,
     mediaType = mediaType,
-  ).map { it.map() }
+  )
+    .map { it.map() }
+    .also {
+      if (it.data is AddToListResult.Success) {
+        listDao.insertMediaToList(listId = listId, mediaId = mediaId)
+      }
+    }
 
   override suspend fun fetchListDetails(
     listId: Int,

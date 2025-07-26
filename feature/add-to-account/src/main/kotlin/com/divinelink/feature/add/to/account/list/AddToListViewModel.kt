@@ -161,19 +161,6 @@ class AddToListViewModel(
 
                 uiState.copy(
                   isLoading = false,
-                  lists = ListData.Data(
-                    lists.data.copy(
-                      list = lists.data.list.map { listItem ->
-                        if (listItem.id == listId) {
-                          listItem.copy(
-                            numberOfItems = listItem.numberOfItems + 1,
-                          )
-                        } else {
-                          listItem
-                        }
-                      },
-                    ),
-                  ),
                   displayMessage = DisplayMessage.Success(
                     UIText.ResourceText(
                       R.string.feature_add_to_account_item_added_to_list_success,

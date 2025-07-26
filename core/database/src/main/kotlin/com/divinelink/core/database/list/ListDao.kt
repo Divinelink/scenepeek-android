@@ -57,4 +57,9 @@ interface ListDao {
    * This is a collection of the backdrops of all media in the list.
    */
   fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>>
+
+  fun insertMediaToList(
+    listId: Int,
+    mediaId: Int,
+  )
 }

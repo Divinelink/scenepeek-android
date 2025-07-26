@@ -231,4 +231,26 @@ class ProdListDao(
             }
         }
     }
+
+  // TODO Add tests
+  override fun insertMediaToList(
+    listId: Int,
+    mediaId: Int,
+  ) = database.transaction {
+    val itemExists = database.listMediaItemEntityQueries
+      .checkIfItemExistsInList(listId.toLong(), mediaId.toLong())
+      .executeAsOneOrNull() != null
+
+    if (!itemExists) {
+      database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
+        listId = listId.toLong(),
+        listId_ = listId.toLong(),
+        mediaItemId = mediaId.toLong(),
+      )
+
+      database.listItemEntityQueries.increaseListItemCount(
+        id = listId.toLong(),
+      )
+    }
+  }
 }
