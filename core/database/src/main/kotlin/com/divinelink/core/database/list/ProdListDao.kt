@@ -92,17 +92,9 @@ class ProdListDao(
       val listItem = items.getOrNull(index)
       if (listItem != null) {
         database.listItemEntityQueries.insertListItem(
-          ListItemEntity = ListItemEntity(
-            id = listItem.id.toLong(),
-            name = listItem.name,
-            posterPath = listItem.posterPath,
-            backdropPath = listItem.backdropPath,
-            description = listItem.description,
-            isPublic = if (listItem.public) 1 else 0,
-            numberOfItems = listItem.numberOfItems.toLong(),
+          ListItemEntity = listItem.map(
             accountId = accountId,
-            updatedAt = listItem.updatedAt,
-            itemIndex = (page - 1) * 20 + index.toLong(),
+            index = (page - 1) * 20 + index.toLong(),
           ),
         )
       } else {

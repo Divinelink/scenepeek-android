@@ -32,6 +32,7 @@ class ProdMediaRepositoryTest {
   private val persistableMovie = PersistableMovie(
     id = 550,
     posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+    backdropPath = "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
     releaseDate = "1999-10-15",
     title = "Fight Club",
     voteAverage = 8.4,

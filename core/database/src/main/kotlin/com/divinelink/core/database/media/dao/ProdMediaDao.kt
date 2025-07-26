@@ -6,9 +6,19 @@ import com.divinelink.core.model.media.MediaItem
 
 class ProdMediaDao(private val database: Database) : SqlMediaDao {
 
+  override fun insertMedia(media: MediaItem.Media) {
+    database.mediaItemEntityQueries.insertMediaItem(media.map())
+  }
+
   override fun insertMedia(media: List<MediaItem.Media>) {
     media.forEach {
-      database.mediaItemEntityQueries.insertMediaItem(it.map())
+      insertMedia(it)
     }
   }
+
+  override fun fetchMediaItemById(mediaId: Int): MediaItem.Media? = database
+    .mediaItemEntityQueries
+    .selectMediaItemById(mediaId.toLong())
+    .executeAsOneOrNull()
+    ?.map()
 }

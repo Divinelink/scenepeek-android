@@ -15,12 +15,14 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingDetails
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
+import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
@@ -32,6 +34,7 @@ import com.divinelink.core.network.omdb.model.OMDbResponseApi
 import com.divinelink.core.network.trakt.model.TraktRatingApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.dao.TestCreditsDao
+import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.api.movie.MoviesResponseApiFactory
@@ -134,6 +137,7 @@ class ProdDetailsRepositoryTest {
   private var creditsDao = TestCreditsDao()
   private var omdbService = TestOMDbService()
   private var traktService = TestTraktService()
+  private var mediaDao = TestMediaDao()
 
   private lateinit var repository: DetailsRepository
 
@@ -144,6 +148,7 @@ class ProdDetailsRepositoryTest {
       creditsDao = creditsDao.mock,
       omdbService = omdbService.mock,
       traktService = traktService.mock,
+      mediaDao = mediaDao.mock,
       dispatcher = testDispatcher,
     )
   }
@@ -164,6 +169,22 @@ class ProdDetailsRepositoryTest {
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test fetch details with success also adds media item to database`() = runTest {
+    val request = MediaRequestApiFactory.movie()
+
+    mediaRemote.mockFetchMovieDetails(
+      request = request,
+      response = flowOf(detailsResponseApi),
+    )
+
+    repository.fetchMediaDetails(
+      request = MediaRequestApiFactory.movie(),
+    ).first()
+
+    mediaDao.verifyItemInserted(detailsResponseApi.toDomainMedia().toMediaItem())
   }
 
   @Test
@@ -477,6 +498,7 @@ class ProdDetailsRepositoryTest {
       creditsDao = defaultCreditDao,
       omdbService = omdbService.mock,
       traktService = traktService.mock,
+      mediaDao = mediaDao.mock,
       dispatcher = testDispatcher,
     )
 

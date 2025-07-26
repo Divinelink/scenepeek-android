@@ -10,7 +10,7 @@ object MediaItemFactory {
   fun FightClub(): MediaItem.Media.Movie = MediaItem.Media.Movie(
     id = 550,
     posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
-    backdropPath = "xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
+    backdropPath = "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
     releaseDate = "1999-10-15",
     name = "Fight Club",
     voteAverage = 8.4,
@@ -26,7 +26,7 @@ object MediaItemFactory {
     id = 2316,
     overview = "The everyday lives of office employees in the Scranton, " +
       "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
-    backdropPath = "bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
+    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
     posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
     releaseDate = "2005-03-24",
     name = "The Office",
@@ -42,7 +42,7 @@ object MediaItemFactory {
       "universe in which the national war on drugs has become a permanent," +
       " self-sustaining bureaucracy, and distinctions between good " +
       "and evil are routinely obliterated.",
-    backdropPath = "layPSOJGckJv3PXZDIVluMq69mn.jpg",
+    backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
     posterPath = "/4lbclFySvugI51fwsyxBTOm4DqK.jpg",
     releaseDate = "2002-06-02",
     name = "The Wire",

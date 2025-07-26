@@ -13,12 +13,14 @@ import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.database.credits.dao.CreditsDao
+import com.divinelink.core.database.media.dao.SqlMediaDao
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -53,13 +55,18 @@ class ProdDetailsRepository(
   private val creditsDao: CreditsDao,
   private val omdbService: OMDbService,
   private val traktService: TraktService,
+  private val mediaDao: SqlMediaDao,
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 
   override fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>> = mediaRemote
     .fetchDetails(request)
     .map { apiResponse ->
-      Result.success(apiResponse.toDomainMedia())
+      val details = apiResponse.toDomainMedia()
+      val mediaItem = details.toMediaItem()
+
+      mediaDao.insertMedia(mediaItem)
+      Result.success(details)
     }.catch {
       throw MediaDetailsException()
     }
