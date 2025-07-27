@@ -147,7 +147,8 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       ),
     )
 
-    addItemToListUseCase.mockResponse(Result.success(true))
+    val channel: Channel<Result<Boolean>> = Channel()
+    addItemToListUseCase.mockResponse(channel)
 
     val viewModel = AddToListViewModel(
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
@@ -167,12 +168,15 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithText(getString(R.string.feature_add_to_account_list_title)).assertIsDisplayed()
 
-      onNodeWithText("5 items").assertIsDisplayed()
-      onNodeWithText("6 items").assertIsNotDisplayed()
+      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
+
       onNodeWithText("Top Movies").assertIsDisplayed().performClick()
 
-      onNodeWithText("6 items").assertIsDisplayed()
-      onNodeWithText("5 items").assertIsNotDisplayed()
+      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsDisplayed()
+
+      channel.trySend(Result.success(true))
+
+      onNodeWithTag(TestTags.LINEAR_LOADING_INDICATOR).assertIsNotDisplayed()
     }
   }
 

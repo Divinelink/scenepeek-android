@@ -6,11 +6,21 @@
   <string name="feature_lists_empty">You haven\'t created any lists.</string>
   <string name="feature_lists_empty_list">There are no items added to this list.</string>
 
+  <string name="feature_lists_delete_list">Delete list</string>
+  <string name="feature_lists_delete_list_alert_message">Are you sure you want to delete this list? This action cannot be undone.</string>
+
+  <string name="feature_lists_edit_list">Edit list</string>
   <string name="feature_lists_add_list">Create list</string>
 
   <string name="feature_lists_name">Name</string>
   <string name="feature_lists_description">Description</string>
   <string name="feature_lists_public_description">Public lists can be viewed by other users.</string>
+
+  <string name='feature_lists_update_successfully'>%s updated successfully</string>
+  <string name='feature_lists_update_failure'>Failed to update %s</string>
+
+  <string name='feature_lists_delete_successfully'>%s deleted successfully</string>
+  <string name='feature_lists_delete_failure'>Failed to delete %s</string>
 
   <string name='feature_lists_create_successfully'>%s created successfully</string>
   <string name='feature_lists_create_failure'>Failed to create %s</string>

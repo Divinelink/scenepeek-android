@@ -2,6 +2,7 @@ package com.divinelink.core.model.details
 
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
 /**
@@ -101,4 +102,31 @@ fun MediaDetails?.clearSeasonsStatus(): MediaDetails? = when (this) {
     seasons = seasons.map { it.copy(status = null) },
   )
   null -> null
+}
+
+fun MediaDetails.toMediaItem() = when (this) {
+  is Movie -> MediaItem.Media.Movie(
+    id = this.id,
+    name = this.title,
+    posterPath = this.posterPath,
+    backdropPath = this.backdropPath,
+    releaseDate = this.releaseDate,
+    voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
+    voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
+    overview = this.overview ?: "",
+    isFavorite = false,
+    accountRating = null,
+  )
+  is TV -> MediaItem.Media.TV(
+    id = this.id,
+    name = this.title,
+    posterPath = this.posterPath,
+    backdropPath = this.backdropPath,
+    releaseDate = this.releaseDate,
+    voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
+    voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
+    overview = this.overview ?: "",
+    isFavorite = false,
+    accountRating = null,
+  )
 }

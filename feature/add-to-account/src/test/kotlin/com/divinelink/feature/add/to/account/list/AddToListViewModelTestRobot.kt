@@ -10,6 +10,7 @@ import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 
@@ -93,6 +94,10 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
   }
 
   fun mockFetchUserLists(response: Result<PaginationData<ListItem>>) = apply {
+    fetchUserListsUseCase.mockResponse(response)
+  }
+
+  fun mockFetchUserLists(response: Channel<Result<PaginationData<ListItem>>>) = apply {
     fetchUserListsUseCase.mockResponse(response)
   }
 

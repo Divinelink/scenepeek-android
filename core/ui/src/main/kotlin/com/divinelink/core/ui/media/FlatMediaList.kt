@@ -25,6 +25,7 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.media.MediaItem
@@ -134,24 +135,10 @@ private fun LoadMoreContent(modifier: Modifier = Modifier) {
 @DevicePreviews
 @Previews
 fun MoviesListScreenPreview() {
-  @Suppress("MagicNumber")
-  val movies = (1..8).map { index ->
-    MediaItem.Media.Movie(
-      id = index,
-      posterPath = "original/A81kDB6a1K86YLlcOtZB27jriJh.jpg",
-      releaseDate = (2000 + index).toString(),
-      name = "Fight Club $index",
-      isFavorite = index % 2 == 0,
-      voteAverage = index.toDouble(),
-      voteCount = index * 1000,
-      overview = "",
-    )
-  }.toMutableList()
-
   AppTheme {
     Surface {
       FlatMediaList(
-        data = movies,
+        data = MediaItemFactory.MoviesList(),
         onItemClick = {},
         onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},

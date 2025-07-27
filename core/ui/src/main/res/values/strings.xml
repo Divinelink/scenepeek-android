@@ -28,7 +28,7 @@
 
   <string name="core_ui_create_list">Create list</string>
   <string name="core_ui_create">Create</string>
-  <string name="core_ui_edit">Edit</string>
+  <string name="core_ui_edit">Save</string>
 
   <plurals name="core_ui_character_episode_episodes">
     <item quantity="one">(%s Episode)</item>
@@ -142,6 +142,7 @@
     <item quantity="other">%s items</item>
   </plurals>
 
+  <string name="core_ui_backdrop">Backdrop</string>
   <string name="core_ui_public">Public</string>
   <string name="core_ui_private">Private</string>
 
@@ -149,6 +150,7 @@
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
   <string name="core_ui_movie_image_placeholder">Movie image</string>
   <string name="core_ui_backdrop_image_placeholder">Backdrop image</string>
+  <string name="core_ui_select_media_backdrop_image">Select media backdrop image</string>
   <string name="core_ui_avatar_image_placeholder">Avatar image</string>
   <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
   <string name="clear_search_button_content_description">Clear Search Button</string>

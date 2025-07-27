@@ -41,11 +41,12 @@ object MediaDetailsFactory {
   fun TheOffice() = TV(
     id = 2316,
     title = "The Office",
-    posterPath = "the_office.jpg",
-    backdropPath = "the_office_backdrop.jpg",
-    overview = "Michael Scarn is the best.",
+    posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
+    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
+    overview = "The everyday lives of office employees in the Scranton, " +
+      "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
     releaseDate = "2005-03-24",
-    ratingCount = RatingCount.tmdb(9.5, 12_345),
+    ratingCount = RatingCount.tmdb(8.6, 4503),
     isFavorite = false,
     genres = listOf("Comedy, Romance"),
     seasons = SeasonFactory.all(),

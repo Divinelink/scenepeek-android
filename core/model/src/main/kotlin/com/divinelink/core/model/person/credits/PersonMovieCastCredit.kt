@@ -33,6 +33,7 @@ data class PersonMovieCastCredit(
     voteAverage = voteAverage,
     voteCount = voteCount.toInt(),
     overview = overview,
+    backdropPath = backdropPath,
     isFavorite = null,
   ),
   role = PersonRole.MovieActor(

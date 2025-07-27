@@ -1,6 +1,7 @@
 package com.divinelink.feature.add.to.account.list.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
@@ -9,6 +10,7 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListUiState
 
+@ExcludeFromKoverReport
 class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiState> {
   override val values: Sequence<AddToListUiState> = sequenceOf(
     AddToListUiState(

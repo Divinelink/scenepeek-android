@@ -38,6 +38,7 @@ fun SearchResponseApi.toDomainMoviesList(): List<MediaItem.Media.Movie> = this
 private fun SearchMovieApi.toMovieMediaItem() = MediaItem.Media.Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
+  backdropPath = this.backdropPath ?: "",
   releaseDate = this.releaseDate ?: "",
   name = this.title,
   voteAverage = this.voteAverage.round(1),

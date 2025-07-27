@@ -1,8 +1,10 @@
 package com.divinelink.scenepeek.base.di
 
 import com.divinelink.core.navigation.NavigationQualifier
+import com.divinelink.core.navigation.route.ListsRoute
 import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
+import com.divinelink.core.navigation.route.navigateToEditList
 import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
 import com.divinelink.core.navigation.route.navigateToPerson
@@ -14,6 +16,7 @@ import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
+import com.divinelink.feature.lists.create.ui.navigation.editListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
 import com.divinelink.feature.lists.user.navigation.listsScreen
 import com.divinelink.feature.onboarding.navigation.onboardingScreen
@@ -228,6 +231,7 @@ val navigationModule = module {
       listDetailsScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
+        onNavigateToEdit = navController::navigateToEditList,
       )
     }
   }
@@ -237,6 +241,21 @@ val navigationModule = module {
     { navController, _ ->
       createListScreen(
         onNavigateUp = navController::navigateUp,
+      )
+    }
+  }
+
+  // Create List Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.EditList)) {
+    { navController, _ ->
+      editListScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateBackToLists = {
+          navController.popBackStack(
+            route = ListsRoute,
+            inclusive = false,
+          )
+        },
       )
     }
   }

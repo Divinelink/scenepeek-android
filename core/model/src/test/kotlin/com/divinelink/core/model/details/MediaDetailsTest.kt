@@ -1,6 +1,7 @@
 package com.divinelink.core.model.details
 
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.rating.RatingSource
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
@@ -84,5 +85,19 @@ class MediaDetailsTest {
     val externalUrl = mediaDetails.externalUrl(source = RatingSource.TRAKT)
 
     assertThat(externalUrl).isEqualTo("https://trakt.tv/shows/tt0386676")
+  }
+
+  @Test
+  fun `test map to MediaItem for Movie`() {
+    val mediaDetails = MediaDetailsFactory.FightClub()
+
+    assertThat(mediaDetails.toMediaItem()).isEqualTo(MediaItemFactory.FightClub())
+  }
+
+  @Test
+  fun `test map to MediaItem for TV`() {
+    val mediaDetails = MediaDetailsFactory.TheOffice()
+
+    assertThat(mediaDetails.toMediaItem()).isEqualTo(MediaItemFactory.theOffice())
   }
 }

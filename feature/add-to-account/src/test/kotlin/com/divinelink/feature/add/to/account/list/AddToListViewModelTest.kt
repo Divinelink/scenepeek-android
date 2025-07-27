@@ -7,12 +7,15 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListException
+import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -78,6 +81,109 @@ class AddToListViewModelTest {
                 totalPages = 2,
                 totalResults = 6,
                 list = ListItemFactory.page1().list + ListItemFactory.page2().list,
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test observe changes on fetch user lists`() = runTest {
+    val channel: Channel<Result<PaginationData<ListItem>>> = Channel()
+
+    robot
+      .withArgs(AddToListRouteFactory.movie())
+      .mockFetchUserLists(channel)
+      .buildViewModel()
+      .assertUiState(
+        AddToListUiState.initial,
+      )
+      .expectUiStates(
+        action = {
+          launch {
+            channel.send(Result.success(ListItemFactory.page1()))
+          }
+
+          launch {
+            channel.send(
+              Result.success(
+                ListItemFactory.page1().copy(
+                  list = listOf(
+                    ListItemFactory.movies().copy(
+                      numberOfItems = 6,
+                    ),
+                    ListItemFactory.shows(),
+                    ListItemFactory.recommended(),
+                  ),
+                ),
+              ),
+            )
+          }
+
+          launch {
+            channel.send(
+              Result.success(
+                ListItemFactory.page1().copy(
+                  list = listOf(
+                    ListItemFactory.movies().copy(
+                      numberOfItems = 6,
+                    ),
+                    ListItemFactory.shows(),
+                    ListItemFactory.recommended().copy(
+                      numberOfItems = 16,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          }
+        },
+        uiStates = listOf(
+          AddToListUiState.initial,
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(ListItemFactory.page1()),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(
+              PaginationData(
+                page = 1,
+                totalPages = 2,
+                totalResults = 6,
+                list = listOf(
+                  ListItemFactory.movies().copy(
+                    numberOfItems = 6,
+                  ),
+                  ListItemFactory.shows(),
+                  ListItemFactory.recommended(),
+                ),
+              ),
+            ),
+            isLoading = false,
+            loadingMore = false,
+          ),
+          AddToListUiState.initial.copy(
+            page = 2,
+            lists = ListData.Data(
+              PaginationData(
+                page = 1,
+                totalPages = 2,
+                totalResults = 6,
+                list = listOf(
+                  ListItemFactory.movies().copy(
+                    numberOfItems = 6,
+                  ),
+                  ListItemFactory.shows(),
+                  ListItemFactory.recommended().copy(
+                    numberOfItems = 16,
+                  ),
+                ),
               ),
             ),
             isLoading = false,
@@ -213,7 +319,7 @@ class AddToListViewModelTest {
                 totalPages = 2,
                 totalResults = 6,
                 list = listOf(
-                  ListItemFactory.movies().copy(numberOfItems = 6),
+                  ListItemFactory.movies(),
                   ListItemFactory.shows(),
                   ListItemFactory.recommended(),
                 ),

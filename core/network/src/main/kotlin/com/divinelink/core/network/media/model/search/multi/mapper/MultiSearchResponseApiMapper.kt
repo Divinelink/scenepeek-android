@@ -18,6 +18,7 @@ fun List<MultiSearchResultApi>.map(): List<MediaItem> = this.map {
     MediaType.TV -> MediaItem.Media.TV(
       id = it.id,
       posterPath = it.posterPath,
+      backdropPath = it.backdropPath,
       releaseDate = it.firstAirDate ?: "",
       name = it.name!!,
       voteAverage = it.voteAverage?.round(1) ?: 0.0,
@@ -28,6 +29,7 @@ fun List<MultiSearchResultApi>.map(): List<MediaItem> = this.map {
     MediaType.MOVIE -> MediaItem.Media.Movie(
       id = it.id,
       posterPath = it.posterPath,
+      backdropPath = it.backdropPath,
       releaseDate = it.releaseDate ?: "",
       name = it.title!!,
       voteAverage = it.voteAverage?.round(1) ?: 0.0,
@@ -45,4 +47,3 @@ fun List<MultiSearchResultApi>.map(): List<MediaItem> = this.map {
     MediaType.UNKNOWN -> MediaItem.Unknown
   }
 }
-

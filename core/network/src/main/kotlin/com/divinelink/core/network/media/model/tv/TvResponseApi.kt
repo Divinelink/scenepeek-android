@@ -43,6 +43,7 @@ fun TvResponseApi.map(): PaginationData<MediaItem.Media> = PaginationData(
 private fun TvItemApi.toTv() = MediaItem.Media.TV(
   id = this.id,
   posterPath = this.posterPath,
+  backdropPath = this.backdropPath,
   releaseDate = this.firstAirDate,
   name = this.name,
   voteAverage = this.voteAverage.round(1),

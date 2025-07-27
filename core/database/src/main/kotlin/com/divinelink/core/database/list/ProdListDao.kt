@@ -2,16 +2,117 @@ package com.divinelink.core.database.list
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
+import com.divinelink.core.database.list.mapper.map
+import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class ProdListDao(
   private val database: Database,
   private val dispatcher: DispatcherProvider,
 ) : ListDao {
+
+  /**
+   * List Details
+   */
+  override fun insertListDetails(
+    page: Int,
+    details: ListDetails,
+  ) {
+    database.transaction {
+      database.listDetailsEntityQueries.insertListDetails(details.map())
+
+      details.media.forEachIndexed { index, mediaItem ->
+        database.listMediaItemEntityQueries.insertListMediaItem(
+          listId = details.id.toLong(),
+          mediaItemId = mediaItem.id.toLong(),
+          itemOrder = (page - 1) * 20L + index.toLong(),
+        )
+      }
+    }
+  }
+
+  override fun fetchListDetails(
+    listId: Int,
+    page: Int,
+  ): Flow<ListDetails?> = with(database) {
+    transactionWithResult {
+      val detailsEntity = fetchListDetails(id = listId.toLong())
+      val listMedia = fetchMediaResultForList(id = listId.toLong(), page = page.toLong())
+
+      detailsEntity
+        .combine(listMedia) { details, media ->
+          details?.copy(
+            page = page,
+            media = media,
+          )
+        }
+        .distinctUntilChanged()
+    }
+  }
+
+  override fun insertMediaToList(
+    listId: Int,
+    mediaId: Int,
+  ) = database.transaction {
+    val itemExists = database.listMediaItemEntityQueries
+      .checkIfItemExistsInList(listId.toLong(), mediaId.toLong())
+      .executeAsOneOrNull() != null
+
+    if (!itemExists) {
+      database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
+        listId = listId.toLong(),
+        listId_ = listId.toLong(),
+        mediaItemId = mediaId.toLong(),
+      )
+
+      database.listItemEntityQueries.increaseListItemCount(
+        id = listId.toLong(),
+      )
+    }
+  }
+
+  private fun fetchListDetails(id: Long): Flow<ListDetails?> = database
+    .listDetailsEntityQueries
+    .selectListDetailsById(id)
+    .asFlow()
+    .mapToOneOrNull(dispatcher.io)
+    .map { entity ->
+      entity.map()
+    }
+
+  private fun fetchMediaResultForList(
+    id: Long,
+    page: Long,
+  ): Flow<List<MediaItem.Media>> = database
+    .listMediaItemEntityQueries
+    .fetchListMediaItemsByListId(
+      listId = id,
+      value_ = (page - 1) * 20L,
+    )
+    .asFlow()
+    .mapToList(context = dispatcher.io)
+    .map {
+      it.mapNotNull { entity ->
+        database
+          .mediaItemEntityQueries
+          .selectMediaItemById(entity.mediaItemId)
+          .executeAsOneOrNull()
+          ?.map()
+      }
+    }
+
+  /**
+   * End of list details
+   */
 
   override fun insertListItem(
     page: Int,
@@ -22,18 +123,9 @@ class ProdListDao(
       val listItem = items.getOrNull(index)
       if (listItem != null) {
         database.listItemEntityQueries.insertListItem(
-          ListItemEntity = ListItemEntity(
-            id = listItem.id.toLong(),
-            name = listItem.name,
-            posterPath = listItem.posterPath,
-            backdropPath = listItem.backdropPath,
-            description = listItem.description,
-            isPublic = if (listItem.public) 1 else 0,
-            numberOfItems = listItem.numberOfItems.toLong(),
-            page = page.toLong(),
+          ListItemEntity = listItem.map(
             accountId = accountId,
-            updatedAt = listItem.updatedAt,
-            itemIndex = (page - 1) * 20 + index.toLong(),
+            index = (page - 1) * 20 + index.toLong(),
           ),
         )
       } else {
@@ -44,6 +136,21 @@ class ProdListDao(
         return@transaction
       }
     }
+  }
+
+  override fun insertAtTheTopOfList(
+    accountId: String,
+    item: ListItem,
+  ) = database.transaction {
+    database.listItemEntityQueries.shiftItemsToNegative(accountId)
+    database.listItemEntityQueries.flipNegativeIndices(accountId)
+
+    database.listItemEntityQueries.insertListItem(
+      ListItemEntity = item.map(
+        accountId = accountId,
+        index = 0L,
+      ),
+    )
   }
 
   override fun insertListMetadata(
@@ -101,4 +208,50 @@ class ProdListDao(
       database.listMetadataEntityQueries.clearListMetadata(accountId)
     }
   }
+
+  override fun deleteList(listId: Int) = database.transaction {
+    database.listItemEntityQueries.deleteList(listId.toLong())
+    database.listDetailsEntityQueries.deleteListDetails(listId.toLong())
+    database.listMediaItemEntityQueries.deleteListMediaItem(listId.toLong())
+  }
+
+  override fun updateList(
+    listId: Int,
+    name: String,
+    description: String,
+    backdropPath: String,
+    isPublic: Boolean,
+  ) = database.transaction {
+    database.listDetailsEntityQueries.updateListDetails(
+      id = listId.toLong(),
+      name = name,
+      description = description,
+      backdropPath = backdropPath,
+      isPublic = if (isPublic) 1 else 0,
+    )
+
+    database.listItemEntityQueries.updateListItem(
+      id = listId.toLong(),
+      name = name,
+      description = description,
+      backdropPath = backdropPath,
+      isPublic = if (isPublic) 1 else 0,
+    )
+  }
+
+  override fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = database
+    .transactionWithResult {
+      database
+        .listMediaItemEntityQueries
+        .fetchAllBackdropPathsByListId(listId = listId.toLong())
+        .asFlow()
+        .mapToList(dispatcher.io)
+        .map { list ->
+          list
+            .filter { !it.backdropPath.isNullOrEmpty() && !it.name.isNullOrEmpty() }
+            .associate {
+              it.name!! to it.backdropPath!!
+            }
+        }
+    }
 }

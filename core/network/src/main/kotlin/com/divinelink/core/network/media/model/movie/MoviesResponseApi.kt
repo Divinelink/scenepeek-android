@@ -47,6 +47,7 @@ private fun MovieResponseApi.toMovie() = MediaItem.Media.Movie(
   id = this.id,
   posterPath = this.posterPath ?: "",
   releaseDate = this.releaseDate,
+  backdropPath = this.backdropPath,
   name = this.title,
   voteAverage = this.voteAverage.round(1),
   voteCount = this.voteCount ?: 0,

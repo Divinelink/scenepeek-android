@@ -9,6 +9,7 @@ import com.divinelink.feature.credits.ui.CreditsTab
 import com.divinelink.feature.credits.ui.CreditsUiContent
 import com.divinelink.feature.credits.ui.CreditsUiState
 
+@ExcludeFromKoverReport
 class CreditsUiStateParameterProvider : PreviewParameterProvider<CreditsUiState> {
   override val values: Sequence<CreditsUiState> = sequenceOf(
     CreditsUiState(

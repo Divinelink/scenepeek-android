@@ -5,6 +5,7 @@ sealed interface CreateListAction {
   data class DescriptionChanged(val description: String) : CreateListAction
 
   data object PublicChanged : CreateListAction
+  data class BackdropChanged(val path: String) : CreateListAction
 
   data object CreateOrEditList : CreateListAction
   data object DeleteList : CreateListAction

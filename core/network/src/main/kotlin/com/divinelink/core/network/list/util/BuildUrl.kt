@@ -30,3 +30,9 @@ internal fun buildListUrl(): String = buildUrl {
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/list"
 }.toString()
+
+internal fun buildListWithIdUrl(id: Int): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V4 + "/list/$id"
+}.toString()

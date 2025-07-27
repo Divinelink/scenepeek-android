@@ -1,6 +1,7 @@
 package com.divinelink.feature.user.data.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection
@@ -8,6 +9,7 @@ import com.divinelink.feature.user.data.MediaTab
 import com.divinelink.feature.user.data.UserDataForm
 import com.divinelink.feature.user.data.UserDataUiState
 
+@ExcludeFromKoverReport
 class UserDataUiStateParameterProvider : PreviewParameterProvider<UserDataUiState> {
   override val values: Sequence<UserDataUiState> = sequenceOf(
     UserDataUiState(

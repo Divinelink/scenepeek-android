@@ -6,13 +6,24 @@ CREATE TABLE ListItemEntity (
   numberOfItems INTEGER NOT NULL,
   posterPath TEXT,
   backdropPath TEXT,
-  page INTEGER NOT NULL,
   accountId TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   itemIndex INTEGER NOT NULL,
 
   UNIQUE(accountId, itemIndex) ON CONFLICT REPLACE
 );
+
+-- Query to temporarily move items to negative indices
+shiftItemsToNegative:
+UPDATE ListItemEntity
+SET itemIndex = -(itemIndex + 1)
+WHERE accountId = ? AND itemIndex >= 0;
+
+-- Query to flip negative indices back to positive (now shifted +1)
+flipNegativeIndices:
+UPDATE ListItemEntity
+SET itemIndex = -itemIndex
+WHERE accountId = ? AND itemIndex < 0;
 
 insertListItem:
 INSERT OR REPLACE INTO ListItemEntity(
@@ -23,7 +34,6 @@ INSERT OR REPLACE INTO ListItemEntity(
   numberOfItems,
   posterPath,
   backdropPath,
-  page,
   accountId,
   updatedAt,
   itemIndex
@@ -38,6 +48,19 @@ AND itemIndex >= :startIndex
 AND itemIndex < :startIndex + :limit
 ORDER BY itemIndex ASC;
 
+updateListItem:
+UPDATE ListItemEntity SET
+  name = ?,
+  description = ?,
+  backdropPath = ?,
+  isPublic = ?
+WHERE id = ?;
+
+increaseListItemCount:
+UPDATE ListItemEntity SET
+  numberOfItems = numberOfItems + 1
+WHERE id = ?;
+
 deleteItemsAfterIndex:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId AND itemIndex >= :startIndex;
@@ -45,3 +68,6 @@ WHERE accountId = :accountId AND itemIndex >= :startIndex;
 clearListItems:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId;
+
+deleteList:
+DELETE FROM ListItemEntity WHERE id = ?;

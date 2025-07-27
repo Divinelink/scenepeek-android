@@ -41,6 +41,7 @@ data class DetailsViewState(
     is Movie -> MediaItem.Media.Movie(
       id = mediaDetails.id,
       name = mediaDetails.title,
+      backdropPath = mediaDetails.backdropPath,
       posterPath = mediaDetails.posterPath,
       releaseDate = mediaDetails.releaseDate,
       voteAverage = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage ?: 0.0,
@@ -51,6 +52,7 @@ data class DetailsViewState(
     is TV -> MediaItem.Media.TV(
       id = mediaDetails.id,
       name = mediaDetails.title,
+      backdropPath = mediaDetails.backdropPath,
       posterPath = mediaDetails.posterPath,
       releaseDate = mediaDetails.releaseDate,
       voteAverage = mediaDetails.ratingCount.getRating(ratingSource)?.voteAverage ?: 0.0,

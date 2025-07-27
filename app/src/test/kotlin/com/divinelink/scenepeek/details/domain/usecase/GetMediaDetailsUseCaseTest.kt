@@ -306,7 +306,7 @@ class GetMediaDetailsUseCaseTest {
           MediaDetailsResult.RatingSuccess(
             RatingCount(
               ratings = mapOf(
-                RatingSource.TMDB to RatingDetails.Score(9.5, 12_345),
+                RatingSource.TMDB to RatingDetails.Score(8.6, 4503),
                 RatingSource.IMDB to RatingDetails.Initial,
                 RatingSource.TRAKT to RatingDetailsFactory.trakt(),
               ),

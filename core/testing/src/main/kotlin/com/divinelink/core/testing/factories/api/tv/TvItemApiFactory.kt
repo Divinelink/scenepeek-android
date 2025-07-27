@@ -7,7 +7,7 @@ object TvItemApiFactory {
   fun theWire() = TvItemApi(
     id = 1438,
     adult = false,
-    backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg\"",
+    backdropPath = "/layPSOJGckJv3PXZDIVluMq69mn.jpg",
     genreIds = listOf(80, 18),
     originCountry = listOf("US"),
     originalLanguage = "en",
@@ -28,7 +28,7 @@ object TvItemApiFactory {
   fun theOffice() = TvItemApi(
     id = 2316,
     adult = false,
-    backdropPath = "/mLyW3UTgi2lsMdtueYODcfAB9Ku.jpg",
+    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
     genreIds = listOf(35),
     originCountry = listOf("US"),
     originalLanguage = "en",

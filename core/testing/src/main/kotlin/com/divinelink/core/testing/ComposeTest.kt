@@ -3,6 +3,9 @@ package com.divinelink.core.testing
 import android.app.Application
 import android.os.Build
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import org.junit.Ignore
 import org.junit.Rule
@@ -29,3 +32,10 @@ fun ComposeTest.getString(
   resId: Int,
   vararg formatArgs: Any,
 ): String = composeTestRule.activity.getString(resId, *formatArgs)
+
+fun ComposeTest.hasClickLabel(label: Int) =
+  SemanticsMatcher("Clickable action with label: $label") {
+    it.config.getOrNull(
+      SemanticsActions.OnClick,
+    )?.label == getString(label)
+  }

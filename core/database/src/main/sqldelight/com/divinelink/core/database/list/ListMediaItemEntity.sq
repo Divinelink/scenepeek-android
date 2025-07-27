@@ -1,0 +1,42 @@
+CREATE TABLE ListMediaItemEntity (
+    listId INTEGER NOT NULL,
+    mediaItemId INTEGER NOT NULL,
+    itemOrder INTEGER NOT NULL,
+    FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
+    FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
+    UNIQUE(listId, mediaItemId)
+);
+
+insertListMediaItem:
+INSERT OR REPLACE INTO ListMediaItemEntity (
+    listId, mediaItemId, itemOrder
+) VALUES (?, ?, ?);
+
+checkIfItemExistsInList:
+SELECT 1 FROM ListMediaItemEntity
+WHERE listId = ? AND mediaItemId = ?;
+
+insertListMediaItemAtBottom:
+INSERT OR IGNORE INTO ListMediaItemEntity (
+    listId, mediaItemId, itemOrder
+) VALUES (
+    ?,
+    ?,
+    COALESCE((SELECT MAX(itemOrder) FROM ListMediaItemEntity WHERE listId = ?), -1) + 1
+);
+
+fetchListMediaItemsByListId:
+SELECT * FROM ListMediaItemEntity
+WHERE listId = ?
+ORDER BY itemOrder
+LIMIT 20 OFFSET ?;
+
+fetchAllBackdropPathsByListId:
+SELECT m.backdropPath, m.name
+FROM ListMediaItemEntity lmi
+JOIN MediaItemEntity m ON lmi.mediaItemId = m.id
+WHERE lmi.listId = ?
+ORDER BY lmi.itemOrder;
+
+deleteListMediaItem:
+DELETE FROM ListMediaItemEntity WHERE listId = ?;

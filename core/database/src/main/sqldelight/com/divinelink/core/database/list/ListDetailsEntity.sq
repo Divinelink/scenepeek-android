@@ -1,0 +1,59 @@
+ CREATE TABLE ListDetailsEntity (
+    id INTEGER PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT,
+    averageRating REAL NOT NULL,
+    backdropPath TEXT,
+    posterPath TEXT,
+    itemCount INTEGER NOT NULL,
+    page INTEGER NOT NULL,
+    totalPages INTEGER NOT NULL,
+    totalResults INTEGER NOT NULL,
+    isPublic INTEGER,
+    revenue INTEGER NOT NULL,
+    runtime INTEGER NOT NULL,
+    sortBy TEXT NOT NULL,
+    iso31661 TEXT NOT NULL,
+    iso6391 TEXT NOT NULL,
+    createdById TEXT NOT NULL,
+    createdByUsername TEXT NOT NULL,
+    createdByName TEXT,
+    createdByAvatarPath TEXT,
+    createdByGravatarHash TEXT,
+    commentsJson TEXT, -- JSON string of the comments object
+    objectIdsJson TEXT -- JSON string of the object_ids object
+);
+
+insertListDetails:
+INSERT OR REPLACE INTO ListDetailsEntity (
+  id, name, description, averageRating, backdropPath, posterPath,
+  itemCount, page, totalPages, totalResults, isPublic, revenue, runtime,
+  sortBy, iso31661, iso6391, createdById, createdByUsername,
+  createdByName, createdByAvatarPath, createdByGravatarHash,
+  commentsJson, objectIdsJson
+)
+VALUES ?;
+
+updateListDetails:
+UPDATE ListDetailsEntity SET
+  name = ?,
+  description = ?,
+  backdropPath = ?,
+  isPublic = ?
+WHERE id = ?;
+
+increaseListItemCount:
+UPDATE ListDetailsEntity SET
+    itemCount = itemCount + 1
+WHERE id = ?;
+
+decreaseListItemCount:
+UPDATE ListDetailsEntity SET
+    itemCount = itemCount - 1
+WHERE id = ?;
+
+selectListDetailsById:
+SELECT * FROM ListDetailsEntity WHERE id = ?;
+
+deleteListDetails:
+DELETE FROM ListDetailsEntity WHERE id = ?;
