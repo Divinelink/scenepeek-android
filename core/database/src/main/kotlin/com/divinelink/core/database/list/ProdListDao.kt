@@ -12,6 +12,7 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class ProdListDao(
@@ -19,6 +20,9 @@ class ProdListDao(
   private val dispatcher: DispatcherProvider,
 ) : ListDao {
 
+  /**
+   * List Details
+   */
   override fun insertListDetails(
     page: Int,
     details: ListDetails,
@@ -44,12 +48,35 @@ class ProdListDao(
       val detailsEntity = fetchListDetails(id = listId.toLong())
       val listMedia = fetchMediaResultForList(id = listId.toLong(), page = page.toLong())
 
-      combine(detailsEntity, listMedia) { details, media ->
-        details?.copy(
-          page = page,
-          media = media,
-        )
-      }
+      detailsEntity
+        .combine(listMedia) { details, media ->
+          details?.copy(
+            page = page,
+            media = media,
+          )
+        }
+        .distinctUntilChanged()
+    }
+  }
+
+  override fun insertMediaToList(
+    listId: Int,
+    mediaId: Int,
+  ) = database.transaction {
+    val itemExists = database.listMediaItemEntityQueries
+      .checkIfItemExistsInList(listId.toLong(), mediaId.toLong())
+      .executeAsOneOrNull() != null
+
+    if (!itemExists) {
+      database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
+        listId = listId.toLong(),
+        listId_ = listId.toLong(),
+        mediaItemId = mediaId.toLong(),
+      )
+
+      database.listItemEntityQueries.increaseListItemCount(
+        id = listId.toLong(),
+      )
     }
   }
 
@@ -82,6 +109,10 @@ class ProdListDao(
           ?.map()
       }
     }
+
+  /**
+   * End of list details
+   */
 
   override fun insertListItem(
     page: Int,
@@ -217,32 +248,10 @@ class ProdListDao(
         .mapToList(dispatcher.io)
         .map { list ->
           list
-            .filter { it.backdropPath != null && it.name != null }
+            .filter { !it.backdropPath.isNullOrEmpty() && !it.name.isNullOrEmpty() }
             .associate {
               it.name!! to it.backdropPath!!
             }
         }
     }
-
-  // TODO Add tests
-  override fun insertMediaToList(
-    listId: Int,
-    mediaId: Int,
-  ) = database.transaction {
-    val itemExists = database.listMediaItemEntityQueries
-      .checkIfItemExistsInList(listId.toLong(), mediaId.toLong())
-      .executeAsOneOrNull() != null
-
-    if (!itemExists) {
-      database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
-        listId = listId.toLong(),
-        listId_ = listId.toLong(),
-        mediaItemId = mediaId.toLong(),
-      )
-
-      database.listItemEntityQueries.increaseListItemCount(
-        id = listId.toLong(),
-      )
-    }
-  }
 }

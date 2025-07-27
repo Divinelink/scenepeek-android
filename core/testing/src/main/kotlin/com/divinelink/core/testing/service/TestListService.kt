@@ -1,9 +1,11 @@
 package com.divinelink.core.testing.service
 
 import com.divinelink.core.network.account.model.ListsResponse
-import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.add.AddToListResponse
+import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
+import com.divinelink.core.network.list.model.update.UpdateListRequest
+import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.service.ListService
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -33,5 +35,17 @@ class TestListService {
 
   suspend fun mockCreateList(response: Result<CreateListResponse>) {
     whenever(mock.createList(any())).thenReturn(response)
+  }
+
+  suspend fun mockDeleteList(response: Result<Unit>) {
+    whenever(mock.deleteList(any())).thenReturn(response)
+  }
+
+  suspend fun mockUpdateList(
+    id: Int,
+    request: UpdateListRequest,
+    response: Result<UpdateListResponse>,
+  ) {
+    whenever(mock.updateList(id, request)).thenReturn(response)
   }
 }

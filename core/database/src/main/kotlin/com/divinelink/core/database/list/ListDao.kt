@@ -22,6 +22,11 @@ interface ListDao {
     items: List<ListItem>,
   )
 
+  fun insertMediaToList(
+    listId: Int,
+    mediaId: Int,
+  )
+
   fun insertAtTheTopOfList(
     accountId: String,
     item: ListItem,
@@ -57,9 +62,4 @@ interface ListDao {
    * This is a collection of the backdrops of all media in the list.
    */
   fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>>
-
-  fun insertMediaToList(
-    listId: Int,
-    mediaId: Int,
-  )
 }

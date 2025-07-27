@@ -64,12 +64,13 @@ class ProdListRepository(
       service.fetchListDetails(listId, page)
     },
     saveFetchResult = { remoteData ->
-      val mapped = remoteData.data.map()
+      val details = remoteData.data.map()
+
+      mediaDao.insertMedia(details.media)
       listDao.insertListDetails(
         page = page,
-        details = mapped,
+        details = details,
       )
-      mediaDao.insertMedia(mapped.media)
     },
   )
 
@@ -154,13 +155,15 @@ class ProdListRepository(
       request = request,
     )
     .onSuccess {
-      listDao.updateList(
-        listId = listId,
-        name = request.name,
-        description = request.description,
-        backdropPath = request.backdropPath ?: "",
-        isPublic = request.public,
-      )
+      if (it.success) {
+        listDao.updateList(
+          listId = listId,
+          name = request.name,
+          description = request.description,
+          backdropPath = request.backdropPath ?: "",
+          isPublic = request.public,
+        )
+      }
     }
 
   override suspend fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = listDao
