@@ -8,6 +8,7 @@ object TestTags {
 
     const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
     const val MEDIA_LIST_CONTENT = "Media List Content"
+    const val SCROLLABLE_CONTENT = "Scrollable Content"
 
     object Button {
       const val SWITCH_VIEW = "Switch View Button"

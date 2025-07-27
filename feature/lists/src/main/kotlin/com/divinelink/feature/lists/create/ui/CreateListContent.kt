@@ -88,6 +88,9 @@ fun CreateListContent(
   }
 
   ScenePeekLazyColumn(
+    modifier = Modifier.testTag(
+      TestTags.Components.SCROLLABLE_CONTENT,
+    ),
     contentPadding = PaddingValues(MaterialTheme.dimensions.keyline_16),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_32),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -165,9 +168,12 @@ fun CreateListContent(
           ListItemBackdropImage(
             modifier = Modifier
               .width(160.dp)
-              .clickable {
-                showBackdropModal = true
-              },
+              .clickable(
+                onClickLabel = stringResource(uiR.string.core_ui_select_media_backdrop_image),
+                onClick = {
+                  showBackdropModal = true
+                },
+              ),
             url = uiState.backdrop,
           )
         }
