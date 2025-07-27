@@ -1,6 +1,8 @@
 package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.list.AddItemToListUseCase
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -20,5 +22,9 @@ class TestAddItemToListUseCase {
 
   fun mockResponse(response: Result<Boolean>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
+  }
+
+  fun mockResponse(response: Channel<Result<Boolean>>) {
+    whenever(mock.invoke(any())).thenReturn(response.consumeAsFlow())
   }
 }

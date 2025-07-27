@@ -42,6 +42,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ListDetailsScreen(
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -70,6 +71,7 @@ class ListDetailsScreenTest : ComposeTest() {
           navigatedUp = true
         },
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -96,6 +98,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ListDetailsScreen(
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -145,6 +148,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateToMediaDetails = {
           detailsRoute = it
         },
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -182,6 +186,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ListDetailsScreen(
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -201,7 +206,7 @@ class ListDetailsScreenTest : ComposeTest() {
         Result.success(ListDetailsFactory.page2()),
       )
 
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(18)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(19)
 
       onNodeWithText("Fight club 1").assertIsNotDisplayed()
       onNodeWithText("Fight club 40").assertIsNotDisplayed()
@@ -224,6 +229,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ListDetailsScreen(
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -257,6 +263,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ListDetailsScreen(
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,

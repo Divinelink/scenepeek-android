@@ -1,11 +1,13 @@
 package com.divinelink.feature.lists.create.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.create.CreateListUiState
 
+@ExcludeFromKoverReport
 class CreateListUiStateParameterProvider : PreviewParameterProvider<CreateListUiState> {
   override val values: Sequence<CreateListUiState> = sequenceOf(
     CreateListUiState.initial,

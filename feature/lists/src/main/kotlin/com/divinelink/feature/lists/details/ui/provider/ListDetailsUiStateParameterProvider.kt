@@ -1,11 +1,13 @@
 package com.divinelink.feature.lists.details.ui.provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.details.ListDetailsUiState
 
+@ExcludeFromKoverReport
 class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetailsUiState> {
   override val values: Sequence<ListDetailsUiState> = sequenceOf(
     ListDetailsUiState(

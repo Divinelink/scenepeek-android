@@ -31,6 +31,8 @@ class FindMyIdResponseApiMapperTest {
           voteCount = 29700,
           overview = "A ticking-time-bomb insomniac and a slippery soap salesman.",
           isFavorite = false,
+          backdropPath = "/hZkgoQYus5vegHoetLkCJzb17zJ.jpg",
+          accountRating = null,
         ),
       )
     }
@@ -56,6 +58,8 @@ class FindMyIdResponseApiMapperTest {
           voteCount = 1433,
           overview = "Mark leads a team of office workers whose memories have been lost.",
           isFavorite = false,
+          accountRating = null,
+          backdropPath = "/5OsiT39OiZNdD0v2LiAcI2TpSYj.jpg",
         ),
       )
     }

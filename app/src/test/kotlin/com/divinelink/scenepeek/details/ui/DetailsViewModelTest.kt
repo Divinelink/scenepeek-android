@@ -1884,8 +1884,8 @@ class DetailsViewModelTest {
               ratingCount = RatingCount(
                 ratings = mapOf(
                   RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 9.5,
-                    voteCount = 12_345,
+                    voteAverage = 8.6,
+                    voteCount = 4503,
                   ),
                   RatingSource.IMDB to RatingDetails.Initial,
                   RatingSource.TRAKT to RatingDetails.Initial,
@@ -1908,8 +1908,8 @@ class DetailsViewModelTest {
               ratingCount = RatingCount(
                 ratings = mapOf(
                   RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 9.5,
-                    voteCount = 12_345,
+                    voteAverage = 8.6,
+                    voteCount = 4503,
                   ),
                   RatingSource.IMDB to RatingDetails.Initial,
                   RatingSource.TRAKT to RatingDetailsFactory.trakt(),
@@ -1932,8 +1932,8 @@ class DetailsViewModelTest {
               ratingCount = RatingCount(
                 ratings = mapOf(
                   RatingSource.TMDB to RatingDetails.Score(
-                    voteAverage = 9.5,
-                    voteCount = 12_345,
+                    voteAverage = 8.6,
+                    voteCount = 4503,
                   ),
                   RatingSource.IMDB to RatingDetailsFactory.imdb(),
                   RatingSource.TRAKT to RatingDetailsFactory.trakt(),
