@@ -3,6 +3,7 @@ package com.divinelink.feature.lists.details.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.details.ListDetailsUiState
@@ -22,6 +23,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -35,6 +38,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -45,6 +50,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -55,6 +62,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Offline,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -68,6 +77,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Offline,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -81,6 +92,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Generic,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -91,6 +104,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Offline,
       refreshing = true,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -101,6 +116,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Offline,
       refreshing = true,
       loadingMore = true,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -114,6 +131,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     ),
     ListDetailsUiState(
       id = 1,
@@ -124,6 +143,20 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = true,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
+    ),
+    ListDetailsUiState(
+      id = 1,
+      page = 1,
+      details = ListDetailsData.Data(
+        data = ListDetailsFactory.page1(),
+      ),
+      error = null,
+      refreshing = false,
+      loadingMore = false,
+      selectedMediaIds = MediaItemFactory.MoviesList().take(5).map { it.id },
+      multipleSelectMode = true,
     ),
   )
 }

@@ -50,15 +50,7 @@ fun ListDetailsContent(
       state.details is ListDetailsData.Initial || state.details is ListDetailsData.Data ->
         ListScrollableContent(
           state = state,
-          onMediaClick = {
-            action(
-              ListDetailsAction.OnItemClick(
-                mediaId = it.id,
-                mediaType = it.mediaType,
-              ),
-            )
-          },
-          onLoadMore = { action(ListDetailsAction.LoadMore) },
+          action = action,
           onShowTitle = onShowTitle,
           onBackdropLoaded = onBackdropLoaded,
         )

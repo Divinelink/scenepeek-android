@@ -28,7 +28,6 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -38,14 +37,14 @@ import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
 import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
 import kotlinx.coroutines.launch
 
 @Composable
 fun ListScrollableContent(
   state: ListDetailsUiState,
-  onMediaClick: (MediaItem.Media) -> Unit,
-  onLoadMore: () -> Unit,
+  action: (ListDetailsAction) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
 ) {
@@ -67,7 +66,7 @@ fun ListScrollableContent(
 
   scrollState.EndlessScrollHandler(
     buffer = 4,
-    onLoadMore = onLoadMore,
+    onLoadMore = { action(ListDetailsAction.LoadMore) },
   )
 
   Box(
@@ -148,7 +147,25 @@ fun ListScrollableContent(
           ) { media ->
             DetailedMediaItem(
               mediaItem = media,
-              onClick = onMediaClick,
+              onClick = {
+                if (state.multipleSelectMode) {
+                  action(
+                    ListDetailsAction.SelectMedia(mediaId = media.id),
+                  )
+                } else {
+                  action(
+                    ListDetailsAction.OnItemClick(
+                      mediaId = media.id,
+                      mediaType = media.mediaType,
+                    ),
+                  )
+                }
+              },
+              onLongClick = {
+                action(
+                  ListDetailsAction.SelectMedia(mediaId = media.id),
+                )
+              },
             )
           }
 
@@ -174,5 +191,15 @@ fun ListScrollableContent(
         }
       },
     )
+
+    MultipleSelectHeader(
+      visible = state.multipleSelectMode,
+      selectedItems = state.selectedMediaIds.toList(),
+      totalItemCount = (state.details as? ListDetailsData.Data)?.data?.media?.size ?: 0,
+      onSelectAll = { action(ListDetailsAction.OnSelectAll) },
+      onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },
+      onDismiss = { action(ListDetailsAction.OnDismissMultipleSelect) },
+    )
   }
 }
+

@@ -10,4 +10,9 @@ sealed interface ListDetailsAction {
     val mediaId: Int,
     val mediaType: MediaType,
   ) : ListDetailsAction
+
+  data class SelectMedia(val mediaId: Int) : ListDetailsAction
+  data object OnDeselectAll : ListDetailsAction
+  data object OnSelectAll : ListDetailsAction
+  data object OnDismissMultipleSelect : ListDetailsAction
 }

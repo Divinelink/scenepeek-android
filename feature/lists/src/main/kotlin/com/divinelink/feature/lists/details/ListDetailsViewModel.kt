@@ -130,6 +130,36 @@ class ListDetailsViewModel(
       is ListDetailsAction.OnItemClick -> {
         // Do nothing
       }
+      is ListDetailsAction.SelectMedia -> _uiState.update { uiState ->
+        if (uiState.selectedMediaIds.contains(action.mediaId)) {
+          uiState.copy(
+            selectedMediaIds = uiState.selectedMediaIds - action.mediaId,
+          )
+        } else {
+          uiState.copy(
+            multipleSelectMode = true,
+            selectedMediaIds = uiState.selectedMediaIds + action.mediaId,
+          )
+        }
+      }
+      ListDetailsAction.OnDeselectAll -> _uiState.update {
+        it.copy(
+          selectedMediaIds = emptyList(),
+        )
+      }
+      ListDetailsAction.OnSelectAll -> _uiState.update { uiState ->
+        if (uiState.details is ListDetailsData.Data) {
+          uiState.copy(selectedMediaIds = uiState.details.data.media.map { it.id })
+        } else {
+          uiState
+        }
+      }
+      ListDetailsAction.OnDismissMultipleSelect -> _uiState.update { uiState ->
+        uiState.copy(
+          multipleSelectMode = false,
+          selectedMediaIds = emptyList(),
+        )
+      }
     }
   }
 
