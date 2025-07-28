@@ -24,4 +24,7 @@
 
   <string name='feature_lists_create_successfully'>%s created successfully</string>
   <string name='feature_lists_create_failure'>Failed to create %s</string>
+
+  <string name="feature_lists_backdrops_empty">There are no images for this list. Add items to be able to change the image.</string>
+  <string name="feature_lists_change_image">Change image</string>
 </resources>
