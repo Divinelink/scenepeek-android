@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.details.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.SelectableCard
 import com.divinelink.core.ui.components.VisibilityBadge
 import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
@@ -48,6 +50,12 @@ fun ListScrollableContent(
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
 ) {
+  BackHandler(
+    enabled = state.multipleSelectMode,
+  ) {
+    action.invoke(ListDetailsAction.OnDismissMultipleSelect)
+  }
+
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
   val density = LocalDensity.current
@@ -145,8 +153,9 @@ fun ListScrollableContent(
             items = state.details.data.media,
             key = { it.id },
           ) { media ->
-            DetailedMediaItem(
-              mediaItem = media,
+            SelectableCard(
+              isSelected = state.selectedMediaIds.contains(media.id),
+              isSelectionMode = state.multipleSelectMode,
               onClick = {
                 if (state.multipleSelectMode) {
                   action(
@@ -162,11 +171,15 @@ fun ListScrollableContent(
                 }
               },
               onLongClick = {
-                action(
-                  ListDetailsAction.SelectMedia(mediaId = media.id),
-                )
+                action(ListDetailsAction.SelectMedia(mediaId = media.id))
               },
-            )
+            ) { onClick, onLongClick ->
+              DetailedMediaItem(
+                mediaItem = media,
+                onClick = { onClick() },
+                onLongClick = { onLongClick() },
+              )
+            }
           }
 
           if (state.details.data.canLoadMore() && state.loadingMore) {
@@ -202,4 +215,3 @@ fun ListScrollableContent(
     )
   }
 }
-

@@ -1,5 +1,6 @@
 package com.divinelink.core.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,10 +44,12 @@ fun DetailedMediaItem(
 ) {
   val offset = MaterialTheme.dimensions.keyline_28
   Card(
-    modifier = modifier.combinedClickable(
-      onClick = { onClick(mediaItem) },
-      onLongClick = onLongClick,
-    ),
+    modifier = modifier
+      .animateContentSize()
+      .combinedClickable(
+        onClick = { onClick(mediaItem) },
+        onLongClick = onLongClick,
+      ),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     Row(
