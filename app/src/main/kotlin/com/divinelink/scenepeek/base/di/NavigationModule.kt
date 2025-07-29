@@ -2,6 +2,7 @@ package com.divinelink.scenepeek.base.di
 
 import com.divinelink.core.navigation.NavigationQualifier
 import com.divinelink.core.navigation.route.ListsRoute
+import com.divinelink.core.navigation.route.navigateToAddToList
 import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToEditList
@@ -11,6 +12,7 @@ import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.navigation.route.navigateToUserData
 import com.divinelink.core.scaffold.NavGraphExtension
+import com.divinelink.feature.add.to.account.list.navigation.addToListScreen
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
@@ -75,7 +77,7 @@ val navigationModule = module {
         onNavigateToCredits = navController::navigateToCredits,
         onNavigateToPerson = navController::navigateToPerson,
         onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
-        onNavigateToCreateList = navController::navigateToCreateList,
+        onNavigateToAddToList = navController::navigateToAddToList,
       )
     }
   }
@@ -232,6 +234,7 @@ val navigationModule = module {
         onNavigateUp = navController::navigateUp,
         onNavigateToDetails = navController::navigateToDetails,
         onNavigateToEdit = navController::navigateToEditList,
+        onNavigateToAddToList = navController::navigateToAddToList,
       )
     }
   }
@@ -256,6 +259,17 @@ val navigationModule = module {
             inclusive = false,
           )
         },
+      )
+    }
+  }
+
+  // Add To List Navigation
+  single<NavGraphExtension>(named(NavigationQualifier.AddToList)) {
+    { navController, _ ->
+      addToListScreen(
+        onNavigateUp = navController::navigateUp,
+        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
+        onNavigateToCreateList = navController::navigateToCreateList,
       )
     }
   }

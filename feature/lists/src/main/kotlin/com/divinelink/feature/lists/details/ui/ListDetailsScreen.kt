@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.EditListRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -50,6 +51,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   onNavigateToEdit: (EditListRoute) -> Unit,
+  onNavigateToAddToList: (AddToListRoute) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val view = LocalView.current
@@ -179,6 +181,14 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onBackdropLoaded = {
             onBackdropLoaded = true
+          },
+          onNavigateToAddToList = {
+            onNavigateToAddToList(
+              AddToListRoute(
+                id = it.id,
+                mediaType = it.mediaType,
+              ),
+            )
           },
         )
       }

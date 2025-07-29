@@ -19,7 +19,7 @@ import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.add.to.account.R
-import com.divinelink.feature.add.to.account.list.ui.AddToListModalBottomSheet
+import com.divinelink.feature.add.to.account.list.ui.AddToListScreen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -50,7 +50,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      AddToListModalBottomSheet(
+      AddToListScreen(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
@@ -80,7 +80,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      AddToListModalBottomSheet(
+      AddToListScreen(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
@@ -108,7 +108,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      AddToListModalBottomSheet(
+      AddToListScreen(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {
           navigatedToTMDBAuth = true
@@ -157,7 +157,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      AddToListModalBottomSheet(
+      AddToListScreen(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
@@ -192,7 +192,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     )
 
     setContentWithTheme {
-      AddToListModalBottomSheet(
+      AddToListScreen(
         onDismissRequest = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},

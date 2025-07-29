@@ -76,7 +76,6 @@ import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasons
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
-import com.divinelink.feature.add.to.account.list.ui.AddToListModalBottomSheet
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
 import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
 import com.divinelink.feature.details.media.ui.forms.about.AboutFormContent
@@ -97,8 +96,6 @@ fun DetailsContent(
   viewState: DetailsViewState,
   modifier: Modifier = Modifier,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  onNavigateToTMDBAuth: () -> Unit,
-  onNavigateToCreateList: () -> Unit,
   onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
@@ -114,6 +111,7 @@ fun DetailsContent(
   onPlayTrailerClick: (String) -> Unit,
   onDeleteRequest: (Int) -> Unit,
   onDeleteMedia: (Boolean) -> Unit,
+  onNavigateToAddToList: () -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -125,7 +123,6 @@ fun DetailsContent(
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
   var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
-  var showAddToListModal by rememberSaveable { mutableStateOf(false) }
 
   SnackbarMessageHandler(
     snackbarMessage = viewState.snackbarMessage,
@@ -156,13 +153,14 @@ fun DetailsContent(
     }
   }
 
-  if (showAddToListModal) {
-    AddToListModalBottomSheet(
-      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
-      onNavigateToCreateList = onNavigateToCreateList,
-      onDismissRequest = { showAddToListModal = false },
-    )
-  }
+//  if (showAddToListModal && viewState.mediaItem is MediaItem.Media) {
+//    AddToListScreen(
+//      mediaItem = viewState.mediaItem,
+//      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
+//      onNavigateToCreateList = onNavigateToCreateList,
+//      onDismissRequest = { showAddToListModal = false },
+//    )
+//  }
 
   LaunchedEffect(viewState.jellyseerrMediaInfo) {
     if (viewState.jellyseerrMediaInfo?.status == JellyseerrStatus.Media.UNKNOWN ||
@@ -308,7 +306,7 @@ fun DetailsContent(
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
-            onOpenAddToListModal = { showAddToListModal = true },
+            onNavigateToAddToList = onNavigateToAddToList,
             scope = scope,
           )
           null -> {
@@ -346,7 +344,7 @@ private fun MediaDetailsContent(
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
-  onOpenAddToListModal: () -> Unit,
+  onNavigateToAddToList: () -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -379,7 +377,7 @@ private fun MediaDetailsContent(
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
     onOpenManageModal = onOpenManageModal,
-    onAddToListClick = onOpenAddToListModal,
+    onAddToListClick = onNavigateToAddToList,
   ) {
     Column(
       modifier = Modifier
@@ -496,8 +494,7 @@ fun DetailsContentPreview(
               onPlayTrailerClick = {},
               onDeleteRequest = {},
               onDeleteMedia = {},
-              onNavigateToTMDBAuth = {},
-              onNavigateToCreateList = {},
+              onNavigateToAddToList = {},
             )
           }
         }

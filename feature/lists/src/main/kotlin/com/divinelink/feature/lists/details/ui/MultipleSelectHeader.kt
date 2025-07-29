@@ -55,8 +55,8 @@ fun BoxScope.MultipleSelectHeader(
         horizontalArrangement = Arrangement.Center,
         itemVerticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(
-          vertical = MaterialTheme.dimensions.keyline_8,
-          horizontal = MaterialTheme.dimensions.keyline_4,
+          vertical = MaterialTheme.dimensions.keyline_4,
+          horizontal = MaterialTheme.dimensions.keyline_8,
         ),
       ) {
         Text(

@@ -13,6 +13,7 @@
   <string name="core_ui_connected">You\'re back online</string>
   <string name="core_ui_not_connected">You\'re offline</string>
 
+  <string name="core_ui_select">Select</string>
   <string name="core_ui_share">Share</string>
   <string name="core_ui_show_total_episodes_item">Show spoilers</string>
   <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>

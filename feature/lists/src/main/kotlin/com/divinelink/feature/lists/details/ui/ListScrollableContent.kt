@@ -16,8 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -29,6 +31,7 @@ import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -38,6 +41,8 @@ import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
+import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
+import com.divinelink.feature.add.to.account.modal.ActionMenuModal
 import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
@@ -49,12 +54,9 @@ fun ListScrollableContent(
   action: (ListDetailsAction) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
-  BackHandler(
-    enabled = state.multipleSelectMode,
-  ) {
-    action.invoke(ListDetailsAction.OnDismissMultipleSelect)
-  }
+  var showActionModal by remember { mutableStateOf<MediaItem?>(null) }
 
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
@@ -72,10 +74,27 @@ fun ListScrollableContent(
     onShowTitle(shouldShowTitle)
   }
 
+  BackHandler(enabled = state.multipleSelectMode) {
+    action.invoke(ListDetailsAction.OnDismissMultipleSelect)
+  }
+
   scrollState.EndlessScrollHandler(
     buffer = 4,
     onLoadMore = { action(ListDetailsAction.LoadMore) },
   )
+
+  if (showActionModal != null) {
+    ActionMenuModal(
+      mediaItem = showActionModal!!,
+      onDismissRequest = { showActionModal = null },
+      entryPoint = ActionMenuEntryPoint.ListDetails,
+      onMultiSelect = { media ->
+        action(ListDetailsAction.SelectMedia(mediaId = media.id))
+        showActionModal = null
+      },
+      onNavigateToAddToList = onNavigateToAddToList,
+    )
+  }
 
   Box(
     Modifier.fillMaxSize(),
@@ -171,7 +190,11 @@ fun ListScrollableContent(
                 }
               },
               onLongClick = {
-                action(ListDetailsAction.SelectMedia(mediaId = media.id))
+                if (showActionModal == null) {
+                  showActionModal = media
+                } else {
+                  action(ListDetailsAction.SelectMedia(mediaId = media.id))
+                }
               },
             ) { onClick, onLongClick ->
               DetailedMediaItem(

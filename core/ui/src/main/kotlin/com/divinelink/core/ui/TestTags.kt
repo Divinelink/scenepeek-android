@@ -227,6 +227,10 @@ object TestTags {
     object Create {
       const val SCREEN = "Create List Screen"
     }
+
+    object Add {
+      const val SCREEN = "Add To List Screen"
+    }
   }
 
   object Search {

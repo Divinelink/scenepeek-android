@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.launchCustomTab
+import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.CreditsRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.PersonRoute
@@ -36,7 +37,7 @@ fun DetailsScreen(
   onNavigateToDetails: (DetailsRoute) -> Unit,
   onNavigateToCredits: (CreditsRoute) -> Unit,
   onNavigateToPerson: (PersonRoute) -> Unit,
-  onNavigateToCreateList: () -> Unit,
+  onNavigateToAddToList: (AddToListRoute) -> Unit,
   onNavigateToTMDBLogin: () -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: DetailsViewModel = koinViewModel(),
@@ -140,8 +141,16 @@ fun DetailsScreen(
       onPlayTrailerClick = { videoUrl = it },
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
-      onNavigateToTMDBAuth = onNavigateToTMDBLogin,
-      onNavigateToCreateList = onNavigateToCreateList,
+      onNavigateToAddToList = {
+        viewState.mediaDetails?.id?.let { id ->
+          onNavigateToAddToList.invoke(
+            AddToListRoute(
+              id = id,
+              mediaType = viewState.mediaType,
+            ),
+          )
+        }
+      },
     )
 
     OverlayScreen(

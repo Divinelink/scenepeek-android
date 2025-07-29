@@ -52,7 +52,7 @@ fun DynamicDetailsCollapsingToolbar(
         onAddRateClick = onAddRateClick,
         onShowAllRatingsClick = onShowAllRatingsClick,
         onWatchTrailerClick = onWatchTrailerClick,
-        onOpenManageModal = onOpenManageModal,
+        onNavigateToAddToList = onOpenManageModal,
         onAddToListClick = onAddToListClick,
       )
     }.first().measure(constraints)
@@ -95,7 +95,7 @@ fun DynamicDetailsCollapsingToolbar(
               onAddRateClick = onAddRateClick,
               onShowAllRatingsClick = onShowAllRatingsClick,
               onWatchTrailerClick = onWatchTrailerClick,
-              onOpenManageModal = onOpenManageModal,
+              onNavigateToAddToList = onOpenManageModal,
               onAddToListClick = onAddToListClick,
             )
           }

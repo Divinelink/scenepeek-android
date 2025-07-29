@@ -54,7 +54,7 @@ fun CollapsibleDetailsContent(
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
   onWatchTrailerClick: () -> Unit,
-  onOpenManageModal: () -> Unit,
+  onNavigateToAddToList: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -89,7 +89,7 @@ fun CollapsibleDetailsContent(
             JellyseerrStatusPill(
               modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
               status = status,
-              onClick = onOpenManageModal,
+              onClick = onNavigateToAddToList,
             )
           }
         }

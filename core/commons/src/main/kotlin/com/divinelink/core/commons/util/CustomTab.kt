@@ -2,10 +2,10 @@ package com.divinelink.core.commons.util
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 import com.divinelink.core.commons.ExcludeFromKoverReport
 
 @ExcludeFromKoverReport
@@ -24,7 +24,7 @@ fun launchCustomTab(
     customTabsIntent.intent.setPackage(packageName)
   }
 
-  customTabsIntent.launchUrl(context, Uri.parse(url))
+  customTabsIntent.launchUrl(context, url.toUri())
 }
 
 @ExcludeFromKoverReport
@@ -37,7 +37,7 @@ fun launchCustomTab(
 
   val customTabsIntent = CustomTabsIntent.Builder().build()
   val intent = customTabsIntent.intent.apply {
-    data = Uri.parse(url)
+    data = url.toUri()
   }
 
   if (packageName != null) {

@@ -1,6 +1,5 @@
 package com.divinelink.feature.add.to.account.list.ui
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,57 +56,45 @@ fun AddToListContent(
       )
     }
 
-    AnimatedContent(
-      targetState = uiState,
-      contentKey = { uiState ->
-        when {
-          uiState.error != null -> "error"
-          uiState.lists is ListData.Initial -> "loading"
-          uiState.lists is ListData.Data && uiState.lists.isEmpty -> "empty"
-          else -> "data"
-        }
-      },
-    ) { uiState ->
-      when {
-        uiState.error != null -> BlankSlate(
-          modifier = Modifier
-            .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-            .padding(bottom = LocalBottomNavigationPadding.current),
-          uiState = uiState.error,
-          onRetry = {
-            if (uiState.error is BlankSlateState.Unauthenticated) {
-              action(AddToListAction.Login)
-            } else {
-              // Do nothing
-            }
-          },
-        )
+    when {
+      uiState.error != null -> BlankSlate(
+        modifier = Modifier
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .padding(bottom = LocalBottomNavigationPadding.current),
+        uiState = uiState.error,
+        onRetry = {
+          if (uiState.error is BlankSlateState.Unauthenticated) {
+            action(AddToListAction.Login)
+          } else {
+            // Do nothing
+          }
+        },
+      )
 
-        uiState.lists is ListData.Initial -> Box(
+      uiState.lists is ListData.Initial -> Box(
+        modifier = Modifier
+          .testTag(TestTags.LOADING_CONTENT)
+          .fillMaxWidth()
+          .height(MaterialTheme.dimensions.keyline_96),
+      ) {
+        Material3CircularProgressIndicator(
           modifier = Modifier
-            .testTag(TestTags.LOADING_CONTENT)
-            .fillMaxWidth()
-            .height(MaterialTheme.dimensions.keyline_96),
-        ) {
-          Material3CircularProgressIndicator(
-            modifier = Modifier
-              .wrapContentSize()
-              .align(Alignment.Center),
-          )
-        }
-
-        uiState.lists is ListData.Data -> ListsDataContent(
-          data = uiState.lists.data,
-          action = action,
+            .wrapContentSize()
+            .align(Alignment.Center),
         )
       }
+
+      uiState.lists is ListData.Data -> ListsDataContent(
+        data = uiState.lists.data,
+        action = action,
+      )
     }
   }
 }
 
 @Composable
 @Previews
-fun AddToListContentPreview(
+private fun AddToListContentPreview(
   @PreviewParameter(AddToListUiStateParameterProvider::class) state: AddToListUiState,
 ) {
   AppTheme {
