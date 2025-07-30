@@ -3,6 +3,7 @@ package com.divinelink.feature.search
 import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.testing.MainDispatcherRule
@@ -177,7 +178,7 @@ class SearchViewModelTest {
   @Test
   fun `given offline error state when I search then I expect error result`() = runTest {
     testRobot
-      .mockFetchSearchMedia(Result.failure(UnknownHostException("You are offline.")))
+      .mockFetchSearchMedia(Result.failure(AppException.Offline()))
       .buildViewModel()
       .assertUiState(
         expectedViewState = SearchUiState.initial().copy(
@@ -198,7 +199,7 @@ class SearchViewModelTest {
   @Test
   fun `test retry on search when expecting success`() = runTest {
     testRobot
-      .mockFetchSearchMedia(Result.failure(UnknownHostException("You are offline.")))
+      .mockFetchSearchMedia(Result.failure(AppException.Offline()))
       .buildViewModel()
       .assertUiState(
         expectedViewState = SearchUiState.initial().copy(

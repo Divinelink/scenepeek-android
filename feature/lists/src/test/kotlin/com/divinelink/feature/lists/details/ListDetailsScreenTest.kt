@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
@@ -18,7 +19,6 @@ import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import com.google.common.truth.Truth.assertThat
-import java.net.UnknownHostException
 import kotlin.test.Test
 
 class ListDetailsScreenTest : ComposeTest() {
@@ -222,7 +222,7 @@ class ListDetailsScreenTest : ComposeTest() {
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
     fetchListDetailsUseCase.mockResponse(
-      Result.failure(UnknownHostException()),
+      Result.failure(AppException.Offline()),
     )
 
     setVisibilityScopeContent {

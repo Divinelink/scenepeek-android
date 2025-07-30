@@ -2,10 +2,11 @@ package com.divinelink.scenepeek.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 class HomeViewModel(
   private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
@@ -62,23 +62,22 @@ class HomeViewModel(
               popularMovies = viewState.popularMovies.addMore(result.data),
             )
           }
+        }.onError<AppException.Offline> {
+          if (getPage(HomePage.Popular) == 1) {
+            _viewState.update { viewState ->
+              viewState.copy(
+                error = BlankSlateState.Offline,
+                retryAction = HomeMode.Browser,
+                isLoading = false,
+              )
+            }
+          }
         }.onFailure {
           _viewState.update { viewState ->
             viewState.copy(
               isLoading = false,
+              error = BlankSlateState.Generic,
             )
-          }
-          ErrorHandler.create(it) {
-            on<UnknownHostException> {
-              if (getPage(HomePage.Popular) == 1) {
-                _viewState.update { viewState ->
-                  viewState.copy(
-                    error = BlankSlateState.Offline,
-                    retryAction = HomeMode.Browser,
-                  )
-                }
-              }
-            }
           }
         }
       }

@@ -3,22 +3,21 @@ package com.divinelink.feature.user.data
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
-import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.UserDataRoute
+import com.divinelink.core.model.exception.AppException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.net.UnknownHostException
 
 class UserDataViewModel(
   private val observeAccountUseCase: ObserveAccountUseCase,
@@ -149,27 +148,21 @@ class UserDataViewModel(
     mediaType: MediaType,
     throwable: Throwable,
   ) {
-    ErrorHandler.create(throwable) {
-      on<UnknownHostException> {
-        _uiState.update {
-          it.copy(
-            forms = it.forms + (mediaType to UserDataForm.Error.Network),
-          )
-        }
+    when (throwable) {
+      is AppException.Offline -> _uiState.update {
+        it.copy(
+          forms = it.forms + (mediaType to UserDataForm.Error.Network),
+        )
       }
-      on<SessionException.Unauthenticated> {
-        _uiState.update {
-          it.copy(
-            forms = it.forms + (mediaType to UserDataForm.Error.Unauthenticated),
-          )
-        }
+      is SessionException.Unauthenticated -> _uiState.update {
+        it.copy(
+          forms = it.forms + (mediaType to UserDataForm.Error.Unauthenticated),
+        )
       }
-      otherwise {
-        _uiState.update {
-          it.copy(
-            forms = it.forms + (mediaType to UserDataForm.Error.Unknown),
-          )
-        }
+      else -> _uiState.update {
+        it.copy(
+          forms = it.forms + (mediaType to UserDataForm.Error.Unknown),
+        )
       }
     }
   }

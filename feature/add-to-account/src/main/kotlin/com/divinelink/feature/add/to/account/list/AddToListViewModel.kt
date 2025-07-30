@@ -3,8 +3,8 @@ package com.divinelink.feature.add.to.account.list
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.list.AddItemParameters
 import com.divinelink.core.domain.list.AddItemToListUseCase
 import com.divinelink.core.domain.list.FetchUserListsUseCase
@@ -66,46 +66,38 @@ class AddToListViewModel(
         ),
       )
         .collect { result ->
-          result.fold(
-            onSuccess = {
-              _uiState.update { uiState ->
-                uiState.copy(
-                  loadingMore = false,
-                  isLoading = false,
-                  page = result.data.page + 1,
-                  error = null,
-                  lists = when (uiState.lists) {
-                    ListData.Initial -> ListData.Data(result.data)
-                    is ListData.Data -> ListData.Data(
-                      uiState.lists.data.copy(
-                        page = result.data.page,
-                        list = mergeListItems(
-                          page = result.data.page - 1,
-                          existingItems = uiState.lists.data.list,
-                          newItems = result.data.list,
-                        ),
+          result.onSuccess {
+            _uiState.update { uiState ->
+              uiState.copy(
+                loadingMore = false,
+                isLoading = false,
+                page = result.data.page + 1,
+                error = null,
+                lists = when (uiState.lists) {
+                  ListData.Initial -> ListData.Data(result.data)
+                  is ListData.Data -> ListData.Data(
+                    uiState.lists.data.copy(
+                      page = result.data.page,
+                      list = mergeListItems(
+                        page = result.data.page - 1,
+                        existingItems = uiState.lists.data.list,
+                        newItems = result.data.list,
                       ),
-                    )
-                  },
-                )
-              }
-            },
-            onFailure = {
-              ErrorHandler.create(it) {
-                on<SessionException.Unauthenticated> {
-                  setUnauthenticatedError()
-                }
-                otherwise {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      isLoading = false,
-                      loadingMore = false,
-                    )
-                  }
-                }
-              }
-            },
-          )
+                    ),
+                  )
+                },
+              )
+            }
+          }.onFailure {
+            _uiState.update { uiState ->
+              uiState.copy(
+                isLoading = false,
+                loadingMore = false,
+              )
+            }
+          }.onError<SessionException.Unauthenticated> {
+            setUnauthenticatedError()
+          }
         }
     }
   }
@@ -154,8 +146,8 @@ class AddToListViewModel(
         ),
       )
         .collect { result ->
-          result.fold(
-            onSuccess = {
+          result
+            .onSuccess {
               _uiState.update { uiState ->
                 val lists = uiState.lists as ListData.Data
 
@@ -169,45 +161,40 @@ class AddToListViewModel(
                   ),
                 )
               }
-            },
-            onFailure = {
-              ErrorHandler.create(it) {
-                on<SessionException.Unauthenticated> {
-                  setUnauthenticatedError()
-                }
-                on<ListException.ItemAlreadyExists> {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      isLoading = false,
-                      displayMessage = DisplayMessage.Error(
-                        UIText.ResourceText(
-                          R.string.feature_add_to_account_item_added_to_list_failure,
-                          (uiState.lists as ListData.Data).data.list.first { list ->
-                            list.id == listId
-                          }.name,
-                        ),
-                      ),
-                    )
-                  }
-                }
-                otherwise {
-                  _uiState.update { uiState ->
-                    uiState.copy(
-                      isLoading = false,
-                      displayMessage = DisplayMessage.Error(
-                        UIText.ResourceText(
-                          R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
-                          (uiState.lists as ListData.Data).data.list.first { list ->
-                            list.id == listId
-                          }.name,
-                        ),
-                      ),
-                    )
-                  }
-                }
+            }
+            .onError<SessionException.Unauthenticated> {
+              setUnauthenticatedError()
+            }
+            .onError<ListException.ItemAlreadyExists> {
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  displayMessage = DisplayMessage.Error(
+                    UIText.ResourceText(
+                      R.string.feature_add_to_account_item_added_to_list_failure,
+                      (uiState.lists as ListData.Data).data.list.first { list ->
+                        list.id == listId
+                      }.name,
+                    ),
+                  ),
+                )
               }
-            },
-          )
+            }
+            .onFailure {
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  displayMessage = DisplayMessage.Error(
+                    UIText.ResourceText(
+                      R.string.feature_add_to_account_item_add_to_list_unexpected_failure,
+                      (uiState.lists as ListData.Data).data.list.first { list ->
+                        list.id == listId
+                      }.name,
+                    ),
+                  ),
+                )
+              }
+            }
         }
     }
   }

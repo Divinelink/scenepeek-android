@@ -2,12 +2,13 @@ package com.divinelink.feature.settings.app.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.feature.settings.R
@@ -63,18 +64,14 @@ class AccountSettingsViewModel(
               it.copy(tmdbAccount = accountDetails)
             }
           }
-          .onFailure {
-            ErrorHandler.create(it) {
-              on<SessionException.Unauthenticated> {
-                _viewState.update { uiState ->
-                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
-                }
-              }
-              on(401) {
-                _viewState.update { uiState ->
-                  uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
-                }
-              }
+          .onError<SessionException.Unauthenticated> {
+            _viewState.update { uiState ->
+              uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
+            }
+          }
+          .onError<AppException.Unauthorized> {
+            _viewState.update { uiState ->
+              uiState.copy(tmdbAccount = TMDBAccount.Anonymous)
             }
           }
       }
@@ -112,16 +109,12 @@ class AccountSettingsViewModel(
             )
           }
         }
-        .onFailure { error ->
-          ErrorHandler.create(error) {
-            on(401) {
-              _viewState.update {
-                it.copy(
-                  tmdbAccount = TMDBAccount.Anonymous,
-                  alertDialogUiState = null,
-                )
-              }
-            }
+        .onError<AppException.Unauthorized> {
+          _viewState.update {
+            it.copy(
+              tmdbAccount = TMDBAccount.Anonymous,
+              alertDialogUiState = null,
+            )
           }
         }
     }

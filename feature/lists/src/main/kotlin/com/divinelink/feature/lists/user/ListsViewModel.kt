@@ -2,12 +2,12 @@ package com.divinelink.feature.lists.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.list.FetchUserListsUseCase
 import com.divinelink.core.domain.list.UserListsParameters
 import com.divinelink.core.domain.list.mergeListItems
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) : ViewModel() {
 
@@ -88,29 +87,23 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
             },
             onFailure = {
               if (uiState.value.lists is ListData.Initial) {
-                ErrorHandler.create(it) {
-                  on<SessionException.Unauthenticated> {
-                    setUnauthenticatedError()
+                when (it) {
+                  is SessionException.Unauthenticated -> setUnauthenticatedError()
+                  is AppException.Offline -> _uiState.update { uiState ->
+                    uiState.copy(
+                      error = BlankSlateState.Offline,
+                      isLoading = false,
+                      loadingMore = false,
+                      refreshing = false,
+                    )
                   }
-                  on<UnknownHostException> {
-                    _uiState.update { uiState ->
-                      uiState.copy(
-                        error = BlankSlateState.Offline,
-                        isLoading = false,
-                        loadingMore = false,
-                        refreshing = false,
-                      )
-                    }
-                  }
-                  otherwise {
-                    _uiState.update { uiState ->
-                      uiState.copy(
-                        error = BlankSlateState.Generic,
-                        isLoading = false,
-                        loadingMore = false,
-                        refreshing = false,
-                      )
-                    }
+                  else -> _uiState.update { uiState ->
+                    uiState.copy(
+                      error = BlankSlateState.Generic,
+                      isLoading = false,
+                      loadingMore = false,
+                      refreshing = false,
+                    )
                   }
                 }
               } else {

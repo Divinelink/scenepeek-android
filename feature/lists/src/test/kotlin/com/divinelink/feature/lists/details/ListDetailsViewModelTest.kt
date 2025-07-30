@@ -1,6 +1,7 @@
 package com.divinelink.feature.lists.details
 
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
@@ -8,7 +9,6 @@ import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import java.net.UnknownHostException
 import kotlin.test.Test
 
 class ListDetailsViewModelTest {
@@ -303,7 +303,7 @@ class ListDetailsViewModelTest {
     robot
       .withArgs(listDetailsRoute)
       .mockListDetails(
-        Result.failure(UnknownHostException()),
+        Result.failure(AppException.Offline()),
       )
       .buildViewModel()
       .assertUiState(

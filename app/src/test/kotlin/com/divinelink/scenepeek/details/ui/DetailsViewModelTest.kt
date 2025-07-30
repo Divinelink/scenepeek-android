@@ -24,6 +24,7 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
@@ -1624,7 +1625,7 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `test request with 403 prompts to re-login`() = runTest {
+  fun `test request with forbidden 403 prompts to re-login`() = runTest {
     val viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
@@ -1637,7 +1638,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(403))))
+      .mockRequestMedia(flowOf(Result.failure(AppException.Forbidden())))
       .withNavArguments(
         id = mediaId,
         mediaType = MediaType.MOVIE,
@@ -1682,7 +1683,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(401))))
+      .mockRequestMedia(flowOf(Result.failure(AppException.Unauthorized("401"))))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel().also {
         viewModel = it.getViewModel()
@@ -1711,7 +1712,7 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `test request with 409 informs that movie already exists`() = runTest {
+  fun `test request with conflict 409 informs that movie already exists`() = runTest {
     testRobot
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1723,7 +1724,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(409))))
+      .mockRequestMedia(flowOf(Result.failure(AppException.Conflict())))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .onRequestMedia(emptyList())

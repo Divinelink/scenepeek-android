@@ -1,10 +1,13 @@
 package com.divinelink.core.network.client
 
 import com.divinelink.core.commons.Constants
-import com.divinelink.core.commons.exception.InvalidStatusException
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.network.sockets.ConnectTimeoutException
+import io.ktor.client.network.sockets.SocketTimeoutException
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -24,9 +27,13 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import timber.log.Timber
+import java.net.ConnectException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 
 val localJson = Json {
   prettyPrint = true
@@ -51,11 +58,38 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
 
   HttpResponseValidator {
     validateResponse { response ->
-      if (!response.status.isSuccess()) throw InvalidStatusException(response.status.value)
+      if (!response.status.isSuccess()) {
+        val statusCode = response.status.value
+        val error = when (statusCode) {
+          HttpStatusCode.Unauthorized.value -> AppException.Unauthorized(
+            response.status.description,
+          )
+          HttpStatusCode.Forbidden.value -> AppException.Forbidden()
+          HttpStatusCode.NotFound.value -> AppException.NotFound()
+          HttpStatusCode.Conflict.value -> AppException.Conflict()
+          HttpStatusCode.TooManyRequests.value -> AppException.TooManyRequests()
+          HttpStatusCode.PayloadTooLarge.value -> AppException.PayloadTooLarge()
+          in 500..599 -> AppException.ServerError()
+          else -> AppException.BadRequest()
+        }
+        throw error
+      }
     }
+
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")
-      throw cause
+      val dataError = when (cause) {
+        is SocketTimeoutException -> AppException.SocketTimeout()
+        is ConnectTimeoutException -> AppException.ConnectionTimeout()
+        is HttpRequestTimeoutException -> AppException.RequestTimeout()
+        is SSLHandshakeException -> AppException.Ssl()
+        is SerializationException -> AppException.Serialization()
+        is ConnectException -> AppException.Offline()
+        is UnknownHostException -> AppException.Offline()
+        is AppException -> cause
+        else -> AppException.Unknown(cause.message)
+      }
+      throw dataError
     }
   }
 }

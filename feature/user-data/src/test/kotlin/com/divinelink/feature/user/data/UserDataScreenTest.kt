@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection
@@ -70,7 +71,7 @@ class UserDataScreenTest : ComposeTest() {
   fun `test network error`() {
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
-      response = flowOf(Result.failure(UnknownHostException())),
+      response = flowOf(Result.failure(AppException.Offline())),
     )
 
     setVisibilityScopeContent {
