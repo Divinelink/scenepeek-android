@@ -76,7 +76,6 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
       }
     }
 
-    // Todo add tests for those
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")
       val dataError = when (cause) {
