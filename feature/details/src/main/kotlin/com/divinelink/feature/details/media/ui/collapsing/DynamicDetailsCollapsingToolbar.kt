@@ -12,6 +12,7 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.collapsing.CollapsingOption
 import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
@@ -21,6 +22,7 @@ import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsCont
 
 @Composable
 fun DynamicDetailsCollapsingToolbar(
+  onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
   userDetails: AccountMediaDetails?,
@@ -33,7 +35,6 @@ fun DynamicDetailsCollapsingToolbar(
   onWatchTrailerClick: () -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
-  onAddToListClick: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   SubcomposeLayout { constraints ->
@@ -52,8 +53,8 @@ fun DynamicDetailsCollapsingToolbar(
         onAddRateClick = onAddRateClick,
         onShowAllRatingsClick = onShowAllRatingsClick,
         onWatchTrailerClick = onWatchTrailerClick,
-        onNavigateToAddToList = onOpenManageModal,
-        onAddToListClick = onAddToListClick,
+        onOpenManageModal = onOpenManageModal,
+        onNavigate = onNavigate,
       )
     }.first().measure(constraints)
 
@@ -85,6 +86,7 @@ fun DynamicDetailsCollapsingToolbar(
                 .requiredToolBarMaxHeight()
                 .fillMaxWidth(),
               mediaDetails = mediaDetails,
+              onNavigate = onNavigate,
               status = status,
               isOnWatchlist = userDetails?.watchlist == true,
               hasTrailer = hasTrailer,
@@ -95,8 +97,7 @@ fun DynamicDetailsCollapsingToolbar(
               onAddRateClick = onAddRateClick,
               onShowAllRatingsClick = onShowAllRatingsClick,
               onWatchTrailerClick = onWatchTrailerClick,
-              onNavigateToAddToList = onOpenManageModal,
-              onAddToListClick = onAddToListClick,
+              onOpenManageModal = onOpenManageModal,
             )
           }
         },

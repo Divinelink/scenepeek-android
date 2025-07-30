@@ -12,7 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.details.Person
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -25,8 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.CreditsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToPersonDetails: (Person) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: CreditsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -49,7 +49,7 @@ fun AnimatedVisibilityScope.CreditsScreen(
             onClick = viewModel::onObfuscateSpoilers,
           )
         },
-        onNavigateUp = onNavigateUp,
+        onNavigateUp = { onNavigate(Navigation.Back) },
       )
     },
     navigationBar = {
@@ -65,7 +65,7 @@ fun AnimatedVisibilityScope.CreditsScreen(
       CreditsContent(
         state = uiState,
         onTabSelected = viewModel::onTabSelected,
-        onPersonSelected = onNavigateToPersonDetails,
+        onPersonSelected = { onNavigate(it.toPersonRoute()) },
       )
     }
   }

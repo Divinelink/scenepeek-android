@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.model.user.data.UserDataSection
-import com.divinelink.core.navigation.route.UserDataRoute
-import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

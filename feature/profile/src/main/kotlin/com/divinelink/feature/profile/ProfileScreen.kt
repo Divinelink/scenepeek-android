@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.model.user.data.UserDataSection
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -18,9 +18,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AnimatedVisibilityScope.ProfileScreen(
-  onNavigateToUserData: (UserDataSection) -> Unit,
-  onNavigateToLists: () -> Unit,
-  onNavigateToTMDBAuth: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: ProfileViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,11 +40,11 @@ fun AnimatedVisibilityScope.ProfileScreen(
           uiState = uiState,
           userInteraction = { userInteraction ->
             when (userInteraction) {
-              ProfileAction.Login -> onNavigateToTMDBAuth()
-              is ProfileAction.NavigateToUserData -> onNavigateToUserData(
-                userInteraction.section,
+              ProfileAction.Login -> onNavigate(Navigation.TMDBAuthRoute)
+              is ProfileAction.NavigateToUserData -> onNavigate(
+                Navigation.UserDataRoute(userInteraction.section),
               )
-              ProfileAction.NavigateToLists -> onNavigateToLists()
+              ProfileAction.NavigateToLists -> onNavigate(Navigation.ListsRoute)
             }
           },
         )

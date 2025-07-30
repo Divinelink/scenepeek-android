@@ -6,8 +6,7 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.media.MediaContent
@@ -16,11 +15,10 @@ import com.divinelink.feature.search.R
 @Composable
 fun SearchContent(
   uiState: SearchUiState,
+  onNavigate: (Navigation) -> Unit,
   onRetryClick: () -> Unit,
   onMarkAsFavorite: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToPerson: (PersonRoute) -> Unit,
 ) {
   when {
     uiState.error is BlankSlateState.Offline -> BlankSlate(
@@ -44,22 +42,22 @@ fun SearchContent(
       onMediaClick = { media ->
         when (media) {
           is MediaItem.Media -> {
-            val route = DetailsRoute(
+            val route = Navigation.DetailsRoute(
               id = media.id,
               mediaType = media.mediaType,
               isFavorite = media.isFavorite,
             )
-            onNavigateToDetails(route)
+            onNavigate(route)
           }
           is MediaItem.Person -> {
-            val route = PersonRoute(
+            val route = Navigation.PersonRoute(
               id = media.id.toLong(),
               knownForDepartment = media.knownForDepartment,
               name = media.name,
               profilePath = media.profilePath,
               gender = media.gender,
             )
-            onNavigateToPerson(route)
+            onNavigate(route)
           }
           else -> {
             return@MediaContent

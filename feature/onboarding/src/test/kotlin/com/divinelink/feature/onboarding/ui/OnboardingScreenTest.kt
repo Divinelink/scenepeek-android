@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
@@ -43,9 +44,7 @@ class OnboardingScreenTest : ComposeTest() {
 
     setContentWithTheme {
       OnboardingScreen(
-        onNavigateUp = {},
-        onNavigateToJellyseerrSettings = {},
-        onNavigateToTMDBLogin = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -77,9 +76,7 @@ class OnboardingScreenTest : ComposeTest() {
 
     setContentWithTheme {
       OnboardingScreen(
-        onNavigateUp = {},
-        onNavigateToJellyseerrSettings = {},
-        onNavigateToTMDBLogin = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -117,10 +114,10 @@ class OnboardingScreenTest : ComposeTest() {
 
     setContentWithTheme {
       OnboardingScreen(
-        onNavigateUp = {},
-        onNavigateToJellyseerrSettings = {},
-        onNavigateToTMDBLogin = {
-          tmdbLoginClicked = true
+        onNavigate = {
+          if (it is Navigation.TMDBAuthRoute) {
+            tmdbLoginClicked = true
+          }
         },
         viewModel = viewModel,
       )
@@ -156,11 +153,11 @@ class OnboardingScreenTest : ComposeTest() {
 
     setContentWithTheme {
       OnboardingScreen(
-        onNavigateUp = {},
-        onNavigateToJellyseerrSettings = {
-          jellyseerrLoginClick = true
+        onNavigate = {
+          if (it is Navigation.JellyseerrSettingsRoute) {
+            jellyseerrLoginClick = true
+          }
         },
-        onNavigateToTMDBLogin = {},
         viewModel = viewModel,
       )
     }

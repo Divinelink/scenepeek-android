@@ -15,9 +15,9 @@ import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
-import com.divinelink.core.navigation.route.AddToListRoute
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.navigation.route.Navigation.EditListRoute
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
@@ -72,10 +72,7 @@ class ListDetailsScreenTest : ComposeTest() {
     fetchListDetailsUseCase.mockResponse(Result.success(ListDetailsFactory.page1()))
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -102,12 +99,11 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {
-          navigatedUp = true
+        onNavigate = {
+          if (it is Navigation.Back) {
+            navigatedUp = true
+          }
         },
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -133,10 +129,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -183,12 +176,11 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {
-          detailsRoute = it
+        onNavigate = {
+          if (it is DetailsRoute) {
+            detailsRoute = it
+          }
         },
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -225,10 +217,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -270,10 +259,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -306,10 +292,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -353,10 +336,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -388,12 +368,11 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {
-          editListRoute = it
+        onNavigate = {
+          if (it is EditListRoute) {
+            editListRoute = it
+          }
         },
-        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -438,10 +417,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -525,7 +501,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test on navigate to add to list`() {
-    var addToListRoute: AddToListRoute? = null
+    var addToListRoute: Navigation.AddToListRoute? = null
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
     fetchListDetailsUseCase.mockResponse(
@@ -545,11 +521,10 @@ class ListDetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       ListDetailsScreen(
-        onNavigateUp = {},
-        onNavigateToMediaDetails = {},
-        onNavigateToEdit = {},
-        onNavigateToAddToList = {
-          addToListRoute = it
+        onNavigate = {
+          if (it is Navigation.AddToListRoute) {
+            addToListRoute = it
+          }
         },
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
@@ -570,8 +545,11 @@ class ListDetailsScreenTest : ComposeTest() {
         getString(R.string.feature_add_to_account_list_title),
       ).performClick()
 
-      addToListRoute shouldBe AddToListRoute(
-        media = ListDetailsFactory.page1().media.first().toStub(),
+      val stub = ListDetailsFactory.page1().media.first().toStub()
+
+      addToListRoute shouldBe Navigation.AddToListRoute(
+        id = stub.mediaId,
+        mediaType = stub.mediaType,
       )
     }
   }

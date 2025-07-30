@@ -5,8 +5,8 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState

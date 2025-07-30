@@ -3,7 +3,7 @@ package com.divinelink.feature.lists.details
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.repository.TestListRepository
@@ -16,7 +16,7 @@ import org.junit.Rule
 class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
 
   private lateinit var viewModel: ListDetailsViewModel
-  private lateinit var navArgs: ListDetailsRoute
+  private lateinit var navArgs: Navigation.ListDetailsRoute
 
   private val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
   private val repository = TestListRepository()
@@ -40,7 +40,7 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
     )
   }
 
-  fun withArgs(args: ListDetailsRoute) = apply {
+  fun withArgs(args: Navigation.ListDetailsRoute) = apply {
     this.navArgs = args
   }
 

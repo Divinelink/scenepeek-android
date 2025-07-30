@@ -1,15 +1,20 @@
 package com.divinelink.feature.profile
 
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
+import com.divinelink.core.model.user.data.UserDataSection
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class ProfileScreenTest : ComposeTest() {
 
@@ -29,23 +34,23 @@ class ProfileScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       ProfileScreen(
         viewModel = viewModel,
-        onNavigateToUserData = {},
-        onNavigateToLists = {},
-        onNavigateToTMDBAuth = {
-          navigateToTMDBAuthCalled = true
+        onNavigate = {
+          if (it is Navigation.TMDBAuthRoute) {
+            navigateToTMDBAuthCalled = true
+          }
         },
       )
     }
     with(composeTestRule) {
       onNodeWithText(getString(R.string.core_ui_login)).performClick()
 
-      assertTrue { navigateToTMDBAuthCalled }
+      navigateToTMDBAuthCalled shouldBe true
     }
   }
 
   @Test
   fun `test navigate to watchlist`() {
-    var navigateToWatchlistCalled = false
+    var userDataSection: UserDataSection? = null
 
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
@@ -54,17 +59,66 @@ class ProfileScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       ProfileScreen(
         viewModel = viewModel,
-        onNavigateToUserData = {
-          navigateToWatchlistCalled = true
+        onNavigate = {
+          if (it is Navigation.UserDataRoute) {
+            userDataSection = it.userDataSection
+          }
         },
-        onNavigateToLists = {},
-        onNavigateToTMDBAuth = { },
       )
     }
     with(composeTestRule) {
       onNodeWithText("Watchlist").performClick()
 
-      assertTrue { navigateToWatchlistCalled }
+      userDataSection shouldBe UserDataSection.Watchlist
+    }
+  }
+
+  @Test
+  fun `test navigate to ratings`() {
+    var userDataSection: UserDataSection? = null
+
+    viewModel = ProfileViewModel(
+      getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+    )
+
+    setVisibilityScopeContent {
+      ProfileScreen(
+        viewModel = viewModel,
+        onNavigate = {
+          if (it is Navigation.UserDataRoute) {
+            userDataSection = it.userDataSection
+          }
+        },
+      )
+    }
+    composeTestRule.onNodeWithText("Ratings").performClick()
+
+    userDataSection shouldBe UserDataSection.Ratings
+  }
+
+  @Test
+  fun `test navigate to lists`() {
+    var navigateToLists = false
+
+    viewModel = ProfileViewModel(
+      getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+    )
+
+    setVisibilityScopeContent {
+      ProfileScreen(
+        viewModel = viewModel,
+        onNavigate = {
+          if (it is Navigation.ListsRoute) {
+            navigateToLists = true
+          }
+        },
+      )
+    }
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Profile.CONTENT).performScrollToIndex(5)
+      onNodeWithText("Lists").performClick()
+
+      navigateToLists shouldBe true
     }
   }
 }

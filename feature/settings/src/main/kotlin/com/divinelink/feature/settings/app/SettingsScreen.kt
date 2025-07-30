@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -23,16 +24,11 @@ import com.divinelink.feature.settings.components.SettingsScaffold
 @Composable
 fun SettingsScreen(
   animatedVisibilityScope: AnimatedVisibilityScope,
-  onNavigateUp: () -> Unit,
-  onNavigateToAccountSettings: () -> Unit,
-  onNavigateToAppearanceSettings: () -> Unit,
-  onNavigateToDetailPreferencesSettings: () -> Unit,
-  onNavigateToLinkHandling: () -> Unit,
-  onNavigateToAboutSettings: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   SettingsScaffold(
     title = stringResource(R.string.settings),
-    onNavigationClick = onNavigateUp,
+    onNavigationClick = { onNavigate(Navigation.Back) },
     animatedVisibilityScope = animatedVisibilityScope,
     navigationIconPainter = Icons.AutoMirrored.Rounded.ArrowBack,
   ) {
@@ -43,7 +39,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.AccountCircle),
           text = stringResource(R.string.preferences__account),
-          onClick = onNavigateToAccountSettings,
+          onClick = { onNavigate(Navigation.AccountSettingsRoute) },
         )
       }
 
@@ -55,7 +51,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.AutoAwesome),
           text = stringResource(R.string.preferences__appearance),
-          onClick = onNavigateToAppearanceSettings,
+          onClick = { onNavigate(Navigation.AppearanceSettingsRoute) },
         )
       }
 
@@ -67,7 +63,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.DisplaySettings),
           text = stringResource(R.string.feature_settings_details_preferences),
-          onClick = onNavigateToDetailPreferencesSettings,
+          onClick = { onNavigate(Navigation.DetailsPreferencesSettingsRoute) },
         )
       }
 
@@ -79,7 +75,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.Outlined.Link),
           text = stringResource(R.string.feature_settings_link_handling),
-          onClick = onNavigateToLinkHandling,
+          onClick = { onNavigate(Navigation.LinkHandlingSettingsRoute) },
         )
       }
 
@@ -91,7 +87,7 @@ fun SettingsScreen(
         SettingsClickItem(
           icon = IconWrapper.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
           text = stringResource(R.string.feature_settings_about),
-          onClick = onNavigateToAboutSettings,
+          onClick = { onNavigate(Navigation.AboutSettingsRoute) },
         )
       }
     }

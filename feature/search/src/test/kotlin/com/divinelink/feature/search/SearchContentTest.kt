@@ -24,12 +24,11 @@ class SearchContentTest : ComposeTest() {
 
     setContentWithTheme {
       SearchContent(
+        onNavigate = {},
         uiState = uiState,
         onMarkAsFavorite = {},
         onLoadNextPage = {},
-        onNavigateToDetails = {},
         onRetryClick = {},
-        onNavigateToPerson = {},
       )
     }
 
@@ -50,12 +49,11 @@ class SearchContentTest : ComposeTest() {
 
     setContentWithTheme {
       SearchContent(
+        onNavigate = {},
         uiState = uiState,
         onMarkAsFavorite = {},
         onLoadNextPage = {},
-        onNavigateToDetails = {},
         onRetryClick = {},
-        onNavigateToPerson = {},
       )
     }
 
@@ -75,12 +73,11 @@ class SearchContentTest : ComposeTest() {
 
     setContentWithTheme {
       SearchContent(
+        onNavigate = {},
         uiState = uiState,
         onMarkAsFavorite = {},
         onLoadNextPage = {},
-        onNavigateToDetails = {},
         onRetryClick = {},
-        onNavigateToPerson = {},
       )
     }
 
@@ -106,8 +103,7 @@ class SearchContentTest : ComposeTest() {
     setContentWithTheme {
       SearchContent(
         uiState = uiState,
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
+        onNavigate = {},
         onLoadNextPage = {},
         onRetryClick = {},
         onMarkAsFavorite = {},

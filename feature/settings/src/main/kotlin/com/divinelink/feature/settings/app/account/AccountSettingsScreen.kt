@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
@@ -16,9 +17,7 @@ import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun AccountSettingsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToJellyseerrSettingsScreen: () -> Unit,
-  onNavigateToTMDBAuth: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   sharedTransitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: AccountSettingsViewModel = koinViewModel(),
@@ -27,14 +26,14 @@ fun AccountSettingsScreen(
 
   LaunchedEffect(Unit) {
     viewModel.navigateToTMDBAuth.collect {
-      onNavigateToTMDBAuth()
+      onNavigate(Navigation.TMDBAuthRoute)
     }
   }
 
   SettingsScaffold(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(id = R.string.preferences__account),
-    onNavigationClick = onNavigateUp,
+    onNavigationClick = { onNavigate(Navigation.Back) },
   ) {
     AccountSettingsContent(
       transitionScope = sharedTransitionScope,
@@ -42,7 +41,7 @@ fun AccountSettingsScreen(
       onLoginClick = viewModel::login,
       uiState = viewState,
       onLogoutClick = viewModel::logoutDialog,
-      onNavigateToJellyseerrLogin = onNavigateToJellyseerrSettingsScreen,
+      onNavigateToJellyseerrLogin = { onNavigate(Navigation.JellyseerrSettingsRoute(true)) },
     )
   }
 

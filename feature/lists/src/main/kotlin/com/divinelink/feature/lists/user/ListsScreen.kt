@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.ui.ViewableSection
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -37,10 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.ListsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
-  onNavigateToCreateList: () -> Unit,
-  onNavigateToList: (ListDetailsRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: ListsViewModel = koinViewModel(),
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
@@ -68,7 +65,9 @@ fun AnimatedVisibilityScope.ListsScreen(
         title = {
           Text(text = stringResource(R.string.feature_lists_title))
         },
-        navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
+        navigationIcon = {
+          NavigateUpButton(onClick = { onNavigate(Navigation.Back) })
+        },
       )
     },
     floatingActionButton = {
@@ -77,7 +76,7 @@ fun AnimatedVisibilityScope.ListsScreen(
           icon = Icons.Default.AccountCircle,
           text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
           expanded = true,
-          onClick = onNavigateToTMDBLogin,
+          onClick = { onNavigate(Navigation.TMDBAuthRoute) },
         )
       } else if (uiState.lists is ListData.Data) {
         ScaffoldFab(
@@ -85,7 +84,7 @@ fun AnimatedVisibilityScope.ListsScreen(
           icon = Icons.Default.Add,
           text = null,
           expanded = false,
-          onClick = onNavigateToCreateList,
+          onClick = { onNavigate(Navigation.CreateListRoute) },
         )
       }
     },
@@ -99,8 +98,8 @@ fun AnimatedVisibilityScope.ListsScreen(
             when (userInteraction) {
               ListsAction.LoadMore -> viewModel.onLoadMore()
               ListsAction.Refresh -> viewModel.onRefresh()
-              is ListsAction.OnListClick -> onNavigateToList(
-                ListDetailsRoute(
+              is ListsAction.OnListClick -> onNavigate(
+                Navigation.ListDetailsRoute(
                   id = userInteraction.id,
                   name = userInteraction.name,
                   backdropPath = userInteraction.backdropPath,
@@ -108,6 +107,7 @@ fun AnimatedVisibilityScope.ListsScreen(
                   public = userInteraction.public,
                 ),
               )
+
               ListsAction.SwitchViewMode -> switchViewButtonViewModel.switchViewMode(
                 section = ViewableSection.LISTS,
               )

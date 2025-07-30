@@ -2,12 +2,8 @@ package com.divinelink.core.navigation.route
 
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import kotlinx.serialization.Serializable
-
-@Serializable
-object HomeRoute
 
 fun NavController.navigateToHome(navOptions: NavOptions) = navigate(
-  route = HomeRoute,
+  route = Navigation.HomeRoute,
   navOptions = navOptions,
 )

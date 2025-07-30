@@ -4,15 +4,15 @@ import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import kotlinx.coroutines.test.runTest
+import com.divinelink.feature.add.to.account.R as accountR
 import org.junit.Rule
 import kotlin.test.Test
-import com.divinelink.feature.add.to.account.R as accountR
 
 class ListDetailsViewModelTest {
 
@@ -21,7 +21,7 @@ class ListDetailsViewModelTest {
 
   private val robot = ListDetailsViewModelTestRobot()
 
-  private val listDetailsRoute = ListDetailsRoute(
+  private val listDetailsRoute = Navigation.ListDetailsRoute(
     id = 1,
     name = "Test List",
     backdropPath = ListDetailsFactory.mustWatch().backdropPath,

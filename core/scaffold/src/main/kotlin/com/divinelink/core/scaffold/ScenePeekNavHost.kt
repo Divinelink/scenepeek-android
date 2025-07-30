@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
-import com.divinelink.core.navigation.route.HomeRoute
+import com.divinelink.core.navigation.route.Navigation
 
 typealias NavGraphExtension = NavGraphBuilder.(
   navController: NavController,
@@ -23,7 +23,7 @@ fun SharedTransitionScope.ScenePeekNavHost() {
 
   NavHost(
     navController = navController,
-    startDestination = HomeRoute,
+    startDestination = Navigation.HomeRoute,
     enterTransition = {
       fadeIn(animationSpec = tween(durationMillis = 300, easing = LinearEasing))
     },

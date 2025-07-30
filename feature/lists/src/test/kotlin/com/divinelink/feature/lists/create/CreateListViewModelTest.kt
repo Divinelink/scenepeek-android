@@ -1,7 +1,7 @@
 package com.divinelink.feature.lists.create
 
 import com.divinelink.core.model.UIText
-import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.snackbar.SnackbarMessage

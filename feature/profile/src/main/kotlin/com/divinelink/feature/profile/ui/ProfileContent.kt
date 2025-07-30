@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.ui.Previews
@@ -74,6 +75,12 @@ fun ProfileContent(
       ProfileSectionItem(
         section = ProfileSection.Lists,
         onClick = { userInteraction(ProfileAction.NavigateToLists) },
+      )
+    }
+
+    item {
+      Spacer(
+        modifier = Modifier.height(LocalBottomNavigationPadding.current),
       )
     }
   }

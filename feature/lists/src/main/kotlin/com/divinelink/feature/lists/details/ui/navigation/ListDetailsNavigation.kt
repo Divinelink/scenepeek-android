@@ -2,24 +2,14 @@ package com.divinelink.feature.lists.details.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.divinelink.core.navigation.route.AddToListRoute
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.EditListRoute
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 
-fun NavGraphBuilder.listDetailsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToEdit: (EditListRoute) -> Unit,
-  onNavigateToAddToList: (AddToListRoute) -> Unit,
-) {
+fun NavGraphBuilder.listDetailsScreen(onNavigate: (Navigation) -> Unit) {
   composable<ListDetailsRoute> {
     ListDetailsScreen(
-      onNavigateUp = onNavigateUp,
-      onNavigateToMediaDetails = onNavigateToDetails,
-      onNavigateToEdit = onNavigateToEdit,
-      onNavigateToAddToList = onNavigateToAddToList,
+      onNavigate = onNavigate,
     )
   }
 }

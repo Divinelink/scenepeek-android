@@ -4,25 +4,18 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.settings.app.account.AccountSettingsScreen
-import kotlinx.serialization.Serializable
 
-@Serializable
-object AccountSettingsRoute
-
-fun NavController.navigateToAccountSettings() = navigate(route = AccountSettingsRoute)
+fun NavController.navigateToAccountSettings() = navigate(route = Navigation.AccountSettingsRoute)
 
 fun NavGraphBuilder.accountSettingsScreen(
   sharedTransitionScope: SharedTransitionScope,
-  onNavigateUp: () -> Unit,
-  onNavigateToTMDBAuth: () -> Unit,
-  onNavigateToJellyseerrSettings: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
-  composable<AccountSettingsRoute> {
+  composable<Navigation.AccountSettingsRoute> {
     AccountSettingsScreen(
-      onNavigateUp = onNavigateUp,
-      onNavigateToJellyseerrSettingsScreen = onNavigateToJellyseerrSettings,
-      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
+      onNavigate = onNavigate,
       sharedTransitionScope = sharedTransitionScope,
       animatedVisibilityScope = this@composable,
     )

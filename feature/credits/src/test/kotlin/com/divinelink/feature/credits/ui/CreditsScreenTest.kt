@@ -53,8 +53,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -73,8 +72,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -98,9 +96,8 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateToPersonDetails = {},
       )
     }
     with(composeTestRule) {
@@ -132,8 +129,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -170,8 +166,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -196,8 +191,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -224,8 +218,7 @@ class CreditsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       CreditsScreen(
-        onNavigateUp = {},
-        onNavigateToPersonDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }

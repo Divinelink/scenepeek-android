@@ -7,8 +7,7 @@ import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.domain.list.CreateListParameters
 import com.divinelink.core.domain.list.CreateListUseCase
 import com.divinelink.core.model.UIText
-import com.divinelink.core.navigation.route.CreateListRoute
-import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.R
@@ -28,7 +27,7 @@ class CreateListViewModel(
 ) : ViewModel() {
 
   private val route: Any = if (savedStateHandle.get<Int>("id") != null) {
-    EditListRoute(
+    Navigation.EditListRoute(
       id = savedStateHandle.get<Int>("id") ?: 0,
       name = savedStateHandle.get<String>("name") ?: "",
       backdropPath = savedStateHandle.get<String>("backdropPath") ?: "",
@@ -36,11 +35,11 @@ class CreateListViewModel(
       public = savedStateHandle.get<Boolean>("public") ?: false,
     )
   } else {
-    CreateListRoute
+    Navigation.CreateListRoute
   }
 
   private val _uiState: MutableStateFlow<CreateListUiState> = MutableStateFlow(
-    if (route is EditListRoute) {
+    if (route is Navigation.EditListRoute) {
       CreateListUiState.initial.copy(
         id = route.id,
         name = route.name,

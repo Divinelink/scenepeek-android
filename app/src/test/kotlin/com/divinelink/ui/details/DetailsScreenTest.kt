@@ -31,7 +31,8 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
-import com.divinelink.core.navigation.route.CreditsRoute
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
@@ -96,9 +97,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -118,9 +117,6 @@ class DetailsScreenTest : ComposeTest() {
             ),
           ),
         ),
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -146,7 +142,7 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun navigateToAnotherDetailsScreen() = runTest {
-    var navigatedToDetails = false
+    var detailsRoute: Navigation.DetailsRoute? = null
 
     fetchAccountMediaDetailsUseCase.mockFetchAccountDetails(
       response = flowOf(
@@ -173,9 +169,11 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {
+          if (it is Navigation.DetailsRoute) {
+            detailsRoute = it
+          }
+        },
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -195,11 +193,6 @@ class DetailsScreenTest : ComposeTest() {
             ),
           ),
         ),
-        onNavigateUp = {},
-        onNavigateToDetails = {
-          navigatedToDetails = true
-        },
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -233,7 +226,13 @@ class DetailsScreenTest : ComposeTest() {
         .onNodeWithContentDescription(navigateUpContentDescription)
         .performClick()
 
-      assertThat(navigatedToDetails).isTrue()
+      assertThat(detailsRoute).isEqualTo(
+        Navigation.DetailsRoute(
+          id = MediaItemFactory.MoviesList()[0].id,
+          mediaType = MediaItemFactory.MoviesList()[0].mediaType,
+          isFavorite = false,
+        ),
+      )
     }
   }
 
@@ -277,13 +276,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -342,13 +336,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -395,7 +384,6 @@ class DetailsScreenTest : ComposeTest() {
   @Test
   fun `test navigate to credits screen with tv credits`() {
     // Initial navigation to DETAILS screen
-    var navigatedToCredits = false
     var route: CreditsRoute? = null
 
     getMovieDetailsUseCase.mockFetchMediaDetails(
@@ -416,10 +404,10 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {
-          navigatedToCredits = true
-          route = it
+        onNavigate = {
+          if (it is CreditsRoute) {
+            route = it
+          }
         },
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
@@ -440,10 +428,6 @@ class DetailsScreenTest : ComposeTest() {
             ),
           ),
         ),
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
-        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -465,7 +449,6 @@ class DetailsScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.VIEW_ALL).assertIsDisplayed().performClick()
     }
 
-    assertThat(navigatedToCredits).isTrue()
     assertThat(route).isEqualTo(
       CreditsRoute(
         id = 2316,
@@ -497,9 +480,7 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -519,9 +500,6 @@ class DetailsScreenTest : ComposeTest() {
             ),
           ),
         ),
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -583,13 +561,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
       )
     }
@@ -649,13 +622,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -746,13 +714,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -850,13 +813,8 @@ class DetailsScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       DetailsScreen(
+        onNavigate = {},
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToDetails = {},
-        onNavigateToPerson = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToCredits = {},
-        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }

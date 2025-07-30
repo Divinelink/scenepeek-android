@@ -15,7 +15,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
@@ -42,10 +42,7 @@ class ListsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToList = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -67,10 +64,7 @@ class ListsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToList = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -96,10 +90,7 @@ class ListsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToList = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -123,18 +114,17 @@ class ListsScreenTest : ComposeTest() {
 
   @Test
   fun `test on navigate to list on list mode`() {
-    var navigateRoute: ListDetailsRoute? = null
+    var navigateRoute: Navigation.ListDetailsRoute? = null
     fetchUserListsUseCase.mockResponse(Result.success(ListItemFactory.page1()))
 
     setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToCreateList = {},
-        onNavigateToList = {
-          navigateRoute = it
+        onNavigate = {
+          if (it is Navigation.ListDetailsRoute) {
+            navigateRoute = it
+          }
         },
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
@@ -151,7 +141,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     assertThat(navigateRoute).isEqualTo(
-      ListDetailsRoute(
+      Navigation.ListDetailsRoute(
         id = 8452377,
         name = ListItemFactory.shows().name,
         backdropPath = ListItemFactory.shows().backdropPath,
@@ -163,7 +153,7 @@ class ListsScreenTest : ComposeTest() {
 
   @Test
   fun `test on navigate to list on grid mode`() {
-    var navigateRoute: ListDetailsRoute? = null
+    var navigateRoute: Navigation.ListDetailsRoute? = null
     fetchUserListsUseCase.mockResponse(Result.success(ListItemFactory.page1()))
 
     setVisibilityScopeContent(
@@ -174,11 +164,10 @@ class ListsScreenTest : ComposeTest() {
       ),
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToCreateList = {},
-        onNavigateToList = {
-          navigateRoute = it
+        onNavigate = {
+          if (it is Navigation.ListDetailsRoute) {
+            navigateRoute = it
+          }
         },
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
@@ -195,7 +184,7 @@ class ListsScreenTest : ComposeTest() {
     }
 
     assertThat(navigateRoute).isEqualTo(
-      ListDetailsRoute(
+      Navigation.ListDetailsRoute(
         id = 8452377,
         name = ListItemFactory.shows().name,
         backdropPath = ListItemFactory.shows().backdropPath,
@@ -215,10 +204,7 @@ class ListsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToCreateList = {},
-        onNavigateToList = {},
+        onNavigate = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),
@@ -250,12 +236,11 @@ class ListsScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       ListsScreen(
-        onNavigateToTMDBLogin = {},
-        onNavigateUp = {},
-        onNavigateToCreateList = {
-          isCreateListScreenNavigated = true
+        onNavigate = {
+          if (it is Navigation.CreateListRoute) {
+            isCreateListScreenNavigated = true
+          }
         },
-        onNavigateToList = {},
         viewModel = ListsViewModel(
           fetchUserListsUseCase = fetchUserListsUseCase.mock,
         ),

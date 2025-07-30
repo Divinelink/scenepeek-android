@@ -2,28 +2,13 @@ package com.divinelink.feature.details.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.divinelink.core.navigation.route.AddToListRoute
-import com.divinelink.core.navigation.route.CreditsRoute
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.details.media.ui.DetailsScreen
 
-fun NavGraphBuilder.detailsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToCredits: (CreditsRoute) -> Unit,
-  onNavigateToPerson: (PersonRoute) -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
-  onNavigateToAddToList: (AddToListRoute) -> Unit,
-) {
-  composable<DetailsRoute> {
+fun NavGraphBuilder.detailsScreen(onNavigate: (Navigation) -> Unit) {
+  composable<Navigation.DetailsRoute> {
     DetailsScreen(
-      onNavigateUp = onNavigateUp,
-      onNavigateToDetails = onNavigateToDetails,
-      onNavigateToCredits = onNavigateToCredits,
-      onNavigateToPerson = onNavigateToPerson,
-      onNavigateToTMDBLogin = onNavigateToTMDBLogin,
-      onNavigateToAddToList = onNavigateToAddToList,
+      onNavigate = onNavigate,
       animatedVisibilityScope = this@composable,
     )
   }

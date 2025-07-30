@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.user.data.UserDataSection
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -40,9 +40,7 @@ import com.divinelink.core.ui.R as uiR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.UserDataScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
-  onNavigateToMediaDetails: (DetailsRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: UserDataViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -74,7 +72,9 @@ fun AnimatedVisibilityScope.UserDataScreen(
         title = {
           Text(text = stringResource(title))
         },
-        navigationIcon = { NavigateUpButton(onClick = onNavigateUp) },
+        navigationIcon = {
+          NavigateUpButton(onClick = { onNavigate(Navigation.Back) })
+        },
       )
     },
     floatingActionButton = {
@@ -85,7 +85,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
               icon = Icons.Default.AccountCircle,
               text = stringResource(com.divinelink.core.ui.R.string.core_ui_login),
               expanded = true,
-              onClick = onNavigateToTMDBLogin,
+              onClick = { onNavigate(Navigation.TMDBAuthRoute) },
             )
           }
           else -> {
@@ -106,7 +106,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
 
         UserDataScreenContent(
           uiState = uiState,
-          onNavigateToMediaDetails = onNavigateToMediaDetails,
+          onNavigateToMediaDetails = { onNavigate(it) },
           onRefresh = viewModel::onRefresh,
           onLoadMore = viewModel::onLoadMore,
           onTabSelected = viewModel::onTabSelected,

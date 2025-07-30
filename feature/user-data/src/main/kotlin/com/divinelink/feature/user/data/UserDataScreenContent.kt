@@ -25,7 +25,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -39,7 +39,7 @@ fun UserDataScreenContent(
   onRefresh: () -> Unit,
   onLoadMore: () -> Unit,
   onTabSelected: (Int) -> Unit,
-  onNavigateToMediaDetails: (DetailsRoute) -> Unit,
+  onNavigateToMediaDetails: (Navigation.DetailsRoute) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
@@ -96,7 +96,7 @@ fun UserDataScreenContent(
                 list = it.data,
                 onMediaClick = { media ->
                   onNavigateToMediaDetails(
-                    DetailsRoute(
+                    Navigation.DetailsRoute(
                       mediaType = media.mediaType,
                       id = media.id,
                       isFavorite = media.isFavorite,

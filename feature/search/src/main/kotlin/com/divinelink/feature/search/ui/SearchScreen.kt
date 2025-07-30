@@ -23,8 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.SearchBarShape
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -38,9 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.SearchScreen(
-  onNavigateToSettings: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToPerson: (PersonRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: SearchViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -75,7 +72,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           ToolbarState.Unfocused
         },
         actions = {
-          IconButton(onClick = onNavigateToSettings) {
+          IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
             Icon(
               imageVector = Icons.Filled.Settings,
               contentDescription = stringResource(
@@ -117,8 +114,7 @@ fun AnimatedVisibilityScope.SearchScreen(
 
         SearchContent(
           uiState = uiState,
-          onNavigateToDetails = onNavigateToDetails,
-          onNavigateToPerson = onNavigateToPerson,
+          onNavigate = onNavigate,
           onLoadNextPage = viewModel::onLoadNextPage,
           onMarkAsFavorite = viewModel::onMarkAsFavoriteClick,
           onRetryClick = viewModel::onRetryClick,

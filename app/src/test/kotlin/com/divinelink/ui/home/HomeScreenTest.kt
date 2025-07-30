@@ -5,7 +5,7 @@ import androidx.compose.ui.test.performClick
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -40,11 +40,11 @@ class HomeScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       HomeScreen(
-        onNavigateToSettings = {},
-        onNavigateToDetails = {
-          detailsRoute = it
+        onNavigate = {
+          if (it is DetailsRoute) {
+            detailsRoute = it
+          }
         },
-        onNavigateToPerson = {},
         animatedVisibilityScope = this,
         viewModel = HomeViewModel(
           getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
@@ -52,7 +52,6 @@ class HomeScreenTest : ComposeTest() {
           getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
           searchStateManager = SearchStateManager(),
         ),
-        onNavigateToSearch = {},
       )
     }
     composeTestRule

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.ListItem
-import com.divinelink.core.navigation.route.AddToListRoute
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestAddItemToListUseCase

@@ -2,7 +2,7 @@ package com.divinelink.feature.credits.ui
 
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.credits.AggregateCredits
-import com.divinelink.core.navigation.route.CreditsRoute
+import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchCreditsUseCase

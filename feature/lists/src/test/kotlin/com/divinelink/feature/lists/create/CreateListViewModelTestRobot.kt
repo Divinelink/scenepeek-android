@@ -2,7 +2,7 @@ package com.divinelink.feature.lists.create
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot

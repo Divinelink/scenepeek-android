@@ -31,10 +31,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.media.toStub
-import com.divinelink.core.navigation.route.AddToListRoute
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.EditListRoute
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -50,10 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedVisibilityScope.ListDetailsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToMediaDetails: (DetailsRoute) -> Unit,
-  onNavigateToEdit: (EditListRoute) -> Unit,
-  onNavigateToAddToList: (AddToListRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val view = LocalView.current
@@ -129,7 +124,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
         contentColor = textColor,
         text = UIText.StringText(uiState.details.name),
         isVisible = isAppBarVisible,
-        onNavigateUp = onNavigateUp,
+        onNavigateUp = { onNavigate(Navigation.Back) },
       )
     },
     floatingActionButton = {
@@ -144,8 +139,8 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           text = null,
           expanded = false,
           onClick = {
-            onNavigateToEdit(
-              EditListRoute(
+            onNavigate(
+              Navigation.EditListRoute(
                 id = uiState.id,
                 name = uiState.details.name,
                 backdropPath = uiState.details.backdropPath,
@@ -176,8 +171,8 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               is ListDetailsAction.OnRemoveItems,
               is ListDetailsAction.ConsumeSnackbarMessage,
               -> viewModel.onAction(action)
-              is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
-                DetailsRoute(
+              is ListDetailsAction.OnItemClick -> onNavigate(
+                Navigation.DetailsRoute(
                   id = action.mediaId,
                   mediaType = action.mediaType,
                   isFavorite = null,
@@ -187,7 +182,14 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onShowTitle = { show -> isAppBarVisible = show },
           onBackdropLoaded = { onBackdropLoaded = true },
-          onNavigateToAddToList = { onNavigateToAddToList(AddToListRoute(it.toStub())) },
+          onNavigateToAddToList = {
+            onNavigate(
+              AddToListRoute(
+                id = it.id,
+                mediaType = it.mediaType,
+              ),
+            )
+          },
         )
       }
     },
