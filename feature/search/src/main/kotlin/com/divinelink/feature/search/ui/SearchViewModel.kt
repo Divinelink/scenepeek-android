@@ -2,12 +2,13 @@ package com.divinelink.feature.search.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchParameters
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.search.SearchEntryPoint
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.net.UnknownHostException
 
 class SearchViewModel(
   private val fetchMultiInfoSearchUseCase: FetchMultiInfoSearchUseCase,
@@ -177,15 +177,13 @@ class SearchViewModel(
       )
     }
 
-    ErrorHandler.create(it) {
-      on<UnknownHostException> {
-        if (uiState.value.page == 1) {
-          _uiState.update { viewState ->
-            viewState.copy(
-              searchResults = null,
-              error = BlankSlateState.Offline,
-            )
-          }
+    if (it is AppException.Offline) {
+      if (uiState.value.page == 1) {
+        _uiState.update { viewState ->
+          viewState.copy(
+            searchResults = null,
+            error = BlankSlateState.Offline,
+          )
         }
       }
     }

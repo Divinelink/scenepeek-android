@@ -2,14 +2,15 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.model.jellyseerr.loginParams
@@ -23,8 +24,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import java.net.ConnectException
-import java.net.UnknownHostException
 import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModel(
@@ -61,16 +60,12 @@ class JellyseerrSettingsViewModel(
               )
             }
           }
-        }.onFailure {
-          ErrorHandler.create(it) {
-            otherwise { throwable ->
-              _uiState.setSnackbarMessage(
-                throwable.message?.let { message ->
-                  UIText.StringText(message)
-                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-              )
-            }
-          }
+        }.onFailure { throwable ->
+          _uiState.setSnackbarMessage(
+            throwable.message?.let { message ->
+              UIText.StringText(message)
+            } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
+          )
         }
       }.launchIn(viewModelScope)
   }
@@ -101,31 +96,28 @@ class JellyseerrSettingsViewModel(
                   ),
                 )
               }
-            }.onFailure { error ->
-              ErrorHandler.create(error) {
-                on(401, 403) {
-                  _uiState.setSnackbarMessage(
-                    UIText.ResourceText(R.string.feature_settings_invalid_credentials),
-                  )
-                }
-                on<UnknownHostException> {
-                  _uiState.setSnackbarMessage(
-                    UIText.ResourceText(R.string.feature_settings_could_not_connect),
-                  )
-                }
-                on<ConnectException> {
-                  _uiState.setSnackbarMessage(
-                    UIText.ResourceText(R.string.feature_settings_could_not_connect),
-                  )
-                }
-                otherwise {
-                  _uiState.setSnackbarMessage(
-                    it.message?.let { message ->
-                      UIText.StringText(message)
-                    } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-                  )
-                }
-              }
+            }.onError<AppException.Unauthorized> {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+              )
+            }.onError<AppException.Forbidden> {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+              )
+            }.onError<AppException.Offline> {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(R.string.feature_settings_could_not_connect),
+              )
+            }.onError<AppException.SocketTimeout> {
+              _uiState.setSnackbarMessage(
+                UIText.ResourceText(R.string.feature_settings_could_not_connect),
+              )
+            }.onFailure {
+              _uiState.setSnackbarMessage(
+                it.message?.let { message ->
+                  UIText.StringText(message)
+                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
+              )
             }
           }.launchIn(viewModelScope)
       }
@@ -147,26 +139,21 @@ class JellyseerrSettingsViewModel(
                   ),
                 )
               }
-            }.onFailure { throwable ->
-              ErrorHandler.create(throwable) {
-                on(401) {
-                  _uiState.update {
-                    it.copy(
-                      jellyseerrState = JellyseerrState.Initial(
-                        address = "",
-                        isLoading = false,
-                      ),
-                    )
-                  }
-                }
-                otherwise {
-                  _uiState.setSnackbarMessage(
-                    it.message?.let { message ->
-                      UIText.StringText(message)
-                    } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-                  )
-                }
+            }.onError<AppException.Unauthorized> {
+              _uiState.update {
+                it.copy(
+                  jellyseerrState = JellyseerrState.Initial(
+                    address = "",
+                    isLoading = false,
+                  ),
+                )
               }
+            }.onFailure {
+              _uiState.setSnackbarMessage(
+                it.message?.let { message ->
+                  UIText.StringText(message)
+                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
+              )
             }
           }
           .launchIn(viewModelScope)

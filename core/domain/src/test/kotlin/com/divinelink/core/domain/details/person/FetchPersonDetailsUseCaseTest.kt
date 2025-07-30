@@ -90,7 +90,7 @@ class FetchPersonDetailsUseCaseTest {
       val expectedFailure = awaitItem()
       assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       assertThat(expectedFailure.isFailure).isTrue()
-      assertThat(awaitItem().exceptionOrNull()?.cause).isEqualTo(PersonDetailsResult.DetailsFailure)
+      assertThat(awaitItem().exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       awaitComplete()
     }
   }
@@ -101,7 +101,7 @@ class FetchPersonDetailsUseCaseTest {
       val expectedFailure = awaitItem()
       assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       assertThat(expectedFailure.isFailure).isTrue()
-      assertThat(awaitItem().exceptionOrNull()?.cause).isEqualTo(PersonDetailsResult.DetailsFailure)
+      assertThat(awaitItem().exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
       awaitComplete()
     }
   }

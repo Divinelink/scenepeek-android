@@ -2,6 +2,7 @@ package com.divinelink.scenepeek.popular.ui
 
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
@@ -12,7 +13,6 @@ import com.divinelink.scenepeek.home.ui.HomeFilter
 import com.divinelink.scenepeek.home.ui.HomeViewState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import java.net.UnknownHostException
 import kotlin.test.Test
 
 @Suppress("LargeClass")
@@ -82,7 +82,7 @@ class HomeViewModelTest {
         ),
       )
       .mockFetchPopularMovies(
-        response = Result.failure(UnknownHostException("You are offline")),
+        response = Result.failure(AppException.Offline()),
       )
       .onLoadNextPage()
       .assertViewState(
@@ -103,7 +103,7 @@ class HomeViewModelTest {
   fun `given offline error, when popular movies are fetched, I expect offline state`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.failure(UnknownHostException("You are offline")),
+        response = Result.failure(AppException.Offline()),
       )
       .buildViewModel()
       .assertViewState(
@@ -124,7 +124,7 @@ class HomeViewModelTest {
   fun `test retryAction on browser when expecting failure does not change state`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.failure(UnknownHostException("You are offline")),
+        response = Result.failure(AppException.Offline()),
       )
       .buildViewModel()
       .assertViewState(
@@ -157,7 +157,7 @@ class HomeViewModelTest {
   fun `test retryAction on browser when expecting success, update popular data`() = runTest {
     testRobot
       .mockFetchPopularMovies(
-        response = Result.failure(UnknownHostException("You are offline")),
+        response = Result.failure(AppException.Offline()),
       )
       .buildViewModel()
       .assertViewState(
@@ -273,7 +273,7 @@ class HomeViewModelTest {
         HomeViewState.initial().copy(
           isLoading = false,
           popularMovies = MediaSection(data = listOf(), shouldLoadMore = true),
-          error = null,
+          error = BlankSlateState.Generic,
         ),
       )
   }

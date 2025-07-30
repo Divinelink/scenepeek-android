@@ -1,7 +1,7 @@
 package com.divinelink.core.network.client
 
 import com.divinelink.core.commons.Constants
-import com.divinelink.core.network.AppException
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -26,12 +26,12 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.io.IOException
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import timber.log.Timber
+import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
 
@@ -75,6 +75,8 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
         throw error
       }
     }
+
+    // Todo add tests for those
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")
       val dataError = when (cause) {
@@ -83,9 +85,10 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
         is HttpRequestTimeoutException -> AppException.RequestTimeout()
         is SSLHandshakeException -> AppException.Ssl()
         is SerializationException -> AppException.Serialization()
+        is ConnectException -> AppException.Offline()
         is UnknownHostException -> AppException.Offline()
-        is IOException -> AppException.Offline()
-        else -> AppException.Unknown(message = cause.message)
+        is AppException -> cause
+        else -> AppException.Unknown(cause.message)
       }
       throw dataError
     }

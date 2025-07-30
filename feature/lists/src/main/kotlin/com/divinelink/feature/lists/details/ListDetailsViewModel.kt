@@ -3,9 +3,10 @@ package com.divinelink.feature.lists.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchListParameters
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 class ListDetailsViewModel(
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
@@ -60,8 +60,8 @@ class ListDetailsViewModel(
       )
         .distinctUntilChanged()
         .collect { result ->
-          result.fold(
-            onSuccess = { listDetails ->
+          result
+            .onSuccess { listDetails ->
               _uiState.update { uiState ->
                 uiState.copy(
                   page = listDetails.page + 1,
@@ -87,40 +87,36 @@ class ListDetailsViewModel(
                   error = null,
                 )
               }
-            },
-            onFailure = { error ->
+            }
+            .onError<AppException.Offline> {
               if (uiState.value.details is ListDetailsData.Initial) {
-                ErrorHandler.create(error) {
-                  on<UnknownHostException> {
-                    _uiState.update { uiState ->
-                      uiState.copy(
-                        error = BlankSlateState.Offline,
-                        loadingMore = false,
-                        refreshing = false,
-                      )
-                    }
-                  }
-                  otherwise {
-                    _uiState.update { uiState ->
-                      uiState.copy(
-                        error = BlankSlateState.Generic,
-                        loadingMore = false,
-                        refreshing = false,
-                      )
-                    }
-                  }
+                _uiState.update { uiState ->
+                  uiState.copy(
+                    error = BlankSlateState.Offline,
+                    loadingMore = false,
+                    refreshing = false,
+                  )
+                }
+              }
+            }
+            .onFailure {
+              if (uiState.value.details is ListDetailsData.Initial) {
+                _uiState.update { uiState ->
+                  uiState.copy(
+                    error = BlankSlateState.Generic,
+                    loadingMore = false,
+                    refreshing = false,
+                  )
                 }
               } else {
                 _uiState.update { uiState ->
-                  // TODO Maybe show a snackbar that loading more failed?
                   uiState.copy(
                     loadingMore = false,
                     refreshing = false,
                   )
                 }
               }
-            },
-          )
+            }
         }
     }
   }

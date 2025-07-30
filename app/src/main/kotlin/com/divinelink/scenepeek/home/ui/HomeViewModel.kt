@@ -6,12 +6,12 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.SearchStateManager
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaSection
 import com.divinelink.core.model.search.SearchEntryPoint
-import com.divinelink.core.network.AppException
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
@@ -62,21 +62,22 @@ class HomeViewModel(
               popularMovies = viewState.popularMovies.addMore(result.data),
             )
           }
-        }.onFailure {
-          _viewState.update { viewState ->
-            viewState.copy(
-              isLoading = false,
-              error = BlankSlateState.Generic,
-            )
-          }
         }.onError<AppException.Offline> {
           if (getPage(HomePage.Popular) == 1) {
             _viewState.update { viewState ->
               viewState.copy(
                 error = BlankSlateState.Offline,
                 retryAction = HomeMode.Browser,
+                isLoading = false,
               )
             }
+          }
+        }.onFailure {
+          _viewState.update { viewState ->
+            viewState.copy(
+              isLoading = false,
+              error = BlankSlateState.Generic,
+            )
           }
         }
       }

@@ -6,6 +6,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFac
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
@@ -16,8 +17,6 @@ import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import java.net.ConnectException
-import java.net.UnknownHostException
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
@@ -29,13 +28,9 @@ class JellyseerrSettingsViewModelTest {
   val mainDispatcherRule = MainDispatcherRule()
 
   @Test
-  fun `test on 401 when jellyseerr expect invalid credentials error`() = runTest {
-    testRobot.mockLoginJellyseerrResponse(
-      Result.failure(InvalidStatusException(401)),
-    )
-
+  fun `test on Unauthorised when jellyseerr expect invalid credentials error`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(401)))
+      .mockLoginJellyseerrResponse(Result.failure(AppException.Unauthorized("401")))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
@@ -63,9 +58,9 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
-  fun `test on UnknownHostException when jellyseerr expect could not connect error`() = runTest {
+  fun `test on Offline when jellyseerr expect could not connect error`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(UnknownHostException()))
+      .mockLoginJellyseerrResponse(Result.failure(AppException.Offline()))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
@@ -93,9 +88,9 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
-  fun `test on ConnectException when jellyseerr expect could not connect error`() = runTest {
+  fun `test on SocketTimeout when jellyseerr expect could not connect error`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(ConnectException()))
+      .mockLoginJellyseerrResponse(Result.failure(AppException.SocketTimeout()))
       .buildViewModel()
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
@@ -158,7 +153,7 @@ class JellyseerrSettingsViewModelTest {
       .mockJellyseerrAccountDetailsResponse(
         Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
       )
-      .mockLogoutJellyseerrResponse(Result.failure(InvalidStatusException(401)))
+      .mockLogoutJellyseerrResponse(Result.failure(AppException.Unauthorized("401")))
       .buildViewModel()
       .assertUiState(
         createUiState(

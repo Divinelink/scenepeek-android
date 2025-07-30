@@ -5,7 +5,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.commons.ErrorHandler
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
@@ -30,6 +29,7 @@ import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
@@ -533,39 +533,40 @@ class DetailsViewModel(
               )
             }
           }
-        }.onFailure {
-          ErrorHandler.create(it) {
-            on(401, 403) {
-              setSnackbarMessage(
-                SnackbarMessage.from(
-                  text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-                  actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-                  duration = SnackbarDuration.Long,
-                  onSnackbarResult = ::navigateToLogin,
+        }.onFailure { error ->
+          when (error) {
+            is AppException.Forbidden -> setSnackbarMessage(
+              SnackbarMessage.from(
+                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+                duration = SnackbarDuration.Long,
+                onSnackbarResult = ::navigateToLogin,
+              ),
+            )
+            is AppException.Unauthorized -> setSnackbarMessage(
+              SnackbarMessage.from(
+                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+                duration = SnackbarDuration.Long,
+                onSnackbarResult = ::navigateToLogin,
+              ),
+            )
+            is AppException.Conflict -> setSnackbarMessage(
+              SnackbarMessage.from(
+                text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
+              ),
+            )
+            else -> setSnackbarMessage(
+              SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_details_jellyseerr_request_failed,
+                  viewState.value.mediaDetails?.title ?: "",
                 ),
-              )
-            }
-            on(409) {
-              setSnackbarMessage(
-                SnackbarMessage.from(
-                  text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
-                ),
-              )
-            }
-            otherwise {
-              setSnackbarMessage(
-                SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    R.string.feature_details_jellyseerr_request_failed,
-                    viewState.value.mediaDetails?.title ?: "",
-                  ),
-                ),
-              )
-            }
+              ),
+            )
           }
         }
-      }
-      .launchIn(viewModelScope)
+      }.launchIn(viewModelScope)
   }
 
   fun onObfuscateSpoilers() {
@@ -660,7 +661,10 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(tvStatus = mediaInfo.status, updatedForms.second),
+                    actionButtons = findTvActions(
+                      tvStatus = mediaInfo.status,
+                      updatedForms.second,
+                    ),
                     isLoading = false,
                     snackbarMessage = SnackbarMessage.from(
                       text = UIText.ResourceText(
@@ -729,9 +733,10 @@ class DetailsViewModel(
                 mediaDetails = viewState.mediaDetails.clearSeasonsStatus(),
                 forms = if (viewState.mediaType == MediaType.TV) {
                   val form = _viewState.value.forms[TvTab.Seasons.order] as? DetailsForm.Content
-                  val clearedSeasons = (form?.data as? DetailsData.Seasons)?.items?.map { season ->
-                    season.copy(status = null)
-                  } ?: emptyList()
+                  val clearedSeasons =
+                    (form?.data as? DetailsData.Seasons)?.items?.map { season ->
+                      season.copy(status = null)
+                    } ?: emptyList()
 
                   viewState.forms + mapOf(
                     TvTab.Seasons.order to DetailsForm.Content(

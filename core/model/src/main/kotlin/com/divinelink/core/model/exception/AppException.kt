@@ -1,4 +1,4 @@
-package com.divinelink.core.network
+package com.divinelink.core.model.exception
 
 import kotlinx.io.IOException
 
@@ -22,7 +22,7 @@ sealed class AppException(message: String? = null) : IOException(message) {
   class Database : AppException()
 
   // HTTP Errors
-  class Unauthorized(customMessage: String?) : AppException(message = customMessage)
+  class Unauthorized(customMessage: String?) : AppException(message = customMessage) // 401
   class Forbidden : AppException()
   class NotFound : AppException()
   class Conflict : AppException()

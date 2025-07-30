@@ -3,6 +3,7 @@ package com.divinelink.feature.lists.user
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.testing.MainDispatcherRule
@@ -11,7 +12,6 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.R
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import java.net.UnknownHostException
 import kotlin.test.Test
 
 class ListsViewModelTest {
@@ -58,7 +58,7 @@ class ListsViewModelTest {
   @Test
   fun `test fetch lists when offline`() = runTest {
     robot
-      .mockFetchUserData(Result.failure(UnknownHostException()))
+      .mockFetchUserData(Result.failure(AppException.Offline()))
       .buildViewModel()
       .assertUiState(
         ListsUiState.initial.copy(
