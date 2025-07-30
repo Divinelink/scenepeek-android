@@ -148,6 +148,7 @@ object TestTags {
   object Modal {
     const val REQUEST_MOVIE = "Request Movie Modal"
     const val REQUEST_SEASONS = "Select Seasons Modal"
+    const val ACTION_MENU = "Action Menu Modal"
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
 
     const val DELETE_BUTTON = "Delete button for id %s"
@@ -222,6 +223,8 @@ object TestTags {
     object Details {
       const val EMPTY_ITEM = "List Details Empty Item"
       const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+
+      const val SELECTED_CARD = "Selected Card: %s - %s"
     }
 
     object Create {

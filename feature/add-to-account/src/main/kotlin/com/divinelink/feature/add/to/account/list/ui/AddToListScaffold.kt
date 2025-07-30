@@ -52,7 +52,7 @@ fun AnimatedVisibilityScope.AddToListScaffold(
   rememberScaffoldState(
     animatedVisibilityScope = this,
   ).PersistentScaffold(
-    modifier = Modifier.testTag(TestTags.Lists.SCREEN),
+    modifier = Modifier.testTag(TestTags.Lists.Add.SCREEN),
     navigationRail = {
       PersistentNavigationRail()
     },

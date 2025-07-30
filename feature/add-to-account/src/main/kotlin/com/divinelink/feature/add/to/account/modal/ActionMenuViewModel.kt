@@ -38,7 +38,9 @@ class ActionMenuViewModel(
       ActionMenuIntent.AddToList -> viewModelScope.launch {
         _addToList.send(_uiState.value.media)
       }
-      ActionMenuIntent.RemoveFromList -> TODO()
+      ActionMenuIntent.RemoveFromList -> {
+        // TODO Implement
+      }
       ActionMenuIntent.MultiSelect -> {
         // Do nothing
       }

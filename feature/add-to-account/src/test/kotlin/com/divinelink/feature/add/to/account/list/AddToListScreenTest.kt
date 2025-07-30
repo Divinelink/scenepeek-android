@@ -14,7 +14,7 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
@@ -26,7 +26,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class AddToListModalBottomSheetTest : ComposeTest() {
+class AddToListScreenTest : ComposeTest() {
 
   private val fetchUserListsUseCase = TestFetchUserListsUseCase()
   private val addItemToListUseCase = TestAddItemToListUseCase()
@@ -49,9 +49,9 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AddToListScreen(
-        onDismissRequest = {},
+        onNavigateUp = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
         viewModel = viewModel,
@@ -59,7 +59,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
     }
   }
 
@@ -79,9 +79,9 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AddToListScreen(
-        onDismissRequest = {},
+        onNavigateUp = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
         viewModel = viewModel,
@@ -89,7 +89,7 @@ class AddToListModalBottomSheetTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(TestTags.Lists.Add.SCREEN).assertIsDisplayed()
       onNodeWithText(getString(R.string.feature_add_to_account_empty_lists)).assertIsDisplayed()
     }
   }
@@ -107,9 +107,9 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AddToListScreen(
-        onDismissRequest = {},
+        onNavigateUp = {},
         onNavigateToTMDBAuth = {
           navigatedToTMDBAuth = true
         },
@@ -156,9 +156,9 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AddToListScreen(
-        onDismissRequest = {},
+        onNavigateUp = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
         viewModel = viewModel,
@@ -191,9 +191,9 @@ class AddToListModalBottomSheetTest : ComposeTest() {
       savedStateHandle = savedStateHandle,
     )
 
-    setContentWithTheme {
+    setVisibilityScopeContent {
       AddToListScreen(
-        onDismissRequest = {},
+        onNavigateUp = {},
         onNavigateToTMDBAuth = {},
         onNavigateToCreateList = {},
         viewModel = viewModel,
@@ -209,11 +209,11 @@ class AddToListModalBottomSheetTest : ComposeTest() {
 
       channel.trySend(Result.success(ListItemFactory.page2Many()))
 
-      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(21)
+      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(19)
 
       onNodeWithText(ListItemFactory.page1Many().list.last().name).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(30)
+      onNodeWithTag(TestTags.Lists.SCROLLABLE_CONTENT).performScrollToIndex(29)
 
       onNodeWithText(ListItemFactory.page2Many().list.last().name).assertIsDisplayed()
     }

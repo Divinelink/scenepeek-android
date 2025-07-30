@@ -53,7 +53,7 @@ fun ActionMenuModal(
   }
 
   ModalBottomSheet(
-    modifier = Modifier.testTag(TestTags.Modal.REQUEST_SEASONS),
+    modifier = Modifier.testTag(TestTags.Modal.ACTION_MENU),
     shape = MaterialTheme.shapes.extraLarge,
     onDismissRequest = onDismissRequest,
     sheetState = sheetState,

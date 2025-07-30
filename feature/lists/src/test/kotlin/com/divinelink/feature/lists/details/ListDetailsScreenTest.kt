@@ -2,6 +2,8 @@ package com.divinelink.feature.lists.details
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.longClick
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -14,14 +16,35 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.ui.TestTags
+import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
+import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
 import com.google.common.truth.Truth.assertThat
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.mock.declare
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class ListDetailsScreenTest : ComposeTest() {
+
+  @BeforeTest
+  fun setup() {
+    startKoin {
+      androidContext(composeTestRule.activity)
+    }
+  }
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
+  }
 
   private val savedStateHandle = SavedStateHandle(
     mapOf(
@@ -43,6 +66,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -72,6 +96,7 @@ class ListDetailsScreenTest : ComposeTest() {
         },
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -99,6 +124,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -149,6 +175,7 @@ class ListDetailsScreenTest : ComposeTest() {
           detailsRoute = it
         },
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -187,6 +214,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -230,6 +258,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -264,6 +293,7 @@ class ListDetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToMediaDetails = {},
         onNavigateToEdit = {},
+        onNavigateToAddToList = {},
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
@@ -282,6 +312,92 @@ class ListDetailsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.BLANK_SLATE).assertIsNotDisplayed()
       onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test on long press media shows action menu`() {
+    val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
+
+    fetchListDetailsUseCase.mockResponse(
+      Result.success(ListDetailsFactory.page1()),
+    )
+
+    declare {
+      ActionMenuViewModel(
+        entryPoint = ActionMenuEntryPoint.ListDetails,
+        mediaItem = ListDetailsFactory.page1().media.first(),
+      )
+    }
+
+    setVisibilityScopeContent {
+      ListDetailsScreen(
+        onNavigateUp = {},
+        onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
+        onNavigateToAddToList = {},
+        viewModel = ListDetailsViewModel(
+          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+          savedStateHandle = savedStateHandle,
+        ),
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
+
+      onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
+        longClick()
+      }
+
+      onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test select multiple items`() {
+    val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
+
+    fetchListDetailsUseCase.mockResponse(
+      Result.success(ListDetailsFactory.page1()),
+    )
+
+    declare {
+      ActionMenuViewModel(
+        entryPoint = ActionMenuEntryPoint.ListDetails,
+        mediaItem = ListDetailsFactory.page1().media.first(),
+      )
+    }
+
+    setVisibilityScopeContent {
+      ListDetailsScreen(
+        onNavigateUp = {},
+        onNavigateToMediaDetails = {},
+        onNavigateToEdit = {},
+        onNavigateToAddToList = {},
+        viewModel = ListDetailsViewModel(
+          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+          savedStateHandle = savedStateHandle,
+        ),
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).assertIsDisplayed()
+
+      onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
+        longClick()
+      }
+
+      onNodeWithTag(TestTags.Modal.ACTION_MENU).assertIsDisplayed()
+
+      onNodeWithText(getString(com.divinelink.core.ui.R.string.core_ui_select)).performClick()
+
+      onNodeWithContentDescription(
+        TestTags.Lists.Details.SELECTED_CARD.format(),
+      )
     }
   }
 }

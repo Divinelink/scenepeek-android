@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
@@ -172,8 +174,16 @@ fun ListScrollableContent(
             items = state.details.data.media,
             key = { it.id },
           ) { media ->
+            val isSelected = state.selectedMediaIds.contains(media.id)
+
             SelectableCard(
-              isSelected = state.selectedMediaIds.contains(media.id),
+              modifier = Modifier.semantics {
+                contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                  isSelected,
+                  media.id,
+                )
+              },
+              isSelected = isSelected,
               isSelectionMode = state.multipleSelectMode,
               onClick = {
                 if (state.multipleSelectMode) {

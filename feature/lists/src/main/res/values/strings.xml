@@ -29,4 +29,6 @@
   <string name="feature_lists_change_image">Change image</string>
 
   <string name="feature_lists_selected">%s/%s selected</string>
+
+  <string name="feature_lists_selected_media_content_desc">Selected media %s</string>
 </resources>
