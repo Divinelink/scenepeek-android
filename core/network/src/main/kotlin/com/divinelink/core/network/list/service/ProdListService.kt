@@ -25,16 +25,15 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
 
   override suspend fun addItemToList(
     listId: Int,
-    mediaId: Int,
-    mediaType: String,
+    media: MediaReference,
   ): Result<AddToListResponse> = runCatching {
     client.post<AddToListRequest, AddToListResponse>(
       url = buildListItemsUrl(listId),
       body = AddToListRequest(
         listOf(
           MediaItemRequest(
-            mediaId = mediaId,
-            mediaType = mediaType,
+            mediaId = media.mediaId,
+            mediaType = media.mediaType.value,
           ),
         ),
       ),

@@ -5,6 +5,7 @@ import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
   private lateinit var navArgs: ListDetailsRoute
 
   private val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
+  private val repository = TestListRepository()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -23,6 +25,7 @@ class ListDetailsViewModelTestRobot : ViewModelTestRobot<ListDetailsUiState>() {
   override fun buildViewModel() = apply {
     viewModel = ListDetailsViewModel(
       fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      repository = repository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,

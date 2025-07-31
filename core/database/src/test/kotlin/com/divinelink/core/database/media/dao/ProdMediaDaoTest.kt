@@ -2,6 +2,7 @@ package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import io.kotest.matchers.shouldBe
 import org.junit.Before
@@ -23,25 +24,25 @@ class ProdMediaDaoTest {
 
   @Test
   fun `test insert and fetch media items`() {
-    val item = dao.fetchMediaItemById(MediaItemFactory.theWire().id)
+    val item = dao.fetchMedia(MediaItemFactory.theWire().toStub())
 
     item shouldBe null
 
     dao.insertMedia(MediaItemFactory.theWire())
 
-    val fetchedItem = dao.fetchMediaItemById(MediaItemFactory.theWire().id)
+    val fetchedItem = dao.fetchMedia(MediaItemFactory.theWire().toStub())
 
     fetchedItem shouldBe MediaItemFactory.theWire()
   }
 
   @Test
   fun `test insert list of items`() {
-    dao.fetchMediaItemById(MediaItemFactory.theWire().id) shouldBe null
-    dao.fetchMediaItemById(MediaItemFactory.theOffice().id) shouldBe null
+    dao.fetchMedia(MediaItemFactory.theWire().toStub()) shouldBe null
+    dao.fetchMedia(MediaItemFactory.theOffice().toStub()) shouldBe null
 
     dao.insertMedia(MediaItemFactory.tvAll())
 
-    dao.fetchMediaItemById(MediaItemFactory.theWire().id) shouldBe MediaItemFactory.theWire()
-    dao.fetchMediaItemById(MediaItemFactory.theOffice().id) shouldBe MediaItemFactory.theOffice()
+    dao.fetchMedia(MediaItemFactory.theWire().toStub()) shouldBe MediaItemFactory.theWire()
+    dao.fetchMedia(MediaItemFactory.theOffice().toStub()) shouldBe MediaItemFactory.theOffice()
   }
 }

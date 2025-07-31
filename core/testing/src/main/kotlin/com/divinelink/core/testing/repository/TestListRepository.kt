@@ -26,7 +26,6 @@ class TestListRepository {
       mock.addItemToList(
         any(),
         any(),
-        any(),
       ),
     ).thenReturn(result)
   }

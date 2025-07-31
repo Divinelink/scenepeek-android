@@ -25,8 +25,7 @@ interface ListDao {
 
   fun insertMediaToList(
     listId: Int,
-    mediaType: String,
-    mediaId: Int,
+    media: MediaReference,
   )
 
   fun removeMediaFromList(

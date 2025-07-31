@@ -133,8 +133,7 @@ class AddToListViewModel(
     viewModelScope.launch {
       addItemToListUseCase(
         parameters = AddItemParameters(
-          mediaId = uiState.value.id,
-          mediaType = uiState.value.mediaType,
+          media = uiState.value.media,
           listId = listId,
         ),
       )

@@ -4,6 +4,7 @@ import com.divinelink.core.database.list.ListDao
 import com.divinelink.core.database.list.ListMetadataEntity
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
@@ -53,9 +54,9 @@ class TestListDao {
 
   fun verifyMediaItemInserted(
     listId: Int,
-    mediaId: Int,
+    media: MediaReference,
   ) {
-    verify(mock).insertMediaToList(listId, mediaId)
+    verify(mock).insertMediaToList(listId, media)
   }
 
   fun verifyListDeleted(listId: Int) {

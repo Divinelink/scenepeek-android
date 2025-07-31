@@ -15,8 +15,7 @@ interface ListService {
 
   suspend fun addItemToList(
     listId: Int,
-    mediaId: Int,
-    mediaType: String,
+    media: MediaReference,
   ): Result<AddToListResponse>
 
   suspend fun fetchListDetails(

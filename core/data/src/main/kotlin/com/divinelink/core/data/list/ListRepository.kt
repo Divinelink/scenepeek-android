@@ -16,8 +16,7 @@ interface ListRepository {
 
   suspend fun addItemToList(
     listId: Int,
-    mediaId: Int,
-    mediaType: String,
+    media: MediaReference,
   ): Result<AddToListResult>
 
   suspend fun fetchListDetails(

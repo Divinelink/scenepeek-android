@@ -11,6 +11,7 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
@@ -91,8 +92,10 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Failure.ItemAlreadyExists
@@ -127,8 +130,10 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Success
@@ -161,15 +166,20 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Success
 
     listDao.verifyMediaItemInserted(
       listId = listId,
-      mediaId = 4108,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
   }
 

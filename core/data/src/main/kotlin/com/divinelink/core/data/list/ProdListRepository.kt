@@ -38,20 +38,17 @@ class ProdListRepository(
 
   override suspend fun addItemToList(
     listId: Int,
-    mediaId: Int,
-    mediaType: String,
+    media: MediaReference,
   ): Result<AddToListResult> = service.addItemToList(
     listId = listId,
-    mediaId = mediaId,
-    mediaType = mediaType,
+    media = media,
   )
     .map { it.map() }
     .also {
       if (it.data is AddToListResult.Success) {
         listDao.insertMediaToList(
           listId = listId,
-          mediaType = mediaType,
-          mediaId = mediaId,
+          media = media,
         )
       }
     }

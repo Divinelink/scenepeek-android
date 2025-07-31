@@ -8,6 +8,7 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import io.kotest.matchers.shouldBe
@@ -332,7 +333,7 @@ class ProdListDaoTest {
 
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = ListDetailsFactory.mustWatch().media.first().id,
+        media = ListDetailsFactory.mustWatch().media.first().toStub(),
       )
 
       awaitItem() shouldBe ListItemFactory.page1().list.map { item ->
@@ -346,7 +347,7 @@ class ProdListDaoTest {
       // When item already exists, it should not change the count
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = ListDetailsFactory.mustWatch().media.first().id,
+        media = ListDetailsFactory.mustWatch().media.first().toStub(),
       )
 
       expectNoEvents()
@@ -385,7 +386,7 @@ class ProdListDaoTest {
 
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = MediaItemFactory.theOffice().id,
+        media = MediaItemFactory.theOffice().toStub(),
       )
 
       awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(

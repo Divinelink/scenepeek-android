@@ -89,21 +89,21 @@ fun BoxScope.MultipleSelectHeader(
             )
           }
 
-          val allSelected = selectedItems.size < totalItemCount
+          val allNotSelected = selectedItems.size < totalItemCount
 
           IconButton(
-            onClick = if (allSelected) {
+            onClick = if (allNotSelected) {
               onSelectAll
             } else {
               onDeselectAll
             },
           ) {
             Icon(
-              imageVector = if (allSelected) Icons.Rounded.SelectAll else Icons.Rounded.Deselect,
-              contentDescription = if (allSelected) {
-                stringResource(uiR.string.core_ui_deselect_all)
-              } else {
+              imageVector = if (allNotSelected) Icons.Rounded.SelectAll else Icons.Rounded.Deselect,
+              contentDescription = if (allNotSelected) {
                 stringResource(uiR.string.core_ui_select_all)
+              } else {
+                stringResource(uiR.string.core_ui_deselect_all)
               },
               tint = LocalContentColor.current,
             )

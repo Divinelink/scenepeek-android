@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.EditListRoute
@@ -186,8 +187,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           onNavigateToAddToList = {
             onNavigateToAddToList(
               AddToListRoute(
-                id = it.id,
-                mediaType = it.mediaType,
+                it.toStub(),
               ),
             )
           },

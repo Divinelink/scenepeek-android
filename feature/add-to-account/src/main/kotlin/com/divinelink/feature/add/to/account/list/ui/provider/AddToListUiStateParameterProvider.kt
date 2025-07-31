@@ -7,6 +7,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.list.AddToListUiState
@@ -15,8 +16,7 @@ import com.divinelink.feature.add.to.account.list.AddToListUiState
 class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiState> {
   override val values: Sequence<AddToListUiState> = sequenceOf(
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Initial,
       displayMessage = null,
@@ -25,8 +25,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = false,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(ListItemFactory.page1()),
       displayMessage = null,
@@ -35,8 +34,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = false,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -49,8 +47,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = false,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = true,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -63,8 +60,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = false,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -77,8 +73,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = true,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -96,8 +91,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = true,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -115,8 +109,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = true,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(
         ListItemFactory.page2().copy(
@@ -136,8 +129,7 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       loadingMore = false,
     ),
     AddToListUiState(
-      id = MediaItemFactory.theWire().id,
-      mediaType = MediaItemFactory.theWire().mediaType,
+      media = MediaItemFactory.theWire().toStub(),
       isLoading = false,
       lists = ListData.Data(ListItemFactory.empty()),
       displayMessage = null,

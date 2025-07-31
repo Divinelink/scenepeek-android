@@ -5,14 +5,13 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListException
-import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.MediaReference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 data class AddItemParameters(
   val listId: Int,
-  val mediaId: Int,
-  val mediaType: MediaType,
+  val media: MediaReference,
 )
 
 class AddItemToListUseCase(
@@ -23,8 +22,7 @@ class AddItemToListUseCase(
   override fun execute(parameters: AddItemParameters): Flow<Result<Boolean>> = flow {
     val result = repository.addItemToList(
       parameters.listId,
-      parameters.mediaId,
-      parameters.mediaType.value,
+      parameters.media,
     )
     result.fold(
       onSuccess = {

@@ -63,14 +63,13 @@ class ProdListDao(
 
   override fun insertMediaToList(
     listId: Int,
-    mediaType: String,
-    mediaId: Int,
+    media: MediaReference,
   ) = database.transaction {
     val itemExists = database.listMediaItemEntityQueries
       .checkIfItemExistsInList(
         listId = listId.toLong(),
-        mediaItemId = mediaId.toLong(),
-        mediaType = mediaType,
+        mediaItemId = media.mediaId.toLong(),
+        mediaType = media.mediaType.value,
       )
       .executeAsOneOrNull() != null
 
@@ -78,8 +77,8 @@ class ProdListDao(
       database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
         listId = listId.toLong(),
         listId_ = listId.toLong(),
-        mediaType = mediaType,
-        mediaItemId = mediaId.toLong(),
+        mediaType = media.mediaType.value,
+        mediaItemId = media.mediaId.toLong(),
       )
 
       database.listItemEntityQueries.increaseListItemCount(

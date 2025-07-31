@@ -16,7 +16,7 @@ class TestListService {
   val mock: ListService = mock()
 
   suspend fun mockAddItemToList(response: Result<AddToListResponse>) {
-    whenever(mock.addItemToList(any(), any(), any())).thenReturn(
+    whenever(mock.addItemToList(any(), any())).thenReturn(
       response,
     )
   }

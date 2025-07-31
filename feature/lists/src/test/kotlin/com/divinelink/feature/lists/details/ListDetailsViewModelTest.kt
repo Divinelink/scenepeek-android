@@ -39,6 +39,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
           ),
           page = 2,
           error = null,
@@ -63,6 +64,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.page1(),
+            pages = mapOf(1 to ListDetailsFactory.page1().media),
           ),
           page = 2,
           error = null,
@@ -80,9 +82,10 @@ class ListDetailsViewModelTest {
         ListDetailsUiState(
           id = 1,
           details = ListDetailsData.Data(
-            data = ListDetailsFactory.page1().copy(
-              page = 2,
-              media = ListDetailsFactory.page1().media + ListDetailsFactory.page2().media,
+            data = ListDetailsFactory.page2(),
+            pages = mapOf(
+              1 to ListDetailsFactory.page1().media,
+              2 to ListDetailsFactory.page2().media,
             ),
           ),
           page = 3,
@@ -104,9 +107,10 @@ class ListDetailsViewModelTest {
           ListDetailsUiState(
             id = 1,
             details = ListDetailsData.Data(
-              data = ListDetailsFactory.page1().copy(
-                page = 2,
-                media = ListDetailsFactory.page1().media + ListDetailsFactory.page2().media,
+              data = ListDetailsFactory.page2(),
+              pages = mapOf(
+                1 to ListDetailsFactory.page1().media,
+                2 to ListDetailsFactory.page2().media,
               ),
             ),
             page = 3,
@@ -119,9 +123,10 @@ class ListDetailsViewModelTest {
           ListDetailsUiState(
             id = 1,
             details = ListDetailsData.Data(
-              data = ListDetailsFactory.page1().copy(
-                page = 2,
-                media = ListDetailsFactory.page1().media + ListDetailsFactory.page2().media,
+              data = ListDetailsFactory.page2(),
+              pages = mapOf(
+                1 to ListDetailsFactory.page1().media,
+                2 to ListDetailsFactory.page2().media,
               ),
             ),
             page = 3,
@@ -135,6 +140,9 @@ class ListDetailsViewModelTest {
             id = 1,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.mustWatch(),
+              pages = mapOf(
+                1 to ListDetailsFactory.mustWatch().media,
+              ),
             ),
             page = 2,
             error = null,
@@ -160,6 +168,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
           ),
           page = 2,
           error = null,
@@ -175,6 +184,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
           ),
           page = 2,
           error = null,
@@ -199,6 +209,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.page1(),
+            pages = mapOf(1 to ListDetailsFactory.page1().media),
           ),
           page = 2,
           error = null,
@@ -220,6 +231,7 @@ class ListDetailsViewModelTest {
             id = 1,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1(),
+              pages = mapOf(1 to ListDetailsFactory.page1().media),
             ),
             page = 2,
             error = null,
@@ -232,6 +244,7 @@ class ListDetailsViewModelTest {
             id = 1,
             details = ListDetailsData.Data(
               data = ListDetailsFactory.page1(),
+              pages = mapOf(1 to ListDetailsFactory.page1().media),
             ),
             page = 2,
             error = null,
@@ -243,9 +256,10 @@ class ListDetailsViewModelTest {
           ListDetailsUiState(
             id = 1,
             details = ListDetailsData.Data(
-              data = ListDetailsFactory.page1().copy(
-                page = 2,
-                media = ListDetailsFactory.page1().media + ListDetailsFactory.page2().media,
+              data = ListDetailsFactory.page2(),
+              pages = mapOf(
+                1 to ListDetailsFactory.page1().media,
+                2 to ListDetailsFactory.page2().media,
               ),
             ),
             page = 3,
@@ -272,6 +286,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
           ),
           page = 2,
           error = null,
@@ -290,6 +305,7 @@ class ListDetailsViewModelTest {
           id = 1,
           details = ListDetailsData.Data(
             data = ListDetailsFactory.mustWatch(),
+            pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
           ),
           page = 2,
           error = null, // Error should not be set when data is not initial

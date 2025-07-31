@@ -3,6 +3,7 @@ package com.divinelink.core.domain.list
 import app.cash.turbine.test
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListException
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestListRepository
@@ -33,8 +34,10 @@ class AddItemToListUseCaseTest {
     useCase.invoke(
       AddItemParameters(
         listId = 1234,
-        mediaId = 3456,
-        mediaType = MediaType.MOVIE,
+        media = MediaReference(
+          mediaId = 3456,
+          mediaType = MediaType.MOVIE,
+        ),
       ),
     ).test {
       assertThat(awaitItem()).isEqualTo(
@@ -59,8 +62,10 @@ class AddItemToListUseCaseTest {
     useCase.invoke(
       AddItemParameters(
         listId = 1234,
-        mediaId = 3456,
-        mediaType = MediaType.MOVIE,
+        media = MediaReference(
+          mediaId = 3456,
+          mediaType = MediaType.MOVIE,
+        ),
       ),
     ).test {
       assertThat(awaitItem().toString()).isEqualTo(
@@ -85,8 +90,10 @@ class AddItemToListUseCaseTest {
     useCase.invoke(
       AddItemParameters(
         listId = 1234,
-        mediaId = 3456,
-        mediaType = MediaType.MOVIE,
+        media = MediaReference(
+          mediaId = 3456,
+          mediaType = MediaType.MOVIE,
+        ),
       ),
     ).test {
       assertThat(awaitItem().toString()).isEqualTo(
@@ -111,8 +118,10 @@ class AddItemToListUseCaseTest {
     useCase.invoke(
       AddItemParameters(
         listId = 1234,
-        mediaId = 3456,
-        mediaType = MediaType.MOVIE,
+        media = MediaReference(
+          mediaId = 3456,
+          mediaType = MediaType.MOVIE,
+        ),
       ),
     ).test {
       assertThat(awaitItem().toString()).isEqualTo(
