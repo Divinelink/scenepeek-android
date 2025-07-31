@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Deselect
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.SelectAll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -40,6 +40,7 @@ fun BoxScope.MultipleSelectHeader(
   visible: Boolean,
   selectedItems: List<MediaReference>,
   totalItemCount: Int,
+  onRemoveAction: () -> Unit,
   onSelectAll: () -> Unit,
   onDeselectAll: () -> Unit,
   onDismiss: () -> Unit,
@@ -78,28 +79,26 @@ fun BoxScope.MultipleSelectHeader(
           verticalAlignment = Alignment.CenterVertically,
         ) {
           IconButton(
-            onClick = {
-              // Show Modal
-            },
+            onClick = onRemoveAction,
           ) {
             Icon(
-              imageVector = Icons.Rounded.MoreVert,
-              contentDescription = null,
+              imageVector = Icons.Rounded.DeleteForever,
+              contentDescription = stringResource(com.divinelink.core.ui.R.string.core_ui_delete),
               tint = LocalContentColor.current,
             )
           }
 
-          val allSelected = selectedItems.size == totalItemCount
+          val allSelected = selectedItems.size < totalItemCount
 
           IconButton(
             onClick = if (allSelected) {
-              onDeselectAll
-            } else {
               onSelectAll
+            } else {
+              onDeselectAll
             },
           ) {
             Icon(
-              imageVector = if (allSelected) Icons.Rounded.Deselect else Icons.Rounded.SelectAll,
+              imageVector = if (allSelected) Icons.Rounded.SelectAll else Icons.Rounded.Deselect,
               contentDescription = if (allSelected) {
                 stringResource(uiR.string.core_ui_deselect_all)
               } else {

@@ -155,7 +155,7 @@ class ListDetailsViewModel(
       ListDetailsAction.OnSelectAll -> _uiState.update { uiState ->
         if (uiState.details is ListDetailsData.Data) {
           uiState.copy(
-            selectedMediaIds = uiState.details.data.media.map { it.toStub() },
+            selectedMediaIds = uiState.details.media.map { it.toStub() },
           )
         } else {
           uiState
@@ -167,7 +167,7 @@ class ListDetailsViewModel(
           selectedMediaIds = emptyList(),
         )
       }
-      is ListDetailsAction.OnRemoveItems -> onRemoveItems(action.items)
+      ListDetailsAction.OnRemoveItems -> onRemoveItems(uiState.value.selectedMediaIds)
     }
   }
 
@@ -186,8 +186,22 @@ class ListDetailsViewModel(
         listId = _uiState.value.id,
         items = items,
       ).fold(
-        onSuccess = {},
-        onFailure = {},
+        onSuccess = {
+          _uiState.update {
+            it.copy(
+              multipleSelectMode = false,
+              selectedMediaIds = emptyList(),
+            )
+          }
+        },
+        onFailure = {
+          _uiState.update {
+            it.copy(
+              multipleSelectMode = false,
+              selectedMediaIds = emptyList(),
+            )
+          }
+        },
       )
     }
   }

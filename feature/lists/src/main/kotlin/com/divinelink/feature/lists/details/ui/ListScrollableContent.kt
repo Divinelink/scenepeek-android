@@ -244,10 +244,11 @@ fun ListScrollableContent(
     MultipleSelectHeader(
       visible = state.multipleSelectMode,
       selectedItems = state.selectedMediaIds,
-      totalItemCount = (state.details as? ListDetailsData.Data)?.data?.media?.size ?: 0,
+      totalItemCount = (state.details as? ListDetailsData.Data)?.media?.size ?: 0,
       onSelectAll = { action(ListDetailsAction.OnSelectAll) },
       onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },
       onDismiss = { action(ListDetailsAction.OnDismissMultipleSelect) },
+      onRemoveAction = { action(ListDetailsAction.OnRemoveItems) },
     )
   }
 }
