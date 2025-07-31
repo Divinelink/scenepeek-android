@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Deselect
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.SelectAll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.lists.R
 import com.divinelink.core.ui.R as uiR
@@ -37,8 +38,9 @@ import com.divinelink.core.ui.R as uiR
 fun BoxScope.MultipleSelectHeader(
   modifier: Modifier = Modifier,
   visible: Boolean,
-  selectedItems: List<Int>,
+  selectedItems: List<MediaReference>,
   totalItemCount: Int,
+  onRemoveAction: () -> Unit,
   onSelectAll: () -> Unit,
   onDeselectAll: () -> Unit,
   onDismiss: () -> Unit,
@@ -77,32 +79,31 @@ fun BoxScope.MultipleSelectHeader(
           verticalAlignment = Alignment.CenterVertically,
         ) {
           IconButton(
-            onClick = {
-              // Show Modal
-            },
+            onClick = onRemoveAction,
+            enabled = selectedItems.isNotEmpty(),
           ) {
             Icon(
-              imageVector = Icons.Rounded.MoreVert,
-              contentDescription = null,
+              imageVector = Icons.Rounded.DeleteForever,
+              contentDescription = stringResource(com.divinelink.core.ui.R.string.core_ui_delete),
               tint = LocalContentColor.current,
             )
           }
 
-          val allSelected = selectedItems.size == totalItemCount
+          val allNotSelected = selectedItems.size < totalItemCount
 
           IconButton(
-            onClick = if (allSelected) {
-              onDeselectAll
-            } else {
+            onClick = if (allNotSelected) {
               onSelectAll
+            } else {
+              onDeselectAll
             },
           ) {
             Icon(
-              imageVector = if (allSelected) Icons.Rounded.Deselect else Icons.Rounded.SelectAll,
-              contentDescription = if (allSelected) {
-                stringResource(uiR.string.core_ui_deselect_all)
-              } else {
+              imageVector = if (allNotSelected) Icons.Rounded.SelectAll else Icons.Rounded.Deselect,
+              contentDescription = if (allNotSelected) {
                 stringResource(uiR.string.core_ui_select_all)
+              } else {
+                stringResource(uiR.string.core_ui_deselect_all)
               },
               tint = LocalContentColor.current,
             )

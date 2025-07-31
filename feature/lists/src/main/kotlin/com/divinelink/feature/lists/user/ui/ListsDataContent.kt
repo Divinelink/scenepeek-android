@@ -88,7 +88,6 @@ fun ListsDataContent(
         .padding(bottom = LocalBottomNavigationPadding.current),
       uiState = BlankSlateState.Custom(
         title = UIText.ResourceText(R.string.feature_lists_empty),
-        //  retryText = UIText.ResourceText(uiR.string.core_ui_create_list), TODO
       ),
     )
   } else {

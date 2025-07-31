@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.details
 
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 
 sealed interface ListDetailsAction {
@@ -11,8 +12,12 @@ sealed interface ListDetailsAction {
     val mediaType: MediaType,
   ) : ListDetailsAction
 
-  data class SelectMedia(val mediaId: Int) : ListDetailsAction
+  data class SelectMedia(val media: MediaItem.Media) : ListDetailsAction
   data object OnDeselectAll : ListDetailsAction
   data object OnSelectAll : ListDetailsAction
   data object OnDismissMultipleSelect : ListDetailsAction
+
+  data object OnRemoveItems : ListDetailsAction
+
+  data object ConsumeSnackbarMessage : ListDetailsAction
 }

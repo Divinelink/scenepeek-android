@@ -2,6 +2,8 @@ package com.divinelink.core.testing.usecase
 
 import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.model.list.ListDetails
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -21,5 +23,9 @@ class TestFetchListDetailsUseCase {
 
   fun mockResponse(response: Result<ListDetails>) {
     whenever(mock.invoke(any())).thenReturn(flowOf(response))
+  }
+
+  fun mockResponse(response: Channel<Result<ListDetails>>) {
+    whenever(mock.invoke(any())).thenReturn(response.consumeAsFlow())
   }
 }

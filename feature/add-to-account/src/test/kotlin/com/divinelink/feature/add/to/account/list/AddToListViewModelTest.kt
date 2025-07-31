@@ -8,6 +8,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListException
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
@@ -24,13 +25,10 @@ class AddToListViewModelTest {
 
   object AddToListRouteFactory {
     fun movie() = AddToListRoute(
-      id = 1234,
-      mediaType = MediaType.MOVIE,
-    )
-
-    fun tv() = AddToListRoute(
-      id = 1234,
-      mediaType = MediaType.TV,
+      media = MediaReference(
+        mediaId = 1234,
+        mediaType = MediaType.MOVIE,
+      ),
     )
   }
 

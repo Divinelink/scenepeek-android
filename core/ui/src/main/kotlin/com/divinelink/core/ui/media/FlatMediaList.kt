@@ -65,7 +65,7 @@ fun FlatMediaList(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
     items(
-      key = { it.id },
+      key = { it.uniqueIdentifier },
       items = data,
     ) { search ->
       when (search) {

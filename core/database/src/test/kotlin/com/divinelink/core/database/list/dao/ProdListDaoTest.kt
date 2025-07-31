@@ -8,8 +8,10 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
+import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -332,7 +334,7 @@ class ProdListDaoTest {
 
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = ListDetailsFactory.mustWatch().media.first().id,
+        media = ListDetailsFactory.mustWatch().media.first().toStub(),
       )
 
       awaitItem() shouldBe ListItemFactory.page1().list.map { item ->
@@ -346,7 +348,7 @@ class ProdListDaoTest {
       // When item already exists, it should not change the count
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = ListDetailsFactory.mustWatch().media.first().id,
+        media = ListDetailsFactory.mustWatch().media.first().toStub(),
       )
 
       expectNoEvents()
@@ -385,7 +387,7 @@ class ProdListDaoTest {
 
       dao.insertMediaToList(
         listId = ListDetailsFactory.mustWatch().id,
-        mediaId = MediaItemFactory.theOffice().id,
+        media = MediaItemFactory.theOffice().toStub(),
       )
 
       awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
@@ -581,6 +583,216 @@ class ProdListDaoTest {
       dao.clearUserLists(accountId = "one")
 
       awaitItem() shouldBe emptyList()
+    }
+  }
+
+  @Test
+  fun `test insert media with the same id but different media type keeps both`() = runTest {
+    val theWire = MediaItemFactory.theWire().copy(id = 650)
+    val fightClub = MediaItemFactory.FightClub().copy(id = 650)
+    val theOffice = MediaItemFactory.theOffice()
+    listOf(
+      theWire,
+      fightClub,
+      theOffice,
+    ).forEach {
+      database.mediaItemEntityQueries.insertMediaItem(it.map())
+    }
+
+    dao.insertMediaToList(
+      listId = ListDetailsFactory.mustWatch().id,
+      media = theWire.toStub(),
+    )
+
+    dao.insertMediaToList(
+      listId = ListDetailsFactory.mustWatch().id,
+      media = fightClub.toStub(),
+    )
+
+    dao.insertMediaToList(
+      listId = ListDetailsFactory.mustWatch().id,
+      media = theOffice.toStub(),
+    )
+
+    dao.fetchListDetails(
+      listId = ListDetailsFactory.mustWatch().id,
+      page = 1,
+    ).test {
+      awaitItem() shouldBe null
+
+      dao.insertListDetails(
+        page = 1,
+        details = ListDetailsFactory.mustWatch(),
+      )
+
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        media = listOf(
+          theWire,
+          fightClub,
+          theOffice,
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test insert media with the same id and type replaces previous`() = runTest {
+    val theWire = MediaItemFactory.theWire().copy(id = 650)
+    val fightClub = MediaItemFactory.FightClub().copy(id = 650)
+    val theOffice = MediaItemFactory.theOffice().copy(id = 650)
+    listOf(
+      theWire,
+      fightClub,
+      theOffice,
+    ).forEach {
+      database.mediaItemEntityQueries.insertMediaItem(it.map())
+    }
+
+    dao.insertMediaToList(
+      listId = ListDetailsFactory.mustWatch().id,
+      media = theWire.toStub(),
+    )
+
+    dao.insertMediaToList(
+      listId = ListDetailsFactory.mustWatch().id,
+      media = fightClub.toStub(),
+    )
+
+    dao.insertListDetails(
+      page = 1,
+      details = ListDetailsFactory.mustWatch().copy(
+        media = listOf(),
+      ),
+    )
+
+    dao.fetchListDetails(
+      listId = ListDetailsFactory.mustWatch().id,
+      page = 1,
+    ).test {
+      assertThat(awaitItem()).isEqualTo(
+        ListDetailsFactory.mustWatch().copy(
+          media = listOf(
+            theOffice,
+            fightClub,
+          ),
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test remove media from list correctly reorders data`() = runTest {
+    val data = MediaItemFactory.MoviesList(1..50).onEach {
+      database.mediaItemEntityQueries.insertMediaItem(it.map())
+    }
+
+    dao.insertListDetails(
+      page = 1,
+      details = ListDetailsFactory.mustWatch().copy(
+        media = data,
+      ),
+    )
+
+    dao.fetchListDetails(
+      listId = ListDetailsFactory.mustWatch().id,
+      page = 1,
+    ).test {
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        media = MediaItemFactory.MoviesList(1..20),
+      )
+
+      // Remove the first item
+      dao.removeMediaFromList(
+        listId = ListDetailsFactory.mustWatch().id,
+        items = listOf(data.first().toStub()),
+      )
+
+      // the first is removed and a new one from page 2 is added
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        media = MediaItemFactory.MoviesList(2..21),
+      )
+    }
+  }
+
+  @Test
+  fun `test remove multiple media from list`() = runTest {
+    val data = MediaItemFactory.MoviesList(1..50).onEach {
+      database.mediaItemEntityQueries.insertMediaItem(it.map())
+    }
+
+    dao.insertListDetails(
+      page = 1,
+      details = ListDetailsFactory.mustWatch().copy(
+        media = data,
+      ),
+    )
+
+    dao.fetchListDetails(
+      listId = ListDetailsFactory.mustWatch().id,
+      page = 1,
+    ).test {
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        media = MediaItemFactory.MoviesList(1..20),
+      )
+
+      // Remove the first item
+      dao.removeMediaFromList(
+        listId = ListDetailsFactory.mustWatch().id,
+        items = data.take(5).map { it.toStub() },
+      )
+
+      // the first five are removed and five from page 2 are added
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        media = MediaItemFactory.MoviesList(6..25),
+      )
+    }
+
+    dao.fetchListDetails(
+      listId = ListDetailsFactory.mustWatch().id,
+      page = 2,
+    ).test {
+      awaitItem() shouldBe ListDetailsFactory.mustWatch().copy(
+        page = 2,
+        media = MediaItemFactory.MoviesList(26..45),
+      )
+    }
+  }
+
+  @Test
+  fun `test removing items also decreases list item count`() = runTest {
+    val data = MediaItemFactory.MoviesList(1..50).onEach {
+      database.mediaItemEntityQueries.insertMediaItem(it.map())
+    }
+
+    // Insert single list
+    dao.insertListItem(
+      page = 1,
+      accountId = "one",
+      items = listOf(ListItemFactory.movies()),
+    )
+
+    dao.insertListDetails(
+      page = 1,
+      details = ListDetailsFactory.mustWatch().copy(
+        id = ListItemFactory.movies().id,
+        media = data,
+      ),
+    )
+
+    dao.fetchUserLists(
+      accountId = "one",
+      fromIndex = 0,
+    ).test {
+      val firstEmission = awaitItem()
+      firstEmission shouldBe listOf(ListItemFactory.movies())
+      firstEmission.first().numberOfItems shouldBe 5
+
+      dao.removeMediaFromList(
+        listId = ListItemFactory.movies().id,
+        items = data.take(5).map { it.toStub() },
+      )
+
+      awaitItem() shouldBe listOf(ListItemFactory.movies().copy(numberOfItems = 0))
     }
   }
 }

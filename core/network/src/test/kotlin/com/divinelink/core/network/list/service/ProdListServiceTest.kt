@@ -1,5 +1,7 @@
 package com.divinelink.core.network.list.service
 
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.list.model.MediaItemRequest
 import com.divinelink.core.network.list.model.add.AddToListRequest
 import com.divinelink.core.network.list.model.add.AddToListResponse
@@ -55,8 +57,11 @@ class ProdListServiceTest {
 
     val result = service.addItemToList(
       listId = 12345,
-      mediaId = 67890,
-      mediaType = "movie",
+      media = MediaReference(
+        mediaId = 67890,
+        mediaType = MediaType.MOVIE,
+      ),
+
     )
 
     assertThat(result.isSuccess).isTrue()
@@ -94,8 +99,10 @@ class ProdListServiceTest {
 
     val result = service.addItemToList(
       listId = 12345,
-      mediaId = 67890,
-      mediaType = "movie",
+      MediaReference(
+        mediaId = 67890,
+        mediaType = MediaType.MOVIE,
+      ),
     )
 
     assertThat(result.isSuccess).isTrue()

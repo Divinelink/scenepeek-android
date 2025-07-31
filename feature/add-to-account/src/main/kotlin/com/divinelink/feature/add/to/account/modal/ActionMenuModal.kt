@@ -18,6 +18,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.add.to.account.modal.ui.ActionMenuContent
 import com.divinelink.feature.add.to.account.modal.ui.provider.ActionMenuUiStateParameterProvider
 import kotlinx.coroutines.flow.collectLatest
@@ -57,6 +58,12 @@ fun ActionMenuModal(
     }
   }
 
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = viewModel::onDismissSnackbar,
+    onShowMessage = onDismissRequest,
+  )
+
   ModalBottomSheet(
     modifier = Modifier.testTag(TestTags.Modal.ACTION_MENU),
     shape = MaterialTheme.shapes.extraLarge,
@@ -68,16 +75,15 @@ fun ActionMenuModal(
         onAction = { intent ->
           when (intent) {
             ActionMenuIntent.MultiSelect -> {
-              onDismissRequest()
               onMultiSelect(uiState.media)
+              onDismissRequest()
             }
-            ActionMenuIntent.RemoveFromList,
-            ActionMenuIntent.AddToList,
-            -> {
+            ActionMenuIntent.AddToList -> {
               onDismissRequest()
               viewModel.onAction(intent)
             }
             ActionMenuIntent.Share,
+            ActionMenuIntent.RemoveFromList,
             -> viewModel.onAction(intent)
           }
         },

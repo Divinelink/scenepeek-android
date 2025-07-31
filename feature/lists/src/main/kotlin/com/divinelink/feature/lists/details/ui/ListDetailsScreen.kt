@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.EditListRoute
@@ -41,6 +42,7 @@ import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -100,6 +102,11 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       updateStatusBarColor(view = view, setLight = !isDarkTheme)
     }
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = { viewModel.onAction(ListDetailsAction.ConsumeSnackbarMessage) },
+  )
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
@@ -166,6 +173,8 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               ListDetailsAction.OnSelectAll,
               ListDetailsAction.OnDismissMultipleSelect,
               is ListDetailsAction.SelectMedia,
+              is ListDetailsAction.OnRemoveItems,
+              is ListDetailsAction.ConsumeSnackbarMessage,
               -> viewModel.onAction(action)
               is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
                 DetailsRoute(
@@ -176,20 +185,9 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               )
             }
           },
-          onShowTitle = { show ->
-            isAppBarVisible = show
-          },
-          onBackdropLoaded = {
-            onBackdropLoaded = true
-          },
-          onNavigateToAddToList = {
-            onNavigateToAddToList(
-              AddToListRoute(
-                id = it.id,
-                mediaType = it.mediaType,
-              ),
-            )
-          },
+          onShowTitle = { show -> isAppBarVisible = show },
+          onBackdropLoaded = { onBackdropLoaded = true },
+          onNavigateToAddToList = { onNavigateToAddToList(AddToListRoute(it.toStub())) },
         )
       }
     },

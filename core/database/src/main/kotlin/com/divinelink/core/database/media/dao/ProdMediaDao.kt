@@ -3,6 +3,7 @@ package com.divinelink.core.database.media.dao
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 
 class ProdMediaDao(private val database: Database) : SqlMediaDao {
 
@@ -16,9 +17,9 @@ class ProdMediaDao(private val database: Database) : SqlMediaDao {
     }
   }
 
-  override fun fetchMediaItemById(mediaId: Int): MediaItem.Media? = database
+  override fun fetchMedia(media: MediaReference): MediaItem.Media? = database
     .mediaItemEntityQueries
-    .selectMediaItemById(mediaId.toLong())
+    .selectMediaItemByIdAndType(id = media.mediaId.toLong(), mediaType = media.mediaType.value)
     .executeAsOneOrNull()
     ?.map()
 }

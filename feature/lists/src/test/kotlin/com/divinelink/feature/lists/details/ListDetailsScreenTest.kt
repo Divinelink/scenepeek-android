@@ -14,11 +14,13 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.EditListRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.ui.TestTags
@@ -38,6 +40,8 @@ import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
 class ListDetailsScreenTest : ComposeTest() {
+
+  private val repository = TestListRepository()
 
   @BeforeTest
   fun setup() {
@@ -75,6 +79,8 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
+
         ),
       )
     }
@@ -105,6 +111,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -133,6 +140,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -184,6 +192,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -223,6 +232,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -267,6 +277,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -302,6 +313,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -330,8 +342,12 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails,
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
+        listRepository = repository.mock,
       )
     }
 
@@ -344,6 +360,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -380,6 +397,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -409,8 +427,12 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails,
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
+        listRepository = repository.mock,
       )
     }
 
@@ -423,6 +445,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -511,8 +534,12 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails,
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
+        listRepository = repository.mock,
       )
     }
 
@@ -527,6 +554,7 @@ class ListDetailsScreenTest : ComposeTest() {
         viewModel = ListDetailsViewModel(
           fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
           savedStateHandle = savedStateHandle,
+          repository = repository.mock,
         ),
       )
     }
@@ -543,8 +571,7 @@ class ListDetailsScreenTest : ComposeTest() {
       ).performClick()
 
       addToListRoute shouldBe AddToListRoute(
-        id = 1,
-        mediaType = MediaType.MOVIE,
+        media = ListDetailsFactory.page1().media.first().toStub(),
       )
     }
   }

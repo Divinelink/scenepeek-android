@@ -61,6 +61,11 @@ UPDATE ListItemEntity SET
   numberOfItems = numberOfItems + 1
 WHERE id = ?;
 
+decreaseListItemCountBy:
+UPDATE ListItemEntity SET
+  numberOfItems = numberOfItems - :size
+WHERE id = ? AND numberOfItems > 0;
+
 deleteItemsAfterIndex:
 DELETE FROM ListItemEntity
 WHERE accountId = :accountId AND itemIndex >= :startIndex;

@@ -5,6 +5,7 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.create.CreateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListRequest
@@ -15,8 +16,7 @@ interface ListRepository {
 
   suspend fun addItemToList(
     listId: Int,
-    mediaId: Int,
-    mediaType: String,
+    media: MediaReference,
   ): Result<AddToListResult>
 
   suspend fun fetchListDetails(
@@ -39,4 +39,9 @@ interface ListRepository {
     listId: Int,
     request: UpdateListRequest,
   ): Result<UpdateListResponse>
+
+  suspend fun removeItems(
+    listId: Int,
+    items: List<MediaReference>,
+  ): Result<Int>
 }

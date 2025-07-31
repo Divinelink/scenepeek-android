@@ -1,6 +1,7 @@
 package com.divinelink.core.model.list.details
 
 import com.divinelink.core.model.list.ListDetails
+import com.divinelink.core.model.media.MediaItem
 
 sealed class ListDetailsData<out T>(
   open val name: String,
@@ -20,14 +21,17 @@ sealed class ListDetailsData<out T>(
     public = public,
   )
 
-  data class Data(val data: ListDetails) :
-    ListDetailsData<ListDetails>(
-      name = data.name,
-      backdropPath = data.backdropPath,
-      description = data.description,
-      public = data.public,
-    ) {
-    val isEmpty: Boolean = data.isEmpty()
+  data class Data(
+    val data: ListDetails,
+    val pages: Map<Int, List<MediaItem.Media>>,
+  ) : ListDetailsData<ListDetails>(
+    name = data.name,
+    backdropPath = data.backdropPath,
+    description = data.description,
+    public = data.public,
+  ) {
+    val media = pages.values.flatten()
+    val isEmpty: Boolean = media.isEmpty()
     val canLoadMore: Boolean = data.canLoadMore()
   }
 }

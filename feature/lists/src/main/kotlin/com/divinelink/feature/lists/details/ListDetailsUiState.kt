@@ -2,7 +2,9 @@ package com.divinelink.feature.lists.details
 
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class ListDetailsUiState(
   val id: Int,
@@ -11,8 +13,9 @@ data class ListDetailsUiState(
   val error: BlankSlateState?,
   val refreshing: Boolean,
   val loadingMore: Boolean,
-  val selectedMediaIds: List<Int>,
+  val selectedMedia: List<MediaItem.Media>,
   val multipleSelectMode: Boolean,
+  val snackbarMessage: SnackbarMessage?,
 ) {
   companion object {
     fun initial(
@@ -33,8 +36,9 @@ data class ListDetailsUiState(
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
+      snackbarMessage = null,
     )
   }
 

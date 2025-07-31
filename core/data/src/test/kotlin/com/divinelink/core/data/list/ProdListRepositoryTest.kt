@@ -11,6 +11,7 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
@@ -91,8 +92,10 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Failure.ItemAlreadyExists
@@ -127,8 +130,10 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Success
@@ -161,15 +166,20 @@ class ProdListRepositoryTest {
 
     val result = repository.addItemToList(
       listId = listId,
-      mediaId = 4108,
-      mediaType = MediaType.TV.name,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
 
     result.data shouldBe AddToListResult.Success
 
     listDao.verifyMediaItemInserted(
       listId = listId,
-      mediaId = 4108,
+      media = MediaReference(
+        mediaId = 4108,
+        mediaType = MediaType.TV,
+      ),
     )
   }
 
@@ -546,5 +556,90 @@ class ProdListRepositoryTest {
 
       awaitComplete()
     }
+  }
+
+  @Test
+  fun `test removeItems with success also removes from database`() = runTest {
+    val listId = 123
+    val itemsToRemove = listOf(
+      MediaReference(mediaId = 1, mediaType = MediaType.MOVIE),
+      MediaReference(mediaId = 2, mediaType = MediaType.TV),
+    )
+
+    service.mockRemoveItems(
+      response = Result.success(
+        localJson.decodeFromString(
+          """
+          {
+            "success": true,
+            "status_code": 1,
+            "status_message": "Success.",
+            "results": [
+              {"media_id": 1, "media_type": "movie", "success": true},
+              {"media_id": 2, "media_type": "tv", "success": true}
+            ]
+          }
+          """.trimIndent(),
+        ),
+      ),
+    )
+
+    repository.removeItems(listId, itemsToRemove)
+
+    listDao.verifyRemoveItems(listId, itemsToRemove)
+  }
+
+  @Test
+  fun `test removeItems with partial success removes all items`() = runTest {
+    val listId = 123
+    val itemsToRemove = listOf(
+      MediaReference(mediaId = 1, mediaType = MediaType.MOVIE),
+      MediaReference(mediaId = 2, mediaType = MediaType.TV),
+    )
+
+    service.mockRemoveItems(
+      response = Result.success(
+        localJson.decodeFromString(
+          """
+          {
+            "success": true,
+            "status_code": 1,
+            "status_message": "Success.",
+            "results": [
+              {"media_id": 1, "media_type": "movie", "success": true},
+              {"media_id": 2, "media_type": "tv", "success": false}
+            ]
+          }
+          """.trimIndent(),
+        ),
+      ),
+    )
+
+    repository.removeItems(listId, itemsToRemove)
+
+    listDao.verifyRemoveItems(
+      listId,
+      listOf(
+        MediaReference(mediaId = 1, mediaType = MediaType.MOVIE),
+        MediaReference(mediaId = 2, mediaType = MediaType.TV),
+      ),
+    )
+  }
+
+  @Test
+  fun `test removeItems with failure`() = runTest {
+    val listId = 123
+    val itemsToRemove = listOf(
+      MediaReference(mediaId = 1, mediaType = MediaType.MOVIE),
+      MediaReference(mediaId = 2, mediaType = MediaType.TV),
+    )
+
+    service.mockRemoveItems(
+      response = Result.failure(Exception("Foo")),
+    )
+
+    repository.removeItems(listId, itemsToRemove)
+
+    listDao.verifyNoInteraction()
   }
 }

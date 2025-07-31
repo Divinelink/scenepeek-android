@@ -5,7 +5,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
 import io.ktor.http.encodedPath
 
-internal fun buildAddItemsToListUrl(listId: Int): String = buildUrl {
+internal fun buildListItemsUrl(listId: Int): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/list/$listId/items"

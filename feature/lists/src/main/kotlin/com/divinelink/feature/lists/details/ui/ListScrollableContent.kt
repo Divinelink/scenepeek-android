@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -43,6 +45,8 @@ import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
+import com.divinelink.feature.add.to.account.list.delete.ui.RemoveFromListDialog
+import com.divinelink.feature.add.to.account.list.delete.ui.RemoveItem
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuModal
 import com.divinelink.feature.lists.R
@@ -59,6 +63,7 @@ fun ListScrollableContent(
   onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
   var showActionModal by remember { mutableStateOf<MediaItem?>(null) }
+  var showRemoveItemsDialog by rememberSaveable { mutableStateOf(false) }
 
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
@@ -89,12 +94,37 @@ fun ListScrollableContent(
     ActionMenuModal(
       mediaItem = showActionModal!!,
       onDismissRequest = { showActionModal = null },
-      entryPoint = ActionMenuEntryPoint.ListDetails,
+      entryPoint = ActionMenuEntryPoint.ListDetails(
+        listId = state.id,
+        listName = state.details.name,
+      ),
       onMultiSelect = { media ->
-        action(ListDetailsAction.SelectMedia(mediaId = media.id))
+        if (media !is MediaItem.Media) return@ActionMenuModal
+        action(ListDetailsAction.SelectMedia(media))
         showActionModal = null
       },
       onNavigateToAddToList = onNavigateToAddToList,
+    )
+  }
+
+  if (showRemoveItemsDialog) {
+    RemoveFromListDialog(
+      onDismissRequest = { showRemoveItemsDialog = false },
+      onConfirm = {
+        action(ListDetailsAction.OnRemoveItems)
+        showRemoveItemsDialog = false
+      },
+      item = if (state.selectedMedia.size == 1) {
+        RemoveItem.Item(
+          name = state.selectedMedia.firstOrNull()?.name ?: "",
+          listName = state.details.name,
+        )
+      } else {
+        RemoveItem.Batch(
+          size = state.selectedMedia.size,
+          listName = state.details.name,
+        )
+      },
     )
   }
 
@@ -157,7 +187,7 @@ fun ListScrollableContent(
           DetailedMediaItemSkeleton()
         }
 
-        is ListDetailsData.Data -> if (state.details.data.media.isEmpty()) {
+        is ListDetailsData.Data -> if (state.details.media.isEmpty()) {
           item {
             Text(
               modifier = Modifier
@@ -171,24 +201,26 @@ fun ListScrollableContent(
           }
         } else {
           items(
-            items = state.details.data.media,
-            key = { it.id },
+            items = state.details.media,
+            key = { it.uniqueIdentifier },
           ) { media ->
-            val isSelected = state.selectedMediaIds.contains(media.id)
+            val isSelected = state.selectedMedia.contains(media)
 
             SelectableCard(
-              modifier = Modifier.semantics {
-                contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
-                  media.name,
-                  isSelected,
-                )
-              },
+              modifier = Modifier
+                .animateItem()
+                .semantics {
+                  contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                    media.name,
+                    isSelected,
+                  )
+                },
               isSelected = isSelected,
               isSelectionMode = state.multipleSelectMode,
               onClick = {
                 if (state.multipleSelectMode) {
                   action(
-                    ListDetailsAction.SelectMedia(mediaId = media.id),
+                    ListDetailsAction.SelectMedia(media),
                   )
                 } else {
                   action(
@@ -203,7 +235,7 @@ fun ListScrollableContent(
                 if (showActionModal == null) {
                   showActionModal = media
                 } else {
-                  action(ListDetailsAction.SelectMedia(mediaId = media.id))
+                  action(ListDetailsAction.SelectMedia(media = media))
                 }
               },
             ) { onClick, onLongClick ->
@@ -240,11 +272,12 @@ fun ListScrollableContent(
 
     MultipleSelectHeader(
       visible = state.multipleSelectMode,
-      selectedItems = state.selectedMediaIds.toList(),
-      totalItemCount = (state.details as? ListDetailsData.Data)?.data?.media?.size ?: 0,
+      selectedItems = state.selectedMedia.map { it.toStub() },
+      totalItemCount = (state.details as? ListDetailsData.Data)?.media?.size ?: 0,
       onSelectAll = { action(ListDetailsAction.OnSelectAll) },
       onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },
       onDismiss = { action(ListDetailsAction.OnDismissMultipleSelect) },
+      onRemoveAction = { showRemoveItemsDialog = true },
     )
   }
 }

@@ -1,5 +1,5 @@
 CREATE TABLE MediaItemEntity (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id INTEGER NOT NULL,
   adult INTEGER NOT NULL DEFAULT 0,
   backdropPath TEXT,
   posterPath TEXT,
@@ -20,7 +20,8 @@ CREATE TABLE MediaItemEntity (
   firstAirDate TEXT, -- Only for TV shows
   originCountryJson TEXT, -- JSON array of origin countries for TV shows
   -- Common fields stored as JSON
-  genreIdsJson TEXT NOT NULL -- JSON array of genre IDs
+  genreIdsJson TEXT NOT NULL, -- JSON array of genre IDs
+  UNIQUE(id, mediaType)
 );
 
 insertMediaItem:
@@ -32,6 +33,6 @@ INSERT OR REPLACE INTO MediaItemEntity (
 )
 VALUES ?;
 
-selectMediaItemById:
+selectMediaItemByIdAndType:
 SELECT * FROM MediaItemEntity
-WHERE id = ?;
+WHERE id = ? AND mediaType = ?;

@@ -4,8 +4,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.lists.details.ListDetailsUiState
 
 @ExcludeFromKoverReport
@@ -23,7 +25,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -38,7 +41,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -46,11 +50,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
+        pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
       ),
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -58,11 +64,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
+        pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
       ),
       error = BlankSlateState.Offline,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -77,7 +85,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Offline,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -92,7 +101,8 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = BlankSlateState.Generic,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -100,11 +110,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
+        pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
       ),
       error = BlankSlateState.Offline,
       refreshing = true,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -112,11 +124,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.mustWatch(),
+        pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
       ),
       error = BlankSlateState.Offline,
       refreshing = true,
       loadingMore = true,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -127,11 +141,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
           public = false,
           description = "",
         ),
+        pages = mapOf(1 to ListDetailsFactory.mustWatch().media),
       ),
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -139,11 +155,13 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.page1(),
+        pages = mapOf(),
       ),
       error = null,
       refreshing = false,
       loadingMore = true,
-      selectedMediaIds = emptyList(),
+      snackbarMessage = null,
+      selectedMedia = emptyList(),
       multipleSelectMode = false,
     ),
     ListDetailsUiState(
@@ -151,11 +169,29 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       page = 1,
       details = ListDetailsData.Data(
         data = ListDetailsFactory.page1(),
+        pages = mapOf(1 to ListDetailsFactory.page1().media),
       ),
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = MediaItemFactory.MoviesList().take(2).map { it.id },
+      snackbarMessage = null,
+      selectedMedia = MediaItemFactory.MoviesList()
+        .take(2),
+      multipleSelectMode = true,
+    ),
+    ListDetailsUiState(
+      id = 1,
+      page = 1,
+      details = ListDetailsData.Data(
+        data = ListDetailsFactory.page1(),
+        pages = mapOf(1 to ListDetailsFactory.page1().media),
+      ),
+      error = null,
+      refreshing = false,
+      loadingMore = false,
+      snackbarMessage = SnackbarMessage.from(UIText.StringText("Items removed successfully.")),
+      selectedMedia = MediaItemFactory.MoviesList()
+        .take(2),
       multipleSelectMode = true,
     ),
   )

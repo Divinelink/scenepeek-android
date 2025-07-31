@@ -26,7 +26,6 @@ class TestListRepository {
       mock.addItemToList(
         any(),
         any(),
-        any(),
       ),
     ).thenReturn(result)
   }
@@ -47,5 +46,9 @@ class TestListRepository {
 
   suspend fun mockFetchListsBackdrops(response: Flow<Map<String, String>>) {
     whenever(mock.fetchListsBackdrops(any())).thenReturn(response)
+  }
+
+  suspend fun mockRemoveItems(result: Result<Int>) {
+    whenever(mock.removeItems(any(), any())).thenReturn(result)
   }
 }
