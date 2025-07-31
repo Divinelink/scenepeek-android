@@ -44,6 +44,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
   }
@@ -66,6 +68,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
       .mockListDetails(
@@ -85,6 +89,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
       .mockListDetails(
@@ -107,6 +113,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = false,
             loadingMore = false,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -120,6 +128,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = true,
             loadingMore = false,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -130,6 +140,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = false,
             loadingMore = false,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
         ),
       )
@@ -153,6 +165,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
       .onLoadMore()
@@ -166,6 +180,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
   }
@@ -188,6 +204,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
       .mockListDetails(
@@ -207,6 +225,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = false,
             loadingMore = false,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -217,6 +237,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = false,
             loadingMore = true,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
           ListDetailsUiState(
             id = 1,
@@ -230,6 +252,8 @@ class ListDetailsViewModelTest {
             error = null,
             refreshing = false,
             loadingMore = false,
+            selectedMediaIds = emptyList(),
+            multipleSelectMode = false,
           ),
         ),
       )
@@ -253,6 +277,8 @@ class ListDetailsViewModelTest {
           error = null,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
       .mockListDetails(
@@ -269,6 +295,8 @@ class ListDetailsViewModelTest {
           error = null, // Error should not be set when data is not initial
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
   }
@@ -294,6 +322,8 @@ class ListDetailsViewModelTest {
           error = BlankSlateState.Generic,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
   }
@@ -319,6 +349,8 @@ class ListDetailsViewModelTest {
           error = BlankSlateState.Offline,
           refreshing = false,
           loadingMore = false,
+          selectedMediaIds = emptyList(),
+          multipleSelectMode = false,
         ),
       )
   }

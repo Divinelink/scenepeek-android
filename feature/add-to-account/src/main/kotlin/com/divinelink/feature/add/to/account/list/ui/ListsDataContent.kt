@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,27 +49,6 @@ fun ListsDataContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    item {
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-        text = stringResource(R.string.feature_add_to_account_list_title),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium,
-      )
-    }
-
-    item {
-      Button(
-        onClick = { action(AddToListAction.OnCreateListClick) },
-      ) {
-        Text(
-          text = stringResource(R.string.feature_add_to_account_new_list),
-        )
-      }
-    }
-
     if (data.isEmpty()) {
       item {
         Text(

@@ -3,7 +3,11 @@ package com.divinelink.feature.lists.details.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.AddToListRoute
 import com.divinelink.core.navigation.route.DetailsRoute
 import com.divinelink.core.navigation.route.EditListRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -46,6 +51,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigateUp: () -> Unit,
   onNavigateToMediaDetails: (DetailsRoute) -> Unit,
   onNavigateToEdit: (EditListRoute) -> Unit,
+  onNavigateToAddToList: (AddToListRoute) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
 ) {
   val view = LocalView.current
@@ -120,23 +126,29 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       )
     },
     floatingActionButton = {
-      ScaffoldFab(
-        modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
-        icon = Icons.Default.Edit,
-        text = null,
-        expanded = false,
-        onClick = {
-          onNavigateToEdit(
-            EditListRoute(
-              id = uiState.id,
-              name = uiState.details.name,
-              backdropPath = uiState.details.backdropPath,
-              description = uiState.details.description,
-              public = uiState.details.public,
-            ),
-          )
-        },
-      )
+      AnimatedVisibility(
+        visible = !uiState.multipleSelectMode,
+        enter = fadeIn(tween(easing = EaseIn)),
+        exit = fadeOut(tween(easing = EaseOut)),
+      ) {
+        ScaffoldFab(
+          modifier = Modifier.testTag(TestTags.Lists.Details.EDIT_LIST_FAB),
+          icon = Icons.Default.Edit,
+          text = null,
+          expanded = false,
+          onClick = {
+            onNavigateToEdit(
+              EditListRoute(
+                id = uiState.id,
+                name = uiState.details.name,
+                backdropPath = uiState.details.backdropPath,
+                description = uiState.details.description,
+                public = uiState.details.public,
+              ),
+            )
+          },
+        )
+      }
     },
     content = { paddingValues ->
       Column {
@@ -150,6 +162,10 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
             when (action) {
               ListDetailsAction.LoadMore,
               ListDetailsAction.Refresh,
+              ListDetailsAction.OnDeselectAll,
+              ListDetailsAction.OnSelectAll,
+              ListDetailsAction.OnDismissMultipleSelect,
+              is ListDetailsAction.SelectMedia,
               -> viewModel.onAction(action)
               is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
                 DetailsRoute(
@@ -165,6 +181,14 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onBackdropLoaded = {
             onBackdropLoaded = true
+          },
+          onNavigateToAddToList = {
+            onNavigateToAddToList(
+              AddToListRoute(
+                id = it.id,
+                mediaType = it.mediaType,
+              ),
+            )
           },
         )
       }

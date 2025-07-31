@@ -13,6 +13,7 @@
   <string name="core_ui_connected">You\'re back online</string>
   <string name="core_ui_not_connected">You\'re offline</string>
 
+  <string name="core_ui_select">Select</string>
   <string name="core_ui_share">Share</string>
   <string name="core_ui_show_total_episodes_item">Show spoilers</string>
   <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>
@@ -163,4 +164,7 @@
   <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>
   <string name="core_ui_visible_spoilers_button">Spoilers are visible</string>
   <string name="core_ui_change_layout_button">Change layout style</string>
+  <string name="core_ui_close_multiple_select">Close multiple select</string>
+  <string name="core_ui_select_all">Select all</string>
+  <string name="core_ui_deselect_all">Deselect all</string>
 </resources>

@@ -31,7 +31,7 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
       addItemToListUseCase = addItemToListUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
-          "id" to navArgs.mediaId,
+          "id" to navArgs.id,
           "mediaType" to navArgs.mediaType,
         ),
       ),
@@ -51,10 +51,6 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
 
   fun onConsumeDisplayMessage() = apply {
     viewModel.onAction(AddToListAction.ConsumeDisplayMessage)
-  }
-
-  fun onCreateListClick() = apply {
-    viewModel.onAction(AddToListAction.OnCreateListClick)
   }
 
   fun onListClick(id: Int) = apply {
@@ -77,18 +73,6 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
 
   suspend fun awaitNavigateToTMDBAuth() = apply {
     viewModel.navigateToTMDBAuth.test {
-      awaitItem()
-    }
-  }
-
-  suspend fun expectNoNavigateToCreateList() = apply {
-    viewModel.navigateToCreateList.test {
-      expectNoEvents()
-    }
-  }
-
-  suspend fun awaitNavigateToCreateList() = apply {
-    viewModel.navigateToCreateList.test {
       awaitItem()
     }
   }

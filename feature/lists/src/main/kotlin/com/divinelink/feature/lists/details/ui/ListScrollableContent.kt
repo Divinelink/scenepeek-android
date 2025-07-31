@@ -1,5 +1,6 @@
 package com.divinelink.feature.lists.details.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -15,13 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
@@ -32,23 +37,29 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
+import com.divinelink.core.ui.components.SelectableCard
 import com.divinelink.core.ui.components.VisibilityBadge
 import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
+import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
+import com.divinelink.feature.add.to.account.modal.ActionMenuModal
 import com.divinelink.feature.lists.R
+import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
 import kotlinx.coroutines.launch
 
 @Composable
 fun ListScrollableContent(
   state: ListDetailsUiState,
-  onMediaClick: (MediaItem.Media) -> Unit,
-  onLoadMore: () -> Unit,
+  action: (ListDetailsAction) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
+  var showActionModal by remember { mutableStateOf<MediaItem?>(null) }
+
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
   val density = LocalDensity.current
@@ -65,10 +76,27 @@ fun ListScrollableContent(
     onShowTitle(shouldShowTitle)
   }
 
+  BackHandler(enabled = state.multipleSelectMode) {
+    action.invoke(ListDetailsAction.OnDismissMultipleSelect)
+  }
+
   scrollState.EndlessScrollHandler(
     buffer = 4,
-    onLoadMore = onLoadMore,
+    onLoadMore = { action(ListDetailsAction.LoadMore) },
   )
+
+  if (showActionModal != null) {
+    ActionMenuModal(
+      mediaItem = showActionModal!!,
+      onDismissRequest = { showActionModal = null },
+      entryPoint = ActionMenuEntryPoint.ListDetails,
+      onMultiSelect = { media ->
+        action(ListDetailsAction.SelectMedia(mediaId = media.id))
+        showActionModal = null
+      },
+      onNavigateToAddToList = onNavigateToAddToList,
+    )
+  }
 
   Box(
     Modifier.fillMaxSize(),
@@ -146,10 +174,45 @@ fun ListScrollableContent(
             items = state.details.data.media,
             key = { it.id },
           ) { media ->
-            DetailedMediaItem(
-              mediaItem = media,
-              onClick = onMediaClick,
-            )
+            val isSelected = state.selectedMediaIds.contains(media.id)
+
+            SelectableCard(
+              modifier = Modifier.semantics {
+                contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                  media.name,
+                  isSelected,
+                )
+              },
+              isSelected = isSelected,
+              isSelectionMode = state.multipleSelectMode,
+              onClick = {
+                if (state.multipleSelectMode) {
+                  action(
+                    ListDetailsAction.SelectMedia(mediaId = media.id),
+                  )
+                } else {
+                  action(
+                    ListDetailsAction.OnItemClick(
+                      mediaId = media.id,
+                      mediaType = media.mediaType,
+                    ),
+                  )
+                }
+              },
+              onLongClick = {
+                if (showActionModal == null) {
+                  showActionModal = media
+                } else {
+                  action(ListDetailsAction.SelectMedia(mediaId = media.id))
+                }
+              },
+            ) { onClick, onLongClick ->
+              DetailedMediaItem(
+                mediaItem = media,
+                onClick = { onClick() },
+                onLongClick = { onLongClick() },
+              )
+            }
           }
 
           if (state.details.data.canLoadMore() && state.loadingMore) {
@@ -173,6 +236,15 @@ fun ListScrollableContent(
           scrollState.animateScrollToItem(0)
         }
       },
+    )
+
+    MultipleSelectHeader(
+      visible = state.multipleSelectMode,
+      selectedItems = state.selectedMediaIds.toList(),
+      totalItemCount = (state.details as? ListDetailsData.Data)?.data?.media?.size ?: 0,
+      onSelectAll = { action(ListDetailsAction.OnSelectAll) },
+      onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },
+      onDismiss = { action(ListDetailsAction.OnDismissMultipleSelect) },
     )
   }
 }

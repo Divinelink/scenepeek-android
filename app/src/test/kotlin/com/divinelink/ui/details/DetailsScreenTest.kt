@@ -98,6 +98,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -120,7 +121,6 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -175,6 +175,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -199,7 +200,6 @@ class DetailsScreenTest : ComposeTest() {
           navigatedToDetails = true
         },
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -279,11 +279,11 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -344,11 +344,11 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -443,7 +443,7 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
+        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -499,6 +499,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -521,7 +522,6 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -585,11 +585,11 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         viewModel = viewModel,
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -653,9 +653,9 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -750,9 +750,9 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }
@@ -854,9 +854,9 @@ class DetailsScreenTest : ComposeTest() {
         onNavigateUp = {},
         onNavigateToDetails = {},
         onNavigateToPerson = {},
-        onNavigateToCreateList = {},
         onNavigateToTMDBLogin = {},
         onNavigateToCredits = {},
+        onNavigateToAddToList = {},
         animatedVisibilityScope = this,
       )
     }

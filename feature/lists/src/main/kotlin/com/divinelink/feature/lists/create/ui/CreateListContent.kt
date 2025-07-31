@@ -95,6 +95,36 @@ fun CreateListContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_32),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
+    if (uiState.editMode) {
+      item {
+        Column(
+          modifier = Modifier.fillMaxWidth(),
+          verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          ListItemBackdropImage(
+            modifier = Modifier
+              .width(160.dp)
+              .clickable(
+                onClickLabel = stringResource(uiR.string.core_ui_select_media_backdrop_image),
+                onClick = {
+                  showBackdropModal = true
+                },
+              ),
+            url = uiState.backdrop,
+          )
+
+          TextButton(
+            onClick = {
+              showBackdropModal = true
+            },
+          ) {
+            Text(stringResource(R.string.feature_lists_change_image))
+          }
+        }
+      }
+    }
+
     item {
       OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -136,6 +166,7 @@ fun CreateListContent(
         horizontalArrangement = Arrangement.SpaceBetween,
       ) {
         Column(
+          modifier = Modifier.fillMaxWidth(0.8f),
           verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
         ) {
           Text(
@@ -155,30 +186,6 @@ fun CreateListContent(
     }
 
     if (uiState.editMode) {
-      item {
-        Column(
-          modifier = Modifier.fillMaxWidth(),
-          verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-        ) {
-          Text(
-            text = stringResource(uiR.string.core_ui_backdrop),
-            style = MaterialTheme.typography.titleSmall,
-          )
-
-          ListItemBackdropImage(
-            modifier = Modifier
-              .width(160.dp)
-              .clickable(
-                onClickLabel = stringResource(uiR.string.core_ui_select_media_backdrop_image),
-                onClick = {
-                  showBackdropModal = true
-                },
-              ),
-            url = uiState.backdrop,
-          )
-        }
-      }
-
       item {
         TextButton(
           onClick = { deleteDialog = true },

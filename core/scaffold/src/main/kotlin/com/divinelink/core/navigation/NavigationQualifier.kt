@@ -21,4 +21,5 @@ enum class NavigationQualifier {
   ListDetails,
   CreateList,
   EditList,
+  AddToList,
 }

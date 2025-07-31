@@ -18,11 +18,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.ListItemBackdropImage
+import com.divinelink.feature.lists.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -49,40 +52,57 @@ fun SelectBackdropModal(
       LazyColumn(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
-        itemsIndexed(
-          items = uiState.backdrops.toList(),
-          key = { index, backdrop ->
-            backdrop.first + index
-          },
-        ) { _, backdrop ->
-          Row(
-            modifier = Modifier
-              .fillMaxWidth()
-              .clickable {
-                onBackdropSelected(backdrop.second)
-                onDismissRequest()
-              }
-              .padding(
-                horizontal = MaterialTheme.dimensions.keyline_16,
-                vertical = MaterialTheme.dimensions.keyline_8,
-              ),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
-            ListItemBackdropImage(
-              modifier = Modifier
-                .width(160.dp),
-              url = backdrop.second,
-            )
-
+        if (uiState.backdrops.toList().isEmpty()) {
+          item {
             Text(
-              text = backdrop.first,
-              style = MaterialTheme.typography.bodyLarge,
-              color = MaterialTheme.colorScheme.onSurface,
               modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+                .fillMaxWidth()
+                .padding(
+                  vertical = MaterialTheme.dimensions.keyline_16,
+                  horizontal = MaterialTheme.dimensions.keyline_32,
+                ),
+              text = stringResource(id = R.string.feature_lists_backdrops_empty),
+              style = MaterialTheme.typography.titleMedium,
+              color = MaterialTheme.colorScheme.onSurface,
+              textAlign = TextAlign.Center,
             )
+          }
+        } else {
+          itemsIndexed(
+            items = uiState.backdrops.toList(),
+            key = { index, backdrop ->
+              backdrop.first + index
+            },
+          ) { _, backdrop ->
+            Row(
+              modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                  onBackdropSelected(backdrop.second)
+                  onDismissRequest()
+                }
+                .padding(
+                  horizontal = MaterialTheme.dimensions.keyline_16,
+                  vertical = MaterialTheme.dimensions.keyline_8,
+                ),
+              horizontalArrangement = Arrangement.Center,
+              verticalAlignment = Alignment.CenterVertically,
+            ) {
+              ListItemBackdropImage(
+                modifier = Modifier
+                  .width(160.dp),
+                url = backdrop.second,
+              )
+
+              Text(
+                text = backdrop.first,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                  .weight(1f)
+                  .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+              )
+            }
           }
         }
       }

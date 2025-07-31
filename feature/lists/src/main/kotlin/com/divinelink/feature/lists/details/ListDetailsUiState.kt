@@ -11,6 +11,8 @@ data class ListDetailsUiState(
   val error: BlankSlateState?,
   val refreshing: Boolean,
   val loadingMore: Boolean,
+  val selectedMediaIds: List<Int>,
+  val multipleSelectMode: Boolean,
 ) {
   companion object {
     fun initial(
@@ -31,6 +33,8 @@ data class ListDetailsUiState(
       error = null,
       refreshing = false,
       loadingMore = false,
+      selectedMediaIds = emptyList(),
+      multipleSelectMode = false,
     )
   }
 

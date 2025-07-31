@@ -14,6 +14,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -28,6 +29,7 @@ fun ListDetailsContent(
   action: (ListDetailsAction) -> Unit,
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
+  onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
   PullToRefreshBox(
     isRefreshing = state.refreshing,
@@ -50,17 +52,10 @@ fun ListDetailsContent(
       state.details is ListDetailsData.Initial || state.details is ListDetailsData.Data ->
         ListScrollableContent(
           state = state,
-          onMediaClick = {
-            action(
-              ListDetailsAction.OnItemClick(
-                mediaId = it.id,
-                mediaType = it.mediaType,
-              ),
-            )
-          },
-          onLoadMore = { action(ListDetailsAction.LoadMore) },
+          action = action,
           onShowTitle = onShowTitle,
           onBackdropLoaded = onBackdropLoaded,
+          onNavigateToAddToList = onNavigateToAddToList,
         )
     }
   }
@@ -78,6 +73,7 @@ fun ListDetailsContentPreview(
         action = {},
         onShowTitle = {},
         onBackdropLoaded = {},
+        onNavigateToAddToList = {},
       )
     }
   }

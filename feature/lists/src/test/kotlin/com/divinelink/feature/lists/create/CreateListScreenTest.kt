@@ -6,7 +6,6 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.network.list.model.update.UpdateListResponse
@@ -143,10 +142,6 @@ class CreateListScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(
-        TestTags.Components.SCROLLABLE_CONTENT,
-      ).performScrollToIndex(4)
-
       onNode(
         hasClickLabel(uiR.string.core_ui_select_media_backdrop_image),
       ).performClick()

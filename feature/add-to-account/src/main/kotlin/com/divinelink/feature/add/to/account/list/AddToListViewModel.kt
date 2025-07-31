@@ -34,20 +34,17 @@ class AddToListViewModel(
 ) : ViewModel() {
 
   private val route: AddToListRoute = AddToListRoute(
-    mediaId = savedStateHandle.get<Int>("id")!!,
-    mediaType = savedStateHandle.get<MediaType>("mediaType")!!,
+    id = savedStateHandle.get<Int>("id") ?: -1,
+    mediaType = savedStateHandle.get<MediaType>("mediaType") ?: MediaType.UNKNOWN,
   )
 
   private val _uiState: MutableStateFlow<AddToListUiState> = MutableStateFlow(
-    AddToListUiState.initial,
+    AddToListUiState.initial(route),
   )
   val uiState: StateFlow<AddToListUiState> = _uiState
 
   private val _navigateToTMDBAuth = Channel<Unit>()
   val navigateToTMDBAuth: Flow<Unit> = _navigateToTMDBAuth.receiveAsFlow()
-
-  private val _navigateToCreateList = Channel<Unit>()
-  val navigateToCreateList: Flow<Unit> = _navigateToCreateList.receiveAsFlow()
 
   init {
     fetchUserLists()
@@ -115,10 +112,6 @@ class AddToListViewModel(
       AddToListAction.Login -> viewModelScope.launch {
         _navigateToTMDBAuth.send(Unit)
       }
-
-      AddToListAction.OnCreateListClick -> viewModelScope.launch {
-        _navigateToCreateList.send(Unit)
-      }
     }
   }
 
@@ -140,8 +133,8 @@ class AddToListViewModel(
     viewModelScope.launch {
       addItemToListUseCase(
         parameters = AddItemParameters(
-          mediaId = route.mediaId,
-          mediaType = route.mediaType,
+          mediaId = uiState.value.id,
+          mediaType = uiState.value.mediaType,
           listId = listId,
         ),
       )

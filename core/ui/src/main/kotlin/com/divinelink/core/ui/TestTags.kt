@@ -37,6 +37,7 @@ object TestTags {
     const val NAVIGATION_BAR = "App Navigation Bar"
 
     const val STATUS_PILL = "Status Pill %s"
+    const val MULTIPLE_SELECT_HEADER = "Multiple Select Header"
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
@@ -148,6 +149,7 @@ object TestTags {
   object Modal {
     const val REQUEST_MOVIE = "Request Movie Modal"
     const val REQUEST_SEASONS = "Select Seasons Modal"
+    const val ACTION_MENU = "Action Menu Modal"
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
 
     const val DELETE_BUTTON = "Delete button for id %s"
@@ -222,10 +224,17 @@ object TestTags {
     object Details {
       const val EMPTY_ITEM = "List Details Empty Item"
       const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+      const val EDIT_LIST_FAB = "Edit List FAB"
+
+      const val SELECTED_CARD = "Media with name %s is selected %s"
     }
 
     object Create {
       const val SCREEN = "Create List Screen"
+    }
+
+    object Add {
+      const val SCREEN = "Add To List Screen"
     }
   }
 

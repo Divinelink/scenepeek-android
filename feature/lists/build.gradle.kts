@@ -5,6 +5,8 @@ plugins {
 }
 
 dependencies {
+  implementation(projects.feature.addToAccount)
+
   implementation(projects.core.commons)
   implementation(projects.core.data)
   implementation(projects.core.datastore)

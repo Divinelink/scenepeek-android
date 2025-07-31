@@ -24,12 +24,12 @@ class AddToListViewModelTest {
 
   object AddToListRouteFactory {
     fun movie() = AddToListRoute(
-      mediaId = 1234,
+      id = 1234,
       mediaType = MediaType.MOVIE,
     )
 
     fun tv() = AddToListRoute(
-      mediaId = 1234,
+      id = 1234,
       mediaType = MediaType.TV,
     )
   }
@@ -48,7 +48,7 @@ class AddToListViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 2,
           lists = ListData.Data(ListItemFactory.page1()),
           isLoading = false,
@@ -61,19 +61,19 @@ class AddToListViewModelTest {
           onLoadMore()
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = true,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 3,
             lists = ListData.Data(
               PaginationData(
@@ -99,7 +99,7 @@ class AddToListViewModelTest {
       .mockFetchUserLists(channel)
       .buildViewModel()
       .assertUiState(
-        AddToListUiState.initial,
+        AddToListUiState.initial(AddToListRouteFactory.movie()),
       )
       .expectUiStates(
         action = {
@@ -142,14 +142,14 @@ class AddToListViewModelTest {
           }
         },
         uiStates = listOf(
-          AddToListUiState.initial,
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()),
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(
               PaginationData(
@@ -168,7 +168,7 @@ class AddToListViewModelTest {
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(
               PaginationData(
@@ -202,7 +202,7 @@ class AddToListViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 2,
           lists = ListData.Data(ListItemFactory.page1()),
           isLoading = false,
@@ -215,19 +215,19 @@ class AddToListViewModelTest {
           onLoadMore()
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = true,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
@@ -246,7 +246,7 @@ class AddToListViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 2,
           lists = ListData.Data(ListItemFactory.page1()),
           isLoading = false,
@@ -259,19 +259,19 @@ class AddToListViewModelTest {
           onLoadMore()
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = true,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             isLoading = false,
             error = BlankSlateState.Unauthenticated(
               description = UIText.ResourceText(
@@ -299,19 +299,19 @@ class AddToListViewModelTest {
           onListClick(ListItemFactory.movies().id)
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = true,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(
               PaginationData(
@@ -355,19 +355,19 @@ class AddToListViewModelTest {
           onListClick(ListItemFactory.page1().list.first().id)
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = true,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
@@ -400,19 +400,19 @@ class AddToListViewModelTest {
           onListClick(ListItemFactory.page1().list.first().id)
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = true,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
@@ -441,7 +441,7 @@ class AddToListViewModelTest {
       )
       .onListClick(ListItemFactory.page1().list.first().id)
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 2,
           lists = ListData.Data(ListItemFactory.page1()),
           isLoading = false,
@@ -456,7 +456,7 @@ class AddToListViewModelTest {
       )
       .onConsumeDisplayMessage()
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 2,
           lists = ListData.Data(ListItemFactory.page1()),
           isLoading = false,
@@ -483,19 +483,19 @@ class AddToListViewModelTest {
           onListClick(ListItemFactory.page1().list.first().id)
         },
         uiStates = listOf(
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = false,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 2,
             lists = ListData.Data(ListItemFactory.page1()),
             isLoading = true,
             loadingMore = false,
           ),
-          AddToListUiState.initial.copy(
+          AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
             page = 1,
             lists = ListData.Initial,
             isLoading = false,
@@ -520,7 +520,7 @@ class AddToListViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        AddToListUiState.initial.copy(
+        AddToListUiState.initial(AddToListRouteFactory.movie()).copy(
           page = 1,
           lists = ListData.Initial,
           isLoading = false,
@@ -536,27 +536,5 @@ class AddToListViewModelTest {
       .expectNoNavigateToTMDBAuth()
       .onLogin()
       .awaitNavigateToTMDBAuth()
-  }
-
-  @Test
-  fun `test onCreateList emits navigateToTMDBAuth`() = runTest {
-    robot
-      .withArgs(AddToListRouteFactory.tv())
-      .mockFetchUserLists(
-        Result.success(ListItemFactory.page1()),
-      )
-      .buildViewModel()
-      .assertUiState(
-        AddToListUiState.initial.copy(
-          page = 2,
-          lists = ListData.Data(ListItemFactory.page1()),
-          isLoading = false,
-          loadingMore = false,
-          error = null,
-        ),
-      )
-      .expectNoNavigateToCreateList()
-      .onCreateListClick()
-      .awaitNavigateToCreateList()
   }
 }
