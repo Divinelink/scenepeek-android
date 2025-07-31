@@ -37,6 +37,7 @@ object TestTags {
     const val NAVIGATION_BAR = "App Navigation Bar"
 
     const val STATUS_PILL = "Status Pill %s"
+    const val MULTIPLE_SELECT_HEADER = "Multiple Select Header"
   }
 
   const val LOADING_CONTENT = "LOADING_CONTENT"
@@ -223,8 +224,9 @@ object TestTags {
     object Details {
       const val EMPTY_ITEM = "List Details Empty Item"
       const val PULL_TO_REFRESH = "List Details Pull To Refresh"
+      const val EDIT_LIST_FAB = "Edit List FAB"
 
-      const val SELECTED_CARD = "Selected Card: %s - %s"
+      const val SELECTED_CARD = "Media with name %s is selected %s"
     }
 
     object Create {

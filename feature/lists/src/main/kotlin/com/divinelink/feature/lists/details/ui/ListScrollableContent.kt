@@ -179,8 +179,8 @@ fun ListScrollableContent(
             SelectableCard(
               modifier = Modifier.semantics {
                 contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                  media.name,
                   isSelected,
-                  media.id,
                 )
               },
               isSelected = isSelected,

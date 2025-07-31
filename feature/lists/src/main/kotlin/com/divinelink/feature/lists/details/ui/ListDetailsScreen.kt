@@ -132,7 +132,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
         exit = fadeOut(tween(easing = EaseOut)),
       ) {
         ScaffoldFab(
-          modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
+          modifier = Modifier.testTag(TestTags.Lists.Details.EDIT_LIST_FAB),
           icon = Icons.Default.Edit,
           text = null,
           expanded = false,

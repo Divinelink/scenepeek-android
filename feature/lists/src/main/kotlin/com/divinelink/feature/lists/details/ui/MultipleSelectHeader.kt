@@ -25,10 +25,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.lists.R
+import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun BoxScope.MultipleSelectHeader(
@@ -49,7 +52,9 @@ fun BoxScope.MultipleSelectHeader(
       .padding(bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16),
     label = "Show multiple selection header animation",
   ) {
-    Card {
+    Card(
+      modifier = Modifier.testTag(TestTags.Components.MULTIPLE_SELECT_HEADER),
+    ) {
       FlowRow(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
         horizontalArrangement = Arrangement.Center,
@@ -83,18 +88,22 @@ fun BoxScope.MultipleSelectHeader(
             )
           }
 
-          val allSelected = selectedItems.size < totalItemCount
+          val allSelected = selectedItems.size == totalItemCount
 
           IconButton(
             onClick = if (allSelected) {
-              onSelectAll
-            } else {
               onDeselectAll
+            } else {
+              onSelectAll
             },
           ) {
             Icon(
-              imageVector = if (allSelected) Icons.Rounded.SelectAll else Icons.Rounded.Deselect,
-              contentDescription = null,
+              imageVector = if (allSelected) Icons.Rounded.Deselect else Icons.Rounded.SelectAll,
+              contentDescription = if (allSelected) {
+                stringResource(uiR.string.core_ui_deselect_all)
+              } else {
+                stringResource(uiR.string.core_ui_select_all)
+              },
               tint = LocalContentColor.current,
             )
           }
@@ -104,7 +113,7 @@ fun BoxScope.MultipleSelectHeader(
           ) {
             Icon(
               imageVector = Icons.Rounded.Close,
-              contentDescription = null,
+              contentDescription = stringResource(uiR.string.core_ui_close_multiple_select),
             )
           }
         }
