@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,8 @@ import com.divinelink.core.ui.components.details.BackdropImage
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
+import com.divinelink.feature.add.to.account.list.delete.ui.RemoveFromListDialog
+import com.divinelink.feature.add.to.account.list.delete.ui.RemoveItem
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuModal
 import com.divinelink.feature.lists.R
@@ -60,6 +63,7 @@ fun ListScrollableContent(
   onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
   var showActionModal by remember { mutableStateOf<MediaItem?>(null) }
+  var showRemoveItemsDialog by rememberSaveable { mutableStateOf(false) }
 
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
@@ -96,6 +100,30 @@ fun ListScrollableContent(
         showActionModal = null
       },
       onNavigateToAddToList = onNavigateToAddToList,
+    )
+  }
+
+  if (showRemoveItemsDialog) {
+    RemoveFromListDialog(
+      onDismissRequest = { showRemoveItemsDialog = false },
+      onConfirm = {
+        action(ListDetailsAction.OnRemoveItems)
+        showRemoveItemsDialog = false
+      },
+      item = if (state.selectedMediaIds.size == 1) {
+        RemoveItem.Item(
+          name = (state.details as? ListDetailsData.Data)?.media?.find {
+            it.id == state.selectedMediaIds.firstOrNull()?.mediaId &&
+              it.mediaType == state.selectedMediaIds.firstOrNull()?.mediaType
+          }?.name ?: "",
+          listName = state.details.name,
+        )
+      } else {
+        RemoveItem.Batch(
+          size = state.selectedMediaIds.size,
+          listName = state.details.name,
+        )
+      },
     )
   }
 
@@ -248,7 +276,7 @@ fun ListScrollableContent(
       onSelectAll = { action(ListDetailsAction.OnSelectAll) },
       onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },
       onDismiss = { action(ListDetailsAction.OnDismissMultipleSelect) },
-      onRemoveAction = { action(ListDetailsAction.OnRemoveItems) },
+      onRemoveAction = { showRemoveItemsDialog = true },
     )
   }
 }

@@ -139,6 +139,7 @@ object TestTags {
     const val CONFIRM_BUTTON = "Dialog Confirm Button"
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
     const val DELETE_REQUEST = "Delete Request Dialog"
+    const val REMOVE_ITEMS_FROM_LIST = "Remove Items From List"
 
     const val TOGGLE_ALL_SEASONS_SWITCH = "Season Toggle All Switch"
     const val SEASON_SWITCH = "Season Switch %s"

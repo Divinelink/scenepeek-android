@@ -80,6 +80,7 @@ fun BoxScope.MultipleSelectHeader(
         ) {
           IconButton(
             onClick = onRemoveAction,
+            enabled = selectedItems.isNotEmpty(),
           ) {
             Icon(
               imageVector = Icons.Rounded.DeleteForever,
