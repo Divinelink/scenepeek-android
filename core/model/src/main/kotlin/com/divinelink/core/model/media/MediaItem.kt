@@ -9,6 +9,7 @@ sealed class MediaItem(
   open val backdropPath: String?,
   open val mediaType: MediaType,
 ) {
+  abstract val uniqueIdentifier: String
 
   sealed class Media(
     override val id: Int,
@@ -80,6 +81,9 @@ sealed class MediaItem(
       accountRating = accountRating,
 
     )
+
+    override val uniqueIdentifier: String
+      get() = "${mediaType.value}-$id"
   }
 
   data class Person(
@@ -94,7 +98,10 @@ sealed class MediaItem(
     posterPath = profilePath,
     mediaType = MediaType.PERSON,
     backdropPath = null,
-  )
+  ) {
+    override val uniqueIdentifier: String
+      get() = "person-$id"
+  }
 
   data object Unknown : MediaItem(
     id = -1,
@@ -102,5 +109,8 @@ sealed class MediaItem(
     name = "",
     mediaType = MediaType.UNKNOWN,
     backdropPath = null,
-  )
+  ) {
+    override val uniqueIdentifier: String
+      get() = "unknown-$id"
+  }
 }

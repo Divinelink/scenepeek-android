@@ -10,6 +10,7 @@ import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -34,6 +35,7 @@ class ProdListDao(
         database.listMediaItemEntityQueries.insertListMediaItem(
           listId = details.id.toLong(),
           mediaItemId = mediaItem.id.toLong(),
+          mediaType = mediaItem.mediaType.value,
           itemOrder = (page - 1) * 20L + index.toLong(),
         )
       }
@@ -61,16 +63,22 @@ class ProdListDao(
 
   override fun insertMediaToList(
     listId: Int,
+    mediaType: String,
     mediaId: Int,
   ) = database.transaction {
     val itemExists = database.listMediaItemEntityQueries
-      .checkIfItemExistsInList(listId.toLong(), mediaId.toLong())
+      .checkIfItemExistsInList(
+        listId = listId.toLong(),
+        mediaItemId = mediaId.toLong(),
+        mediaType = mediaType,
+      )
       .executeAsOneOrNull() != null
 
     if (!itemExists) {
       database.listMediaItemEntityQueries.insertListMediaItemAtBottom(
         listId = listId.toLong(),
         listId_ = listId.toLong(),
+        mediaType = mediaType,
         mediaItemId = mediaId.toLong(),
       )
 
@@ -78,6 +86,39 @@ class ProdListDao(
         id = listId.toLong(),
       )
     }
+  }
+
+  override fun removeMediaFromList(
+    listId: Int,
+    items: List<MediaReference>,
+  ) = database.transaction {
+    // Delete all items first
+    items.forEach { media ->
+      database.listMediaItemEntityQueries.deleteMediaFromList(
+        listId = listId.toLong(),
+        mediaItemId = media.mediaId.toLong(),
+        mediaType = media.mediaType.value,
+      )
+    }
+
+    // Get remaining items and reassign consecutive orders
+    val remainingItems = database.listMediaItemEntityQueries
+      .getRemainingItemsInOrder(listId.toLong())
+      .executeAsList()
+
+    remainingItems.forEachIndexed { index, item ->
+      database.listMediaItemEntityQueries.updateItemOrder(
+        itemOrder = index.toLong(),
+        listId = item.listId,
+        mediaItemId = item.mediaItemId,
+        mediaType = item.mediaType,
+      )
+    }
+
+    database.listItemEntityQueries.decreaseListItemCountBy(
+      id = listId.toLong(),
+      size = items.size.toLong(),
+    )
   }
 
   private fun fetchListDetails(id: Long): Flow<ListDetails?> = database
@@ -104,7 +145,7 @@ class ProdListDao(
       it.mapNotNull { entity ->
         database
           .mediaItemEntityQueries
-          .selectMediaItemById(entity.mediaItemId)
+          .selectMediaItemByIdAndType(entity.mediaItemId, entity.mediaType)
           .executeAsOneOrNull()
           ?.map()
       }

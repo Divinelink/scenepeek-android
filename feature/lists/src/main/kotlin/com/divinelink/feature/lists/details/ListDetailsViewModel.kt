@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.onError
+import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchListParameters
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class ListDetailsViewModel(
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
+  private val repository: ListRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -68,17 +72,17 @@ class ListDetailsViewModel(
                   details = if (isRefreshing) {
                     ListDetailsData.Data(
                       data = listDetails,
+                      pages = mapOf(1 to listDetails.media),
                     )
                   } else {
                     when (uiState.details) {
                       is ListDetailsData.Initial -> ListDetailsData.Data(
                         data = listDetails,
+                        pages = mapOf(1 to listDetails.media),
                       )
                       is ListDetailsData.Data -> ListDetailsData.Data(
-                        data = listDetails.copy(
-                          media = (uiState.details.data.media + listDetails.media)
-                            .distinctBy { it.id },
-                        ),
+                        data = listDetails,
+                        pages = uiState.details.pages + (listDetails.page to listDetails.media),
                       )
                     }
                   },
@@ -131,14 +135,15 @@ class ListDetailsViewModel(
         // Do nothing
       }
       is ListDetailsAction.SelectMedia -> _uiState.update { uiState ->
-        if (uiState.selectedMediaIds.contains(action.mediaId)) {
+        val reference = action.media.toStub()
+        if (uiState.selectedMediaIds.contains(reference)) {
           uiState.copy(
-            selectedMediaIds = uiState.selectedMediaIds - action.mediaId,
+            selectedMediaIds = uiState.selectedMediaIds - reference,
           )
         } else {
           uiState.copy(
             multipleSelectMode = true,
-            selectedMediaIds = uiState.selectedMediaIds + action.mediaId,
+            selectedMediaIds = uiState.selectedMediaIds + reference,
           )
         }
       }
@@ -149,7 +154,9 @@ class ListDetailsViewModel(
       }
       ListDetailsAction.OnSelectAll -> _uiState.update { uiState ->
         if (uiState.details is ListDetailsData.Data) {
-          uiState.copy(selectedMediaIds = uiState.details.data.media.map { it.id })
+          uiState.copy(
+            selectedMediaIds = uiState.details.data.media.map { it.toStub() },
+          )
         } else {
           uiState
         }
@@ -160,6 +167,7 @@ class ListDetailsViewModel(
           selectedMediaIds = emptyList(),
         )
       }
+      is ListDetailsAction.OnRemoveItems -> onRemoveItems(action.items)
     }
   }
 
@@ -170,5 +178,17 @@ class ListDetailsViewModel(
       )
     }
     fetchListDetails(isRefreshing = true)
+  }
+
+  private fun onRemoveItems(items: List<MediaReference>) {
+    viewModelScope.launch {
+      repository.removeItems(
+        listId = _uiState.value.id,
+        items = items,
+      ).fold(
+        onSuccess = {},
+        onFailure = {},
+      )
+    }
   }
 }

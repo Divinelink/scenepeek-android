@@ -166,6 +166,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               ListDetailsAction.OnSelectAll,
               ListDetailsAction.OnDismissMultipleSelect,
               is ListDetailsAction.SelectMedia,
+              is ListDetailsAction.OnRemoveItems,
               -> viewModel.onAction(action)
               is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
                 DetailsRoute(

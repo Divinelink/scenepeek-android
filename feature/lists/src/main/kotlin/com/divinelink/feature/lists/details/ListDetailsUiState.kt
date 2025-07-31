@@ -2,6 +2,7 @@ package com.divinelink.feature.lists.details
 
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.details.ListDetailsData
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class ListDetailsUiState(
@@ -11,7 +12,7 @@ data class ListDetailsUiState(
   val error: BlankSlateState?,
   val refreshing: Boolean,
   val loadingMore: Boolean,
-  val selectedMediaIds: List<Int>,
+  val selectedMediaIds: List<MediaReference>,
   val multipleSelectMode: Boolean,
 ) {
   companion object {

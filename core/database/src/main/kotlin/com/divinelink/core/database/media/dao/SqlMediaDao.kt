@@ -1,10 +1,11 @@
 package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 
 interface SqlMediaDao {
 
-  fun fetchMediaItemById(mediaId: Int): MediaItem.Media?
+  fun fetchMedia(media: MediaReference): MediaItem.Media?
 
   fun insertMedia(media: MediaItem.Media)
 

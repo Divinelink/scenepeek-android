@@ -2,6 +2,7 @@ package com.divinelink.core.database.list
 
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import kotlinx.coroutines.flow.Flow
 
 interface ListDao {
@@ -24,7 +25,13 @@ interface ListDao {
 
   fun insertMediaToList(
     listId: Int,
+    mediaType: String,
     mediaId: Int,
+  )
+
+  fun removeMediaFromList(
+    listId: Int,
+    items: List<MediaReference>,
   )
 
   fun insertAtTheTopOfList(

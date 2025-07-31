@@ -1,5 +1,6 @@
 package com.divinelink.core.network.list.service
 
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.account.util.buildFetchListsUrl
 import com.divinelink.core.network.client.AuthTMDbClient
@@ -9,10 +10,12 @@ import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.create.CreateListRequest
 import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
+import com.divinelink.core.network.list.model.remove.RemoveItemsRequest
+import com.divinelink.core.network.list.model.remove.RemoveItemsResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
-import com.divinelink.core.network.list.util.buildAddItemsToListUrl
 import com.divinelink.core.network.list.util.buildFetchListDetailsUrl
+import com.divinelink.core.network.list.util.buildListItemsUrl
 import com.divinelink.core.network.list.util.buildListUrl
 import com.divinelink.core.network.list.util.buildListWithIdUrl
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +29,7 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
     mediaType: String,
   ): Result<AddToListResponse> = runCatching {
     client.post<AddToListRequest, AddToListResponse>(
-      url = buildAddItemsToListUrl(listId),
+      url = buildListItemsUrl(listId),
       body = AddToListRequest(
         listOf(
           MediaItemRequest(
@@ -87,5 +90,17 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
     val url = buildListWithIdUrl(listId)
 
     client.put<UpdateListRequest, UpdateListResponse>(url, request)
+  }
+
+  override suspend fun removeItems(
+    listId: Int,
+    items: List<MediaReference>,
+  ): Result<RemoveItemsResponse> = runCatching {
+    val url = buildListItemsUrl(listId)
+
+    client.delete<RemoveItemsRequest, RemoveItemsResponse>(
+      url = url,
+      body = RemoveItemsRequest.fromMediaReference(items),
+    )
   }
 }

@@ -34,6 +34,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.toStub
 import com.divinelink.core.ui.DetailedMediaItem
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ScrollToTopButton
@@ -89,9 +90,9 @@ fun ListScrollableContent(
     ActionMenuModal(
       mediaItem = showActionModal!!,
       onDismissRequest = { showActionModal = null },
-      entryPoint = ActionMenuEntryPoint.ListDetails,
+      entryPoint = ActionMenuEntryPoint.ListDetails(state.id),
       onMultiSelect = { media ->
-        action(ListDetailsAction.SelectMedia(mediaId = media.id))
+        action(ListDetailsAction.SelectMedia(media))
         showActionModal = null
       },
       onNavigateToAddToList = onNavigateToAddToList,
@@ -157,7 +158,7 @@ fun ListScrollableContent(
           DetailedMediaItemSkeleton()
         }
 
-        is ListDetailsData.Data -> if (state.details.data.media.isEmpty()) {
+        is ListDetailsData.Data -> if (state.details.media.isEmpty()) {
           item {
             Text(
               modifier = Modifier
@@ -171,24 +172,26 @@ fun ListScrollableContent(
           }
         } else {
           items(
-            items = state.details.data.media,
-            key = { it.id },
+            items = state.details.media,
+            key = { it.uniqueIdentifier },
           ) { media ->
-            val isSelected = state.selectedMediaIds.contains(media.id)
+            val isSelected = state.selectedMediaIds.contains(media.toStub())
 
             SelectableCard(
-              modifier = Modifier.semantics {
-                contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
-                  media.name,
-                  isSelected,
-                )
-              },
+              modifier = Modifier
+                .animateItem()
+                .semantics {
+                  contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                    media.name,
+                    isSelected,
+                  )
+                },
               isSelected = isSelected,
               isSelectionMode = state.multipleSelectMode,
               onClick = {
                 if (state.multipleSelectMode) {
                   action(
-                    ListDetailsAction.SelectMedia(mediaId = media.id),
+                    ListDetailsAction.SelectMedia(media),
                   )
                 } else {
                   action(
@@ -203,7 +206,7 @@ fun ListScrollableContent(
                 if (showActionModal == null) {
                   showActionModal = media
                 } else {
-                  action(ListDetailsAction.SelectMedia(mediaId = media.id))
+                  action(ListDetailsAction.SelectMedia(media = media))
                 }
               },
             ) { onClick, onLongClick ->
@@ -240,7 +243,7 @@ fun ListScrollableContent(
 
     MultipleSelectHeader(
       visible = state.multipleSelectMode,
-      selectedItems = state.selectedMediaIds.toList(),
+      selectedItems = state.selectedMediaIds,
       totalItemCount = (state.details as? ListDetailsData.Data)?.data?.media?.size ?: 0,
       onSelectAll = { action(ListDetailsAction.OnSelectAll) },
       onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },

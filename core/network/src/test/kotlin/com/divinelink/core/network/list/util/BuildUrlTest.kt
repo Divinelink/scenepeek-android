@@ -8,7 +8,7 @@ class BuildUrlTest {
   @Test
   fun `test buildAddItemsToListUrl`() {
     assertThat(
-      buildAddItemsToListUrl(12345),
+      buildListItemsUrl(12345),
     ).isEqualTo(
       "https://api.themoviedb.org/4/list/12345/items",
     )

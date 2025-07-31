@@ -1,25 +1,27 @@
 CREATE TABLE ListMediaItemEntity (
     listId INTEGER NOT NULL,
     mediaItemId INTEGER NOT NULL,
+    mediaType TEXT NOT NULL,
     itemOrder INTEGER NOT NULL,
     FOREIGN KEY (listId) REFERENCES ListDetailsEntity(id) ON DELETE CASCADE,
     FOREIGN KEY (mediaItemId) REFERENCES MediaItemEntity(id) ON DELETE CASCADE,
-    UNIQUE(listId, mediaItemId)
+    UNIQUE(listId, mediaItemId, mediaType)
 );
 
 insertListMediaItem:
 INSERT OR REPLACE INTO ListMediaItemEntity (
-    listId, mediaItemId, itemOrder
-) VALUES (?, ?, ?);
+    listId, mediaItemId, mediaType, itemOrder
+) VALUES (?, ?, ?,?);
 
 checkIfItemExistsInList:
 SELECT 1 FROM ListMediaItemEntity
-WHERE listId = ? AND mediaItemId = ?;
+WHERE listId = ? AND mediaItemId = ? AND mediaType = ?;
 
 insertListMediaItemAtBottom:
 INSERT OR IGNORE INTO ListMediaItemEntity (
-    listId, mediaItemId, itemOrder
+    listId, mediaItemId, mediaType, itemOrder
 ) VALUES (
+    ?,
     ?,
     ?,
     COALESCE((SELECT MAX(itemOrder) FROM ListMediaItemEntity WHERE listId = ?), -1) + 1
@@ -40,3 +42,20 @@ ORDER BY lmi.itemOrder;
 
 deleteListMediaItem:
 DELETE FROM ListMediaItemEntity WHERE listId = ?;
+
+deleteMediaFromList:
+DELETE FROM ListMediaItemEntity
+WHERE listId = ? AND mediaItemId = ? AND mediaType = ?;
+
+-- Get remaining items in order
+getRemainingItemsInOrder:
+SELECT listId, mediaItemId, mediaType, itemOrder
+FROM ListMediaItemEntity
+WHERE listId = ?
+ORDER BY itemOrder;
+
+-- Update item order by composite key
+updateItemOrder:
+UPDATE ListMediaItemEntity
+SET itemOrder = ?
+WHERE listId = ? AND mediaItemId = ? AND mediaType = ?;

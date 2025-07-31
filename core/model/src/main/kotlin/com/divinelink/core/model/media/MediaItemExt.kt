@@ -13,3 +13,8 @@ fun MediaItem.shareUrl(): String {
     MediaItem.Unknown -> ""
   }
 }
+
+fun MediaItem.toStub(): MediaReference = MediaReference(
+  mediaId = id,
+  mediaType = mediaType,
+)

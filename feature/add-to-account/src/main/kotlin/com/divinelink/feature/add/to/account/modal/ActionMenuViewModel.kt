@@ -2,8 +2,10 @@ package com.divinelink.feature.add.to.account.modal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.shareUrl
+import com.divinelink.core.model.media.toStub
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 class ActionMenuViewModel(
   entryPoint: ActionMenuEntryPoint,
   mediaItem: MediaItem,
+  private val listRepository: ListRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ActionMenuUiState> = MutableStateFlow(
@@ -38,12 +41,21 @@ class ActionMenuViewModel(
       ActionMenuIntent.AddToList -> viewModelScope.launch {
         _addToList.send(_uiState.value.media)
       }
-      ActionMenuIntent.RemoveFromList -> {
-        // TODO Implement
-      }
+      ActionMenuIntent.RemoveFromList -> removeItemFromList()
       ActionMenuIntent.MultiSelect -> {
         // Do nothing
       }
+    }
+  }
+
+  private fun removeItemFromList() {
+    if (uiState.value.entryPoint !is ActionMenuEntryPoint.ListDetails) return
+
+    viewModelScope.launch {
+      listRepository.removeItems(
+        listId = (uiState.value.entryPoint as ActionMenuEntryPoint.ListDetails).listId,
+        items = listOf(_uiState.value.media.toStub()),
+      )
     }
   }
 }

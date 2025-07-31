@@ -11,6 +11,8 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.account.mapper.map
 import com.divinelink.core.network.list.mapper.add.map
@@ -46,7 +48,11 @@ class ProdListRepository(
     .map { it.map() }
     .also {
       if (it.data is AddToListResult.Success) {
-        listDao.insertMediaToList(listId = listId, mediaId = mediaId)
+        listDao.insertMediaToList(
+          listId = listId,
+          mediaType = mediaType,
+          mediaId = mediaId,
+        )
       }
     }
 
@@ -168,4 +174,20 @@ class ProdListRepository(
 
   override suspend fun fetchListsBackdrops(listId: Int): Flow<Map<String, String>> = listDao
     .fetchListsBackdrops(listId)
+
+  override suspend fun removeItems(
+    listId: Int,
+    items: List<MediaReference>,
+  ): Result<Unit> = service
+    .removeItems(
+      listId = listId,
+      items = items,
+    )
+    .map { response ->
+      val successfullyRemoved = response.results
+        .filter { it.success }
+        .map { MediaReference(it.mediaId, mediaType = MediaType.from(it.mediaType)) }
+
+      listDao.removeMediaFromList(listId, successfullyRemoved)
+    }
 }

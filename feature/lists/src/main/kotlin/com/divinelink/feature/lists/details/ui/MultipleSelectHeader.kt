@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.lists.R
 import com.divinelink.core.ui.R as uiR
@@ -37,7 +38,7 @@ import com.divinelink.core.ui.R as uiR
 fun BoxScope.MultipleSelectHeader(
   modifier: Modifier = Modifier,
   visible: Boolean,
-  selectedItems: List<Int>,
+  selectedItems: List<MediaReference>,
   totalItemCount: Int,
   onSelectAll: () -> Unit,
   onDeselectAll: () -> Unit,
