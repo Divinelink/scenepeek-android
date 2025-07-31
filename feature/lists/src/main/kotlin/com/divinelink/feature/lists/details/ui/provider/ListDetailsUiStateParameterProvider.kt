@@ -155,7 +155,7 @@ class ListDetailsUiStateParameterProvider : PreviewParameterProvider<ListDetails
       error = null,
       refreshing = false,
       loadingMore = false,
-      selectedMediaIds = MediaItemFactory.MoviesList().take(5).map { it.id },
+      selectedMediaIds = MediaItemFactory.MoviesList().take(2).map { it.id },
       multipleSelectMode = true,
     ),
   )

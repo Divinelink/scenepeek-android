@@ -9,7 +9,7 @@ import com.divinelink.feature.lists.details.ui.provider.ListDetailsUiStateParame
 
 @Composable
 @Previews
-fun UserListsContentScreenshots(
+fun ListDetailsContentScreenshots(
   @PreviewParameter(ListDetailsUiStateParameterProvider::class) state: ListDetailsUiState,
 ) {
   ListDetailsContentPreview(state)
