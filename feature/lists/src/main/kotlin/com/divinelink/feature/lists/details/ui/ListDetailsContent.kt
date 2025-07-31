@@ -18,7 +18,6 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
-import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsUiState
 import com.divinelink.feature.lists.details.ui.provider.ListDetailsUiStateParameterProvider
@@ -32,11 +31,6 @@ fun ListDetailsContent(
   onBackdropLoaded: () -> Unit,
   onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
-  SnackbarMessageHandler(
-    snackbarMessage = state.snackbarMessage,
-    onDismissSnackbar = { action(ListDetailsAction.ConsumeSnackbarMessage) },
-  )
-
   PullToRefreshBox(
     isRefreshing = state.refreshing,
     onRefresh = { action(ListDetailsAction.Refresh) },

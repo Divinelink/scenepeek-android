@@ -42,6 +42,7 @@ import com.divinelink.core.scaffold.ScaffoldFab
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -101,6 +102,11 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
       updateStatusBarColor(view = view, setLight = !isDarkTheme)
     }
   }
+
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = { viewModel.onAction(ListDetailsAction.ConsumeSnackbarMessage) },
+  )
 
   rememberScaffoldState(
     animatedVisibilityScope = this,
