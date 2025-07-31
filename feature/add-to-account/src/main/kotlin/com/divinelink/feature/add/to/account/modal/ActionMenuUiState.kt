@@ -1,11 +1,23 @@
 package com.divinelink.feature.add.to.account.modal
 
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class ActionMenuUiState(
   val media: MediaItem,
   val entryPoint: ActionMenuEntryPoint,
+  val snackbarMessage: SnackbarMessage?,
 ) {
+  companion object {
+    fun initial(
+      media: MediaItem,
+      entryPoint: ActionMenuEntryPoint,
+    ): ActionMenuUiState = ActionMenuUiState(
+      media = media,
+      entryPoint = entryPoint,
+      snackbarMessage = null,
+    )
+  }
 
   val availableActions = when (entryPoint) {
     is ActionMenuEntryPoint.ListDetails -> listOf(
@@ -16,16 +28,6 @@ data class ActionMenuUiState(
     )
     ActionMenuEntryPoint.Other -> listOf(
       ActionMenuIntent.Share,
-    )
-  }
-
-  companion object {
-    fun initial(
-      media: MediaItem,
-      entryPoint: ActionMenuEntryPoint,
-    ): ActionMenuUiState = ActionMenuUiState(
-      media = media,
-      entryPoint = entryPoint,
     )
   }
 }

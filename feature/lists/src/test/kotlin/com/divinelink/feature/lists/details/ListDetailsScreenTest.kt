@@ -342,7 +342,10 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails(1234),
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
       )
@@ -424,7 +427,10 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails(1234),
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
       )
@@ -528,7 +534,10 @@ class ListDetailsScreenTest : ComposeTest() {
 
     declare {
       ActionMenuViewModel(
-        entryPoint = ActionMenuEntryPoint.ListDetails(1234),
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
       )

@@ -12,10 +12,12 @@ sealed interface ListDetailsAction {
     val mediaType: MediaType,
   ) : ListDetailsAction
 
-  data class SelectMedia(val media: MediaItem) : ListDetailsAction
+  data class SelectMedia(val media: MediaItem.Media) : ListDetailsAction
   data object OnDeselectAll : ListDetailsAction
   data object OnSelectAll : ListDetailsAction
   data object OnDismissMultipleSelect : ListDetailsAction
 
   data object OnRemoveItems : ListDetailsAction
+
+  data object ConsumeSnackbarMessage : ListDetailsAction
 }

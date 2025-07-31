@@ -168,6 +168,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               ListDetailsAction.OnDismissMultipleSelect,
               is ListDetailsAction.SelectMedia,
               is ListDetailsAction.OnRemoveItems,
+              is ListDetailsAction.ConsumeSnackbarMessage,
               -> viewModel.onAction(action)
               is ListDetailsAction.OnItemClick -> onNavigateToMediaDetails(
                 DetailsRoute(
@@ -178,19 +179,9 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               )
             }
           },
-          onShowTitle = { show ->
-            isAppBarVisible = show
-          },
-          onBackdropLoaded = {
-            onBackdropLoaded = true
-          },
-          onNavigateToAddToList = {
-            onNavigateToAddToList(
-              AddToListRoute(
-                it.toStub(),
-              ),
-            )
-          },
+          onShowTitle = { show -> isAppBarVisible = show },
+          onBackdropLoaded = { onBackdropLoaded = true },
+          onNavigateToAddToList = { onNavigateToAddToList(AddToListRoute(it.toStub())) },
         )
       }
     },

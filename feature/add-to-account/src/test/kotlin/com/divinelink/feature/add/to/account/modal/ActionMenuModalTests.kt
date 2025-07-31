@@ -24,7 +24,10 @@ class ActionMenuModalTests : ComposeTest() {
   fun `test ActionMenuModal for ListDetails`() {
     val viewModel = ActionMenuViewModel(
       listRepository = repository.mock,
-      entryPoint = ActionMenuEntryPoint.ListDetails(1234),
+      entryPoint = ActionMenuEntryPoint.ListDetails(
+        listId = 1234,
+        listName = "TV Shows",
+      ),
       mediaItem = MediaItemFactory.theWire(),
     )
     var mediaItem: MediaItem? = null
@@ -32,7 +35,10 @@ class ActionMenuModalTests : ComposeTest() {
     setContentWithTheme {
       ActionMenuModal(
         mediaItem = MediaItemFactory.theWire(),
-        entryPoint = ActionMenuEntryPoint.ListDetails(listId = 1234),
+        entryPoint = ActionMenuEntryPoint.ListDetails(
+          listId = 1234,
+          listName = "TV Shows",
+        ),
         onDismissRequest = {},
         onMultiSelect = {
           mediaItem = it

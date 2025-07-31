@@ -94,8 +94,12 @@ fun ListScrollableContent(
     ActionMenuModal(
       mediaItem = showActionModal!!,
       onDismissRequest = { showActionModal = null },
-      entryPoint = ActionMenuEntryPoint.ListDetails(state.id),
+      entryPoint = ActionMenuEntryPoint.ListDetails(
+        listId = state.id,
+        listName = state.details.name,
+      ),
       onMultiSelect = { media ->
+        if (media !is MediaItem.Media) return@ActionMenuModal
         action(ListDetailsAction.SelectMedia(media))
         showActionModal = null
       },
@@ -110,17 +114,14 @@ fun ListScrollableContent(
         action(ListDetailsAction.OnRemoveItems)
         showRemoveItemsDialog = false
       },
-      item = if (state.selectedMediaIds.size == 1) {
+      item = if (state.selectedMedia.size == 1) {
         RemoveItem.Item(
-          name = (state.details as? ListDetailsData.Data)?.media?.find {
-            it.id == state.selectedMediaIds.firstOrNull()?.mediaId &&
-              it.mediaType == state.selectedMediaIds.firstOrNull()?.mediaType
-          }?.name ?: "",
+          name = state.selectedMedia.firstOrNull()?.name ?: "",
           listName = state.details.name,
         )
       } else {
         RemoveItem.Batch(
-          size = state.selectedMediaIds.size,
+          size = state.selectedMedia.size,
           listName = state.details.name,
         )
       },
@@ -203,7 +204,7 @@ fun ListScrollableContent(
             items = state.details.media,
             key = { it.uniqueIdentifier },
           ) { media ->
-            val isSelected = state.selectedMediaIds.contains(media.toStub())
+            val isSelected = state.selectedMedia.contains(media)
 
             SelectableCard(
               modifier = Modifier
@@ -271,7 +272,7 @@ fun ListScrollableContent(
 
     MultipleSelectHeader(
       visible = state.multipleSelectMode,
-      selectedItems = state.selectedMediaIds,
+      selectedItems = state.selectedMedia.map { it.toStub() },
       totalItemCount = (state.details as? ListDetailsData.Data)?.media?.size ?: 0,
       onSelectAll = { action(ListDetailsAction.OnSelectAll) },
       onDeselectAll = { action(ListDetailsAction.OnDeselectAll) },

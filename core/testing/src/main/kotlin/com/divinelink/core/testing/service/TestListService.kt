@@ -4,6 +4,7 @@ import com.divinelink.core.network.account.model.ListsResponse
 import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
+import com.divinelink.core.network.list.model.remove.RemoveItemsResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.service.ListService
@@ -47,5 +48,11 @@ class TestListService {
     response: Result<UpdateListResponse>,
   ) {
     whenever(mock.updateList(id, request)).thenReturn(response)
+  }
+
+  suspend fun mockRemoveItems(response: Result<RemoveItemsResponse>) {
+    whenever(mock.removeItems(listId = any(), items = any())).thenReturn(
+      response,
+    )
   }
 }

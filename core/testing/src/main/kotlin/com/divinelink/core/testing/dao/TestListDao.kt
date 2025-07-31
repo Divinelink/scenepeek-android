@@ -89,4 +89,11 @@ class TestListDao {
   fun verifyNoInteraction() {
     verifyNoInteractions(mock)
   }
+
+  fun verifyRemoveItems(
+    listId: Int,
+    items: List<MediaReference>,
+  ) {
+    verify(mock).removeMediaFromList(listId, items)
+  }
 }

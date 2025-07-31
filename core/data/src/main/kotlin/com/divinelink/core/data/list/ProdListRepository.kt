@@ -175,16 +175,17 @@ class ProdListRepository(
   override suspend fun removeItems(
     listId: Int,
     items: List<MediaReference>,
-  ): Result<Unit> = service
+  ): Result<Int> = service
     .removeItems(
       listId = listId,
       items = items,
     )
     .map { response ->
       val successfullyRemoved = response.results
-        .filter { it.success }
         .map { MediaReference(it.mediaId, mediaType = MediaType.from(it.mediaType)) }
 
       listDao.removeMediaFromList(listId, successfullyRemoved)
+
+      successfullyRemoved.size
     }
 }

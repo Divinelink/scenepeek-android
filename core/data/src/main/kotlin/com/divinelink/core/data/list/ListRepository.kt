@@ -43,5 +43,5 @@ interface ListRepository {
   suspend fun removeItems(
     listId: Int,
     items: List<MediaReference>,
-  ): Result<Unit>
+  ): Result<Int>
 }

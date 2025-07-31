@@ -7,17 +7,22 @@ import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.domain.list.FetchListDetailsUseCase
 import com.divinelink.core.domain.list.FetchListParameters
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
-import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.toStub
 import com.divinelink.core.navigation.route.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.add.to.account.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.divinelink.core.ui.R as uiR
+import com.divinelink.feature.add.to.account.R as accountR
 
 class ListDetailsViewModel(
   private val fetchListDetailsUseCase: FetchListDetailsUseCase,
@@ -135,27 +140,27 @@ class ListDetailsViewModel(
         // Do nothing
       }
       is ListDetailsAction.SelectMedia -> _uiState.update { uiState ->
-        val reference = action.media.toStub()
-        if (uiState.selectedMediaIds.contains(reference)) {
+        val reference = action.media
+        if (uiState.selectedMedia.contains(reference)) {
           uiState.copy(
-            selectedMediaIds = uiState.selectedMediaIds - reference,
+            selectedMedia = uiState.selectedMedia - reference,
           )
         } else {
           uiState.copy(
             multipleSelectMode = true,
-            selectedMediaIds = uiState.selectedMediaIds + reference,
+            selectedMedia = uiState.selectedMedia + reference,
           )
         }
       }
       ListDetailsAction.OnDeselectAll -> _uiState.update {
         it.copy(
-          selectedMediaIds = emptyList(),
+          selectedMedia = emptyList(),
         )
       }
       ListDetailsAction.OnSelectAll -> _uiState.update { uiState ->
         if (uiState.details is ListDetailsData.Data) {
           uiState.copy(
-            selectedMediaIds = uiState.details.media.map { it.toStub() },
+            selectedMedia = uiState.details.media,
           )
         } else {
           uiState
@@ -164,10 +169,15 @@ class ListDetailsViewModel(
       ListDetailsAction.OnDismissMultipleSelect -> _uiState.update { uiState ->
         uiState.copy(
           multipleSelectMode = false,
-          selectedMediaIds = emptyList(),
+          selectedMedia = emptyList(),
         )
       }
-      ListDetailsAction.OnRemoveItems -> onRemoveItems(uiState.value.selectedMediaIds)
+      ListDetailsAction.OnRemoveItems -> onRemoveItems(uiState.value.selectedMedia)
+      ListDetailsAction.ConsumeSnackbarMessage -> _uiState.update { uiState ->
+        uiState.copy(
+          snackbarMessage = null,
+        )
+      }
     }
   }
 
@@ -180,26 +190,56 @@ class ListDetailsViewModel(
     fetchListDetails(isRefreshing = true)
   }
 
-  private fun onRemoveItems(items: List<MediaReference>) {
+  private fun onRemoveItems(items: List<MediaItem.Media>) {
     viewModelScope.launch {
       repository.removeItems(
         listId = _uiState.value.id,
-        items = items,
+        items = items.map { it.toStub() },
       ).fold(
-        onSuccess = {
+        onSuccess = { result ->
           _uiState.update {
+            val snackbarMessage = when (result) {
+              0 -> null
+              1 -> SnackbarMessage.from(
+                UIText.ResourceText(
+                  accountR.string.feature_add_to_account_remove_single_item_success,
+                  items.first().name,
+                  uiState.value.details.name,
+                ),
+              )
+              else -> SnackbarMessage.from(
+                UIText.ResourceText(
+                  accountR.string.feature_add_to_account_remove_batch_items_success,
+                  items.size,
+                  uiState.value.details.name,
+                ),
+              )
+            }
             it.copy(
               multipleSelectMode = false,
-              selectedMediaIds = emptyList(),
+              selectedMedia = emptyList(),
+              snackbarMessage = snackbarMessage,
             )
           }
         },
-        onFailure = {
-          _uiState.update {
-            it.copy(
-              multipleSelectMode = false,
-              selectedMediaIds = emptyList(),
-            )
+        onFailure = { error ->
+          when (error) {
+            is AppException.Offline -> _uiState.update {
+              it.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  UIText.ResourceText(
+                    R.string.feature_add_to_account_remove_from_list_offline_error,
+                  ),
+                ),
+              )
+            }
+            else -> _uiState.update {
+              it.copy(
+                snackbarMessage = error.message?.let { message ->
+                  SnackbarMessage.from(UIText.StringText(message))
+                } ?: SnackbarMessage.from(UIText.ResourceText(uiR.string.core_ui_error_retry)),
+              )
+            }
           }
         },
       )

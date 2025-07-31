@@ -11,7 +11,10 @@ class ActionMenuUiStateParameterProvider : PreviewParameterProvider<ActionMenuUi
   override val values: Sequence<ActionMenuUiState> = sequenceOf(
     ActionMenuUiState.initial(
       media = MediaItemFactory.theWire(),
-      entryPoint = ActionMenuEntryPoint.ListDetails(listId = 123),
+      entryPoint = ActionMenuEntryPoint.ListDetails(
+        listName = "TV Shows",
+        listId = 123,
+      ),
     ),
     ActionMenuUiState.initial(
       media = MediaItemFactory.FightClub(),
