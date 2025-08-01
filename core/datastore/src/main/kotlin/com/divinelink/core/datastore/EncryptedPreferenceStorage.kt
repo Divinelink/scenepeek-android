@@ -1,17 +1,12 @@
 package com.divinelink.core.datastore
 
-import android.content.Context
+import android.app.Application
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import java.util.UUID
+import java.security.KeyStore
 
 interface EncryptedStorage {
-  suspend fun setTmdbAuthToken(key: String)
-  val tmdbAuthToken: String
-
   suspend fun clearSession()
   suspend fun setSessionId(sessionId: String)
   val sessionId: String?
@@ -33,27 +28,10 @@ interface EncryptedStorage {
   val jellyseerrPassword: String?
 }
 
-class EncryptedPreferenceStorage(
-  private val preferenceStorage: PreferenceStorage,
-  context: Context,
-) : EncryptedStorage {
-
-  private var masterKey: MasterKey = MasterKey
-    .Builder(context)
-    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-    .build()
-
-  // Known issue: https://issuetracker.google.com/issues/158234058
-  private val encryptedPreferences: SharedPreferences = EncryptedSharedPreferences(
-    context = context,
-    fileName = getFileName(),
-    masterKey = masterKey,
-    prefKeyEncryptionScheme = EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-    prefValueEncryptionScheme = EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-  )
+class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPreferences) :
+  EncryptedStorage {
 
   object PreferencesKeys {
-    const val SECRET_TMDB_AUTH_TOKEN = "secret.tmdb.auth.token"
     const val SECRET_TMDB_SESSION_ID = "secret.tmdb.token.id"
     const val SECRET_JELLYSEERR_AUTH_COOKIE = "secret.jellyseerr.auth.cookie"
     const val SECRET_JELLYSEERR_PASSWORD = "secret.jellyseerr.password"
@@ -61,16 +39,6 @@ class EncryptedPreferenceStorage(
     const val SECRET_TMDB_ACCESS_TOKEN = "secret.tmdb.access.token"
     const val SECRET_TMDB_ACCOUNT_ID = "secret.tmdb.account.id"
   }
-
-  override suspend fun setTmdbAuthToken(key: String) {
-    with(encryptedPreferences.edit()) {
-      putString(PreferencesKeys.SECRET_TMDB_AUTH_TOKEN, key)
-      apply()
-    }
-  }
-
-  override val tmdbAuthToken: String
-    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_AUTH_TOKEN, "") ?: ""
 
   override suspend fun setSessionId(sessionId: String) {
     with(encryptedPreferences.edit()) {
@@ -156,24 +124,43 @@ class EncryptedPreferenceStorage(
 
   override val jellyseerrPassword: String?
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_PASSWORD, null)
-
-  /**
-   * Known issue: https://issuetracker.google.com/issues/158234058
-   * This library makes the app crash when re-installing,
-   * so we have to make a by-pass for now until Google fixes it.
-   *
-   * Therefore we have to create a new encryption file name in case the current one is not available
-   * and save that to our data store preferences.
-   */
-  private fun getFileName(): String = runBlocking {
-    val encryptedFileName = preferenceStorage.encryptedPreferences.first()
-    if (encryptedFileName == null) {
-      val newEncryptedFileName = UUID.randomUUID().toString() + ".encrypted.secrets"
-      preferenceStorage.setEncryptedPreferences(newEncryptedFileName)
-      return@runBlocking newEncryptedFileName
-    } else {
-      preferenceStorage.setEncryptedPreferences(encryptedFileName)
-      return@runBlocking encryptedFileName
-    }
-  }
 }
+
+/**
+ * Completely destroys the keystore master key and encrypted shared preferences file. This will
+ * cause all users to be logged out since the access and refresh tokens will be removed.
+ *
+ * This is not desirable and should only be called if we have completely failed to access our
+ * encrypted shared preferences instance.
+ */
+fun destroyEncryptedSharedPreferencesAndRebuild(application: Application): SharedPreferences {
+  // Delete the master key
+  KeyStore.getInstance(KeyStore.getDefaultType()).run {
+    load(null)
+    deleteEntry(MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+  }
+  // Deletes the encrypted shared preferences file
+  application.deleteSharedPreferences(application.encryptedSharedPreferencesName)
+  // Attempts to create the encrypted shared preferences instance
+  return getEncryptedSharedPreferences(application = application)
+}
+
+/**
+ * Helper method to get the app's encrypted shared preferences instance.
+ */
+fun getEncryptedSharedPreferences(application: Application): SharedPreferences =
+  EncryptedSharedPreferences.create(
+    application,
+    application.encryptedSharedPreferencesName,
+    MasterKey.Builder(application)
+      .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+      .build(),
+    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+  )
+
+/**
+ * Helper method to get the app's encrypted shared preferences name.
+ */
+private val Application.encryptedSharedPreferencesName: String
+  get() = "${packageName}_encrypted_preferences"

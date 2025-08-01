@@ -7,6 +7,7 @@ import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
@@ -15,6 +16,7 @@ import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -55,7 +57,7 @@ class GetAccountDetailsUseCaseTest {
   }
 
   @Test
-  fun `given sessionId, when getAccountDetails is called, then return success`() = runTest {
+  fun `given no account id when getAccountDetails is called return unauthenticated`() = runTest {
     val sessionStorage = createSessionStorage(sessionId = "session_id")
 
     repository.mockGetAccountDetails(
@@ -74,8 +76,11 @@ class GetAccountDetailsUseCaseTest {
       assertThat(awaitItem()).isInstanceOf(
         Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
       )
-      assertThat(awaitItem()).isEqualTo(
-        Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())),
+      assertThat(awaitItem()).isInstanceOf(
+        Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
+      )
+      assertThat(awaitItem()).isInstanceOf(
+        Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
       )
     }
   }
@@ -137,17 +142,13 @@ class GetAccountDetailsUseCaseTest {
       )
     }
 
-    assertThat(sessionStorage.sessionId).isEqualTo("session_id")
-    assertThat(sessionStorage.encryptedStorage.accessToken).isEqualTo(
-      AccessTokenFactory.valid().accessToken,
-    )
-    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isEqualTo(
-      AccessTokenFactory.valid().accountId,
-    )
+    assertThat(sessionStorage.sessionId).isNull()
+    assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
+    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
   }
 
   @Test
-  fun `test getAccountDetails with other failure emits failure`() = runTest {
+  fun `test getAccountDetails with other failure emits failure and clears data`() = runTest {
     val sessionStorage = createSessionStorage(
       sessionId = "session_id",
       accessToken = AccessTokenFactory.valid(),
@@ -172,18 +173,117 @@ class GetAccountDetailsUseCaseTest {
       )
     }
 
-    assertThat(sessionStorage.sessionId).isEqualTo("session_id")
-    assertThat(sessionStorage.encryptedStorage.accessToken).isEqualTo(
-      AccessTokenFactory.valid().accessToken,
+    assertThat(sessionStorage.sessionId).isNull()
+    assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
+    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
+  }
+
+  @Test
+  fun `test getAccountDetails with unauthorised clears session`() = runTest {
+    val sessionStorage = createSessionStorage(
+      sessionId = "session_id",
+      accessToken = AccessTokenFactory.valid(),
     )
-    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isEqualTo(
-      AccessTokenFactory.valid().accountId,
+
+    repository.mockGetAccountDetails(
+      Result.failure(AppException.Unauthorized("Unauthorized")),
     )
+
+    val useCase = GetAccountDetailsUseCase(
+      storage = sessionStorage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(Unit).test {
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
+      )
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
+      )
+
+      assertThat(sessionStorage.sessionId).isNull()
+      assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
+      assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
+      assertThat(sessionStorage.accountStorage.accountDetails.first()).isNull()
+    }
+  }
+
+  @Test
+  fun `test getAccountDetails from local storage with unknown remote error`() = runTest {
+    val sessionStorage = createSessionStorage(
+      sessionId = "session_id",
+      accessToken = AccessTokenFactory.valid(),
+      accountStorage = FakeAccountStorage(
+        accountDetails = AccountDetailsFactory.Pinkman(),
+      ),
+    )
+
+    repository.mockGetAccountDetails(
+      Result.failure(AppException.Unknown()),
+    )
+
+    val useCase = GetAccountDetailsUseCase(
+      storage = sessionStorage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(Unit).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())),
+      )
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(AppException.Unknown()).toString(),
+      )
+
+      assertThat(sessionStorage.sessionId).isEqualTo("session_id")
+    }
+  }
+
+  @Test
+  fun `test getAccountDetails from local storage with unauthorised error clears data`() = runTest {
+    val sessionStorage = createSessionStorage(
+      sessionId = "session_id",
+      accessToken = AccessTokenFactory.valid(),
+      accountStorage = FakeAccountStorage(
+        accountDetails = AccountDetailsFactory.Pinkman(),
+      ),
+    )
+
+    repository.mockGetAccountDetails(
+      Result.failure(AppException.Unauthorized("Unauthorized")),
+    )
+
+    val useCase = GetAccountDetailsUseCase(
+      storage = sessionStorage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(Unit).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman())),
+      )
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
+      )
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
+      )
+
+      assertThat(sessionStorage.sessionId).isNull()
+      assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
+      assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
+      assertThat(sessionStorage.accountStorage.accountDetails.first()).isNull()
+    }
   }
 
   private fun createSessionStorage(
     sessionId: String? = null,
     accessToken: AccessToken? = null,
+    accountStorage: FakeAccountStorage = FakeAccountStorage(),
   ) = SessionStorage(
     storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(
@@ -191,6 +291,6 @@ class GetAccountDetailsUseCaseTest {
       accessToken = accessToken?.accessToken,
       tmdbAccountId = accessToken?.accountId,
     ),
-    accountStorage = FakeAccountStorage(),
+    accountStorage = accountStorage,
   )
 }

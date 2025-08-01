@@ -636,7 +636,7 @@ class ScenePeekAppTest : ComposeTest() {
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
-    getAccountDetailsUseCase.mockSuccess(Result.success(TMDBAccountFactory.loggedIn()))
+    getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
 
     getMediaDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(

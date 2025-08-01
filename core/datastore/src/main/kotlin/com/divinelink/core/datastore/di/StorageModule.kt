@@ -11,13 +11,15 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.account.AccountDetailsSerializer
 import com.divinelink.core.datastore.account.AccountPreferenceStorage
 import com.divinelink.core.datastore.account.AccountStorage
+import com.divinelink.core.datastore.destroyEncryptedSharedPreferencesAndRebuild
+import com.divinelink.core.datastore.getEncryptedSharedPreferences
 import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
 import com.divinelink.core.datastore.ui.DatastoreUiStorage
 import com.divinelink.core.datastore.ui.UiSettingsStorage
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import java.security.GeneralSecurityException
 
 val Context.accountDetailsDataStore by dataStore(
   fileName = AccountPreferenceStorage.PREFS_NAME,
@@ -52,7 +54,19 @@ val storageModule = module {
     DatastoreUiStorage(context.uiSettingsDataStore)
   }
 
-  singleOf(::EncryptedPreferenceStorage) { bind<EncryptedStorage>() }
+  single<EncryptedStorage> {
+    val preferenceStorage = try {
+      getEncryptedSharedPreferences(application = get())
+    } catch (_: GeneralSecurityException) {
+      // Handle when a bad master key or key-set has been attempted
+      destroyEncryptedSharedPreferencesAndRebuild(application = get())
+    } catch (@Suppress("TooGenericExceptionCaught") _: RuntimeException) {
+      // Handle KeystoreExceptions that get wrapped up in a RuntimeException
+      destroyEncryptedSharedPreferencesAndRebuild(application = get())
+    }
+
+    EncryptedPreferenceStorage(encryptedPreferences = preferenceStorage)
+  }
 
   singleOf(::SessionStorage)
 }

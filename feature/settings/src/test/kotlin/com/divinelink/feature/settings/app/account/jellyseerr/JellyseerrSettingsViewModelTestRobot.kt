@@ -6,6 +6,7 @@ import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -36,6 +37,11 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
   fun mockJellyseerrAccountDetailsResponse(response: Result<JellyseerrAccountDetails?>) = apply {
     getJellyseerrDetailsUseCase.mockSuccess(response)
   }
+
+  fun mockJellyseerrAccountDetailsResponse(response: Channel<Result<JellyseerrAccountDetails?>>) =
+    apply {
+      getJellyseerrDetailsUseCase.mockSuccess(response)
+    }
 
   fun onUserAddressChange(address: String) = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnAddressChange(address))

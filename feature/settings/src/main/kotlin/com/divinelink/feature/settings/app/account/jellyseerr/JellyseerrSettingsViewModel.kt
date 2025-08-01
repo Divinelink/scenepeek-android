@@ -60,6 +60,8 @@ class JellyseerrSettingsViewModel(
               )
             }
           }
+        }.onError<AppException.Unauthorized> {
+          onLogout()
         }.onFailure { throwable ->
           _uiState.setSnackbarMessage(
             throwable.message?.let { message ->
@@ -121,119 +123,106 @@ class JellyseerrSettingsViewModel(
             }
           }.launchIn(viewModelScope)
       }
-      JellyseerrInteraction.OnLogoutClick -> {
-        logoutJellyseerrUseCase.invoke(Unit)
-          .onStart {
-            _uiState.setJellyseerrLoading(true)
-          }
-          .onCompletion {
-            _uiState.setJellyseerrLoading(false)
-          }
-          .onEach { result ->
-            result.onSuccess {
-              _uiState.update {
-                it.copy(
-                  jellyseerrState = JellyseerrState.Initial(
-                    address = result.data,
-                    isLoading = false,
-                  ),
-                )
-              }
-            }.onError<AppException.Unauthorized> {
-              _uiState.update {
-                it.copy(
-                  jellyseerrState = JellyseerrState.Initial(
-                    address = "",
-                    isLoading = false,
-                  ),
-                )
-              }
-            }.onFailure {
-              _uiState.setSnackbarMessage(
-                it.message?.let { message ->
-                  UIText.StringText(message)
-                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-              )
-            }
-          }
-          .launchIn(viewModelScope)
-      }
-      is JellyseerrInteraction.OnAddressChange -> {
-        _uiState.update {
-          it.copy(
-            jellyseerrState = when (val state = it.jellyseerrState) {
-              is JellyseerrState.Initial -> state.copy(address = interaction.address)
-              else -> state
-            },
-          )
-        }
+      JellyseerrInteraction.OnLogoutClick -> onLogout()
+      is JellyseerrInteraction.OnAddressChange -> _uiState.update {
+        it.copy(
+          jellyseerrState = when (val state = it.jellyseerrState) {
+            is JellyseerrState.Initial -> state.copy(address = interaction.address)
+            else -> state
+          },
+        )
       }
 
-      is JellyseerrInteraction.OnSelectLoginMethod -> {
-        _uiState.update {
-          it.copy(
-            jellyseerrState = when (val state = it.jellyseerrState) {
-              is JellyseerrState.Initial -> {
-                if (state.preferredOption == interaction.signInMethod) {
-                  state.copy(preferredOption = null)
-                } else {
-                  state.copy(preferredOption = interaction.signInMethod)
-                }
+      is JellyseerrInteraction.OnSelectLoginMethod -> _uiState.update {
+        it.copy(
+          jellyseerrState = when (val state = it.jellyseerrState) {
+            is JellyseerrState.Initial -> {
+              if (state.preferredOption == interaction.signInMethod) {
+                state.copy(preferredOption = null)
+              } else {
+                state.copy(preferredOption = interaction.signInMethod)
               }
-              else -> state
-            },
-          )
-        }
+            }
+            else -> state
+          },
+        )
       }
-      is JellyseerrInteraction.OnPasswordChange -> {
-        _uiState.update {
-          it.copy(
-            jellyseerrState = when (val state = it.jellyseerrState) {
-              is JellyseerrState.Initial -> {
-                if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
-                  state.copy(
-                    jellyfinLogin = state.jellyfinLogin.copy(
-                      password = Password(interaction.password),
-                    ),
-                  )
-                } else {
-                  state.copy(
-                    jellyseerrLogin = state.jellyseerrLogin.copy(
-                      password = Password(interaction.password),
-                    ),
-                  )
-                }
+
+      is JellyseerrInteraction.OnPasswordChange -> _uiState.update {
+        it.copy(
+          jellyseerrState = when (val state = it.jellyseerrState) {
+            is JellyseerrState.Initial -> {
+              if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
+                state.copy(
+                  jellyfinLogin = state.jellyfinLogin.copy(
+                    password = Password(interaction.password),
+                  ),
+                )
+              } else {
+                state.copy(
+                  jellyseerrLogin = state.jellyseerrLogin.copy(
+                    password = Password(interaction.password),
+                  ),
+                )
               }
-              else -> state
-            },
-          )
-        }
+            }
+            else -> state
+          },
+        )
       }
-      is JellyseerrInteraction.OnUsernameChange -> {
-        _uiState.update {
-          it.copy(
-            jellyseerrState = when (val state = it.jellyseerrState) {
-              is JellyseerrState.Initial -> {
-                if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
-                  state.copy(
-                    jellyfinLogin = state.jellyfinLogin.copy(
-                      username = Username(interaction.username),
-                    ),
-                  )
-                } else {
-                  state.copy(
-                    jellyseerrLogin = state.jellyseerrLogin.copy(
-                      username = Username(interaction.username),
-                    ),
-                  )
-                }
+
+      is JellyseerrInteraction.OnUsernameChange -> _uiState.update {
+        it.copy(
+          jellyseerrState = when (val state = it.jellyseerrState) {
+            is JellyseerrState.Initial -> {
+              if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
+                state.copy(
+                  jellyfinLogin = state.jellyfinLogin.copy(
+                    username = Username(interaction.username),
+                  ),
+                )
+              } else {
+                state.copy(
+                  jellyseerrLogin = state.jellyseerrLogin.copy(
+                    username = Username(interaction.username),
+                  ),
+                )
               }
-              else -> state
-            },
-          )
-        }
+            }
+            else -> state
+          },
+        )
       }
     }
+  }
+
+  private fun onLogout() {
+    logoutJellyseerrUseCase.invoke(Unit)
+      .onStart {
+        _uiState.setJellyseerrLoading(true)
+      }
+      .onCompletion {
+        _uiState.setJellyseerrLoading(false)
+      }
+      .onEach { result ->
+        result.onSuccess {
+          _uiState.update {
+            it.copy(
+              jellyseerrState = JellyseerrState.Initial(
+                address = result.data,
+                isLoading = false,
+              ),
+            )
+          }
+        }.onFailure {
+          _uiState.update {
+            it.copy(
+              jellyseerrState = JellyseerrState.Initial(address = "", isLoading = false),
+            )
+          }
+        }
+      }
+      .launchIn(viewModelScope)
   }
 }
 

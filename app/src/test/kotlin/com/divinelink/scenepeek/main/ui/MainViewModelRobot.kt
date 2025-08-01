@@ -8,7 +8,6 @@ import com.divinelink.core.testing.usecase.TestFindByIdUseCase
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.scenepeek.MainViewModel
-import com.divinelink.scenepeek.fakes.usecase.FakeSetRemoteConfigUseCase
 import com.divinelink.scenepeek.test.util.fakes.FakeThemedActivityDelegate
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
@@ -19,7 +18,6 @@ class MainViewModelRobot {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val fakeSetRemoteConfigUseCase = FakeSetRemoteConfigUseCase()
   private val themedActivityDelegate = FakeThemedActivityDelegate()
   private val createSessionUseCase = TestCreateSessionUseCase()
   private val findByIdUseCase = TestFindByIdUseCase()
@@ -46,10 +44,6 @@ class MainViewModelRobot {
 
   fun assertUiEvent(expectedUiEvent: MainUiEvent) = apply {
     assertThat(viewModel.uiEvent.value).isEqualTo(expectedUiEvent)
-  }
-
-  fun mockSetRemoteConfigResult(result: Unit) = apply {
-    fakeSetRemoteConfigUseCase.mockSetRemoteConfigResult(result)
   }
 
   fun mockFindById(result: Result<MediaItem>) = apply {

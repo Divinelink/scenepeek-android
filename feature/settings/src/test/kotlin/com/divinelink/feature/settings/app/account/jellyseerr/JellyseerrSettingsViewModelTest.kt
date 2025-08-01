@@ -7,6 +7,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
@@ -15,10 +16,11 @@ import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
-import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModelTest {
 
@@ -148,6 +150,43 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
+  fun `test get jellyseerr details with unauthorised returns initial state`() = runTest {
+    val channel: Channel<Result<JellyseerrAccountDetails?>> = Channel()
+
+    testRobot
+      .mockJellyseerrAccountDetailsResponse(channel)
+      .buildViewModel()
+      .expectUiStates(
+        action = {
+          launch {
+            channel.send(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
+            channel.send(Result.failure(AppException.Unauthorized("Unauthorized")))
+          }
+        },
+        uiStates = listOf(
+          createUiState(
+            jellyseerrState = JellyseerrState.Initial(
+              isLoading = false,
+              address = "",
+            ),
+          ),
+          createUiState(
+            jellyseerrState = JellyseerrState.LoggedIn(
+              accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+              isLoading = false,
+            ),
+          ),
+          createUiState(
+            jellyseerrState = JellyseerrState.Initial(
+              isLoading = false,
+              address = "",
+            ),
+          ),
+        ),
+      )
+  }
+
+  @Test
   fun `test logout with UnauthorizedException returns initial state`() = runTest {
     testRobot
       .mockJellyseerrAccountDetailsResponse(
@@ -175,37 +214,7 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
-  fun `test logout with error shows snackbar`() = runTest {
-    testRobot
-      .mockJellyseerrAccountDetailsResponse(
-        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
-      )
-      .mockLogoutJellyseerrResponse(Result.failure(InvalidStatusException(500)))
-      .buildViewModel()
-      .assertUiState(
-        createUiState(
-          jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
-            isLoading = false,
-          ),
-        ),
-      )
-      .onLogoutJellyseerr()
-      .assertUiState(
-        createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.StringText(InvalidStatusException(500).message!!),
-          ),
-          jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
-            isLoading = false,
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test logout with error and no message shows generic error`() = runTest {
+  fun `test logout sets to initial state on any error`() = runTest {
     testRobot
       .mockJellyseerrAccountDetailsResponse(
         Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
@@ -230,12 +239,9 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(uiR.string.core_ui_error_retry),
-          ),
-          jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+          jellyseerrState = JellyseerrState.Initial(
             isLoading = false,
+            address = "",
           ),
         ),
       )

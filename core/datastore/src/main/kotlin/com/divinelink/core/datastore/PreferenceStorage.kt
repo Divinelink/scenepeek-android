@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_ENCRYPTED_SHARED_PREFS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
@@ -34,9 +33,6 @@ interface PreferenceStorage {
 
   suspend fun setBlackBackgrounds(isEnabled: Boolean)
   val isBlackBackgroundsEnabled: Flow<Boolean>
-
-  suspend fun setEncryptedPreferences(value: String)
-  val encryptedPreferences: Flow<String?>
 
   suspend fun setSpoilersObfuscation(isEnabled: Boolean)
   val spoilersObfuscation: Flow<Boolean>
@@ -74,7 +70,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   }
 
   object PreferencesKeys {
-    val PREF_ENCRYPTED_SHARED_PREFS = stringPreferencesKey("encrypted.shared.prefs")
     val PREF_SELECTED_THEME = stringPreferencesKey("settings.theme")
     val PREF_MATERIAL_YOU = booleanPreferencesKey("settings.material.you")
     val PREF_BLACK_BACKGROUNDS = booleanPreferencesKey("settings.black.backgrounds")
@@ -122,16 +117,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val isBlackBackgroundsEnabled: Flow<Boolean> = dataStore.data.map {
     it[PREF_BLACK_BACKGROUNDS] ?: false
-  }
-
-  override suspend fun setEncryptedPreferences(value: String) {
-    dataStore.edit {
-      it[PREF_ENCRYPTED_SHARED_PREFS] = value
-    }
-  }
-
-  override val encryptedPreferences = dataStore.data.map { preferences ->
-    preferences[PREF_ENCRYPTED_SHARED_PREFS]
   }
 
   override suspend fun setSpoilersObfuscation(isEnabled: Boolean) {

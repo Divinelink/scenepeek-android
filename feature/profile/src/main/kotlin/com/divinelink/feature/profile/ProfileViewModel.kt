@@ -2,8 +2,10 @@ package com.divinelink.feature.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.feature.profile.ui.TMDBAccountUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,6 +38,13 @@ class ProfileViewModel(private val getAccountDetailsUseCase: GetAccountDetailsUs
                   TMDBAccount.Anonymous -> TMDBAccountUiState.Anonymous
                 },
               )
+            }
+          }
+          .onError<AppException.Offline> {
+            if (_uiState.value.accountUiState !is TMDBAccountUiState.LoggedIn) {
+              _uiState.update {
+                it.copy(accountUiState = TMDBAccountUiState.Anonymous)
+              }
             }
           }
           .onFailure {

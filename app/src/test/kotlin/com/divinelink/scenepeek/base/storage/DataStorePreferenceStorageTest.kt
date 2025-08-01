@@ -68,15 +68,6 @@ class DataStorePreferenceStorageTest {
   }
 
   @Test
-  fun `test setEncryptedPreferences sets encryptedPreferences`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setEncryptedPreferences("test_encrypted_preferences")
-
-    assertThat(storage.encryptedPreferences.first()).isEqualTo("test_encrypted_preferences")
-  }
-
-  @Test
   fun `test setJellyseerrAddress`() = runTest {
     storage = DataStorePreferenceStorage(fakeDataStore)
 

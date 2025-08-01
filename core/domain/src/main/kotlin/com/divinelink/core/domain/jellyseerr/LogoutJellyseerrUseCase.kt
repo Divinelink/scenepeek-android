@@ -20,6 +20,8 @@ open class LogoutJellyseerrUseCase(
     val address = sessionStorage.storage.jellyseerrAddress.first()
     if (address == null) {
       emit(Result.failure(Exception("No address found.")))
+      sessionStorage.clearJellyseerrSession()
+      repository.clearJellyseerrAccountDetails()
       return@flow
     }
 

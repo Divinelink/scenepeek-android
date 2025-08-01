@@ -14,6 +14,7 @@ import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.flow.flowOf
 import kotlin.test.Test
 
 class ProfileScreenTest : ComposeTest() {
@@ -25,7 +26,7 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to login when logged out`() {
     var navigateToTMDBAuthCalled = false
-    getAccountDetailsUseCase.mockSuccess(Result.success(TMDBAccountFactory.anonymous()))
+    getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.anonymous())))
 
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,

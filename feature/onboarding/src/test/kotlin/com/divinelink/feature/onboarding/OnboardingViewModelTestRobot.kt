@@ -57,7 +57,7 @@ class OnboardingViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     onboardingManager.setIsInitialOnboarding(isInitialOnboarding)
   }
 
-  fun mockGetAccountDetails(response: Result<TMDBAccount>) = apply {
+  fun mockGetAccountDetails(response: Flow<Result<TMDBAccount>>) = apply {
     getAccountDetailsUseCase.mockSuccess(response)
   }
 

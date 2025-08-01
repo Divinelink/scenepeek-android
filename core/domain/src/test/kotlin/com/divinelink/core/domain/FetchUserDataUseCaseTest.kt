@@ -83,7 +83,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
       ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
@@ -128,7 +127,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
       ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
@@ -173,7 +171,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
       ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
@@ -218,7 +215,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
       ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
@@ -263,7 +259,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-        tmdbAuthToken = AccessTokenFactory.valid().accessToken,
       ),
       accountStorage = FakeAccountStorage(
         accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),

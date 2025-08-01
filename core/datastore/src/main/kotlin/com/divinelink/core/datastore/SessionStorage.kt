@@ -3,7 +3,6 @@ package com.divinelink.core.datastore
 import com.divinelink.core.datastore.account.AccountStorage
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.AccessToken
-import timber.log.Timber
 
 class SessionStorage(
   val storage: PreferenceStorage,
@@ -31,7 +30,6 @@ class SessionStorage(
   }
 
   suspend fun clearSession() {
-    Timber.d("Cleared session.")
     encryptedStorage.clearSession()
     encryptedStorage.clearAccessToken()
     encryptedStorage.clearTmdbAccountId()
