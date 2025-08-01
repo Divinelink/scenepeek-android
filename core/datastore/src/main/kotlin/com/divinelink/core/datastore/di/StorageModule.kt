@@ -54,8 +54,6 @@ val storageModule = module {
     DatastoreUiStorage(context.uiSettingsDataStore)
   }
 
-//  singleOf(::EncryptedPreferenceStorage) { bind<EncryptedStorage>() }
-
   single<EncryptedStorage> {
     val preferenceStorage = try {
       getEncryptedSharedPreferences(application = get())
