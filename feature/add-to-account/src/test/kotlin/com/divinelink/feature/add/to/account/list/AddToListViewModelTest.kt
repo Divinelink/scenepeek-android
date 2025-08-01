@@ -10,7 +10,7 @@ import com.divinelink.core.model.list.ListException
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.route.AddToListRoute
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState

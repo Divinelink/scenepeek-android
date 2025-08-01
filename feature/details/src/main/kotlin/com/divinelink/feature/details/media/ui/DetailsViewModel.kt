@@ -36,7 +36,7 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.details.R

@@ -12,7 +12,7 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.list.details.ListDetailsData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.toStub
-import com.divinelink.core.navigation.route.ListDetailsRoute
+import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.add.to.account.R

@@ -16,7 +16,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListException
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.route.AddToListRoute
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.add.to.account.R
 import kotlinx.coroutines.channels.Channel

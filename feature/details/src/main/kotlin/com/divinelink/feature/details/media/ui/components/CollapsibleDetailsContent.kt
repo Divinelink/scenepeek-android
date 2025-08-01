@@ -27,7 +27,9 @@ import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AddToListButton
@@ -42,6 +44,7 @@ import com.divinelink.feature.details.R
 @Composable
 fun CollapsibleDetailsContent(
   modifier: Modifier = Modifier,
+  onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
@@ -50,11 +53,10 @@ fun CollapsibleDetailsContent(
   ratingSource: RatingSource,
   hasTrailer: Boolean,
   onAddToWatchListClick: () -> Unit,
-  onAddToListClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
   onWatchTrailerClick: () -> Unit,
-  onNavigateToAddToList: () -> Unit,
+  onOpenManageModal: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -89,7 +91,7 @@ fun CollapsibleDetailsContent(
             JellyseerrStatusPill(
               modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
               status = status,
-              onClick = onNavigateToAddToList,
+              onClick = onOpenManageModal,
             )
           }
         }
@@ -136,7 +138,16 @@ fun CollapsibleDetailsContent(
 
       AddToListButton(
         modifier = Modifier.weight(1f),
-        onClick = onAddToListClick,
+        onClick = {
+          with(mediaDetails.toMediaItem()) {
+            onNavigate(
+              Navigation.AddToListRoute(
+                id = id,
+                mediaType = mediaType,
+              ),
+            )
+          }
+        },
       )
     }
   }

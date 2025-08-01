@@ -14,7 +14,7 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.factories.model.data.UserDataResponseFactory
 import com.divinelink.core.testing.getString
@@ -26,7 +26,6 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import java.net.UnknownHostException
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 
@@ -41,9 +40,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -76,9 +73,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -109,11 +104,11 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {
-          verifyNavigatedToTMDBLogin = true
+        onNavigate = {
+          if (it is Navigation.TMDBAuthRoute) {
+            verifyNavigatedToTMDBLogin = true
+          }
         },
-        onNavigateToMediaDetails = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -149,9 +144,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -190,9 +183,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -238,9 +229,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -285,9 +274,7 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -336,9 +323,9 @@ class UserDataScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test nagivate to details from tv content`() {
+  fun `test navigate to details from tv content`() {
     var verifyNavigatedToMediaDetails = false
-    var navArgs: DetailsRoute? = null
+    var navArgs: Navigation.DetailsRoute? = null
 
     observeAccountUseCase.mockResponse(response = Result.success(true))
     fetchWatchlistUseCase.mockSuccess(
@@ -350,11 +337,11 @@ class UserDataScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       UserDataScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBLogin = {},
-        onNavigateToMediaDetails = {
-          verifyNavigatedToMediaDetails = true
-          navArgs = it
+        onNavigate = {
+          if (it is Navigation.DetailsRoute) {
+            verifyNavigatedToMediaDetails = true
+            navArgs = it
+          }
         },
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
@@ -387,7 +374,7 @@ class UserDataScreenTest : ComposeTest() {
 
     assertThat(verifyNavigatedToMediaDetails).isTrue()
     assertThat(navArgs).isEqualTo(
-      DetailsRoute(
+      Navigation.DetailsRoute(
         mediaType = MediaType.TV,
         id = tvList.first().id,
         isFavorite = tvList.first().isFavorite,

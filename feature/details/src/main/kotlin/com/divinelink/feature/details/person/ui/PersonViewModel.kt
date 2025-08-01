@@ -9,7 +9,7 @@ import com.divinelink.core.domain.details.person.FetchPersonDetailsUseCase
 import com.divinelink.core.domain.details.person.PersonDetailsParams
 import com.divinelink.core.model.details.person.GroupedPersonCredits
 import com.divinelink.core.model.tab.PersonTab
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.navigation.route.map
 import com.divinelink.feature.details.person.ui.filter.CreditFilter
 import kotlinx.coroutines.flow.MutableStateFlow

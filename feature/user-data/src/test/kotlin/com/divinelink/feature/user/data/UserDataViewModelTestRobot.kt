@@ -2,7 +2,7 @@ package com.divinelink.feature.user.data
 
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.user.data.UserDataSection
-import com.divinelink.core.navigation.route.UserDataRoute
+import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase

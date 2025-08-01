@@ -2,7 +2,7 @@ package com.divinelink.feature.credits.ui
 
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.navigation.route.CreditsRoute
+import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates

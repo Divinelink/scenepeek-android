@@ -3,6 +3,7 @@ package com.divinelink.feature.settings.app
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -19,16 +20,13 @@ class SettingsScreenTest : ComposeTest() {
     var navigatedUp = false
     setVisibilityScopeContent {
       SettingsScreen(
-        onNavigateUp = {
-          navigatedUp = true
+        onNavigate = { route ->
+          if (route is Navigation.Back) {
+            navigatedUp = true
+          } else if (route is Navigation.AccountSettingsRoute) {
+            navigatedToAccountSettings = true
+          }
         },
-        onNavigateToAccountSettings = {
-          navigatedToAccountSettings = true
-        },
-        onNavigateToAppearanceSettings = { },
-        onNavigateToDetailPreferencesSettings = { },
-        onNavigateToLinkHandling = { },
-        onNavigateToAboutSettings = { },
         animatedVisibilityScope = this,
       )
     }
@@ -55,14 +53,11 @@ class SettingsScreenTest : ComposeTest() {
     var navigatedToAppearanceSettings = false
     setVisibilityScopeContent {
       SettingsScreen(
-        onNavigateUp = {},
-        onNavigateToAccountSettings = {},
-        onNavigateToAppearanceSettings = {
-          navigatedToAppearanceSettings = true
+        onNavigate = { route ->
+          if (route is Navigation.AppearanceSettingsRoute) {
+            navigatedToAppearanceSettings = true
+          }
         },
-        onNavigateToDetailPreferencesSettings = {},
-        onNavigateToLinkHandling = {},
-        onNavigateToAboutSettings = {},
         animatedVisibilityScope = this,
       )
     }
@@ -82,14 +77,11 @@ class SettingsScreenTest : ComposeTest() {
     var navigatedToLinkHandling = false
     setVisibilityScopeContent {
       SettingsScreen(
-        onNavigateUp = {},
-        onNavigateToAccountSettings = {},
-        onNavigateToAppearanceSettings = {},
-        onNavigateToDetailPreferencesSettings = {},
-        onNavigateToLinkHandling = {
-          navigatedToLinkHandling = true
+        onNavigate = { route ->
+          if (route is Navigation.LinkHandlingSettingsRoute) {
+            navigatedToLinkHandling = true
+          }
         },
-        onNavigateToAboutSettings = {},
         animatedVisibilityScope = this,
       )
     }
@@ -109,14 +101,11 @@ class SettingsScreenTest : ComposeTest() {
     var navigatedToDetailPreferencesSettings = false
     setVisibilityScopeContent {
       SettingsScreen(
-        onNavigateUp = {},
-        onNavigateToAccountSettings = {},
-        onNavigateToAppearanceSettings = {},
-        onNavigateToDetailPreferencesSettings = {
-          navigatedToDetailPreferencesSettings = true
+        onNavigate = { route ->
+          if (route is Navigation.DetailsPreferencesSettingsRoute) {
+            navigatedToDetailPreferencesSettings = true
+          }
         },
-        onNavigateToLinkHandling = {},
-        onNavigateToAboutSettings = {},
         animatedVisibilityScope = this,
       )
     }

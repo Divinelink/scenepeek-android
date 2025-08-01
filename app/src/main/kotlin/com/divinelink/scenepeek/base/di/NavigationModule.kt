@@ -1,20 +1,12 @@
 package com.divinelink.scenepeek.base.di
 
-import com.divinelink.core.navigation.NavigationQualifier
-import com.divinelink.core.navigation.route.ListsRoute
-import com.divinelink.core.navigation.route.navigateToAddToList
-import com.divinelink.core.navigation.route.navigateToCreateList
-import com.divinelink.core.navigation.route.navigateToDetails
-import com.divinelink.core.navigation.route.navigateToEditList
-import com.divinelink.core.navigation.route.navigateToListDetails
-import com.divinelink.core.navigation.route.navigateToLists
-import com.divinelink.core.navigation.route.navigateToPerson
-import com.divinelink.core.navigation.route.navigateToSearchFromHome
-import com.divinelink.core.navigation.route.navigateToUserData
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.AccountSettingsRoute
+import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
+import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.add.to.account.list.navigation.addToListScreen
 import com.divinelink.feature.credits.navigation.creditsScreen
-import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
@@ -25,102 +17,77 @@ import com.divinelink.feature.onboarding.navigation.onboardingScreen
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.search.navigation.searchScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
-import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
 import com.divinelink.feature.settings.navigation.account.jellyseerrSettingsScreen
-import com.divinelink.feature.settings.navigation.account.navigateToAccountSettings
-import com.divinelink.feature.settings.navigation.account.navigateToJellyseerrSettings
 import com.divinelink.feature.settings.navigation.appearance.appearanceSettingsScreen
-import com.divinelink.feature.settings.navigation.appearance.navigateToAppearanceSettings
 import com.divinelink.feature.settings.navigation.details.detailsPreferencesSettingsScreen
-import com.divinelink.feature.settings.navigation.details.navigateToDetailsPreferenceSettings
 import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScreen
-import com.divinelink.feature.settings.navigation.links.navigateToLinkHandlingSettings
-import com.divinelink.feature.settings.navigation.settings.navigateToSettings
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
-import com.divinelink.feature.tmdb.auth.navigateToTMDBAuth
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
+import com.divinelink.scenepeek.home.navigation.findNavigation
 import com.divinelink.scenepeek.home.navigation.homeScreen
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val navigationModule = module {
 
-  single<NavGraphExtension>(named(NavigationQualifier.Home)) {
+  single<NavGraphExtension>(named<Navigation.HomeRoute>()) {
     { navController, _ ->
       homeScreen(
-        onNavigateToSettings = navController::navigateToSettings,
-        onNavigateToDetails = navController::navigateToDetails,
-        onNavigateToPerson = navController::navigateToPerson,
-        onNavigateToSearch = navController::navigateToSearchFromHome,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Person Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Person)) {
+  single<NavGraphExtension>(named<Navigation.PersonRoute>()) {
     { navController, _ ->
       personScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToDetails = navController::navigateToDetails,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Details Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Details)) {
+  single<NavGraphExtension>(named<Navigation.DetailsRoute>()) {
     { navController, _ ->
       detailsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToDetails = navController::navigate,
-        onNavigateToCredits = navController::navigateToCredits,
-        onNavigateToPerson = navController::navigateToPerson,
-        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
-        onNavigateToAddToList = navController::navigateToAddToList,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Search Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Search)) {
+  single<NavGraphExtension>(named<Navigation.SearchRoute>()) {
     { navController, _ ->
       searchScreen(
-        onNavigateToSettings = navController::navigateToSettings,
-        onNavigateToDetails = navController::navigateToDetails,
-        onNavigateToPerson = navController::navigateToPerson,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Settings)) {
+  single<NavGraphExtension>(named<Navigation.SettingsRoute>()) {
     { navController, _ ->
       settingsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToAccountSettings = navController::navigateToAccountSettings,
-        onNavigateToAppearanceSettings = navController::navigateToAppearanceSettings,
-        onNavigateToDetailPreferencesSettings = navController::navigateToDetailsPreferenceSettings,
-        onNavigateToLinkHandling = navController::navigateToLinkHandlingSettings,
-        onNavigateToAboutSettings = navController::navigateToAboutSettings,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Account Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.AccountSettings)) {
+  single<NavGraphExtension>(named<AccountSettingsRoute>()) {
     { navController, transitionScope ->
       accountSettingsScreen(
         sharedTransitionScope = transitionScope,
-        onNavigateUp = navController::navigateUp,
-        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
-        onNavigateToJellyseerrSettings = { navController.navigateToJellyseerrSettings(true) },
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
 // Jellyseerr Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.JellyseerrSettings)) {
+  single<NavGraphExtension>(named<JellyseerrSettingsRoute>()) {
     { navController, transitionScope ->
       jellyseerrSettingsScreen(
         sharedTransitionScope = transitionScope,
@@ -129,8 +96,8 @@ val navigationModule = module {
     }
   }
 
-// Appearance Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.AppearanceSettings)) {
+  // Appearance Settings Navigation
+  single<NavGraphExtension>(named<AppearanceSettingsRoute>()) {
     { navController, _ ->
       appearanceSettingsScreen(
         onNavigateUp = navController::navigateUp,
@@ -138,8 +105,8 @@ val navigationModule = module {
     }
   }
 
-// Details Preferences Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.DetailsPreferencesSettings)) {
+  // Details Preferences Settings Navigation
+  single<NavGraphExtension>(named<Navigation.DetailsPreferencesSettingsRoute>()) {
     { navController, _ ->
       detailsPreferencesSettingsScreen(
         onNavigateUp = navController::navigateUp,
@@ -148,7 +115,7 @@ val navigationModule = module {
   }
 
 // Link Handling Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.LinkHandlingSettings)) {
+  single<NavGraphExtension>(named<Navigation.LinkHandlingSettingsRoute>()) {
     { navController, _ ->
       linkHandlingSettingsScreen(
         onNavigateUp = navController::navigateUp,
@@ -157,7 +124,7 @@ val navigationModule = module {
   }
 
 // About Settings Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.AboutSettings)) {
+  single<NavGraphExtension>(named<Navigation.AboutSettingsRoute>()) {
     { navController, _ ->
       aboutSettingsScreen(
         onNavigateUp = navController::navigateUp,
@@ -165,97 +132,85 @@ val navigationModule = module {
     }
   }
 
-// Credits Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Credits)) {
+  // Credits Navigation
+  single<NavGraphExtension>(named<Navigation.CreditsRoute>()) {
     { navController, _ ->
       creditsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToPerson = navController::navigateToPerson,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
-// Watchlist Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.UserData)) {
+  // UserData Navigation (Watchlist, Ratings)
+  single<NavGraphExtension>(named<Navigation.UserDataRoute>()) {
     { navController, _ ->
       userDataScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToDetails = navController::navigateToDetails,
-        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
-// Onboarding Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Onboarding)) {
+  // Onboarding Navigation
+  single<NavGraphExtension>(named<Navigation.OnboardingRoute>()) {
     { navController, _ ->
       onboardingScreen(
-        onNavigateToJellyseerrSettings = { navController.navigateToJellyseerrSettings(false) },
-        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
-        onNavigateUp = navController::navigateUp,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
-// TMDB Auth Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.TMDBAuth)) {
+  // TMDB Auth Navigation
+  single<NavGraphExtension>(named<Navigation.TMDBAuthRoute>()) {
     { navController, _ ->
       tmdbAuthScreen(navController::navigateUp)
     }
   }
 
   // Profile Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Profile)) {
+  single<NavGraphExtension>(named<Navigation.ProfileRoute>()) {
     { navController, _ ->
       profileScreen(
-        onNavigateToUserData = navController::navigateToUserData,
-        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
-        onNavigateToLists = navController::navigateToLists,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
   // User Lists Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.Lists)) {
+  single<NavGraphExtension>(named<Navigation.ListsRoute>()) {
     { navController, _ ->
       listsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToTMDBLogin = navController::navigateToTMDBAuth,
-        onNavigateToList = navController::navigateToListDetails,
-        onNavigateToCreateList = navController::navigateToCreateList,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
   // List Details Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.ListDetails)) {
+  single<NavGraphExtension>(named<Navigation.ListDetailsRoute>()) {
     { navController, _ ->
       listDetailsScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToDetails = navController::navigateToDetails,
-        onNavigateToEdit = navController::navigateToEditList,
-        onNavigateToAddToList = navController::navigateToAddToList,
+        onNavigate = navController::findNavigation,
       )
     }
   }
 
   // Create List Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.CreateList)) {
+  single<NavGraphExtension>(named<Navigation.CreateListRoute>()) {
     { navController, _ ->
       createListScreen(
         onNavigateUp = navController::navigateUp,
+
       )
     }
   }
 
   // Create List Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.EditList)) {
+  single<NavGraphExtension>(named<Navigation.EditListRoute>()) {
     { navController, _ ->
       editListScreen(
         onNavigateUp = navController::navigateUp,
         onNavigateBackToLists = {
           navController.popBackStack(
-            route = ListsRoute,
+            route = Navigation.ListsRoute,
             inclusive = false,
           )
         },
@@ -264,20 +219,11 @@ val navigationModule = module {
   }
 
   // Add To List Navigation
-  single<NavGraphExtension>(named(NavigationQualifier.AddToList)) {
+  single<NavGraphExtension>(named<Navigation.AddToListRoute>()) {
     { navController, _ ->
       addToListScreen(
-        onNavigateUp = navController::navigateUp,
-        onNavigateToTMDBAuth = navController::navigateToTMDBAuth,
-        onNavigateToCreateList = navController::navigateToCreateList,
+        onNavigate = navController::findNavigation,
       )
-    }
-  }
-
-// Collect all navigation extensions
-  single<List<NavGraphExtension>> {
-    NavigationQualifier.entries.map { qualifier ->
-      get<NavGraphExtension>(named(qualifier))
     }
   }
 

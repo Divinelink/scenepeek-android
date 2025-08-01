@@ -29,8 +29,8 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.tab.PersonTab
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -104,8 +104,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -129,8 +128,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -162,8 +160,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -188,8 +185,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -216,8 +212,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -246,8 +241,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -282,8 +276,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -329,8 +322,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -423,8 +415,7 @@ class PersonScreenTest : ComposeTest() {
 
       setVisibilityScopeContent {
         PersonScreen(
-          onNavigateUp = {},
-          onNavigateToDetails = {},
+          onNavigate = {},
           viewModel = viewModel,
           switchViewButtonViewModel = switchViewButtonViewModel,
           animatedVisibilityScope = this,
@@ -470,8 +461,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -520,9 +510,10 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {
-          detailsRoute = it
+        onNavigate = {
+          if (it is DetailsRoute) {
+            detailsRoute = it
+          }
         },
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
@@ -586,8 +577,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -625,8 +615,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -675,8 +664,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -709,8 +697,7 @@ class PersonScreenTest : ComposeTest() {
       preferencesRepository = preferencesRepository,
     ) {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -760,8 +747,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -820,8 +806,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -873,8 +858,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -928,8 +912,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -983,8 +966,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
@@ -1041,8 +1023,7 @@ class PersonScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       PersonScreen(
-        onNavigateUp = {},
-        onNavigateToDetails = {},
+        onNavigate = {},
         viewModel = viewModel,
         switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,

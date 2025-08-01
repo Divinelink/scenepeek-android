@@ -58,7 +58,6 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.MOVIE,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {
           hasClickedMarkAsFavorite = true
         },
@@ -75,7 +74,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -99,7 +98,6 @@ class DetailsContentTest : ComposeTest() {
           isLoading = true,
           mediaType = MediaType.MOVIE,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -114,7 +112,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -136,7 +134,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           selectedTabIndex = MovieTab.Reviews.order,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -151,7 +148,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -173,7 +170,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = MovieTab.Reviews.order,
           forms = DetailsFormFactory.Movie.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -188,7 +184,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -210,7 +206,6 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.MOVIE,
           error = UIText.ResourceText(detailsR.string.details__fatal_error_fetching_details),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -225,7 +220,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -257,7 +252,6 @@ class DetailsContentTest : ComposeTest() {
           trailer = VideoFactory.Youtube(),
           forms = DetailsFormFactory.Movie.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -272,7 +266,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -297,7 +291,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.full(),
           tabs = MovieTab.entries,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -312,7 +305,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -348,7 +341,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           tabs = MovieTab.entries,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -363,7 +355,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -391,7 +383,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           userDetails = AccountMediaDetailsFactory.NotRated(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -406,7 +397,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -433,7 +424,6 @@ class DetailsContentTest : ComposeTest() {
             withWatchlist(true)
           },
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -448,7 +438,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -478,7 +468,6 @@ class DetailsContentTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsContent(
         viewState = viewState.value,
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -500,7 +489,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -539,7 +528,6 @@ class DetailsContentTest : ComposeTest() {
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -554,7 +542,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -579,7 +567,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           menuOptions = listOf(DetailsMenuOptions.SHARE),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -594,7 +581,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -616,7 +603,6 @@ class DetailsContentTest : ComposeTest() {
           mediaType = MediaType.MOVIE,
           mediaDetails = null,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -631,7 +617,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -658,7 +644,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Tv.empty(),
           tabs = TvTab.entries,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -673,7 +658,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -709,7 +694,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           tabs = MovieTab.entries,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -724,7 +708,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -758,7 +742,6 @@ class DetailsContentTest : ComposeTest() {
           menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
           spoilersObfuscated = false,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -775,7 +758,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -807,7 +790,6 @@ class DetailsContentTest : ComposeTest() {
           menuOptions = listOf(DetailsMenuOptions.OBFUSCATE_SPOILERS),
           spoilersObfuscated = true,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -824,7 +806,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -855,7 +837,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           tabs = MovieTab.entries,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -869,7 +850,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
@@ -900,7 +881,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           ratingSource = RatingSource.IMDB,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -915,7 +895,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -947,7 +927,6 @@ class DetailsContentTest : ComposeTest() {
           tabs = MovieTab.entries,
           forms = DetailsFormFactory.Movie.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -962,7 +941,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -993,7 +972,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Movie.empty(),
           ratingSource = RatingSource.TMDB,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1008,7 +986,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1039,7 +1017,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1054,7 +1031,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1087,7 +1064,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1102,7 +1078,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1131,7 +1107,6 @@ class DetailsContentTest : ComposeTest() {
           forms = DetailsFormFactory.Tv.empty(),
           ratingSource = RatingSource.TMDB,
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1146,7 +1121,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1168,7 +1143,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = MovieTab.About.order,
           forms = DetailsFormFactory.Movie.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1183,7 +1157,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1205,7 +1179,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.About.order,
           forms = DetailsFormFactory.Tv.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1220,7 +1193,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1242,7 +1215,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = MovieTab.Cast.order,
           forms = DetailsFormFactory.Movie.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1257,7 +1229,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1285,7 +1257,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Cast.order,
           forms = DetailsFormFactory.Tv.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1300,7 +1271,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1325,7 +1296,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Cast.order,
           forms = DetailsFormFactory.Tv.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1340,7 +1310,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1362,7 +1332,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = MovieTab.Recommendations.order,
           forms = DetailsFormFactory.Movie.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1377,7 +1346,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1400,7 +1369,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Recommendations.order,
           forms = DetailsFormFactory.Tv.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1415,7 +1383,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1438,7 +1406,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Recommendations.order,
           forms = DetailsFormFactory.Tv.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1453,7 +1420,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1475,7 +1442,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Seasons.order,
           forms = DetailsFormFactory.Tv.full(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1490,7 +1456,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1519,7 +1485,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Seasons.order,
           forms = DetailsFormFactory.Tv.empty(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1534,7 +1499,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1556,7 +1521,6 @@ class DetailsContentTest : ComposeTest() {
           selectedTabIndex = TvTab.Seasons.order,
           forms = DetailsFormFactory.Tv.loading(),
         ),
-        onNavigateUp = {},
         onMarkAsFavoriteClicked = {},
         onSimilarMovieClicked = {},
         onConsumeSnackbar = {},
@@ -1571,7 +1535,7 @@ class DetailsContentTest : ComposeTest() {
         onPlayTrailerClick = {},
         onDeleteRequest = {},
         onDeleteMedia = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }

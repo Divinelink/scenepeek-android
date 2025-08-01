@@ -12,6 +12,7 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -51,9 +52,7 @@ class AddToListScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       AddToListScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -81,9 +80,7 @@ class AddToListScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       AddToListScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -109,11 +106,11 @@ class AddToListScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       AddToListScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {
-          navigatedToTMDBAuth = true
+        onNavigate = {
+          if (it is Navigation.TMDBAuthRoute) {
+            navigatedToTMDBAuth = true
+          }
         },
-        onNavigateToCreateList = {},
         viewModel = viewModel,
       )
     }
@@ -158,9 +155,7 @@ class AddToListScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       AddToListScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }
@@ -193,9 +188,7 @@ class AddToListScreenTest : ComposeTest() {
 
     setVisibilityScopeContent {
       AddToListScreen(
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToCreateList = {},
+        onNavigate = {},
         viewModel = viewModel,
       )
     }

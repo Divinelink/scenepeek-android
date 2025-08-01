@@ -4,7 +4,7 @@ import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
-import com.divinelink.core.navigation.route.AddToListRoute
+import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class AddToListUiState(

@@ -4,18 +4,8 @@ import androidx.navigation.NavController
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.person.Gender
-import kotlinx.serialization.Serializable
 
-@Serializable
-data class PersonRoute(
-  val id: Long,
-  val knownForDepartment: String?,
-  val name: String?,
-  val profilePath: String?,
-  val gender: Gender?,
-)
-
-fun Person.map() = PersonRoute(
+fun Person.toPersonRoute() = Navigation.PersonRoute(
   id = id,
   knownForDepartment = knownForDepartment,
   name = name,
@@ -23,7 +13,7 @@ fun Person.map() = PersonRoute(
   gender = gender,
 )
 
-fun PersonRoute.map() = Person(
+fun Navigation.PersonRoute.map() = Person(
   id = id,
   knownForDepartment = knownForDepartment,
   name = name ?: "",
@@ -32,4 +22,4 @@ fun PersonRoute.map() = Person(
   role = listOf(PersonRole.Unknown),
 )
 
-fun NavController.navigateToPerson(route: PersonRoute) = navigate(route = route)
+fun NavController.navigateToPerson(route: Navigation.PersonRoute) = navigate(route = route)

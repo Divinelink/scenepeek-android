@@ -5,27 +5,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.add.to.account.list.AddToListViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AnimatedVisibilityScope.AddToListScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToTMDBAuth: () -> Unit,
-  onNavigateToCreateList: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: AddToListViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
     viewModel.navigateToTMDBAuth.collect {
-      onNavigateToTMDBAuth()
+      onNavigate(Navigation.TMDBAuthRoute)
     }
   }
 
   AddToListScaffold(
-    onNavigateUp = onNavigateUp,
-    onNavigateToCreateList = onNavigateToCreateList,
+    onNavigateUp = { onNavigate(Navigation.Back) },
+    onNavigateToCreateList = { onNavigate(Navigation.CreateListRoute) },
     uiState = uiState,
     action = viewModel::onAction,
   )

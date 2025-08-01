@@ -8,6 +8,7 @@ import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
@@ -58,9 +59,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
 
@@ -80,9 +79,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
 
@@ -107,9 +104,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
     with(composeTestRule) {
@@ -131,9 +126,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
 
@@ -167,9 +160,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
 
@@ -193,10 +184,10 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {
-          navigatedToJellyseerrSettingsScreen = true
+        onNavigate = { route ->
+          if (route is Navigation.JellyseerrSettingsRoute) {
+            navigatedToJellyseerrSettingsScreen = true
+          }
         },
       )
     }
@@ -222,9 +213,7 @@ class AccountSettingsScreenTest : ComposeTest() {
         sharedTransitionScope = it,
         animatedVisibilityScope = this,
         viewModel = viewModel,
-        onNavigateUp = {},
-        onNavigateToTMDBAuth = {},
-        onNavigateToJellyseerrSettingsScreen = {},
+        onNavigate = {},
       )
     }
     val jellyseerrButton = getString(R.string.feature_settings_jellyseerr_integration)

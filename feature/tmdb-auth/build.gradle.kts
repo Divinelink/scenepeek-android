@@ -11,6 +11,8 @@ dependencies {
   implementation(projects.core.domain)
   implementation(projects.core.model)
 
+  implementation(projects.core.scaffold)
+
   implementation(libs.timber)
 
   implementation(projects.core.fixtures)

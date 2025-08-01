@@ -18,13 +18,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.launchCustomTab
-import com.divinelink.core.model.details.toMediaItem
-import com.divinelink.core.model.media.toStub
-import com.divinelink.core.navigation.route.AddToListRoute
-import com.divinelink.core.navigation.route.CreditsRoute
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
-import com.divinelink.core.navigation.route.map
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.CreditsRoute
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.TMDBAuthRoute
+import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.OverlayScreen
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
@@ -35,12 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToCredits: (CreditsRoute) -> Unit,
-  onNavigateToPerson: (PersonRoute) -> Unit,
-  onNavigateToAddToList: (AddToListRoute) -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: DetailsViewModel = koinViewModel(),
 ) {
@@ -53,7 +46,7 @@ fun DetailsScreen(
 
   BackHandler {
     if (videoUrl.isNullOrEmpty()) {
-      onNavigateUp()
+      onNavigate(Navigation.Back)
     } else {
       videoUrl = null
     }
@@ -61,7 +54,7 @@ fun DetailsScreen(
 
   LaunchedEffect(viewState.navigateToLogin) {
     viewState.navigateToLogin?.let {
-      onNavigateToTMDBLogin()
+      onNavigate(TMDBAuthRoute)
 
       viewModel.consumeNavigateToLogin()
     }
@@ -108,18 +101,18 @@ fun DetailsScreen(
   ) {
     DetailsContent(
       viewState = viewState,
+      onNavigate = onNavigate,
       animatedVisibilityScope = animatedVisibilityScope,
-      onNavigateUp = onNavigateUp,
       onMarkAsFavoriteClicked = viewModel::onMarkAsFavorite,
       onSimilarMovieClicked = { movie ->
-        val navArgs = DetailsRoute(
+        val route = DetailsRoute(
           id = movie.id,
           mediaType = movie.mediaType,
           isFavorite = movie.isFavorite ?: false,
         )
-        onNavigateToDetails(navArgs)
+        onNavigate(route)
       },
-      onPersonClick = { person -> onNavigateToPerson(person.map()) },
+      onPersonClick = { person -> onNavigate(person.toPersonRoute()) },
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
       onAddRateClick = { openRateBottomSheet = true },
       onAddToWatchlistClick = viewModel::onAddToWatchlist,
@@ -127,7 +120,7 @@ fun DetailsScreen(
       onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
       onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
-          onNavigateToCredits(
+          onNavigate(
             CreditsRoute(
               mediaType = viewState.mediaType,
               id = id.toLong(),
@@ -143,15 +136,6 @@ fun DetailsScreen(
       onPlayTrailerClick = { videoUrl = it },
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
-      onNavigateToAddToList = {
-        viewState.mediaDetails?.toMediaItem()?.toStub()?.let { media ->
-          onNavigateToAddToList.invoke(
-            AddToListRoute(
-              media = media,
-            ),
-          )
-        }
-      },
     )
 
     OverlayScreen(

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.credits.FetchCreditsUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
-import com.divinelink.core.navigation.route.CreditsRoute
+import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn

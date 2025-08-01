@@ -5,22 +5,19 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsScreen
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class JellyseerrSettingsRoute(val withNavigationBar: Boolean)
 
 fun NavController.navigateToJellyseerrSettings(withNavigationBar: Boolean) = navigate(
-  route = JellyseerrSettingsRoute(withNavigationBar),
+  route = Navigation.JellyseerrSettingsRoute(withNavigationBar),
 )
 
 fun NavGraphBuilder.jellyseerrSettingsScreen(
   sharedTransitionScope: SharedTransitionScope,
   onNavigateUp: () -> Unit,
 ) {
-  composable<JellyseerrSettingsRoute> {
-    val route = it.toRoute<JellyseerrSettingsRoute>()
+  composable<Navigation.JellyseerrSettingsRoute> {
+    val route = it.toRoute<Navigation.JellyseerrSettingsRoute>()
 
     JellyseerrSettingsScreen(
       sharedTransitionScope = sharedTransitionScope,

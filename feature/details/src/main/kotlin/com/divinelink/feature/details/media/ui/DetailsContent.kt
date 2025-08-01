@@ -55,6 +55,7 @@ import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -95,8 +96,8 @@ import com.divinelink.core.ui.R as uiR
 fun DetailsContent(
   viewState: DetailsViewState,
   modifier: Modifier = Modifier,
+  onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  onNavigateUp: () -> Unit,
   onMarkAsFavoriteClicked: () -> Unit,
   onSimilarMovieClicked: (MediaItem.Media) -> Unit,
   onPersonClick: (Person) -> Unit,
@@ -111,7 +112,6 @@ fun DetailsContent(
   onPlayTrailerClick: (String) -> Unit,
   onDeleteRequest: (Int) -> Unit,
   onDeleteMedia: (Boolean) -> Unit,
-  onNavigateToAddToList: () -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -152,15 +152,6 @@ fun DetailsContent(
       }
     }
   }
-
-//  if (showAddToListModal && viewState.mediaItem is MediaItem.Media) {
-//    AddToListScreen(
-//      mediaItem = viewState.mediaItem,
-//      onNavigateToTMDBAuth = onNavigateToTMDBAuth,
-//      onNavigateToCreateList = onNavigateToCreateList,
-//      onDismissRequest = { showAddToListModal = false },
-//    )
-//  }
 
   LaunchedEffect(viewState.jellyseerrMediaInfo) {
     if (viewState.jellyseerrMediaInfo?.status == JellyseerrStatus.Media.UNKNOWN ||
@@ -265,7 +256,11 @@ fun DetailsContent(
             )
           }
         },
-        onNavigateUp = onNavigateUp,
+        onNavigateUp = {
+          onNavigate(Navigation.Back)
+          isAppBarVisible = false
+          onBackdropLoaded = false
+        },
       )
     },
     floatingActionButton = {
@@ -291,6 +286,7 @@ fun DetailsContent(
         when (viewState.mediaDetails) {
           is Movie, is TV -> MediaDetailsContent(
             uiState = viewState,
+            onNavigate = onNavigate,
             trailer = viewState.trailer,
             onMediaItemClick = onSimilarMovieClicked,
             onAddRateClick = onAddRateClick,
@@ -306,7 +302,6 @@ fun DetailsContent(
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
-            onNavigateToAddToList = onNavigateToAddToList,
             scope = scope,
           )
           null -> {
@@ -315,7 +310,7 @@ fun DetailsContent(
         }
         if (viewState.error != null) {
           SimpleAlertDialog(
-            confirmClick = onNavigateUp,
+            confirmClick = { onNavigate(Navigation.Back) },
             confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
             uiState = AlertDialogUiState(text = viewState.error),
           )
@@ -331,6 +326,7 @@ fun DetailsContent(
 @Composable
 private fun MediaDetailsContent(
   uiState: DetailsViewState,
+  onNavigate: (Navigation) -> Unit,
   trailer: Video?,
   obfuscateEpisodes: Boolean,
   onPersonClick: (Person) -> Unit,
@@ -344,7 +340,6 @@ private fun MediaDetailsContent(
   onShowTitle: (Boolean) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
-  onNavigateToAddToList: () -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -366,6 +361,7 @@ private fun MediaDetailsContent(
 
   DynamicDetailsCollapsingToolbar(
     mediaDetails = uiState.mediaDetails,
+    onNavigate = onNavigate,
     status = uiState.jellyseerrMediaInfo?.status,
     ratingSource = uiState.ratingSource,
     hasTrailer = trailer?.key != null,
@@ -377,7 +373,6 @@ private fun MediaDetailsContent(
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
     onOpenManageModal = onOpenManageModal,
-    onAddToListClick = onNavigateToAddToList,
   ) {
     Column(
       modifier = Modifier
@@ -479,7 +474,7 @@ fun DetailsContentPreview(
               modifier = Modifier,
               viewState = viewState,
               animatedVisibilityScope = this,
-              onNavigateUp = {},
+              onNavigate = {},
               onMarkAsFavoriteClicked = {},
               onSimilarMovieClicked = {},
               onConsumeSnackbar = {},
@@ -494,7 +489,6 @@ fun DetailsContentPreview(
               onPlayTrailerClick = {},
               onDeleteRequest = {},
               onDeleteMedia = {},
-              onNavigateToAddToList = {},
             )
           }
         }

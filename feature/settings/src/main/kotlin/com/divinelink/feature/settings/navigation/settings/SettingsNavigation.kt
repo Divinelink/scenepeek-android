@@ -7,23 +7,13 @@ import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.feature.settings.app.SettingsScreen
-import kotlinx.serialization.Serializable
 
-@Serializable
-data object SettingsRoute
+fun NavController.navigateToSettings() = navigate(route = Navigation.SettingsRoute)
 
-fun NavController.navigateToSettings() = navigate(route = SettingsRoute)
-
-fun NavGraphBuilder.settingsScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToAppearanceSettings: () -> Unit,
-  onNavigateToAccountSettings: () -> Unit,
-  onNavigateToDetailPreferencesSettings: () -> Unit,
-  onNavigateToLinkHandling: () -> Unit,
-  onNavigateToAboutSettings: () -> Unit,
-) {
-  composable<SettingsRoute>(
+fun NavGraphBuilder.settingsScreen(onNavigate: (Navigation) -> Unit) {
+  composable<Navigation.SettingsRoute>(
     enterTransition = {
       slideInVertically(
         initialOffsetY = { fullHeight -> fullHeight },
@@ -39,12 +29,7 @@ fun NavGraphBuilder.settingsScreen(
   ) {
     SettingsScreen(
       animatedVisibilityScope = this,
-      onNavigateUp = onNavigateUp,
-      onNavigateToAppearanceSettings = onNavigateToAppearanceSettings,
-      onNavigateToAccountSettings = onNavigateToAccountSettings,
-      onNavigateToDetailPreferencesSettings = onNavigateToDetailPreferencesSettings,
-      onNavigateToLinkHandling = onNavigateToLinkHandling,
-      onNavigateToAboutSettings = onNavigateToAboutSettings,
+      onNavigate = onNavigate,
     )
   }
 }

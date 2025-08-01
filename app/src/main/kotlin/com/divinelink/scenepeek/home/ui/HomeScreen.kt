@@ -17,8 +17,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.navigation.route.DetailsRoute
-import com.divinelink.core.navigation.route.PersonRoute
+import com.divinelink.core.model.search.SearchEntryPoint
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -30,10 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-  onNavigateToSettings: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
-  onNavigateToPerson: (PersonRoute) -> Unit,
-  onNavigateToSearch: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: HomeViewModel = koinViewModel(),
 ) {
@@ -50,10 +49,10 @@ fun HomeScreen(
         modifier = Modifier,
         onFocused = {
           viewModel.onNavigateToSearch()
-          onNavigateToSearch()
+          onNavigate(Navigation.SearchRoute(SearchEntryPoint.HOME))
         },
         actions = {
-          IconButton(onClick = onNavigateToSettings) {
+          IconButton(onClick = { onNavigate(Navigation.SettingsRoute) }) {
             Icon(
               imageVector = Icons.Filled.Settings,
               contentDescription = stringResource(R.string.settings_button_content_description),
@@ -94,7 +93,7 @@ fun HomeScreen(
                 mediaType = media.mediaType,
                 isFavorite = media.isFavorite,
               )
-              onNavigateToDetails(route)
+              onNavigate(route)
             }
             is MediaItem.Person -> {
               val route = PersonRoute(
@@ -104,7 +103,7 @@ fun HomeScreen(
                 profilePath = media.profilePath,
                 gender = media.gender,
               )
-              onNavigateToPerson(route)
+              onNavigate(route)
             }
             else -> {
               return@HomeContent

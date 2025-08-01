@@ -32,7 +32,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.ui.ViewableSection
-import com.divinelink.core.navigation.route.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -44,8 +45,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PersonScreen(
-  onNavigateUp: () -> Unit,
-  onNavigateToDetails: (DetailsRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: PersonViewModel = koinViewModel(),
   switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
@@ -85,7 +85,7 @@ fun PersonScreen(
             (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
           ),
           isVisible = isAppBarVisible,
-          onNavigateUp = onNavigateUp,
+          onNavigateUp = { onNavigate(Navigation.Back) },
           topAppBarColors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
@@ -127,7 +127,7 @@ fun PersonScreen(
             lazyListState = lazyListState,
             scope = scope,
             onMediaClick = { mediaItem ->
-              onNavigateToDetails(
+              onNavigate(
                 DetailsRoute(
                   id = mediaItem.id,
                   mediaType = mediaItem.mediaType,

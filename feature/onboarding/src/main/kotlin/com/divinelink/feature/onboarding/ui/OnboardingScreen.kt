@@ -13,14 +13,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.model.onboarding.OnboardingAction
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OnboardingScreen(
-  onNavigateToJellyseerrSettings: () -> Unit,
-  onNavigateToTMDBLogin: () -> Unit,
-  onNavigateUp: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   viewModel: OnboardingViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -28,7 +27,7 @@ fun OnboardingScreen(
 
   LaunchedEffect(Unit) {
     viewModel.onNavigateUp.collect {
-      onNavigateUp()
+      onNavigate(Navigation.Back)
     }
   }
 
@@ -51,8 +50,11 @@ fun OnboardingScreen(
         onPageScroll = viewModel::onPageScroll,
         onActionClick = { action ->
           when (action) {
-            is OnboardingAction.NavigateToJellyseerrLogin -> onNavigateToJellyseerrSettings()
-            is OnboardingAction.NavigateToTMDBLogin -> onNavigateToTMDBLogin()
+            is OnboardingAction.NavigateToJellyseerrLogin -> onNavigate(
+              Navigation.JellyseerrSettingsRoute(withNavigationBar = false),
+            )
+            is OnboardingAction.NavigateToTMDBLogin -> onNavigate(Navigation.TMDBAuthRoute)
+
             is OnboardingAction.NavigateToLinkHandling -> AppSettingsUtil.openAppDetails(context)
           }
         },

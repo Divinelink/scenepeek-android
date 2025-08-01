@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import com.divinelink.core.commons.BuildConfigProvider
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -114,12 +115,14 @@ class AboutSettingsScreenTest : ComposeTest() {
     var navigatedToAbout = false
     setVisibilityScopeContent {
       SettingsScreen(
-        onNavigateUp = { navigatedUp = true },
-        onNavigateToAccountSettings = {},
-        onNavigateToAppearanceSettings = {},
-        onNavigateToDetailPreferencesSettings = {},
-        onNavigateToLinkHandling = {},
-        onNavigateToAboutSettings = { navigatedToAbout = true },
+        onNavigate = { route ->
+          if (route is Navigation.AboutSettingsRoute) {
+            navigatedToAbout = true
+          }
+          if (route is Navigation.Back) {
+            navigatedUp = true
+          }
+        },
         animatedVisibilityScope = this,
       )
     }

@@ -4,14 +4,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
-import kotlinx.serialization.Serializable
-
-@Serializable
-object SearchRoute
+import com.divinelink.core.model.search.SearchEntryPoint
 
 fun NavController.navigateToSearchFromTab(navOptions: NavOptions? = null) = navigate(
   navOptions = navOptions,
-  route = SearchRoute,
+  route = Navigation.SearchRoute(
+    entryPoint = SearchEntryPoint.SEARCH_TAB,
+  ),
 )
 
 fun NavController.navigateToSearchFromHome() {
@@ -23,11 +22,13 @@ fun NavController.navigateToSearchFromHome() {
       launchSingleTop = true
       restoreState = true
     },
-    route = SearchRoute,
+    route = Navigation.SearchRoute(
+      entryPoint = SearchEntryPoint.HOME,
+    ),
   )
 
   popBackStack(
-    route = SearchRoute,
+    route = Navigation.SearchRoute(entryPoint = SearchEntryPoint.HOME),
     inclusive = false,
   )
 }
