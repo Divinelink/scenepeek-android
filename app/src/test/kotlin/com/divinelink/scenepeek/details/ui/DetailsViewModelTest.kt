@@ -1679,7 +1679,7 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `test request with 401 prompts to re-login`() = runTest {
+  fun `test jellyseerr request with 401 prompts to re-login`() = runTest {
     val viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
@@ -1714,10 +1714,55 @@ class DetailsViewModelTest {
             text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
             actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
             duration = SnackbarDuration.Long,
-            onSnackbarResult = viewModel::navigateToLogin,
+            onSnackbarResult = viewModel::navigateToJellyseerrAuth,
           ),
         ),
       )
+  }
+
+  @Test
+  fun `test navigate to jellyseerr auth`() = runTest {
+    val viewModel: DetailsViewModel
+    testRobot
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        ),
+      )
+      .mockRequestMedia(flowOf(Result.failure(AppException.Unauthorized("401"))))
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel().also {
+        viewModel = it.getViewModel()
+      }
+      .onRequestMedia(emptyList())
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = null,
+          mediaDetails = movieDetails,
+          snackbarMessage = SnackbarMessage.from(
+            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
+            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
+            duration = SnackbarDuration.Long,
+            onSnackbarResult = viewModel::navigateToJellyseerrAuth,
+          ),
+        ),
+      )
+      .expectNoJellyseerrAuthEmission()
+      .onNavigateToJellyseerrLogin(SnackbarResult.ActionPerformed)
+      .expectJellyseerrAuthEmission()
   }
 
   @Test

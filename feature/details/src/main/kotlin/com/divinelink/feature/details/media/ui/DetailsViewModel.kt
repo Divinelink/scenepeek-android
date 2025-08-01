@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
@@ -119,6 +120,9 @@ class DetailsViewModel(
 
   private val _openUrlTab = Channel<String>()
   val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
+
+  private val _navigateToJellyseerrAuth = Channel<Unit>()
+  val navigateToJellyseerrAuth: Flow<Unit> = _navigateToJellyseerrAuth.receiveAsFlow()
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
@@ -548,7 +552,7 @@ class DetailsViewModel(
                 text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
                 actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
                 duration = SnackbarDuration.Long,
-                onSnackbarResult = ::navigateToLogin,
+                onSnackbarResult = ::navigateToJellyseerrAuth,
               ),
             )
             is AppException.Conflict -> setSnackbarMessage(
@@ -577,6 +581,7 @@ class DetailsViewModel(
     }
   }
 
+  @VisibleForTesting
   fun navigateToLogin(snackbarResult: SnackbarResult) {
     if (snackbarResult == SnackbarResult.ActionPerformed) {
       _viewState.update { viewState ->
@@ -584,6 +589,16 @@ class DetailsViewModel(
           navigateToLogin = true,
           snackbarMessage = null,
         )
+      }
+    }
+  }
+
+  @VisibleForTesting
+  fun navigateToJellyseerrAuth(snackbarResult: SnackbarResult) {
+    if (snackbarResult == SnackbarResult.ActionPerformed) {
+      viewModelScope.launch {
+        _navigateToJellyseerrAuth.send(Unit)
+        consumeSnackbarMessage()
       }
     }
   }

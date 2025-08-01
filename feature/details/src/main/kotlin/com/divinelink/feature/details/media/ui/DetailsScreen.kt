@@ -68,6 +68,12 @@ fun DetailsScreen(
     }
   }
 
+  LaunchedEffect(Unit) {
+    viewModel.navigateToJellyseerrAuth.collect {
+      onNavigate(Navigation.JellyseerrSettingsRoute(withNavigationBar = true))
+    }
+  }
+
   if (openRateBottomSheet) {
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),

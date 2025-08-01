@@ -3,17 +3,12 @@ package com.divinelink.core.testing.storage
 import com.divinelink.core.datastore.EncryptedStorage
 
 open class FakeEncryptedPreferenceStorage(
-  override var tmdbAuthToken: String = "",
   override var sessionId: String? = null,
   override var jellyseerrAuthCookie: String? = null,
   override var jellyseerrPassword: String? = null,
   override var accessToken: String? = null,
   override var tmdbAccountId: String? = null,
 ) : EncryptedStorage {
-
-  override suspend fun setTmdbAuthToken(key: String) {
-    tmdbAuthToken = key
-  }
 
   override suspend fun clearSession() {
     sessionId = null

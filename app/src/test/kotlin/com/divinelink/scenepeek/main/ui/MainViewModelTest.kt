@@ -27,7 +27,6 @@ class MainViewModelTest {
   @Test
   fun successInitTest() {
     robot
-      .mockSetRemoteConfigResult(Unit)
       .buildViewModel()
       .assertUiState(
         MainUiState.Completed,
@@ -212,26 +211,4 @@ class MainViewModelTest {
       .onHandleDeeplink(url)
       .assertUiEvent(MainUiEvent.None)
   }
-
-//  @Test
-//  fun errorTest() {
-//    robot
-//      .buildViewModel()
-//      .assertViewState(
-//        MainViewState.Error(
-//          UIText.StringText("Something went wrong. Trying again...")
-//        )
-//      )
-//  }
-
-//  @Test
-//  fun retryTest() {
-//    robot
-//      .mockSetRemoteConfigResult(Unit)
-//      .buildViewModel()
-//      .onRetryFetchRemoteConfig()
-//      .assertViewState(
-//        MainViewState.Completed
-//      )
-//  }
 }

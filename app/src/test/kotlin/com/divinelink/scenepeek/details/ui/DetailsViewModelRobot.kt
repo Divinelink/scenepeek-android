@@ -86,6 +86,18 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
+  suspend fun expectJellyseerrAuthEmission() = apply {
+    viewModel.navigateToJellyseerrAuth.test {
+      awaitItem()
+    }
+  }
+
+  suspend fun expectNoJellyseerrAuthEmission() = apply {
+    viewModel.navigateToJellyseerrAuth.test {
+      expectNoEvents()
+    }
+  }
+
   fun assertOpenUrlTab(validate: suspend TurbineTestContext<String>.() -> Unit) = apply {
     runTest {
       viewModel.openUrlTab.test {
@@ -124,6 +136,10 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun onNavigateToLogin(snackbarResult: SnackbarResult) = apply {
     viewModel.navigateToLogin(snackbarResult)
+  }
+
+  fun onNavigateToJellyseerrLogin(snackbarResult: SnackbarResult) = apply {
+    viewModel.navigateToJellyseerrAuth(snackbarResult)
   }
 
   fun onMarkAsFavorite() = apply {

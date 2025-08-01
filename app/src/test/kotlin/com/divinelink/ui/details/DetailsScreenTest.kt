@@ -34,6 +34,7 @@ import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -58,11 +59,16 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import kotlin.test.Test
 import com.divinelink.core.ui.R as uiR
 import com.divinelink.feature.details.R as detailsR
 
 class DetailsScreenTest : ComposeTest() {
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
+  private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private val getMovieDetailsUseCase = FakeGetMediaDetailsUseCase()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()

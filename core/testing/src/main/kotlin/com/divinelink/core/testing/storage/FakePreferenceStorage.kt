@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakePreferenceStorage(
   selectedTheme: String = "",
-  encryptedPreferences: String = "secret.preferences",
   isMaterialYouEnabled: Boolean = false,
   isBlackBackgroundsEnabled: Boolean = false,
   jellyseerrAddress: String? = null,
@@ -22,9 +21,6 @@ class FakePreferenceStorage(
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
   override val selectedTheme = _selectedTheme
-
-  private val _encryptedPreferences = MutableStateFlow(encryptedPreferences)
-  override val encryptedPreferences = _encryptedPreferences
 
   private val _isMaterialYouEnabled = MutableStateFlow(isMaterialYouEnabled)
   override val isMaterialYouEnabled = _isMaterialYouEnabled
@@ -58,10 +54,6 @@ class FakePreferenceStorage(
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
-  }
-
-  override suspend fun setEncryptedPreferences(value: String) {
-    _encryptedPreferences.value = value
   }
 
   override suspend fun setMaterialYou(isEnabled: Boolean) {

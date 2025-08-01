@@ -42,10 +42,8 @@ fun ComposeTest.setVisibilityScopeContent(
       preferencesRepository = preferencesRepository,
       navigationProvider = listOf(),
     )
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
     ProvideScenePeekAppState(appState = state) {
-      ProvideSnackbarController(snackbarHostState, coroutineScope) {
+      ProvideSnackbarController(state.snackbarHostState, state.scope) {
         SharedTransitionScopeProvider { sharedTransitionScope ->
           state.sharedTransitionScope = sharedTransitionScope
           content(sharedTransitionScope)
@@ -60,9 +58,6 @@ fun ComposeTest.setScaffoldContent(
   content: @Composable ScaffoldState.() -> Unit,
 ) {
   composeTestRule.setContent {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
       onboardingManager = TestOnboardingManager(),
@@ -71,7 +66,7 @@ fun ComposeTest.setScaffoldContent(
     )
 
     ProvideScenePeekAppState(appState = state) {
-      ProvideSnackbarController(snackbarHostState, coroutineScope) {
+      ProvideSnackbarController(state.snackbarHostState, state.scope) {
         SharedTransitionScopeProvider {
           state.sharedTransitionScope = it
 
