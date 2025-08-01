@@ -4,6 +4,7 @@ import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 
 class ProfileViewModelTestRobot {
@@ -21,7 +22,7 @@ class ProfileViewModelTestRobot {
     )
   }
 
-  fun mockFetchAccountDetails(response: Result<TMDBAccount>) = apply {
+  fun mockFetchAccountDetails(response: Flow<Result<TMDBAccount>>) = apply {
     getAccountDetailsUseCase.mockSuccess(response)
   }
 

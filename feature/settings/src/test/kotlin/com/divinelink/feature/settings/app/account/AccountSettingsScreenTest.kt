@@ -21,6 +21,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -70,7 +71,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test account details are visible when user connected`() {
-    getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
+    getAccountDetailsUseCase.mockSuccess(flowOf(accountDetailsResult))
 
     val viewModel = setupViewModel()
 
@@ -95,7 +96,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test logout dialog is shown when logout clicked`() {
-    getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
+    getAccountDetailsUseCase.mockSuccess(flowOf(accountDetailsResult))
 
     val viewModel = setupViewModel()
 
@@ -115,7 +116,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test user logs out when confirm button pressed and success logout response`() = runTest {
-    getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
+    getAccountDetailsUseCase.mockSuccess(flowOf(accountDetailsResult))
 
     logoutUseCase.mockSuccess(Result.success(Unit))
 
@@ -151,7 +152,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test dismiss dialog when cancel button pressed`() {
-    getAccountDetailsUseCase.mockSuccess(accountDetailsResult)
+    getAccountDetailsUseCase.mockSuccess(flowOf(accountDetailsResult))
 
     val viewModel = setupViewModel()
 

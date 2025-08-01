@@ -12,6 +12,7 @@ import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
 import com.divinelink.feature.onboarding.manager.OnboardingPages.linkHandlingPage
 import com.divinelink.feature.onboarding.manager.OnboardingPages.tmdbPage
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -120,7 +121,7 @@ class OnboardingViewModelTest {
     robot
       .mockOnboardingPages(OnboardingPages.initialPages)
       .mockIsInitialOnboarding(true)
-      .mockGetAccountDetails(Result.success(TMDBAccountFactory.loggedIn()))
+      .mockGetAccountDetails(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
       .buildViewModel()
       .onPageScroll(1)
       .assertUiState(
