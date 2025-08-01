@@ -15,8 +15,7 @@ class GetDetailsActionItemsUseCase(
   override fun execute(parameters: Unit): Flow<Result<List<DetailActionItem>>> =
     storage.jellyseerrAccount.mapLatest { account ->
       val menuItems = buildList {
-        add(DetailActionItem.Rate)
-        add(DetailActionItem.Watchlist)
+        addAll(DetailActionItem.defaultItems)
         account?.firstOrNull()?.let {
           add(DetailActionItem.Request)
         }
