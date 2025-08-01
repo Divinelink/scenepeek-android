@@ -47,5 +47,20 @@ object OnboardingPages {
     linkHandlingPage,
   )
 
-  val newFeaturePages = emptyMap<Int, List<OnboardingPage>>()
+  private val v22 = listOf(
+    OnboardingPage(
+      tag = "v22-lists-changelog",
+      title = UIText.ResourceText(R.string.feature_onboarding_changelog),
+      description = UIText.ResourceText(R.string.feature_onboarding_lists_description),
+      image = null,
+      showSkipButton = false,
+    ),
+  )
+
+  /**
+   * A map of new feature pages keyed by version code.
+   */
+  val newFeaturePages = mapOf(
+    22 to v22,
+  )
 }

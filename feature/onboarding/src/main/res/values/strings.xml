@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="feature_onboarding_changelog">Changelog</string>
   <string name="feature_onboarding_get_started">Get started</string>
   <string name="feature_onboarding_skip">Skip</string>
 
@@ -25,4 +26,15 @@
     (some devices have this listed under <strong>Default Apps</strong> in the main settings followed by selecting ScenePeek for relevant categories)
     ]]>
   </string>
+
+  <string name="feature_onboarding_lists_description">
+    <![CDATA[
+    <strong>New in this version:</strong>
+    <br>
+    1. TMDB Lists - Create and edit custom lists, add movies and TV shows
+    <br>
+    2. Watchlist tab renamed to Profile, now includes watchlists, lists, and ratings
+    ]]>
+  </string>
+
 </resources>

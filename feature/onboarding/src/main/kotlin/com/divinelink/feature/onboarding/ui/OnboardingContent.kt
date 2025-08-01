@@ -70,7 +70,7 @@ fun BoxScope.OnboardingContent(
 
   LaunchedEffect(Unit) {
     while (true) {
-      delay(6500)
+      delay(8000)
 
       backdropImage = (backdropImage + 1) % backdropImages.size
     }
