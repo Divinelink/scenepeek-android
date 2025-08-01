@@ -1242,6 +1242,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
           mediaId = mediaId,
@@ -1285,6 +1286,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -1356,6 +1358,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageTvShow,
               DetailActionItem.Request,
             ),
@@ -1398,6 +1401,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
@@ -1447,6 +1451,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
@@ -1510,6 +1515,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -1537,6 +1543,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
         ),
@@ -1590,6 +1597,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -1614,6 +1622,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
@@ -2192,6 +2201,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2221,6 +2231,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.unknown(),
@@ -2267,6 +2278,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2297,6 +2309,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2315,6 +2328,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2333,6 +2347,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.Request,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.unknown(),
@@ -2382,6 +2397,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2411,6 +2427,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2459,6 +2476,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2486,6 +2504,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = null,
@@ -2535,6 +2554,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2562,6 +2582,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = null,
@@ -2611,6 +2632,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2639,6 +2661,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2660,6 +2683,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2681,6 +2705,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageTvShow,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
@@ -2729,6 +2754,7 @@ class DetailsViewModelTest {
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
+            DetailActionItem.List,
             DetailActionItem.ManageMovie,
           ),
           ratingSource = RatingSource.TMDB,
@@ -2753,6 +2779,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2771,6 +2798,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
@@ -2789,6 +2817,7 @@ class DetailsViewModelTest {
             actionButtons = listOf(
               DetailActionItem.Rate,
               DetailActionItem.Watchlist,
+              DetailActionItem.List,
               DetailActionItem.Request,
             ),
             jellyseerrMediaInfo = null,

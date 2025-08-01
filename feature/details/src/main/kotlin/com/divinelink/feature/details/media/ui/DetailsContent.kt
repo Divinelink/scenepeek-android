@@ -268,6 +268,9 @@ fun DetailsContent(
         actionButtons = viewState.actionButtons,
         onAddRateClicked = onAddRateClick,
         onAddToWatchlistClicked = onAddToWatchlistClick,
+        onAddToListClicked = {
+          viewState.mediaItem?.let { onNavigate(Navigation.AddToListRoute(it.id, it.mediaType)) }
+        },
         onRequestClicked = { showRequestModal = true },
         onManageMovie = { showManageMediaModal = true },
         onManageTv = { showManageMediaModal = true },

@@ -1,6 +1,7 @@
 package com.divinelink.feature.details.media.ui.fab
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.PlaylistAdd
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.SettingsSuggest
@@ -20,6 +21,7 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
   actionButtons: List<DetailActionItem>,
   onAddRateClicked: () -> Unit,
   onAddToWatchlistClicked: () -> Unit,
+  onAddToListClicked: () -> Unit,
   onRequestClicked: () -> Unit,
   onManageMovie: () -> Unit,
   onManageTv: () -> Unit,
@@ -39,6 +41,12 @@ internal fun ScaffoldState.DetailsExpandableFloatingActionButton(
           label = UIText.ResourceText(R.string.feature_details__watchlist),
           contentDescription = UIText.ResourceText(R.string.feature_details__watchlist),
           onClick = onAddToWatchlistClicked,
+        )
+        DetailActionItem.List -> FloatingActionButtonItem(
+          icon = IconWrapper.Vector(Icons.AutoMirrored.Rounded.PlaylistAdd),
+          label = UIText.ResourceText(R.string.feature_details__add_to_list),
+          contentDescription = UIText.ResourceText(R.string.feature_details__add_to_list),
+          onClick = onAddToListClicked,
         )
         DetailActionItem.Request -> FloatingActionButtonItem(
           icon = IconWrapper.Vector(Icons.Rounded.Download),

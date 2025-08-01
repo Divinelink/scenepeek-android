@@ -25,6 +25,7 @@ class GetDetailsActionItemsUseCaseTest {
         listOf(
           DetailActionItem.Rate,
           DetailActionItem.Watchlist,
+          DetailActionItem.List,
         ),
       )
     }
@@ -42,6 +43,7 @@ class GetDetailsActionItemsUseCaseTest {
         listOf(
           DetailActionItem.Rate,
           DetailActionItem.Watchlist,
+          DetailActionItem.List,
           DetailActionItem.Request,
         ),
       )

@@ -719,11 +719,10 @@ class DetailsViewModel(
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
-                actionButtons = listOf(
-                  DetailActionItem.Rate,
-                  DetailActionItem.Watchlist,
-                  DetailActionItem.Request,
-                ),
+                actionButtons = buildList {
+                  addAll(DetailActionItem.defaultItems)
+                  add(DetailActionItem.Request)
+                },
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(
                     R.string.feature_details_jellyseerr_success_media_delete,
@@ -838,8 +837,7 @@ class DetailsViewModel(
     tvStatus: JellyseerrStatus,
     seasons: List<Season>,
   ): List<DetailActionItem> = buildList {
-    add(DetailActionItem.Rate)
-    add(DetailActionItem.Watchlist)
+    addAll(DetailActionItem.defaultItems)
     if (seasons.any { it.isAvailable() } || tvStatus != JellyseerrStatus.Media.UNKNOWN) {
       add(DetailActionItem.ManageTvShow)
     }
@@ -849,8 +847,7 @@ class DetailsViewModel(
   }
 
   private fun findMovieActions(status: JellyseerrStatus.Media): List<DetailActionItem> = buildList {
-    add(DetailActionItem.Rate)
-    add(DetailActionItem.Watchlist)
+    addAll(DetailActionItem.defaultItems)
     if (status == JellyseerrStatus.Media.UNKNOWN) {
       add(DetailActionItem.Request)
     } else {
