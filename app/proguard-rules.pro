@@ -23,6 +23,12 @@
 -keep class com.divinelink.core.model.person.Gender { *; }
 -keepclassmembers class com.divinelink.core.model.person.Gender { *; }
 
+-keep class com.divinelink.core.model.search.SearchEntryPoint { *; }
+-keepclassmembers class com.divinelink.core.model.search.SearchEntryPoint { *; }
+
+-keep class com.divinelink.core.model.user.data.UserDataSection { *; }
+-keepclassmembers class com.divinelink.core.model.user.data.UserDataSection { *; }
+
 -keep class com.divinelink.core.model.media.MediaType { *; }
 -keepclassmembers class com.divinelink.core.model.media.MediaType { *; }
 
