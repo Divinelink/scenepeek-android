@@ -6,7 +6,7 @@ CREATE TABLE ListMetadataEntity (
 );
 
 CREATE TABLE ListItemEntity (
-  id INTEGER NOT NULL PRIMARY KEY,
+  id INTEGER NOT NULL,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   isPublic INTEGER NOT NULL,
@@ -14,6 +14,7 @@ CREATE TABLE ListItemEntity (
   posterPath TEXT,
   backdropPath TEXT,
   accountId TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
   itemIndex INTEGER NOT NULL,
 
   UNIQUE(accountId, itemIndex) ON CONFLICT REPLACE
@@ -27,6 +28,7 @@ CREATE TABLE ListDetailsEntity (
     backdropPath TEXT,
     posterPath TEXT,
     itemCount INTEGER NOT NULL,
+    page INTEGER NOT NULL,
     totalPages INTEGER NOT NULL,
     totalResults INTEGER NOT NULL,
     isPublic INTEGER,
