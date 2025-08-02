@@ -1,4 +1,4 @@
- CREATE TABLE ListDetailsEntity (
+CREATE TABLE ListDetailsEntity (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
