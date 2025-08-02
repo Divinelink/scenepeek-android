@@ -3,16 +3,29 @@ package com.divinelink.feature.onboarding.navigation
 import androidx.activity.compose.BackHandler
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.feature.onboarding.ui.OnboardingScreen
+import com.divinelink.feature.onboarding.ui.IntroModalBottomSheet
 
-fun NavGraphBuilder.onboardingScreen(onNavigate: (Navigation) -> Unit) {
-  composable<Navigation.OnboardingRoute> {
+fun NavGraphBuilder.fullscreenOnboarding(onNavigate: (Navigation) -> Unit) {
+  composable<Navigation.Onboarding.FullScreenRoute> {
     BackHandler(enabled = true) {
       // Disable back button
     }
 
-    OnboardingScreen(
+    IntroModalBottomSheet(
+      onNavigate = onNavigate,
+    )
+  }
+}
+
+fun NavGraphBuilder.modalOnboarding(onNavigate: (Navigation) -> Unit) {
+  dialog<Navigation.Onboarding.ModalRoute> {
+    BackHandler(enabled = true) {
+      // Disable back button
+    }
+
+    IntroModalBottomSheet(
       onNavigate = onNavigate,
     )
   }

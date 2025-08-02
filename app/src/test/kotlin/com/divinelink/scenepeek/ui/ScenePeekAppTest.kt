@@ -887,7 +887,7 @@ class ScenePeekAppTest : ComposeTest() {
       )
     }
 
-    onboardingManager.setShouldShowOnboarding(true)
+    onboardingManager.setIntroType(true)
 
     setContentWithTheme {
       state = rememberScenePeekAppState(

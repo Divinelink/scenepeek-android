@@ -25,15 +25,12 @@
   <string name="core_model_request_status_declined">Declined</string>
   <string name="core_model_request_status_failed">Failed</string>
 
-
   <string name="core_model_tv_status_ended">Ended</string>
   <string name="core_model_tv_status_canceled">Canceled</string>
   <string name="core_model_tv_status_continuing">Continuing</string>
   <string name="core_model_tv_status_unknown">Unknown</string>
 
-  <string name="core_model_onboarding_link_handling_action">Open settings</string>
-  <string name="core_model_onboarding_tmdb_page_action">Connect TMDB Account</string>
-  <string name="core_model_onboarding_jellyseerr_page_action">Link Jellyseerr Account</string>
-
-  <string name="core_model_onboarding_successfully_connected">Connected successfully</string>
+  <string name="core_model_onboarding_features_headers">Features</string>
+  <string name="core_model_onboarding_added_header">Added</string>
+  <string name="core_model_onboarding_fixed_header">Fixed/Improved</string>
 </resources>

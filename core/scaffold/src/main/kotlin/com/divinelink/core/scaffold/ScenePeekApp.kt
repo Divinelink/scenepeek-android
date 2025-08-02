@@ -39,6 +39,7 @@ fun ScenePeekApp(
 ) {
   val isOffline by state.isOffline.collectAsStateWithLifecycle()
   val showOnboarding by state.shouldShowOnboarding.collectAsStateWithLifecycle()
+  val isFirstLaunch by state.isInitialOnboarding.collectAsStateWithLifecycle()
   var networkState by remember { mutableStateOf<NetworkState>(NetworkState.Online.Persistent) }
 
   LaunchedEffect(isOffline) {
@@ -82,7 +83,7 @@ fun ScenePeekApp(
 
   LaunchedEffect(showOnboarding) {
     if (showOnboarding) {
-      state.navController.navigateToOnboarding()
+      state.navController.navigateToOnboarding(fullscreen = isFirstLaunch)
     }
   }
 

@@ -1,66 +1,58 @@
 package com.divinelink.feature.onboarding.manager
 
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.model.onboarding.OnboardingAction
-import com.divinelink.core.model.onboarding.OnboardingPage
 import com.divinelink.feature.onboarding.R
 
-object OnboardingPages {
+object IntroSections {
 
-  val jellyseerrPage = OnboardingPage(
-    tag = "jellyseerr",
+  val jellyseerr = IntroSection.Feature(
     title = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_title),
     description = UIText.ResourceText(R.string.feature_onboarding_jellyseerr_page_description),
     image = com.divinelink.core.ui.R.drawable.core_ui_ic_jellyseerr,
-    showSkipButton = true,
     action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = false),
   )
 
-  val tmdbPage = OnboardingPage(
-    tag = "tmdb",
+  val tmdb = IntroSection.Feature(
     title = UIText.ResourceText(R.string.feature_onboarding_tmdb_page_title),
     description = UIText.ResourceText(R.string.feature_onboarding_tmdb_page_description),
     image = com.divinelink.core.model.R.drawable.core_model_ic_tmdb,
-    showSkipButton = true,
     action = OnboardingAction.NavigateToTMDBLogin(isComplete = false),
   )
 
-  val linkHandlingPage = OnboardingPage(
-    tag = "link_handling",
+  val linkHandling = IntroSection.Feature(
     title = UIText.ResourceText(R.string.feature_onboarding_link_handling_page_title),
     description = UIText.ResourceText(R.string.feature_onboarding_link_handling_page_description),
-    image = null,
-    showSkipButton = false,
     action = OnboardingAction.NavigateToLinkHandling,
   )
 
-  val initialPages = listOf(
-    OnboardingPage(
-      tag = "welcome",
+  val onboardingSections = listOf(
+    IntroSection.Header(
       title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
       description = UIText.ResourceText(R.string.feature_onboarding_welcome_page_description),
-      image = null,
-      showSkipButton = true,
     ),
-    tmdbPage,
-    jellyseerrPage,
-    linkHandlingPage,
+    IntroSection.Spacer,
+    IntroSection.SecondaryHeader.Features,
+    tmdb,
+    jellyseerr,
+    linkHandling,
   )
 
-  private val v22 = listOf(
-    OnboardingPage(
-      tag = "v22-lists-changelog",
-      title = UIText.ResourceText(R.string.feature_onboarding_changelog),
-      description = UIText.ResourceText(R.string.feature_onboarding_lists_description),
-      image = null,
-      showSkipButton = false,
-    ),
+  val v22 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew,
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_tmdb_lists)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_profile)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_fix_encryption)),
   )
 
   /**
-   * A map of new feature pages keyed by version code.
+   * A map of changelog sections keyed by version code.
    */
-  val newFeaturePages = mapOf(
+  val changelogSections = mapOf(
     22 to v22,
   )
 }

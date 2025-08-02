@@ -1,9 +1,14 @@
 package com.divinelink.feature.onboarding.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,14 +20,18 @@ import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.conditional
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnboardingScreen(
+fun IntroModalBottomSheet(
   onNavigate: (Navigation) -> Unit,
   viewModel: OnboardingViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
   val context = LocalContext.current
 
   LaunchedEffect(Unit) {
@@ -31,34 +40,36 @@ fun OnboardingScreen(
     }
   }
 
-  Scaffold(
+  ModalBottomSheet(
     modifier = Modifier
-      .testTag(TestTags.Onboarding.SCREEN)
-      .fillMaxSize(),
-    topBar = {
-      if (uiState.pages.isNotEmpty() && uiState.pages[uiState.selectedPageIndex].showSkipButton) {
-        OnboardingSkipButton(viewModel::onboardingComplete)
-      }
-    },
-  ) {
-    Box(
-      modifier = Modifier.consumeWindowInsets(it),
-    ) {
+      .conditional(
+        condition = uiState.isFirstLaunch,
+        ifTrue = { fillMaxSize() },
+      )
+      .conditional(
+        condition = uiState.isFirstLaunch,
+        ifTrue = { consumeWindowInsets(WindowInsets.systemBars) },
+      )
+      .testTag(TestTags.Modal.CHANGELOG),
+    shape = MaterialTheme.shapes.extraLarge,
+    properties = properties,
+    onDismissRequest = { viewModel.onboardingComplete() },
+    sheetState = sheetState,
+    content = {
       OnboardingContent(
         uiState = uiState,
-        onCompleteOnboarding = viewModel::onboardingComplete,
-        onPageScroll = viewModel::onPageScroll,
         onActionClick = { action ->
           when (action) {
             is OnboardingAction.NavigateToJellyseerrLogin -> onNavigate(
               Navigation.JellyseerrSettingsRoute(withNavigationBar = false),
             )
-            is OnboardingAction.NavigateToTMDBLogin -> onNavigate(Navigation.TMDBAuthRoute)
-
-            is OnboardingAction.NavigateToLinkHandling -> AppSettingsUtil.openAppDetails(context)
+            OnboardingAction.NavigateToLinkHandling -> AppSettingsUtil.openAppDetails(context)
+            is OnboardingAction.NavigateToTMDBLogin -> onNavigate(
+              Navigation.TMDBAuthRoute,
+            )
           }
         },
       )
-    }
-  }
+    },
+  )
 }

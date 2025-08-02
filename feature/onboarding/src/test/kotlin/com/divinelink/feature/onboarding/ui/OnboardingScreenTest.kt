@@ -18,7 +18,7 @@ import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.onboarding.R
-import com.divinelink.feature.onboarding.manager.OnboardingPages
+import com.divinelink.feature.onboarding.manager.IntroSections
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 import com.divinelink.core.model.R as modelR
@@ -38,12 +38,12 @@ class OnboardingScreenTest : ComposeTest() {
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
-        onboardingPages = OnboardingPages.initialPages,
+        pages = IntroSections.onboardingSections,
       ),
     )
 
     setContentWithTheme {
-      OnboardingScreen(
+      IntroModalBottomSheet(
         onNavigate = {},
         viewModel = viewModel,
       )
@@ -52,13 +52,13 @@ class OnboardingScreenTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithText(getString(R.string.feature_onboarding_skip)).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.initialPages[0].tag))
+      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.onboardingSections[0].tag))
         .assertIsDisplayed()
         .performTouchInput {
           swipeLeft()
         }
 
-      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.initialPages[1].tag))
+      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.onboardingSections[1].tag))
         .assertIsDisplayed()
     }
   }
@@ -70,31 +70,31 @@ class OnboardingScreenTest : ComposeTest() {
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
-        onboardingPages = OnboardingPages.initialPages,
+        pages = IntroSections.onboardingSections,
       ),
     )
 
     setContentWithTheme {
-      OnboardingScreen(
+      IntroModalBottomSheet(
         onNavigate = {},
         viewModel = viewModel,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.initialPages[0].tag))
+      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.onboardingSections[0].tag))
         .assertIsDisplayed()
         .performTouchInput {
           swipeLeft()
         }
 
-      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.tmdbPage.tag))
+      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.tmdb.tag))
         .assertIsDisplayed()
         .performTouchInput {
           swipeLeft()
         }
 
-      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.jellyseerrPage.tag))
+      onNodeWithTag(TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.jellyseerr.tag))
         .assertIsDisplayed()
     }
   }
@@ -106,14 +106,14 @@ class OnboardingScreenTest : ComposeTest() {
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
-        onboardingPages = listOf(OnboardingPages.tmdbPage),
+        pages = listOf(IntroSections.tmdb),
       ),
     )
 
     var tmdbLoginClicked = false
 
     setContentWithTheme {
-      OnboardingScreen(
+      IntroModalBottomSheet(
         onNavigate = {
           if (it is Navigation.TMDBAuthRoute) {
             tmdbLoginClicked = true
@@ -125,7 +125,7 @@ class OnboardingScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(
-        TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.tmdbPage.tag),
+        TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.tmdb.tag),
       ).performScrollToNode(
         hasText(getString(modelR.string.core_model_onboarding_tmdb_page_action)),
       )
@@ -145,14 +145,14 @@ class OnboardingScreenTest : ComposeTest() {
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
-        onboardingPages = listOf(OnboardingPages.jellyseerrPage),
+        pages = listOf(IntroSections.jellyseerr),
       ),
     )
 
     var jellyseerrLoginClick = false
 
     setContentWithTheme {
-      OnboardingScreen(
+      IntroModalBottomSheet(
         onNavigate = {
           if (it is Navigation.JellyseerrSettingsRoute) {
             jellyseerrLoginClick = true
@@ -164,7 +164,7 @@ class OnboardingScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(
-        TestTags.Onboarding.ONBOARDING_PAGE.format(OnboardingPages.jellyseerrPage.tag),
+        TestTags.Onboarding.ONBOARDING_PAGE.format(IntroSections.jellyseerr.tag),
       ).performScrollToNode(
         hasText(getString(modelR.string.core_model_onboarding_jellyseerr_page_action)),
       )

@@ -54,7 +54,7 @@ class ScenePeekAppState internal constructor(
   val snackbarHostState: SnackbarHostState,
   preferencesRepository: PreferencesRepository,
   networkMonitor: NetworkMonitor,
-  onboardingManager: OnboardingManager, // This could go on MainViewModel
+  onboardingManager: OnboardingManager,
 ) {
   val currentDestination: NavDestination?
     @Composable get() = navController.currentBackStackEntryAsState().value?.destination
@@ -67,7 +67,14 @@ class ScenePeekAppState internal constructor(
       initialValue = false,
     )
 
-  val shouldShowOnboarding = onboardingManager.shouldShowOnboarding
+  val shouldShowOnboarding = onboardingManager.showIntro
+    .stateIn(
+      scope = scope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),
+      initialValue = false,
+    )
+
+  val isInitialOnboarding = onboardingManager.isInitialOnboarding
     .stateIn(
       scope = scope,
       started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT),

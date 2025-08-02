@@ -50,7 +50,7 @@ class OnboardingViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
 
   // Mocks
   fun mockOnboardingPages(pages: List<OnboardingPage>) = apply {
-    onboardingManager.setOnboardingPages(pages)
+    onboardingManager.setIntroPages(pages)
   }
 
   fun mockIsInitialOnboarding(isInitialOnboarding: Boolean) = apply {

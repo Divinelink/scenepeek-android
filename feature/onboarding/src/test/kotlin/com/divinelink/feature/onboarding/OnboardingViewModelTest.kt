@@ -7,10 +7,10 @@ import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.model.onboarding.OnboardingPage
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
-import com.divinelink.feature.onboarding.manager.OnboardingPages
-import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
-import com.divinelink.feature.onboarding.manager.OnboardingPages.linkHandlingPage
-import com.divinelink.feature.onboarding.manager.OnboardingPages.tmdbPage
+import com.divinelink.feature.onboarding.manager.IntroSections
+import com.divinelink.feature.onboarding.manager.IntroSections.jellyseerr
+import com.divinelink.feature.onboarding.manager.IntroSections.linkHandling
+import com.divinelink.feature.onboarding.manager.IntroSections.tmdb
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -27,24 +27,24 @@ class OnboardingViewModelTest {
   @Test
   fun `test viewModel init with onboarding pages`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .buildViewModel()
       .assertUiState(
-        OnboardingUiState.initial().copy(pages = OnboardingPages.initialPages),
+        OnboardingUiState.initial().copy(pages = IntroSections.onboardingSections),
       )
   }
 
   @Test
   fun `test onPageScroll with initial onboarding starts fetch account job`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .buildViewModel()
       .onPageScroll(1)
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 1,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("tmdb"),
         ),
       )
@@ -53,14 +53,14 @@ class OnboardingViewModelTest {
   @Test
   fun `test onPageScroll starts fetch account job only once`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .buildViewModel()
       .onPageScroll(1)
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 1,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("tmdb"),
         ),
       )
@@ -69,7 +69,7 @@ class OnboardingViewModelTest {
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 1,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("tmdb"),
         ),
       )
@@ -78,14 +78,14 @@ class OnboardingViewModelTest {
   @Test
   fun `test onPageScroll to jellyseerr page starts fetch jellyseerr account`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .buildViewModel()
       .onPageScroll(2)
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 2,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("jellyseerr"),
         ),
       )
@@ -94,14 +94,14 @@ class OnboardingViewModelTest {
   @Test
   fun `test onPageScroll to jellyseerr page starts fetch jellyseerr account only once`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .buildViewModel()
       .onPageScroll(2)
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 2,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("jellyseerr"),
         ),
       )
@@ -110,7 +110,7 @@ class OnboardingViewModelTest {
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 2,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
           startedJobs = listOf("jellyseerr"),
         ),
       )
@@ -119,7 +119,7 @@ class OnboardingViewModelTest {
   @Test
   fun `test onFetchAccount with success updates page action`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .mockGetAccountDetails(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
       .buildViewModel()
@@ -137,9 +137,9 @@ class OnboardingViewModelTest {
               image = null,
               showSkipButton = true,
             ),
-            tmdbPage.copy(action = OnboardingAction.NavigateToTMDBLogin(isComplete = true)),
-            jellyseerrPage,
-            linkHandlingPage,
+            tmdb.copy(action = OnboardingAction.NavigateToTMDBLogin(isComplete = true)),
+            jellyseerr,
+            linkHandling,
           ),
           startedJobs = listOf("tmdb"),
         ),
@@ -149,7 +149,7 @@ class OnboardingViewModelTest {
   @Test
   fun `test onFetchJellyseerrAccountDetails with success updates page action`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .mockGetJellyseerrAccountDetails(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
       .buildViewModel()
@@ -167,11 +167,11 @@ class OnboardingViewModelTest {
               image = null,
               showSkipButton = true,
             ),
-            tmdbPage,
-            jellyseerrPage.copy(
+            tmdb,
+            jellyseerr.copy(
               action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = true),
             ),
-            linkHandlingPage,
+            linkHandling,
           ),
           startedJobs = listOf("jellyseerr"),
         ),
@@ -181,7 +181,7 @@ class OnboardingViewModelTest {
   @Test
   fun `test on onboardingComplete navigates up`() = runTest {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
       .buildViewModel()
       .onboardingComplete()
@@ -191,7 +191,7 @@ class OnboardingViewModelTest {
   @Test
   fun `test on not initial onboarding does not update started jobs`() {
     robot
-      .mockOnboardingPages(OnboardingPages.initialPages)
+      .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(false)
       .mockGetJellyseerrAccountDetails(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
       .buildViewModel()
@@ -199,7 +199,7 @@ class OnboardingViewModelTest {
       .assertUiState(
         OnboardingUiState.initial().copy(
           selectedPageIndex = 2,
-          pages = OnboardingPages.initialPages,
+          pages = IntroSections.onboardingSections,
         ),
       )
   }
