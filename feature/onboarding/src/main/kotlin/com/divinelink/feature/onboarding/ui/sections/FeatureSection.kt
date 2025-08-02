@@ -70,14 +70,14 @@ fun FeatureSection(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Start,
         text = section.title.getString(),
-        style = MaterialTheme.typography.titleSmall,
+        style = MaterialTheme.typography.titleMedium,
       )
 
       Text(
         modifier = Modifier,
         textAlign = TextAlign.Start,
         text = AnnotatedString.fromHtml(section.description.getString()),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
       )
     }
 

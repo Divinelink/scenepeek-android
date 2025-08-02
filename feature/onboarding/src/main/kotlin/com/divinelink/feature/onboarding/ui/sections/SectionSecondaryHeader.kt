@@ -18,6 +18,6 @@ fun SectionSecondaryHeader(item: IntroSection.SecondaryHeader) {
       .padding(top = MaterialTheme.dimensions.keyline_16)
       .padding(horizontal = MaterialTheme.dimensions.keyline_8),
     text = item.title.getString(),
-    style = MaterialTheme.typography.titleSmall,
+    style = MaterialTheme.typography.titleMedium,
   )
 }

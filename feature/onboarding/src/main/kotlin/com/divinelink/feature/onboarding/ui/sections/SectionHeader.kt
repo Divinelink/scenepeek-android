@@ -25,7 +25,7 @@ fun SectionHeader(item: IntroSection.Header) {
         .padding(bottom = MaterialTheme.dimensions.keyline_8),
       textAlign = TextAlign.Center,
       text = item.title.getString(),
-      style = MaterialTheme.typography.titleSmall,
+      style = MaterialTheme.typography.titleMedium,
     )
 
     item.description?.let { description ->
@@ -35,7 +35,7 @@ fun SectionHeader(item: IntroSection.Header) {
           .padding(horizontal = MaterialTheme.dimensions.keyline_8),
         textAlign = TextAlign.Center,
         text = AnnotatedString.fromHtml(description.getString()),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
       )
     }
   }

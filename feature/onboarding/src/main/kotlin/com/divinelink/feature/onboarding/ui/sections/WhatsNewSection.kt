@@ -23,7 +23,7 @@ fun WhatsNewSection() {
       stringResource(commonR.string.core_commons_app_name),
       stringResource(commonR.string.version_name),
     ),
-    style = MaterialTheme.typography.titleSmall,
+    style = MaterialTheme.typography.titleMedium,
   )
 
   HorizontalDivider()

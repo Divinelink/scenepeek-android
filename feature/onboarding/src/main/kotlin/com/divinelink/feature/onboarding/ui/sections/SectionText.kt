@@ -21,6 +21,6 @@ fun SectionText(item: IntroSection.Text) {
       .padding(horizontal = MaterialTheme.dimensions.keyline_8),
     textAlign = TextAlign.Start,
     text = AnnotatedString.fromHtml(item.description.getString()),
-    style = MaterialTheme.typography.bodySmall,
+    style = MaterialTheme.typography.bodyMedium,
   )
 }
