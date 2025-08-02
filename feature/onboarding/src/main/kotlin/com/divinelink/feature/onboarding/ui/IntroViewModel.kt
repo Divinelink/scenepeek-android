@@ -7,25 +7,23 @@ import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.model.onboarding.OnboardingAction
-import com.divinelink.feature.onboarding.manager.OnboardingPages
-import com.divinelink.feature.onboarding.manager.OnboardingPages.jellyseerrPage
-import com.divinelink.feature.onboarding.manager.OnboardingPages.tmdbPage
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class OnboardingViewModel(
+class IntroViewModel(
   private val markOnboardingCompleteUseCase: MarkOnboardingCompleteUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
   private val getJellyseerrAccountDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
-  private val onboardingManager: OnboardingManager,
+  onboardingManager: OnboardingManager,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(OnboardingUiState.initial())
@@ -35,13 +33,21 @@ class OnboardingViewModel(
   val onNavigateUp: Flow<Unit> = _onNavigateUp.receiveAsFlow()
 
   init {
-    viewModelScope.launch {
-      onboardingManager.onboardingPages.collect {
-        _uiState.update { uiState ->
-          uiState.copy(pages = it)
-        }
+    combine(
+      onboardingManager.isInitialOnboarding,
+      onboardingManager.sections,
+    ) { isFirstLaunch, sections ->
+      _uiState.update { uiState ->
+        uiState.copy(
+          sections = sections,
+          isFirstLaunch = isFirstLaunch,
+        )
       }
-    }
+
+      if (isFirstLaunch) {
+        startAccountObservers()
+      }
+    }.launchIn(viewModelScope)
   }
 
   fun onboardingComplete() {
@@ -51,47 +57,26 @@ class OnboardingViewModel(
     }
   }
 
-  fun onPageScroll(index: Int) {
-    _uiState.update { uiState ->
-      uiState.copy(selectedPageIndex = index)
-    }
-
-    viewModelScope.launch {
-      if (onboardingManager.isInitialOnboarding.first()) {
-        val tmdbIndex = OnboardingPages.initialPages.indexOf(tmdbPage)
-        val jellyseerrIndex = OnboardingPages.initialPages.indexOf(jellyseerrPage)
-
-        if (index == tmdbIndex && !uiState.value.startedJobs.contains(tmdbPage.tag)) {
-          _uiState.update { uiState ->
-            uiState.copy(startedJobs = uiState.startedJobs + tmdbPage.tag)
-          }
-          fetchAccountJob.invoke()
-        } else if (
-          index == jellyseerrIndex && !uiState.value.startedJobs.contains(jellyseerrPage.tag)
-        ) {
-          _uiState.update { uiState ->
-            uiState.copy(startedJobs = uiState.startedJobs + jellyseerrPage.tag)
-          }
-          fetchJellyseerrAccountJob.invoke()
-        }
-      }
-    }
+  private fun startAccountObservers() {
+    fetchAccountJob()
+    fetchJellyseerrAccountJob()
   }
 
-  private val fetchAccountJob: () -> Job = {
+  private fun fetchAccountJob() {
     viewModelScope.launch {
       getAccountDetailsUseCase.invoke(Unit).collect { result ->
         result.onSuccess {
           _uiState.update { uiState ->
             uiState.copy(
-              pages = uiState.pages.map { page ->
+              sections = uiState.sections.map { section ->
                 if (
-                  page.action is OnboardingAction.NavigateToTMDBLogin &&
+                  section is IntroSection.Feature &&
+                  section.action is OnboardingAction.NavigateToTMDBLogin &&
                   it is TMDBAccount.LoggedIn
                 ) {
-                  page.copy(action = OnboardingAction.NavigateToTMDBLogin(true))
+                  section.copy(action = OnboardingAction.NavigateToTMDBLogin(true))
                 } else {
-                  page
+                  section
                 }
               },
             )
@@ -101,7 +86,7 @@ class OnboardingViewModel(
     }
   }
 
-  private val fetchJellyseerrAccountJob: () -> Job = {
+  private fun fetchJellyseerrAccountJob() {
     viewModelScope.launch {
       getJellyseerrAccountDetailsUseCase.invoke(true).collect { result ->
         result.onSuccess { accountDetails ->
@@ -109,11 +94,14 @@ class OnboardingViewModel(
 
           _uiState.update { uiState ->
             uiState.copy(
-              pages = uiState.pages.map { page ->
-                if (page.action is OnboardingAction.NavigateToJellyseerrLogin) {
-                  page.copy(action = OnboardingAction.NavigateToJellyseerrLogin(true))
+              sections = uiState.sections.map { section ->
+                if (
+                  section is IntroSection.Feature &&
+                  section.action is OnboardingAction.NavigateToJellyseerrLogin
+                ) {
+                  section.copy(action = OnboardingAction.NavigateToJellyseerrLogin(true))
                 } else {
-                  page
+                  section
                 }
               },
             )

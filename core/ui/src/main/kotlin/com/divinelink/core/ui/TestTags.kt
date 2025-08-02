@@ -250,8 +250,8 @@ object TestTags {
   }
 
   object Onboarding {
-    const val SCREEN = "Onboarding Screen"
-    const val ONBOARDING_PAGE = "Onboarding Page %s"
+    const val FULLSCREEN = "Fullscreen Onboarding Modal"
+    const val MODAL = "Modal Onboarding"
   }
 
   object Shimmer {

@@ -10,7 +10,7 @@ import com.divinelink.feature.lists.create.CreateListViewModel
 import com.divinelink.feature.lists.create.backdrop.SelectBackdropViewModel
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import com.divinelink.feature.lists.user.ListsViewModel
-import com.divinelink.feature.onboarding.ui.OnboardingViewModel
+import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
@@ -37,7 +37,7 @@ val appViewModelModule = module {
   viewModelOf(::UserDataViewModel)
   viewModelOf(::DetailsPreferencesViewModel)
   viewModelOf(::TMDBAuthViewModel)
-  viewModelOf(::OnboardingViewModel)
+  viewModelOf(::IntroViewModel)
   viewModelOf(::ProfileViewModel)
   viewModelOf(::ListsViewModel)
   viewModelOf(::AddToListViewModel)

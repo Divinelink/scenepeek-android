@@ -1,46 +1,45 @@
 package com.divinelink.feature.onboarding.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.coil.BackdropImage
-import com.divinelink.core.ui.conditional
 import com.divinelink.feature.onboarding.ui.provider.OnboardingUiStatePreviewParameterProvider
+import com.divinelink.feature.onboarding.ui.sections.FeatureSection
+import com.divinelink.feature.onboarding.ui.sections.SectionHeader
+import com.divinelink.feature.onboarding.ui.sections.SectionSecondaryHeader
+import com.divinelink.feature.onboarding.ui.sections.SectionText
+import com.divinelink.feature.onboarding.ui.sections.WhatsNewSection
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
-fun BoxScope.OnboardingContent(
+fun OnboardingContent(
   uiState: OnboardingUiState,
   onActionClick: (OnboardingAction) -> Unit,
-  onCompleteOnboarding: () -> Unit,
-  onPageScroll: (Int) -> Unit,
 ) {
   val backdropImages = listOf(
     "https://image.tmdb.org/t/p/original/b3mdmjYTEL70j7nuXATUAD9qgu4.jpg",
@@ -53,75 +52,57 @@ fun BoxScope.OnboardingContent(
 
   var backdropImage by remember { mutableIntStateOf(0) }
 
-  var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedPageIndex) }
-  val pagerState = rememberPagerState(
-    initialPage = selectedPage,
-    pageCount = { uiState.pages.size },
-  )
-
-  LaunchedEffect(pagerState) {
-    snapshotFlow { pagerState.currentPage }
-      .distinctUntilChanged()
-      .collectLatest { page ->
-        selectedPage = page
-        onPageScroll(page)
-      }
-  }
-
   LaunchedEffect(Unit) {
     while (true) {
-      delay(6500)
+      delay(8000)
 
       backdropImage = (backdropImage + 1) % backdropImages.size
     }
   }
 
-  BackdropImage(
-    modifier = Modifier
-      .fillMaxSize()
-      .blurEffect(
-        radiusX = 3f,
-        radiusY = 3f,
+  Box {
+    if (uiState.isFirstLaunch) {
+      BackdropImage(
+        modifier = Modifier
+          .fillMaxSize()
+          .blurEffect(
+            radiusX = 3f,
+            radiusY = 3f,
+          )
+          .graphicsLayer { alpha = 0.15f },
+        url = backdropImages[backdropImage],
       )
-      .graphicsLayer { alpha = 0.3f },
-    url = backdropImages[backdropImage],
-  )
-
-  HorizontalPager(
-    state = pagerState,
-  ) { page ->
-    OnboardingItem(
-      modifier = Modifier
-        .fillMaxSize()
-        .conditional(
-          condition = uiState.pages.size > 1, // Only add padding if there are pager dots
-          ifTrue = {
-            val bottomPadding = if (LocalBottomNavigationPadding.current > 0.dp) {
-              LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_36
-            } else {
-              NavigationBarDefaults.windowInsets.asPaddingValues().calculateBottomPadding() +
-                MaterialTheme.dimensions.keyline_24
-            }
-
-            padding(bottom = bottomPadding)
-          },
-          ifFalse = {
-            padding(
-              bottom = LocalBottomNavigationPadding.current + MaterialTheme.dimensions.keyline_16,
-            )
-          },
-        ),
-      page = uiState.pages[page],
-      onCompleteOnboarding = onCompleteOnboarding,
-      isLast = page == uiState.pages.size - 1,
-      onActionClick = onActionClick,
-    )
+    }
+    LazyColumn(
+      modifier = Modifier.fillMaxWidth(),
+      contentPadding = PaddingValues(
+        horizontal = MaterialTheme.dimensions.keyline_8,
+        vertical = MaterialTheme.dimensions.keyline_16,
+      ),
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+    ) {
+      items(
+        items = uiState.sections,
+      ) { item ->
+        when (item) {
+          is IntroSection.Header -> SectionHeader(item)
+          is IntroSection.SecondaryHeader -> SectionSecondaryHeader(item)
+          is IntroSection.Feature -> FeatureSection(
+            section = item,
+            onAction = onActionClick,
+          )
+          is IntroSection.Text -> SectionText(item)
+          is IntroSection.WhatsNew -> WhatsNewSection()
+          IntroSection.Spacer -> Spacer(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(MaterialTheme.dimensions.keyline_8),
+          )
+          IntroSection.Divider -> HorizontalDivider(modifier = Modifier.fillMaxWidth())
+        }
+      }
+    }
   }
-
-  PagerDotsIndicator(
-    totalPages = uiState.pages.size,
-    currentIndex = pagerState.currentPage,
-  )
 }
 
 @Composable
@@ -135,8 +116,6 @@ fun OnboardingContentPreview(
         OnboardingContent(
           uiState = uiState,
           onActionClick = {},
-          onCompleteOnboarding = {},
-          onPageScroll = {},
         )
       }
     }

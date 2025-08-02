@@ -38,7 +38,13 @@ sealed interface Navigation {
   data object LinkHandlingSettingsRoute : Navigation
 
   @Serializable
-  data object OnboardingRoute : Navigation
+  sealed interface Onboarding : Navigation {
+    @Serializable
+    data object ModalRoute : Onboarding
+
+    @Serializable
+    data object FullScreenRoute : Onboarding
+  }
 
   @Serializable
   data class PersonRoute(

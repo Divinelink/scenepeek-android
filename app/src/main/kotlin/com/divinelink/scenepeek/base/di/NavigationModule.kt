@@ -13,7 +13,8 @@ import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
 import com.divinelink.feature.lists.user.navigation.listsScreen
-import com.divinelink.feature.onboarding.navigation.onboardingScreen
+import com.divinelink.feature.onboarding.navigation.fullscreenOnboarding
+import com.divinelink.feature.onboarding.navigation.modalOnboarding
 import com.divinelink.feature.profile.navigation.profileScreen
 import com.divinelink.feature.search.navigation.searchScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
@@ -150,10 +151,19 @@ val navigationModule = module {
     }
   }
 
-  // Onboarding Navigation
-  single<NavGraphExtension>(named<Navigation.OnboardingRoute>()) {
+  // Fullscreen Onboarding Navigation
+  single<NavGraphExtension>(named<Navigation.Onboarding.FullScreenRoute>()) {
     { navController, _ ->
-      onboardingScreen(
+      fullscreenOnboarding(
+        onNavigate = navController::findNavigation,
+      )
+    }
+  }
+
+  // Modal Onboarding Navigation
+  single<NavGraphExtension>(named<Navigation.Onboarding.ModalRoute>()) {
+    { navController, _ ->
+      modalOnboarding(
         onNavigate = navController::findNavigation,
       )
     }

@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="feature_onboarding_changelog">Changelog</string>
   <string name="feature_onboarding_get_started">Get started</string>
   <string name="feature_onboarding_skip">Skip</string>
 
   <string name="feature_onboarding_welcome_page_title">Welcome to ScenePeek</string>
-  <string name="feature_onboarding_welcome_page_description">Your ultimate destination for discovering movies, TV shows, and more.</string>
+  <string name="feature_onboarding_welcome_page_description">A free and open-source client for TMDB &amp; Jellyseerr</string>
 
-  <string name="feature_onboarding_tmdb_page_title">Sync with TMDB</string>
-  <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlists and ratings.</string>
+  <string name="feature_onboarding_whats_new_title">What\'s new in %s for v%s</string>
 
-  <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr Integration</string>
-  <string name="feature_onboarding_jellyseerr_page_description">If you have access to a Jellyseerr server, connect your account to request movies and TV shows instantly.</string>
+  <string name="feature_onboarding_tmdb_page_title">TMDB</string>
+  <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlist, ratings, lists and more.</string>
+
+  <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr</string>
+  <string name="feature_onboarding_jellyseerr_page_description">Connect to your Jellyseerr instance to request movies and TV shows instantly.</string>
 
   <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
-  <string name="feature_onboarding_link_handling_page_description">
-    <![CDATA[
-    ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> &amp; <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and person directly in the app.
-    <br><br>
-    To enable this, follow these steps:<br>
-    1. Open the settings by pressing the button below.<br>
-    2. <strong>Open by default</strong> or <strong>Set as default section</strong>.<br>
-    3. Choose <strong>Open supported links</strong> for ScenePeek<br>
-    <br><br>
-    (some devices have this listed under <strong>Default Apps</strong> in the main settings followed by selecting ScenePeek for relevant categories)
-    ]]>
-  </string>
+  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> &amp; <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
+
+  <string name="feature_onboarding_v22_feature_tmdb_lists">- TMDB Lists: Create and edit custom lists, add movies and TV shows</string>
+  <string name="feature_onboarding_v22_feature_profile">- Watchlist tab has been renamed to Profile, now includes watchlist, lists, and ratings</string>
+  <string name="feature_onboarding_v22_fix_encryption">- Update encryption library that caused app to crash on re-install.\n\nIf you were connected to either TMDB or Jellyseerr you have been signed out. You can re-login to either services</string>
 </resources>

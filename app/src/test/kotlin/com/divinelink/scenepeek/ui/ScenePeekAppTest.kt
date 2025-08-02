@@ -11,6 +11,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.composable
@@ -52,7 +54,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import com.divinelink.feature.onboarding.ui.OnboardingViewModel
+import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.scenepeek.R
@@ -864,7 +866,7 @@ class ScenePeekAppTest : ComposeTest() {
   }
 
   @Test
-  fun `test when onboarding is visible navigation bar is hidden`() = runTest {
+  fun `test when onboarding is visible and initial full screen onboarding is shown`() = runTest {
     popularMoviesUseCase.mockFetchPopularMovies(
       response = Result.success(MediaItemFactory.MoviesList()),
     )
@@ -879,7 +881,7 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     declare {
-      OnboardingViewModel(
+      IntroViewModel(
         markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
         getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
@@ -887,7 +889,8 @@ class ScenePeekAppTest : ComposeTest() {
       )
     }
 
-    onboardingManager.setShouldShowOnboarding(true)
+    onboardingManager.setIsInitialOnboarding(true)
+    onboardingManager.setShowIntro(true)
 
     setContentWithTheme {
       state = rememberScenePeekAppState(
@@ -908,8 +911,68 @@ class ScenePeekAppTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Onboarding.SCREEN).assertIsDisplayed()
+      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
       onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
+
+      // Dismiss onboarding
+      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).performTouchInput {
+        swipeDown()
+      }
+
+      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
+
+      onNodeWithText("Fight club 1").assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test when intro is visible and is not firstLaunch modal intro is shown`() = runTest {
+    popularMoviesUseCase.mockFetchPopularMovies(
+      response = Result.success(MediaItemFactory.MoviesList()),
+    )
+
+    declare {
+      HomeViewModel(
+        getPopularMoviesUseCase = popularMoviesUseCase.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
+        getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+        searchStateManager = searchStateManager,
+      )
+    }
+
+    declare {
+      IntroViewModel(
+        markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
+        getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+        getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+        onboardingManager = onboardingManager,
+      )
+    }
+
+    onboardingManager.setIsInitialOnboarding(false)
+    onboardingManager.setShowIntro(true)
+
+    setContentWithTheme {
+      state = rememberScenePeekAppState(
+        networkMonitor = networkMonitor,
+        onboardingManager = onboardingManager,
+        navigationProvider = navigationProvider,
+        preferencesRepository = preferencesRepository,
+      )
+
+      KoinContext {
+        ScenePeekApp(
+          state = state,
+          uiState = uiState,
+          uiEvent = uiEvent,
+          onConsumeEvent = {},
+        )
+      }
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Onboarding.MODAL).assertIsDisplayed()
     }
   }
 }
