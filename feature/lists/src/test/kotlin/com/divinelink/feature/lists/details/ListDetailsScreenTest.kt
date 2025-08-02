@@ -15,9 +15,9 @@ import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
-import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
+import com.divinelink.core.navigation.route.Navigation.EditListRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
@@ -70,15 +70,17 @@ class ListDetailsScreenTest : ComposeTest() {
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
     fetchListDetailsUseCase.mockResponse(Result.success(ListDetailsFactory.page1()))
+
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -97,6 +99,12 @@ class ListDetailsScreenTest : ComposeTest() {
     var navigatedUp = false
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {
@@ -104,11 +112,7 @@ class ListDetailsScreenTest : ComposeTest() {
             navigatedUp = true
           }
         },
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -127,14 +131,16 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.empty()),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -174,6 +180,12 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.mustWatch()),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {
@@ -181,11 +193,7 @@ class ListDetailsScreenTest : ComposeTest() {
             detailsRoute = it
           }
         },
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -215,14 +223,16 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.page1()),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -257,14 +267,16 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.failure(AppException.Offline()),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -290,14 +302,16 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.failure(Exception("Foo")),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -334,14 +348,16 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -366,6 +382,12 @@ class ListDetailsScreenTest : ComposeTest() {
       Result.success(ListDetailsFactory.page1()),
     )
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {
@@ -373,11 +395,7 @@ class ListDetailsScreenTest : ComposeTest() {
             editListRoute = it
           }
         },
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -415,14 +433,16 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {},
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -519,6 +539,12 @@ class ListDetailsScreenTest : ComposeTest() {
       )
     }
 
+    val viewModel = ListDetailsViewModel(
+      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
+      savedStateHandle = savedStateHandle,
+      repository = repository.mock,
+    )
+
     setVisibilityScopeContent {
       ListDetailsScreen(
         onNavigate = {
@@ -526,11 +552,7 @@ class ListDetailsScreenTest : ComposeTest() {
             addToListRoute = it
           }
         },
-        viewModel = ListDetailsViewModel(
-          fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-          savedStateHandle = savedStateHandle,
-          repository = repository.mock,
-        ),
+        viewModel = viewModel,
       )
     }
 

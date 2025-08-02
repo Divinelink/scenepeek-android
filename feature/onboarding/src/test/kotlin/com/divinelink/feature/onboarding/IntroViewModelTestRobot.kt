@@ -4,29 +4,29 @@ import app.cash.turbine.test
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
-import com.divinelink.core.model.onboarding.OnboardingPage
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkOnboardingCompleteUseCase
+import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
-import com.divinelink.feature.onboarding.ui.OnboardingViewModel
 import kotlinx.coroutines.flow.Flow
 
-class OnboardingViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
+class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
 
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
   private val getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
   private val getJellyseerrAccountDetailsUseCase = FakeGetJellyseerrDetailsUseCase()
   private val onboardingManager = TestOnboardingManager()
 
-  private lateinit var viewModel: OnboardingViewModel
+  private lateinit var viewModel: IntroViewModel
 
   override val actualUiState: Flow<OnboardingUiState>
     get() = viewModel.uiState
 
   override fun buildViewModel() = apply {
-    viewModel = OnboardingViewModel(
+    viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
       getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
@@ -44,13 +44,9 @@ class OnboardingViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     viewModel.onboardingComplete()
   }
 
-  fun onPageScroll(index: Int) = apply {
-    viewModel.onPageScroll(index)
-  }
-
   // Mocks
-  fun mockOnboardingPages(pages: List<OnboardingPage>) = apply {
-    onboardingManager.setIntroPages(pages)
+  fun mockOnboardingPages(pages: List<IntroSection>) = apply {
+    onboardingManager.setSections(pages)
   }
 
   fun mockIsInitialOnboarding(isInitialOnboarding: Boolean) = apply {

@@ -152,7 +152,6 @@ object TestTags {
     const val REQUEST_SEASONS = "Select Seasons Modal"
     const val ACTION_MENU = "Action Menu Modal"
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
-    const val CHANGELOG = "Changelog Modal"
 
     const val DELETE_BUTTON = "Delete button for id %s"
   }
@@ -251,8 +250,8 @@ object TestTags {
   }
 
   object Onboarding {
-    const val SCREEN = "Onboarding Screen"
-    const val ONBOARDING_PAGE = "Onboarding Page %s"
+    const val FULLSCREEN = "Fullscreen Onboarding Modal"
+    const val MODAL = "Modal Onboarding"
   }
 
   object Shimmer {

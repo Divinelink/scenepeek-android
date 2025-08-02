@@ -14,20 +14,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.AppSettingsUtil
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.conditional
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntroModalBottomSheet(
+  modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
-  viewModel: OnboardingViewModel = koinViewModel(),
+  viewModel: IntroViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -41,7 +40,7 @@ fun IntroModalBottomSheet(
   }
 
   ModalBottomSheet(
-    modifier = Modifier
+    modifier = modifier
       .conditional(
         condition = uiState.isFirstLaunch,
         ifTrue = { fillMaxSize() },
@@ -49,8 +48,7 @@ fun IntroModalBottomSheet(
       .conditional(
         condition = uiState.isFirstLaunch,
         ifTrue = { consumeWindowInsets(WindowInsets.systemBars) },
-      )
-      .testTag(TestTags.Modal.CHANGELOG),
+      ),
     shape = MaterialTheme.shapes.extraLarge,
     properties = properties,
     onDismissRequest = { viewModel.onboardingComplete() },

@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class TestOnboardingManager(
   showIntro: Boolean = false,
-  pages: List<IntroSection> = emptyList(),
+  sections: List<IntroSection> = emptyList(),
   isInitialOnboarding: Boolean = false,
 ) : OnboardingManager {
 
   private val _showIntro = MutableStateFlow(showIntro)
   override val showIntro: Flow<Boolean> = _showIntro
 
-  private val _introPages = MutableStateFlow(pages)
-  override val sections: Flow<List<IntroSection>> = _introPages
+  private val _sections = MutableStateFlow(sections)
+  override val sections: Flow<List<IntroSection>> = _sections
 
   private val _isInitialOnboarding = MutableStateFlow(isInitialOnboarding)
   override val isInitialOnboarding: Flow<Boolean> = _isInitialOnboarding
@@ -24,11 +24,15 @@ class TestOnboardingManager(
     _showIntro.value = false
   }
 
-  fun setIntroPages(pages: List<IntroSection>) {
-    _introPages.value = pages
+  fun setSections(pages: List<IntroSection>) {
+    _sections.value = pages
   }
 
   fun setIsInitialOnboarding(isInitialOnboarding: Boolean) {
     _isInitialOnboarding.value = isInitialOnboarding
+  }
+
+  fun setShowIntro(showIntro: Boolean) {
+    _showIntro.value = showIntro
   }
 }

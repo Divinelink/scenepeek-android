@@ -14,6 +14,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.domain.settings.MediaRatingPreferenceUseCase
@@ -123,6 +124,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     composeTestRule.setContent {
       navController = TestNavHostController(LocalContext.current)
       navController.navigatorProvider.addNavigator(ComposeNavigator())
+      navController.navigatorProvider.addNavigator(DialogNavigator())
       val snackbarHostState = remember { SnackbarHostState() }
       val coroutineScope = rememberCoroutineScope()
 

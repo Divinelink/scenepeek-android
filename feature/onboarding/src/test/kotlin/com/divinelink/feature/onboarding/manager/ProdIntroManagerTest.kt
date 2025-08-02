@@ -1,13 +1,13 @@
 package com.divinelink.feature.onboarding.manager
 
 import app.cash.turbine.test
-import com.divinelink.core.model.onboarding.OnboardingPage
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.testing.storage.TestOnboardingStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class ProdOnboardingManagerTest {
+class ProdIntroManagerTest {
 
   private lateinit var manager: ProdIntroManager
 
@@ -71,7 +71,7 @@ class ProdOnboardingManagerTest {
     )
 
     manager.sections.test {
-      assertThat(awaitItem()).isEqualTo(emptyList<OnboardingPage>())
+      assertThat(awaitItem()).isEqualTo(emptyList<IntroSection>())
     }
   }
 
@@ -81,20 +81,38 @@ class ProdOnboardingManagerTest {
       onboardingStorage = TestOnboardingStorage(isFirstLaunch = true),
     )
 
-    manager.shouldShowOnboarding.test {
+    manager.showIntro.test {
       assertThat(awaitItem()).isTrue()
     }
   }
 
   @Test
-  fun `test shouldShowOnboarding for lastSeenVersion 15 but current version 16`() = runTest {
+  fun `test showIntro for lastSeenVersion 15 but current version 16`() = runTest {
     manager = ProdIntroManager(
       onboardingStorage = TestOnboardingStorage(isFirstLaunch = false, lastSeenVersion = 15),
       currentVersion = 16,
     )
 
-    manager.shouldShowOnboarding.test {
+    manager.showIntro.test {
       assertThat(awaitItem()).isFalse()
+    }
+  }
+
+  @Test
+  fun `test showIntro for lastSeenVersion 21 but current version 22`() = runTest {
+    manager = ProdIntroManager(
+      onboardingStorage = TestOnboardingStorage(isFirstLaunch = false, lastSeenVersion = 21),
+      currentVersion = 22,
+    )
+
+    manager.showIntro.test {
+      assertThat(awaitItem()).isTrue()
+    }
+
+    manager.sections.test {
+      assertThat(awaitItem()).containsExactlyElementsIn(
+        IntroSections.v22,
+      )
     }
   }
 }

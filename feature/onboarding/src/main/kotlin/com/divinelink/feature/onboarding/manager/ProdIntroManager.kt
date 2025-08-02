@@ -6,6 +6,7 @@ import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.onboarding.IntroSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class ProdIntroManager(
   private val onboardingStorage: OnboardingStorage,
@@ -16,33 +17,26 @@ class ProdIntroManager(
     onboardingStorage.lastSeenVersion,
   ) { isFirstLaunch, lastSeenVersion ->
 
-    isFirstLaunch || (lastSeenVersion != currentVersion && hasNewPagesForUpdate(lastSeenVersion))
+    isFirstLaunch || (lastSeenVersion != currentVersion && hasChangelogsAvailable(currentVersion))
   }
 
   override val isInitialOnboarding: Flow<Boolean> = onboardingStorage.isFirstLaunch
 
-  override val sections: Flow<List<IntroSection>> = combine(
-    onboardingStorage.isFirstLaunch,
-    onboardingStorage.lastSeenVersion,
-  ) { isFirstLaunch, lastSeenVersion ->
-
-    if (isFirstLaunch) {
-      IntroSections.onboardingSections
-    } else {
-      val newPages = IntroSections.changelogSections
-        .filter { (version, _) -> version > lastSeenVersion }
-        .flatMap { (_, pages) -> pages }
-
-      newPages
+  override val sections: Flow<List<IntroSection>> = onboardingStorage
+    .isFirstLaunch
+    .map { isFirstLaunch ->
+      if (isFirstLaunch) {
+        IntroSections.onboardingSections
+      } else {
+        IntroSections.changelogSections[currentVersion] ?: emptyList()
+      }
     }
-  }
 
   override suspend fun onOnboardingComplete() {
     onboardingStorage.setOnboardingCompleted()
   }
 
-  private fun hasNewPagesForUpdate(lastSeenVersion: Int): Boolean = IntroSections.changelogSections
-    .any { (version, _) ->
-      version > lastSeenVersion
-    }
+  private fun hasChangelogsAvailable(currentVersion: Int): Boolean = IntroSections
+    .changelogSections
+    .containsKey(currentVersion)
 }

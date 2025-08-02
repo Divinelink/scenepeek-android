@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class OnboardingViewModel(
+class IntroViewModel(
   private val markOnboardingCompleteUseCase: MarkOnboardingCompleteUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
   private val getJellyseerrAccountDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
@@ -99,7 +99,7 @@ class OnboardingViewModel(
                   section is IntroSection.Feature &&
                   section.action is OnboardingAction.NavigateToJellyseerrLogin
                 ) {
-                  section.copy(action = OnboardingAction.NavigateToTMDBLogin(true))
+                  section.copy(action = OnboardingAction.NavigateToJellyseerrLogin(true))
                 } else {
                   section
                 }
