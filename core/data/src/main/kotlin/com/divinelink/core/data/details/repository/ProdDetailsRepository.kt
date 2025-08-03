@@ -115,23 +115,17 @@ class ProdDetailsRepository(
       Result.success(response.map())
     }
 
-  override fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>> = mediaRemote
+  override suspend fun submitRating(request: AddRatingRequestApi): Result<Unit> = mediaRemote
     .submitRating(request)
-    .map {
-      Result.success(Unit)
-    }
+    .map { it.success }
 
-  override fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>> = mediaRemote
+  override suspend fun deleteRating(request: DeleteRatingRequestApi): Result<Unit> = mediaRemote
     .deleteRating(request)
-    .map {
-      Result.success(Unit)
-    }
+    .map { it.success }
 
-  override fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>> = mediaRemote
+  override suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<Unit> = mediaRemote
     .addToWatchlist(request)
-    .map {
-      Result.success(Unit)
-    }
+    .map { it.success }
 
   override fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>> = flow {
     val localExists = creditsDao.checkIfAggregateCreditsExist(id).first()

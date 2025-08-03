@@ -53,7 +53,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -339,9 +338,8 @@ class DetailsViewModel(
           mediaType = viewState.value.mediaType,
           rating = rating,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
-          Timber.d("Rating submitted: $rating")
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
               userDetails = updateOrCreateAccountMediaDetails(rating),
@@ -353,7 +351,8 @@ class DetailsViewModel(
               ),
             )
           }
-        }.onFailure {
+        },
+        onFailure = {
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
@@ -364,9 +363,17 @@ class DetailsViewModel(
                 ),
               )
             }
+          } else {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+                ),
+              )
+            }
           }
-        }
-      }
+        },
+      )
     }
   }
 
@@ -395,14 +402,11 @@ class DetailsViewModel(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
-          Timber.d("Rating deleted")
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
-              userDetails = viewState.userDetails?.copy(
-                rating = null,
-              ),
+              userDetails = viewState.userDetails?.copy(rating = null),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_deleted_successfully,
@@ -411,8 +415,17 @@ class DetailsViewModel(
               ),
             )
           }
-        }
-      }
+        },
+        onFailure = {
+          _viewState.update { viewState ->
+            viewState.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+              ),
+            )
+          }
+        },
+      )
     }
   }
 
@@ -424,8 +437,8 @@ class DetailsViewModel(
           mediaType = viewState.value.mediaType,
           addToWatchlist = viewState.value.userDetails?.watchlist == false,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             if (viewState.userDetails?.watchlist == true) {
               viewState.copy(
@@ -449,7 +462,8 @@ class DetailsViewModel(
               )
             }
           }
-        }.onFailure {
+        },
+        onFailure = {
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
@@ -469,8 +483,8 @@ class DetailsViewModel(
               )
             }
           }
-        }
-      }
+        },
+      )
     }
   }
 

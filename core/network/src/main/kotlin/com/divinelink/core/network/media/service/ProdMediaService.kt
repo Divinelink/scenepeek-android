@@ -8,7 +8,7 @@ import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseAp
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestBodyApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.find.FindByIdResponseApi
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -24,6 +24,7 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRespons
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
+import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -152,51 +153,51 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun submitRating(request: AddRatingRequestApi) = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
-    val url = baseUrl +
-      "${request.id}/rating?" +
-      "&session_id=${request.sessionId}"
+  override suspend fun submitRating(request: AddRatingRequestApi): Result<SubmitOnAccountResponse> =
+    runCatchingWithNetworkRetry(times = 10) {
+      val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+      val url = baseUrl +
+        "${request.id}/rating?" +
+        "&session_id=${request.sessionId}"
 
-    val response = restClient.post<AddRatingRequestBodyApi, Unit>(
-      url = url,
-      body = AddRatingRequestBodyApi(request.rating),
-    )
-
-    emit(response)
-  }
-
-  override fun deleteRating(request: DeleteRatingRequestApi): Flow<Unit> = flow {
-    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
-    val url = baseUrl +
-      "${request.id}/rating?" +
-      "&session_id=${request.sessionId}"
-
-    val response = restClient.delete<Unit>(url = url)
-
-    emit(response)
-  }
-
-  override fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<AddToWatchlistResponseApi> =
-    flow {
-      val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
-        "?session_id=${request.sessionId}"
-
-      val response = restClient.post<AddToWatchlistRequestBodyApi, AddToWatchlistResponseApi>(
+      val response = restClient.post<AddRatingRequestBodyApi, SubmitOnAccountResponse>(
         url = url,
-        body = AddToWatchlistRequestBodyApi(
-          mediaType = request.mediaType,
-          mediaId = request.mediaId,
-          watchlist = request.addToWatchlist,
-        ),
+        body = AddRatingRequestBodyApi(request.rating),
       )
 
-      if (response.success) {
-        emit(response)
-      } else {
-        throw Exception("Failed to add to watchlist")
-      }
+      return Result.success(response)
     }
+
+  override suspend fun deleteRating(
+    request: DeleteRatingRequestApi,
+  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(times = 10) {
+    val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
+    val url = baseUrl +
+      "${request.id}/rating?" +
+      "&session_id=${request.sessionId}"
+
+    val response = restClient.delete<SubmitOnAccountResponse>(url = url)
+
+    return Result.success(response)
+  }
+
+  override suspend fun addToWatchlist(
+    request: AddToWatchlistRequestApi,
+  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(times = 10) {
+    val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
+      "?session_id=${request.sessionId}"
+
+    val response = restClient.post<AddToWatchlistRequestBodyApi, SubmitOnAccountResponse>(
+      url = url,
+      body = AddToWatchlistRequestBodyApi(
+        mediaType = request.mediaType,
+        mediaId = request.mediaId,
+        watchlist = request.addToWatchlist,
+      ),
+    )
+
+    return Result.success(response)
+  }
 
   override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {
     val url = buildFindByIdUrl(externalId = externalId)

@@ -1,16 +1,13 @@
 package com.divinelink.feature.details.media.usecase
 
 import com.divinelink.core.commons.domain.DispatcherProvider
-import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.commons.domain.UseCase
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.repository.DetailsRepository
-import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 
 data class SubmitRatingParameters(
   val id: Int,
@@ -22,13 +19,12 @@ open class SubmitRatingUseCase(
   private val sessionStorage: SessionStorage,
   private val repository: DetailsRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<SubmitRatingParameters, Unit>(dispatcher.io) {
-  override fun execute(parameters: SubmitRatingParameters): Flow<Result<Unit>> = flow {
+) : UseCase<SubmitRatingParameters, Unit>(dispatcher.default) {
+  override suspend fun execute(parameters: SubmitRatingParameters) {
     val sessionId = sessionStorage.sessionId
 
     if (sessionId == null) {
-      emit(Result.failure(SessionException.Unauthenticated()))
-      return@flow
+      Result.failure<Exception>(SessionException.Unauthenticated())
     } else {
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> AddRatingRequestApi.Movie(
@@ -45,9 +41,9 @@ open class SubmitRatingUseCase(
         else -> throw IllegalArgumentException("Unsupported media type: ${parameters.mediaType}")
       }
 
-      val response = repository.submitRating(request).last()
+      val response = repository.submitRating(request)
 
-      emit(Result.success(response.data))
+      Result.success(response.data)
     }
   }
 }

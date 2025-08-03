@@ -39,11 +39,11 @@ interface DetailsRepository {
     request: AccountMediaDetailsRequestApi,
   ): Flow<Result<AccountMediaDetails>>
 
-  fun submitRating(request: AddRatingRequestApi): Flow<Result<Unit>>
+  suspend fun submitRating(request: AddRatingRequestApi): Result<Unit>
 
-  fun deleteRating(request: DeleteRatingRequestApi): Flow<Result<Unit>>
+  suspend fun deleteRating(request: DeleteRatingRequestApi): Result<Unit>
 
-  fun addToWatchlist(request: AddToWatchlistRequestApi): Flow<Result<Unit>>
+  suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<Unit>
 
   fun fetchAggregateCredits(id: Long): Flow<Result<AggregateCredits>>
 

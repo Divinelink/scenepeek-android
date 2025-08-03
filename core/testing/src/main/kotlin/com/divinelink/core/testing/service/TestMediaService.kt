@@ -6,7 +6,7 @@ import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -114,9 +114,9 @@ class TestMediaService {
     )
   }
 
-  fun mockSubmitRating(
+  suspend fun mockSubmitRating(
     request: AddRatingRequestApi,
-    response: Flow<Unit>,
+    response: Result<SubmitOnAccountResponse>,
   ) {
     whenever(
       mock.submitRating(request),
@@ -125,9 +125,9 @@ class TestMediaService {
     )
   }
 
-  fun mockDeleteRating(
+  suspend fun mockDeleteRating(
     request: DeleteRatingRequestApi,
-    response: Flow<Unit>,
+    response: Result<SubmitOnAccountResponse>,
   ) {
     whenever(
       mock.deleteRating(request),
@@ -136,9 +136,9 @@ class TestMediaService {
     )
   }
 
-  fun mockAddToWatchlist(
+  suspend fun mockAddToWatchlist(
     request: AddToWatchlistRequestApi,
-    response: Flow<AddToWatchlistResponseApi>,
+    response: Result<SubmitOnAccountResponse>,
   ) {
     whenever(
       mock.addToWatchlist(request),
