@@ -3,6 +3,7 @@ package com.divinelink.feature.details.media.ui
 import androidx.compose.runtime.Immutable
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
@@ -24,6 +25,9 @@ data class DetailsViewState(
   val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
   val userDetails: AccountMediaDetails? = null,
+  val accountDataState: Map<AccountDataSection, Boolean> = AccountDataSection
+    .entries
+    .associateWith { false },
   val trailer: Video? = null,
   val error: UIText? = null,
   val snackbarMessage: SnackbarMessage? = null,

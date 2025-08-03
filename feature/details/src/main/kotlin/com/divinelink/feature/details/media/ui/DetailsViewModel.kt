@@ -19,6 +19,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
@@ -331,6 +332,7 @@ class DetailsViewModel(
   }
 
   fun onSubmitRate(rating: Int) {
+    setSectionState(AccountDataSection.Rating, true)
     viewModelScope.launch {
       submitRatingUseCase.invoke(
         SubmitRatingParameters(
@@ -351,6 +353,7 @@ class DetailsViewModel(
               ),
             )
           }
+          setSectionState(AccountDataSection.Rating, false)
         },
         onFailure = {
           if (it is SessionException.Unauthenticated) {
@@ -372,6 +375,7 @@ class DetailsViewModel(
               )
             }
           }
+          setSectionState(AccountDataSection.Rating, false)
         },
       )
     }
@@ -395,7 +399,7 @@ class DetailsViewModel(
 
   fun onClearRating() {
     if (viewState.value.userDetails == null) return
-
+    setSectionState(AccountDataSection.Rating, true)
     viewModelScope.launch {
       deleteRatingUseCase.invoke(
         DeleteRatingParameters(
@@ -415,6 +419,7 @@ class DetailsViewModel(
               ),
             )
           }
+          setSectionState(AccountDataSection.Rating, false)
         },
         onFailure = {
           _viewState.update { viewState ->
@@ -424,12 +429,14 @@ class DetailsViewModel(
               ),
             )
           }
+          setSectionState(AccountDataSection.Rating, false)
         },
       )
     }
   }
 
   fun onAddToWatchlist() {
+    setSectionState(AccountDataSection.Watchlist, true)
     viewModelScope.launch {
       addToWatchlistUseCase.invoke(
         AddToWatchlistParameters(
@@ -462,6 +469,7 @@ class DetailsViewModel(
               )
             }
           }
+          setSectionState(AccountDataSection.Watchlist, false)
         },
         onFailure = {
           if (it is SessionException.Unauthenticated) {
@@ -483,6 +491,7 @@ class DetailsViewModel(
               )
             }
           }
+          setSectionState(AccountDataSection.Watchlist, false)
         },
       )
     }
@@ -881,6 +890,17 @@ class DetailsViewModel(
       add(DetailActionItem.Request)
     } else {
       add(DetailActionItem.ManageMovie)
+    }
+  }
+
+  private fun setSectionState(
+    section: AccountDataSection,
+    loading: Boolean,
+  ) {
+    _viewState.update {
+      it.copy(
+        accountDataState = it.accountDataState + (section to loading),
+      )
     }
   }
 }

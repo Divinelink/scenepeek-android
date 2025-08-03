@@ -9,6 +9,7 @@ import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
@@ -23,6 +24,7 @@ import com.divinelink.feature.details.media.ui.components.CollapsibleDetailsCont
 @Composable
 fun DynamicDetailsCollapsingToolbar(
   onNavigate: (Navigation) -> Unit,
+  accountDataState: Map<AccountDataSection, Boolean>,
   mediaDetails: MediaDetails,
   ratingSource: RatingSource,
   userDetails: AccountMediaDetails?,
@@ -43,6 +45,7 @@ fun DynamicDetailsCollapsingToolbar(
       CollapsibleDetailsContent(
         modifier = Modifier.fillMaxWidth(),
         mediaDetails = mediaDetails,
+        accountDataState = accountDataState,
         status = status,
         isOnWatchlist = userDetails?.watchlist == true,
         hasTrailer = hasTrailer,
@@ -86,6 +89,7 @@ fun DynamicDetailsCollapsingToolbar(
                 .requiredToolBarMaxHeight()
                 .fillMaxWidth(),
               mediaDetails = mediaDetails,
+              accountDataState = accountDataState,
               onNavigate = onNavigate,
               status = status,
               isOnWatchlist = userDetails?.watchlist == true,
