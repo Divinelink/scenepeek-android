@@ -471,7 +471,7 @@ class ListDetailsScreenTest : ComposeTest() {
 
       onNodeWithText("1/20 selected").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(3)
+      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(4)
 
       // Select second item
       onNodeWithContentDescription(
