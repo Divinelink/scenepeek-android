@@ -14,7 +14,6 @@ import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -37,7 +36,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with no account id cannot add to watchlist`() = runTest {
-    sessionStorage = createSessionStorage(accountId = null, "123")
+    sessionStorage = createSessionStorage(accountId = null, sessionId = "123")
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -53,10 +52,8 @@ class AddToWatchlistUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(
-      result.first().exceptionOrNull(),
-    ).isInstanceOf(SessionException.Unauthenticated::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
@@ -77,10 +74,8 @@ class AddToWatchlistUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(
-      result.first().exceptionOrNull(),
-    ).isInstanceOf(SessionException.Unauthenticated::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
@@ -105,7 +100,7 @@ class AddToWatchlistUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
+    assertThat(result.isSuccess).isTrue()
   }
 
   @Test
@@ -134,7 +129,7 @@ class AddToWatchlistUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
+    assertThat(result.isSuccess).isTrue()
   }
 
   @Test
@@ -150,13 +145,13 @@ class AddToWatchlistUseCaseTest {
     val result = useCase.invoke(
       AddToWatchlistParameters(
         id = 0,
-        mediaType = MediaType.MOVIE,
+        mediaType = MediaType.UNKNOWN,
         addToWatchlist = false,
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
   private fun createSessionStorage(

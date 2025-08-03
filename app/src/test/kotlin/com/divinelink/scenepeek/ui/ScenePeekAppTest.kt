@@ -71,7 +71,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.koin.android.ext.koin.androidContext
-import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.get
@@ -185,14 +184,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -248,14 +245,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -320,14 +315,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -402,14 +395,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -497,14 +488,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -568,14 +557,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -696,14 +683,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -725,21 +710,19 @@ class ScenePeekAppTest : ComposeTest() {
     setContentWithTheme {
       val navController = rememberTestNavController()
 
-      KoinContext {
-        ScenePeekApp(
-          state = rememberScenePeekAppState(
-            navController = navController,
-            scope = backgroundScope,
-            onboardingManager = onboardingManager,
-            networkMonitor = networkMonitor,
-            navigationProvider = navigationProvider,
-            preferencesRepository = preferencesRepository,
-          ),
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = rememberScenePeekAppState(
+          navController = navController,
+          scope = backgroundScope,
+          onboardingManager = onboardingManager,
+          networkMonitor = networkMonitor,
+          navigationProvider = navigationProvider,
+          preferencesRepository = preferencesRepository,
+        ),
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -796,14 +779,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     networkMonitor.setConnected(false)
@@ -900,14 +881,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
@@ -960,14 +939,12 @@ class ScenePeekAppTest : ComposeTest() {
         preferencesRepository = preferencesRepository,
       )
 
-      KoinContext {
-        ScenePeekApp(
-          state = state,
-          uiState = uiState,
-          uiEvent = uiEvent,
-          onConsumeEvent = {},
-        )
-      }
+      ScenePeekApp(
+        state = state,
+        uiState = uiState,
+        uiEvent = uiEvent,
+        onConsumeEvent = {},
+      )
     }
 
     with(composeTestRule) {
