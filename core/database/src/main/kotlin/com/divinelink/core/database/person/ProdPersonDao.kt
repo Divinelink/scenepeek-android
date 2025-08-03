@@ -11,7 +11,7 @@ import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class ProdPersonDao(
   private val clock: Clock,

@@ -19,7 +19,7 @@ import com.divinelink.core.database.currentEpochSeconds
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class ProdCreditsDao(
   private val database: Database,

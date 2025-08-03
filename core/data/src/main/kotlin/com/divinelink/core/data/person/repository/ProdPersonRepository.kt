@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
 import timber.log.Timber
+import kotlin.time.Clock
 
 class ProdPersonRepository(
   private val service: PersonService,

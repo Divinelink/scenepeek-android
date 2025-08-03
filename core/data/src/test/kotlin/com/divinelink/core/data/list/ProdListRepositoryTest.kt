@@ -31,10 +31,10 @@ import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import org.junit.Before
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class ProdListRepositoryTest {
 
