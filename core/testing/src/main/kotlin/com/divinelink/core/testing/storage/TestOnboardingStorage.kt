@@ -22,8 +22,4 @@ class TestOnboardingStorage(
   override suspend fun setOnboardingCompleted() {
     _onboardingCompleted.value = true
   }
-
-  override suspend fun updateLastSeenVersion(version: Int) {
-    _lastSeenVersion.value = version
-  }
 }

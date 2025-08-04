@@ -1,8 +1,10 @@
 package com.divinelink.feature.onboarding.manager
 
 import app.cash.turbine.test
+import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.testing.storage.TestOnboardingStorage
+import com.divinelink.feature.onboarding.R
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -19,6 +21,7 @@ class ProdIntroManagerTest {
 
     manager.isInitialOnboarding.test {
       assertThat(awaitItem()).isTrue()
+      awaitComplete()
     }
   }
 
@@ -30,6 +33,7 @@ class ProdIntroManagerTest {
 
     manager.isInitialOnboarding.test {
       assertThat(awaitItem()).isFalse()
+      awaitComplete()
     }
   }
 
@@ -58,6 +62,7 @@ class ProdIntroManagerTest {
 
     manager.sections.test {
       assertThat(awaitItem()).containsExactlyElementsIn(IntroSections.onboardingSections)
+      awaitComplete()
     }
   }
 
@@ -72,6 +77,7 @@ class ProdIntroManagerTest {
 
     manager.sections.test {
       assertThat(awaitItem()).isEqualTo(emptyList<IntroSection>())
+      awaitComplete()
     }
   }
 
@@ -99,10 +105,10 @@ class ProdIntroManagerTest {
   }
 
   @Test
-  fun `test showIntro for lastSeenVersion 21 but current version 22`() = runTest {
+  fun `test showIntro for lastSeenVersion 21 but current version 23`() = runTest {
     manager = ProdIntroManager(
       onboardingStorage = TestOnboardingStorage(isFirstLaunch = false, lastSeenVersion = 21),
-      currentVersion = 22,
+      currentVersion = 23,
     )
 
     manager.showIntro.test {
@@ -111,8 +117,40 @@ class ProdIntroManagerTest {
 
     manager.sections.test {
       assertThat(awaitItem()).containsExactlyElementsIn(
-        IntroSections.v22,
+        IntroSections.v23,
       )
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test showIntro for lastSeenVersion 21 but current version 24 shows all unseen`() = runTest {
+    manager = ProdIntroManager(
+      onboardingStorage = TestOnboardingStorage(isFirstLaunch = false, lastSeenVersion = 21),
+      currentVersion = 24,
+    )
+
+    manager.showIntro.test {
+      assertThat(awaitItem()).isTrue()
+    }
+
+    manager.sections.test {
+      val sections = awaitItem()
+      assertThat(sections).containsExactlyElementsIn(
+        listOf(
+          IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+          IntroSection.WhatsNew("v0.16.0"),
+          IntroSection.WhatsNew("v0.15.0"),
+          IntroSection.SecondaryHeader.Added,
+          IntroSection.Text(
+            UIText.ResourceText(R.string.feature_onboarding_v22_feature_tmdb_lists),
+          ),
+          IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_profile)),
+          IntroSection.SecondaryHeader.Fixed,
+          IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_fix_encryption)),
+        ),
+      )
+      awaitComplete()
     }
   }
 }

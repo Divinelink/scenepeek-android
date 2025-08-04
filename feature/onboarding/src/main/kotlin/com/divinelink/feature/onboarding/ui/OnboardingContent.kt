@@ -20,12 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.model.onboarding.OnboardingAction
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blurEffect
 import com.divinelink.core.ui.coil.BackdropImage
 import com.divinelink.feature.onboarding.ui.provider.OnboardingUiStatePreviewParameterProvider
@@ -33,6 +35,7 @@ import com.divinelink.feature.onboarding.ui.sections.FeatureSection
 import com.divinelink.feature.onboarding.ui.sections.SectionHeader
 import com.divinelink.feature.onboarding.ui.sections.SectionSecondaryHeader
 import com.divinelink.feature.onboarding.ui.sections.SectionText
+import com.divinelink.feature.onboarding.ui.sections.SkipIntroButton
 import com.divinelink.feature.onboarding.ui.sections.WhatsNewSection
 import kotlinx.coroutines.delay
 
@@ -40,6 +43,7 @@ import kotlinx.coroutines.delay
 fun OnboardingContent(
   uiState: OnboardingUiState,
   onActionClick: (OnboardingAction) -> Unit,
+  onDismiss: () -> Unit,
 ) {
   val backdropImages = listOf(
     "https://image.tmdb.org/t/p/original/b3mdmjYTEL70j7nuXATUAD9qgu4.jpg",
@@ -74,7 +78,9 @@ fun OnboardingContent(
       )
     }
     LazyColumn(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(TestTags.Components.SCROLLABLE_CONTENT),
       contentPadding = PaddingValues(
         horizontal = MaterialTheme.dimensions.keyline_8,
         vertical = MaterialTheme.dimensions.keyline_16,
@@ -92,13 +98,14 @@ fun OnboardingContent(
             onAction = onActionClick,
           )
           is IntroSection.Text -> SectionText(item)
-          is IntroSection.WhatsNew -> WhatsNewSection()
+          is IntroSection.WhatsNew -> WhatsNewSection(item)
           IntroSection.Spacer -> Spacer(
             modifier = Modifier
               .fillMaxWidth()
               .height(MaterialTheme.dimensions.keyline_8),
           )
           IntroSection.Divider -> HorizontalDivider(modifier = Modifier.fillMaxWidth())
+          IntroSection.GetStartedButton -> SkipIntroButton(onDismiss)
         }
       }
     }
@@ -116,6 +123,7 @@ fun OnboardingContentPreview(
         OnboardingContent(
           uiState = uiState,
           onActionClick = {},
+          onDismiss = {},
         )
       }
     }

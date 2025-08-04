@@ -37,11 +37,12 @@ object IntroSections {
     tmdb,
     jellyseerr,
     linkHandling,
+    IntroSection.GetStartedButton,
   )
 
-  val v22 = listOf(
+  val v23 = listOf(
     IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
-    IntroSection.WhatsNew,
+    IntroSection.WhatsNew("v0.15.0"),
     IntroSection.SecondaryHeader.Added,
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_tmdb_lists)),
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_feature_profile)),
@@ -49,10 +50,16 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v22_fix_encryption)),
   )
 
+  val v24 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.16.0"),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
   val changelogSections = mapOf(
-    22 to v22,
+    23 to v23,
+    24 to v24,
   )
 }

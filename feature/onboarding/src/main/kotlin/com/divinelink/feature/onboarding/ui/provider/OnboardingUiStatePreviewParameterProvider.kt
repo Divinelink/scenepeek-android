@@ -13,7 +13,7 @@ class OnboardingUiStatePreviewParameterProvider : PreviewParameterProvider<Onboa
       isFirstLaunch = true,
     ),
     OnboardingUiState(
-      sections = IntroSections.v22,
+      sections = IntroSections.v23,
       isFirstLaunch = false,
     ),
   )

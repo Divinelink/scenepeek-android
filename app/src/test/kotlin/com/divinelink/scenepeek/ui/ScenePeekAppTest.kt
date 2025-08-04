@@ -6,10 +6,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
@@ -54,6 +56,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.ToolbarState
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.divinelink.feature.onboarding.manager.IntroSections
 import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
@@ -872,6 +875,7 @@ class ScenePeekAppTest : ComposeTest() {
 
     onboardingManager.setIsInitialOnboarding(true)
     onboardingManager.setShowIntro(true)
+    onboardingManager.setSections(IntroSections.onboardingSections)
 
     setContentWithTheme {
       state = rememberScenePeekAppState(
@@ -893,11 +897,18 @@ class ScenePeekAppTest : ComposeTest() {
       onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
       onNodeWithTag(TestTags.Components.NAVIGATION_BAR).assertIsNotDisplayed()
 
-      // Dismiss onboarding
+      // Try to dismiss onboarding by swiping down
       onNodeWithTag(TestTags.Onboarding.FULLSCREEN).performTouchInput {
         swipeDown()
       }
 
+      // Still displayed because it's not dismissable through swipe
+      onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Components.SCROLLABLE_CONTENT).performScrollToNode(
+        matcher = hasText("Get started"),
+      )
+      onNodeWithText("Get started").performClick()
       onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
 
       onNodeWithText("Fight club 1").assertIsDisplayed()
@@ -950,6 +961,13 @@ class ScenePeekAppTest : ComposeTest() {
     with(composeTestRule) {
       onNodeWithTag(TestTags.Onboarding.FULLSCREEN).assertIsNotDisplayed()
       onNodeWithTag(TestTags.Onboarding.MODAL).assertIsDisplayed()
+
+      // Modal is dismissable through swipe
+      onNodeWithTag(TestTags.Onboarding.MODAL).performTouchInput {
+        swipeDown()
+      }
+
+      onNodeWithTag(TestTags.Onboarding.MODAL).assertIsNotDisplayed()
     }
   }
 }
