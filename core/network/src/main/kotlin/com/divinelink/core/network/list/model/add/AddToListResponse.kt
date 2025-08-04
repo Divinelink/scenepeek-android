@@ -15,5 +15,6 @@ data class AddToListResponse(val results: List<MediaItemResponse>) {
 
   companion object {
     const val ALREADY_EXISTS_ERROR = "Media has already been taken"
+    const val MEDIA_IS_REQUIRED = "Media is required"
   }
 }

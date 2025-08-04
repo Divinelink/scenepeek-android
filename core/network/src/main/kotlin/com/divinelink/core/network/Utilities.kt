@@ -1,5 +1,6 @@
 package com.divinelink.core.network
 
+import com.divinelink.core.network.list.model.add.AddToListResponse
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import io.ktor.client.plugins.ResponseException
 import kotlinx.coroutines.delay
@@ -84,10 +85,19 @@ internal suspend inline fun <T : Any> runCatchingWithNetworkRetry(
             )
           }
         }
-        else -> {
-          @Suppress("UNCHECKED_CAST")
+        is AddToListResponse -> if (response.results.any {
+            it.error?.any { error -> error == AddToListResponse.MEDIA_IS_REQUIRED } == true
+          }
+        ) {
+          if (retry == times - 1) {
+            return Result.failure(
+              Exception("Resource not found after $times attempts"),
+            )
+          }
+        } else {
           return Result.success(response as T)
         }
+        else -> return Result.success(response as T)
       }
     } catch (e: IOException) {
       if (retry == times - 1) {

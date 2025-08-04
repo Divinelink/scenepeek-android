@@ -68,6 +68,53 @@ class ProdListServiceTest {
   }
 
   @Test
+  fun `test add item to list with media is required error makes retry attemps`() = runTest {
+    testRestClient.mockPost<AddToListRequest, AddToListResponse>(
+      url = "https://api.themoviedb.org/4/list/12345/items",
+      response = """
+        {
+          "success": true,
+          "status_code": 1,
+          "status_message": "Success.",
+          "results": [
+            {
+              "media_id": 749170,
+              "media_type": "movie",
+              "error": [
+                "Media is required"
+              ],
+              "success": false
+            }
+          ]
+        }
+      """.trimIndent(),
+      body = AddToListRequest(
+        items = listOf(
+          MediaItemRequest(
+            mediaId = 67890,
+            mediaType = "movie",
+          ),
+        ),
+      ),
+    )
+
+    service = ProdListService(testRestClient.restClient)
+
+    val result = service.addItemToList(
+      listId = 12345,
+      media = MediaReference(
+        mediaId = 67890,
+        mediaType = MediaType.MOVIE,
+      ),
+
+    )
+
+    assertThat(result.toString()).isEqualTo(
+      Result.failure<Exception>(Exception("Resource not found after 10 attempts")).toString(),
+    )
+  }
+
+  @Test
   fun `test add item to list with success`() = runTest {
     testRestClient.mockPost<AddToListRequest, AddToListResponse>(
       url = "https://api.themoviedb.org/4/list/12345/items",
