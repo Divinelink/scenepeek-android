@@ -1,5 +1,6 @@
 package com.divinelink.core.data.person.repository
 
+import app.cash.sqldelight.db.QueryResult
 import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
@@ -31,10 +32,10 @@ interface PersonRepository {
     placeOfBirth: String? = null,
     profilePath: String? = null,
     insertedAt: String? = null,
-  )
+  ): QueryResult<Long>
 
   fun deleteFromPerson(
     id: Long,
     field: PersonChangeField,
-  )
+  ): QueryResult<Long>
 }

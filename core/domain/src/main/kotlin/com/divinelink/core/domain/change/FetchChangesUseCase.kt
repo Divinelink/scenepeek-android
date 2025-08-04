@@ -9,8 +9,8 @@ import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.domain.change.person.PersonChangesActionFactory
 import com.divinelink.core.network.media.model.changes.ChangesParameters
 import kotlinx.coroutines.flow.first
-import kotlinx.datetime.Clock
 import timber.log.Timber
+import kotlin.time.Clock
 
 class FetchChangesUseCase(
   private val repository: PersonRepository,

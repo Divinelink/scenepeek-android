@@ -17,30 +17,33 @@ import com.divinelink.scenepeek.base.di.appUseCaseModule
 import com.divinelink.scenepeek.base.di.appViewModelModule
 import com.divinelink.scenepeek.base.di.navigationModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.androix.startup.KoinStartup.onKoinStartup
+import org.koin.androix.startup.KoinStartup
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.dsl.koinConfiguration
 
-class Application : Application() {
+@OptIn(KoinExperimentalAPI::class)
+class Application :
+  Application(),
+  KoinStartup {
 
-  init {
-    onKoinStartup {
-      androidContext(this@Application)
-      modules(
-        appModule,
-        appRemoteModule,
-        appRepositoryModule,
-        appViewModelModule,
-        appUseCaseModule,
-        commonModule,
-        dataModule,
-        databaseModule,
-        dispatcherModule,
-        onboardingModule,
-        remoteModule,
-        useCaseModule,
-        storageModule,
-        settingsUseCaseModule,
-        navigationModule,
-      )
-    }
+  override fun onKoinStartup() = koinConfiguration {
+    androidContext(this@Application)
+    modules(
+      appModule,
+      appRemoteModule,
+      appRepositoryModule,
+      appViewModelModule,
+      appUseCaseModule,
+      commonModule,
+      dataModule,
+      databaseModule,
+      dispatcherModule,
+      onboardingModule,
+      remoteModule,
+      useCaseModule,
+      storageModule,
+      settingsUseCaseModule,
+      navigationModule,
+    )
   }
 }

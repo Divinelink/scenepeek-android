@@ -1,5 +1,6 @@
 package com.divinelink.core.database.person
 
+import app.cash.sqldelight.db.QueryResult
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +9,7 @@ interface PersonDao {
 
   fun fetchPersonById(id: Long): Flow<PersonEntity?>
 
-  fun insertPerson(person: PersonEntity)
+  fun insertPerson(person: PersonEntity): QueryResult<Long>
 
   fun updatePerson(
     biography: String? = null,
@@ -23,12 +24,12 @@ interface PersonDao {
     profilePath: String? = null,
     insertedAt: String? = null,
     id: Long,
-  )
+  ): QueryResult<Long>
 
   fun deleteFromPerson(
     id: Long,
     field: PersonChangeField,
-  )
+  ): QueryResult<Long>
 
   fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>>
 

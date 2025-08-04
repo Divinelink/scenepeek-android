@@ -21,10 +21,10 @@ import com.divinelink.core.testing.factories.entity.credits.CrewEntityFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import org.junit.Before
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class ProdCreditsDaoTest {
 

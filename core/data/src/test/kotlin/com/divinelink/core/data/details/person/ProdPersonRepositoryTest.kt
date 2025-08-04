@@ -23,10 +23,10 @@ import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.service.TestPersonService
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class ProdPersonRepositoryTest {
 

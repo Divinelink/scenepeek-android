@@ -11,10 +11,10 @@ import com.divinelink.core.testing.factories.entity.person.credits.PersonCastCre
 import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCreditEntityFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import org.junit.Rule
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
 
 class ProdPersonDaoTest {
 
