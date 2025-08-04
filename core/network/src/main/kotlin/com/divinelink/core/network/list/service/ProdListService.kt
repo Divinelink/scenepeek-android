@@ -18,6 +18,7 @@ import com.divinelink.core.network.list.util.buildFetchListDetailsUrl
 import com.divinelink.core.network.list.util.buildListItemsUrl
 import com.divinelink.core.network.list.util.buildListUrl
 import com.divinelink.core.network.list.util.buildListWithIdUrl
+import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -26,7 +27,10 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
   override suspend fun addItemToList(
     listId: Int,
     media: MediaReference,
-  ): Result<AddToListResponse> = runCatching {
+  ): Result<AddToListResponse> = runCatchingWithNetworkRetry(
+    times = 10,
+    maxDelay = 1000L,
+  ) {
     client.post<AddToListRequest, AddToListResponse>(
       url = buildListItemsUrl(listId),
       body = AddToListRequest(

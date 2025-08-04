@@ -12,7 +12,6 @@ import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -50,9 +49,9 @@ class DeleteRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
+    assertThat(result.isFailure).isTrue()
     assertThat(
-      result.first().exceptionOrNull(),
+      result.exceptionOrNull(),
     ).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
@@ -77,8 +76,8 @@ class DeleteRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(Unit)
+    assertThat(result.isSuccess).isTrue()
+    assertThat(result.data).isEqualTo(Unit)
   }
 
   @Test
@@ -102,8 +101,8 @@ class DeleteRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(Unit)
+    assertThat(result.isSuccess).isTrue()
+    assertThat(result.data).isEqualTo(Unit)
   }
 
   @Test
@@ -123,8 +122,8 @@ class DeleteRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
   private fun createSessionStorage(sessionId: String?) = SessionStorage(

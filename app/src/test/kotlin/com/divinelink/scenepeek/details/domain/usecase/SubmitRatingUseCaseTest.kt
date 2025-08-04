@@ -12,7 +12,6 @@ import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.SubmitRatingParameters
 import com.divinelink.feature.details.media.usecase.SubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -51,10 +50,8 @@ class SubmitRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(
-      result.first().exceptionOrNull(),
-    ).isInstanceOf(SessionException.Unauthenticated::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(SessionException.Unauthenticated::class.java)
   }
 
   @Test
@@ -79,8 +76,8 @@ class SubmitRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(Unit)
+    assertThat(result.isSuccess).isTrue()
+    assertThat(result.data).isEqualTo(Unit)
   }
 
   @Test
@@ -105,8 +102,8 @@ class SubmitRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isSuccess).isTrue()
-    assertThat(result.first().data).isEqualTo(Unit)
+    assertThat(result.isSuccess).isTrue()
+    assertThat(result.data).isEqualTo(Unit)
   }
 
   @Test
@@ -127,8 +124,8 @@ class SubmitRatingUseCaseTest {
       ),
     )
 
-    assertThat(result.first().isFailure).isTrue()
-    assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
+    assertThat(result.isFailure).isTrue()
+    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
   private fun createSessionStorage(sessionId: String?) = SessionStorage(

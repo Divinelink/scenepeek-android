@@ -19,6 +19,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
@@ -53,7 +54,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -332,6 +332,7 @@ class DetailsViewModel(
   }
 
   fun onSubmitRate(rating: Int) {
+    setSectionState(AccountDataSection.Rating, true)
     viewModelScope.launch {
       submitRatingUseCase.invoke(
         SubmitRatingParameters(
@@ -339,9 +340,8 @@ class DetailsViewModel(
           mediaType = viewState.value.mediaType,
           rating = rating,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
-          Timber.d("Rating submitted: $rating")
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
               userDetails = updateOrCreateAccountMediaDetails(rating),
@@ -353,7 +353,9 @@ class DetailsViewModel(
               ),
             )
           }
-        }.onFailure {
+          setSectionState(AccountDataSection.Rating, false)
+        },
+        onFailure = {
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
@@ -364,9 +366,18 @@ class DetailsViewModel(
                 ),
               )
             }
+          } else {
+            _viewState.update { viewState ->
+              viewState.copy(
+                snackbarMessage = SnackbarMessage.from(
+                  text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+                ),
+              )
+            }
           }
-        }
-      }
+          setSectionState(AccountDataSection.Rating, false)
+        },
+      )
     }
   }
 
@@ -388,21 +399,18 @@ class DetailsViewModel(
 
   fun onClearRating() {
     if (viewState.value.userDetails == null) return
-
+    setSectionState(AccountDataSection.Rating, true)
     viewModelScope.launch {
       deleteRatingUseCase.invoke(
         DeleteRatingParameters(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
-          Timber.d("Rating deleted")
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
-              userDetails = viewState.userDetails?.copy(
-                rating = null,
-              ),
+              userDetails = viewState.userDetails?.copy(rating = null),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_deleted_successfully,
@@ -411,12 +419,24 @@ class DetailsViewModel(
               ),
             )
           }
-        }
-      }
+          setSectionState(AccountDataSection.Rating, false)
+        },
+        onFailure = {
+          _viewState.update { viewState ->
+            viewState.copy(
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(uiR.string.core_ui_error_retry),
+              ),
+            )
+          }
+          setSectionState(AccountDataSection.Rating, false)
+        },
+      )
     }
   }
 
   fun onAddToWatchlist() {
+    setSectionState(AccountDataSection.Watchlist, true)
     viewModelScope.launch {
       addToWatchlistUseCase.invoke(
         AddToWatchlistParameters(
@@ -424,8 +444,8 @@ class DetailsViewModel(
           mediaType = viewState.value.mediaType,
           addToWatchlist = viewState.value.userDetails?.watchlist == false,
         ),
-      ).collectLatest { result ->
-        result.onSuccess {
+      ).fold(
+        onSuccess = {
           _viewState.update { viewState ->
             if (viewState.userDetails?.watchlist == true) {
               viewState.copy(
@@ -449,7 +469,9 @@ class DetailsViewModel(
               )
             }
           }
-        }.onFailure {
+          setSectionState(AccountDataSection.Watchlist, false)
+        },
+        onFailure = {
           if (it is SessionException.Unauthenticated) {
             _viewState.update { viewState ->
               viewState.copy(
@@ -469,8 +491,9 @@ class DetailsViewModel(
               )
             }
           }
-        }
-      }
+          setSectionState(AccountDataSection.Watchlist, false)
+        },
+      )
     }
   }
 
@@ -867,6 +890,17 @@ class DetailsViewModel(
       add(DetailActionItem.Request)
     } else {
       add(DetailActionItem.ManageMovie)
+    }
+  }
+
+  private fun setSectionState(
+    section: AccountDataSection,
+    loading: Boolean,
+  ) {
+    _viewState.update {
+      it.copy(
+        accountDataState = it.accountDataState + (section to loading),
+      )
     }
   }
 }

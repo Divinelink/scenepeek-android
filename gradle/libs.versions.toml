@@ -49,7 +49,7 @@ kotlinx-serialization = "1.9.0"
 kotlinx-io = "0.8.0"
 
 # Depedency Injection
-koin = "4.1.0"
+koin = "4.1.1-Beta1"
 
 # Compose
 compose-bom = "2025.07.00"

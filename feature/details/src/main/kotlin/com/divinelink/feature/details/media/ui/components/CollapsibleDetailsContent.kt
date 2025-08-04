@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.media.ui.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
@@ -46,6 +50,7 @@ fun CollapsibleDetailsContent(
   modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
   mediaDetails: MediaDetails,
+  accountDataState: Map<AccountDataSection, Boolean>,
   isOnWatchlist: Boolean,
   userDetails: AccountMediaDetails?,
   status: JellyseerrStatus.Media?,
@@ -128,12 +133,14 @@ fun CollapsibleDetailsContent(
         modifier = Modifier.weight(3f),
         onClick = onAddRateClick,
         accountRating = userDetails?.beautifiedRating,
+        isLoading = accountDataState[AccountDataSection.Rating] == true,
       )
 
       WatchlistButton(
         modifier = Modifier.weight(1f),
         onWatchlist = isOnWatchlist,
         onClick = onAddToWatchListClick,
+        isLoading = accountDataState[AccountDataSection.Watchlist] == true,
       )
 
       AddToListButton(
@@ -158,6 +165,7 @@ fun RatingButton(
   modifier: Modifier = Modifier,
   accountRating: Int?,
   onClick: () -> Unit,
+  isLoading: Boolean,
 ) {
   ElevatedButton(
     shape = MaterialTheme.shape.large,
@@ -167,13 +175,19 @@ fun RatingButton(
     modifier = modifier.testTag(TestTags.Details.RATE_THIS_BUTTON),
     onClick = onClick,
   ) {
-    if (accountRating != null) {
-      YourRatingText(modifier, accountRating)
-    } else {
-      Text(
-        text = stringResource(id = R.string.details__add_rating),
-        style = MaterialTheme.typography.titleSmall,
-      )
+    AnimatedContent(isLoading) { loading ->
+      if (loading) {
+        CircularProgressIndicator(modifier = Modifier.size(MaterialTheme.dimensions.keyline_24))
+      } else {
+        if (accountRating != null) {
+          YourRatingText(modifier, accountRating)
+        } else {
+          Text(
+            text = stringResource(id = R.string.details__add_rating),
+            style = MaterialTheme.typography.titleSmall,
+          )
+        }
+      }
     }
   }
 }

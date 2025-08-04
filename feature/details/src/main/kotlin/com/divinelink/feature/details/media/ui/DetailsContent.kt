@@ -364,6 +364,7 @@ private fun MediaDetailsContent(
 
   DynamicDetailsCollapsingToolbar(
     mediaDetails = uiState.mediaDetails,
+    accountDataState = uiState.accountDataState,
     onNavigate = onNavigate,
     status = uiState.jellyseerrMediaInfo?.status,
     ratingSource = uiState.ratingSource,

@@ -1,5 +1,6 @@
 package com.divinelink.core.ui.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +27,7 @@ fun WatchlistButton(
   modifier: Modifier = Modifier,
   onWatchlist: Boolean,
   onClick: () -> Unit,
+  isLoading: Boolean,
 ) {
   ElevatedButton(
     modifier = modifier,
@@ -34,20 +37,26 @@ fun WatchlistButton(
     ),
     shape = MaterialTheme.shape.medium,
   ) {
-    Icon(
-      modifier = Modifier.size(MaterialTheme.dimensions.keyline_24),
-      imageVector = if (onWatchlist) {
-        Icons.Filled.BookmarkAdded
+    AnimatedContent(isLoading) { loading ->
+      if (loading) {
+        CircularProgressIndicator(modifier = Modifier.size(MaterialTheme.dimensions.keyline_24))
       } else {
-        Icons.Outlined.BookmarkAdd
-      },
-      tint = MaterialTheme.colorScheme.primary,
-      contentDescription = if (onWatchlist) {
-        stringResource(R.string.core_ui_remove_from_watchlist_content_desc)
-      } else {
-        stringResource(R.string.core_ui_add_to_watchlist_content_desc)
-      },
-    )
+        Icon(
+          modifier = Modifier.size(MaterialTheme.dimensions.keyline_24),
+          imageVector = if (onWatchlist) {
+            Icons.Filled.BookmarkAdded
+          } else {
+            Icons.Outlined.BookmarkAdd
+          },
+          tint = MaterialTheme.colorScheme.primary,
+          contentDescription = if (onWatchlist) {
+            stringResource(R.string.core_ui_remove_from_watchlist_content_desc)
+          } else {
+            stringResource(R.string.core_ui_add_to_watchlist_content_desc)
+          },
+        )
+      }
+    }
   }
 }
 
@@ -59,8 +68,9 @@ private fun WatchlistButtonPreview() {
       Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
-        WatchlistButton(onWatchlist = false, onClick = {})
-        WatchlistButton(onWatchlist = true, onClick = {})
+        WatchlistButton(onWatchlist = false, onClick = {}, isLoading = false)
+        WatchlistButton(onWatchlist = true, onClick = {}, isLoading = false)
+        WatchlistButton(onWatchlist = true, onClick = {}, isLoading = true)
       }
     }
   }

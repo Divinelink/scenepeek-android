@@ -305,9 +305,7 @@ class DetailsScreenTest : ComposeTest() {
       response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
 
-    submitRateUseCase.mockSubmitRate(
-      response = flowOf(Result.success(Unit)),
-    )
+    submitRateUseCase.mockSubmitRate(response = Result.success(Unit),)
 
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(

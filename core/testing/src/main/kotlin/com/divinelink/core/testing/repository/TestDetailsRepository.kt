@@ -90,27 +90,27 @@ class TestDetailsRepository {
     )
   }
 
-  fun mockSubmitRating(response: Result<Unit>) {
+  suspend fun mockSubmitRating(response: Result<Unit>) {
     whenever(
       mock.submitRating(any()),
     ).thenReturn(
-      flowOf(response),
+      response,
     )
   }
 
-  fun mockDeleteRating(response: Result<Unit>) {
+  suspend fun mockDeleteRating(response: Result<Unit>) {
     whenever(
       mock.deleteRating(any()),
     ).thenReturn(
-      flowOf(response),
+      response,
     )
   }
 
-  fun mockAddToWatchlist(response: Result<Unit>) {
+  suspend fun mockAddToWatchlist(response: Result<Unit>) {
     whenever(
       mock.addToWatchlist(any()),
     ).thenReturn(
-      flowOf(response),
+      response,
     )
   }
 

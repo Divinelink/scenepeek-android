@@ -19,6 +19,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.AccountMediaDetails
+import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
@@ -668,7 +669,7 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `given success submit rate, when I submit rate, then I expect success message`() {
+  fun `given success submit rate, when I submit rate, then I expect success message`() = runTest {
     testRobot
       .mockFetchMediaDetails(
         response = defaultDetails(
@@ -678,39 +679,73 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockSubmitRate(
-        response = flowOf(Result.success(Unit)),
-      )
+      .mockSubmitRate(response = Result.success(Unit))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
-      .onSubmitRate(5)
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(
-              R.string.details__rating_submitted_successfully,
-              movieDetails.title,
+      .expectUiStates(
+        action = { onSubmitRate(5) },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = null,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withRating(null)
+            },
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = null,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withRating(null)
+            },
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to true,
             ),
           ),
-          userDetails = AccountMediaDetailsFactory.Rated().toWizard {
-            withId(mediaId)
-            withRating(5.0f)
-          },
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            snackbarMessage = SnackbarMessage.from(
+              UIText.ResourceText(
+                R.string.details__rating_submitted_successfully,
+                movieDetails.title,
+              ),
+            ),
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard {
+              withId(mediaId)
+              withRating(5.0f)
+            },
+          ),
         ),
       )
   }
 
   @Test
-  fun `given NoSession error submit rate, when I submit, then I expect error message`() {
+  fun `given NoSession error submit rate, when I submit, then I expect error message`() = runTest {
     lateinit var viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
@@ -721,37 +756,73 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.Unauthenticated())),
-      )
+      .mockSubmitRate(response = Result.failure(SessionException.Unauthenticated()))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel().also {
         viewModel = it.getViewModel()
       }
-      .onSubmitRate(5)
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
-            actionLabelText = UIText.ResourceText(R.string.login),
-            onSnackbarResult = viewModel::navigateToLogin,
+      .expectUiStates(
+        action = {
+          onSubmitRate(5)
+        },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to false,
+              AccountDataSection.Rating to true,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(R.string.details__must_be_logged_in_to_rate),
+              actionLabelText = UIText.ResourceText(R.string.login),
+              onSnackbarResult = viewModel::navigateToLogin,
+            ),
           ),
         ),
       )
   }
 
   @Test
-  fun `given NoSession error, when login action clicked, then I expect navigation to login`() {
+  fun `given NoSession error, when login action, then I expect navigation to login`() = runTest {
     lateinit var viewModel: DetailsViewModel
     testRobot
       .mockFetchMediaDetails(
@@ -762,9 +833,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockSubmitRate(
-        response = flowOf(Result.failure(SessionException.Unauthenticated())),
-      )
+      .mockSubmitRate(response = Result.failure(SessionException.Unauthenticated()))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel().also {
         viewModel = it.getViewModel()
@@ -854,11 +923,9 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `given snackbar message, when I consume it I expect snackbar message null`() {
+  fun `given snackbar message, when I consume it I expect snackbar message null`() = runTest {
     testRobot
-      .mockSubmitRate(
-        response = flowOf(Result.success(Unit)),
-      )
+      .mockSubmitRate(response = Result.success(Unit))
       .mockFetchMediaDetails(
         response = defaultDetails(
           MediaDetailsResult.DetailsSuccess(
@@ -926,7 +993,7 @@ class DetailsViewModelTest {
         ),
       )
       .mockDeleteRating(
-        response = flowOf(Result.success(Unit)),
+        response = Result.success(Unit),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
@@ -983,29 +1050,61 @@ class DetailsViewModelTest {
         ),
       )
       .mockAddToWatchlist(
-        response = flowOf(Result.failure(SessionException.Unauthenticated())),
+        response = Result.failure(SessionException.Unauthenticated()),
       )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel().also {
         viewModel = it.getViewModel()
       }
-      .onAddToWatchlist()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.NotRated(),
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
-            actionLabelText = UIText.ResourceText(R.string.login),
-            onSnackbarResult = viewModel::navigateToLogin,
+      .expectUiStates(
+        action = { onAddToWatchlist() },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to true,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.NotRated(),
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(R.string.details__must_be_logged_in_to_watchlist),
+              actionLabelText = UIText.ResourceText(R.string.login),
+              onSnackbarResult = viewModel::navigateToLogin,
+            ),
           ),
         ),
       )
@@ -1022,9 +1121,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockAddToWatchlist(
-        response = flowOf(Result.failure(Exception())),
-      )
+      .mockAddToWatchlist(response = Result.failure(Exception()))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .onAddToWatchlist()
@@ -1059,7 +1156,7 @@ class DetailsViewModelTest {
           accountDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
         ),
       )
-      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .mockAddToWatchlist(Result.success(Unit))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(
@@ -1076,23 +1173,55 @@ class DetailsViewModelTest {
           userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
         ),
       )
-      .onAddToWatchlist()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          mediaDetails = movieDetails,
-          isLoading = false,
-          userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(
-              R.string.details__removed_from_watchlist,
-              movieDetails.title,
+      .expectUiStates(
+        action = { onAddToWatchlist() },
+        uiStates = listOf(
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+            snackbarMessage = null,
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(true) },
+            snackbarMessage = null,
+            accountDataState = mapOf(
+              AccountDataSection.Watchlist to true,
+              AccountDataSection.Rating to false,
+            ),
+          ),
+          DetailsViewState(
+            mediaType = MediaType.MOVIE,
+            tabs = MovieTab.entries,
+            forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+              withAbout(DetailsDataFactory.Movie.about())
+              withCast(DetailsDataFactory.Movie.cast())
+            },
+            mediaId = mediaId,
+            mediaDetails = movieDetails,
+            isLoading = false,
+            userDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
+            snackbarMessage = SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.details__removed_from_watchlist,
+                movieDetails.title,
+              ),
             ),
           ),
         ),
@@ -1111,7 +1240,7 @@ class DetailsViewModelTest {
           accountDetails = AccountMediaDetailsFactory.Rated().toWizard { withWatchlist(false) },
         ),
       )
-      .mockAddToWatchlist(flowOf(Result.success(Unit)))
+      .mockAddToWatchlist(Result.success(Unit))
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
       .assertViewState(

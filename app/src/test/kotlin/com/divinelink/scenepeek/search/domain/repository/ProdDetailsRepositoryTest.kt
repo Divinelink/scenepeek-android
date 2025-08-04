@@ -26,7 +26,7 @@ import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
 import com.divinelink.core.network.media.model.details.videos.VideosResponseApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
-import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistResponseApi
+import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
@@ -366,7 +366,14 @@ class ProdDetailsRepositoryTest {
       rating = 5,
     )
 
-    val response = flowOf(Unit)
+    val response = Result.success(
+      SubmitOnAccountResponse(
+        statusMessage = "Success",
+        statusCode = 1,
+        success = true,
+      ),
+    )
+
     val expectedResult = Unit
 
     mediaRemote.mockSubmitRating(
@@ -376,7 +383,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.submitRating(
       request = request,
-    ).first()
+    )
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -388,7 +395,14 @@ class ProdDetailsRepositoryTest {
       sessionId = "session_id",
     )
 
-    val response = flowOf(Unit)
+    val response = Result.success(
+      SubmitOnAccountResponse(
+        statusMessage = "Success",
+        statusCode = 1,
+        success = true,
+      ),
+    )
+
     val expectedResult = Unit
 
     mediaRemote.mockDeleteRating(
@@ -398,7 +412,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.deleteRating(
       request = request,
-    ).first()
+    )
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -410,7 +424,14 @@ class ProdDetailsRepositoryTest {
       sessionId = "session_id",
     )
 
-    val response = flowOf(Unit)
+    val response = Result.success(
+      SubmitOnAccountResponse(
+        statusMessage = "Success",
+        statusCode = 1,
+        success = true,
+      ),
+    )
+
     val expectedResult = Unit
 
     mediaRemote.mockDeleteRating(
@@ -420,7 +441,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.deleteRating(
       request = request,
-    ).first()
+    )
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }
@@ -434,8 +455,8 @@ class ProdDetailsRepositoryTest {
       sessionId = "session_id",
     )
 
-    val response = flowOf(
-      AddToWatchlistResponseApi(
+    val response = Result.success(
+      SubmitOnAccountResponse(
         statusMessage = "Success",
         statusCode = 1,
         success = true,
@@ -451,7 +472,7 @@ class ProdDetailsRepositoryTest {
 
     val actualResult = repository.addToWatchlist(
       request = request,
-    ).first()
+    )
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
   }

@@ -202,19 +202,19 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
-  fun mockSubmitRate(response: Flow<Result<Unit>>) = apply {
+  suspend fun mockSubmitRate(response: Result<Unit>) = apply {
     fakeSubmitRatingUseCase.mockSubmitRate(
       response = response,
     )
   }
 
-  fun mockDeleteRating(response: Flow<Result<Unit>>) = apply {
+  suspend fun mockDeleteRating(response: Result<Unit>) = apply {
     fakeDeleteRatingUseCase.mockDeleteRating(
       response = response,
     )
   }
 
-  fun mockAddToWatchlist(response: Flow<Result<Unit>>) = apply {
+  suspend fun mockAddToWatchlist(response: Result<Unit>) = apply {
     fakeAddToWatchListUseCase.mockAddToWatchlist(
       response = response,
     )
