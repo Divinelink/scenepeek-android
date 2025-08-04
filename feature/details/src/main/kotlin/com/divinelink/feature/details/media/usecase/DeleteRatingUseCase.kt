@@ -23,7 +23,7 @@ open class DeleteRatingUseCase(
     val sessionId = sessionStorage.sessionId
 
     if (sessionId == null) {
-      Result.failure<Exception>(SessionException.Unauthenticated())
+      throw SessionException.Unauthenticated()
     } else {
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> DeleteRatingRequestApi.Movie(

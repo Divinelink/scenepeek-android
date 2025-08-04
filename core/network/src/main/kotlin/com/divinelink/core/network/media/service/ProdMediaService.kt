@@ -154,40 +154,45 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
   }
 
   override suspend fun submitRating(request: AddRatingRequestApi): Result<SubmitOnAccountResponse> =
-    runCatchingWithNetworkRetry(times = 10) {
+    runCatchingWithNetworkRetry(
+      maxDelay = 1000L,
+      times = 10,
+    ) {
       val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
       val url = baseUrl +
         "${request.id}/rating?" +
         "&session_id=${request.sessionId}"
 
-      val response = restClient.post<AddRatingRequestBodyApi, SubmitOnAccountResponse>(
+      restClient.post<AddRatingRequestBodyApi, SubmitOnAccountResponse>(
         url = url,
         body = AddRatingRequestBodyApi(request.rating),
       )
-
-      return Result.success(response)
     }
 
   override suspend fun deleteRating(
     request: DeleteRatingRequestApi,
-  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(times = 10) {
+  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(
+    maxDelay = 1000L,
+    times = 10,
+  ) {
     val baseUrl = "${restClient.tmdbUrl}/${request.endpoint}/"
     val url = baseUrl +
       "${request.id}/rating?" +
       "&session_id=${request.sessionId}"
 
-    val response = restClient.delete<SubmitOnAccountResponse>(url = url)
-
-    return Result.success(response)
+    restClient.delete<SubmitOnAccountResponse>(url = url)
   }
 
   override suspend fun addToWatchlist(
     request: AddToWatchlistRequestApi,
-  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(times = 10) {
+  ): Result<SubmitOnAccountResponse> = runCatchingWithNetworkRetry(
+    maxDelay = 1000L,
+    times = 10,
+  ) {
     val url = "${restClient.tmdbUrl}/account/${request.accountId}/watchlist" +
       "?session_id=${request.sessionId}"
 
-    val response = restClient.post<AddToWatchlistRequestBodyApi, SubmitOnAccountResponse>(
+    restClient.post<AddToWatchlistRequestBodyApi, SubmitOnAccountResponse>(
       url = url,
       body = AddToWatchlistRequestBodyApi(
         mediaType = request.mediaType,
@@ -195,8 +200,6 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
         watchlist = request.addToWatchlist,
       ),
     )
-
-    return Result.success(response)
   }
 
   override fun findById(externalId: String): Flow<FindByIdResponseApi> = flow {

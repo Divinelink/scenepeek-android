@@ -25,7 +25,7 @@ open class AddToWatchlistUseCase(
     val sessionId = sessionStorage.sessionId
 
     if (accountId == null || sessionId == null) {
-      Result.failure<Exception>(SessionException.Unauthenticated())
+      throw SessionException.Unauthenticated()
     } else {
       val request = when (parameters.mediaType) {
         MediaType.MOVIE -> AddToWatchlistRequestApi.Movie(
