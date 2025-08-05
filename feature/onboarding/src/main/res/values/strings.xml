@@ -21,4 +21,8 @@
   <string name="feature_onboarding_v22_feature_tmdb_lists">- TMDB Lists: Create and edit custom lists, add movies and TV shows</string>
   <string name="feature_onboarding_v22_feature_profile">- Watchlist tab has been renamed to Profile, now includes watchlist, lists, and ratings</string>
   <string name="feature_onboarding_v22_fix_encryption">- Update encryption library that caused app to crash on re-install.\n\nIf you were connected to either TMDB or Jellyseerr you have been signed out. You can re-login to either services</string>
+
+  <string name="feature_onboarding_v24_retry_failed_api_calls">- Fix TMDB\'s issue causing submit movie/tv-show rating, add to watchlist and add to list to fail</string>
+  <string name="feature_onboarding_v24_add_loading_indicator">- Add loading indication when adding to watchlist and submitting rating</string>
+  <string name="feature_onboarding_v24_update_changelog">- Display all unread changelogs on app update</string>
 </resources>
