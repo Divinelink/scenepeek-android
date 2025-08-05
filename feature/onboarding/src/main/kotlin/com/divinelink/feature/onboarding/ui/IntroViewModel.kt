@@ -52,8 +52,11 @@ class IntroViewModel(
 
   fun onboardingComplete() {
     viewModelScope.launch {
-      markOnboardingCompleteUseCase.invoke(Unit)
-      _onNavigateUp.send(Unit)
+      markOnboardingCompleteUseCase
+        .invoke(Unit)
+        .map {
+          _onNavigateUp.send(Unit)
+        }
     }
   }
 

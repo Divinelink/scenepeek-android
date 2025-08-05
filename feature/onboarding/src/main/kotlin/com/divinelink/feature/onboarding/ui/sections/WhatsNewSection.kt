@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.feature.onboarding.R
 import com.divinelink.core.commons.R as commonR
 
 @Composable
-fun WhatsNewSection() {
+fun WhatsNewSection(whatsNew: IntroSection.WhatsNew) {
   Text(
     modifier = Modifier
       .fillMaxWidth()
@@ -21,7 +22,7 @@ fun WhatsNewSection() {
     text = stringResource(
       R.string.feature_onboarding_whats_new_title,
       stringResource(commonR.string.core_commons_app_name),
-      stringResource(commonR.string.version_name),
+      whatsNew.version,
     ),
     style = MaterialTheme.typography.titleMedium,
   )

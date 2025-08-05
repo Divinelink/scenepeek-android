@@ -10,7 +10,7 @@ sealed interface IntroSection {
     val description: UIText? = null,
   ) : IntroSection
 
-  data object WhatsNew : IntroSection
+  data class WhatsNew(val version: String) : IntroSection
 
   data object Divider : IntroSection
   data object Spacer : IntroSection
@@ -40,4 +40,6 @@ sealed interface IntroSection {
   }
 
   data class Text(val description: UIText) : IntroSection
+
+  data object GetStartedButton : IntroSection
 }

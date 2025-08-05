@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +30,16 @@ fun IntroModalBottomSheet(
   viewModel: IntroViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val sheetState = rememberModalBottomSheetState(
+    skipPartiallyExpanded = true,
+    confirmValueChange = {
+      if (uiState.isFirstLaunch) {
+        it != SheetValue.Hidden
+      } else {
+        true
+      }
+    },
+  )
   val properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
   val context = LocalContext.current
 
@@ -56,6 +66,7 @@ fun IntroModalBottomSheet(
     content = {
       OnboardingContent(
         uiState = uiState,
+        onDismiss = { viewModel.onboardingComplete() },
         onActionClick = { action ->
           when (action) {
             is OnboardingAction.NavigateToJellyseerrLogin -> onNavigate(

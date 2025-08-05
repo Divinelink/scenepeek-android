@@ -13,7 +13,6 @@ interface OnboardingStorage {
   val isFirstLaunch: Flow<Boolean>
   val lastSeenVersion: Flow<Int>
   suspend fun setOnboardingCompleted()
-  suspend fun updateLastSeenVersion(version: Int)
 }
 
 class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) :
@@ -38,12 +37,6 @@ class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) 
     dataStore.edit { preferences ->
       preferences[PreferencesKeys.IS_FIRST_LAUNCH] = false
       preferences[PreferencesKeys.LAST_SEEN_VERSION] = BuildConfig.VERSION_CODE
-    }
-  }
-
-  override suspend fun updateLastSeenVersion(version: Int) {
-    dataStore.edit { preferences ->
-      preferences[PreferencesKeys.LAST_SEEN_VERSION] = version
     }
   }
 }
