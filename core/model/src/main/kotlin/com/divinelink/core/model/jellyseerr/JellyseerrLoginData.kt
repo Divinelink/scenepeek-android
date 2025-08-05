@@ -7,8 +7,14 @@ data class JellyseerrLoginData(
   val address: String,
   val username: Username,
   val password: Password,
+  val serverType: Int,
 ) {
   companion object {
-    fun empty() = JellyseerrLoginData("", Username.empty(), Password.empty())
+    fun empty() = JellyseerrLoginData(
+      address = "",
+      username = Username.empty(),
+      password = Password.empty(),
+      serverType = -1,
+    )
   }
 }

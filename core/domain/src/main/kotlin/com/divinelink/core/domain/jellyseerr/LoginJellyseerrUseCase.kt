@@ -26,7 +26,9 @@ open class LoginJellyseerrUseCase(
       }
 
       val result = when (parameters.authMethod) {
-        JellyseerrAuthMethod.JELLYFIN -> repository.signInWithJellyfin(
+        JellyseerrAuthMethod.JELLYFIN,
+        JellyseerrAuthMethod.EMBY,
+        -> repository.signInWithJellyfin(
           parameters.toLoginData(),
         )
         JellyseerrAuthMethod.JELLYSEERR -> repository.signInWithJellyseerr(

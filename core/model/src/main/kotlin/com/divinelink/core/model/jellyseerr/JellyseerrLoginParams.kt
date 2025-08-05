@@ -13,5 +13,6 @@ data class JellyseerrLoginParams(
     address = address,
     username = username,
     password = password,
+    serverType = authMethod.serverType,
   )
 }

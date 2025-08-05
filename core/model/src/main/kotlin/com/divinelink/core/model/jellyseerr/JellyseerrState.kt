@@ -31,10 +31,12 @@ val JellyseerrState.loginParams: JellyseerrLoginParams?
       username = when (preferredOption) {
         JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.username
         JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.username
+        JellyseerrAuthMethod.EMBY -> jellyfinLogin.username
       },
       password = when (preferredOption) {
         JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.password
         JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.password
+        JellyseerrAuthMethod.EMBY -> jellyfinLogin.password
       },
     )
     else -> null

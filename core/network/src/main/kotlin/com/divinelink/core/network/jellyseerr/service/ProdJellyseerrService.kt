@@ -24,6 +24,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       body = JellyseerrLoginRequestBodyApi.Jellyfin(
         username = jellyfinLogin.username.value,
         password = jellyfinLogin.password.value,
+        serverType = jellyfinLogin.serverType,
       ),
     )
 
