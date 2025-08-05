@@ -3,9 +3,6 @@
 package com.divinelink.feature.details.person.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -15,12 +12,12 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +40,7 @@ import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonScreen(
   onNavigate: (Navigation) -> Unit,
@@ -53,25 +51,14 @@ fun PersonScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
+  var toolbarProgress by remember { mutableFloatStateOf(0F) }
 
   val scope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
 
-  var isAppBarVisible by remember { mutableStateOf(false) }
-
   val personDetails by remember(uiState.aboutForm) {
     derivedStateOf { uiState.aboutForm?.personDetails }
   }
-
-  val containerColor by animateColorAsState(
-    targetValue = if (isAppBarVisible) {
-      MaterialTheme.colorScheme.surface
-    } else {
-      Color.Transparent
-    },
-    animationSpec = tween(durationMillis = 0),
-    label = "appBarContainerColor",
-  )
 
   rememberScaffoldState(
     animatedVisibilityScope = animatedVisibilityScope,
@@ -79,12 +66,11 @@ fun PersonScreen(
     topBar = {
       if (personDetails is PersonDetailsUiState.Data) {
         AppTopAppBar(
-          modifier = Modifier.background(color = containerColor),
           scrollBehavior = scrollBehavior,
           text = UIText.StringText(
             (personDetails as PersonDetailsUiState.Data).personDetails.person.name,
           ),
-          isVisible = isAppBarVisible,
+          progress = toolbarProgress,
           onNavigateUp = { onNavigate(Navigation.Back) },
           topAppBarColors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
@@ -140,7 +126,7 @@ fun PersonScreen(
               switchViewButtonViewModel.switchViewMode(ViewableSection.PERSON_CREDITS)
             },
             onApplyFilter = viewModel::onApplyFilter,
-            onShowTitle = { isAppBarVisible = it },
+            onProgressUpdate = { toolbarProgress = it },
           )
         }
       }

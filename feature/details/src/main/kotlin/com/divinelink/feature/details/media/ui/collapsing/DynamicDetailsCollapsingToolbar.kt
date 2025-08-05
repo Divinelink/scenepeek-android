@@ -33,7 +33,7 @@ fun DynamicDetailsCollapsingToolbar(
   onAddToWatchlistClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
-  onShowTitle: (Boolean) -> Unit,
+  onScrollProgress: (Float) -> Unit,
   onWatchTrailerClick: () -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
@@ -71,7 +71,7 @@ fun DynamicDetailsCollapsingToolbar(
       )
 
       LaunchedEffect(state.progress) {
-        onShowTitle(state.progress > 0.22f)
+        onScrollProgress(state.progress)
       }
 
       CollapsingToolBarLayout(

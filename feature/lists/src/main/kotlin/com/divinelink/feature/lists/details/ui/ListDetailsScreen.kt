@@ -2,13 +2,11 @@ package com.divinelink.feature.lists.details.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -20,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,21 +55,12 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-  var isAppBarVisible by remember { mutableStateOf(false) }
+  var toolbarProgress by remember { mutableFloatStateOf(0F) }
   var onBackdropLoaded by remember { mutableStateOf(false) }
-
-  val containerColor by animateColorAsState(
-    targetValue = when (isAppBarVisible) {
-      true -> MaterialTheme.colorScheme.surface
-      false -> Color.Transparent
-    },
-    animationSpec = tween(durationMillis = 0),
-    label = "TopAppBar Container Color",
-  )
 
   val textColor = when {
     // When app bar is visible, we want to contrast against the app bar background
-    isAppBarVisible -> MaterialTheme.colorScheme.onSurface
+    toolbarProgress > 0.2 -> MaterialTheme.colorScheme.onSurface
 
     // When backdrop has loaded, determine color based on theme
     onBackdropLoaded -> if (LocalDarkThemeProvider.current) {
@@ -115,7 +105,6 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
     },
     topBar = {
       AppTopAppBar(
-        modifier = Modifier.background(containerColor),
         scrollBehavior = scrollBehavior,
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
           scrolledContainerColor = Color.Transparent,
@@ -123,7 +112,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
         ),
         contentColor = textColor,
         text = UIText.StringText(uiState.details.name),
-        isVisible = isAppBarVisible,
+        progress = toolbarProgress,
         onNavigateUp = { onNavigate(Navigation.Back) },
       )
     },
@@ -180,7 +169,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               )
             }
           },
-          onShowTitle = { show -> isAppBarVisible = show },
+          onUpdateProgress = { progress -> toolbarProgress = progress },
           onBackdropLoaded = { onBackdropLoaded = true },
           onNavigateToAddToList = {
             onNavigate(
