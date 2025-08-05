@@ -1,8 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -119,7 +118,7 @@ fun DetailsContent(
 
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var showDropdownMenu by remember { mutableStateOf(false) }
-  var isAppBarVisible by remember { mutableStateOf(false) }
+  var toolbarProgress by remember { mutableFloatStateOf(0F) }
   var onBackdropLoaded by remember { mutableStateOf(false) }
   var showRequestModal by remember { mutableStateOf(false) }
   var showManageMediaModal by rememberSaveable { mutableStateOf(false) }
@@ -172,18 +171,9 @@ fun DetailsContent(
     )
   }
 
-  val containerColor by animateColorAsState(
-    targetValue = when (isAppBarVisible) {
-      true -> MaterialTheme.colorScheme.surface
-      false -> Color.Transparent
-    },
-    animationSpec = tween(durationMillis = 0),
-    label = "TopAppBar Container Color",
-  )
-
   val textColor = when {
     // When app bar is visible, we want to contrast against the app bar background
-    isAppBarVisible -> MaterialTheme.colorScheme.onSurface
+    toolbarProgress > 0.5 -> MaterialTheme.colorScheme.onSurface
 
     // When backdrop has loaded, determine color based on theme
     onBackdropLoaded -> if (LocalDarkThemeProvider.current) {
@@ -216,7 +206,6 @@ fun DetailsContent(
   ).PersistentScaffold(
     topBar = {
       AppTopAppBar(
-        modifier = Modifier.background(containerColor),
         scrollBehavior = scrollBehavior,
         topAppBarColors = TopAppBarDefaults.topAppBarColors(
           scrolledContainerColor = Color.Transparent,
@@ -224,7 +213,7 @@ fun DetailsContent(
         ),
         contentColor = textColor,
         text = UIText.StringText(viewState.mediaDetails?.title ?: ""),
-        isVisible = isAppBarVisible,
+        progress = toolbarProgress,
         actions = {
           FavoriteButton(
             modifier = Modifier.clip(MaterialTheme.shape.rounded),
@@ -258,7 +247,7 @@ fun DetailsContent(
         },
         onNavigateUp = {
           onNavigate(Navigation.Back)
-          isAppBarVisible = false
+//          isAppBarVisible = false
           onBackdropLoaded = false
         },
       )
@@ -301,7 +290,7 @@ fun DetailsContent(
             onTabSelected = onTabSelected,
             onWatchTrailer = onPlayTrailerClick,
             onShowTitle = { showTitle ->
-              isAppBarVisible = showTitle
+              toolbarProgress = showTitle
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
@@ -340,7 +329,7 @@ private fun MediaDetailsContent(
   viewAllRatingsClick: () -> Unit,
   onWatchTrailer: (String) -> Unit,
   onTabSelected: (Int) -> Unit,
-  onShowTitle: (Boolean) -> Unit,
+  onShowTitle: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
   scope: CoroutineScope,
@@ -373,7 +362,7 @@ private fun MediaDetailsContent(
     onAddRateClick = onAddRateClick,
     onShowAllRatingsClick = viewAllRatingsClick,
     userDetails = uiState.userDetails,
-    onShowTitle = onShowTitle,
+    onScrollProgress = onShowTitle,
     onWatchTrailerClick = { trailer?.key?.let { onWatchTrailer(it) } },
     onBackdropLoaded = onBackdropLoaded,
     onOpenManageModal = onOpenManageModal,

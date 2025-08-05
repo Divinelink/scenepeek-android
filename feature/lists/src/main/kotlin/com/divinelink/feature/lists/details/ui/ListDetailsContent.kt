@@ -27,7 +27,7 @@ import com.divinelink.feature.lists.details.ui.provider.ListDetailsUiStateParame
 fun ListDetailsContent(
   state: ListDetailsUiState,
   action: (ListDetailsAction) -> Unit,
-  onShowTitle: (Boolean) -> Unit,
+  onUpdateProgress: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
@@ -53,7 +53,7 @@ fun ListDetailsContent(
         ListScrollableContent(
           state = state,
           action = action,
-          onShowTitle = onShowTitle,
+          onUpdateToolbarProgress = onUpdateProgress,
           onBackdropLoaded = onBackdropLoaded,
           onNavigateToAddToList = onNavigateToAddToList,
         )
@@ -71,7 +71,7 @@ fun ListDetailsContentPreview(
       ListDetailsContent(
         state = state,
         action = {},
-        onShowTitle = {},
+        onUpdateProgress = {},
         onBackdropLoaded = {},
         onNavigateToAddToList = {},
       )

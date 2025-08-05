@@ -89,7 +89,7 @@ fun PersonContent(
   onTabSelected: (Int) -> Unit,
   onUpdateViewMode: () -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
-  onShowTitle: (Boolean) -> Unit,
+  onProgressUpdate: (Float) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
@@ -182,7 +182,7 @@ fun PersonContent(
   val state = rememberCollapsingToolBarState(toolBarMaxHeight = 262.dp)
 
   LaunchedEffect(state.progress) {
-    onShowTitle(state.progress > 0.20f)
+    onProgressUpdate(state.progress)
   }
   Box {
     CollapsingToolBarLayout(
@@ -404,7 +404,7 @@ fun PersonContentListPreview(
           onTabSelected = {},
           onUpdateViewMode = {},
           onApplyFilter = {},
-          onShowTitle = {},
+          onProgressUpdate = {},
         )
       }
     }
@@ -447,7 +447,7 @@ fun PersonContentGridPreview() {
           onTabSelected = {},
           onUpdateViewMode = {},
           onApplyFilter = {},
-          onShowTitle = {},
+          onProgressUpdate = {},
         )
       }
     }

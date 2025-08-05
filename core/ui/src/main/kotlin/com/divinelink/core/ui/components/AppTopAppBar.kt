@@ -1,11 +1,8 @@
 package com.divinelink.core.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,11 +14,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
@@ -36,28 +36,38 @@ fun AppTopAppBar(
   text: UIText,
   contentColor: Color = MaterialTheme.colorScheme.onSurface,
   actions: @Composable RowScope.() -> Unit = {},
-  isVisible: Boolean = true,
+  progress: Float = 1f,
   onNavigateUp: () -> Unit,
 ) {
+  val (alpha, offsetY) = remember(progress) {
+    if (progress > 0.5f) {
+      val calculatedAlpha = ((progress - 0.5f) / 0.3f).coerceIn(0f, 1f)
+      val calculatedOffsetY = (1f - calculatedAlpha) * -32f
+      calculatedAlpha to calculatedOffsetY
+    } else {
+      0f to 32f
+    }
+  }
+
   TopAppBar(
-    modifier = modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
+    modifier = modifier
+      .background(animateColorFromProgress(progress))
+      .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehavior,
     colors = topAppBarColors,
     title = {
-      AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn() + expandVertically(),
-        exit = fadeOut() + shrinkVertically(),
-      ) {
-        Text(
-          modifier = Modifier.testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE),
-          text = text.getString(),
-          color = contentColor,
-          maxLines = 2,
-          style = MaterialTheme.typography.titleLarge,
-          overflow = TextOverflow.Ellipsis,
-        )
-      }
+      Text(
+        modifier = Modifier
+          .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE)
+          .offset(y = offsetY.dp)
+          .alpha(alpha)
+          .alpha(progress),
+        text = text.getString(),
+        color = contentColor,
+        maxLines = 2,
+        style = MaterialTheme.typography.titleLarge,
+        overflow = TextOverflow.Ellipsis,
+      )
     },
     navigationIcon = {
       IconButton(
@@ -74,5 +84,13 @@ fun AppTopAppBar(
       }
     },
     actions = actions,
+  )
+}
+
+@Composable
+fun animateColorFromProgress(toolbarProgress: Float): Color = when {
+  toolbarProgress < 0.3f -> Color.Transparent
+  else -> MaterialTheme.colorScheme.surface.copy(
+    alpha = ((toolbarProgress - 0.3f) / 0.7f).coerceIn(0f, 1f),
   )
 }

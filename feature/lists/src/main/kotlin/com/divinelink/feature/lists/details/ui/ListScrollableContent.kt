@@ -23,6 +23,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -58,7 +59,7 @@ import kotlinx.coroutines.launch
 fun ListScrollableContent(
   state: ListDetailsUiState,
   action: (ListDetailsAction) -> Unit,
-  onShowTitle: (Boolean) -> Unit,
+  onUpdateToolbarProgress: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onNavigateToAddToList: (MediaItem) -> Unit,
 ) {
@@ -68,17 +69,22 @@ fun ListScrollableContent(
   val scrollState = rememberLazyListState()
   val scope = rememberCoroutineScope()
   val density = LocalDensity.current
-  val shouldShowTitle by remember {
-    with(density) {
-      derivedStateOf {
-        scrollState.firstVisibleItemIndex > 0 ||
-          scrollState.firstVisibleItemScrollOffset > 168.dp.roundToPx()
+
+  var backdropHeight by remember { mutableStateOf(0.dp) }
+  val firstItemScrollProgress by remember {
+    derivedStateOf {
+      if (scrollState.firstVisibleItemIndex == 0) {
+        // Convert dp to pixels for calculation
+        val itemHeightPx = with(density) { backdropHeight.toPx() }
+        (scrollState.firstVisibleItemScrollOffset.toFloat() / itemHeightPx).coerceIn(0f, 1f)
+      } else {
+        1f
       }
     }
   }
 
-  LaunchedEffect(shouldShowTitle) {
-    onShowTitle(shouldShowTitle)
+  LaunchedEffect(firstItemScrollProgress) {
+    onUpdateToolbarProgress(firstItemScrollProgress)
   }
 
   BackHandler(enabled = state.multipleSelectMode) {
@@ -140,6 +146,9 @@ fun ListScrollableContent(
     ) {
       item {
         BackdropImage(
+          modifier = Modifier.onSizeChanged {
+            backdropHeight = with(density) { it.height.toDp() }
+          },
           path = state.details.backdropPath,
           onBackdropLoaded = onBackdropLoaded,
           applyOffset = false,
