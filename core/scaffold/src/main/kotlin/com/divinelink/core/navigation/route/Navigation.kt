@@ -106,4 +106,10 @@ sealed interface Navigation {
     val description: String,
     val public: Boolean,
   ) : Navigation
+
+  @Serializable
+  data class WebViewRoute(
+    val url: String,
+    val title: String,
+  ) : Navigation
 }

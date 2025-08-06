@@ -15,6 +15,7 @@ import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
 import com.divinelink.core.navigation.route.navigateToTMDBAuth
 import com.divinelink.core.navigation.route.navigateToUserData
+import com.divinelink.core.navigation.route.navigateToWebView
 import com.divinelink.feature.credits.navigation.navigateToCredits
 import com.divinelink.feature.settings.navigation.about.navigateToAboutSettings
 import com.divinelink.feature.settings.navigation.account.navigateToAccountSettings
@@ -50,6 +51,7 @@ fun NavController.findNavigation(route: Navigation) {
       SearchEntryPoint.SEARCH_TAB -> navigateToSearchFromTab()
     }
     is Navigation.UserDataRoute -> navigateToUserData(route.userDataSection)
+    is Navigation.WebViewRoute -> navigateToWebView(route)
 
     // This is from top level navigation
     Navigation.HomeRoute -> {

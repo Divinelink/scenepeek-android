@@ -3,7 +3,6 @@ package com.divinelink.feature.settings.app.about
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,14 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import com.divinelink.core.commons.util.launchCustomTab
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
@@ -43,8 +44,9 @@ fun AboutCard(
   name: String,
   version: String,
   github: String,
+  onNavigate: (Navigation) -> Unit,
 ) {
-  val uriHandler = LocalUriHandler.current
+  val context = LocalContext.current
   val repositoryUrl = stringResource(R.string.feature_settings_about__repository_url)
   val githubAccountUrl = stringResource(
     R.string.feature_settings_about__developer_github_url,
@@ -126,7 +128,20 @@ fun AboutCard(
             style = MaterialTheme.typography.bodyMedium,
           )
           TextButton(
-            onClick = { uriHandler.openUri(githubAccountUrl) },
+            onClick = {
+              launchCustomTab(
+                context = context,
+                url = githubAccountUrl,
+                webViewFallback = {
+                  onNavigate(
+                    Navigation.WebViewRoute(
+                      url = githubAccountUrl,
+                      title = context.getString(R.string.feature_settings_about__github),
+                    ),
+                  )
+                },
+              )
+            },
           ) {
             Row(
               verticalAlignment = Alignment.CenterVertically,
@@ -143,7 +158,20 @@ fun AboutCard(
         }
 
         TextButton(
-          onClick = { uriHandler.openUri(repositoryUrl) },
+          onClick = {
+            launchCustomTab(
+              context = context,
+              url = repositoryUrl,
+              webViewFallback = {
+                onNavigate(
+                  Navigation.WebViewRoute(
+                    url = repositoryUrl,
+                    title = context.getString(R.string.feature_settings_about__github),
+                  ),
+                )
+              },
+            )
+          },
         ) {
           Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -162,7 +190,6 @@ fun AboutCard(
   }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ScenePeekFeatures() {
   Card(
@@ -228,6 +255,7 @@ fun AboutCardPreview() {
         name = "ScenePeek",
         version = "1.0.0",
         github = "Divinelink",
+        onNavigate = {},
       )
     }
   }

@@ -19,11 +19,14 @@ import androidx.compose.ui.platform.LocalContext
 import com.divinelink.core.commons.util.launchCustomTab
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
+import com.divinelink.feature.settings.R
 
 @Composable
 fun SettingsExternalLinkItem(
   modifier: Modifier = Modifier,
+  onNavigate: (Navigation) -> Unit,
   text: String,
   url: String,
 ) {
@@ -33,7 +36,20 @@ fun SettingsExternalLinkItem(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     modifier = modifier
-      .clickable { launchCustomTab(context = context, url = url) }
+      .clickable {
+        launchCustomTab(
+          context = context,
+          url = url,
+          webViewFallback = {
+            onNavigate(
+              Navigation.WebViewRoute(
+                url = url,
+                title = context.getString(R.string.feature_settings_about__privacy_policy),
+              ),
+            )
+          },
+        )
+      }
       .padding(MaterialTheme.dimensions.keyline_16)
       .fillMaxWidth(),
   ) {
@@ -58,6 +74,7 @@ private fun SettingsScreenPreview() {
   AppTheme {
     Surface {
       SettingsExternalLinkItem(
+        onNavigate = {},
         text = "Privacy Policy",
         url = "https://www.scenepeek.com/privacy-policy",
       )

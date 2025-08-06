@@ -6,7 +6,7 @@ import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.delay
 
-const val TMDB_AUTH_DELAY = 3000L // 3 seconds
+const val TMDB_AUTH_DELAY = 1500L // 3 seconds
 
 class CreateSessionUseCase(
   private val repository: SessionRepository,

@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,9 +32,11 @@ import com.divinelink.core.ui.getString
 @Composable
 fun AppTopAppBar(
   modifier: Modifier = Modifier,
-  scrollBehavior: TopAppBarScrollBehavior,
-  topAppBarColors: TopAppBarColors,
   text: UIText,
+  scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+  topAppBarColors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+    scrolledContainerColor = MaterialTheme.colorScheme.surface,
+  ),
   contentColor: Color = MaterialTheme.colorScheme.onSurface,
   actions: @Composable RowScope.() -> Unit = {},
   progress: Float = 1f,
