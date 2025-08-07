@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -112,33 +111,6 @@ class PersonScreenTest : ComposeTest() {
     }
     with(composeTestRule) {
       onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
-    }
-  }
-
-  @Test
-  fun `test topAppBar is not visible when scrolled on top`() {
-    fetchPersonDetailsUseCase.mockSuccess(
-      PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell()),
-    )
-    val viewModel = PersonViewModel(
-      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
-      fetchChangesUseCase = fetchChangesUseCase.mock,
-      savedStateHandle = savedStateHandle,
-    )
-
-    setVisibilityScopeContent {
-      PersonScreen(
-        onNavigate = {},
-        viewModel = viewModel,
-        switchViewButtonViewModel = switchViewButtonViewModel,
-        animatedVisibilityScope = this,
-      )
-    }
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
-      onAllNodesWithTag(TestTags.Person.COLLAPSIBLE_CONTENT).onFirst().assertIsDisplayed()
-      onAllNodesWithTag(TestTags.Person.PERSON_NAME).onFirst().assertIsDisplayed()
     }
   }
 

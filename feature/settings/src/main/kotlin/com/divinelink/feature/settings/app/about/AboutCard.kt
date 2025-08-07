@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
@@ -118,8 +119,9 @@ fun AboutCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
       ) {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
+        FlowRow(
+          verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+          itemVerticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.Center,
           modifier = Modifier.fillMaxWidth(),
         ) {
@@ -182,7 +184,10 @@ fun AboutCard(
               contentDescription = "Source Code",
               modifier = Modifier.size(MaterialTheme.dimensions.keyline_16),
             )
-            Text(stringResource(R.string.feature_settings_about__source_code))
+            Text(
+              text = stringResource(R.string.feature_settings_about__source_code),
+              textAlign = TextAlign.Center,
+            )
           }
         }
       }
@@ -193,7 +198,7 @@ fun AboutCard(
 @Composable
 private fun ScenePeekFeatures() {
   Card(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = Modifier.wrapContentSize(),
     colors = CardDefaults.cardColors(
       containerColor = MaterialTheme.colorScheme.surfaceVariant,
     ),

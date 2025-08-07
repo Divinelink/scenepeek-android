@@ -2,10 +2,13 @@ package com.divinelink.feature.settings.app.about
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.commons.BuildConfigProvider
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -35,7 +38,7 @@ class AboutSettingsScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       AboutSettingsScreen(
         buildConfigProvider = debugBuildConfigProvider,
-        onNavigateUp = {},
+        onNavigate = {},
         animatedVisibilityScope = this,
       )
     }
@@ -60,7 +63,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test version with release`() {
     setVisibilityScopeContent {
       AboutSettingsScreen(
-        onNavigateUp = {},
+        onNavigate = {},
         buildConfigProvider = releaseBuildConfigProvider,
         animatedVisibilityScope = this,
       )
@@ -82,7 +85,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test about card is visible`() {
     setVisibilityScopeContent {
       AboutSettingsScreen(
-        onNavigateUp = {},
+        onNavigate = {},
         buildConfigProvider = releaseBuildConfigProvider,
         animatedVisibilityScope = this,
       )
@@ -97,7 +100,7 @@ class AboutSettingsScreenTest : ComposeTest() {
   fun `test privacy policy is visible`() {
     setVisibilityScopeContent {
       AboutSettingsScreen(
-        onNavigateUp = {},
+        onNavigate = {},
         buildConfigProvider = releaseBuildConfigProvider,
         animatedVisibilityScope = this,
       )
@@ -137,5 +140,63 @@ class AboutSettingsScreenTest : ComposeTest() {
 
     assertThat(navigatedUp).isTrue()
     assertThat(navigatedToAbout).isTrue()
+  }
+
+  @Test
+  fun `test click on view source code`() {
+    var navigationRoute: Navigation? = null
+    setVisibilityScopeContent {
+      AboutSettingsScreen(
+        onNavigate = { route ->
+          navigationRoute = route
+        },
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Settings.About.SCROLLABLE_CONTENT).performScrollToNode(
+        hasText(getString(R.string.feature_settings_about__privacy_policy)),
+      )
+
+      onNodeWithText(getString(R.string.feature_settings_about__source_code)).performClick()
+
+      val url = getString(R.string.feature_settings_about__repository_url)
+      assertThat(navigationRoute).isEqualTo(
+        Navigation.WebViewRoute(
+          url = url,
+          title = "Github",
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test click on developed by field`() {
+    var navigationRoute: Navigation? = null
+    setVisibilityScopeContent {
+      AboutSettingsScreen(
+        onNavigate = { route ->
+          navigationRoute = route
+        },
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Settings.About.SCROLLABLE_CONTENT).performScrollToNode(
+        hasText(getString(R.string.feature_settings_about__privacy_policy)),
+      )
+
+      onNodeWithContentDescription("GitHub Account").performClick()
+
+      val url = getString(R.string.feature_settings_about__developer_github_url, "Divinelink")
+      assertThat(navigationRoute).isEqualTo(
+        Navigation.WebViewRoute(
+          url = url,
+          title = "Github",
+        ),
+      )
+    }
   }
 }

@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.viewinterop.AndroidView
+import com.divinelink.core.ui.TestTags
 
 @Composable
 @SuppressLint("SetJavaScriptEnabled")
@@ -31,6 +33,7 @@ fun LoginWebViewScreen(
 
   AndroidView(
     modifier = modifier
+      .testTag(TestTags.Auth.LOGIN_WEB_VIEW_SCREEN)
       .fillMaxSize(),
     factory = { webView },
     update = { it.loadUrl(url) },

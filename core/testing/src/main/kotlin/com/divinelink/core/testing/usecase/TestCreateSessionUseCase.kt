@@ -8,6 +8,7 @@ import org.junit.Rule
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 
 class TestCreateSessionUseCase {
 
@@ -21,6 +22,10 @@ class TestCreateSessionUseCase {
     storage = SessionStorageFactory.empty(),
     dispatcher = mainDispatcherRule.testDispatcher,
   )
+
+  suspend fun mockResponse(response: Result<Unit>) {
+    whenever(mock.invoke(Unit)).thenReturn(response)
+  }
 
   suspend fun verifySessionInvoked() {
     verify(mock).invoke(Unit)

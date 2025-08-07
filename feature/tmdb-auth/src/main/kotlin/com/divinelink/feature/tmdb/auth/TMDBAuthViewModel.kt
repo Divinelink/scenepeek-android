@@ -67,7 +67,9 @@ class TMDBAuthViewModel(
 
   fun createSession() {
     viewModelScope.launch {
-      createSessionUseCase.invoke(Unit).map {
+      createSessionUseCase.invoke(Unit).onSuccess {
+        _onNavigateUp.send(Unit)
+      }.onFailure {
         _onNavigateUp.send(Unit)
       }
     }

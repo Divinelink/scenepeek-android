@@ -255,6 +255,10 @@ object TestTags {
     const val MODAL = "Modal Onboarding"
   }
 
+  object Auth {
+    const val LOGIN_WEB_VIEW_SCREEN = "Login web view screen"
+  }
+
   object Shimmer {
     const val HALF_LINE = "Shimmer Half Line - %s"
     const val LINE = "Shimmer Line - %s"

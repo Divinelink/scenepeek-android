@@ -54,7 +54,7 @@ fun AppTopAppBar(
 
   TopAppBar(
     modifier = modifier
-      .background(animateColorFromProgress(progress))
+      .background(animateColorFromProgress(alpha))
       .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR),
     scrollBehavior = scrollBehavior,
     colors = topAppBarColors,
@@ -63,8 +63,7 @@ fun AppTopAppBar(
         modifier = Modifier
           .testTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE)
           .offset(y = offsetY.dp)
-          .alpha(alpha)
-          .alpha(progress),
+          .alpha(alpha),
         text = text.getString(),
         color = contentColor,
         maxLines = 2,

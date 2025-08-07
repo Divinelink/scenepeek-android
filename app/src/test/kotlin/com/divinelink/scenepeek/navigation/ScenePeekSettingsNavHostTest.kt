@@ -43,6 +43,7 @@ import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
 import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
+import com.divinelink.core.testing.usecase.TestCreateSessionUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
@@ -395,6 +396,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       TMDBAuthViewModel(
         createRequestTokenUseCase = FakeCreateRequestTokenUseCase().mock,
+        createSessionUseCase = TestCreateSessionUseCase().mock,
       )
     }
 
