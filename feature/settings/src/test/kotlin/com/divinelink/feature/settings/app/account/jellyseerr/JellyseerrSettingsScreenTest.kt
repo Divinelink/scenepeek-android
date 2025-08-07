@@ -87,7 +87,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
 
     assertThat(viewModel.uiState.value.jellyseerrState).isEqualTo(
-      JellyseerrState.Initial(address = "", isLoading = false),
+      JellyseerrState.Login(address = "", isLoading = false),
     )
   }
 

@@ -6,7 +6,7 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -16,24 +16,15 @@ open class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<JellyseerrLoginParams?, JellyseerrAccountDetails>(dispatcher.io) {
+) : FlowUseCase<JellyseerrLoginData, JellyseerrAccountDetails>(dispatcher.default) {
 
-  override fun execute(parameters: JellyseerrLoginParams?): Flow<Result<JellyseerrAccountDetails>> =
+  override fun execute(parameters: JellyseerrLoginData): Flow<Result<JellyseerrAccountDetails>> =
     flow {
-      if (parameters == null) {
-        emit(Result.failure(IllegalArgumentException("Parameters cannot be null")))
-        return@flow
-      }
-
       val result = when (parameters.authMethod) {
         JellyseerrAuthMethod.JELLYFIN,
         JellyseerrAuthMethod.EMBY,
-        -> repository.signInWithJellyfin(
-          parameters.toLoginData(),
-        )
-        JellyseerrAuthMethod.JELLYSEERR -> repository.signInWithJellyseerr(
-          parameters.toLoginData(),
-        )
+        -> repository.signInWithJellyfin(parameters)
+        JellyseerrAuthMethod.JELLYSEERR -> repository.signInWithJellyseerr(parameters)
       }
 
       result.last().fold(

@@ -2,7 +2,7 @@ package com.divinelink.core.model.jellyseerr
 
 enum class JellyseerrAuthMethod(
   val endpoint: String,
-  val value: String,
+  val displayName: String,
   val serverType: Int,
 ) {
   JELLYSEERR("local", "Jellyseerr", 2),

@@ -44,7 +44,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_invalid_credentials),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -53,7 +53,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -74,7 +74,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_could_not_connect),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -83,7 +83,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -104,7 +104,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_could_not_connect),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -113,7 +113,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -134,7 +134,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.StringText(InvalidStatusException(500).message!!),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -143,7 +143,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -165,7 +165,7 @@ class JellyseerrSettingsViewModelTest {
         },
         uiStates = listOf(
           createUiState(
-            jellyseerrState = JellyseerrState.Initial(
+            jellyseerrState = JellyseerrState.Login(
               isLoading = false,
               address = "",
             ),
@@ -177,7 +177,7 @@ class JellyseerrSettingsViewModelTest {
             ),
           ),
           createUiState(
-            jellyseerrState = JellyseerrState.Initial(
+            jellyseerrState = JellyseerrState.Login(
               isLoading = false,
               address = "",
             ),
@@ -205,7 +205,7 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             address = "",
           ),
@@ -239,7 +239,7 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             address = "",
           ),
@@ -262,7 +262,7 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = SnackbarMessage.from(
             UIText.StringText(InvalidStatusException(500).message!!),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -271,7 +271,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -279,7 +279,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           snackbarMessage = null,
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             preferredOption = JellyseerrAuthMethod.JELLYSEERR,
             address = "http://localhost:8096",
@@ -288,7 +288,7 @@ class JellyseerrSettingsViewModelTest {
               username = Username("username"),
               password = Password("password"),
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
+            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -301,7 +301,7 @@ class JellyseerrSettingsViewModelTest {
       .buildViewModel()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             address = "",
           ),
@@ -316,7 +316,7 @@ class JellyseerrSettingsViewModelTest {
       .buildViewModel()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             address = "",
           ),
@@ -328,7 +328,7 @@ class JellyseerrSettingsViewModelTest {
         action = { onLoginJellyseerr() },
         uiStates = listOf(
           createUiState(
-            jellyseerrState = JellyseerrState.Initial(
+            jellyseerrState = JellyseerrState.Login(
               address = "",
               isLoading = false,
               preferredOption = JellyseerrAuthMethod.JELLYSEERR,
@@ -346,7 +346,7 @@ class JellyseerrSettingsViewModelTest {
       .onLogoutJellyseerr()
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             address = "",
             isLoading = false,
             preferredOption = null,
@@ -357,7 +357,7 @@ class JellyseerrSettingsViewModelTest {
 
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
-    jellyseerrState: JellyseerrState = JellyseerrState.Initial(
+    jellyseerrState: JellyseerrState = JellyseerrState.Login(
       address = "",
       isLoading = false,
       preferredOption = null,

@@ -11,9 +11,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrState
-import com.divinelink.core.model.jellyseerr.loginParams
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,8 +42,7 @@ class JellyseerrSettingsViewModel(
           if (accountDetails == null) {
             _uiState.update {
               it.copy(
-                jellyseerrState = JellyseerrState.Initial(
-                  address = "",
+                jellyseerrState = JellyseerrState.Login(
                   isLoading = false,
                 ),
               )
@@ -81,7 +78,9 @@ class JellyseerrSettingsViewModel(
   fun onJellyseerrInteraction(interaction: JellyseerrInteraction) {
     when (interaction) {
       JellyseerrInteraction.OnLoginClick -> {
-        loginJellyseerrUseCase.invoke(uiState.value.jellyseerrState.loginParams)
+        if (uiState.value.jellyseerrState !is JellyseerrState.Login) return
+
+        loginJellyseerrUseCase.invoke(uiState.value.jellyseerrState.loginData)
           .onStart {
             _uiState.setJellyseerrLoading(true)
           }
@@ -127,7 +126,11 @@ class JellyseerrSettingsViewModel(
       is JellyseerrInteraction.OnAddressChange -> _uiState.update {
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Initial -> state.copy(address = interaction.address)
+            is JellyseerrState.Login -> state.copy(
+              loginData = uiState.value.jellyseerrState.loginData.copy(
+                address = interaction.address,
+              ),
+            )
             else -> state
           },
         )
@@ -136,12 +139,12 @@ class JellyseerrSettingsViewModel(
       is JellyseerrInteraction.OnSelectLoginMethod -> _uiState.update {
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Initial -> {
-              if (state.preferredOption == interaction.signInMethod) {
-                state.copy(preferredOption = null)
-              } else {
-                state.copy(preferredOption = interaction.signInMethod)
-              }
+            is JellyseerrState.Login -> {
+              state.copy(
+                loginData = uiState.value.jellyseerrState.loginData.copy(
+                  authMethod = interaction.signInMethod,
+                ),
+              )
             }
             else -> state
           },
@@ -151,20 +154,12 @@ class JellyseerrSettingsViewModel(
       is JellyseerrInteraction.OnPasswordChange -> _uiState.update {
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Initial -> {
-              if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
-                state.copy(
-                  jellyfinLogin = state.jellyfinLogin.copy(
-                    password = Password(interaction.password),
-                  ),
-                )
-              } else {
-                state.copy(
-                  jellyseerrLogin = state.jellyseerrLogin.copy(
-                    password = Password(interaction.password),
-                  ),
-                )
-              }
+            is JellyseerrState.Login -> {
+              state.copy(
+                loginData = state.loginData.copy(
+                  password = Password(interaction.password),
+                ),
+              )
             }
             else -> state
           },
@@ -174,20 +169,12 @@ class JellyseerrSettingsViewModel(
       is JellyseerrInteraction.OnUsernameChange -> _uiState.update {
         it.copy(
           jellyseerrState = when (val state = it.jellyseerrState) {
-            is JellyseerrState.Initial -> {
-              if (state.preferredOption == JellyseerrAuthMethod.JELLYFIN) {
-                state.copy(
-                  jellyfinLogin = state.jellyfinLogin.copy(
-                    username = Username(interaction.username),
-                  ),
-                )
-              } else {
-                state.copy(
-                  jellyseerrLogin = state.jellyseerrLogin.copy(
-                    username = Username(interaction.username),
-                  ),
-                )
-              }
+            is JellyseerrState.Login -> {
+              state.copy(
+                loginData = state.loginData.copy(
+                  username = Username(interaction.username),
+                ),
+              )
             }
             else -> state
           },
@@ -208,8 +195,7 @@ class JellyseerrSettingsViewModel(
         result.onSuccess {
           _uiState.update {
             it.copy(
-              jellyseerrState = JellyseerrState.Initial(
-                address = result.data,
+              jellyseerrState = JellyseerrState.Login(
                 isLoading = false,
               ),
             )
@@ -217,7 +203,7 @@ class JellyseerrSettingsViewModel(
         }.onFailure {
           _uiState.update {
             it.copy(
-              jellyseerrState = JellyseerrState.Initial(address = "", isLoading = false),
+              jellyseerrState = JellyseerrState.Login(isLoading = false),
             )
           }
         }
@@ -234,7 +220,7 @@ private fun MutableStateFlow<JellyseerrSettingsUiState>.setJellyseerrLoading(loa
           isLoading = loading,
         ),
       )
-      is JellyseerrState.Initial -> uiState.copy(
+      is JellyseerrState.Login -> uiState.copy(
         jellyseerrState = uiState.jellyseerrState.copy(
           isLoading = loading,
         ),

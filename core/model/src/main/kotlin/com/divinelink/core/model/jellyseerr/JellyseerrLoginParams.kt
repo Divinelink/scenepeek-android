@@ -8,11 +8,4 @@ data class JellyseerrLoginParams(
   val password: Password,
   val address: String,
   val authMethod: JellyseerrAuthMethod,
-) {
-  fun toLoginData() = JellyseerrLoginData(
-    address = address,
-    username = username,
-    password = password,
-    serverType = authMethod.serverType,
-  )
-}
+)
