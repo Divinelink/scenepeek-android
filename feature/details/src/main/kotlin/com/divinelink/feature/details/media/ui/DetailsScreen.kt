@@ -64,7 +64,18 @@ fun DetailsScreen(
 
   LaunchedEffect(Unit) {
     viewModel.openUrlTab.collect { url ->
-      launchCustomTab(context, url)
+      launchCustomTab(
+        context = context,
+        url = url,
+        webViewFallback = {
+          onNavigate(
+            Navigation.WebViewRoute(
+              url = url,
+              title = viewState.mediaDetails?.title ?: "",
+            ),
+          )
+        },
+      )
     }
   }
 

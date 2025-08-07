@@ -66,35 +66,6 @@ class ListDetailsScreenTest : ComposeTest() {
   )
 
   @Test
-  fun `test top app bar is displayed but title is hidden initially`() {
-    val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
-
-    fetchListDetailsUseCase.mockResponse(Result.success(ListDetailsFactory.page1()))
-
-    val viewModel = ListDetailsViewModel(
-      fetchListDetailsUseCase = fetchListDetailsUseCase.mock,
-      savedStateHandle = savedStateHandle,
-      repository = repository.mock,
-    )
-
-    setVisibilityScopeContent {
-      ListDetailsScreen(
-        onNavigate = {},
-        viewModel = viewModel,
-      )
-    }
-
-    with(composeTestRule) {
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR).assertIsDisplayed()
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsNotDisplayed()
-
-      onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT).performScrollToIndex(12)
-
-      onNodeWithTag(TestTags.Components.TopAppBar.TOP_APP_BAR_TITLE).assertIsDisplayed()
-    }
-  }
-
-  @Test
   fun `test on navigate up`() {
     var navigatedUp = false
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()

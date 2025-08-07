@@ -9,6 +9,7 @@ object TestTags {
     const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
     const val MEDIA_LIST_CONTENT = "Media List Content"
     const val SCROLLABLE_CONTENT = "Scrollable Content"
+    const val PULL_TO_REFRESH = "Pull to refresh"
 
     object Button {
       const val SWITCH_VIEW = "Switch View Button"
@@ -252,6 +253,10 @@ object TestTags {
   object Onboarding {
     const val FULLSCREEN = "Fullscreen Onboarding Modal"
     const val MODAL = "Modal Onboarding"
+  }
+
+  object Auth {
+    const val LOGIN_WEB_VIEW_SCREEN = "Login web view screen"
   }
 
   object Shimmer {

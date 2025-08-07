@@ -13,6 +13,7 @@ import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
@@ -22,14 +23,14 @@ import com.divinelink.core.commons.R as commonR
 
 @Composable
 fun AboutSettingsScreen(
-  onNavigateUp: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
 ) {
   SettingsScaffold(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(R.string.feature_settings_about),
-    onNavigationClick = onNavigateUp,
+    onNavigationClick = { onNavigate.invoke(Navigation.Back) },
   ) {
     val version = UIText.ResourceText(commonR.string.version_name)
 
@@ -48,10 +49,12 @@ fun AboutSettingsScreen(
           name = stringResource(commonR.string.core_commons_app_name),
           version = buildVersion.getString(),
           github = "Divinelink",
+          onNavigate = onNavigate,
         )
       }
       item {
         SettingsExternalLinkItem(
+          onNavigate = onNavigate,
           text = stringResource(R.string.feature_settings_about__privacy_policy),
           url = stringResource(R.string.feature_settings_about__privacy_policy_url),
         )

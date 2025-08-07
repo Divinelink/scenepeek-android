@@ -8,11 +8,11 @@ import com.divinelink.feature.settings.app.about.AboutSettingsScreen
 
 fun NavController.navigateToAboutSettings() = navigate(route = Navigation.AboutSettingsRoute)
 
-fun NavGraphBuilder.aboutSettingsScreen(onNavigateUp: () -> Unit) {
+fun NavGraphBuilder.aboutSettingsScreen(onNavigate: (Navigation) -> Unit) {
   composable<Navigation.AboutSettingsRoute> {
     AboutSettingsScreen(
       animatedVisibilityScope = this,
-      onNavigateUp = onNavigateUp,
+      onNavigate = onNavigate,
     )
   }
 }

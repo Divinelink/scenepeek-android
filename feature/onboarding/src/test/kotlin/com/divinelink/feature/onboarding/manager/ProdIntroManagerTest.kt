@@ -140,6 +140,14 @@ class ProdIntroManagerTest {
         listOf(
           IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
           IntroSection.WhatsNew("v0.16.0"),
+          IntroSection.SecondaryHeader.Fixed,
+          IntroSection.Text(
+            UIText.ResourceText(R.string.feature_onboarding_v24_retry_failed_api_calls),
+          ),
+          IntroSection.Text(
+            UIText.ResourceText(R.string.feature_onboarding_v24_add_loading_indicator),
+          ),
+          IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v24_update_changelog)),
           IntroSection.WhatsNew("v0.15.0"),
           IntroSection.SecondaryHeader.Added,
           IntroSection.Text(

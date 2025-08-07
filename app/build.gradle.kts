@@ -105,6 +105,7 @@ dependencies {
   implementation(projects.feature.profile)
   implementation(projects.feature.userData)
   implementation(projects.feature.lists)
+  implementation(projects.feature.webview)
 
   // Firebase
   implementation(platform(libs.firebase.bom))

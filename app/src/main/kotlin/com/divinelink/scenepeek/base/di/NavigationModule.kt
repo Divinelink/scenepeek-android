@@ -26,6 +26,7 @@ import com.divinelink.feature.settings.navigation.links.linkHandlingSettingsScre
 import com.divinelink.feature.settings.navigation.settings.settingsScreen
 import com.divinelink.feature.tmdb.auth.tmdbAuthScreen
 import com.divinelink.feature.user.data.navigation.userDataScreen
+import com.divinelink.feature.webview.webViewScreen
 import com.divinelink.scenepeek.home.navigation.findNavigation
 import com.divinelink.scenepeek.home.navigation.homeScreen
 import org.koin.core.qualifier.named
@@ -128,7 +129,7 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.AboutSettingsRoute>()) {
     { navController, _ ->
       aboutSettingsScreen(
-        onNavigateUp = navController::navigateUp,
+        onNavigate = navController::findNavigation,
       )
     }
   }
@@ -172,7 +173,7 @@ val navigationModule = module {
   // TMDB Auth Navigation
   single<NavGraphExtension>(named<Navigation.TMDBAuthRoute>()) {
     { navController, _ ->
-      tmdbAuthScreen(navController::navigateUp)
+      tmdbAuthScreen(navController::findNavigation)
     }
   }
 
@@ -234,6 +235,13 @@ val navigationModule = module {
       addToListScreen(
         onNavigate = navController::findNavigation,
       )
+    }
+  }
+
+  // WebView Navigation
+  single<NavGraphExtension>(named<Navigation.WebViewRoute>()) {
+    { navController, _ ->
+      webViewScreen(navController::findNavigation)
     }
   }
 
