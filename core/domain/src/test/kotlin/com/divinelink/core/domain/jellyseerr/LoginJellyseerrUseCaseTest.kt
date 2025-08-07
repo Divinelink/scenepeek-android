@@ -8,7 +8,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFac
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginParams
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
@@ -39,27 +39,6 @@ class LoginJellyseerrUseCaseTest {
   }
 
   @Test
-  fun `test loginJellyseerr with null parameters throws exception`() = runTest {
-    preferenceStorage = FakePreferenceStorage()
-    encryptedStorage = FakeEncryptedPreferenceStorage()
-
-    val useCase = LoginJellyseerrUseCase(
-      repository = repository.mock,
-      storage = SessionStorage(
-        storage = preferenceStorage,
-        encryptedStorage = encryptedStorage,
-        accountStorage = accountStorage,
-      ),
-      dispatcher = testDispatcher,
-    )
-
-    useCase.invoke(null).collect {
-      assertThat(it.isFailure).isTrue()
-      assertThat(it.exceptionOrNull()).isInstanceOf(IllegalArgumentException::class.java)
-    }
-  }
-
-  @Test
   fun `test loginJellyseerr with Jellyfin login method`() = runTest {
     preferenceStorage = FakePreferenceStorage()
     encryptedStorage = FakeEncryptedPreferenceStorage()
@@ -82,7 +61,7 @@ class LoginJellyseerrUseCaseTest {
     assertThat(encryptedStorage.jellyseerrPassword).isNull()
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyfinUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
@@ -123,7 +102,7 @@ class LoginJellyseerrUseCaseTest {
     assertThat(encryptedStorage.jellyseerrPassword).isNull()
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyseerrUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
@@ -164,7 +143,7 @@ class LoginJellyseerrUseCaseTest {
     assertThat(encryptedStorage.jellyseerrPassword).isNull()
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyseerrUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
@@ -203,7 +182,7 @@ class LoginJellyseerrUseCaseTest {
     assertThat(encryptedStorage.jellyseerrPassword).isNull()
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyseerrUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
@@ -237,7 +216,7 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyseerrUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
@@ -266,7 +245,7 @@ class LoginJellyseerrUseCaseTest {
     )
 
     useCase.invoke(
-      JellyseerrLoginParams(
+      JellyseerrLoginData(
         username = Username("jellyfinUsername"),
         password = Password("password"),
         address = "http://localhost:8096",

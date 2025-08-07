@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -46,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -57,6 +56,7 @@ import com.divinelink.core.ui.PasswordOutlinedTextField
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.settings.R
+import com.divinelink.feature.settings.app.account.jellyseerr.preview.JellyseerrLoginStatePreviewParameterProvider
 
 @Composable
 fun JellyseerrLoginContent(
@@ -123,36 +123,6 @@ fun JellyseerrLoginContent(
 
     item {
       Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_96))
-    }
-  }
-}
-
-@Previews
-@Composable
-private fun JellyseerrBottomSheetContentPreview() {
-  AppTheme {
-    Surface {
-      JellyseerrLoginContent(
-        state = JellyseerrState.Login(
-          isLoading = false,
-        ),
-        interaction = {},
-      )
-    }
-  }
-}
-
-@Previews
-@Composable
-private fun JellyseerrBottomSheetContentLoadingPreview() {
-  AppTheme {
-    Surface {
-      JellyseerrLoginContent(
-        state = JellyseerrState.Login(
-          isLoading = true,
-        ),
-        interaction = {},
-      )
     }
   }
 }
@@ -257,7 +227,9 @@ private fun LoginForm(
         interaction.invoke(JellyseerrInteraction.OnUsernameChange(it))
       },
       label = { Text(stringResource(label)) },
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD),
       colors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = Color(0xFF6366F1),
         focusedLabelColor = Color(0xFF6366F1),
@@ -277,7 +249,7 @@ private fun LoginForm(
         .semantics {
           contentType = ContentType.Password
         }
-        .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_PASSWORD_TEXT_FIELD)
+        .testTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
         .fillMaxWidth(),
       colors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = Color(0xFF6366F1),
@@ -300,10 +272,11 @@ private fun LoginButton(
   Button(
     onClick = onClick,
     modifier = Modifier
+      .testTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON)
       .fillMaxWidth()
-      .height(52.dp),
+      .height(MaterialTheme.dimensions.keyline_56),
     enabled = enabled && !isLoading,
-    shape = RoundedCornerShape(8.dp),
+    shape = MaterialTheme.shapes.medium,
     colors = ButtonDefaults.buttonColors(
       containerColor = Color(0xFF6366F1),
       disabledContainerColor = Color(0x4D6366F1),
@@ -311,11 +284,11 @@ private fun LoginButton(
   ) {
     if (isLoading) {
       CircularProgressIndicator(
-        modifier = Modifier.size(20.dp),
+        modifier = Modifier.size(MaterialTheme.dimensions.keyline_20),
         color = Color.White,
-        strokeWidth = 2.dp,
+        strokeWidth = MaterialTheme.dimensions.keyline_2,
       )
-      Spacer(modifier = Modifier.width(8.dp))
+      Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
       Text(
         text = stringResource(R.string.feature_settings_signing_in),
         color = Color.White,
@@ -324,6 +297,22 @@ private fun LoginButton(
       Text(
         text = stringResource(R.string.feature_settings_sign_in_with, selectedMethod.displayName),
         color = Color.White,
+      )
+    }
+  }
+}
+
+@Previews
+@Composable
+fun JellyseerrLoginContentPreview(
+  @PreviewParameter(JellyseerrLoginStatePreviewParameterProvider::class) state:
+  JellyseerrState.Login,
+) {
+  AppTheme {
+    Surface {
+      JellyseerrLoginContent(
+        state = state,
+        interaction = {},
       )
     }
   }

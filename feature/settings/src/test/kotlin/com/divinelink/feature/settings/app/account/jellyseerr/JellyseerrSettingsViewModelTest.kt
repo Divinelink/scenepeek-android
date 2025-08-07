@@ -46,14 +46,12 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -76,14 +74,12 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -106,14 +102,12 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -136,14 +130,12 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -167,7 +159,6 @@ class JellyseerrSettingsViewModelTest {
           createUiState(
             jellyseerrState = JellyseerrState.Login(
               isLoading = false,
-              address = "",
             ),
           ),
           createUiState(
@@ -179,7 +170,6 @@ class JellyseerrSettingsViewModelTest {
           createUiState(
             jellyseerrState = JellyseerrState.Login(
               isLoading = false,
-              address = "",
             ),
           ),
         ),
@@ -207,7 +197,6 @@ class JellyseerrSettingsViewModelTest {
         createUiState(
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
@@ -241,7 +230,6 @@ class JellyseerrSettingsViewModelTest {
         createUiState(
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
@@ -264,14 +252,12 @@ class JellyseerrSettingsViewModelTest {
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -281,14 +267,12 @@ class JellyseerrSettingsViewModelTest {
           snackbarMessage = null,
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            loginData = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -303,7 +287,6 @@ class JellyseerrSettingsViewModelTest {
         createUiState(
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
@@ -318,7 +301,6 @@ class JellyseerrSettingsViewModelTest {
         createUiState(
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
@@ -329,9 +311,10 @@ class JellyseerrSettingsViewModelTest {
         uiStates = listOf(
           createUiState(
             jellyseerrState = JellyseerrState.Login(
-              address = "",
               isLoading = false,
-              preferredOption = JellyseerrAuthMethod.JELLYSEERR,
+              loginData = JellyseerrLoginData.empty().copy(
+                authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              ),
             ),
           ),
           createUiState(
@@ -347,9 +330,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.Login(
-            address = "",
             isLoading = false,
-            preferredOption = null,
           ),
         ),
       )
@@ -358,9 +339,7 @@ class JellyseerrSettingsViewModelTest {
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
     jellyseerrState: JellyseerrState = JellyseerrState.Login(
-      address = "",
       isLoading = false,
-      preferredOption = null,
     ),
   ) = JellyseerrSettingsUiState(
     snackbarMessage = snackbarMessage,
