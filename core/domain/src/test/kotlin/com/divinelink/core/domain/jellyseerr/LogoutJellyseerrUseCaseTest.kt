@@ -57,7 +57,7 @@ class LogoutJellyseerrUseCaseTest {
     val result = useCase.invoke(Unit).first()
 
     assertThat(result.isSuccess).isTrue()
-    assertThat(result.getOrNull()).isEqualTo("http://localhost:8096")
+    assertThat(result).isEqualTo(Result.success(Unit))
   }
 
   @Test

@@ -11,6 +11,7 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
@@ -38,12 +39,15 @@ class JellyseerrSettingsViewModel(
       .distinctUntilChanged()
       .onEach { result ->
         result.onSuccess {
-          val accountDetails = result.data
-          if (accountDetails == null) {
+          val accountDetailsResult = result.data
+          if (accountDetailsResult.accountDetails == null) {
             _uiState.update {
               it.copy(
                 jellyseerrState = JellyseerrState.Login(
                   isLoading = false,
+                  loginData = JellyseerrLoginData.prefilled(
+                    address = accountDetailsResult.address,
+                  ),
                 ),
               )
             }
@@ -51,8 +55,9 @@ class JellyseerrSettingsViewModel(
             _uiState.update {
               it.copy(
                 jellyseerrState = JellyseerrState.LoggedIn(
-                  accountDetails = accountDetails,
+                  accountDetails = accountDetailsResult.accountDetails!!,
                   isLoading = false,
+                  address = accountDetailsResult.address,
                 ),
               )
             }
@@ -86,40 +91,31 @@ class JellyseerrSettingsViewModel(
           }
           .onCompletion {
             _uiState.setJellyseerrLoading(false)
-          }
-          .onEach { result ->
-            result.onSuccess {
-              _uiState.update {
-                it.copy(
-                  jellyseerrState = JellyseerrState.LoggedIn(
-                    accountDetails = result.data,
-                    isLoading = false,
-                  ),
+          }.onEach { result ->
+            result
+              .onError<AppException.Unauthorized> {
+                _uiState.setSnackbarMessage(
+                  UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+                )
+              }.onError<AppException.Forbidden> {
+                _uiState.setSnackbarMessage(
+                  UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+                )
+              }.onError<AppException.Offline> {
+                _uiState.setSnackbarMessage(
+                  UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                )
+              }.onError<AppException.SocketTimeout> {
+                _uiState.setSnackbarMessage(
+                  UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                )
+              }.onFailure {
+                _uiState.setSnackbarMessage(
+                  it.message?.let { message ->
+                    UIText.StringText(message)
+                  } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
                 )
               }
-            }.onError<AppException.Unauthorized> {
-              _uiState.setSnackbarMessage(
-                UIText.ResourceText(R.string.feature_settings_invalid_credentials),
-              )
-            }.onError<AppException.Forbidden> {
-              _uiState.setSnackbarMessage(
-                UIText.ResourceText(R.string.feature_settings_invalid_credentials),
-              )
-            }.onError<AppException.Offline> {
-              _uiState.setSnackbarMessage(
-                UIText.ResourceText(R.string.feature_settings_could_not_connect),
-              )
-            }.onError<AppException.SocketTimeout> {
-              _uiState.setSnackbarMessage(
-                UIText.ResourceText(R.string.feature_settings_could_not_connect),
-              )
-            }.onFailure {
-              _uiState.setSnackbarMessage(
-                it.message?.let { message ->
-                  UIText.StringText(message)
-                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-              )
-            }
           }.launchIn(viewModelScope)
       }
       JellyseerrInteraction.OnLogoutClick -> onLogout()
@@ -190,23 +186,6 @@ class JellyseerrSettingsViewModel(
       }
       .onCompletion {
         _uiState.setJellyseerrLoading(false)
-      }
-      .onEach { result ->
-        result.onSuccess {
-          _uiState.update {
-            it.copy(
-              jellyseerrState = JellyseerrState.Login(
-                isLoading = false,
-              ),
-            )
-          }
-        }.onFailure {
-          _uiState.update {
-            it.copy(
-              jellyseerrState = JellyseerrState.Login(isLoading = false),
-            )
-          }
-        }
       }
       .launchIn(viewModelScope)
   }

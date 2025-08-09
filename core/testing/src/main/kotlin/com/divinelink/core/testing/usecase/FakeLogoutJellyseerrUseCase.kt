@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class FakeLogoutJellyseerrUseCase {
@@ -19,7 +20,11 @@ class FakeLogoutJellyseerrUseCase {
     whenever(mock.invoke(any())).thenReturn(flowOf(Result.failure(error)))
   }
 
-  fun mockSuccess(response: Flow<Result<String>>) {
+  fun mockSuccess(response: Flow<Result<Unit>>) {
     whenever(mock.invoke(any())).thenReturn(response)
+  }
+
+  fun verifyLogoutInteraction() {
+    verify(mock).invoke(Unit)
   }
 }

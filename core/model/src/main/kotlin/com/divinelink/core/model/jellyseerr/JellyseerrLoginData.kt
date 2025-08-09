@@ -16,5 +16,12 @@ data class JellyseerrLoginData(
       password = Password.empty(),
       authMethod = JellyseerrAuthMethod.JELLYFIN,
     )
+
+    fun prefilled(address: String = "") = JellyseerrLoginData(
+      address = address,
+      username = Username.empty(),
+      password = Password.empty(),
+      authMethod = JellyseerrAuthMethod.JELLYFIN,
+    )
   }
 }

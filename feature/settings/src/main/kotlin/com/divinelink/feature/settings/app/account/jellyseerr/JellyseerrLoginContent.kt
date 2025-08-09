@@ -291,12 +291,20 @@ private fun LoginButton(
       Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
       Text(
         text = stringResource(R.string.feature_settings_signing_in),
-        color = Color.White,
+        color = if (enabled) {
+          Color.White
+        } else {
+          MaterialTheme.colorScheme.onSurfaceVariant
+        },
       )
     } else {
       Text(
         text = stringResource(R.string.feature_settings_sign_in_with, selectedMethod.displayName),
-        color = Color.White,
+        color = if (enabled) {
+          Color.White
+        } else {
+          MaterialTheme.colorScheme.onSurfaceVariant
+        },
       )
     }
   }

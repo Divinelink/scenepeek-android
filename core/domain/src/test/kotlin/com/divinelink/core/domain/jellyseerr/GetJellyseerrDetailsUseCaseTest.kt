@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
@@ -37,7 +38,9 @@ class GetJellyseerrDetailsUseCaseTest {
     )
 
     useCase.invoke(false).test {
-      assertThat(awaitItem()).isEqualTo(Result.success(null))
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(JellyseerrAccountDetailsResultFactory.initial()),
+      )
       awaitComplete()
     }
   }
@@ -45,7 +48,7 @@ class GetJellyseerrDetailsUseCaseTest {
   @Test
   fun `test get jellyseerr account details with storage data`() = runTest {
     preferenceStorage = FakePreferenceStorage(
-      jellyseerrAddress = "http://localhost:8096",
+      jellyseerrAddress = "http://localhost:5055",
       jellyseerrAccount = "jellyseerrAccount",
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
@@ -61,7 +64,7 @@ class GetJellyseerrDetailsUseCaseTest {
     val result = useCase.invoke(false).first()
 
     assertThat(result.isSuccess).isTrue()
-    assertThat(result.data).isEqualTo(JellyseerrAccountDetailsFactory.jellyseerr())
+    assertThat(result.data).isEqualTo(JellyseerrAccountDetailsResultFactory.jellyseerr())
   }
 
   @Test
@@ -84,7 +87,9 @@ class GetJellyseerrDetailsUseCaseTest {
     )
 
     useCase.invoke(true).test {
-      assertThat(awaitItem()).isEqualTo(Result.success(null))
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(JellyseerrAccountDetailsResultFactory.initial()),
+      )
       awaitComplete()
     }
   }
@@ -92,7 +97,7 @@ class GetJellyseerrDetailsUseCaseTest {
   @Test
   fun `test get remote jellyseerr account details without local data and address`() = runTest {
     preferenceStorage = FakePreferenceStorage(
-      jellyseerrAddress = "http://localhost:8096",
+      jellyseerrAddress = "http://localhost:5055",
       jellyseerrAccount = "jellyseerrAccount",
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
@@ -109,8 +114,12 @@ class GetJellyseerrDetailsUseCaseTest {
     )
 
     useCase.invoke(true).test {
-      assertThat(awaitItem().getOrNull()).isNull()
-      assertThat(awaitItem().getOrNull()).isEqualTo(JellyseerrAccountDetailsFactory.jellyseerr())
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
       awaitComplete()
     }
   }
@@ -118,7 +127,7 @@ class GetJellyseerrDetailsUseCaseTest {
   @Test
   fun `test get remote jellyseerr account details with failure and no local data`() = runTest {
     preferenceStorage = FakePreferenceStorage(
-      jellyseerrAddress = "http://localhost:8096",
+      jellyseerrAddress = "http://localhost:5055",
       jellyseerrAccount = "jellyseerrAccount",
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
@@ -135,7 +144,9 @@ class GetJellyseerrDetailsUseCaseTest {
     )
 
     useCase.invoke(true).test {
-      assertThat(awaitItem().getOrNull()).isNull()
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
+      )
       assertThat(awaitItem().getOrNull()).isNull()
       awaitComplete()
     }

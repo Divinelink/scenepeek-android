@@ -1,6 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -9,6 +9,7 @@ import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlin.math.log
 
 class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettingsUiState>() {
 
@@ -18,7 +19,11 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
 
   private lateinit var viewModel: JellyseerrSettingsViewModel
 
+  private val accountDetailsChannel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+
   override fun buildViewModel() = apply {
+    getJellyseerrDetailsUseCase.mockSuccess(accountDetailsChannel)
+
     viewModel = JellyseerrSettingsViewModel(
       logoutJellyseerrUseCase = logoutJellyseerrUseCase.mock,
       getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
@@ -26,22 +31,23 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     )
   }
 
-  fun mockLoginJellyseerrResponse(response: Result<JellyseerrAccountDetails>) = apply {
+  fun mockLoginJellyseerrResponse(response: Result<Unit>) = apply {
     loginJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 
-  fun mockLogoutJellyseerrResponse(response: Result<String>) = apply {
+  fun mockLogoutJellyseerrResponse(response: Result<Unit>) = apply {
     logoutJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 
-  fun mockJellyseerrAccountDetailsResponse(response: Result<JellyseerrAccountDetails?>) = apply {
-    getJellyseerrDetailsUseCase.mockSuccess(response)
+  fun verifyLogoutInteraction() = apply {
+    logoutJellyseerrUseCase.verifyLogoutInteraction()
   }
 
-  fun mockJellyseerrAccountDetailsResponse(response: Channel<Result<JellyseerrAccountDetails?>>) =
-    apply {
-      getJellyseerrDetailsUseCase.mockSuccess(response)
-    }
+  suspend fun mockJellyseerrAccountDetailsResponse(
+    response: Result<JellyseerrAccountDetailsResult>,
+  ) = apply {
+    accountDetailsChannel.send(response)
+  }
 
   fun onUserAddressChange(address: String) = apply {
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnAddressChange(address))
@@ -59,13 +65,16 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnSelectLoginMethod(method))
   }
 
-  fun onLoginJellyseerr() = apply {
+  suspend fun onLoginJellyseerr(result: Result<JellyseerrAccountDetailsResult>) = apply {
+    accountDetailsChannel.send(result)
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLoginClick)
   }
 
-  fun onLogoutJellyseerr() = apply {
-    viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)
-  }
+  suspend fun onLogoutJellyseerr(accountDetailsResult: Result<JellyseerrAccountDetailsResult>) =
+    apply {
+      accountDetailsChannel.send(accountDetailsResult)
+      viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)
+    }
 
   fun onDismissSnackbar() = apply {
     viewModel.dismissSnackbar()

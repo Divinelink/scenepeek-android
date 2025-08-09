@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.onCompletion
 
-open class LogoutJellyseerrUseCase(
+class LogoutJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val sessionStorage: SessionStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Unit, String>(dispatcher.io) {
+) : FlowUseCase<Unit, Unit>(dispatcher.default) {
 
-  override fun execute(parameters: Unit): Flow<Result<String>> = flow {
+  override fun execute(parameters: Unit): Flow<Result<Unit>> = flow {
     val address = sessionStorage.storage.jellyseerrAddress.first()
     if (address == null) {
       emit(Result.failure(Exception("No address found.")))
@@ -34,7 +34,7 @@ open class LogoutJellyseerrUseCase(
         }
         .last()
         .fold(
-          onSuccess = { Result.success(address) },
+          onSuccess = { Result.success(Unit) },
           onFailure = { Result.failure(it) },
         ),
     )

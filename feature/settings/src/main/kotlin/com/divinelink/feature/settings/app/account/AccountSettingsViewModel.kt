@@ -44,7 +44,7 @@ class AccountSettingsViewModel(
         result
           .onSuccess { jellyseerrDetails ->
             _viewState.update {
-              it.copy(jellyseerrAccountDetails = jellyseerrDetails)
+              it.copy(jellyseerrAccountDetails = jellyseerrDetails.accountDetails)
             }
           }
           .onFailure {

@@ -69,7 +69,7 @@ class LoginJellyseerrUseCaseTest {
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
-      assertThat(it.getOrNull()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
+      assertThat(it.getOrNull()).isEqualTo(Unit)
       assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("jellyfinUsername")
       assertThat(preferenceStorage.jellyseerrAddress.first()).isEqualTo("http://localhost:8096")
       assertThat(
@@ -110,7 +110,7 @@ class LoginJellyseerrUseCaseTest {
       ),
     ).collect {
       assertThat(it.isSuccess).isTrue()
-      assertThat(it.getOrNull()).isEqualTo(JellyseerrAccountDetailsFactory.jellyseerr())
+      assertThat(it.getOrNull()).isEqualTo(Unit)
       assertThat(preferenceStorage.jellyseerrAccount.first()).isEqualTo("jellyseerrUsername")
       assertThat(preferenceStorage.jellyseerrAddress.first()).isEqualTo("http://localhost:8096")
       assertThat(

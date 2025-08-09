@@ -13,7 +13,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -22,6 +24,7 @@ import com.divinelink.core.testing.usecase.FakeLoginJellyseerrUseCase
 import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -33,8 +36,12 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   private lateinit var loginJellyseerrUseCase: FakeLoginJellyseerrUseCase
   private lateinit var getJellyseerrDetailsUseCase: FakeGetJellyseerrDetailsUseCase
 
-  private val loggedInJellyseerr = Result.success(JellyseerrAccountDetailsFactory.jellyseerr())
-  private val loggedInJellyfin = Result.success(JellyseerrAccountDetailsFactory.jellyfin())
+  private val loggedInJellyseerr = Result.success(
+    JellyseerrAccountDetailsResultFactory.jellyseerr(),
+  )
+  private val loggedInJellyfin = Result.success(
+    JellyseerrAccountDetailsResultFactory.jellyfin(),
+  )
 
   @Before
   fun setUp() {
@@ -60,7 +67,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
     assertThat(viewModel.uiState.value.jellyseerrState).isEqualTo(
       JellyseerrState.LoggedIn(
-        accountDetails = loggedInJellyseerr.data,
+        accountDetails = loggedInJellyseerr.data.accountDetails!!,
+        address = loggedInJellyseerr.data.address,
         isLoading = false,
       ),
     )
@@ -68,7 +76,14 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test jellyseerr state is initial when user is not logged in`() = runTest {
-    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
+    getJellyseerrDetailsUseCase.mockSuccess(
+      Result.success(
+        JellyseerrAccountDetailsResult(
+          address = "",
+          accountDetails = null,
+        ),
+      ),
+    )
     val viewModel = setupViewModel()
 
     setVisibilityScopeContent {
@@ -87,8 +102,9 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test login with jellyfin account`() = runTest {
-    loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyfin))
-    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
+    val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+    loginJellyseerrUseCase.mockSuccess(flowOf(Result.success(Unit)))
+    getJellyseerrDetailsUseCase.mockSuccess(channel)
 
     val viewModel = setupViewModel()
 
@@ -102,6 +118,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
+
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
@@ -132,7 +150,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
         .performClick()
-        .performTextInput(loggedInJellyfin.getOrNull()?.displayName!!)
+        .performTextInput(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!)
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
         .performClick()
@@ -140,7 +158,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD,
-      ).assert(hasText(loggedInJellyfin.getOrNull()?.displayName!!))
+      ).assert(hasText(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!))
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
@@ -152,6 +170,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
         hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
       )
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
+
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.jellyfin()))
 
       // Success login
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
@@ -166,8 +186,9 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test login with jellyseerr account`() = runTest {
-    loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyseerr))
-    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
+    val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+    loginJellyseerrUseCase.mockSuccess(flowOf(Result.success(Unit)))
+    getJellyseerrDetailsUseCase.mockSuccess(channel)
 
     val viewModel = setupViewModel()
 
@@ -181,6 +202,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
+
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
@@ -211,7 +234,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
         .performClick()
-        .performTextInput(loggedInJellyfin.getOrNull()?.displayName!!)
+        .performTextInput(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!)
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
         .performClick()
@@ -219,7 +242,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD,
-      ).assert(hasText(loggedInJellyfin.getOrNull()?.displayName!!))
+      ).assert(hasText(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!))
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
@@ -231,6 +254,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
         hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
       )
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
+
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()))
 
       // Success login
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
@@ -245,8 +270,9 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test login with emby account`() = runTest {
-    loginJellyseerrUseCase.mockSuccess(flowOf(loggedInJellyseerr))
-    getJellyseerrDetailsUseCase.mockSuccess(Result.success(null))
+    val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+    loginJellyseerrUseCase.mockSuccess(flowOf(Result.success(Unit)))
+    getJellyseerrDetailsUseCase.mockSuccess(channel)
 
     val viewModel = setupViewModel()
 
@@ -260,6 +286,8 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
+
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
 
       waitUntil {
@@ -290,7 +318,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
         .performClick()
-        .performTextInput(loggedInJellyfin.getOrNull()?.displayName!!)
+        .performTextInput(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!)
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
         .performClick()
@@ -298,7 +326,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD,
-      ).assert(hasText(loggedInJellyfin.getOrNull()?.displayName!!))
+      ).assert(hasText(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!))
 
       onNodeWithTag(
         TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
@@ -309,14 +337,17 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
         hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
       )
+
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
+
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.jellyfin()))
 
       // Success login
       onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
 
       onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
 
-      val loggedInUsername = JellyseerrAccountDetailsFactory.jellyseerr().displayName
+      val loggedInUsername = JellyseerrAccountDetailsFactory.jellyfin().displayName
       onNodeWithText(loggedInUsername).assertIsDisplayed()
       onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON).assertIsDisplayed()
     }
@@ -324,8 +355,9 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test logout jellyseerr account when user is logged in`() = runTest {
-    getJellyseerrDetailsUseCase.mockSuccess(loggedInJellyseerr)
-    logoutJellyseerrUseCase.mockSuccess(flowOf(Result.success("http://localhost:8080")))
+    val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+    logoutJellyseerrUseCase.mockSuccess(flowOf(Result.success(Unit)))
+    getJellyseerrDetailsUseCase.mockSuccess(channel)
 
     val viewModel = setupViewModel()
 
@@ -339,17 +371,18 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      runOnUiThread {
-        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
-        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()))
+      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsNotDisplayed()
 
-        onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON)
-          .assertIsDisplayed()
-          .performClick()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGOUT_BUTTON)
+        .assertIsDisplayed()
+        .performClick()
 
-        onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
-        onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsNotDisplayed()
-      }
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.LOGGED_IN_CONTENT).assertIsNotDisplayed()
     }
   }
 
