@@ -10,40 +10,53 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+data class JellyseerrAccountDetailsResult(
+  val address: String,
+  val accountDetails: JellyseerrAccountDetails?,
+)
+
 class GetJellyseerrAccountDetailsUseCase(
   private val storage: PreferenceStorage,
   private val repository: JellyseerrRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Boolean, JellyseerrAccountDetails?>(dispatcher.default) {
+) : FlowUseCase<Boolean, JellyseerrAccountDetailsResult>(dispatcher.default) {
 
   /**
    * @param parameters: If true, fetch from remote
    */
-  override fun execute(parameters: Boolean): Flow<Result<JellyseerrAccountDetails?>> = channelFlow {
-    val address = storage.jellyseerrAddress.first()
+  override fun execute(parameters: Boolean): Flow<Result<JellyseerrAccountDetailsResult>> =
+    channelFlow {
+      val address = storage.jellyseerrAddress.first()
 
-    launch {
-      repository.getLocalJellyseerrAccountDetails().collect { localDetails ->
-        if (storage.jellyseerrAddress.first() == null) {
-          send(Result.success(null))
-        } else {
-          send(Result.success(localDetails))
+      launch {
+        repository.getLocalJellyseerrAccountDetails().collect { localDetails ->
+          if (address == null) {
+            send(Result.success(JellyseerrAccountDetailsResult(address = "", null)))
+          } else {
+            send(Result.success(JellyseerrAccountDetailsResult(address, localDetails)))
+          }
+        }
+      }
+
+      launch {
+        if (parameters && address != null) {
+          repository.getRemoteAccountDetails(address).first().fold(
+            onSuccess = {
+              repository.insertJellyseerrAccountDetails(it)
+              send(
+                Result.success(
+                  JellyseerrAccountDetailsResult(
+                    address = address,
+                    accountDetails = it,
+                  ),
+                ),
+              )
+            },
+            onFailure = {
+              send(Result.failure(it))
+            },
+          )
         }
       }
     }
-
-    launch {
-      if (parameters && address != null) {
-        repository.getRemoteAccountDetails(address).first().fold(
-          onSuccess = {
-            repository.insertJellyseerrAccountDetails(it)
-            send(Result.success(it))
-          },
-          onFailure = {
-            send(Result.failure(it))
-          },
-        )
-      }
-    }
-  }
 }

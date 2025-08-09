@@ -25,14 +25,14 @@
   <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
   <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
 
-  <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr features.\nMake sure to include the full URL with https:// or http:// and port number if needed.</string>
+  <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr.\nMake sure to include the full URL with https:// or http:// and port number if needed.</string>
   <string name="feature_settings_jellyseerr_address">http(s)://your-jellyseerr-server.com</string>
 
-  <string name="feature_settings_login_using_jellyfin">Use your Jellyfin account</string>
-  <string name="feature_settings_login_using_jellyseerr">Use your Jellyseerr account</string>
+  <string name="feature_settings_sign_in_with">Sign in with %s</string>
+  <string name="feature_settings_signing_in">Signing in…</string>
 
   <string name="feature_settings_username">Username</string>
-  <string name="feature_settings_username_or_email">Email address</string>
+  <string name="feature_settings_email">Email address</string>
   <string name="feature_settings_password">Password</string>
 
   <string name="feature_settings_additional_features">Additional features</string>
@@ -94,4 +94,8 @@
   <string name="preferences__light_theme">Light</string>
   <string name="preferences__dark_theme">Dark</string>
   <string name="preferences__system_default">System default</string>
+
+  <!-- Accessibility -->
+  <string name="feature_settings_show_password">Show password</string>
+  <string name="feature_settings_hide_password">Show password</string>
 </resources>

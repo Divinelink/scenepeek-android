@@ -1,41 +1,24 @@
 package com.divinelink.core.model.jellyseerr
 
 sealed class JellyseerrState(
-  open var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
-  open var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
+  open var loginData: JellyseerrLoginData = JellyseerrLoginData.empty(),
 ) {
-  data class Initial(
-    val address: String,
+  data class Login(
     val isLoading: Boolean,
-    val preferredOption: JellyseerrAuthMethod? = null,
-    override var jellyfinLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
-    override var jellyseerrLogin: JellyseerrLoginData = JellyseerrLoginData.empty(),
+    override var loginData: JellyseerrLoginData = JellyseerrLoginData.empty(),
   ) : JellyseerrState(
-    jellyfinLogin = jellyfinLogin,
-    jellyseerrLogin = jellyseerrLogin,
+    loginData = loginData,
   ) {
-    val isLoginEnabled = preferredOption != null
+    val isLoginEnabled = loginData.address.isNotEmpty() &&
+      loginData.username.value.isNotEmpty() &&
+      loginData.password.value.isNotEmpty()
   }
 
   data class LoggedIn(
     val isLoading: Boolean,
     val accountDetails: JellyseerrAccountDetails,
-  ) : JellyseerrState()
+    val address: String,
+  ) : JellyseerrState(
+    loginData = JellyseerrLoginData.prefilled(address),
+  )
 }
-
-val JellyseerrState.loginParams: JellyseerrLoginParams?
-  get() = when (this) {
-    is JellyseerrState.Initial -> JellyseerrLoginParams(
-      address = address,
-      authMethod = preferredOption!!,
-      username = when (preferredOption) {
-        JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.username
-        JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.username
-      },
-      password = when (preferredOption) {
-        JellyseerrAuthMethod.JELLYFIN -> jellyfinLogin.password
-        JellyseerrAuthMethod.JELLYSEERR -> jellyseerrLogin.password
-      },
-    )
-    else -> null
-  }

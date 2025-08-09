@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequ
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
+import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
@@ -66,6 +67,7 @@ class ProdJellyseerrRepositoryTest {
         username = Username("jellyfinUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
+        authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
     )
 
@@ -81,6 +83,7 @@ class ProdJellyseerrRepositoryTest {
         username = Username("jellyseerrUsername"),
         password = Password("password"),
         address = "http://localhost:8096",
+        authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     )
 

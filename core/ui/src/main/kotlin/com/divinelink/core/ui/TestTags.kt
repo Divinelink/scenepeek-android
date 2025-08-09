@@ -182,13 +182,8 @@ object TestTags {
 
       const val LOGGED_IN_AVATAR = "Jellyseerr Logged In Avatar"
 
-      const val JELLYFIN_EXPANDABLE_CARD_BUTTON = "Jellyfin Expandable Card"
-      const val JELLYFIN_USERNAME_TEXT_FIELD = "Jellyfin Username"
-      const val JELLYFIN_PASSWORD_TEXT_FIELD = "Jellyfin Password"
-
-      const val JELLYSEERR_EXPANDABLE_CARD_BUTTON = "Jellyseerr Expandable Card"
-      const val JELLYSEERR_USERNAME_TEXT_FIELD = "Jellyseerr Username"
-      const val JELLYSEERR_PASSWORD_TEXT_FIELD = "Jellyseerr Password"
+      const val USERNAME_TEXT_FIELD = "Username input"
+      const val PASSWORD_TEXT_FIELD = "Password input"
 
       const val JELLYSEERR_LOGIN_BUTTON = "Jellyseerr Login Button"
       const val JELLYSEERR_LOGOUT_BUTTON = "Jellyseerr Logout Button"

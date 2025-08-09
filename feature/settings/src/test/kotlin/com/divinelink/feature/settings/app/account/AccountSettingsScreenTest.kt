@@ -4,10 +4,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.account.TMDBAccount
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
@@ -203,7 +203,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test observe jellyseerr account`() = runTest {
-    val jellyseerrChannel = Channel<Result<JellyseerrAccountDetails?>>()
+    val jellyseerrChannel = Channel<Result<JellyseerrAccountDetailsResult>>()
     getJellyseerrDetailsUseCase.mockSuccess(jellyseerrChannel)
     val viewModel = setupViewModel()
 
@@ -223,12 +223,23 @@ class AccountSettingsScreenTest : ComposeTest() {
       onNodeWithText(jellyseerrButton).assertIsDisplayed()
       onNodeWithText(getString(R.string.feature_settings_logged_in)).assertDoesNotExist()
 
-      jellyseerrChannel.send(Result.success(account))
+      jellyseerrChannel.send(
+        Result.success(
+          JellyseerrAccountDetailsResult(
+            address = "",
+            accountDetails = account,
+          ),
+        ),
+      )
 
       onNodeWithText(getString(R.string.feature_settings_logged_in)).assertIsDisplayed()
       onNodeWithText(account.displayName).assertIsDisplayed()
 
-      jellyseerrChannel.send(Result.success(null))
+      jellyseerrChannel.send(
+        Result.success(
+          JellyseerrAccountDetailsResult(address = "", accountDetails = null),
+        ),
+      )
 
       onNodeWithText(jellyseerrButton).assertIsDisplayed()
       onNodeWithText(getString(R.string.feature_settings_logged_in)).assertDoesNotExist()

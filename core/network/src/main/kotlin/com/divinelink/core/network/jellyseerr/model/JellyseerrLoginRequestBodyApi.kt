@@ -8,6 +8,7 @@ sealed interface JellyseerrLoginRequestBodyApi {
   data class Jellyfin(
     val username: String,
     val password: String,
+    val serverType: Int,
   ) : JellyseerrLoginRequestBodyApi
 
   @Serializable
@@ -21,9 +22,12 @@ fun JellyseerrAuthMethod.toRequestBodyApi(
   username: String,
   password: String,
 ): JellyseerrLoginRequestBodyApi = when (this) {
-  JellyseerrAuthMethod.JELLYFIN -> JellyseerrLoginRequestBodyApi.Jellyfin(
+  JellyseerrAuthMethod.JELLYFIN,
+  JellyseerrAuthMethod.EMBY,
+  -> JellyseerrLoginRequestBodyApi.Jellyfin(
     username = username,
     password = password,
+    serverType = serverType,
   )
   JellyseerrAuthMethod.JELLYSEERR -> JellyseerrLoginRequestBodyApi.Jellyseerr(
     email = username,

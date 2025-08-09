@@ -1,7 +1,7 @@
 package com.divinelink.feature.onboarding
 
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.onboarding.IntroSection
 import com.divinelink.core.model.onboarding.OnboardingAction
@@ -67,7 +67,9 @@ class IntroViewModelTest {
     robot
       .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(true)
-      .mockGetJellyseerrAccountDetails(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
       .buildViewModel()
       .assertUiState(
         OnboardingUiState.initial().copy(
@@ -107,7 +109,9 @@ class IntroViewModelTest {
     robot
       .mockOnboardingPages(IntroSections.onboardingSections)
       .mockIsInitialOnboarding(false)
-      .mockGetJellyseerrAccountDetails(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
       .buildViewModel()
       .assertUiState(
         OnboardingUiState.initial().copy(

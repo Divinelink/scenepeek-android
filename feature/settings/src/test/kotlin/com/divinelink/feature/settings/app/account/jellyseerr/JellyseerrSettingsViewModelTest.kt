@@ -2,12 +2,13 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import com.divinelink.core.commons.exception.ApiClientException
 import com.divinelink.core.commons.exception.InvalidStatusException
+import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
@@ -16,7 +17,6 @@ import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -38,22 +38,20 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr()
+      .onLoginJellyseerr(Result.failure(AppException.Unauthorized("401")))
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_invalid_credentials),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -68,22 +66,20 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr()
+      .onLoginJellyseerr(Result.failure(AppException.Offline()))
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_could_not_connect),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -98,22 +94,20 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr()
+      .onLoginJellyseerr(Result.failure(AppException.SocketTimeout()))
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
             UIText.ResourceText(R.string.feature_settings_could_not_connect),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -128,86 +122,74 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr()
+      .onLoginJellyseerr(Result.failure(InvalidStatusException(500)))
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
             UIText.StringText(InvalidStatusException(500).message!!),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
   }
 
   @Test
-  fun `test get jellyseerr details with unauthorised returns initial state`() = runTest {
-    val channel: Channel<Result<JellyseerrAccountDetails?>> = Channel()
-
+  fun `test get jellyseerr details with unauthorised logs out user`() = runTest {
     testRobot
-      .mockJellyseerrAccountDetailsResponse(channel)
       .buildViewModel()
-      .expectUiStates(
-        action = {
-          launch {
-            channel.send(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
-            channel.send(Result.failure(AppException.Unauthorized("Unauthorized")))
-          }
-        },
-        uiStates = listOf(
-          createUiState(
-            jellyseerrState = JellyseerrState.Initial(
-              isLoading = false,
-              address = "",
-            ),
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(
+          JellyseerrAccountDetailsResult(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            address = "http://localhost:5055",
           ),
-          createUiState(
-            jellyseerrState = JellyseerrState.LoggedIn(
-              accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
-              isLoading = false,
-            ),
-          ),
-          createUiState(
-            jellyseerrState = JellyseerrState.Initial(
-              isLoading = false,
-              address = "",
-            ),
+        ),
+      ).assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.LoggedIn(
+            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            isLoading = false,
+            address = "http://localhost:5055",
           ),
         ),
       )
+      .mockJellyseerrAccountDetailsResponse(
+        Result.failure(AppException.Unauthorized("Unauthorized")),
+      )
+      .verifyLogoutInteraction()
   }
 
   @Test
   fun `test logout with UnauthorizedException returns initial state`() = runTest {
     testRobot
-      .mockJellyseerrAccountDetailsResponse(
-        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
-      )
       .mockLogoutJellyseerrResponse(Result.failure(AppException.Unauthorized("401")))
       .buildViewModel()
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
+      )
       .assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.LoggedIn(
             accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
             isLoading = false,
+            address = "http://localhost:5055",
           ),
         ),
       )
-      .onLogoutJellyseerr()
+      .onLogoutJellyseerr(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
+            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
           ),
         ),
       )
@@ -216,32 +198,30 @@ class JellyseerrSettingsViewModelTest {
   @Test
   fun `test logout sets to initial state on any error`() = runTest {
     testRobot
+      .buildViewModel()
       .mockJellyseerrAccountDetailsResponse(
-        Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+        Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
       )
       .mockLogoutJellyseerrResponse(
-        Result.failure(
-          ApiClientException(
-            message = null,
-            cause = null,
-          ),
-        ),
+        Result.failure(ApiClientException(message = null, cause = null)),
       )
-      .buildViewModel()
       .assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.LoggedIn(
             accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
             isLoading = false,
+            address = "http://localhost:5055",
           ),
         ),
       )
-      .onLogoutJellyseerr()
+      .onLogoutJellyseerr(
+        accountDetailsResult = Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
+      )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
+            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
           ),
         ),
       )
@@ -250,28 +230,26 @@ class JellyseerrSettingsViewModelTest {
   @Test
   fun `test dismissSnackbar removes snackbar`() = runTest {
     testRobot
-      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(500)))
       .buildViewModel()
+      .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(500)))
       .onUserAddressChange("http://localhost:8096")
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr()
+      .onLoginJellyseerr(Result.failure(InvalidStatusException(500)))
       .assertUiState(
         createUiState(
           snackbarMessage = SnackbarMessage.from(
             UIText.StringText(InvalidStatusException(500).message!!),
           ),
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -279,16 +257,14 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           snackbarMessage = null,
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = JellyseerrAuthMethod.JELLYSEERR,
-            address = "http://localhost:8096",
-            jellyseerrLogin = JellyseerrLoginData(
-              address = "",
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
               username = Username("username"),
               password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
-            jellyfinLogin = JellyseerrLoginData.empty(),
           ),
         ),
       )
@@ -297,13 +273,14 @@ class JellyseerrSettingsViewModelTest {
   @Test
   fun `test getJellyseerrAccount with null sets logged in data`() = runTest {
     testRobot
-      .mockJellyseerrAccountDetailsResponse(Result.success(null))
       .buildViewModel()
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsResultFactory.initial()),
+      )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
@@ -312,44 +289,50 @@ class JellyseerrSettingsViewModelTest {
   @Test
   fun `test login and then logout`() = runTest {
     testRobot
-      .mockJellyseerrAccountDetailsResponse(Result.success(null))
       .buildViewModel()
+      .mockJellyseerrAccountDetailsResponse(
+        Result.success(JellyseerrAccountDetailsResultFactory.initial()),
+      )
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            address = "",
           ),
         ),
       )
-      .mockLoginJellyseerrResponse(Result.success(JellyseerrAccountDetailsFactory.jellyseerr()))
+      .mockLoginJellyseerrResponse(Result.success(Unit))
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
       .expectUiStates(
-        action = { onLoginJellyseerr() },
+        action = {
+          launch {
+            onLoginJellyseerr(Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()))
+          }
+        },
         uiStates = listOf(
           createUiState(
-            jellyseerrState = JellyseerrState.Initial(
-              address = "",
+            jellyseerrState = JellyseerrState.Login(
               isLoading = false,
-              preferredOption = JellyseerrAuthMethod.JELLYSEERR,
+              loginData = JellyseerrLoginData.empty().copy(
+                authMethod = JellyseerrAuthMethod.JELLYSEERR,
+              ),
             ),
           ),
           createUiState(
             jellyseerrState = JellyseerrState.LoggedIn(
               isLoading = false,
               accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+              address = "http://localhost:5055",
             ),
           ),
         ),
       )
-      .mockLogoutJellyseerrResponse(Result.success(""))
-      .onLogoutJellyseerr()
+      .mockLogoutJellyseerrResponse(Result.success(Unit))
+      .onLogoutJellyseerr(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
       .assertUiState(
         createUiState(
-          jellyseerrState = JellyseerrState.Initial(
-            address = "",
+          jellyseerrState = JellyseerrState.Login(
             isLoading = false,
-            preferredOption = null,
+            loginData = JellyseerrLoginData.prefilled("http://localhost:5055"),
           ),
         ),
       )
@@ -357,10 +340,8 @@ class JellyseerrSettingsViewModelTest {
 
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
-    jellyseerrState: JellyseerrState = JellyseerrState.Initial(
-      address = "",
+    jellyseerrState: JellyseerrState = JellyseerrState.Login(
       isLoading = false,
-      preferredOption = null,
     ),
   ) = JellyseerrSettingsUiState(
     snackbarMessage = snackbarMessage,

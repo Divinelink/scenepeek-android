@@ -2,7 +2,6 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
-
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -186,6 +185,7 @@ private fun JellyseerrLoggedInContentPreview() {
           email = "jellyseerr@info.com",
           createdAt = "2023-08-19T00:00:00Z",
         ),
+        address = "http://localhost:5055",
       ),
       onLogoutClock = {},
     )
@@ -209,6 +209,7 @@ private fun JellyseerrLoggedInContentLoadingPreview() {
           email = "jellyseerr@info.com",
           createdAt = "2023-08-19T00:00:00Z",
         ),
+        address = "http://localhost:5055",
       ),
       onLogoutClock = {},
     )

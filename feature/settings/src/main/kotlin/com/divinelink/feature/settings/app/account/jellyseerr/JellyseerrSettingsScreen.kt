@@ -42,16 +42,16 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
       label = "Jellyseerr State Animated Content",
       contentKey = { state ->
         when (state) {
-          is JellyseerrState.Initial -> "Initial"
+          is JellyseerrState.Login -> "Login"
           is JellyseerrState.LoggedIn -> "LoggedIn"
         }
       },
     ) { state ->
       when (state) {
-        is JellyseerrState.Initial -> JellyseerrInitialContent(
+        is JellyseerrState.Login -> JellyseerrLoginContent(
           modifier = Modifier
             .testTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT),
-          jellyseerrState = state,
+          state = state,
           interaction = viewModel::onJellyseerrInteraction,
         )
         is JellyseerrState.LoggedIn -> JellyseerrLoggedInContent(

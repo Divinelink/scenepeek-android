@@ -51,6 +51,7 @@ class ProdJellyseerrRepository(
     }
 
   override suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails) {
+    queries.removeAccountDetails()
     queries.insertAccountDetails(accountDetails.mapToEntity())
   }
 
