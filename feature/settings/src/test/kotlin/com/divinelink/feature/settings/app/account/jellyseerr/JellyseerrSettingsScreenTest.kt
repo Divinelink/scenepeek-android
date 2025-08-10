@@ -356,7 +356,7 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
   @Test
   fun `test logout jellyseerr account when user is logged in`() = runTest {
     val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
-    logoutJellyseerrUseCase.mockSuccess(flowOf(Result.success(Unit)))
+    logoutJellyseerrUseCase.mockSuccess(Result.success(Unit))
     getJellyseerrDetailsUseCase.mockSuccess(channel)
 
     val viewModel = setupViewModel()

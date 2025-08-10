@@ -9,7 +9,6 @@ import com.divinelink.core.testing.usecase.FakeLogoutJellyseerrUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlin.math.log
 
 class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettingsUiState>() {
 
@@ -35,11 +34,11 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     loginJellyseerrUseCase.mockSuccess(flowOf(response))
   }
 
-  fun mockLogoutJellyseerrResponse(response: Result<Unit>) = apply {
-    logoutJellyseerrUseCase.mockSuccess(flowOf(response))
+  suspend fun mockLogoutJellyseerrResponse(response: Result<Unit>) = apply {
+    logoutJellyseerrUseCase.mockSuccess(response)
   }
 
-  fun verifyLogoutInteraction() = apply {
+  suspend fun verifyLogoutInteraction() = apply {
     logoutJellyseerrUseCase.verifyLogoutInteraction()
   }
 

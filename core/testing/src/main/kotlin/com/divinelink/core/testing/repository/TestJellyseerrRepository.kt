@@ -5,6 +5,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
+import com.divinelink.core.network.Resource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -22,12 +24,12 @@ class TestJellyseerrRepository {
     whenever(mock.signInWithJellyseerr(any())).thenReturn(flowOf(response))
   }
 
-  fun mockGetLocalJellyseerrAccountDetails(response: JellyseerrAccountDetails?) {
-    whenever(mock.getLocalJellyseerrAccountDetails()).thenReturn(flowOf(response))
-  }
-
   suspend fun mockGetRemoteAccountDetails(response: Result<JellyseerrAccountDetails>) {
     whenever(mock.getRemoteAccountDetails(any())).thenReturn(flowOf(response))
+  }
+
+  suspend fun mockGetAccountDetails(response: Flow<Resource<JellyseerrAccountDetails?>>) {
+    whenever(mock.getJellyseerrAccountDetails(any(), any())).thenReturn(response)
   }
 
   suspend fun verifyClearJellyseerrAccountDetails() {
@@ -35,7 +37,7 @@ class TestJellyseerrRepository {
   }
 
   suspend fun mockLogout(response: Result<Unit>) {
-    whenever(mock.logout(any())).thenReturn(flowOf(response))
+    whenever(mock.logout(any())).thenReturn(response)
   }
 
   suspend fun mockRequestMedia(response: Result<MediaRequestResult>) {

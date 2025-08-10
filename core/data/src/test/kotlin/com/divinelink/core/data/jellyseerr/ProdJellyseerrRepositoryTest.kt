@@ -19,6 +19,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
@@ -93,14 +94,14 @@ class ProdJellyseerrRepositoryTest {
   @Test
   fun `test logout successfully`() = runTest {
     remote.mockLogout(
-      response = Unit,
+      response = Result.success(Unit),
     )
 
     val result = repository.logout(
       address = "http://localhost:8096",
     )
 
-    assertThat(result.first()).isEqualTo(Result.success(Unit))
+    assertThat(result).isEqualTo(Result.success(Unit))
   }
 
   @Test
@@ -164,37 +165,6 @@ class ProdJellyseerrRepositoryTest {
     val result = repository.getRemoteAccountDetails("http://localhost:5000")
 
     assertThat(result.first()).isEqualTo(Result.success(JellyseerrAccountDetailsFactory.jellyfin()))
-  }
-
-  @Test
-  fun `test getLocalJellyseerrAccountDetails after insertion`() = runTest {
-    val resultNull = repository.getLocalJellyseerrAccountDetails()
-
-    assertThat(resultNull.first()).isNull()
-
-    repository.insertJellyseerrAccountDetails(
-      JellyseerrAccountDetailsFactory.jellyfin(),
-    )
-
-    val result = repository.getLocalJellyseerrAccountDetails()
-
-    assertThat(result.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
-  }
-
-  @Test
-  fun `test clearJellyseerrAccountDetails`() = runTest {
-    repository.insertJellyseerrAccountDetails(
-      JellyseerrAccountDetailsFactory.jellyfin(),
-    )
-
-    val resultNotNull = repository.getLocalJellyseerrAccountDetails()
-    assertThat(resultNotNull.first()).isEqualTo(JellyseerrAccountDetailsFactory.jellyfin())
-
-    repository.clearJellyseerrAccountDetails()
-
-    val result = repository.getLocalJellyseerrAccountDetails()
-
-    assertThat(result.first()).isNull()
   }
 
   @Test
@@ -397,5 +367,59 @@ class ProdJellyseerrRepositoryTest {
     assertThat(result.first()).isInstanceOf(
       Result.failure<Exception>(Exception("Request details not found"))::class.java,
     )
+  }
+
+  @Test
+  fun `test getJellyseerrAccountDetails always fetches from local data`() = runTest {
+    val domain = JellyseerrAccountDetailsFactory.jellyfin()
+
+    remote.mockFetchAccountDetails(
+      JellyseerrAccountDetailsResponseApi(
+        id = domain.id,
+        email = domain.email!!,
+        displayName = domain.displayName,
+        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
+        requestCount = domain.requestCount,
+        createdAt = domain.createdAt,
+      ),
+    )
+
+    repository.getJellyseerrAccountDetails(
+      refresh = true,
+      address = "http://192.168.1.50:5055",
+    ).test {
+      assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
+      assertThat(awaitItem()).isEqualTo(
+        Resource.Success(
+          JellyseerrAccountDetailsFactory.jellyfin().copy(
+            avatar = "http://192.168.1.50:5055/avatarproxy/1dde62cf4a2c436d95e17b9",
+          ),
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test getJellyseerrAccountDetails with refresh false does not fetch from remote`() = runTest {
+    val domain = JellyseerrAccountDetailsFactory.jellyfin()
+
+    remote.mockFetchAccountDetails(
+      JellyseerrAccountDetailsResponseApi(
+        id = domain.id,
+        email = domain.email!!,
+        displayName = domain.displayName,
+        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
+        requestCount = domain.requestCount,
+        createdAt = domain.createdAt,
+      ),
+    )
+
+    repository.getJellyseerrAccountDetails(
+      refresh = false,
+      address = "http://192.168.1.50:5055",
+    ).test {
+      assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
+      assertThat(awaitItem()).isEqualTo(Resource.Success(null))
+    }
   }
 }

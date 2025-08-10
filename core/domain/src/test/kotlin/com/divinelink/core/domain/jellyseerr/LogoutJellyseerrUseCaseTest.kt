@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.jellyseerr
 
-import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.MainDispatcherRule
@@ -25,7 +24,10 @@ class LogoutJellyseerrUseCaseTest {
 
   @Test
   fun `test logout jellyseerr with null address`() = runTest {
-    sessionStorage = SessionStorageFactory.empty()
+    sessionStorage = SessionStorageFactory.empty().toWzd {
+      withJellyseerrAccount("jelly_admin")
+      withJellyseerrSignInMethod(JellyseerrAuthMethod.JELLYSEERR.name)
+    }
 
     val useCase = LogoutJellyseerrUseCase(
       repository = repository.mock,
@@ -33,11 +35,15 @@ class LogoutJellyseerrUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(Unit).first()
+    assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNotNull()
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNotNull()
 
-    assertThat(result.isFailure).isTrue()
-    assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
-    assertThat(result.exceptionOrNull()?.message).isEqualTo("No address found.")
+    val result = useCase.invoke(Unit)
+
+    assertThat(result).isEqualTo(Result.success(Unit))
+    assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
   }
 
   @Test
@@ -54,7 +60,7 @@ class LogoutJellyseerrUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(Unit).first()
+    val result = useCase.invoke(Unit)
 
     assertThat(result.isSuccess).isTrue()
     assertThat(result).isEqualTo(Result.success(Unit))
@@ -86,7 +92,7 @@ class LogoutJellyseerrUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(Unit).first()
+    val result = useCase.invoke(Unit)
 
     assertThat(result.isSuccess).isTrue()
 
@@ -112,7 +118,7 @@ class LogoutJellyseerrUseCaseTest {
       dispatcher = testDispatcher,
     )
 
-    val result = useCase.invoke(Unit).first()
+    val result = useCase.invoke(Unit)
 
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
@@ -149,19 +155,18 @@ class LogoutJellyseerrUseCaseTest {
       assertThat(it).isEqualTo("jellyseerrAuthCookie")
     }
 
-    useCase.invoke(Unit).test {
-      repository.verifyClearJellyseerrAccountDetails()
+    val response = useCase.invoke(Unit)
 
-      assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
-      assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
-      assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
-      assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isNull()
+    repository.verifyClearJellyseerrAccountDetails()
 
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(Exception("Logout failed.")).toString(),
-      )
-      awaitComplete()
-    }
+    assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
+    assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isNull()
+
+    assertThat(response.toString()).isEqualTo(
+      Result.failure<Exception>(Exception("Logout failed.")).toString(),
+    )
   }
 
   @Test
@@ -191,18 +196,14 @@ class LogoutJellyseerrUseCaseTest {
       assertThat(it).isEqualTo("jellyseerrAuthCookie")
     }
 
-    useCase.invoke(Unit).test {
-      repository.verifyClearJellyseerrAccountDetails()
+    val response = useCase.invoke(Unit)
+    repository.verifyClearJellyseerrAccountDetails()
 
-      assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
-      assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
-      assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
-      assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAddress.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAccount.first()).isNull()
+    assertThat(sessionStorage.storage.jellyseerrAuthMethod.first()).isNull()
+    assertThat(sessionStorage.encryptedStorage.jellyseerrAuthCookie).isNull()
 
-      assertThat(awaitItem().toString()).isEqualTo(
-        Result.failure<Exception>(Exception("No address found.")).toString(),
-      )
-      awaitComplete()
-    }
+    assertThat(response).isEqualTo(Result.success(Unit))
   }
 }
