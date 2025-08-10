@@ -56,12 +56,10 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     emit(response)
   }
 
-  override suspend fun logout(address: String): Flow<Unit> = flow {
+  override suspend fun logout(address: String): Result<Unit> = runCatching {
     val url = "$address$AUTH_ENDPOINT/logout"
 
     restClient.post<Unit, Unit>(url = url, body = Unit)
-
-    emit(Unit)
   }
 
   override suspend fun requestMedia(

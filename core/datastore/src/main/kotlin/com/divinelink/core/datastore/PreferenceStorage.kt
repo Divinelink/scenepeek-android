@@ -141,9 +141,9 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     }
   }
 
-  override val jellyseerrAddress: Flow<String?> = dataStore.data.map {
+  override val jellyseerrAddress: Flow<String?> = dataStore.data.mapLatest {
     it[PREF_JELLYSEERR_ADDRESS]
-  }
+  }.distinctUntilChanged()
 
   override suspend fun clearJellyseerrAccount() {
     dataStore.edit {

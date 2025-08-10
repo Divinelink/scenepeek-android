@@ -12,12 +12,15 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
+import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class ProdJellyseerrRepository(
@@ -42,13 +45,28 @@ class ProdJellyseerrRepository(
     .fetchAccountDetails(address)
     .map { Result.success(it.map(address)) }
 
-  override fun getLocalJellyseerrAccountDetails(): Flow<JellyseerrAccountDetails?> = queries
-    .selectAll()
-    .asFlow()
-    .mapToOneOrNull(context = dispatcher.io)
-    .map { entity ->
-      entity?.map()
-    }
+  override suspend fun getJellyseerrAccountDetails(
+    refresh: Boolean,
+    address: String,
+  ): Flow<Resource<JellyseerrAccountDetails?>> = networkBoundResource(
+    query = {
+      queries
+        .selectAll()
+        .asFlow()
+        .mapToOneOrNull(context = dispatcher.io)
+        .map { entity ->
+          entity?.map()
+        }
+    },
+    fetch = {
+      service.fetchAccountDetails(address).first().map(address)
+    },
+    saveFetchResult = { remoteData ->
+      queries.removeAccountDetails()
+      queries.insertAccountDetails(remoteData.mapToEntity())
+    },
+    shouldFetch = { refresh },
+  )
 
   override suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails) {
     queries.removeAccountDetails()
@@ -59,7 +77,7 @@ class ProdJellyseerrRepository(
     queries.removeAccountDetails()
   }
 
-  override suspend fun logout(address: String): Flow<Result<Unit>> = service.logout(address)
+  override suspend fun logout(address: String): Result<Unit> = service.logout(address)
     .map { Result.success(Unit) }
 
   override suspend fun requestMedia(

@@ -9,6 +9,7 @@ import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -42,6 +43,8 @@ val localJson = Json {
   ignoreUnknownKeys = true
 }
 
+private val timeoutMillis = 30_000L
+
 fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
   install(Logging) {
     logger = HttpLogger()
@@ -56,21 +59,26 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
     contentType(ContentType.Application.Json)
   }
 
+  install(HttpTimeout) {
+    requestTimeoutMillis = timeoutMillis
+    connectTimeoutMillis = timeoutMillis
+    socketTimeoutMillis = timeoutMillis
+  }
+
   HttpResponseValidator {
     validateResponse { response ->
       if (!response.status.isSuccess()) {
         val statusCode = response.status.value
+        val status = response.status.toString()
         val error = when (statusCode) {
-          HttpStatusCode.Unauthorized.value -> AppException.Unauthorized(
-            response.status.description,
-          )
-          HttpStatusCode.Forbidden.value -> AppException.Forbidden()
-          HttpStatusCode.NotFound.value -> AppException.NotFound()
-          HttpStatusCode.Conflict.value -> AppException.Conflict()
-          HttpStatusCode.TooManyRequests.value -> AppException.TooManyRequests()
-          HttpStatusCode.PayloadTooLarge.value -> AppException.PayloadTooLarge()
-          in 500..599 -> AppException.ServerError()
-          else -> AppException.BadRequest()
+          HttpStatusCode.Unauthorized.value -> AppException.Unauthorized(status)
+          HttpStatusCode.Forbidden.value -> AppException.Forbidden(status)
+          HttpStatusCode.NotFound.value -> AppException.NotFound(status)
+          HttpStatusCode.Conflict.value -> AppException.Conflict(status)
+          HttpStatusCode.TooManyRequests.value -> AppException.TooManyRequests(status)
+          HttpStatusCode.PayloadTooLarge.value -> AppException.PayloadTooLarge(status)
+          in 500..599 -> AppException.ServerError(status)
+          else -> AppException.BadRequest(status)
         }
         throw error
       }
@@ -79,13 +87,13 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")
       val dataError = when (cause) {
-        is SocketTimeoutException -> AppException.SocketTimeout()
-        is ConnectTimeoutException -> AppException.ConnectionTimeout()
-        is HttpRequestTimeoutException -> AppException.RequestTimeout()
-        is SSLHandshakeException -> AppException.Ssl()
-        is SerializationException -> AppException.Serialization()
-        is ConnectException -> AppException.Offline()
-        is UnknownHostException -> AppException.Offline()
+        is SocketTimeoutException -> AppException.SocketTimeout(cause.message)
+        is ConnectTimeoutException -> AppException.ConnectionTimeout(cause.message)
+        is HttpRequestTimeoutException -> AppException.RequestTimeout(cause.message)
+        is SSLHandshakeException -> AppException.Ssl(cause.message)
+        is SerializationException -> AppException.Serialization(cause.message)
+        is ConnectException -> AppException.Offline(cause.message)
+        is UnknownHostException -> AppException.Offline(cause.message)
         is AppException -> cause
         else -> AppException.Unknown(cause.message)
       }

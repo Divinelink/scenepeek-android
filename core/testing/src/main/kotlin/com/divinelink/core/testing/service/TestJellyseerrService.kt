@@ -38,12 +38,10 @@ class TestJellyseerrService {
     )
   }
 
-  suspend fun mockLogout(response: Unit) {
+  suspend fun mockLogout(response: Result<Unit>) {
     whenever(
       mock.logout(address = any()),
-    ).thenReturn(
-      flowOf(response),
-    )
+    ).thenReturn(response)
   }
 
   suspend fun mockRequestMedia(response: JellyseerrRequestMediaResponse) {

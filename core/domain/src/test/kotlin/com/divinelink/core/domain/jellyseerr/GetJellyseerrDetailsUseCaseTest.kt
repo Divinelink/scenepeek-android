@@ -6,11 +6,13 @@ import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -29,8 +31,6 @@ class GetJellyseerrDetailsUseCaseTest {
   fun `test get jellyseerr account details with null storage data`() = runTest {
     preferenceStorage = FakePreferenceStorage()
 
-    repository.mockGetLocalJellyseerrAccountDetails(JellyseerrAccountDetailsFactory.jellyseerr())
-
     val useCase = GetJellyseerrAccountDetailsUseCase(
       storage = preferenceStorage,
       repository = repository.mock,
@@ -41,7 +41,6 @@ class GetJellyseerrDetailsUseCaseTest {
       assertThat(awaitItem()).isEqualTo(
         Result.success(JellyseerrAccountDetailsResultFactory.initial()),
       )
-      awaitComplete()
     }
   }
 
@@ -53,7 +52,9 @@ class GetJellyseerrDetailsUseCaseTest {
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
-    repository.mockGetLocalJellyseerrAccountDetails(JellyseerrAccountDetailsFactory.jellyseerr())
+    repository.mockGetAccountDetails(
+      flowOf(Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr())),
+    )
 
     val useCase = GetJellyseerrAccountDetailsUseCase(
       storage = preferenceStorage,
@@ -75,9 +76,8 @@ class GetJellyseerrDetailsUseCaseTest {
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
-    repository.mockGetLocalJellyseerrAccountDetails(JellyseerrAccountDetailsFactory.jellyseerr())
-    repository.mockGetRemoteAccountDetails(
-      Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+    repository.mockGetAccountDetails(
+      flowOf(Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr())),
     )
 
     val useCase = GetJellyseerrAccountDetailsUseCase(
@@ -90,7 +90,6 @@ class GetJellyseerrDetailsUseCaseTest {
       assertThat(awaitItem()).isEqualTo(
         Result.success(JellyseerrAccountDetailsResultFactory.initial()),
       )
-      awaitComplete()
     }
   }
 
@@ -102,9 +101,11 @@ class GetJellyseerrDetailsUseCaseTest {
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
-    repository.mockGetLocalJellyseerrAccountDetails(null)
-    repository.mockGetRemoteAccountDetails(
-      Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+    repository.mockGetAccountDetails(
+      flowOf(
+        Resource.Success(null),
+        Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr()),
+      ),
     )
 
     val useCase = GetJellyseerrAccountDetailsUseCase(
@@ -120,7 +121,6 @@ class GetJellyseerrDetailsUseCaseTest {
       assertThat(awaitItem()).isEqualTo(
         Result.success(JellyseerrAccountDetailsResultFactory.jellyseerr()),
       )
-      awaitComplete()
     }
   }
 
@@ -132,9 +132,11 @@ class GetJellyseerrDetailsUseCaseTest {
       jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
     )
 
-    repository.mockGetLocalJellyseerrAccountDetails(null)
-    repository.mockGetRemoteAccountDetails(
-      Result.failure(Exception("Error")),
+    repository.mockGetAccountDetails(
+      flowOf(
+        Resource.Success(null),
+        Resource.Error(Exception("Error")),
+      ),
     )
 
     val useCase = GetJellyseerrAccountDetailsUseCase(
@@ -148,7 +150,6 @@ class GetJellyseerrDetailsUseCaseTest {
         Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
       )
       assertThat(awaitItem().getOrNull()).isNull()
-      awaitComplete()
     }
   }
 }
