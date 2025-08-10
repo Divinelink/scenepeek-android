@@ -5,10 +5,10 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 data class JellyseerrAccountDetailsResult(
   val address: String,
@@ -26,37 +26,45 @@ class GetJellyseerrAccountDetailsUseCase(
    */
   override fun execute(parameters: Boolean): Flow<Result<JellyseerrAccountDetailsResult>> =
     channelFlow {
-      val address = storage.jellyseerrAddress.first()
-
-      launch {
-        repository.getLocalJellyseerrAccountDetails().collect { localDetails ->
-          if (address == null) {
-            send(Result.success(JellyseerrAccountDetailsResult(address = "", null)))
+      storage
+        .jellyseerrAddress
+        .distinctUntilChanged()
+        .collect { address ->
+          if (address != null) {
+            repository.getJellyseerrAccountDetails(
+              address = address,
+              refresh = parameters,
+            ).collect { result ->
+              when (result) {
+                is Resource.Error -> send(Result.failure(result.error))
+                is Resource.Loading<JellyseerrAccountDetails?> -> send(
+                  Result.success(
+                    JellyseerrAccountDetailsResult(
+                      address = address,
+                      accountDetails = result.data,
+                    ),
+                  ),
+                )
+                is Resource.Success<JellyseerrAccountDetails?> -> send(
+                  Result.success(
+                    JellyseerrAccountDetailsResult(
+                      address = address,
+                      accountDetails = result.data,
+                    ),
+                  ),
+                )
+              }
+            }
           } else {
-            send(Result.success(JellyseerrAccountDetailsResult(address, localDetails)))
+            send(
+              Result.success(
+                JellyseerrAccountDetailsResult(
+                  address = "",
+                  accountDetails = null,
+                ),
+              ),
+            )
           }
         }
-      }
-
-      launch {
-        if (parameters && address != null) {
-          repository.getRemoteAccountDetails(address).first().fold(
-            onSuccess = {
-              repository.insertJellyseerrAccountDetails(it)
-              send(
-                Result.success(
-                  JellyseerrAccountDetailsResult(
-                    address = address,
-                    accountDetails = it,
-                  ),
-                ),
-              )
-            },
-            onFailure = {
-              send(Result.failure(it))
-            },
-          )
-        }
-      }
     }
 }

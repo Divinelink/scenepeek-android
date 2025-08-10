@@ -1,42 +1,35 @@
 package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
-import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.datastore.SessionStorage
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.onCompletion
 
 class LogoutJellyseerrUseCase(
   private val repository: JellyseerrRepository,
   private val sessionStorage: SessionStorage,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<Unit, Unit>(dispatcher.default) {
+) : UseCase<Unit, Unit>(dispatcher.default) {
 
-  override fun execute(parameters: Unit): Flow<Result<Unit>> = flow {
+  override suspend fun execute(parameters: Unit) {
     val address = sessionStorage.storage.jellyseerrAddress.first()
     if (address == null) {
-      emit(Result.failure(Exception("No address found.")))
       sessionStorage.clearJellyseerrSession()
       repository.clearJellyseerrAccountDetails()
-      return@flow
-    }
-
-    emit(
-      repository
-        .logout(address)
-        .onCompletion {
+      Result.success(Unit)
+    } else {
+      val response = repository.logout(address)
+        .onFailure {
+          sessionStorage.clearJellyseerrSession()
+          repository.clearJellyseerrAccountDetails()
+        }.onSuccess {
           sessionStorage.clearJellyseerrSession()
           repository.clearJellyseerrAccountDetails()
         }
-        .last()
-        .fold(
-          onSuccess = { Result.success(Unit) },
-          onFailure = { Result.failure(it) },
-        ),
-    )
+
+      Result.success(response.data)
+    }
   }
 }

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModel(
@@ -35,43 +36,45 @@ class JellyseerrSettingsViewModel(
   val uiState: StateFlow<JellyseerrSettingsUiState> = _uiState
 
   init {
-    getJellyseerrDetailsUseCase.invoke(true)
-      .distinctUntilChanged()
-      .onEach { result ->
-        result.onSuccess {
-          val accountDetailsResult = result.data
-          if (accountDetailsResult.accountDetails == null) {
-            _uiState.update {
-              it.copy(
-                jellyseerrState = JellyseerrState.Login(
-                  isLoading = false,
-                  loginData = JellyseerrLoginData.prefilled(
+    viewModelScope.launch {
+      getJellyseerrDetailsUseCase.invoke(true)
+        .distinctUntilChanged()
+        .collect { result ->
+          result.onSuccess {
+            val accountDetailsResult = result.data
+            if (accountDetailsResult.accountDetails == null) {
+              _uiState.update {
+                it.copy(
+                  jellyseerrState = JellyseerrState.Login(
+                    isLoading = false,
+                    loginData = JellyseerrLoginData.prefilled(
+                      address = accountDetailsResult.address,
+                    ),
+                  ),
+                )
+              }
+            } else {
+              _uiState.update {
+                it.copy(
+                  jellyseerrState = JellyseerrState.LoggedIn(
+                    accountDetails = accountDetailsResult.accountDetails!!,
+                    isLoading = false,
                     address = accountDetailsResult.address,
                   ),
-                ),
-              )
+                )
+              }
             }
-          } else {
-            _uiState.update {
-              it.copy(
-                jellyseerrState = JellyseerrState.LoggedIn(
-                  accountDetails = accountDetailsResult.accountDetails!!,
-                  isLoading = false,
-                  address = accountDetailsResult.address,
-                ),
-              )
-            }
+          }.onError<AppException.Unauthorized> {
+            onLogout()
+          }.onFailure { throwable ->
+            _uiState.setSnackbarMessage(
+              throwable.message?.let { message ->
+                UIText.StringText(message)
+              } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
+            )
           }
-        }.onError<AppException.Unauthorized> {
-          onLogout()
-        }.onFailure { throwable ->
-          _uiState.setSnackbarMessage(
-            throwable.message?.let { message ->
-              UIText.StringText(message)
-            } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-          )
         }
-      }.launchIn(viewModelScope)
+    }
   }
 
   fun dismissSnackbar() {
@@ -180,14 +183,17 @@ class JellyseerrSettingsViewModel(
   }
 
   private fun onLogout() {
-    logoutJellyseerrUseCase.invoke(Unit)
-      .onStart {
-        _uiState.setJellyseerrLoading(true)
-      }
-      .onCompletion {
-        _uiState.setJellyseerrLoading(false)
-      }
-      .launchIn(viewModelScope)
+    _uiState.setJellyseerrLoading(true)
+
+    viewModelScope.launch {
+      logoutJellyseerrUseCase.invoke(Unit)
+        .onSuccess {
+          _uiState.setJellyseerrLoading(false)
+        }
+        .onFailure {
+          _uiState.setJellyseerrLoading(false)
+        }
+    }
   }
 }
 

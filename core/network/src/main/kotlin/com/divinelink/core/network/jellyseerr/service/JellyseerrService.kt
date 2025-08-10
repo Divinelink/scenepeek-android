@@ -17,7 +17,7 @@ interface JellyseerrService {
 
   suspend fun fetchAccountDetails(address: String): Flow<JellyseerrAccountDetailsResponseApi>
 
-  suspend fun logout(address: String): Flow<Unit>
+  suspend fun logout(address: String): Result<Unit>
 
   suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
