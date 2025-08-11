@@ -18,7 +18,6 @@ import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
@@ -344,7 +343,7 @@ class DetailsViewModel(
         onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
-              userDetails = updateOrCreateAccountMediaDetails(rating),
+              userDetails = viewState.userDetails.copy(rating = rating.toFloat()),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_submitted_successfully,
@@ -381,24 +380,7 @@ class DetailsViewModel(
     }
   }
 
-  /**
-   * TODO This is not the best way to do this, but it's quick fix for now.
-   * This is needed when the user is not logged in, and tries to submit a rating.
-   * When the user logs in, we should re-fetch the account details, and update the rating along
-   * with the watchlist status.
-   */
-  private fun updateOrCreateAccountMediaDetails(rating: Int): AccountMediaDetails =
-    viewState.value.userDetails?.copy(
-      rating = rating.toFloat(),
-    ) ?: AccountMediaDetails(
-      rating = rating.toFloat(),
-      watchlist = false,
-      id = viewState.value.mediaId,
-      favorite = false,
-    )
-
   fun onClearRating() {
-    if (viewState.value.userDetails == null) return
     setSectionState(AccountDataSection.Rating, true)
     viewModelScope.launch {
       deleteRatingUseCase.invoke(
@@ -410,7 +392,7 @@ class DetailsViewModel(
         onSuccess = {
           _viewState.update { viewState ->
             viewState.copy(
-              userDetails = viewState.userDetails?.copy(rating = null),
+              userDetails = viewState.userDetails.copy(rating = null),
               snackbarMessage = SnackbarMessage.from(
                 text = UIText.ResourceText(
                   R.string.details__rating_deleted_successfully,
@@ -442,12 +424,12 @@ class DetailsViewModel(
         AddToWatchlistParameters(
           id = viewState.value.mediaId,
           mediaType = viewState.value.mediaType,
-          addToWatchlist = viewState.value.userDetails?.watchlist == false,
+          addToWatchlist = !viewState.value.userDetails.watchlist,
         ),
       ).fold(
         onSuccess = {
           _viewState.update { viewState ->
-            if (viewState.userDetails?.watchlist == true) {
+            if (viewState.userDetails.watchlist) {
               viewState.copy(
                 userDetails = viewState.userDetails.copy(watchlist = false),
                 snackbarMessage = SnackbarMessage.from(
@@ -459,7 +441,7 @@ class DetailsViewModel(
               )
             } else {
               viewState.copy(
-                userDetails = viewState.userDetails?.copy(watchlist = true),
+                userDetails = viewState.userDetails.copy(watchlist = true),
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(
                     R.string.details__added_to_watchlist,

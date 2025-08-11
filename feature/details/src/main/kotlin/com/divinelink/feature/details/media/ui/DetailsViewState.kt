@@ -24,7 +24,7 @@ data class DetailsViewState(
   val mediaType: MediaType,
   val mediaId: Int,
   val mediaDetails: MediaDetails? = null,
-  val userDetails: AccountMediaDetails? = null,
+  val userDetails: AccountMediaDetails = AccountMediaDetails.initial,
   val accountDataState: Map<AccountDataSection, Boolean> = AccountDataSection
     .entries
     .associateWith { false },

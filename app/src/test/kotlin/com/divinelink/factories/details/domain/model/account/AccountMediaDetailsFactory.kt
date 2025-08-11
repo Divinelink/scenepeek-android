@@ -18,6 +18,13 @@ object AccountMediaDetailsFactory {
     watchlist = false,
   )
 
+  fun initial(): AccountMediaDetails = AccountMediaDetails(
+    id = -1,
+    favorite = false,
+    rating = null,
+    watchlist = false,
+  )
+
   class AccountMediaDetailsFactoryWizard(private var accountMediaDetails: AccountMediaDetails) {
 
     fun withId(id: Int) = apply {

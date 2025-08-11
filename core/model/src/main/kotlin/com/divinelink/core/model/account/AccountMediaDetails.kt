@@ -7,4 +7,13 @@ data class AccountMediaDetails(
   val watchlist: Boolean,
 ) {
   val beautifiedRating: Int? = rating?.toInt()
+
+  companion object {
+    val initial = AccountMediaDetails(
+      id = -1,
+      favorite = false,
+      rating = null,
+      watchlist = false,
+    )
+  }
 }
