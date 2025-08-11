@@ -1,8 +1,10 @@
 package com.divinelink.scenepeek.details.domain.usecase
 
+import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
@@ -128,9 +130,37 @@ class FetchAccountMediaDetailsUseCaseTest {
     assertThat(result.first().exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
 
-  private fun createSessionStorage(sessionId: String?) = SessionStorage(
+  @Test
+  fun `test fetch account media details obverses tmdb account`() = runTest {
+    sessionStorage = createSessionStorage(sessionId = "session_id")
+
+    repository.mockFetchAccountMediaDetails(Result.success(AccountMediaDetailsFactory.initial()))
+
+    val useCase = FetchAccountMediaDetailsUseCase(
+      sessionStorage = sessionStorage,
+      repository = repository.mock,
+      dispatcher = testDispatcher,
+    )
+
+    useCase.invoke(
+      MediaDetailsParams(
+        id = 0,
+        mediaType = MediaType.MOVIE,
+      ),
+    ).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.initial()))
+      repository.mockFetchAccountMediaDetails(Result.success(AccountMediaDetailsFactory.Rated()))
+      sessionStorage.setTMDbAccountDetails(AccountDetailsFactory.Pinkman())
+      assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.Rated()))
+    }
+  }
+
+  private fun createSessionStorage(
+    sessionId: String?,
+    accountStorage: FakeAccountStorage = FakeAccountStorage(),
+  ) = SessionStorage(
     storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
-    accountStorage = FakeAccountStorage(),
+    accountStorage = accountStorage,
   )
 }

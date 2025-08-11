@@ -1308,7 +1308,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           menuOptions = listOf(DetailsMenuOptions.SHARE),
         ),
@@ -1338,7 +1338,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails,
         ),
       )
@@ -1376,7 +1376,7 @@ class DetailsViewModelTest {
           ),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
         ),
       )
@@ -1408,7 +1408,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
           ),
@@ -1467,7 +1467,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = null,
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails,
           ),
           DetailsViewState(
@@ -1480,7 +1480,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.available(),
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails.copy(
               seasons = SeasonFactory.allWithStatus().filterNot { it.seasonNumber == 0 },
             ),
@@ -1525,7 +1525,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           actionButtons = listOf(
             DetailActionItem.Rate,
@@ -1586,7 +1586,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.StringText("Success"),
@@ -1637,7 +1637,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
           ),
@@ -1662,7 +1662,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
           ),
@@ -1719,7 +1719,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
           ),
@@ -1744,7 +1744,7 @@ class DetailsViewModelTest {
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
           ),
@@ -1795,7 +1795,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
@@ -1837,7 +1837,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
@@ -1879,7 +1879,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
@@ -1921,7 +1921,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
@@ -1957,7 +1957,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
@@ -2281,7 +2281,7 @@ class DetailsViewModelTest {
           },
           mediaId = movieDetails.id,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails.copy(
             ratingCount = RatingCountFactory.imdb(),
           ),
@@ -2398,7 +2398,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
           ),
@@ -2478,7 +2478,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2497,7 +2497,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = true,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2516,7 +2516,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2594,7 +2594,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
           ),
@@ -2671,7 +2671,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
           ),
@@ -2749,7 +2749,7 @@ class DetailsViewModelTest {
           },
           mediaId = mediaId,
           isLoading = false,
-          userDetails = null,
+          userDetails = AccountMediaDetails.initial,
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.all().filterNot { it.seasonNumber == 0 },
           ),
@@ -2828,7 +2828,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails.copy(
               seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
             ),
@@ -2850,7 +2850,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = true,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails.copy(
               seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
             ),
@@ -2872,7 +2872,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails.copy(
               seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
             ),
@@ -2948,7 +2948,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = _root_ide_package_.com.divinelink.core.model.account.AccountMediaDetails.Companion.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2967,7 +2967,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = true,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2986,7 +2986,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = null,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
