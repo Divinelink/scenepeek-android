@@ -247,7 +247,6 @@ fun DetailsContent(
         },
         onNavigateUp = {
           onNavigate(Navigation.Back)
-//          isAppBarVisible = false
           onBackdropLoaded = false
         },
       )

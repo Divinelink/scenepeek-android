@@ -1,7 +1,6 @@
 package com.divinelink.feature.details.media.ui.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +20,6 @@ import com.divinelink.core.model.details.TvStatus
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.details.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TitleDetails(
   modifier: Modifier = Modifier,

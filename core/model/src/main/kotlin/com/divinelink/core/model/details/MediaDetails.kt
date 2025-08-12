@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.media.MediaItem
@@ -20,6 +21,7 @@ sealed class MediaDetails {
   abstract val genres: List<String>?
   abstract val isFavorite: Boolean
   abstract val imdbId: String?
+  abstract val information: MediaDetailsInformation
 
   fun copy(
     id: Int = this.id,
@@ -49,6 +51,7 @@ sealed class MediaDetails {
       cast = cast,
       runtime = runtime,
       imdbId = imdbId,
+      information = information,
     )
     is TV -> TV(
       id = id,
@@ -66,6 +69,7 @@ sealed class MediaDetails {
       numberOfSeasons = numberOfSeasons,
       status = status,
       imdbId = imdbId,
+      information = information,
     )
   }
 }

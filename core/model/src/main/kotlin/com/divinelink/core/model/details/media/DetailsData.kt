@@ -11,6 +11,7 @@ sealed interface DetailsData {
     val tagline: String?,
     val genres: List<String>?,
     val creators: List<Person>?,
+    val information: MediaDetailsInformation?,
   ) : DetailsData
 
   data class Cast(

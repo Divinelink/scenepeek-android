@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 
 /**
@@ -20,4 +21,5 @@ data class Movie(
   val creators: List<Person>?,
   override val isFavorite: Boolean,
   override val imdbId: String?,
+  override val information: MediaDetailsInformation.Movie,
 ) : MediaDetails()

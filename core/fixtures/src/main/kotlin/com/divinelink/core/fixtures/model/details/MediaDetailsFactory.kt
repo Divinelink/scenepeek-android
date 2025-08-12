@@ -6,7 +6,10 @@ import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.TvStatus
+import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
+import com.divinelink.core.model.locale.Country
+import com.divinelink.core.model.locale.Language
 
 object MediaDetailsFactory {
 
@@ -36,6 +39,19 @@ object MediaDetailsFactory {
     runtime = "2h 10m",
     imdbId = "tt0137523",
     tagline = "You don't talk about Fight Club.",
+    information = MediaDetailsInformation.Movie(
+      originalTitle = "Fight Club",
+      status = "Released",
+      runtime = "2h 10m",
+      originalLanguage = Language.ENGLISH,
+      budget = "$63,000,000",
+      revenue = "$100,853,753",
+      companies = listOf(
+        "Fox 2000 Pictures",
+        "Regency Enterprises",
+      ),
+      countries = listOf(Country.UNITED_STATES),
+    ),
   )
 
   fun TheOffice() = TV(
@@ -70,5 +86,6 @@ object MediaDetailsFactory {
     status = TvStatus.ENDED,
     imdbId = "tt0386676",
     tagline = "You don't talk about The Office.",
+    information = MediaDetailsInformation.TV,
   )
 }

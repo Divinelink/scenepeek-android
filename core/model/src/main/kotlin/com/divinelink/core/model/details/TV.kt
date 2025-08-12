@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 
 /**
@@ -17,6 +18,7 @@ data class TV(
   override val isFavorite: Boolean,
   override val imdbId: String?,
   override val tagline: String?,
+  override val information: MediaDetailsInformation.TV,
   val status: TvStatus,
   val creators: List<Person>?,
   val seasons: List<Season>,
