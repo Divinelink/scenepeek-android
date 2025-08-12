@@ -67,7 +67,7 @@ fun MovieInformationSection(information: MediaDetailsInformation.Movie) {
 }
 
 @Composable
-private fun SimpleInformationRow(
+fun SimpleInformationRow(
   title: String,
   data: String,
 ) {
@@ -90,7 +90,7 @@ private fun SimpleInformationRow(
 }
 
 @Composable
-private fun CountriesRow(countries: List<Country>) {
+fun CountriesRow(countries: List<Country>) {
   Row(
     modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
@@ -115,7 +115,7 @@ private fun CountriesRow(countries: List<Country>) {
 }
 
 @Composable
-private fun CompaniesRow(companies: List<String>) {
+fun CompaniesRow(companies: List<String>) {
   Row(
     modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),

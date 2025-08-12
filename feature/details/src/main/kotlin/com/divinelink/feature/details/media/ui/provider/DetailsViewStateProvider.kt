@@ -60,7 +60,9 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaType = MediaType.TV,
           tabs = TvTab.entries,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
-            status = TvStatus.UNKNOWN,
+            information = MediaDetailsFactory.TheOffice().information.copy(
+              status = TvStatus.UNKNOWN,
+            ),
           ),
         ),
         DetailsViewState(

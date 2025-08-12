@@ -83,9 +83,27 @@ object MediaDetailsFactory {
       ),
     ),
     numberOfSeasons = 9,
-    status = TvStatus.ENDED,
     imdbId = "tt0386676",
-    tagline = "You don't talk about The Office.",
-    information = MediaDetailsInformation.TV,
+    tagline = "A comedy for anyone whose boss is an idiot.",
+    information = MediaDetailsInformation.TV(
+      originalTitle = "The Office",
+      status = TvStatus.ENDED,
+      firstAirDate = "2005-03-24",
+      lastAirDate = "2013-05-16",
+      seasons = 9,
+      episodes = 186,
+      originalLanguage = Language.ENGLISH,
+      companies = listOf(
+        "Universal Television",
+        "Deedle-Dee Productions",
+        "Reveille Productions",
+        "Shine America",
+        "Universal Media Studios",
+      ),
+      countries = listOf(
+        Country.UNITED_STATES,
+      ),
+      nextEpisodeAirDate = null,
+    ),
   )
 }

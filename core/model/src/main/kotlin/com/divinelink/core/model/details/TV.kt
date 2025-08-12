@@ -19,7 +19,6 @@ data class TV(
   override val imdbId: String?,
   override val tagline: String?,
   override val information: MediaDetailsInformation.TV,
-  val status: TvStatus,
   val creators: List<Person>?,
   val seasons: List<Season>,
   val numberOfSeasons: Int,

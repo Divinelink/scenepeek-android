@@ -45,6 +45,12 @@ sealed class DetailsResponseApi {
   abstract val voteCount: Int
   abstract val releaseDate: String
 
+  @SerialName("production_companies")
+  abstract val companies: List<ProductionCompany>
+
+  @SerialName("production_countries")
+  abstract val countries: List<ProductionCountryResponse>
+
   @Serializable
   data class Movie(
     override val id: Int,
@@ -60,12 +66,12 @@ sealed class DetailsResponseApi {
     override val overview: String?,
     override val popularity: Double,
     @SerialName("poster_path") override val posterPath: String?,
-    @SerialName("production_companies") val productionCompanies: List<ProductionCompany>,
-    @SerialName("production_countries") val productionCountries: List<ProductionCountry>,
+    @SerialName("production_companies") override val companies: List<ProductionCompany>,
+    @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
     @SerialName("release_date") override val releaseDate: String,
     val revenue: Long,
     val runtime: Int? = null,
-    @SerialName("spoken_languages") val spokenLanguage: List<SpokenLanguage>,
+    @SerialName("spoken_languages") val spokenLanguage: List<SpokenLanguageResponse>,
     val tagline: String,
     val title: String,
     val video: Boolean,
@@ -96,9 +102,12 @@ sealed class DetailsResponseApi {
     @SerialName("created_by") val createdBy: List<SeriesCreatorApi>,
     @SerialName("seasons") val seasons: List<SeasonResponseApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
+    @SerialName("number_of_episodes") val numberOfEpisodes: Int,
     @SerialName("external_ids") val externalIds: ExternalIdsApi,
     @SerialName("last_air_date") val lastAirDate: String? = null,
     @SerialName("next_episode_to_air") val nextEpisodeToAir: NextEpisodeToAirResponse? = null,
+    @SerialName("production_companies") override val companies: List<ProductionCompany>,
+    @SerialName("production_countries") override val countries: List<ProductionCountryResponse>,
   ) : DetailsResponseApi()
 }
 
@@ -130,10 +139,10 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
     status = status ?: "-",
     runtime = runtime.toHourMinuteFormat(),
     originalLanguage = Language.fromCode(originalLanguage),
-    countries = this.productionCountries.mapNotNull {
+    countries = this.countries.mapNotNull {
       Country.fromCode(it.iso31611)
     },
-    companies = this.productionCompanies.map { it.name },
+    companies = this.companies.map { it.name },
     budget = if (budget == 0) {
       "-"
     } else {
@@ -165,8 +174,20 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   creators = this.createdBy.map(),
   seasons = this.seasons.map(),
   imdbId = this.externalIds.imdbId,
-  status = TvStatus.from(this.status),
-  information = MediaDetailsInformation.TV,
+  information = MediaDetailsInformation.TV(
+    originalTitle = this.originalName,
+    status = TvStatus.from(this.status),
+    firstAirDate = this.releaseDate,
+    lastAirDate = lastAirDate ?: "-",
+    nextEpisodeAirDate = nextEpisodeToAir?.airDate,
+    seasons = numberOfSeasons,
+    episodes = numberOfEpisodes,
+    originalLanguage = Language.fromCode(originalLanguage),
+    companies = this.companies.map { it.name },
+    countries = this.countries.mapNotNull {
+      Country.fromCode(it.iso31611)
+    },
+  ),
 )
 
 private fun List<CastApi>.toActors(): List<Person> = this.map(CastApi::toPerson)
@@ -224,13 +245,13 @@ data class ProductionCompany(
 )
 
 @Serializable
-data class ProductionCountry(
+data class ProductionCountryResponse(
   @SerialName("iso_3166_1") val iso31611: String,
   val name: String,
 )
 
 @Serializable
-data class SpokenLanguage(
+data class SpokenLanguageResponse(
   @SerialName("iso_639_1") val iso6391: String,
   @SerialName("english_name") val englishName: String,
   val name: String,

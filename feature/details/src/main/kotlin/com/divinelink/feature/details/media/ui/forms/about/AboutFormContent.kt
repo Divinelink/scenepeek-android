@@ -21,6 +21,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
 import com.divinelink.feature.details.media.ui.components.GenresSection
 import com.divinelink.feature.details.media.ui.components.MovieInformationSection
+import com.divinelink.feature.details.media.ui.components.TvInformationSection
 
 @Composable
 fun AboutFormContent(
@@ -84,8 +85,7 @@ fun AboutFormContent(
       item {
         when (information) {
           is MediaDetailsInformation.Movie -> MovieInformationSection(information)
-          MediaDetailsInformation.TV -> {
-          }
+          is MediaDetailsInformation.TV -> TvInformationSection(information)
         }
       }
     }
