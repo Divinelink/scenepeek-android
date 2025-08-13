@@ -19,8 +19,10 @@ import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
+import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.reviews.ReviewsResponseApi
 import com.divinelink.core.network.media.model.details.toDomainMedia
 import com.divinelink.core.network.media.model.details.videos.VideoResultsApi
@@ -169,6 +171,33 @@ class ProdDetailsRepositoryTest {
     ).first()
 
     assertThat(expectedResult).isEqualTo(actualResult.data)
+  }
+
+  @Test
+  fun `test fetch tv details successfully`() = runTest {
+    val request = MediaRequestApiFactory.tv()
+
+    JvmUnitTestDemoAssetManager
+      .open("details-tv.json")
+      .use {
+        val json = it.readBytes().decodeToString().trimIndent()
+        val serializer = DetailsResponseApi.serializer()
+        val tvDetailsResponse = localJson.decodeFromString(serializer, json)
+
+        mediaRemote.mockFetchMovieDetails(
+          request = request,
+          response = flowOf(tvDetailsResponse),
+        )
+
+        repository.fetchMediaDetails(
+          request = MediaRequestApiFactory.tv(),
+        ).test {
+          assertThat(awaitItem()).isEqualTo(
+            Result.success(MediaDetailsFactory.TheOffice()),
+          )
+          awaitComplete()
+        }
+      }
   }
 
   @Test

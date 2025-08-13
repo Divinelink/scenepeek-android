@@ -1011,7 +1011,9 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
-            status = TvStatus.RETURNING_SERIES,
+            information = MediaDetailsFactory.TheOffice().information.copy(
+              status = TvStatus.RETURNING_SERIES,
+            ),
           ),
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.empty(),
@@ -1058,7 +1060,9 @@ class DetailsContentTest : ComposeTest() {
           mediaId = 0,
           mediaType = MediaType.TV,
           mediaDetails = MediaDetailsFactory.TheOffice().copy(
-            status = TvStatus.UNKNOWN,
+            information = MediaDetailsFactory.TheOffice().information.copy(
+              status = TvStatus.UNKNOWN,
+            ),
           ),
           tabs = TvTab.entries,
           forms = DetailsFormFactory.Tv.empty(),

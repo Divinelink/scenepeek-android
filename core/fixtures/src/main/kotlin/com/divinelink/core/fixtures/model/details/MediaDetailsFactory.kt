@@ -10,6 +10,7 @@ import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.person.Gender
 
 object MediaDetailsFactory {
 
@@ -49,36 +50,52 @@ object MediaDetailsFactory {
       companies = listOf(
         "Fox 2000 Pictures",
         "Regency Enterprises",
+        "Linson Entertainment",
+        "20th Century Fox",
+        "Taurus Film",
       ),
-      countries = listOf(Country.UNITED_STATES),
+      countries = listOf(
+        Country.GERMANY,
+        Country.UNITED_STATES,
+      ),
     ),
   )
 
   fun TheOffice() = TV(
     id = 2316,
     title = "The Office",
-    posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
-    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
+    posterPath = "/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
+    backdropPath = "/mLyW3UTgi2lsMdtueYODcfAB9Ku.jpg",
     overview = "The everyday lives of office employees in the Scranton, " +
       "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
     releaseDate = "2005-03-24",
     ratingCount = RatingCount.tmdb(8.6, 4503),
     isFavorite = false,
-    genres = listOf("Comedy, Romance"),
+    genres = listOf("Comedy"),
     seasons = SeasonFactory.all(),
     creators = listOf(
-      Person(
-        id = 1216630,
-        name = "Greg Daniels",
-        profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
-        knownForDepartment = "Writing",
-        role = listOf(PersonRole.Creator),
-      ),
       Person(
         id = 17835,
         name = "Ricky Gervais",
         profilePath = "/2mAjcq9AQA9peQxNoeEW76DPIju.jpg",
-        knownForDepartment = "Writing",
+        knownForDepartment = null,
+        gender = Gender.MALE,
+        role = listOf(PersonRole.Creator),
+      ),
+      Person(
+        id = 39189,
+        name = "Stephen Merchant",
+        profilePath = "/6WM2rK6390Nwk398syJbGcPvRct.jpg",
+        knownForDepartment = null,
+        gender = Gender.MALE,
+        role = listOf(PersonRole.Creator),
+      ),
+      Person(
+        id = 1216630,
+        name = "Greg Daniels",
+        profilePath = "/2Hi7Tw0fyYFOZex8BuGsHS8Q4KD.jpg",
+        knownForDepartment = null,
+        gender = Gender.MALE,
         role = listOf(PersonRole.Creator),
       ),
     ),

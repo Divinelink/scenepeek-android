@@ -28,7 +28,7 @@ object TvItemApiFactory {
   fun theOffice() = TvItemApi(
     id = 2316,
     adult = false,
-    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
+    backdropPath = "/mLyW3UTgi2lsMdtueYODcfAB9Ku.jpg",
     genreIds = listOf(35),
     originCountry = listOf("US"),
     originalLanguage = "en",
@@ -36,7 +36,7 @@ object TvItemApiFactory {
     overview = "The everyday lives of office employees in the Scranton, " +
       "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
     popularity = 132.0914,
-    posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
+    posterPath = "/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
     firstAirDate = "2005-03-24",
     name = "The Office",
     voteAverage = 8.581,
