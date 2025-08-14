@@ -19,6 +19,7 @@
   <string name="general_error_message">Something when wrong.</string>
 
   <string name="feature_details_genres">Genres</string>
+  <string name="feature_details_information">Information</string>
 
   <string name="feature_details_jellyseerr_success_request_delete">Request deleted successfully</string>
   <string name="feature_details_jellyseerr_success_media_delete"><b>%s</b> successfully removed</string>
@@ -84,6 +85,28 @@
 
   <string name="feature_details_no_seasons_available">No seasons available</string>
   <string name="feature_details_no_seasons_available_desc">We don\'t have any seasons for %s.</string>
+
+  <string name="feature_details_information_original_title">Original title</string>
+  <string name="feature_details_information_status">Status</string>
+  <string name="feature_details_information_runtime">Runtime</string>
+  <string name="feature_details_information_original_language">Original language</string>
+  <string name="feature_details_information_budget">Budget</string>
+  <string name="feature_details_information_revenue">Revenue</string>
+  <string name="feature_details_information_first_air_date">First air date</string>
+  <string name="feature_details_information_last_air_date">Last air date</string>
+  <string name="feature_details_information_next_episode_air_date">Next episode air date</string>
+  <string name="feature_details_information_seasons">Seasons</string>
+  <string name="feature_details_information_aired_episodes">Aired episodes</string>
+
+  <plurals name="feature_details_information_countries">
+    <item quantity="one">Country</item>
+    <item quantity="other">Countries</item>
+  </plurals>
+
+  <plurals name="feature_details_information_companies">
+    <item quantity="one">Company</item>
+    <item quantity="other">Companies</item>
+  </plurals>
 
   <string name="login">Login</string>
 </resources>

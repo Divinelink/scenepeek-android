@@ -26,8 +26,8 @@ object MediaItemFactory {
     id = 2316,
     overview = "The everyday lives of office employees in the Scranton, " +
       "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
-    backdropPath = "/bX6Sypdpk0r8YFdVPoc3yeyvSmm.jpg",
-    posterPath = "/dg9e5fPRRId8PoBE0F6jl5y85Eu.jpg",
+    posterPath = "/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
+    backdropPath = "/mLyW3UTgi2lsMdtueYODcfAB9Ku.jpg",
     releaseDate = "2005-03-24",
     name = "The Office",
     voteAverage = 8.6,

@@ -816,6 +816,7 @@ class DetailsViewModel(
         is Movie -> result.mediaDetails.creators
         else -> null
       },
+      information = result.mediaDetails.information,
     )
 
   /**

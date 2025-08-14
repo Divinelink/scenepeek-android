@@ -16,9 +16,12 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.media.DetailsData
+import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.details.cast.CreatorsItem
 import com.divinelink.feature.details.media.ui.components.GenresSection
+import com.divinelink.feature.details.media.ui.components.MovieInformationSection
+import com.divinelink.feature.details.media.ui.components.TvInformationSection
 
 @Composable
 fun AboutFormContent(
@@ -71,6 +74,19 @@ fun AboutFormContent(
           creators = creators,
           onClick = onPersonClick,
         )
+      }
+    }
+
+    aboutData.information?.let { information ->
+      item {
+        HorizontalDivider()
+      }
+
+      item {
+        when (information) {
+          is MediaDetailsInformation.Movie -> MovieInformationSection(information)
+          is MediaDetailsInformation.TV -> TvInformationSection(information)
+        }
       }
     }
 

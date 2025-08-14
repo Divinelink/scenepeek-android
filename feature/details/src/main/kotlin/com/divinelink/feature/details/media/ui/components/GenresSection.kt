@@ -2,7 +2,6 @@ package com.divinelink.feature.details.media.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -14,7 +13,6 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.components.details.genres.GenreLabel
 import com.divinelink.feature.details.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GenresSection(
   genres: List<String>,

@@ -19,7 +19,6 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CreatorsItem(
   creators: List<Person>,
