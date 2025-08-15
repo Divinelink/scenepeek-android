@@ -16,3 +16,15 @@ plugins {
   alias(libs.plugins.ktlint) apply false
   alias(libs.plugins.screenshot) apply false
 }
+
+// Temporary fix for screenshot testing library
+allprojects {
+  configurations.all {
+    resolutionStrategy.eachDependency {
+      if (requested.group == "com.google.guava" && requested.name == "guava") {
+        useVersion("33.2.0-jre") // Force a stable, recent version
+        because("Align Guava to prevent runtime errors.")
+      }
+    }
+  }
+}

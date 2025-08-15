@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.media.MediaImage
@@ -124,6 +125,38 @@ fun MediaItemWithSubtitlePreview(
         modifier = Modifier,
         media = mediaItem,
         subtitle = "Matthew Walkers",
+        onMediaItemClick = {},
+      )
+    }
+  }
+}
+
+@Composable
+@Previews
+fun MediaItemWithDatePreview() {
+  AppTheme {
+    Surface {
+      MediaItem(
+        modifier = Modifier,
+        media = MediaItemFactory.FightClub(),
+        subtitle = null,
+        showDate = true,
+        onMediaItemClick = {},
+      )
+    }
+  }
+}
+
+@Composable
+@Previews
+fun MediaItemFullPreview() {
+  AppTheme {
+    Surface {
+      MediaItem(
+        modifier = Modifier,
+        media = MediaItemFactory.theOffice(),
+        subtitle = "Actor",
+        showDate = true,
         onMediaItemClick = {},
       )
     }

@@ -1,10 +1,12 @@
 package com.divinelink.scenepeek.feature.home.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import com.android.tools.screenshot.PreviewTest
+import com.divinelink.core.ui.Previews
 import com.divinelink.scenepeek.home.ui.HomeContentPreview
 
-@Preview
+@Previews
+@PreviewTest
 @Composable
 fun HomeContentScreenshots() {
   HomeContentPreview()

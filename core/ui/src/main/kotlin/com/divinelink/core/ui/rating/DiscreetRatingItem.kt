@@ -14,14 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.extensions.isWholeNumber
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.extension.getColorRating
 
 @Composable
 fun DiscreetRatingItem(
@@ -81,38 +79,11 @@ fun DiscreetRatingItem(
 fun DiscreetRatingItemPreview() {
   AppTheme {
     Surface {
-      Column {
-        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-          DiscreetRatingItem(rating = null)
-          DiscreetRatingItem(rating = null)
-          DiscreetRatingItem(rating = null)
-          DiscreetRatingItem(rating = null)
-        }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-          DiscreetRatingItem(rating = 5.4)
-          DiscreetRatingItem(rating = 5.0)
-          DiscreetRatingItem(rating = 5.0)
-          DiscreetRatingItem(rating = 5.4)
-          DiscreetRatingItem(rating = 5.0)
-          DiscreetRatingItem(rating = 5.0)
-        }
-
-        Row(
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-        ) {
-          DiscreetRatingItem(rating = 1.1)
-          DiscreetRatingItem(rating = 1.1)
-          DiscreetRatingItem(rating = 5.9)
-        }
-        Row(
-          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-        ) {
-          DiscreetRatingItem(rating = 0.0)
-          DiscreetRatingItem(rating = 0.0)
-          DiscreetRatingItem(rating = 9.2)
-          DiscreetRatingItem(rating = 9.2)
-        }
+      Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
+        DiscreetRatingItem(rating = null)
+        DiscreetRatingItem(rating = 1.1)
+        DiscreetRatingItem(rating = 5.4)
+        DiscreetRatingItem(rating = 9.2)
       }
     }
   }
