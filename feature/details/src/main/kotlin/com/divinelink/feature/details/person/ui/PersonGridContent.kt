@@ -128,7 +128,7 @@ internal fun PersonGridContent(
                 .animateContentSize(),
               media = item.mediaItem,
               subtitle = item.role.title,
-              fullDate = false,
+              showDate = true,
               onMediaItemClick = onMediaClick,
             )
           } else {

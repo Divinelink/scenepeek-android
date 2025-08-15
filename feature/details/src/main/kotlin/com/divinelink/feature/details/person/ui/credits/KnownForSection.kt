@@ -53,9 +53,8 @@ fun KnownForSection(
           MediaItem(
             media = credit.mediaItem,
             subtitle = credit.role.title,
-            fullDate = false,
+            showDate = true,
             onMediaItemClick = onMediaClick,
-            onLikeMediaClick = { /* Do nothing */ },
           )
         }
       }

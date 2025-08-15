@@ -28,7 +28,6 @@ class HomeContentTest : ComposeTest() {
     setContentWithTheme {
       HomeContent(
         viewState = uiState,
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -54,7 +53,6 @@ class HomeContentTest : ComposeTest() {
     setContentWithTheme {
       HomeContent(
         viewState = uiState,
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -83,7 +81,6 @@ class HomeContentTest : ComposeTest() {
     setContentWithTheme {
       HomeContent(
         viewState = uiState,
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -108,7 +105,6 @@ class HomeContentTest : ComposeTest() {
     setContentWithTheme {
       HomeContent(
         viewState = uiState,
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},
@@ -137,7 +133,6 @@ class HomeContentTest : ComposeTest() {
     setContentWithTheme {
       HomeContent(
         viewState = uiState,
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},

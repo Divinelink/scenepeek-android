@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -40,15 +39,15 @@ enum class RatingSize(
   val coloredArcSize: Dp,
 ) {
   SMALL(
-    size = 40.dp,
+    size = 36.dp,
     coloredArcSize = 28.dp,
   ),
   MEDIUM(
-    size = 48.dp,
-    coloredArcSize = 36.dp,
+    size = 44.dp,
+    coloredArcSize = 38.dp,
   ),
   LARGE(
-    size = 68.dp,
+    size = 64.dp,
     coloredArcSize = 56.dp,
   ),
 }
@@ -79,7 +78,7 @@ fun TMDBRatingItem(
   }
 
   val textSize = when (size) {
-    RatingSize.SMALL -> MaterialTheme.typography.labelMedium
+    RatingSize.SMALL -> MaterialTheme.typography.labelSmall
     RatingSize.MEDIUM -> MaterialTheme.typography.labelMedium
     RatingSize.LARGE -> MaterialTheme.typography.titleMedium
   }
@@ -87,8 +86,7 @@ fun TMDBRatingItem(
   Box(
     contentAlignment = Alignment.Center,
     modifier = modifier
-      .testTag(TestTags.Rating.TMDB_RATING)
-      .padding(vertical = MaterialTheme.dimensions.keyline_4),
+      .testTag(TestTags.Rating.TMDB_RATING),
   ) {
     Canvas(modifier = Modifier.size(size.size)) {
       drawArc(
@@ -108,8 +106,8 @@ fun TMDBRatingItem(
         sweepAngle = 360f,
         useCenter = true,
         style = Stroke(
-          width = 4.dp.toPx(),
-          miter = 4f,
+          width = 2.dp.toPx(),
+          miter = 2f,
         ),
       )
       drawArc(
@@ -118,7 +116,7 @@ fun TMDBRatingItem(
         sweepAngle = (100f / 10f * (rating?.round(1) ?: 0.0) * 3.6f).toFloat(),
         useCenter = false,
         style = Stroke(
-          width = 4.dp.toPx(),
+          width = 2.dp.toPx(),
           miter = 2f,
           cap = StrokeCap.Round,
         ),
