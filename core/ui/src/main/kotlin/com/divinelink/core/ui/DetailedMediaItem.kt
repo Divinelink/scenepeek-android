@@ -2,15 +2,11 @@ package com.divinelink.core.ui
 
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -29,10 +25,9 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
-import com.divinelink.core.ui.rating.RatingSize
 import com.divinelink.core.ui.rating.StarRatingItem
-import com.divinelink.core.ui.rating.TMDBRatingItem
 
 @Composable
 fun DetailedMediaItem(
@@ -57,26 +52,10 @@ fun DetailedMediaItem(
         .wrapContentSize()
         .fillMaxWidth(),
     ) {
-      Column {
-        Box(
-          modifier = Modifier.widthIn(max = 80.dp),
-          contentAlignment = Alignment.Center,
-        ) {
-          MovieImage(
-            path = mediaItem.posterPath,
-          )
-          TMDBRatingItem(
-            modifier = Modifier
-              .align(Alignment.BottomStart)
-              .offset(y = offset)
-              .padding(start = MaterialTheme.dimensions.keyline_8),
-            rating = mediaItem.voteAverage,
-            voteCount = mediaItem.voteCount,
-            size = RatingSize.MEDIUM,
-          )
-        }
-        Spacer(modifier = Modifier.height(offset))
-      }
+      MediaImage(
+        media = mediaItem,
+        modifier = Modifier.widthIn(max = MaterialTheme.dimensions.keyline_96),
+      )
 
       Column(
         Modifier

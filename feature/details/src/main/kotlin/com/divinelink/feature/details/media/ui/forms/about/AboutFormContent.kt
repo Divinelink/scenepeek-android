@@ -57,12 +57,12 @@ fun AboutFormContent(
           style = MaterialTheme.typography.bodyMedium,
         )
       }
-      item {
-        HorizontalDivider()
-      }
     }
 
     aboutData.genres?.let { genres ->
+      item {
+        HorizontalDivider()
+      }
       item {
         GenresSection(genres, onGenreClick)
       }

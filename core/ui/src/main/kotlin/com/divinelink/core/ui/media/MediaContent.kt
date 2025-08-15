@@ -12,7 +12,6 @@ fun MediaContent(
   modifier: Modifier = Modifier,
   section: MediaSection?,
   onMediaClick: (MediaItem) -> Unit,
-  onMarkAsFavoriteClick: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
 ) {
   if (section == null) return
@@ -21,7 +20,6 @@ fun MediaContent(
     modifier = modifier.testTag(MEDIA_LIST_TAG),
     data = section.data,
     onItemClick = onMediaClick,
-    onMarkAsFavoriteClicked = onMarkAsFavoriteClick,
     onLoadNextPage = onLoadNextPage,
     isLoading = section.shouldLoadMore,
   )

@@ -64,7 +64,6 @@ fun SearchContent(
           }
         }
       },
-      onMarkAsFavoriteClick = onMarkAsFavorite,
       onLoadNextPage = onLoadNextPage,
     )
 

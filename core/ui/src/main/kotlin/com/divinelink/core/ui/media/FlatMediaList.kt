@@ -42,7 +42,6 @@ fun FlatMediaList(
   modifier: Modifier = Modifier,
   data: List<MediaItem>,
   onItemClick: (MediaItem) -> Unit,
-  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   isLoading: Boolean,
 ) {
@@ -72,12 +71,10 @@ fun FlatMediaList(
         is MediaItem.Media.Movie -> MediaItem(
           media = search,
           onMediaItemClick = { onItemClick(search) },
-          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Media.TV -> MediaItem(
           media = search,
           onMediaItemClick = { onItemClick(search) },
-          onLikeMediaClick = { onMarkAsFavoriteClicked(search) },
         )
         is MediaItem.Person -> CreditsItemCard(
           // TODO FIX Duplicate model
@@ -140,7 +137,6 @@ fun MoviesListScreenPreview() {
       FlatMediaList(
         data = MediaItemFactory.MoviesList(),
         onItemClick = {},
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         isLoading = true,
       )

@@ -28,7 +28,6 @@ import com.divinelink.scenepeek.ui.composables.transitionspec.fadeTransitionSpec
 fun HomeContent(
   viewState: HomeViewState,
   modifier: Modifier = Modifier,
-  onMarkAsFavoriteClicked: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   onNavigateToDetails: (MediaItem) -> Unit,
   onFilterClick: (Filter) -> Unit,
@@ -70,14 +69,12 @@ fun HomeContent(
               modifier = modifier,
               section = viewState.popularMovies,
               onMediaClick = onNavigateToDetails,
-              onMarkAsFavoriteClick = onMarkAsFavoriteClicked,
               onLoadNextPage = onLoadNextPage,
             )
             HomeMode.Filtered -> MediaContent(
               modifier = modifier,
               section = viewState.filteredResults,
               onMediaClick = onNavigateToDetails,
-              onMarkAsFavoriteClick = onMarkAsFavoriteClicked,
               onLoadNextPage = onLoadNextPage,
             )
           }
@@ -123,7 +120,6 @@ fun HomeContentPreview() {
           mode = HomeMode.Browser,
           retryAction = null,
         ),
-        onMarkAsFavoriteClicked = {},
         onLoadNextPage = {},
         onNavigateToDetails = {},
         onFilterClick = {},

@@ -83,7 +83,6 @@ fun HomeScreen(
       HomeContent(
         modifier = Modifier,
         viewState = viewState,
-        onMarkAsFavoriteClicked = viewModel::onMarkAsFavoriteClicked,
         onLoadNextPage = viewModel::onLoadNextPage,
         onNavigateToDetails = { media ->
           when (media) {
