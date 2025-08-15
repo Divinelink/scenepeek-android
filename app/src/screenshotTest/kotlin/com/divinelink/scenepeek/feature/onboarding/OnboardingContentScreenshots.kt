@@ -2,12 +2,14 @@ package com.divinelink.scenepeek.feature.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.android.tools.screenshot.PreviewTest
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.onboarding.ui.OnboardingContentPreview
 import com.divinelink.feature.onboarding.ui.OnboardingUiState
 import com.divinelink.feature.onboarding.ui.provider.OnboardingUiStatePreviewParameterProvider
 
 @Previews
+@PreviewTest
 @Composable
 fun OnboardingContentScreenshots(
   @PreviewParameter(OnboardingUiStatePreviewParameterProvider::class) uiState: OnboardingUiState,

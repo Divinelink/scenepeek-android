@@ -5,8 +5,8 @@ import com.android.tools.screenshot.PreviewTest
 import com.divinelink.core.ui.Previews
 import com.divinelink.feature.settings.app.about.AboutCardPreview
 
-@Previews
 @PreviewTest
+@Previews
 @Composable
 fun AboutCardScreenshots() {
   AboutCardPreview()
