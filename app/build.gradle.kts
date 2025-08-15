@@ -170,6 +170,9 @@ dependencies {
 
   testImplementation(libs.kotlin.test.junit)
 
+  screenshotTestImplementation(libs.screenshot.validation.api)
+  screenshotTestImplementation(libs.compose.ui.tooling)
+
   androidTestImplementation(libs.androidx.compose.ui.test)
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.truth)

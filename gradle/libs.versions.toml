@@ -63,7 +63,7 @@ timber = "5.0.1"
 
 # Testing
 kover = "0.8.3"
-screenshot = "0.0.1-alpha10"
+screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
 truth = "1.4.4"
 turbine = "1.2.1"
@@ -174,6 +174,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot"}
 
 # UI
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
