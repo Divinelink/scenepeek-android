@@ -41,6 +41,7 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.WatchTrailerButton
 import com.divinelink.core.ui.components.WatchlistButton
 import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.mediaImageDropShadow
 import com.divinelink.core.ui.rating.MediaRatingItem
 import com.divinelink.core.ui.rating.YourRatingText
 import com.divinelink.feature.details.R
@@ -82,7 +83,9 @@ fun CollapsibleDetailsContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       MovieImage(
-        modifier = Modifier.height(MaterialTheme.dimensions.posterSizeSmall),
+        modifier = Modifier
+          .mediaImageDropShadow()
+          .height(MaterialTheme.dimensions.posterSizeSmall),
         path = mediaDetails.posterPath,
       )
 
