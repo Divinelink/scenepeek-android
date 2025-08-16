@@ -94,7 +94,7 @@ fun UserDataScreenContent(
               )
             } else {
               MediaListContent(
-                list = it.data,
+                list = it.media,
                 onClick = { media ->
                   onNavigate(
                     Navigation.DetailsRoute(

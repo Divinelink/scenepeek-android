@@ -14,7 +14,6 @@ import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 
 class FetchUserDataUseCase(
   private val sessionStorage: SessionStorage,
@@ -48,36 +47,40 @@ class FetchUserDataUseCase(
         sortBy = parameters.sortBy.value,
         accountId = accountId,
         sessionId = sessionId,
-      ).last().fold(
-        onSuccess = {
-          handleSuccessResponse(
-            type = MediaType.TV,
-            parameters = parameters,
-            response = it,
-          )
-        },
-        onFailure = {
-          emit(Result.failure(it))
-        },
-      )
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.TV,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
     } else {
       accountRepository.fetchRatedMovies(
         page = parameters.page,
         sortBy = parameters.sortBy.value,
         accountId = accountId,
         sessionId = sessionId,
-      ).last().fold(
-        onSuccess = {
-          handleSuccessResponse(
-            type = MediaType.MOVIE,
-            parameters = parameters,
-            response = it,
-          )
-        },
-        onFailure = {
-          emit(Result.failure(it))
-        },
-      )
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.MOVIE,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
     }
   }
 
@@ -92,36 +95,40 @@ class FetchUserDataUseCase(
         sortBy = parameters.sortBy.value,
         accountId = accountId,
         sessionId = sessionId,
-      ).last().fold(
-        onSuccess = {
-          handleSuccessResponse(
-            type = MediaType.TV,
-            parameters = parameters,
-            response = it,
-          )
-        },
-        onFailure = {
-          emit(Result.failure(it))
-        },
-      )
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.TV,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
     } else {
       accountRepository.fetchMoviesWatchlist(
         page = parameters.page,
         sortBy = parameters.sortBy.value,
         accountId = accountId,
         sessionId = sessionId,
-      ).last().fold(
-        onSuccess = {
-          handleSuccessResponse(
-            type = MediaType.MOVIE,
-            parameters = parameters,
-            response = it,
-          )
-        },
-        onFailure = {
-          emit(Result.failure(it))
-        },
-      )
+      ).collect { result ->
+        result.fold(
+          onSuccess = {
+            handleSuccessResponse(
+              type = MediaType.MOVIE,
+              parameters = parameters,
+              response = it,
+            )
+          },
+          onFailure = {
+            emit(Result.failure(it))
+          },
+        )
+      }
     }
   }
 
@@ -138,6 +145,7 @@ class FetchUserDataUseCase(
           data = response.list,
           totalResults = response.totalResults,
           type = type,
+          page = response.page,
           canFetchMore = canFetchMore,
         ),
       ),
