@@ -11,7 +11,9 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
+import com.divinelink.core.network.Resource
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -77,7 +79,7 @@ class FetchPersonDetailsUseCase(
 
       asyncDetails?.await()?.let { send(it) }
 
-      launch(dispatcher.io) {
+      launch(dispatcher.default) {
         val knownForDepartment = parameters.knownForDepartment
           ?: asyncDetails?.await()?.data?.personDetails?.person?.knownForDepartment
           ?: KnownForDepartment.Acting.value
@@ -85,42 +87,54 @@ class FetchPersonDetailsUseCase(
         repository.fetchPersonCredits(parameters.id)
           .catch { Timber.e(it) }
           .collect { result ->
-            result.fold(
-              onFailure = { Timber.e(it) },
-              onSuccess = {
-                val knownForCredits = calculateKnownForCredits(
-                  department = knownForDepartment,
-                  result = result,
-                )
-
-                val credits = findCreditsForPerson(
-                  department = knownForDepartment,
-                  result = result,
-                )
-
-                val movies = credits.mapValues { department ->
-                  department.value.filter { it.mediaItem is MediaItem.Media.Movie }
-                }.filter { it.value.isNotEmpty() }
-
-                val tvShows = credits.mapValues { department ->
-                  department.value.filter { it.mediaItem is MediaItem.Media.TV }
-                }.filter { it.value.isNotEmpty() }
-
-                send(
-                  Result.success(
-                    PersonDetailsResult.CreditsSuccess(
-                      knownForCredits = knownForCredits,
-                      knownForDepartment = knownForDepartment,
-                      movies = movies,
-                      tvShows = tvShows,
-                    ),
-                  ),
-                )
-              },
-            )
+            when (result) {
+              is Resource.Error -> {
+                Timber.d(result.error)
+              }
+              is Resource.Loading<PersonCombinedCredits?> -> result.data?.let { data ->
+                calculateCredits(knownForDepartment, data)
+              }
+              is Resource.Success<PersonCombinedCredits?> -> result.data?.let { data ->
+                calculateCredits(knownForDepartment, data)
+              }
+            }
           }
       }
     }
+
+  private suspend fun ProducerScope<Result<PersonDetailsResult>>.calculateCredits(
+    knownForDepartment: String,
+    data: PersonCombinedCredits,
+  ) {
+    val knownForCredits = calculateKnownForCredits(
+      department = knownForDepartment,
+      result = Result.success(data),
+    )
+
+    val credits = findCreditsForPerson(
+      department = knownForDepartment,
+      result = Result.success(data),
+    )
+
+    val movies = credits.mapValues { department ->
+      department.value.filter { it.mediaItem is MediaItem.Media.Movie }
+    }.filter { it.value.isNotEmpty() }
+
+    val tvShows = credits.mapValues { department ->
+      department.value.filter { it.mediaItem is MediaItem.Media.TV }
+    }.filter { it.value.isNotEmpty() }
+
+    send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = knownForCredits,
+          knownForDepartment = knownForDepartment,
+          movies = movies,
+          tvShows = tvShows,
+        ),
+      ),
+    )
+  }
 
   private fun calculateMovieScore(media: PersonCredit): Double {
     val order = (media.role as? PersonRole.MovieActor)?.order ?: Int.MAX_VALUE

@@ -7,14 +7,17 @@ import com.divinelink.core.data.person.credits.mapper.toEntityCrew
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.changes.mapper.map
 import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.media.model.changes.ChangesParameters
+import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,6 +28,7 @@ import kotlin.time.Clock
 class ProdPersonRepository(
   private val service: PersonService,
   private val dao: PersonDao,
+  private val mediaDao: MediaDao,
   private val clock: Clock,
   val dispatcher: DispatcherProvider,
 ) : PersonRepository {
@@ -44,21 +48,34 @@ class ProdPersonRepository(
     }
   }
 
-  override fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>> = channelFlow {
-    dao.fetchPersonCombinedCredits(id).collectLatest { personCredits ->
-      if (personCredits != null) {
-        Timber.d("Person credits | ${personCredits.id} | found in database")
-        send(Result.success(personCredits.map()))
-      } else {
-        Timber.d("Person credits not found in database")
-        service.fetchPersonCombinedCredits(id).collectLatest { response ->
-          dao.insertPersonCredits(response.id)
-          dao.insertPersonCrewCredits(response.toEntityCrew())
-          dao.insertPersonCastCredits(response.toEntityCast())
+  override fun fetchPersonCredits(id: Long): Flow<Resource<PersonCombinedCredits?>> =
+    networkBoundResource(
+      query = {
+        channelFlow {
+          dao.fetchPersonCombinedCredits(id).collect { credits ->
+            Timber.d("Person credits | ${credits?.id} | found in database")
+            send(credits?.map())
+          }
+//          combine(
+//            mediaDao.fetchFavoriteMovieIds(),
+//            mediaDao.fetchFavoriteTVIds(),
+//            dao.fetchPersonCombinedCredits(id),
+//          ) { _, _, credits ->
+//            Timber.d("Person credits | ${credits?.id} | found in database")
+//            send(credits?.map())
+//          }
         }
-      }
-    }
-  }
+      },
+      fetch = { service.fetchPersonCombinedCredits(id) },
+      saveFetchResult = { response ->
+        response.collect { credits ->
+          dao.insertPersonCredits(credits.id)
+          dao.insertPersonCrewCredits(credits.toEntityCrew())
+          dao.insertPersonCastCredits(credits.toEntityCast())
+        }
+      },
+      shouldFetch = { data -> data == null },
+    )
 
   override fun fetchPersonChanges(
     id: Long,
