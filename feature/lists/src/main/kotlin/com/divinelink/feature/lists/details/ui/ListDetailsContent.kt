@@ -14,7 +14,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.details.ListDetailsData
-import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -29,7 +29,7 @@ fun ListDetailsContent(
   action: (ListDetailsAction) -> Unit,
   onUpdateProgress: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
-  onNavigateToAddToList: (MediaItem) -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   PullToRefreshBox(
     isRefreshing = state.refreshing,
@@ -55,7 +55,7 @@ fun ListDetailsContent(
           action = action,
           onUpdateToolbarProgress = onUpdateProgress,
           onBackdropLoaded = onBackdropLoaded,
-          onNavigateToAddToList = onNavigateToAddToList,
+          onNavigate = onNavigate,
         )
     }
   }
@@ -73,7 +73,7 @@ fun ListDetailsContentPreview(
         action = {},
         onUpdateProgress = {},
         onBackdropLoaded = {},
-        onNavigateToAddToList = {},
+        onNavigate = {},
       )
     }
   }

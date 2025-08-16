@@ -7,7 +7,7 @@ package com.divinelink.core.model.media
  */
 enum class MediaType(
   val value: String,
-  val traktPath: String
+  val traktPath: String,
 ) {
   TV(value = "tv", traktPath = "shows"),
   MOVIE(value = "movie", traktPath = "movies"),

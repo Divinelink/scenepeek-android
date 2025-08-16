@@ -24,8 +24,10 @@ import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.person.GroupedPersonCredits
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.ui.CreditMediaItem
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.feature.details.R
@@ -36,11 +38,11 @@ import timber.log.Timber
 @Composable
 internal fun PersonGridContent(
   modifier: Modifier = Modifier,
+  onNavigate: (Navigation) -> Unit,
   grid: GridCells,
   credits: GroupedPersonCredits,
   filters: List<CreditFilter>,
   isGrid: Boolean,
-  onMediaClick: (MediaItem) -> Unit,
   setCurrentDepartment: (String) -> Unit,
   mediaType: MediaType,
   name: String,
@@ -129,7 +131,16 @@ internal fun PersonGridContent(
               media = item.mediaItem,
               subtitle = item.role.title,
               showDate = true,
-              onMediaItemClick = onMediaClick,
+              onClick = {
+                onNavigate(
+                  DetailsRoute(
+                    id = it.id,
+                    mediaType = it.mediaType,
+                    isFavorite = null,
+                  ),
+                )
+              },
+              onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
             )
           } else {
             CreditMediaItem(
@@ -138,7 +149,16 @@ internal fun PersonGridContent(
                 .animateContentSize(),
               mediaItem = item.mediaItem,
               subtitle = item.role.title,
-              onClick = onMediaClick,
+              onClick = {
+                onNavigate(
+                  DetailsRoute(
+                    id = it.id,
+                    mediaType = it.mediaType,
+                    isFavorite = null,
+                  ),
+                )
+              },
+              onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
             )
           }
         }

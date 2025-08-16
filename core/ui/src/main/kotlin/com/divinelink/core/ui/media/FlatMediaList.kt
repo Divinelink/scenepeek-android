@@ -42,6 +42,7 @@ fun FlatMediaList(
   modifier: Modifier = Modifier,
   data: List<MediaItem>,
   onItemClick: (MediaItem) -> Unit,
+  onLongClick: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   isLoading: Boolean,
 ) {
@@ -70,11 +71,13 @@ fun FlatMediaList(
       when (search) {
         is MediaItem.Media.Movie -> MediaItem(
           media = search,
-          onMediaItemClick = { onItemClick(search) },
+          onClick = { onItemClick(search) },
+          onLongClick = onLongClick,
         )
         is MediaItem.Media.TV -> MediaItem(
           media = search,
-          onMediaItemClick = { onItemClick(search) },
+          onClick = { onItemClick(search) },
+          onLongClick = onLongClick,
         )
         is MediaItem.Person -> CreditsItemCard(
           // TODO FIX Duplicate model
@@ -137,6 +140,7 @@ fun MoviesListScreenPreview() {
       FlatMediaList(
         data = MediaItemFactory.MoviesList(),
         onItemClick = {},
+        onLongClick = {},
         onLoadNextPage = {},
         isLoading = true,
       )

@@ -1,36 +1,31 @@
 package com.divinelink.core.model.media
 
 import com.divinelink.core.model.person.Gender
+import kotlinx.serialization.Serializable
 
-sealed class MediaItem(
-  open val id: Int,
-  open val name: String,
-  open val posterPath: String?,
-  open val backdropPath: String?,
-  open val mediaType: MediaType,
-) {
+@Serializable
+sealed class MediaItem {
   abstract val uniqueIdentifier: String
+  abstract val id: Int
+  abstract val name: String
+  abstract val posterPath: String?
+  abstract val backdropPath: String?
+  abstract val mediaType: MediaType
 
-  sealed class Media(
-    override val id: Int,
-    override val name: String,
-    override val posterPath: String?,
-    override val backdropPath: String?,
-    open val releaseDate: String,
-    open val voteAverage: Double,
-    open val voteCount: Int,
-    open val overview: String,
-    open val isFavorite: Boolean?,
-    override val mediaType: MediaType,
-    open val accountRating: Int?,
-  ) : MediaItem(
-    id = id,
-    posterPath = posterPath,
-    backdropPath = backdropPath,
-    name = name,
-    mediaType = mediaType,
-  ) {
+  @Serializable
+  sealed class Media(override val mediaType: MediaType) : MediaItem() {
+    abstract override val id: Int
+    abstract override val name: String
+    abstract override val posterPath: String?
+    abstract override val backdropPath: String?
+    abstract val releaseDate: String
+    abstract val voteAverage: Double
+    abstract val voteCount: Int
+    abstract val overview: String
+    abstract val isFavorite: Boolean?
+    abstract val accountRating: Int?
 
+    @Serializable
     data class TV(
       override val id: Int,
       override val name: String,
@@ -43,19 +38,10 @@ sealed class MediaItem(
       override val isFavorite: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(
-      id = id,
-      posterPath = posterPath,
-      name = name,
-      releaseDate = releaseDate,
-      voteAverage = voteAverage,
-      voteCount = voteCount,
-      overview = overview,
-      isFavorite = isFavorite,
       mediaType = MediaType.TV,
-      accountRating = accountRating,
-      backdropPath = backdropPath,
     )
 
+    @Serializable
     data class Movie(
       override val id: Int,
       override val name: String,
@@ -68,18 +54,7 @@ sealed class MediaItem(
       override val isFavorite: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(
-      id = id,
-      posterPath = posterPath,
-      backdropPath = backdropPath,
-      name = name,
-      releaseDate = releaseDate,
-      voteAverage = voteAverage,
-      voteCount = voteCount,
-      overview = overview,
-      isFavorite = isFavorite == true,
       mediaType = MediaType.MOVIE,
-      accountRating = accountRating,
-
     )
 
     override val uniqueIdentifier: String
@@ -92,25 +67,19 @@ sealed class MediaItem(
     val profilePath: String?,
     val gender: Gender,
     val knownForDepartment: String?,
-  ) : MediaItem(
-    id = id,
-    name = name,
-    posterPath = profilePath,
-    mediaType = MediaType.PERSON,
-    backdropPath = null,
-  ) {
-    override val uniqueIdentifier: String
-      get() = "person-$id"
+  ) : MediaItem() {
+    override val posterPath: String? = profilePath
+    override val backdropPath: String? = null
+    override val mediaType: MediaType = MediaType.PERSON
+    override val uniqueIdentifier: String = "person-$id"
   }
 
-  data object Unknown : MediaItem(
-    id = -1,
-    posterPath = null,
-    name = "",
-    mediaType = MediaType.UNKNOWN,
-    backdropPath = null,
-  ) {
-    override val uniqueIdentifier: String
-      get() = "unknown-$id"
+  data object Unknown : MediaItem() {
+    override val id: Int = -1
+    override val name: String = ""
+    override val posterPath: String? = null
+    override val backdropPath: String? = null
+    override val mediaType: MediaType = MediaType.UNKNOWN
+    override val uniqueIdentifier: String = "unknown-$id"
   }
 }

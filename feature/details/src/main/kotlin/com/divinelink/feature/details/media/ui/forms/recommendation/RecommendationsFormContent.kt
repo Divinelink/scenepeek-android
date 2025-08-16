@@ -27,6 +27,7 @@ fun RecommendationsFormContent(
   title: String,
   recommendations: DetailsData.Recommendations,
   onItemClick: (MediaItem.Media) -> Unit,
+  onLongClick: (MediaItem.Media) -> Unit,
 ) {
   ScenePeekLazyColumn(
     modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
@@ -58,6 +59,7 @@ fun RecommendationsFormContent(
         DetailedMediaItem(
           mediaItem = media,
           onClick = onItemClick,
+          onLongClick = onLongClick,
         )
       }
 

@@ -31,7 +31,6 @@ import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
-import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
@@ -171,14 +170,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onUpdateProgress = { progress -> toolbarProgress = progress },
           onBackdropLoaded = { onBackdropLoaded = true },
-          onNavigateToAddToList = {
-            onNavigate(
-              AddToListRoute(
-                id = it.id,
-                mediaType = it.mediaType,
-              ),
-            )
-          },
+          onNavigate = onNavigate,
         )
       }
     },

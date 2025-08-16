@@ -127,6 +127,7 @@ fun PersonScreen(
             },
             onApplyFilter = viewModel::onApplyFilter,
             onProgressUpdate = { toolbarProgress = it },
+            onNavigate = onNavigate,
           )
         }
       }

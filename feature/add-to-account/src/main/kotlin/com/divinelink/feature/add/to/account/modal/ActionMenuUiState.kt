@@ -27,6 +27,7 @@ data class ActionMenuUiState(
       ActionMenuIntent.Share,
     )
     ActionMenuEntryPoint.Other -> listOf(
+      ActionMenuIntent.AddToList,
       ActionMenuIntent.Share,
     )
   }

@@ -57,6 +57,7 @@ import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.MovieImage
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
@@ -90,6 +91,7 @@ fun PersonContent(
   onUpdateViewMode: () -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
   onProgressUpdate: (Float) -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   var selectedPage by rememberSaveable { mutableIntStateOf(uiState.selectedTabIndex) }
   val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
@@ -275,6 +277,7 @@ fun PersonContent(
                       KnownForSection(
                         list = uiState.knownForCredits,
                         onMediaClick = onMediaClick,
+                        onNavigate = onNavigate,
                       )
                     }
                   }
@@ -292,7 +295,7 @@ fun PersonContent(
                   credits = movies,
                   filters = movieFilters,
                   isGrid = isGrid,
-                  onMediaClick = onMediaClick,
+                  onNavigate = onNavigate,
                   setCurrentDepartment = { currentMovieDepartment = it },
                   mediaType = MediaType.MOVIE,
                   name = personDetails.personDetails.person.name,
@@ -307,7 +310,7 @@ fun PersonContent(
                   credits = tvShows,
                   filters = tvFilters,
                   isGrid = isGrid,
-                  onMediaClick = onMediaClick,
+                  onNavigate = onNavigate,
                   setCurrentDepartment = { currentTvDepartment = it },
                   mediaType = MediaType.TV,
                   name = personDetails.personDetails.person.name,
@@ -405,6 +408,7 @@ fun PersonContentListPreview(
           onUpdateViewMode = {},
           onApplyFilter = {},
           onProgressUpdate = {},
+          onNavigate = {},
         )
       }
     }
@@ -448,6 +452,7 @@ fun PersonContentGridPreview() {
           onUpdateViewMode = {},
           onApplyFilter = {},
           onProgressUpdate = {},
+          onNavigate = {},
         )
       }
     }

@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -34,14 +35,14 @@ fun DetailedMediaItem(
   modifier: Modifier = Modifier,
   mediaItem: MediaItem.Media,
   onClick: (MediaItem.Media) -> Unit,
-  onLongClick: () -> Unit = {},
+  onLongClick: (MediaItem.Media) -> Unit,
 ) {
-  val offset = MaterialTheme.dimensions.keyline_28
   Card(
     modifier = modifier
+      .clip(MaterialTheme.shapes.large)
       .combinedClickable(
         onClick = { onClick(mediaItem) },
-        onLongClick = onLongClick,
+        onLongClick = { onLongClick(mediaItem) },
       ),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
@@ -106,6 +107,7 @@ fun DetailedMediaItemPreview(
       DetailedMediaItem(
         mediaItem = mediaItem,
         onClick = {},
+        onLongClick = {},
       )
     }
   }

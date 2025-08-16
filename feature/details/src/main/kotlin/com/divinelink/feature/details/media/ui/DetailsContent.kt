@@ -54,6 +54,7 @@ import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -418,6 +419,7 @@ private fun MediaDetailsContent(
                 recommendations = form.data as DetailsData.Recommendations,
                 title = uiState.mediaDetails.title,
                 onItemClick = onMediaItemClick,
+                onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
               )
               is DetailsData.Reviews -> ReviewsFormContent(
                 modifier = Modifier.fillMaxSize(),

@@ -6,6 +6,7 @@ import com.divinelink.core.navigation.route.Navigation.AppearanceSettingsRoute
 import com.divinelink.core.navigation.route.Navigation.JellyseerrSettingsRoute
 import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.feature.add.to.account.list.navigation.addToListScreen
+import com.divinelink.feature.add.to.account.modal.navigation.defaultMediaActionMenu
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
@@ -242,6 +243,13 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.WebViewRoute>()) {
     { navController, _ ->
       webViewScreen(navController::findNavigation)
+    }
+  }
+
+  // Action Menu Navigation
+  single<NavGraphExtension>(named<Navigation.ActionMenuRoute.Media>()) {
+    { navController, _ ->
+      defaultMediaActionMenu(navController::findNavigation)
     }
   }
 
