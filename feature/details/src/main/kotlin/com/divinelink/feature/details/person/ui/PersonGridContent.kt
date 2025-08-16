@@ -164,7 +164,8 @@ internal fun PersonGridContent(
         }
       }
     }
-    item {
+
+    item(span = { GridItemSpan(maxLineSpan) }) {
       Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
     }
   }
