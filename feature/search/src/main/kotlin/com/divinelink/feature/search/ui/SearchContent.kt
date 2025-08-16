@@ -18,7 +18,6 @@ fun SearchContent(
   uiState: SearchUiState,
   onNavigate: (Navigation) -> Unit,
   onRetryClick: () -> Unit,
-  onMarkAsFavorite: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
 ) {
   when {

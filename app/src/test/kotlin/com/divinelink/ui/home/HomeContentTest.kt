@@ -32,6 +32,7 @@ class HomeContentTest : ComposeTest() {
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
+        onNavigate = {},
         onRetryClick = {},
       )
     }
@@ -57,6 +58,7 @@ class HomeContentTest : ComposeTest() {
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
+        onNavigate = {},
         onRetryClick = { onRetryClicked = true },
       )
     }
@@ -85,6 +87,7 @@ class HomeContentTest : ComposeTest() {
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
+        onNavigate = {},
         onRetryClick = {},
       )
     }
@@ -109,6 +112,7 @@ class HomeContentTest : ComposeTest() {
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
+        onNavigate = {},
         onRetryClick = {},
       )
     }
@@ -137,6 +141,7 @@ class HomeContentTest : ComposeTest() {
         onNavigateToDetails = {},
         onFilterClick = {},
         onClearFiltersClick = {},
+        onNavigate = {},
         onRetryClick = {},
       )
     }

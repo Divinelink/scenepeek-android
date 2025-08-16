@@ -1,10 +1,14 @@
 package com.divinelink.ui.home
 
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
@@ -64,6 +68,38 @@ class HomeScreenTest : ComposeTest() {
         isFavorite = false,
         mediaType = MediaType.MOVIE,
       ),
+    )
+  }
+
+  @Test
+  fun `test on media long click opens action modal`() = runTest {
+    var route: Navigation? = null
+    getPopularMoviesUseCase.mockFetchPopularMovies(
+      response = flowOf(Result.success(MediaItemFactory.MoviesList())),
+    )
+
+    val viewModel = HomeViewModel(
+      getPopularMoviesUseCase = getPopularMoviesUseCase.mock,
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
+      getFavoriteMoviesUseCase = getFavoriteMoviesUseCase.mock,
+      searchStateManager = SearchStateManager(),
+    )
+
+    setVisibilityScopeContent {
+      HomeScreen(
+        onNavigate = { route = it },
+        animatedVisibilityScope = this,
+        viewModel = viewModel,
+      )
+    }
+    composeTestRule
+      .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+      .performTouchInput {
+        longClick()
+      }
+
+    assertThat(route).isEqualTo(
+      Navigation.ActionMenuRoute.Media(MediaItemFactory.MoviesList().first().encodeToString()),
     )
   }
 }
