@@ -2,7 +2,6 @@ package com.divinelink.core.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -19,15 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.colors
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 
 @Composable
 fun FavoriteButton(
   modifier: Modifier = Modifier,
   isFavorite: Boolean,
-  transparentBackground: Boolean = false,
   inactiveColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
   onClick: () -> Unit,
 ) {
@@ -39,16 +37,10 @@ fun FavoriteButton(
     label = "Like button color",
   )
 
-  val backgroundColor = when (transparentBackground) {
-    true -> Color.Transparent
-    false -> MaterialTheme.colorScheme.surface.copy(alpha = 0.80f)
-  }
-
   Box(
     modifier = modifier
       .padding(MaterialTheme.dimensions.keyline_4)
       .clip(MaterialTheme.shape.rounded)
-      .background(color = backgroundColor)
       .clickable { onClick() }
       .size(MaterialTheme.dimensions.keyline_40),
   ) {

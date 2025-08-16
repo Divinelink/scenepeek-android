@@ -221,7 +221,6 @@ fun DetailsContent(
             isFavorite = viewState.mediaDetails?.isFavorite ?: false,
             onClick = onMarkAsFavoriteClicked,
             inactiveColor = textColor,
-            transparentBackground = true,
           )
 
           IconButton(

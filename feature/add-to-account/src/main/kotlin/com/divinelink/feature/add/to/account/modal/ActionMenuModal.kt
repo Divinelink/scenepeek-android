@@ -72,6 +72,7 @@ fun ActionMenuModal(
     content = {
       ActionMenuContent(
         uiState = uiState,
+        onMarkAsFavorite = viewModel::onMarkAsFavorite,
         onAction = { intent ->
           when (intent) {
             ActionMenuIntent.MultiSelect -> {
@@ -101,6 +102,7 @@ fun ActionMenuContentPreview(
     Surface {
       ActionMenuContent(
         uiState = state,
+        onMarkAsFavorite = {},
         onAction = {},
       )
     }
