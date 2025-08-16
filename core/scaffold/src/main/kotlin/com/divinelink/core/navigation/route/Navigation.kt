@@ -112,4 +112,11 @@ sealed interface Navigation {
     val url: String,
     val title: String,
   ) : Navigation
+
+  @Serializable
+  sealed interface ActionMenuRoute : Navigation {
+
+    @Serializable
+    data class Media(val encodedMediaItem: String) : ActionMenuRoute
+  }
 }

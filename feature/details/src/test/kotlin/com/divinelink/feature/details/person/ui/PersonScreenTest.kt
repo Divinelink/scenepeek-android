@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -26,8 +27,10 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.tab.PersonTab
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.ComposeTest
@@ -529,6 +532,66 @@ class PersonScreenTest : ComposeTest() {
           isFavorite = null,
           mediaType = MediaType.TV,
         ),
+      )
+    }
+  }
+
+  @Test
+  fun `test onMediaLongClick opens action modal`() = runTest {
+    var route: Navigation? = null
+    val channel = Channel<Result<PersonDetailsResult>>()
+
+    fetchPersonDetailsUseCase.mockSuccess(
+      response = channel,
+    )
+
+    val viewModel = PersonViewModel(
+      fetchPersonDetailsUseCase = fetchPersonDetailsUseCase.mock,
+      fetchChangesUseCase = fetchChangesUseCase.mock,
+      savedStateHandle = savedStateHandle,
+    )
+
+    setVisibilityScopeContent {
+      PersonScreen(
+        onNavigate = { route = it },
+        viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
+        animatedVisibilityScope = this,
+      )
+    }
+    with(composeTestRule) {
+      channel.send(
+        Result.success(PersonDetailsResult.DetailsSuccess(PersonDetailsFactory.steveCarell())),
+      )
+      channel.send(
+        Result.success(
+          PersonDetailsResult.CreditsSuccess(
+            knownForCredits = PersonCastCreditFactory.knownFor(),
+            knownForDepartment = KnownForDepartment.Acting.value,
+            movies = GroupedPersonCreditsSample.movies(),
+            tvShows = GroupedPersonCreditsSample.tvShows(),
+          ),
+        ),
+      )
+
+      onNodeWithContentDescription(
+        getString(uiR.string.core_ui_movie_image_placeholder),
+      ).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Person.ABOUT_FORM).performScrollToNode(
+        matcher = hasTestTag(TestTags.Person.KNOWN_FOR_SECTION),
+      )
+
+      onNodeWithTag(TestTags.Person.KNOWN_FOR_SECTION).assertIsDisplayed()
+
+      composeTestRule
+        .onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+        .performTouchInput {
+          longClick()
+        }
+
+      assertThat(route).isEqualTo(
+        Navigation.ActionMenuRoute.Media(theOffice().mediaItem.encodeToString()),
       )
     }
   }

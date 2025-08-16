@@ -1,5 +1,6 @@
 package com.divinelink.core.ui
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,10 +34,16 @@ fun CreditMediaItem(
   mediaItem: MediaItem.Media,
   subtitle: String? = null,
   onClick: (MediaItem.Media) -> Unit,
+  onLongClick: (MediaItem.Media) -> Unit,
 ) {
   Card(
-    modifier = modifier.testTag(TestTags.Person.CREDIT_MEDIA_ITEM.format(mediaItem.name)),
-    onClick = { onClick(mediaItem) },
+    modifier = modifier
+      .clip(CardDefaults.shape)
+      .combinedClickable(
+        onClick = { onClick(mediaItem) },
+        onLongClick = { onLongClick(mediaItem) },
+      )
+      .testTag(TestTags.Person.CREDIT_MEDIA_ITEM.format(mediaItem.name)),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     Row(
@@ -93,6 +101,7 @@ fun CreditMediaItemPreview(
         mediaItem = mediaItem,
         subtitle = "Joy (voice)",
         onClick = {},
+        onLongClick = {},
       )
     }
   }

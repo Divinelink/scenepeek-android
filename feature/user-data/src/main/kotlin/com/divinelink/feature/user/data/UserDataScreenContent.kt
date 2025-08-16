@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
 import com.divinelink.core.navigation.route.Navigation
@@ -39,7 +40,7 @@ fun UserDataScreenContent(
   onRefresh: () -> Unit,
   onLoadMore: () -> Unit,
   onTabSelected: (Int) -> Unit,
-  onNavigateToMediaDetails: (Navigation.DetailsRoute) -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
@@ -94,8 +95,8 @@ fun UserDataScreenContent(
             } else {
               MediaListContent(
                 list = it.data,
-                onMediaClick = { media ->
-                  onNavigateToMediaDetails(
+                onClick = { media ->
+                  onNavigate(
                     Navigation.DetailsRoute(
                       mediaType = media.mediaType,
                       id = media.id,
@@ -104,6 +105,9 @@ fun UserDataScreenContent(
                   )
                 },
                 onLoadMore = onLoadMore,
+                onLongClick = { media ->
+                  onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
+                },
               )
             }
           }

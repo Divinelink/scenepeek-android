@@ -112,6 +112,7 @@ fun HomeScreen(
         onFilterClick = viewModel::onFilterClick,
         onClearFiltersClick = viewModel::onClearFiltersClicked,
         onRetryClick = viewModel::onRetryClick,
+        onNavigate = onNavigate,
       )
     }
   }

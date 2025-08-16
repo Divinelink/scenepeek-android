@@ -16,6 +16,8 @@ import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaSection
+import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.Filter
@@ -30,6 +32,7 @@ fun HomeContent(
   modifier: Modifier = Modifier,
   onLoadNextPage: () -> Unit,
   onNavigateToDetails: (MediaItem) -> Unit,
+  onNavigate: (Navigation) -> Unit,
   onFilterClick: (Filter) -> Unit,
   onClearFiltersClick: () -> Unit,
   onRetryClick: () -> Unit,
@@ -70,12 +73,14 @@ fun HomeContent(
               section = viewState.popularMovies,
               onMediaClick = onNavigateToDetails,
               onLoadNextPage = onLoadNextPage,
+              onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
             )
             HomeMode.Filtered -> MediaContent(
               modifier = modifier,
               section = viewState.filteredResults,
               onMediaClick = onNavigateToDetails,
               onLoadNextPage = onLoadNextPage,
+              onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
             )
           }
         }
@@ -125,6 +130,7 @@ fun HomeContentPreview() {
         onFilterClick = {},
         onClearFiltersClick = {},
         onRetryClick = {},
+        onNavigate = {},
       )
     }
   }

@@ -1,19 +1,26 @@
 package com.divinelink.feature.search
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.longClick
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTouchInput
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaSection
+import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.MEDIA_LIST_TAG
 import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.components.MOVIE_CARD_ITEM_TAG
 import com.divinelink.feature.search.ui.SearchContent
 import com.divinelink.feature.search.ui.SearchUiState
+import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
 class SearchContentTest : ComposeTest() {
@@ -26,7 +33,6 @@ class SearchContentTest : ComposeTest() {
       SearchContent(
         onNavigate = {},
         uiState = uiState,
-        onMarkAsFavorite = {},
         onLoadNextPage = {},
         onRetryClick = {},
       )
@@ -51,7 +57,6 @@ class SearchContentTest : ComposeTest() {
       SearchContent(
         onNavigate = {},
         uiState = uiState,
-        onMarkAsFavorite = {},
         onLoadNextPage = {},
         onRetryClick = {},
       )
@@ -59,6 +64,39 @@ class SearchContentTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(MEDIA_LIST_TAG).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test long click on media card`() {
+    var route: Navigation? = null
+
+    val uiState = SearchUiState.initial().copy(
+      searchResults = MediaSection(
+        data = MediaItemFactory.MoviesList(),
+        shouldLoadMore = false,
+      ),
+      focusSearch = false,
+    )
+
+    setContentWithTheme {
+      SearchContent(
+        onNavigate = { route = it },
+        uiState = uiState,
+        onLoadNextPage = {},
+        onRetryClick = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onAllNodesWithTag(MOVIE_CARD_ITEM_TAG)[0]
+        .performTouchInput {
+          longClick()
+        }
+
+      assertThat(route).isEqualTo(
+        Navigation.ActionMenuRoute.Media(MediaItemFactory.MoviesList().first().encodeToString()),
+      )
     }
   }
 
@@ -75,7 +113,6 @@ class SearchContentTest : ComposeTest() {
       SearchContent(
         onNavigate = {},
         uiState = uiState,
-        onMarkAsFavorite = {},
         onLoadNextPage = {},
         onRetryClick = {},
       )
@@ -106,7 +143,6 @@ class SearchContentTest : ComposeTest() {
         onNavigate = {},
         onLoadNextPage = {},
         onRetryClick = {},
-        onMarkAsFavorite = {},
       )
     }
 

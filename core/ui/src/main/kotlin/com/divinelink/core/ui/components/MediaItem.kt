@@ -1,6 +1,6 @@
 package com.divinelink.core.ui.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,7 +37,8 @@ fun MediaItem(
   media: MediaItem.Media,
   subtitle: String? = null,
   showDate: Boolean = false,
-  onMediaItemClick: (MediaItem.Media) -> Unit,
+  onClick: (MediaItem.Media) -> Unit,
+  onLongClick: (MediaItem.Media) -> Unit,
 ) {
   Card(
     shape = MaterialTheme.shape.medium,
@@ -46,9 +47,10 @@ fun MediaItem(
       .widthIn(max = MaterialTheme.dimensions.shortMediaCard)
       .clip(MaterialTheme.shape.medium)
       .clipToBounds()
-      .clickable {
-        onMediaItemClick(media)
-      },
+      .combinedClickable(
+        onClick = { onClick(media) },
+        onLongClick = { onLongClick(media) },
+      ),
     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
   ) {
     MediaImage(media = media)
@@ -108,7 +110,8 @@ fun MediaItemPreview(
       MediaItem(
         modifier = Modifier,
         media = mediaItem,
-        onMediaItemClick = {},
+        onClick = {},
+        onLongClick = {},
       )
     }
   }
@@ -125,7 +128,8 @@ fun MediaItemWithSubtitlePreview(
         modifier = Modifier,
         media = mediaItem,
         subtitle = "Matthew Walkers",
-        onMediaItemClick = {},
+        onClick = {},
+        onLongClick = {},
       )
     }
   }
@@ -141,7 +145,8 @@ fun MediaItemWithDatePreview() {
         media = MediaItemFactory.FightClub(),
         subtitle = null,
         showDate = true,
-        onMediaItemClick = {},
+        onClick = {},
+        onLongClick = {},
       )
     }
   }
@@ -157,7 +162,8 @@ fun MediaItemFullPreview() {
         media = MediaItemFactory.theOffice(),
         subtitle = "Actor",
         showDate = true,
-        onMediaItemClick = {},
+        onClick = {},
+        onLongClick = {},
       )
     }
   }

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -17,7 +18,6 @@ fun SearchContent(
   uiState: SearchUiState,
   onNavigate: (Navigation) -> Unit,
   onRetryClick: () -> Unit,
-  onMarkAsFavorite: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
 ) {
   when {
@@ -65,6 +65,7 @@ fun SearchContent(
         }
       },
       onLoadNextPage = onLoadNextPage,
+      onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
     )
 
     else -> BlankSlate(

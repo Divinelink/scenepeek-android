@@ -5,14 +5,17 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -379,6 +382,57 @@ class UserDataScreenTest : ComposeTest() {
         id = tvList.first().id,
         isFavorite = tvList.first().isFavorite,
       ),
+    )
+  }
+
+  @Test
+  fun `test open action modal on long press`() {
+    var route: Navigation? = null
+
+    observeAccountUseCase.mockResponse(response = Result.success(true))
+    fetchWatchlistUseCase.mockSuccess(
+      response = flowOf(
+        Result.success(UserDataResponseFactory.movies()),
+        Result.success(UserDataResponseFactory.tv()),
+      ),
+    )
+
+    val viewModel = UserDataViewModel(
+      observeAccountUseCase = observeAccountUseCase.mock,
+      fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "userDataSection" to UserDataSection.Watchlist,
+        ),
+      ),
+    )
+
+    setVisibilityScopeContent {
+      UserDataScreen(
+        onNavigate = { route = it },
+        viewModel = viewModel,
+      )
+    }
+
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+      .assertIsDisplayed()
+      .assertIsSelected()
+
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+      .assertIsDisplayed()
+      .assertIsNotSelected()
+      .performClick()
+      .assertIsSelected()
+
+    val tvList = UserDataResponseFactory.tv().data
+
+    composeTestRule.onNodeWithText(tvList.first().name).assertIsDisplayed()
+    composeTestRule.onNodeWithText(tvList.last().name).assertDoesNotExist()
+
+    composeTestRule.onNodeWithText(tvList.first().name).performTouchInput { longClick() }
+
+    assertThat(route).isEqualTo(
+      Navigation.ActionMenuRoute.Media(tvList.first().encodeToString()),
     )
   }
 }

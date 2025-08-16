@@ -116,7 +116,6 @@ fun AnimatedVisibilityScope.SearchScreen(
           uiState = uiState,
           onNavigate = onNavigate,
           onLoadNextPage = viewModel::onLoadNextPage,
-          onMarkAsFavorite = viewModel::onMarkAsFavoriteClick,
           onRetryClick = viewModel::onRetryClick,
         )
       }

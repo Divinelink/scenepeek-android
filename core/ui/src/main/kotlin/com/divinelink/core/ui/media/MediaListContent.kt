@@ -29,7 +29,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun MediaListContent(
   list: List<MediaItem.Media>,
-  onMediaClick: (MediaItem.Media) -> Unit,
+  onClick: (MediaItem.Media) -> Unit,
+  onLongClick: (MediaItem.Media) -> Unit,
   onLoadMore: () -> Unit,
 ) {
   val scrollState = rememberLazyListState()
@@ -54,7 +55,8 @@ fun MediaListContent(
       ) { media ->
         DetailedMediaItem(
           mediaItem = media,
-          onClick = onMediaClick,
+          onClick = onClick,
+          onLongClick = onLongClick,
         )
       }
     }
@@ -78,7 +80,8 @@ fun UserDataContentPreview() {
     Surface {
       MediaListContent(
         list = MediaItemFactory.MoviesList(range = 1..30),
-        onMediaClick = {},
+        onClick = {},
+        onLongClick = {},
         onLoadMore = {},
       )
     }

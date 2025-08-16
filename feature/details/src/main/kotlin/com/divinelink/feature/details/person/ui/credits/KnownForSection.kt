@@ -17,7 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import com.divinelink.core.designsystem.theme.ListPaddingValues
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.person.credits.PersonCredit
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.MediaItem
 import com.divinelink.feature.details.R
@@ -26,6 +28,7 @@ import com.divinelink.feature.details.R
 fun KnownForSection(
   list: List<PersonCredit>,
   onMediaClick: (MediaItem) -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -54,7 +57,8 @@ fun KnownForSection(
             media = credit.mediaItem,
             subtitle = credit.role.title,
             showDate = true,
-            onMediaItemClick = onMediaClick,
+            onClick = onMediaClick,
+            onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
           )
         }
       }

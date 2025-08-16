@@ -106,7 +106,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
 
         UserDataScreenContent(
           uiState = uiState,
-          onNavigateToMediaDetails = { onNavigate(it) },
+          onNavigate = onNavigate,
           onRefresh = viewModel::onRefresh,
           onLoadMore = viewModel::onLoadMore,
           onTabSelected = viewModel::onTabSelected,
@@ -128,7 +128,7 @@ fun UserDataScreenContentPreview(
         onRefresh = {},
         onLoadMore = {},
         onTabSelected = {},
-        onNavigateToMediaDetails = {},
+        onNavigate = {},
       )
     }
   }

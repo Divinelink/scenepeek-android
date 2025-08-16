@@ -13,6 +13,7 @@ fun MediaContent(
   section: MediaSection?,
   onMediaClick: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
+  onLongClick: (MediaItem) -> Unit,
 ) {
   if (section == null) return
 
@@ -20,6 +21,7 @@ fun MediaContent(
     modifier = modifier.testTag(MEDIA_LIST_TAG),
     data = section.data,
     onItemClick = onMediaClick,
+    onLongClick = onLongClick,
     onLoadNextPage = onLoadNextPage,
     isLoading = section.shouldLoadMore,
   )
