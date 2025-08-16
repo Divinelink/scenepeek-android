@@ -15,6 +15,7 @@ import com.divinelink.core.navigation.route.Navigation.UserDataRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -118,23 +119,24 @@ class UserDataViewModel(
           section = section,
           mediaType = mediaType,
         ),
-      ).collectLatest { result ->
-        result
-          .onSuccess { response ->
-            updateUiOnSuccess(response)
-          }
-          .onFailure { throwable ->
-            updateUiOnFailure(
-              mediaType = mediaType,
-              throwable = throwable,
-            )
-          }
-      }
+      ).distinctUntilChanged()
+        .collect { result ->
+          result
+            .onSuccess { response ->
+              updateUiOnSuccess(response)
+            }
+            .onFailure { throwable ->
+              updateUiOnFailure(
+                mediaType = mediaType,
+                throwable = throwable,
+              )
+            }
+        }
     }
   }
 
   /**
-   * Reset pages to 1 when the user logs out or when swipe to refresh is triggered.
+   * Reset paginationData to 1 when the user logs out or when swipe to refresh is triggered.
    */
   private fun resetPages() {
     _uiState.update { uiState ->
@@ -169,18 +171,19 @@ class UserDataViewModel(
 
   private fun updateUiOnSuccess(response: UserDataResponse) {
     _uiState.update { uiState ->
-      val currentData = (uiState.forms[response.type] as? UserDataForm.Data)?.data.orEmpty()
-      val currentPage = uiState.pages[response.type] ?: 1
+      val data = (uiState.forms[response.type] as? UserDataForm.Data)?.paginationData
 
       uiState.copy(
         forms = uiState.forms + (
           response.type to UserDataForm.Data(
             mediaType = response.type,
-            data = currentData + response.data,
+            paginationData = data?.plus((response.page to response.data)) ?: mapOf(
+              1 to response.data,
+            ),
             totalResults = response.totalResults,
           )
           ),
-        pages = uiState.pages + (response.type to currentPage + 1),
+        pages = uiState.pages + (response.type to response.page + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
         tabs = uiState.tabs + if (response.type == MediaType.MOVIE) {
           MediaTab.MOVIE to response.totalResults
@@ -189,7 +192,6 @@ class UserDataViewModel(
         },
       ).run {
         Timber.d("Updating Ui for ${response.type} with data ${response.data}")
-        Timber.d("Update page for ${response.type} to ${currentPage + 1}")
         Timber.d("Can fetch more for ${response.type} is ${response.canFetchMore}")
         this
       }

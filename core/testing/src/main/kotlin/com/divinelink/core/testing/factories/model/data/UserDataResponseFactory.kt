@@ -14,6 +14,7 @@ object UserDataResponseFactory {
     totalResults = 30,
     type = MediaType.MOVIE,
     canFetchMore = canFetchMore,
+    page = page,
   )
 
   fun tv(
@@ -24,6 +25,7 @@ object UserDataResponseFactory {
     totalResults = 30,
     type = MediaType.TV,
     canFetchMore = canFetchMore,
+    page = page,
   )
 
   fun emptyMovies() = UserDataResponse(
@@ -31,6 +33,7 @@ object UserDataResponseFactory {
     totalResults = 0,
     type = MediaType.MOVIE,
     canFetchMore = false,
+    page = 0,
   )
 
   fun emptyTV() = UserDataResponse(
@@ -38,6 +41,7 @@ object UserDataResponseFactory {
     totalResults = 0,
     type = MediaType.TV,
     canFetchMore = false,
+    page = 0,
   )
 
   fun all() = listOf(

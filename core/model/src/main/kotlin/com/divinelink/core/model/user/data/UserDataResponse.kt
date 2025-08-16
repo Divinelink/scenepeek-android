@@ -5,6 +5,7 @@ import com.divinelink.core.model.media.MediaType
 
 data class UserDataResponse(
   val data: List<MediaItem.Media>,
+  val page: Int,
   val totalResults: Int,
   val type: MediaType,
   val canFetchMore: Boolean,

@@ -81,22 +81,22 @@ class UserDataViewModelTest {
           forms = mapOf(
             MediaType.MOVIE to UserDataForm.Data(
               mediaType = MediaType.MOVIE,
-              data = (1..2).map {
-                UserDataResponseFactory.movies()
-              }.flatMap { it.data },
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.movies().data,
+              ),
               totalResults = UserDataResponseFactory.movies().totalResults,
             ),
             MediaType.TV to UserDataForm.Data(
               mediaType = MediaType.TV,
-              data = (1..2).map {
-                UserDataResponseFactory.tv()
-              }.flatMap { it.data },
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.tv().data,
+              ),
               totalResults = UserDataResponseFactory.tv().totalResults,
             ),
           ),
           pages = mapOf(
-            MediaType.MOVIE to 3,
-            MediaType.TV to 3,
+            MediaType.MOVIE to 2,
+            MediaType.TV to 2,
           ),
           tabs = mapOf(
             MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
@@ -128,22 +128,22 @@ class UserDataViewModelTest {
           forms = mapOf(
             MediaType.MOVIE to UserDataForm.Data(
               mediaType = MediaType.MOVIE,
-              data = (1..2).map {
-                UserDataResponseFactory.movies()
-              }.flatMap { it.data },
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.movies().data,
+              ),
               totalResults = UserDataResponseFactory.movies().totalResults,
             ),
             MediaType.TV to UserDataForm.Data(
               mediaType = MediaType.TV,
-              data = (1..2).map {
-                UserDataResponseFactory.tv()
-              }.flatMap { it.data },
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.tv().data,
+              ),
               totalResults = UserDataResponseFactory.tv().totalResults,
             ),
           ),
           pages = mapOf(
-            MediaType.MOVIE to 3,
-            MediaType.TV to 3,
+            MediaType.MOVIE to 2,
+            MediaType.TV to 2,
           ),
           tabs = mapOf(
             MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
@@ -160,18 +160,22 @@ class UserDataViewModelTest {
       forms = mapOf(
         MediaType.MOVIE to UserDataForm.Data(
           mediaType = MediaType.MOVIE,
-          data = UserDataResponseFactory.movies().data + UserDataResponseFactory.movies().data,
+          paginationData = mapOf(
+            1 to UserDataResponseFactory.movies().data,
+          ),
           totalResults = UserDataResponseFactory.movies().totalResults,
         ),
         MediaType.TV to UserDataForm.Data(
           mediaType = MediaType.TV,
-          data = UserDataResponseFactory.tv().data + UserDataResponseFactory.tv().data,
+          paginationData = mapOf(
+            1 to UserDataResponseFactory.tv().data,
+          ),
           totalResults = UserDataResponseFactory.tv().totalResults,
         ),
       ),
       pages = mapOf(
-        MediaType.MOVIE to 3,
-        MediaType.TV to 3,
+        MediaType.MOVIE to 2,
+        MediaType.TV to 2,
       ),
       tabs = mapOf(
         MediaTab.MOVIE to 30,
@@ -185,22 +189,23 @@ class UserDataViewModelTest {
       forms = mapOf(
         MediaType.MOVIE to UserDataForm.Data(
           mediaType = MediaType.MOVIE,
-          data = (1..2).map {
-            UserDataResponseFactory.movies()
-          }.flatMap { it.data },
+          paginationData = mapOf(
+            1 to UserDataResponseFactory.movies().data,
+          ),
           totalResults = UserDataResponseFactory.movies().totalResults,
         ),
         MediaType.TV to UserDataForm.Data(
           mediaType = MediaType.TV,
-          data = (1..3).map {
-            UserDataResponseFactory.tv()
-          }.flatMap { it.data },
+          paginationData = mapOf(
+            1 to UserDataResponseFactory.tv().data,
+            2 to UserDataResponseFactory.tv(2).data,
+          ),
           totalResults = UserDataResponseFactory.tv().totalResults,
         ),
       ),
       pages = mapOf(
-        MediaType.MOVIE to 3,
-        MediaType.TV to 4,
+        MediaType.MOVIE to 2,
+        MediaType.TV to 3,
       ),
     )
 
@@ -228,7 +233,7 @@ class UserDataViewModelTest {
         action = {
           selectTab(1)
           mockFetchUserData {
-            mockSuccess(Result.success(UserDataResponseFactory.tv()))
+            mockSuccess(Result.success(UserDataResponseFactory.tv(2)))
           }
           onLoadMore()
         },
@@ -282,14 +287,15 @@ class UserDataViewModelTest {
             forms = mapOf(
               MediaType.MOVIE to UserDataForm.Data(
                 mediaType = MediaType.MOVIE,
-                data = UserDataResponseFactory.movies().data +
-                  UserDataResponseFactory.movies().data,
+                paginationData = mapOf(
+                  1 to UserDataResponseFactory.movies().data,
+                ),
                 totalResults = UserDataResponseFactory.movies().totalResults,
               ),
               MediaType.TV to UserDataForm.Loading,
             ),
             pages = mapOf(
-              MediaType.MOVIE to 3,
+              MediaType.MOVIE to 2,
               MediaType.TV to 1,
             ),
             tabs = mapOf(
@@ -302,15 +308,16 @@ class UserDataViewModelTest {
             forms = mapOf(
               MediaType.MOVIE to UserDataForm.Data(
                 mediaType = MediaType.MOVIE,
-                data = UserDataResponseFactory.movies().data +
-                  UserDataResponseFactory.movies().data +
-                  UserDataResponseFactory.movies(2).data,
+                paginationData = mapOf(
+                  1 to UserDataResponseFactory.movies().data,
+                  2 to UserDataResponseFactory.movies(2).data,
+                ),
                 totalResults = UserDataResponseFactory.movies().totalResults,
               ),
               MediaType.TV to UserDataForm.Loading,
             ),
             pages = mapOf(
-              MediaType.MOVIE to 4,
+              MediaType.MOVIE to 3,
               MediaType.TV to 1,
             ),
             canFetchMore = mapOf(
@@ -355,7 +362,9 @@ class UserDataViewModelTest {
           forms = mapOf(
             MediaType.MOVIE to UserDataForm.Data(
               mediaType = MediaType.MOVIE,
-              data = UserDataResponseFactory.movies().data,
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.movies().data,
+              ),
               totalResults = UserDataResponseFactory.movies().totalResults,
             ),
             MediaType.TV to UserDataForm.Error.Unknown,
@@ -403,7 +412,9 @@ class UserDataViewModelTest {
             MediaType.MOVIE to UserDataForm.Error.Unknown,
             MediaType.TV to UserDataForm.Data(
               mediaType = MediaType.TV,
-              data = UserDataResponseFactory.tv().data,
+              paginationData = mapOf(
+                1 to UserDataResponseFactory.tv().data,
+              ),
               totalResults = UserDataResponseFactory.tv().totalResults,
             ),
           ),
