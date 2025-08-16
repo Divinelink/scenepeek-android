@@ -6,6 +6,8 @@ import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.database.person.credits.CastCreditsWithMedia
+import com.divinelink.core.database.person.credits.CrewCreditsWithMedia
 import com.divinelink.core.database.person.credits.PersonCastCreditEntity
 import com.divinelink.core.database.person.credits.PersonCreditsEntity
 import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
@@ -125,21 +127,15 @@ class ProdPersonDao(
     .asFlow()
     .mapToOneOrNull(context = dispatcher.io)
 
-  private fun fetchPersonCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
+  private fun fetchPersonCastCredits(id: Long): Flow<List<CastCreditsWithMedia>> = database
     .personCastCreditEntityQueries
-    .fetchPersonCastCredit(id)
+    .castCreditsWithMedia(id)
     .asFlow()
     .mapToList(context = dispatcher.io)
 
-  override fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>> = database
-    .personCastCreditEntityQueries
-    .fetchPopularPersonCastCredits(id)
-    .asFlow()
-    .mapToList(context = dispatcher.io)
-
-  private fun fetchPersonCrewCredits(id: Long): Flow<List<PersonCrewCreditEntity>> = database
+  private fun fetchPersonCrewCredits(id: Long): Flow<List<CrewCreditsWithMedia>> = database
     .personCrewCreditEntityQueries
-    .fetchPersonCrewCredit(id)
+    .crewCreditsWithMedia(id)
     .asFlow()
     .mapToList(context = dispatcher.io)
 }

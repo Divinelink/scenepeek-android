@@ -5,10 +5,14 @@ import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.repository.ProdPersonRepository
+import com.divinelink.core.database.media.dao.ProdMediaDao
+import com.divinelink.core.database.media.dao.SqlMediaDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
+import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.changes.model.api.ChangesResponseApi
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.details.person.model.PersonCreditsApi
@@ -22,6 +26,7 @@ import com.divinelink.core.testing.factories.entity.person.credits.PersonCrewCre
 import com.divinelink.core.testing.factories.model.change.ChangeSample
 import com.divinelink.core.testing.service.TestPersonService
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -37,22 +42,29 @@ class ProdPersonRepositoryTest {
   private lateinit var repository: ProdPersonRepository
   private lateinit var service: TestPersonService
   private lateinit var dao: PersonDao
+  private lateinit var mediaDao: SqlMediaDao
   private lateinit var clock: Clock
 
   @BeforeTest
   fun setUp() {
+    val database = TestDatabaseFactory.createInMemoryDatabase()
+
     dao = ProdPersonDao(
       clock = ClockFactory.augustFifteenth2021(),
-      database = TestDatabaseFactory.createInMemoryDatabase(),
+      database = database,
       dispatcher = testDispatcher,
     )
     service = TestPersonService()
+    mediaDao = ProdMediaDao(
+      database = database,
+    )
     clock = ClockFactory.augustFifteenth2021()
 
     repository = ProdPersonRepository(
       service = service.mock,
       dao = dao,
       clock = clock,
+      mediaDao = mediaDao,
       dispatcher = testDispatcher,
     )
   }
@@ -81,12 +93,19 @@ class ProdPersonRepositoryTest {
   fun `test fetchPersonCredits with local data only fetches from database`() = runTest {
     dao.insertPersonCredits(id = 4495)
     dao.insertPersonCastCredits(cast = PersonCastCreditEntityFactory.all())
-    dao.insertPersonCrewCredits(crew = PersonCrewCreditEntityFactory.all())
+    dao.insertPersonCrewCredits(crew = PersonCrewCreditEntityFactory.sortedByDate())
+
+    PersonCombinedCreditsFactory.all().crew.forEach {
+      mediaDao.insertMedia(it.media)
+    }
+
+    PersonCombinedCreditsFactory.all().cast.forEach {
+      mediaDao.insertMedia(it.media)
+    }
 
     repository.fetchPersonCredits(id = 4495).test {
-      val cached = awaitItem().getOrNull()
-      assertThat(cached).isEqualTo(PersonCombinedCreditsFactory.sortedByDate())
-      expectNoEvents()
+      awaitItem() shouldBe Resource.Loading(PersonCombinedCreditsFactory.sortedByDate())
+      awaitItem() shouldBe Resource.Success(PersonCombinedCreditsFactory.sortedByDate())
     }
   }
 
@@ -101,9 +120,11 @@ class ProdPersonRepositoryTest {
       service.mockFetchPersonCombinedCredits(response = personCreditsApi)
 
       repository.fetchPersonCredits(id = 4495).test {
-        val first = awaitItem().getOrNull()
-        assertThat(first?.cast?.size).isEqualTo(124)
-        assertThat(first?.crew?.size).isEqualTo(17)
+        assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
+        val secondEmission = awaitItem() as Resource.Success<PersonCombinedCredits?>
+        assertThat(secondEmission).isInstanceOf(Resource.Success::class.java)
+        assertThat(secondEmission.data?.cast?.size).isEqualTo(124)
+        assertThat(secondEmission.data?.crew?.size).isEqualTo(17)
         expectNoEvents()
       }
     }

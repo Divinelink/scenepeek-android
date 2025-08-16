@@ -26,7 +26,7 @@ object DetailsResponseApiFactory {
       " channel primal male aggression into a shocking new form of therapy. " +
       "Their concept catches on, with underground \"fight clubs\" forming in every town, " +
       "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
-    popularity = 20.9349,
+    popularity = 21.6213,
     posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
     companies = listOf(
       ProductionCompany(

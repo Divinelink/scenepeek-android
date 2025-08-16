@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
@@ -230,18 +231,20 @@ class UserDataScreenTest : ComposeTest() {
       response = Result.success(UserDataResponseFactory.emptyMovies()),
     )
 
+    val viewModel = UserDataViewModel(
+      observeAccountUseCase = observeAccountUseCase.mock,
+      fetchUserDataUseCase = fetchWatchlistUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "userDataSection" to UserDataSection.Watchlist,
+        ),
+      ),
+    )
+
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
-        viewModel = UserDataViewModel(
-          observeAccountUseCase = observeAccountUseCase.mock,
-          fetchUserDataUseCase = fetchWatchlistUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "userDataSection" to UserDataSection.Watchlist,
-            ),
-          ),
-        ),
+        viewModel = viewModel,
       )
     }
 
@@ -315,7 +318,7 @@ class UserDataScreenTest : ComposeTest() {
     // Scroll up to display the ScrollToTopButton
     composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
       .performScrollToNode(
-        matcher = hasText(text = movieList[movieList.lastIndex - 1].name),
+        matcher = hasText(text = movieList[movieList.lastIndex - 2].name),
       )
 
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()

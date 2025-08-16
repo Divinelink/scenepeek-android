@@ -194,7 +194,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockMarkAsFavoriteUseCase(
     media: MediaItem.Media,
-    response: Result<Unit>,
+    response: Result<Boolean>,
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = media,

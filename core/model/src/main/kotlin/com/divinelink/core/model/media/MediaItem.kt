@@ -23,6 +23,7 @@ sealed class MediaItem {
     abstract val voteCount: Int
     abstract val overview: String
     abstract val isFavorite: Boolean?
+    abstract val popularity: Double
     abstract val accountRating: Int?
 
     @Serializable
@@ -35,6 +36,7 @@ sealed class MediaItem {
       override val voteAverage: Double,
       override val voteCount: Int,
       override val overview: String,
+      override val popularity: Double,
       override val isFavorite: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(
@@ -51,6 +53,7 @@ sealed class MediaItem {
       override val voteAverage: Double,
       override val voteCount: Int,
       override val overview: String,
+      override val popularity: Double,
       override val isFavorite: Boolean?,
       override val accountRating: Int? = null,
     ) : Media(

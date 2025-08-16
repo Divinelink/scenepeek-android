@@ -11,10 +11,10 @@ import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
+import com.divinelink.core.testing.dao.FakeMediaDao
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.factories.api.SearchMovieApiFactory
-import com.divinelink.scenepeek.fakes.dao.FakeMediaDao
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -117,8 +117,8 @@ class ProdMediaRepositoryTest {
   @Test
   fun testFetchFavoriteMovies() = runTest {
     val expectedResult = listOf(
-      movie,
-      movie.copy(id = 1234, name = "Movie Title 2"),
+      movie.copy(popularity = 0.0),
+      movie.copy(id = 1234, name = "Movie Title 2", popularity = 0.0),
     )
 
     val expectedPersistableMovieResult = flowOf(

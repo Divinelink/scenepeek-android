@@ -18,6 +18,7 @@ data class TV(
   override val isFavorite: Boolean,
   override val imdbId: String?,
   override val tagline: String?,
+  override val popularity: Double,
   override val information: MediaDetailsInformation.TV,
   val creators: List<Person>?,
   val seasons: List<Season>,

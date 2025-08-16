@@ -53,5 +53,6 @@ private fun MovieResponseApi.toMovie() = MediaItem.Media.Movie(
   voteCount = this.voteCount ?: 0,
   overview = this.overview,
   isFavorite = false,
+  popularity = popularity,
   accountRating = rating?.toInt(),
 )

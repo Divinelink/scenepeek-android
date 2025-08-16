@@ -1,4 +1,4 @@
-CREATE TABLE MediaItemEntity (
+CREATE TABLE MediaItemEntity_new (
   id INTEGER NOT NULL,
   adult INTEGER NOT NULL DEFAULT 0,
   backdropPath TEXT,
@@ -9,12 +9,12 @@ CREATE TABLE MediaItemEntity (
   voteAverage REAL NOT NULL,
   voteCount INTEGER NOT NULL,
   overview TEXT NOT NULL,
+  name TEXT,
+  originalName TEXT,
   -- Movie specific fields
   releaseDate TEXT, -- Only for movies
   video INTEGER, -- Only for movies
   -- TV show specific fields
-  name TEXT NOT NULL, -- Only for TV shows
-  originalName TEXT NOT NULL, -- Only for TV shows
   firstAirDate TEXT, -- Only for TV shows
   originCountryJson TEXT, -- JSON array of origin countries for TV shows
   -- Common fields stored as JSON
@@ -22,15 +22,17 @@ CREATE TABLE MediaItemEntity (
   UNIQUE(id, mediaType)
 );
 
-insertMediaItem:
-INSERT OR REPLACE INTO MediaItemEntity (
-    id, adult, backdropPath, posterPath, mediaType, originalLanguage,
-    popularity, voteAverage, voteCount, overview,
-    releaseDate, video, name, originalName, firstAirDate, originCountryJson,
-    genreIdsJson
+INSERT INTO MediaItemEntity_new (
+  id, adult, backdropPath, posterPath, mediaType, originalLanguage,
+  popularity, voteAverage, voteCount, overview, name, originalName,
+  releaseDate, video, firstAirDate, originCountryJson, genreIdsJson
 )
-VALUES ?;
+SELECT
+  id, adult, backdropPath, posterPath, mediaType, originalLanguage,
+  popularity, voteAverage, voteCount, overview, name, originalName,
+  releaseDate, video, firstAirDate, originCountryJson, genreIdsJson
+FROM MediaItemEntity;
 
-selectMediaItemByIdAndType:
-SELECT * FROM MediaItemEntity
-WHERE id = ? AND mediaType = ?;
+DROP TABLE MediaItemEntity;
+
+ALTER TABLE MediaItemEntity_new RENAME TO MediaItemEntity;

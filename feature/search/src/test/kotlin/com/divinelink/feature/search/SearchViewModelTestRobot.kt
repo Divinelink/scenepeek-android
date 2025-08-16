@@ -41,7 +41,7 @@ class SearchViewModelTestRobot {
 
   fun mockMarkAsFavorite(
     mediaItem: MediaItem.Media,
-    result: Result<Unit>,
+    result: Result<Boolean>,
   ) = apply {
     markAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = mediaItem,

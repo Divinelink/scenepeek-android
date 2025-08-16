@@ -28,7 +28,7 @@ class MarkAsFavoriteUseCaseTest {
 
   @Test
   fun `given movies is successfully saved I expect Success Result`() = runTest {
-    val expectedResult = Result.success(Unit)
+    val expectedResult = Result.success(false)
 
     repository.mockMarkAsFavorite(
       media = remoteMovies[2],

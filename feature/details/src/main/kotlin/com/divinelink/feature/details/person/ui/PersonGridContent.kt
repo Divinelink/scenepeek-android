@@ -121,14 +121,14 @@ internal fun PersonGridContent(
 
         items(
           items = credit.value,
-          key = { "${it.mediaItem.id} ${it.role.title}" },
+          key = { "${it.media.id} ${it.role.title}" },
         ) { item ->
           if (isGrid) {
             MediaItem(
               modifier = Modifier
                 .animateItem()
                 .animateContentSize(),
-              media = item.mediaItem,
+              media = item.media,
               subtitle = item.role.title,
               showDate = true,
               onClick = {
@@ -147,7 +147,7 @@ internal fun PersonGridContent(
               modifier = Modifier
                 .animateItem()
                 .animateContentSize(),
-              mediaItem = item.mediaItem,
+              mediaItem = item.media,
               subtitle = item.role.title,
               onClick = {
                 onNavigate(

@@ -31,8 +31,6 @@ interface PersonDao {
     field: PersonChangeField,
   ): QueryResult<Long>
 
-  fun fetchTopPopularCastCredits(id: Long): Flow<List<PersonCastCreditEntity>>
-
   fun fetchPersonCombinedCredits(id: Long): Flow<PersonCombinedCreditsEntity?>
 
   fun insertPersonCredits(id: Long)

@@ -19,7 +19,8 @@ data class Movie(
   val runtime: String?,
   val cast: List<Person>,
   val creators: List<Person>?,
-  override val isFavorite: Boolean,
   override val imdbId: String?,
   override val information: MediaDetailsInformation.Movie,
+  override val popularity: Double,
+  override val isFavorite: Boolean,
 ) : MediaDetails()

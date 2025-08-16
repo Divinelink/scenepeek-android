@@ -113,6 +113,7 @@ class FetchUserDataUseCaseTest {
             totalResults = MediaItemFactory.tvPagination().totalResults,
             type = MediaType.TV,
             canFetchMore = true,
+            page = 1,
           ),
         ),
       )
@@ -157,6 +158,7 @@ class FetchUserDataUseCaseTest {
             totalResults = MediaItemFactory.moviesPagination().totalResults,
             type = MediaType.MOVIE,
             canFetchMore = true,
+            page = 1,
           ),
         ),
       )
@@ -201,6 +203,7 @@ class FetchUserDataUseCaseTest {
             totalResults = MediaItemFactory.tvPagination().totalResults,
             type = MediaType.TV,
             canFetchMore = true,
+            page = 1,
           ),
         ),
       )
@@ -245,6 +248,7 @@ class FetchUserDataUseCaseTest {
             totalResults = MediaItemFactory.moviesPagination().totalResults,
             type = MediaType.MOVIE,
             canFetchMore = true,
+            page = 1,
           ),
         ),
       )
@@ -289,6 +293,7 @@ class FetchUserDataUseCaseTest {
             totalResults = MediaItemFactory.moviesPagination().totalResults,
             type = MediaType.MOVIE,
             canFetchMore = false,
+            page = 1,
           ),
         ),
       )

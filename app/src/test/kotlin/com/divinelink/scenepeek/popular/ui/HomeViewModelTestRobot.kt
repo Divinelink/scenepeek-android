@@ -1,11 +1,9 @@
 package com.divinelink.scenepeek.popular.ui
 
 import com.divinelink.core.data.media.repository.MediaListResult
-import com.divinelink.core.domain.search.MultiSearchResult
 import com.divinelink.core.domain.search.SearchStateManager
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
@@ -25,7 +23,6 @@ class HomeViewModelTestRobot {
   private val fakeGetPopularMoviesUseCase = FakeGetPopularMoviesUseCase()
   private val fakeMarkAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
   private val fakeGetFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
-  private val fakeFetchMultiInfoSearchUseCase = FakeFetchMultiInfoSearchUseCase()
 
   fun buildViewModel() = apply {
     viewModel = HomeViewModel(
@@ -40,10 +37,6 @@ class HomeViewModelTestRobot {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
   }
 
-  fun assertFalseViewState(expectedViewState: HomeViewState) = apply {
-    assertThat(viewModel.viewState.value).isNotEqualTo(expectedViewState)
-  }
-
   fun mockFetchPopularMovies(response: MediaListResult) = apply {
     fakeGetPopularMoviesUseCase.mockFetchPopularMovies(
       response = response,
@@ -56,15 +49,9 @@ class HomeViewModelTestRobot {
     )
   }
 
-  fun mockFetchSearchMedia(response: Result<MultiSearchResult>) = apply {
-    fakeFetchMultiInfoSearchUseCase.mockFetchMultiInfoSearch(
-      response = response,
-    )
-  }
-
   fun mockMarkAsFavorite(
     mediaItem: MediaItem.Media,
-    result: Result<Unit>,
+    result: Result<Boolean>,
   ) = apply {
     fakeMarkAsFavoriteUseCase.mockMarkAsFavoriteResult(
       media = mediaItem,
@@ -90,9 +77,5 @@ class HomeViewModelTestRobot {
 
   fun onFilterClicked(filter: Filter) = apply {
     viewModel.onFilterClick(filter)
-  }
-
-  suspend fun delay(timeInMillis: Long) = apply {
-    kotlinx.coroutines.delay(timeInMillis)
   }
 }

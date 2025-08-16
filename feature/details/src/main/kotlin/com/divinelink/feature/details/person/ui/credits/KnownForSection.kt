@@ -51,10 +51,10 @@ fun KnownForSection(
       ) {
         items(
           items = list,
-          key = { it.id },
+          key = { it.media.id },
         ) { credit ->
           MediaItem(
-            media = credit.mediaItem,
+            media = credit.media,
             subtitle = credit.role.title,
             showDate = true,
             onClick = onMediaClick,

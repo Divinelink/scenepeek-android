@@ -24,6 +24,7 @@ private fun MovieResultApi.map(): MediaItem = MediaItem.Media.Movie(
   voteAverage = voteAverage,
   voteCount = voteCount,
   overview = overview,
+  popularity = popularity,
   isFavorite = false,
 )
 
@@ -36,6 +37,7 @@ private fun TvResultApi.map(): MediaItem = MediaItem.Media.TV(
   voteAverage = voteAverage,
   voteCount = voteCount,
   overview = overview,
+  popularity = popularity,
   isFavorite = false,
 )
 

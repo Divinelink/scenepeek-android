@@ -21,6 +21,7 @@ sealed class MediaDetails {
   abstract val genres: List<String>?
   abstract val isFavorite: Boolean
   abstract val imdbId: String?
+  abstract val popularity: Double
   abstract val information: MediaDetailsInformation
 
   fun copy(
@@ -51,6 +52,7 @@ sealed class MediaDetails {
       cast = cast,
       runtime = runtime,
       imdbId = imdbId,
+      popularity = popularity,
       information = information,
     )
     is TV -> TV(
@@ -68,6 +70,7 @@ sealed class MediaDetails {
       creators = creators,
       numberOfSeasons = numberOfSeasons,
       imdbId = imdbId,
+      popularity = popularity,
       information = information,
     )
   }
@@ -117,6 +120,7 @@ fun MediaDetails.toMediaItem() = when (this) {
     voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
     voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
     overview = this.overview ?: "",
+    popularity = popularity,
     isFavorite = false,
     accountRating = null,
   )
@@ -129,6 +133,7 @@ fun MediaDetails.toMediaItem() = when (this) {
     voteAverage = this.ratingCount.getRating(RatingSource.TMDB)?.voteAverage ?: 0.0,
     voteCount = this.ratingCount.getRating(RatingSource.TMDB)?.voteCount ?: 0,
     overview = this.overview ?: "",
+    popularity = popularity,
     isFavorite = false,
     accountRating = null,
   )

@@ -111,6 +111,7 @@ fun HomeContentPreview() {
                 releaseDate = "2021-01-01",
                 isFavorite = false,
                 voteAverage = it.toDouble(),
+                popularity = (it * 525.50),
                 voteCount = it * 1000,
               )
             },

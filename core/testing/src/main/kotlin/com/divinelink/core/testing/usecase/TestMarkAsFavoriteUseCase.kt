@@ -11,15 +11,16 @@ class TestMarkAsFavoriteUseCase :
     repository = TestMoviesRepository().mock,
     dispatcher = MainDispatcherRule().testDispatcher,
   ) {
-  private var resultForMarkAsFavoriteMap: MutableMap<MediaItem.Media, Result<Unit>> = mutableMapOf()
+  private var resultForMarkAsFavoriteMap: MutableMap<MediaItem.Media, Result<Boolean>> =
+    mutableMapOf()
 
   fun mockMarkAsFavoriteResult(
     media: MediaItem.Media,
-    result: Result<Unit>,
+    result: Result<Boolean>,
   ) {
     resultForMarkAsFavoriteMap[media] = result
   }
 
-  override suspend fun execute(parameters: MediaItem.Media) =
-    resultForMarkAsFavoriteMap[parameters]?.data!!
+  override suspend fun execute(parameters: MediaItem.Media): Boolean =
+    resultForMarkAsFavoriteMap[parameters]?.data == true
 }

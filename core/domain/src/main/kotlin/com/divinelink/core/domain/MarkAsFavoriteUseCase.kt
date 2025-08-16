@@ -6,7 +6,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaItem
 
-class MarkAsFavoriteUseCase(
+open class MarkAsFavoriteUseCase(
   private val repository: MediaRepository,
   dispatcher: DispatcherProvider,
 ) : UseCase<MediaItem.Media, Boolean>(dispatcher.default) {

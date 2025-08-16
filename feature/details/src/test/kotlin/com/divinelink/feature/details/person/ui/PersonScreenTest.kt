@@ -19,12 +19,14 @@ import com.divinelink.core.data.person.details.model.PersonDetailsResult
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.toWizard
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
@@ -336,14 +338,30 @@ class PersonScreenTest : ComposeTest() {
         Result.success(
           PersonDetailsResult.CreditsSuccess(
             knownForCredits = listOf(
-              theOffice().copy(id = 1, voteAverage = 9.3),
-              littleMissSunshine().copy(id = 2, voteAverage = 9.4),
-              despicableMe().copy(id = 3, voteAverage = 9.5),
-              bruceAlmighty().copy(id = 4, voteAverage = 9.6),
-              theOffice().copy(id = 5, voteAverage = 5.2),
-              littleMissSunshine().copy(id = 6, voteAverage = 4.3),
-              despicableMe().copy(id = 7, voteAverage = 3.2),
-              bruceAlmighty().copy(id = 8, voteAverage = 2.1),
+              theOffice().copy(
+                media = MediaItemFactory.theOffice().copy(id = 1, voteAverage = 9.3),
+              ),
+              littleMissSunshine().copy(
+                media = MediaItemFactory.littleMissSunshine().copy(id = 2, voteAverage = 9.4),
+              ),
+              despicableMe().copy(
+                media = MediaItemFactory.despicableMe().copy(id = 3, voteAverage = 9.5),
+              ),
+              bruceAlmighty().copy(
+                media = MediaItemFactory.bruceAlmighty().copy(id = 3, voteAverage = 9.6),
+              ),
+              theOffice().copy(
+                media = MediaItemFactory.theOffice().copy(id = 5, voteAverage = 5.2),
+              ),
+              littleMissSunshine().copy(
+                media = MediaItemFactory.littleMissSunshine().copy(id = 6, voteAverage = 4.3),
+              ),
+              despicableMe().copy(
+                media = MediaItemFactory.despicableMe().copy(id = 7, voteAverage = 3.2),
+              ),
+              bruceAlmighty().copy(
+                media = MediaItemFactory.bruceAlmighty().copy(id = 8, voteAverage = 2.1),
+              ),
               theOffice(),
               littleMissSunshine(),
               despicableMe(),
@@ -591,7 +609,7 @@ class PersonScreenTest : ComposeTest() {
         }
 
       assertThat(route).isEqualTo(
-        Navigation.ActionMenuRoute.Media(theOffice().mediaItem.encodeToString()),
+        Navigation.ActionMenuRoute.Media(theOffice().media.encodeToString()),
       )
     }
   }
@@ -819,7 +837,7 @@ class PersonScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER).assertIsNotDisplayed()
       onNodeWithText("Acting").assertIsNotDisplayed()
-      onNodeWithText(bruceAlmighty().title).assertIsNotDisplayed()
+      onNodeWithText(bruceAlmighty().media.name).assertIsNotDisplayed()
       onNodeWithText("Writing").assertIsNotDisplayed()
 
       onNodeWithText("Production (2)").assertIsDisplayed()
@@ -1077,13 +1095,25 @@ class PersonScreenTest : ComposeTest() {
             movies = emptyMap(),
             tvShows = mapOf(
               "Acting" to listOf(theOffice()),
-              "Directing" to listOf(theOffice().copy(character = "Michael Scarn")),
-              "Writing" to listOf(theOffice().copy(character = "Worlds best boss")),
+              "Directing" to listOf(
+                theOffice().toWizard {
+                  withSeriesCharacter(character = "Michael Scarn")
+                },
+              ),
+              "Writing" to listOf(
+                theOffice().toWizard {
+                  withSeriesCharacter("Worlds best boss")
+                },
+              ),
               "Production" to listOf(PersonCrewCreditFactory.riot()),
-              "Lighting" to listOf(PersonCrewCreditFactory.riot().copy(job = "Lighting")),
-              "Sound" to listOf(PersonCrewCreditFactory.riot().copy(job = "Sound Design")),
+              "Lighting" to listOf(
+                PersonCrewCreditFactory.riot().toWizard { withJob("Lighting") },
+              ),
+              "Sound" to listOf(
+                PersonCrewCreditFactory.riot().toWizard { withJob("Sound Design") },
+              ),
               "Visual Effects" to listOf(
-                PersonCrewCreditFactory.riot().copy(job = "Visual Effects"),
+                PersonCrewCreditFactory.riot().toWizard { withJob("Visual Effects") },
               ),
             ),
           ),

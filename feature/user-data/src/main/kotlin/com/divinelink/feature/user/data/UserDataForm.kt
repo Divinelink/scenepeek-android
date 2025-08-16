@@ -18,6 +18,6 @@ sealed interface UserDataForm<out T : MediaItem.Media> {
     val totalResults: Int,
   ) : UserDataForm<T> {
     val media = paginationData.values.flatten()
-    val isEmpty: Boolean = paginationData.values.isEmpty()
+    val isEmpty: Boolean = media.isEmpty()
   }
 }

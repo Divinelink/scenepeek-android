@@ -32,6 +32,7 @@ class FindMyIdResponseApiMapperTest {
           overview = "A ticking-time-bomb insomniac and a slippery soap salesman.",
           isFavorite = false,
           backdropPath = "/hZkgoQYus5vegHoetLkCJzb17zJ.jpg",
+          popularity = 135.839,
           accountRating = null,
         ),
       )
@@ -60,6 +61,7 @@ class FindMyIdResponseApiMapperTest {
           isFavorite = false,
           accountRating = null,
           backdropPath = "/5OsiT39OiZNdD0v2LiAcI2TpSYj.jpg",
+          popularity = 726.309,
         ),
       )
     }
