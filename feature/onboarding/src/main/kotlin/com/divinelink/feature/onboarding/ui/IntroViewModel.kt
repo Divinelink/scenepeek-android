@@ -92,8 +92,8 @@ class IntroViewModel(
   private fun fetchJellyseerrAccountJob() {
     viewModelScope.launch {
       getJellyseerrAccountDetailsUseCase.invoke(true).collect { result ->
-        result.onSuccess { accountDetails ->
-          if (accountDetails == null) return@collect
+        result.onSuccess { accountResult ->
+          if (accountResult.accountDetails == null) return@collect
 
           _uiState.update { uiState ->
             uiState.copy(

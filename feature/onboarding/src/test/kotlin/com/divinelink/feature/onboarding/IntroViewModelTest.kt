@@ -95,6 +95,38 @@ class IntroViewModelTest {
   }
 
   @Test
+  fun `test onFetchJellyseerrAccountDetails with null account details does nothing`() {
+    robot
+      .mockOnboardingPages(IntroSections.onboardingSections)
+      .mockIsInitialOnboarding(true)
+      .mockGetJellyseerrAccountDetails(
+        Result.success(JellyseerrAccountDetailsResultFactory.signedOut()),
+      )
+      .buildViewModel()
+      .assertUiState(
+        OnboardingUiState.initial().copy(
+          sections = listOf(
+            IntroSection.Header(
+              title = UIText.ResourceText(R.string.feature_onboarding_welcome_page_title),
+              description = UIText.ResourceText(
+                R.string.feature_onboarding_welcome_page_description,
+              ),
+            ),
+            IntroSection.Spacer,
+            IntroSection.SecondaryHeader.Features,
+            tmdb,
+            jellyseerr.copy(
+              action = OnboardingAction.NavigateToJellyseerrLogin(isComplete = false),
+            ),
+            linkHandling,
+            IntroSection.GetStartedButton,
+          ),
+          isFirstLaunch = true,
+        ),
+      )
+  }
+
+  @Test
   fun `test on onboardingComplete navigates up`() = runTest {
     robot
       .mockOnboardingPages(IntroSections.onboardingSections)
