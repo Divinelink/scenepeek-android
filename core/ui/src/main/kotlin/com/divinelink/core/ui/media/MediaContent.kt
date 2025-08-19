@@ -1,5 +1,6 @@
 package com.divinelink.core.ui.media
 
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -14,6 +15,7 @@ fun MediaContent(
   onMediaClick: (MediaItem) -> Unit,
   onLoadNextPage: () -> Unit,
   onLongClick: (MediaItem) -> Unit,
+  scrollState: LazyGridState,
 ) {
   if (section == null) return
 
@@ -24,5 +26,6 @@ fun MediaContent(
     onLongClick = onLongClick,
     onLoadNextPage = onLoadNextPage,
     isLoading = section.shouldLoadMore,
+    scrollState = scrollState,
   )
 }
