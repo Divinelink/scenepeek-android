@@ -95,7 +95,7 @@ class ProdDetailsRepository(
     }
 
     Result.success(mapped.copy(list = updatedMovies))
-  }
+  }.catch { Timber.d(it) }
 
   override fun fetchRecommendedTv(
     request: MediaRequestApi.TV,
@@ -113,7 +113,7 @@ class ProdDetailsRepository(
     }
 
     Result.success(mapped.copy(list = updatedTv))
-  }
+  }.catch { Timber.d(it) }
 
   override fun fetchVideos(request: MediaRequestApi): Flow<Result<List<Video>>> = mediaRemote
     .fetchVideos(request)

@@ -93,7 +93,7 @@ class DetailsScreenTest : ComposeTest() {
           ),
         ),
         Result.success(
-          MediaDetailsResult.SimilarSuccess(
+          MediaDetailsResult.RecommendedSuccess(
             similar = MediaItemFactory.MoviesList(),
             formOrder = MovieTab.Recommendations.order,
           ),
@@ -165,7 +165,7 @@ class DetailsScreenTest : ComposeTest() {
           ),
         ),
         Result.success(
-          MediaDetailsResult.SimilarSuccess(
+          MediaDetailsResult.RecommendedSuccess(
             similar = MediaItemFactory.MoviesList(),
             formOrder = MovieTab.Recommendations.order,
           ),

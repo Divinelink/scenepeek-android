@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
@@ -210,8 +211,8 @@ class DetailsViewModel(
                 viewState.copy(forms = updatedForms)
               }
 
-              is MediaDetailsResult.SimilarSuccess -> {
-                val data = result.data as MediaDetailsResult.SimilarSuccess
+              is MediaDetailsResult.RecommendedSuccess -> {
+                val data = result.data as MediaDetailsResult.RecommendedSuccess
 
                 val updatedForms = viewState.forms.toMutableMap().apply {
                   this[data.formOrder] = DetailsForm.Content(
@@ -302,16 +303,23 @@ class DetailsViewModel(
               )
             }
           }
-        }.onFailure {
-          if (it is MediaDetailsException) {
-            _viewState.update { viewState ->
+        }.onFailure { error ->
+          when (error) {
+            is MediaDetailsException -> _viewState.update { viewState ->
               viewState.copy(
                 error = MediaDetailsResult.Failure.FatalError().message,
                 isLoading = false,
               )
             }
-          } else {
-            _viewState.update { viewState ->
+            is RecommendedException -> _viewState.update { viewState ->
+              val updatedForms = viewState.forms.toMutableMap().apply {
+                this[error.order] = DetailsForm.Error
+              }
+
+              viewState.copy(forms = updatedForms)
+            }
+
+            else -> _viewState.update { viewState ->
               viewState.copy(
                 error = MediaDetailsResult.Failure.Unknown.message,
                 isLoading = false,

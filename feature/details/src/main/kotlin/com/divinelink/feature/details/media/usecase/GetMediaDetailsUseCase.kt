@@ -6,6 +6,7 @@ import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
+import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.media.repository.MediaRepository
@@ -112,12 +113,15 @@ open class GetMediaDetailsUseCase(
       launch(dispatcher.default) {
         when (parameters) {
           is MediaRequestApi.Movie -> repository.fetchRecommendedMovies(parameters)
-            .catch { Timber.e(it) }
+            .catch {
+              Timber.e(it)
+              throw RecommendedException(MovieTab.Recommendations.order)
+            }
             .collect { result ->
               result.onSuccess {
                 send(
                   Result.success(
-                    MediaDetailsResult.SimilarSuccess(
+                    MediaDetailsResult.RecommendedSuccess(
                       formOrder = MovieTab.Recommendations.order,
                       similar = result.data.list,
                     ),
@@ -126,12 +130,15 @@ open class GetMediaDetailsUseCase(
               }
             }
           is MediaRequestApi.TV -> repository.fetchRecommendedTv(parameters)
-            .catch { Timber.e(it) }
+            .catch {
+              Timber.e(it)
+              throw RecommendedException(TvTab.Recommendations.order)
+            }
             .collect { result ->
               result.onSuccess {
                 send(
                   Result.success(
-                    MediaDetailsResult.SimilarSuccess(
+                    MediaDetailsResult.RecommendedSuccess(
                       formOrder = TvTab.Recommendations.order,
                       similar = result.data.list,
                     ),

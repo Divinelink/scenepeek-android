@@ -22,6 +22,12 @@ sealed class BlankSlateState(
     retryText = UIText.ResourceText(R.string.core_ui_retry),
   )
 
+  data object Contact : BlankSlateState(
+    title = UIText.ResourceText(R.string.core_ui_error_generic_title),
+    description = UIText.ResourceText(R.string.core_ui_error_contact_description),
+    retryText = UIText.ResourceText(R.string.core_ui_retry),
+  )
+
   data class Unauthenticated(
     override val description: UIText? = null,
     override val retryText: UIText? = null,

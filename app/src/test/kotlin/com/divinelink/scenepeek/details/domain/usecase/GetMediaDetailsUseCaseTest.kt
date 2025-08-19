@@ -2,7 +2,7 @@ package com.divinelink.scenepeek.details.domain.usecase
 
 import app.cash.turbine.test
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.SimilarException
+import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
@@ -380,7 +380,7 @@ class GetMediaDetailsUseCaseTest {
       )
       assertThat(this.awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.SimilarSuccess(
+          MediaDetailsResult.RecommendedSuccess(
             formOrder = MovieTab.Recommendations.order,
             similar = MediaItemFactory.moviesPagination().list,
           ),
@@ -440,7 +440,7 @@ class GetMediaDetailsUseCaseTest {
 
     repository.mockFetchSimilarMovies(
       MediaRequestApiFactory.movie(),
-      Result.failure(SimilarException()),
+      Result.failure(RecommendedException(MovieTab.Recommendations.order)),
     )
 
     val useCase = createGetMediaDetailsUseCase()
@@ -456,7 +456,7 @@ class GetMediaDetailsUseCaseTest {
     repository.mockFetchMediaDetails(movieRequest, Result.success(movieDetails))
     repository.mockFetchSimilarMovies(
       MediaRequestApiFactory.movie(),
-      Result.failure(SimilarException()),
+      Result.failure(RecommendedException(MovieTab.Recommendations.order)),
     )
     val flow = createGetMediaDetailsUseCase()
 

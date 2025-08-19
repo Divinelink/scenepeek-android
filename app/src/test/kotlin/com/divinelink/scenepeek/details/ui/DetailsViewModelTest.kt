@@ -253,7 +253,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.SimilarSuccess(
+            MediaDetailsResult.RecommendedSuccess(
               formOrder = MovieTab.Recommendations.order,
               similar = similarMovies,
             ),
@@ -284,7 +284,7 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(MediaDetailsResult.Failure.FatalError()),
           Result.success(
-            MediaDetailsResult.SimilarSuccess(
+            MediaDetailsResult.RecommendedSuccess(
               formOrder = MovieTab.Recommendations.order,
               similar = similarMovies,
             ),
@@ -332,7 +332,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.SimilarSuccess(
+            MediaDetailsResult.RecommendedSuccess(
               formOrder = MovieTab.Recommendations.order,
               similar = similarMovies,
             ),
@@ -370,7 +370,7 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.failure(MediaDetailsException()),
           Result.success(
-            MediaDetailsResult.SimilarSuccess(
+            MediaDetailsResult.RecommendedSuccess(
               formOrder = MovieTab.Recommendations.order,
               similar = similarMovies,
             ),
@@ -418,7 +418,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.SimilarSuccess(
+            MediaDetailsResult.RecommendedSuccess(
               formOrder = MovieTab.Recommendations.order,
               similar = similarMovies,
             ),

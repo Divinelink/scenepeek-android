@@ -4,8 +4,8 @@ import JvmUnitTestDemoAssetManager
 import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
+import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.model.ReviewsException
-import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.details.repository.ProdDetailsRepository
@@ -335,7 +335,7 @@ class ProdDetailsRepositoryTest {
   fun `test fetch recommended movies with failure`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    val expectedResult = SimilarException()
+    val expectedResult = RecommendedException()
 
     repository.fetchRecommendedMovies(
       request = request,

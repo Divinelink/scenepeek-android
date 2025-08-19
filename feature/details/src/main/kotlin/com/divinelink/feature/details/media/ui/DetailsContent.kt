@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,6 +41,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
@@ -67,6 +69,8 @@ import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
@@ -389,9 +393,15 @@ private fun MediaDetailsContent(
       ) { page ->
         uiState.forms.values.elementAt(page).let { form ->
           when (form) {
-            DetailsForm.Error -> {
-              // TODO("Handle error state")
+            DetailsForm.Error -> Column(
+              modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = MaterialTheme.dimensions.keyline_16)
+                .verticalScroll(rememberScrollState()),
+            ) {
+              BlankSlate(uiState = BlankSlateState.Contact)
             }
+
             DetailsForm.Loading -> LoadingContent(
               modifier = Modifier
                 .fillMaxSize()
