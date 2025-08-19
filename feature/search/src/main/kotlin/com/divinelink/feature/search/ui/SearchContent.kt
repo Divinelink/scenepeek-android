@@ -1,6 +1,7 @@
 package com.divinelink.feature.search.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
@@ -66,6 +67,7 @@ fun SearchContent(
       },
       onLoadNextPage = onLoadNextPage,
       onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
+      scrollState = rememberLazyGridState(),
     )
 
     else -> BlankSlate(
