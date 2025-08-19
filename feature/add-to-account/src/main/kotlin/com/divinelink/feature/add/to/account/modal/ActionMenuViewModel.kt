@@ -66,8 +66,7 @@ class ActionMenuViewModel(
             when (val media = uiState.media) {
               is MediaItem.Media.Movie -> uiState.copy(media = media.copy(isFavorite = isFavorite))
               is MediaItem.Media.TV -> uiState.copy(media = media.copy(isFavorite = isFavorite))
-              is MediaItem.Person -> uiState
-              MediaItem.Unknown -> uiState
+              else -> uiState
             }
           }
         }
