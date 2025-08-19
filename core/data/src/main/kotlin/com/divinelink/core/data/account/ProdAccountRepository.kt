@@ -1,7 +1,6 @@
 package com.divinelink.core.data.account
 
 import com.divinelink.core.database.media.dao.MediaDao
-import com.divinelink.core.database.media.dao.checkIfMediaIsFavorite
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -28,12 +27,14 @@ class ProdAccountRepository(
       accountId = accountId,
       sessionId = sessionId,
     ),
-    dao.fetchFavoriteMovieIds(),
-  ) { response, _ ->
+    dao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
     val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
     val updatedMovies = data.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = dao.checkIfMediaIsFavorite(media.id, MediaType.MOVIE),
+        isFavorite = media.id in favoriteSet,
       )
     }
 
@@ -52,12 +53,14 @@ class ProdAccountRepository(
       accountId = accountId,
       sessionId = sessionId,
     ),
-    dao.fetchFavoriteTVIds(),
-  ) { response, _ ->
+    dao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteIds ->
     val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
     val updatedTvShows = data.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = dao.checkIfMediaIsFavorite(media.id, MediaType.TV),
+        isFavorite = media.id in favoriteSet,
       )
     }
 
@@ -76,12 +79,14 @@ class ProdAccountRepository(
       accountId = accountId,
       sessionId = sessionId,
     ),
-    dao.fetchFavoriteMovieIds(),
-  ) { response, _ ->
+    dao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
     val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
     val updatedMovies = data.list.map { media ->
       (media as MediaItem.Media.Movie).copy(
-        isFavorite = dao.checkIfMediaIsFavorite(media.id, MediaType.MOVIE),
+        isFavorite = media.id in favoriteSet,
       )
     }
 
@@ -100,12 +105,14 @@ class ProdAccountRepository(
       accountId = accountId,
       sessionId = sessionId,
     ),
-    dao.fetchFavoriteTVIds(),
-  ) { response, _ ->
+    dao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteIds ->
     val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
     val updatedTvShows = data.list.map { media ->
       (media as MediaItem.Media.TV).copy(
-        isFavorite = dao.checkIfMediaIsFavorite(media.id, MediaType.TV),
+        isFavorite = media.id in favoriteSet,
       )
     }
 

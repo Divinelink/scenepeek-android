@@ -8,7 +8,7 @@ import com.divinelink.core.data.person.credits.mapper.toMediaEntities
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
-import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.change.Changes
@@ -29,7 +29,7 @@ import kotlin.time.Clock
 class ProdPersonRepository(
   private val service: PersonService,
   private val dao: PersonDao,
-  private val mediaDao: SqlMediaDao,
+  private val mediaDao: MediaDao,
   private val clock: Clock,
   val dispatcher: DispatcherProvider,
 ) : PersonRepository {

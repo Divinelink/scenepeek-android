@@ -24,7 +24,7 @@ import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
-import com.divinelink.core.testing.repository.TestMoviesRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.FakeGetDetailsActionItemsUseCase
 import com.divinelink.core.testing.usecase.FakeGetDropdownMenuItemsUseCase
@@ -50,7 +50,7 @@ class GetMediaDetailsUseCaseTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var repository: TestDetailsRepository
-  private lateinit var moviesRepository: TestMoviesRepository
+  private lateinit var moviesRepository: TestMediaRepository
   private lateinit var jellyseerrRepository: TestJellyseerrRepository
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
@@ -66,7 +66,7 @@ class GetMediaDetailsUseCaseTest {
   @Before
   fun setUp() {
     repository = TestDetailsRepository()
-    moviesRepository = TestMoviesRepository()
+    moviesRepository = TestMediaRepository()
     jellyseerrRepository = TestJellyseerrRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()

@@ -3,7 +3,7 @@ package com.divinelink.scenepeek.popular.domain.usecase
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.repository.TestMoviesRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.scenepeek.home.domain.usecase.GetFavoriteMoviesUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -18,11 +18,11 @@ class GetFavoriteMoviesUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  private lateinit var repository: TestMoviesRepository
+  private lateinit var repository: TestMediaRepository
 
   @Before
   fun setUp() {
-    repository = TestMoviesRepository()
+    repository = TestMediaRepository()
   }
 
   private val favorites = MediaItemFactory.MoviesList(1..6).map { movie ->
@@ -35,11 +35,8 @@ class GetFavoriteMoviesUseCaseTest {
   fun `successfully fetch favorite movies test`() = runTest {
     val expectedResult = Result.success(favorites)
 
-    repository.mockFetchFavoriteMovies(
+    repository.mockFetchFavorites(
       response = Result.success(favorites),
-    )
-    repository.mockFetchFavoriteTVSeries(
-      response = Result.success(emptyList()),
     )
 
     val useCase = GetFavoriteMoviesUseCase(
@@ -55,7 +52,7 @@ class GetFavoriteMoviesUseCaseTest {
   fun `getFavoriteMovies failure test`() = runTest {
     val expectedResult = Result.failure<Exception>(Exception("Something went wrong."))
 
-    repository.mockFetchFavoriteMovies(
+    repository.mockFetchFavorites(
       response = Result.failure(Exception("Oops")),
     )
 

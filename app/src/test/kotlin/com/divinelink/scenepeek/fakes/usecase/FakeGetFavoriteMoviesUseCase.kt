@@ -12,8 +12,5 @@ class FakeGetFavoriteMoviesUseCase {
 
   fun mockGetFavoriteMovies(response: MediaListResult) {
     whenever(mock.invoke(Unit)).thenReturn(flowOf(response))
-//    coEvery {
-//      mock.invoke(Unit)
-//    } returns flowOf(response)
   }
 }

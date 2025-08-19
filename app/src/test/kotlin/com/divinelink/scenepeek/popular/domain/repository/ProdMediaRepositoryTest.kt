@@ -1,9 +1,9 @@
 package com.divinelink.scenepeek.popular.domain.repository
 
+import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
-import com.divinelink.core.database.media.model.PersistableMovie
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.media.MediaType
@@ -11,7 +11,7 @@ import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
-import com.divinelink.core.testing.dao.FakeMediaDao
+import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.factories.api.SearchMovieApiFactory
@@ -29,21 +29,6 @@ class ProdMediaRepositoryTest {
     withFavorite(true)
   }
 
-  private val persistableMovie = PersistableMovie(
-    id = 550,
-    posterPath = "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
-    backdropPath = "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
-    releaseDate = "1999-10-15",
-    title = "Fight Club",
-    voteAverage = 8.4,
-    voteCount = 30_452,
-    overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel " +
-      "primal male aggression into a shocking new form of therapy." +
-      " Their concept catches on, with underground \"fight clubs\" forming in every town, " +
-      "until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
-    isFavorite = true,
-  )
-
   private val apiPopularResponse = MoviesResponseApi(
     page = 1,
     results = MovieApiFactory.EmptyList(),
@@ -58,7 +43,7 @@ class ProdMediaRepositoryTest {
     totalResults = 0,
   )
 
-  private var mediaDao = FakeMediaDao()
+  private var mediaDao = TestMediaDao()
   private var mediaService = TestMediaService()
 
   private lateinit var repository: MediaRepository
@@ -66,30 +51,65 @@ class ProdMediaRepositoryTest {
   @Before
   fun setUp() {
     repository = ProdMediaRepository(
-      mediaDao = mediaDao.mock,
-      mediaRemote = mediaService.mock,
+      dao = mediaDao.mock,
+      remote = mediaService.mock,
     )
   }
 
   @Test
-  fun testFetchPopularMovies() = runTest {
+  fun `test fetch popular movies with no favorite ids`() = runTest {
     val request = MoviesRequestApi(page = 1)
     val expectedResult = MediaItemFactory.MoviesList()
 
     val expectApiPopularResponse = flowOf(apiPopularResponse)
 
-    expectedResult.forEach { movie ->
-      mediaDao.mockCheckIfFavorite(movie.id, 0)
-    }
+    mediaDao.mockFetchFavoriteMovieIds(flowOf(emptyList()))
 
     mediaService.mockFetchPopularMovies(
       request = request,
       result = expectApiPopularResponse,
     )
 
-    val actualResult = repository.fetchPopularMovies(request).first()
+    repository.fetchPopularMovies(request).test {
+      assertThat(awaitItem()).isEqualTo(Result.success(expectedResult))
+      awaitComplete()
+    }
+  }
 
-    assertThat(expectedResult).isEqualTo(actualResult.data)
+  @Test
+  fun `test fetch popular movies with favorite ids`() = runTest {
+    val request = MoviesRequestApi(page = 1)
+
+    val expectApiPopularResponse = flowOf(apiPopularResponse)
+
+    mediaDao.mockFetchFavoriteMovieIds(
+      flowOf(
+        emptyList(),
+        emptyList(),
+        listOf(1, 2),
+      ),
+    )
+
+    mediaService.mockFetchPopularMovies(
+      request = request,
+      result = expectApiPopularResponse,
+    )
+
+    repository.fetchPopularMovies(request).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(MediaItemFactory.MoviesList()),
+      )
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          buildList {
+            addAll(MediaItemFactory.MoviesList(1..2).map { it.copy(isFavorite = true) })
+            addAll(MediaItemFactory.MoviesList(3..10))
+          },
+        ),
+      )
+
+      awaitComplete()
+    }
   }
 
   @Test
@@ -100,7 +120,11 @@ class ProdMediaRepositoryTest {
 
       val expectedApiSearchResponse = flowOf(apiSearchResponse)
       expectedResult.forEach { movie ->
-        mediaDao.mockCheckIfFavorite(movie.id, 0)
+        mediaDao.mockCheckIfFavorite(
+          id = movie.id,
+          mediaType = MediaType.MOVIE,
+          result = false,
+        )
       }
       mediaService.mockFetchSearchMovies(
         request = request,
@@ -115,29 +139,22 @@ class ProdMediaRepositoryTest {
     }
 
   @Test
-  fun testFetchFavoriteMovies() = runTest {
-    val expectedResult = listOf(
-      movie.copy(popularity = 0.0),
-      movie.copy(id = 1234, name = "Movie Title 2", popularity = 0.0),
+  fun `test fetch favorites`() = runTest {
+    val favoriteMovies = flowOf(
+      MediaItemFactory.all(),
     )
 
-    val expectedPersistableMovieResult = flowOf(
-      listOf(
-        persistableMovie,
-        persistableMovie.copy(id = 1234, title = "Movie Title 2"),
-      ),
-    )
+    mediaDao.mockFetchFavorites(favoriteMovies)
 
-    mediaDao.mockFetchFavoritesMovies(expectedPersistableMovieResult)
-
-    val actualResult = repository.fetchFavoriteMovies().first()
-
-    assertThat(expectedResult).isEqualTo(actualResult.data)
+    repository.fetchFavorites().test {
+      assertThat(awaitItem()).isEqualTo(Result.success(MediaItemFactory.all()))
+      awaitComplete()
+    }
   }
 
   @Test
   fun `correctly check movie is favorite`() = runTest {
-    mediaDao.mockCheckIfFavorite(id = 1, result = 1)
+    mediaDao.mockCheckIfFavorite(id = 1, result = true, mediaType = MediaType.MOVIE)
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
@@ -146,7 +163,7 @@ class ProdMediaRepositoryTest {
 
   @Test
   fun `correctly check movie is not favorite`() = runTest {
-    mediaDao.mockCheckIfFavorite(id = 1, result = 0)
+    mediaDao.mockCheckIfFavorite(id = 1, result = false, mediaType = MediaType.MOVIE)
 
     val result = repository.checkIfMediaIsFavorite(1, MediaType.MOVIE)
 
@@ -157,13 +174,13 @@ class ProdMediaRepositoryTest {
   fun testInsertMovie() = runTest {
     repository.insertFavoriteMedia(movie)
 
-    mediaDao.verifyInsertFavoriteMovie(persistableMovie)
+    mediaDao.verifyInsertFavoriteMovie(movie.id)
   }
 
   @Test
   fun testRemoveMovie() = runTest {
     repository.removeFavoriteMedia(movie.id, mediaType = MediaType.MOVIE)
 
-    mediaDao.verifyRemoveMovie(persistableMovie.id)
+    mediaDao.verifyRemoveMovie(movie.id)
   }
 }

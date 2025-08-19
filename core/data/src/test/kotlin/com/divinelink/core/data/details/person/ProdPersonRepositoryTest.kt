@@ -5,8 +5,8 @@ import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.repository.ProdPersonRepository
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.media.dao.ProdMediaDao
-import com.divinelink.core.database.media.dao.SqlMediaDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
@@ -42,7 +42,7 @@ class ProdPersonRepositoryTest {
   private lateinit var repository: ProdPersonRepository
   private lateinit var service: TestPersonService
   private lateinit var dao: PersonDao
-  private lateinit var mediaDao: SqlMediaDao
+  private lateinit var mediaDao: MediaDao
   private lateinit var clock: Clock
 
   @BeforeTest
@@ -56,7 +56,9 @@ class ProdPersonRepositoryTest {
     )
     service = TestPersonService()
     mediaDao = ProdMediaDao(
+      clock = ClockFactory.augustFifteenth2021(),
       database = database,
+      dispatcher = testDispatcher,
     )
     clock = ClockFactory.augustFifteenth2021()
 

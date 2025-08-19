@@ -13,7 +13,7 @@ import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.database.credits.dao.CreditsDao
-import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
@@ -55,7 +55,7 @@ class ProdDetailsRepository(
   private val creditsDao: CreditsDao,
   private val omdbService: OMDbService,
   private val traktService: TraktService,
-  private val mediaDao: SqlMediaDao,
+  private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 

@@ -147,11 +147,6 @@ dependencies {
   implementation(libs.koin.android.compose)
   implementation(libs.koin.start.up)
 
-  // Database
-  implementation(libs.room.ktx) // TODO Remove room deps and add di for database
-  implementation(libs.room.runtime)
-  ksp(libs.room.compiler)
-
   // Testing Libs
   testImplementation(projects.core.testing)
 

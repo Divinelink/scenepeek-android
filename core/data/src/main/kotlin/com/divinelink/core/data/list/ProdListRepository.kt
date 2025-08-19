@@ -3,7 +3,7 @@ package com.divinelink.core.data.list
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.database.currentTimeInUTC
 import com.divinelink.core.database.list.ListDao
-import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
@@ -31,7 +31,7 @@ import kotlin.time.Clock
 class ProdListRepository(
   private val sessionStorage: SessionStorage,
   private val listDao: ListDao,
-  private val mediaDao: SqlMediaDao,
+  private val mediaDao: MediaDao,
   private val service: ListService,
   private val clock: Clock,
 ) : ListRepository {
