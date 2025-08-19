@@ -4,6 +4,7 @@ import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.Resource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
@@ -26,7 +27,7 @@ class TestPersonRepository {
     whenever(mock.fetchPersonDetails(any())).thenReturn(response.consumeAsFlow())
   }
 
-  fun mockFetchPersonCredits(response: Result<PersonCombinedCredits>) {
+  fun mockFetchPersonCredits(response: Resource<PersonCombinedCredits?>) {
     whenever(mock.fetchPersonCredits(any())).thenReturn(flowOf(response))
   }
 

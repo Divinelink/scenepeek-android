@@ -11,7 +11,9 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.person.KnownForDepartment
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.model.person.credits.PersonCredit
+import com.divinelink.core.network.Resource
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
@@ -28,17 +30,13 @@ data class PersonDetailsParams(
 class FetchPersonDetailsUseCase(
   private val repository: PersonRepository,
   val dispatcher: DispatcherProvider,
-) : FlowUseCase<PersonDetailsParams, PersonDetailsResult>(dispatcher.io) {
+) : FlowUseCase<PersonDetailsParams, PersonDetailsResult>(dispatcher.default) {
 
   override fun execute(parameters: PersonDetailsParams): Flow<Result<PersonDetailsResult>> =
     channelFlow {
       if (parameters.knownForDepartment != null) {
-        launch(dispatcher.io) {
+        launch {
           repository.fetchPersonDetails(parameters.id)
-            .catch {
-              Timber.e(it)
-              send(Result.failure(PersonDetailsResult.DetailsFailure))
-            }
             .collect { result ->
               result.fold(
                 onFailure = {
@@ -54,12 +52,8 @@ class FetchPersonDetailsUseCase(
       }
 
       val asyncDetails = if (parameters.knownForDepartment == null) {
-        async(dispatcher.io) {
+        async {
           repository.fetchPersonDetails(parameters.id)
-            .catch {
-              Timber.e(it)
-              emit(Result.failure(PersonDetailsResult.DetailsFailure))
-            }
             .map { result ->
               result.fold(
                 onFailure = {
@@ -77,7 +71,7 @@ class FetchPersonDetailsUseCase(
 
       asyncDetails?.await()?.let { send(it) }
 
-      launch(dispatcher.io) {
+      launch {
         val knownForDepartment = parameters.knownForDepartment
           ?: asyncDetails?.await()?.data?.personDetails?.person?.knownForDepartment
           ?: KnownForDepartment.Acting.value
@@ -85,46 +79,56 @@ class FetchPersonDetailsUseCase(
         repository.fetchPersonCredits(parameters.id)
           .catch { Timber.e(it) }
           .collect { result ->
-            result.fold(
-              onFailure = { Timber.e(it) },
-              onSuccess = {
-                val knownForCredits = calculateKnownForCredits(
-                  department = knownForDepartment,
-                  result = result,
-                )
-
-                val credits = findCreditsForPerson(
-                  department = knownForDepartment,
-                  result = result,
-                )
-
-                val movies = credits.mapValues { department ->
-                  department.value.filter { it.mediaItem is MediaItem.Media.Movie }
-                }.filter { it.value.isNotEmpty() }
-
-                val tvShows = credits.mapValues { department ->
-                  department.value.filter { it.mediaItem is MediaItem.Media.TV }
-                }.filter { it.value.isNotEmpty() }
-
-                send(
-                  Result.success(
-                    PersonDetailsResult.CreditsSuccess(
-                      knownForCredits = knownForCredits,
-                      knownForDepartment = knownForDepartment,
-                      movies = movies,
-                      tvShows = tvShows,
-                    ),
-                  ),
-                )
-              },
-            )
+            when (result) {
+              is Resource.Error -> Timber.d(result.error)
+              is Resource.Loading<PersonCombinedCredits?> -> result.data?.let { data ->
+                calculateCredits(knownForDepartment, data)
+              }
+              is Resource.Success<PersonCombinedCredits?> -> result.data?.let { data ->
+                calculateCredits(knownForDepartment, data)
+              }
+            }
           }
       }
     }
 
-  private fun calculateMovieScore(media: PersonCredit): Double {
-    val order = (media.role as? PersonRole.MovieActor)?.order ?: Int.MAX_VALUE
-    return (media.voteCount / (order + 1)) * (0.04 * media.popularity)
+  private suspend fun ProducerScope<Result<PersonDetailsResult>>.calculateCredits(
+    knownForDepartment: String,
+    data: PersonCombinedCredits,
+  ) {
+    val knownForCredits = calculateKnownForCredits(
+      department = knownForDepartment,
+      result = Result.success(data),
+    )
+
+    val credits = findCreditsForPerson(
+      department = knownForDepartment,
+      result = Result.success(data),
+    )
+
+    val movies = credits.mapValues { department ->
+      department.value.filter { it.media is MediaItem.Media.Movie }
+    }.filter { it.value.isNotEmpty() }
+
+    val tvShows = credits.mapValues { department ->
+      department.value.filter { it.media is MediaItem.Media.TV }
+    }.filter { it.value.isNotEmpty() }
+
+    send(
+      Result.success(
+        PersonDetailsResult.CreditsSuccess(
+          knownForCredits = knownForCredits,
+          knownForDepartment = knownForDepartment,
+          movies = movies,
+          tvShows = tvShows,
+        ),
+      ),
+    )
+  }
+
+  private fun calculateMovieScore(credit: PersonCredit): Double {
+    val order = (credit.role as? PersonRole.MovieActor)?.order ?: Int.MAX_VALUE
+    return (credit.media.voteCount / (order + 1)) * (0.04 * credit.media.popularity)
   }
 
   private fun calculateScore(media: PersonCredit) = when (media.role) {
@@ -133,9 +137,9 @@ class FetchPersonDetailsUseCase(
     else -> 1.0
   }
 
-  private fun calculateTvScore(media: PersonCredit): Double {
-    val episodeCount = (media.role as? PersonRole.SeriesActor)?.totalEpisodes ?: 0
-    return media.voteCount * episodeCount / (0.1 * media.popularity)
+  private fun calculateTvScore(credit: PersonCredit): Double {
+    val episodeCount = (credit.role as? PersonRole.SeriesActor)?.totalEpisodes ?: 0
+    return credit.media.voteCount * episodeCount / (0.1 * credit.media.popularity)
   }
 
   private fun calculateKnownForCredits(
@@ -144,14 +148,14 @@ class FetchPersonDetailsUseCase(
   ): List<PersonCredit> = if (department == KnownForDepartment.Acting.value) {
     result.data.cast
       .sortedByDescending { calculateScore(it) }
-      .distinctBy { it.id }
+      .distinctBy { it.media.id }
       .take(10)
-      .sortedByDescending { it.voteAverage }
+      .sortedByDescending { it.media.voteAverage }
   } else {
     result.data.crew
       .filter { (it.role as? PersonRole.Crew)?.department == department }
-      .sortedByDescending { it.popularity }
-      .distinctBy { it.id }
+      .sortedByDescending { it.media.popularity }
+      .distinctBy { it.media.id }
       .take(10)
   }
 
@@ -173,11 +177,11 @@ class FetchPersonDetailsUseCase(
     departmentsToProcess.forEach { dep ->
       val credits = if (dep == KnownForDepartment.Acting.value) {
         result.data.cast
-          .distinctBy { it.id }
+          .distinctBy { it.media.id }
       } else {
         result.data.crew
           .filter { (it.role as? PersonRole.Crew)?.department == dep }
-          .distinctBy { it.id }
+          .distinctBy { it.media.id }
       }
       map[dep] = credits
     }

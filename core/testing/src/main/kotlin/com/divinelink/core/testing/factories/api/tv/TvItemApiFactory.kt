@@ -17,7 +17,7 @@ object TvItemApiFactory {
       "universe in which the national war on drugs has become a permanent," +
       " self-sustaining bureaucracy, and distinctions between good " +
       "and evil are routinely obliterated.",
-    popularity = 32.9274,
+    popularity = 72.3288,
     posterPath = "/4lbclFySvugI51fwsyxBTOm4DqK.jpg",
     firstAirDate = "2002-06-02",
     name = "The Wire",
@@ -35,7 +35,7 @@ object TvItemApiFactory {
     originalName = "The Office",
     overview = "The everyday lives of office employees in the Scranton, " +
       "Pennsylvania branch of the fictional Dunder Mifflin Paper Company.",
-    popularity = 132.0914,
+    popularity = 530.095,
     posterPath = "/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
     firstAirDate = "2005-03-24",
     name = "The Office",

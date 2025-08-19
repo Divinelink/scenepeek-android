@@ -1,10 +1,10 @@
 package com.divinelink.core.database.person
 
-import com.divinelink.core.database.person.credits.PersonCastCreditEntity
-import com.divinelink.core.database.person.credits.PersonCrewCreditEntity
+import com.divinelink.core.database.person.credits.CastCreditsWithMedia
+import com.divinelink.core.database.person.credits.CrewCreditsWithMedia
 
 data class PersonCombinedCreditsEntity(
   val id: Long,
-  val cast: List<PersonCastCreditEntity>,
-  val crew: List<PersonCrewCreditEntity>,
+  val cast: List<CastCreditsWithMedia>,
+  val crew: List<CrewCreditsWithMedia>,
 )

@@ -4,17 +4,21 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.person.credits.mapper.map
 import com.divinelink.core.data.person.credits.mapper.toEntityCast
 import com.divinelink.core.data.person.credits.mapper.toEntityCrew
+import com.divinelink.core.data.person.credits.mapper.toMediaEntities
 import com.divinelink.core.data.person.details.mapper.map
 import com.divinelink.core.data.person.details.mapper.mapToEntity
 import com.divinelink.core.database.currentEpochSeconds
+import com.divinelink.core.database.media.dao.SqlMediaDao
 import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.changes.mapper.map
 import com.divinelink.core.network.details.person.service.PersonService
 import com.divinelink.core.network.media.model.changes.ChangesParameters
+import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,16 +29,17 @@ import kotlin.time.Clock
 class ProdPersonRepository(
   private val service: PersonService,
   private val dao: PersonDao,
+  private val mediaDao: SqlMediaDao,
   private val clock: Clock,
   val dispatcher: DispatcherProvider,
 ) : PersonRepository {
 
   override fun fetchPersonDetails(id: Long): Flow<Result<PersonDetails>> = channelFlow {
-    dao.fetchPersonById(id).collectLatest { personDetails ->
+    dao.fetchPersonById(id).collect { personDetails ->
       if (personDetails != null) {
         Timber.d("Person details | ${personDetails.name} | found in database")
         send(Result.success(personDetails.map()))
-        return@collectLatest
+        return@collect
       } else {
         Timber.d("Person details not found in database")
         service.fetchPersonDetails(id).collectLatest { response ->
@@ -44,21 +49,27 @@ class ProdPersonRepository(
     }
   }
 
-  override fun fetchPersonCredits(id: Long): Flow<Result<PersonCombinedCredits>> = channelFlow {
-    dao.fetchPersonCombinedCredits(id).collectLatest { personCredits ->
-      if (personCredits != null) {
-        Timber.d("Person credits | ${personCredits.id} | found in database")
-        send(Result.success(personCredits.map()))
-      } else {
-        Timber.d("Person credits not found in database")
-        service.fetchPersonCombinedCredits(id).collectLatest { response ->
-          dao.insertPersonCredits(response.id)
-          dao.insertPersonCrewCredits(response.toEntityCrew())
-          dao.insertPersonCastCredits(response.toEntityCast())
+  override fun fetchPersonCredits(id: Long): Flow<Resource<PersonCombinedCredits?>> =
+    networkBoundResource(
+      query = {
+        dao.fetchPersonCombinedCredits(id).map { credits ->
+          Timber.d("Person credits | ${credits?.id} | found in database")
+          credits?.map()
         }
-      }
-    }
-  }
+      },
+      fetch = { service.fetchPersonCombinedCredits(id) },
+      saveFetchResult = { response ->
+        response.collect { credits ->
+          dao.insertPersonCredits(credits.id)
+          dao.insertPersonCrewCredits(credits.toEntityCrew())
+          dao.insertPersonCastCredits(credits.toEntityCast())
+
+          val media = credits.toMediaEntities()
+          mediaDao.insertMediaEntities(media)
+        }
+      },
+      shouldFetch = { data -> data == null },
+    )
 
   override fun fetchPersonChanges(
     id: Long,

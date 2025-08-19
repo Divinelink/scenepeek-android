@@ -14,9 +14,10 @@ sealed interface UserDataForm<out T : MediaItem.Media> {
 
   data class Data<T : MediaItem.Media>(
     val mediaType: MediaType,
-    val data: List<T>,
+    val paginationData: Map<Int, List<MediaItem.Media>>,
     val totalResults: Int,
   ) : UserDataForm<T> {
-    val isEmpty: Boolean = data.isEmpty()
+    val media = paginationData.values.flatten()
+    val isEmpty: Boolean = media.isEmpty()
   }
 }

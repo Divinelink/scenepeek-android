@@ -1,64 +1,52 @@
 CREATE TABLE PersonCrewCreditEntity (
-    id INTEGER NOT NULL,
-    creditId TEXT PRIMARY KEY  NOT NULL,
-    personId INTEGER NOT NULL,
-    adult INTEGER NOT NULL,
-    backdropPath TEXT,
-    genreIds TEXT NOT NULL,
-    originalLanguage TEXT NOT NULL,
-    overview TEXT NOT NULL,
-    popularity REAL NOT NULL,
-    posterPath TEXT,
-    voteAverage REAL NOT NULL,
-    voteCount INTEGER NOT NULL,
-    department TEXT NOT NULL,
-    job TEXT NOT NULL,
-    mediaType TEXT NOT NULL,
-    -- Movie Properties
-    title TEXT,
-    video INTEGER,
-    releaseDate TEXT,
-    originalTitle TEXT,
-    -- TV Show Properties
-    name TEXT,
-    originalName TEXT,
-    originCountry TEXT,
-    firstAirDate TEXT,
-    episodeCount INTEGER,
-    FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
+  id INTEGER NOT NULL,
+  creditId TEXT PRIMARY KEY NOT NULL,
+  personId INTEGER NOT NULL,
+  department TEXT NOT NULL,
+  job TEXT NOT NULL,
+  releaseDate TEXT,
+  firstAirDate TEXT,
+  mediaType TEXT NOT NULL,
+  episodeCount INTEGER,
+  FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
 );
 
 insertPersonCrewCredit:
 INSERT OR REPLACE INTO PersonCrewCreditEntity(
   id,
-  personId,
-  adult,
-  backdropPath,
-  genreIds,
-  originalLanguage,
-  originalTitle,
-  originalName,
-  overview,
-  popularity,
-  posterPath,
-  releaseDate,
-  firstAirDate,
-  title,
-  name,
-  video,
-  voteAverage,
-  voteCount,
   creditId,
+  personId,
   department,
   job,
-  episodeCount,
+  releaseDate,
+  firstAirDate,
   mediaType,
-  originCountry
+  episodeCount
 )
 VALUES ?;
 
-fetchPersonCrewCredit:
-SELECT * FROM PersonCrewCreditEntity
-WHERE personId = ?
-ORDER BY
-  COALESCE(releaseDate, firstAirDate) DESC;
+crewCreditsWithMedia:
+SELECT
+    pcc.*,
+    mi.adult,
+    mi.backdropPath,
+    mi.posterPath,
+    mi.originalLanguage,
+    mi.popularity,
+    mi.voteAverage,
+    mi.voteCount,
+    mi.overview,
+    -- Movie specific fields
+    mi.video,
+    -- TV show specific fields
+    mi.name,
+    mi.originalName,
+    mi.originCountryJson,
+    -- Common fields
+    mi.genreIdsJson
+FROM PersonCrewCreditEntity pcc
+INNER JOIN MediaItemEntity mi ON (
+    pcc.mediaType = mi.mediaType AND pcc.id = mi.id
+)
+WHERE pcc.personId = ?
+ORDER BY COALESCE(pcc.releaseDate, pcc.firstAirDate) DESC;

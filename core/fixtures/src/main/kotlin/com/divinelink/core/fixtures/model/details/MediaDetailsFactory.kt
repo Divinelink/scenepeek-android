@@ -40,6 +40,7 @@ object MediaDetailsFactory {
     runtime = "2h 10m",
     imdbId = "tt0137523",
     tagline = "You don't talk about Fight Club.",
+    popularity = 21.6213,
     information = MediaDetailsInformation.Movie(
       originalTitle = "Fight Club",
       status = "Released",
@@ -102,6 +103,7 @@ object MediaDetailsFactory {
     numberOfSeasons = 9,
     imdbId = "tt0386676",
     tagline = "A comedy for anyone whose boss is an idiot.",
+    popularity = 530.095,
     information = MediaDetailsInformation.TV(
       originalTitle = "The Office",
       status = TvStatus.ENDED,

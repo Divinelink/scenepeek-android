@@ -3,6 +3,7 @@ package com.divinelink.feature.add.to.account.modal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.list.ListRepository
+import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaItem
@@ -23,6 +24,7 @@ class ActionMenuViewModel(
   entryPoint: ActionMenuEntryPoint,
   mediaItem: MediaItem,
   private val listRepository: ListRepository,
+  private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<ActionMenuUiState> = MutableStateFlow(
@@ -51,6 +53,23 @@ class ActionMenuViewModel(
       ActionMenuIntent.MultiSelect -> {
         // Do nothing
       }
+    }
+  }
+
+  fun onMarkAsFavorite() {
+    if (uiState.value.media !is MediaItem.Media) return
+
+    viewModelScope.launch {
+      markAsFavoriteUseCase(uiState.value.media as MediaItem.Media)
+        .onSuccess { isFavorite ->
+          _uiState.update { uiState ->
+            when (val media = uiState.media) {
+              is MediaItem.Media.Movie -> uiState.copy(media = media.copy(isFavorite = isFavorite))
+              is MediaItem.Media.TV -> uiState.copy(media = media.copy(isFavorite = isFavorite))
+              else -> uiState
+            }
+          }
+        }
     }
   }
 

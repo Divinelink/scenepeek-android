@@ -11,6 +11,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
@@ -19,6 +20,7 @@ import com.divinelink.core.ui.R as uiR
 class ActionMenuModalTests : ComposeTest() {
 
   private val repository = TestListRepository()
+  private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
   @Test
   fun `test ActionMenuModal for ListDetails`() {
@@ -29,6 +31,7 @@ class ActionMenuModalTests : ComposeTest() {
         listName = "TV Shows",
       ),
       mediaItem = MediaItemFactory.theWire(),
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
     )
     var mediaItem: MediaItem? = null
 
@@ -66,6 +69,7 @@ class ActionMenuModalTests : ComposeTest() {
       listRepository = repository.mock,
       entryPoint = ActionMenuEntryPoint.Other,
       mediaItem = MediaItemFactory.theWire(),
+      markAsFavoriteUseCase = markAsFavoriteUseCase,
     )
     var mediaItem: MediaItem? = null
 

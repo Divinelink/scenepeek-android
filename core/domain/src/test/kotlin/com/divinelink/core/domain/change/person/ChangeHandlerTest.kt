@@ -10,6 +10,7 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.entity.person.PersonEntityFactory
 import com.divinelink.core.testing.factories.model.change.PersonChangeItemSample
@@ -36,6 +37,7 @@ class ChangeHandlerTest {
   private lateinit var clock: Clock
   private lateinit var database: Database
   private lateinit var dao: ProdPersonDao
+  private lateinit var mediaDao: TestMediaDao
 
   @BeforeTest
   fun setUp() {
@@ -46,6 +48,7 @@ class ChangeHandlerTest {
       database = database,
       dispatcher = testDispatcher,
     )
+    mediaDao = TestMediaDao()
     dao.insertPerson(PersonEntityFactory.empty())
 
     repository = ProdPersonRepository(
@@ -53,6 +56,7 @@ class ChangeHandlerTest {
       dao = dao,
       clock = clock,
       dispatcher = testDispatcher,
+      mediaDao = mediaDao.mock,
     )
   }
 

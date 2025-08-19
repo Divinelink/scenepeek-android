@@ -23,6 +23,7 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
+import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
@@ -42,6 +43,7 @@ import com.divinelink.core.ui.R as uiR
 class ListDetailsScreenTest : ComposeTest() {
 
   private val repository = TestListRepository()
+  private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
   @BeforeTest
   fun setup() {
@@ -316,6 +318,7 @@ class ListDetailsScreenTest : ComposeTest() {
         ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
 
@@ -401,6 +404,7 @@ class ListDetailsScreenTest : ComposeTest() {
         ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
 
@@ -507,6 +511,7 @@ class ListDetailsScreenTest : ComposeTest() {
         ),
         mediaItem = ListDetailsFactory.page1().media.first(),
         listRepository = repository.mock,
+        markAsFavoriteUseCase = markAsFavoriteUseCase,
       )
     }
 

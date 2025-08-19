@@ -31,7 +31,7 @@ object SearchMovieApiFactory {
       originalLanguage = "",
       originalTitle = "",
       overview = LoremIpsum(15).values.joinToString(),
-      popularity = 0.0,
+      popularity = (it * 525.25),
       posterPath = "movie $it - posterPath",
       releaseDate = "2002-08-22",
       title = "Fight club $it",

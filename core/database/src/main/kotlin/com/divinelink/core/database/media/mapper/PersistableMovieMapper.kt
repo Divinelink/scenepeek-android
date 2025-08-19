@@ -26,5 +26,6 @@ private fun PersistableMovie.toMovie(): MediaItem.Media.Movie = MediaItem.Media.
   voteAverage = this.voteAverage,
   voteCount = this.voteCount,
   overview = this.overview,
+  popularity = 0.0,
   isFavorite = this.isFavorite,
 )

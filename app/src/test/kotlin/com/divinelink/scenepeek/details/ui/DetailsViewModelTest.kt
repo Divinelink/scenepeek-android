@@ -464,7 +464,7 @@ class DetailsViewModelTest {
       )
       .mockMarkAsFavoriteUseCase(
         media = MediaItemFactory.FightClub().toWizard { withFavorite(true) },
-        response = Result.success(Unit),
+        response = Result.success(false),
       )
       .withNavArguments(
         id = mediaId,
@@ -520,7 +520,7 @@ class DetailsViewModelTest {
         )
         .mockMarkAsFavoriteUseCase(
           media = MediaItemFactory.FightClub(),
-          response = Result.success(Unit),
+          response = Result.success(true),
         )
         .withNavArguments(
           id = mediaId,

@@ -49,6 +49,7 @@ private fun TvItemApi.toTv() = MediaItem.Media.TV(
   voteAverage = this.voteAverage.round(1),
   voteCount = this.voteCount ?: 0,
   overview = this.overview,
-  isFavorite = false,
+  popularity = popularity,
   accountRating = rating?.toInt(),
+  isFavorite = false,
 )

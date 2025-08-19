@@ -3,6 +3,7 @@ package com.divinelink.core.data.account
 import app.cash.turbine.test
 import com.divinelink.core.network.media.model.movie.map
 import com.divinelink.core.network.media.model.tv.map
+import com.divinelink.core.testing.dao.FakeMediaDao
 import com.divinelink.core.testing.factories.api.movie.MoviesResponseApiFactory
 import com.divinelink.core.testing.factories.api.tv.TvResponseApiFactory
 import com.divinelink.core.testing.service.TestAccountService
@@ -20,10 +21,12 @@ class ProdAccountRepositoryTest {
   private var remote = TestAccountService()
 
   private lateinit var repository: AccountRepository
+  private lateinit var dao: FakeMediaDao
 
   @Before
   fun setUp() {
-    repository = ProdAccountRepository(remote.mock)
+    dao = FakeMediaDao()
+    repository = ProdAccountRepository(remote.mock, dao.mock)
   }
 
   @Test
@@ -31,6 +34,9 @@ class ProdAccountRepositoryTest {
     remote.mockFetchMoviesWatchlist(
       response = flowOf(response),
     )
+
+    dao.mockFetchFavoriteMovieIds(flowOf(emptyList()))
+    dao.mockNoFavorites()
 
     val result = repository.fetchMoviesWatchlist(
       accountId = "1",
@@ -50,6 +56,9 @@ class ProdAccountRepositoryTest {
     remote.mockFetchTvShowsWatchlist(
       response = flowOf(tvResponse),
     )
+
+    dao.mockFetchFavoriteTvIds(flowOf(emptyList()))
+    dao.mockNoTvFavorites()
 
     val result = repository.fetchTvShowsWatchlist(
       accountId = "1",

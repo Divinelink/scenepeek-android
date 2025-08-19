@@ -5,40 +5,6 @@ import com.divinelink.core.network.media.model.movie.MovieResponseApi
 
 object MovieApiFactory {
 
-  fun Empty() = MovieResponseApi(
-    adult = false,
-    backdropPath = null,
-    genreIds = listOf(),
-    id = 0,
-    originalLanguage = "",
-    originalTitle = "",
-    overview = "",
-    popularity = 0.0,
-    posterPath = null,
-    releaseDate = "",
-    title = "",
-    video = false,
-    voteAverage = 0.0,
-    voteCount = null,
-  )
-
-  fun Full() = MovieResponseApi(
-    id = 1,
-    adult = false,
-    backdropPath = "",
-    genreIds = listOf(),
-    originalLanguage = "",
-    originalTitle = "",
-    overview = "",
-    popularity = 0.0,
-    posterPath = "",
-    releaseDate = "",
-    title = "",
-    video = false,
-    voteAverage = 0.0,
-    voteCount = 0,
-  )
-
   fun EmptyList(range: IntProgression = 1..10): List<MovieResponseApi> = (range).map {
     MovieResponseApi(
       id = it,
@@ -48,7 +14,7 @@ object MovieApiFactory {
       originalLanguage = "",
       originalTitle = "",
       overview = LoremIpsum(15).values.joinToString(),
-      popularity = 0.0,
+      popularity = (it * 525.25),
       posterPath = "movie $it - posterPath",
       releaseDate = "2002-08-22",
       title = "Fight club $it",

@@ -294,7 +294,7 @@ class HomeViewModelTest {
       )
       .mockMarkAsFavorite(
         mediaItem = popularMoviesList[0],
-        result = Result.success(Unit),
+        result = Result.success(true),
       )
       .onMarkAsFavorite(
         movie = popularMoviesList[0],

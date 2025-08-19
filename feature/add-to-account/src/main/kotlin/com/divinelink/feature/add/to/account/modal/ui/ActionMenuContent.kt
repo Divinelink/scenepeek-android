@@ -17,21 +17,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.feature.add.to.account.modal.ActionMenuIntent
 import com.divinelink.feature.add.to.account.modal.ActionMenuUiState
 
 @Composable
 fun ActionMenuContent(
   uiState: ActionMenuUiState,
+  onMarkAsFavorite: () -> Unit,
   onAction: (ActionMenuIntent) -> Unit,
 ) {
   LazyColumn {
     item {
-      Text(
-        modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-        text = uiState.media.name,
-        style = MaterialTheme.typography.headlineSmall,
-      )
+      Row(
+        modifier = Modifier.padding(
+          start = MaterialTheme.dimensions.keyline_16,
+          end = MaterialTheme.dimensions.keyline_8,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      ) {
+        Text(
+          modifier = Modifier
+            .weight(1f)
+            .padding(vertical = MaterialTheme.dimensions.keyline_16),
+          text = uiState.media.name,
+          style = MaterialTheme.typography.headlineSmall,
+        )
+        if (uiState.media is MediaItem.Media) {
+          FavoriteButton(
+            isFavorite = uiState.media.isFavorite == true,
+            onClick = onMarkAsFavorite,
+          )
+        }
+      }
       HorizontalDivider()
       Spacer(modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4))
     }

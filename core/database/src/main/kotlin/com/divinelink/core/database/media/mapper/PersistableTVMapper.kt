@@ -28,5 +28,6 @@ internal fun PersistableTV.toTV() = MediaItem.Media.TV(
   voteAverage = this.voteAverage,
   voteCount = this.voteCount,
   overview = this.overview,
+  popularity = 0.0,
   isFavorite = this.isFavorite,
 )

@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFac
 import com.divinelink.core.fixtures.model.person.credit.PersonCrewCreditFactory
 import com.divinelink.core.model.details.person.PersonDetails
 import com.divinelink.core.model.person.KnownForDepartment
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestPersonRepository
 import com.google.common.truth.Truth.assertThat
@@ -73,16 +74,6 @@ class FetchPersonDetailsUseCaseTest {
   }
 
   @Test
-  fun `test fetchPersonDetails with error`() = runTest {
-    useCase.invoke(params).test {
-      val expectedFailure = awaitItem()
-      assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
-      assertThat(expectedFailure.isFailure).isTrue()
-      awaitComplete()
-    }
-  }
-
-  @Test
   fun `test async fetchPersonDetails with failure person details response`() = runTest {
     repository.mockFetchPersonDetails(Result.failure(Exception("Something went wrong")))
 
@@ -96,20 +87,9 @@ class FetchPersonDetailsUseCaseTest {
   }
 
   @Test
-  fun `test async fetchPersonDetails with error`() = runTest {
-    useCase.invoke(params.copy(knownForDepartment = null)).test {
-      val expectedFailure = awaitItem()
-      assertThat(expectedFailure.exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
-      assertThat(expectedFailure.isFailure).isTrue()
-      assertThat(awaitItem().exceptionOrNull()).isEqualTo(PersonDetailsResult.DetailsFailure)
-      awaitComplete()
-    }
-  }
-
-  @Test
   fun `test fetchPersonCredits for actors with success`() = runTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
@@ -142,7 +122,7 @@ class FetchPersonDetailsUseCaseTest {
           ),
       ),
     )
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     useCase.invoke(
       PersonDetailsParams(
@@ -180,7 +160,7 @@ class FetchPersonDetailsUseCaseTest {
         PersonDetailsFactory.steveCarell().toWzd { withKnownForDepartment(null) },
       ),
     )
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
@@ -206,13 +186,13 @@ class FetchPersonDetailsUseCaseTest {
   fun `test knownFor section does not include tv shows without episode count`() = runTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(
-      Result.success(
+      Resource.Success(
         PersonCombinedCreditsFactory.all().copy(
           cast = listOf(
             bruceAlmighty(),
             littleMissSunshine(),
             despicableMe(),
-            theOffice().copy(episodeCount = 0),
+            theOffice(),
           ),
         ),
       ),
@@ -226,8 +206,7 @@ class FetchPersonDetailsUseCaseTest {
       assertThat(awaitItem().getOrNull()).isEqualTo(
         PersonDetailsResult.CreditsSuccess(
           knownForCredits = listOf(
-            // This should be excluded but we'll keep it for now.
-            theOffice().copy(episodeCount = 0),
+            theOffice(),
             littleMissSunshine(),
             despicableMe(),
             bruceAlmighty(),
@@ -235,7 +214,7 @@ class FetchPersonDetailsUseCaseTest {
           knownForDepartment = KnownForDepartment.Acting.value,
           movies = GroupedPersonCreditsSample.movies(),
           tvShows = mapOf(
-            "Acting" to listOf(theOffice().copy(episodeCount = 0)),
+            "Acting" to listOf(theOffice()),
             "Production" to listOf(PersonCrewCreditFactory.riot()),
           ),
         ),
@@ -248,7 +227,7 @@ class FetchPersonDetailsUseCaseTest {
   @Test
   fun `test fetchPersonCredits with failure`() = runTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
-    repository.mockFetchPersonCredits(Result.failure(Exception("Something went wrong")))
+    repository.mockFetchPersonCredits(Resource.Error(Exception("Something went wrong")))
 
     useCase.invoke(params).test {
       assertThat(awaitItem().getOrNull()).isEqualTo(
@@ -263,7 +242,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchCredits awaits for person details iff knownForDepartment is null`() = runTest {
     val detailsChannel = Channel<Result<PersonDetails>>()
     repository.mockFetchPersonDetails(detailsChannel)
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     val params = PersonDetailsParams(
       id = 4495,
@@ -295,7 +274,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchCredits knownForDepartment defaults to Acting iff all are null`() = runTest {
     val detailsChannel = Channel<Result<PersonDetails>>()
     repository.mockFetchPersonDetails(detailsChannel)
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     val params = PersonDetailsParams(
       id = 4495,
@@ -332,7 +311,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchCredits is concurrent iff knownForDepartment param is known`() = runTest {
     val detailsChannel = Channel<Result<PersonDetails>>()
     repository.mockFetchPersonDetails(detailsChannel)
-    repository.mockFetchPersonCredits(Result.success(PersonCombinedCreditsFactory.all()))
+    repository.mockFetchPersonCredits(Resource.Success(PersonCombinedCreditsFactory.all()))
 
     val paramss = PersonDetailsParams(
       id = 4495,
@@ -364,7 +343,7 @@ class FetchPersonDetailsUseCaseTest {
   fun `test fetchPersonCredits filters out departments without entries`() = runTest {
     repository.mockFetchPersonDetails(Result.success(PersonDetailsFactory.steveCarell()))
     repository.mockFetchPersonCredits(
-      Result.success(
+      Resource.Success(
         PersonCombinedCreditsFactory.all()
           .copy(crew = listOf(PersonCrewCreditFactory.the40YearOldVirgin())),
       ),

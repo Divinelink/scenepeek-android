@@ -44,5 +44,6 @@ private fun SearchMovieApi.toMovieMediaItem() = MediaItem.Media.Movie(
   voteAverage = this.voteAverage.round(1),
   voteCount = this.voteCount ?: 0,
   overview = this.overview,
+  popularity = popularity,
   isFavorite = false,
 )
