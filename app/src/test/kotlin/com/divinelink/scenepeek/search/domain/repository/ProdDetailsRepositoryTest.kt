@@ -14,6 +14,7 @@ import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory.MoviesList
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
@@ -238,40 +239,100 @@ class ProdDetailsRepositoryTest {
   fun `test fetch movie recommendations with success`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    val expectedResult = MediaItemFactory.moviesPagination()
-
     mediaRemote.mockFetchRecommendedMovies(
       request = request,
       response = flowOf(MoviesResponseApiFactory.full()),
     )
 
-    val actualResult = repository.fetchRecommendedMovies(
-      request = request,
-    ).first()
+    mediaDao.mockFetchFavoriteMovieIds(
+      flowOf(
+        emptyList(),
+        listOf(1, 5),
+        listOf(1, 5, 10),
+      ),
+    )
 
-    assertThat(actualResult.data).isEqualTo(expectedResult)
+    repository.fetchRecommendedMovies(
+      request = request,
+    ).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaItemFactory.moviesPagination().copy(
+            list = buildList {
+              addAll(MoviesList(1..1).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(2..4))
+              addAll(MoviesList(5..5).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(6..10))
+            },
+          ),
+        ),
+      )
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaItemFactory.moviesPagination().copy(
+            list = buildList {
+              addAll(MoviesList(1..1).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(2..4))
+              addAll(MoviesList(5..5).map { it.copy(isFavorite = true) })
+              addAll(MoviesList(6..9))
+              addAll(MoviesList(10..10).map { it.copy(isFavorite = true) })
+            },
+          ),
+        ),
+      )
+
+      awaitComplete()
+    }
   }
 
   @Test
   fun `test fetch tv recommendations with success`() = runTest {
     val request = MediaRequestApiFactory.tv()
 
-    val expectedResult = MediaItemFactory.tvPagination()
-
     mediaRemote.mockFetchRecommendedTv(
       request = request,
       response = flowOf(TvResponseApiFactory.full()),
     )
 
-    val actualResult = repository.fetchRecommendedTv(
-      request = request,
-    ).first()
+    mediaDao.mockFetchFavoriteTvIds(
+      flowOf(
+        emptyList(),
+        listOf(MediaItemFactory.theOffice().id),
+        listOf(MediaItemFactory.theOffice().id, MediaItemFactory.theWire().id),
+      ),
+    )
 
-    assertThat(actualResult.data).isEqualTo(expectedResult)
+    repository.fetchRecommendedTv(
+      request = request,
+    ).test {
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaItemFactory.tvPagination().copy(
+            list = listOf(
+              MediaItemFactory.theWire(),
+              MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+          ),
+        ),
+      )
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaItemFactory.tvPagination().copy(
+            list = listOf(
+              MediaItemFactory.theWire().copy(isFavorite = true),
+              MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+          ),
+        ),
+      )
+      awaitComplete()
+    }
   }
 
   @Test
-  fun testSimilarMoviesError() = runTest {
+  fun `test fetch recommended movies with failure`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
     val expectedResult = SimilarException()
@@ -282,6 +343,19 @@ class ProdDetailsRepositoryTest {
       assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
     }
   }
+
+//  @Test
+//  fun testSimilarMoviesError() = runTest {
+//    val request = MediaRequestApiFactory.movie()
+//
+//    val expectedResult = SimilarException()
+//
+//    repository.fetchRecommendedMovies(
+//      request = request,
+//    ).test {
+//      assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+//    }
+//  }
 
   @Test
   fun testMovieReviewsError() = runTest {
