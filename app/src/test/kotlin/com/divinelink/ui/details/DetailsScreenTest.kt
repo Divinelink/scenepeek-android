@@ -16,7 +16,9 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.compose.ui.test.swipeUp
 import androidx.lifecycle.SavedStateHandle
+import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
+import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
@@ -98,31 +100,39 @@ class DetailsScreenTest : ComposeTest() {
             formOrder = MovieTab.Recommendations.order,
           ),
         ),
+        Result.success(
+          MediaDetailsResult.ReviewsSuccess(
+            reviews = ReviewFactory.all(),
+            formOrder = MovieTab.Reviews.order,
+          ),
+        ),
+      ),
+    )
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE,
+        ),
       ),
     )
 
     setVisibilityScopeContent {
       DetailsScreen(
         onNavigate = {},
-        viewModel = DetailsViewModel(
-          getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-          onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-          submitRatingUseCase = submitRateUseCase.mock,
-          deleteRatingUseCase = deleteRatingUseCase.mock,
-          addToWatchlistUseCase = addToWatchlistUseCase.mock,
-          requestMediaUseCase = requestMediaUseCase.mock,
-          spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-          fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-          deleteRequestUseCase = deleteRequestUseCase.mock,
-          deleteMediaUseCase = deleteMediaUseCase.mock,
-          savedStateHandle = SavedStateHandle(
-            mapOf(
-              "id" to 0,
-              "isFavorite" to false,
-              "mediaType" to MediaType.MOVIE,
-            ),
-          ),
-        ),
+        viewModel = viewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -143,6 +153,140 @@ class DetailsScreenTest : ComposeTest() {
         .performClick()
 
       composeTestRule.onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+
+      composeTestRule.onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(MovieTab.Reviews.value))
+        .assertIsDisplayed()
+        .performClick()
+
+      composeTestRule.onNodeWithTag(TestTags.Details.Reviews.FORM).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test switch between movie tabs with error`() = runTest {
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+        Result.failure(RecommendedException(MovieTab.Recommendations.order)),
+      ),
+    )
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE,
+        ),
+      ),
+    )
+
+    setVisibilityScopeContent {
+      DetailsScreen(
+        onNavigate = {},
+        viewModel = viewModel,
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.PERSISTENT_SCAFFOLD).assertIsDisplayed()
+
+      // Add swipe up to avoid overlapping of tabs with bottom navigation
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(MovieTab.Recommendations.value))
+        .assertIsDisplayed()
+        .performClick()
+
+      onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.BLANK_SLATE).assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test empty reviews for movies`() = runTest {
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.ReviewsSuccess(
+            reviews = emptyList(),
+            formOrder = MovieTab.Reviews.order,
+          ),
+        ),
+      ),
+    )
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE,
+        ),
+      ),
+    )
+
+    setVisibilityScopeContent {
+      DetailsScreen(
+        onNavigate = {},
+        viewModel = viewModel,
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.PERSISTENT_SCAFFOLD).assertIsDisplayed()
+
+      // Add swipe up to avoid overlapping of tabs with bottom navigation
+      onNodeWithTag(TestTags.Details.COLLAPSIBLE_LAYOUT).performTouchInput {
+        swipeUp(
+          startY = 100f,
+          endY = 50f,
+        )
+      }
+
+      onNodeWithTag(TestTags.Tabs.TAB_ITEM.format(MovieTab.Reviews.value))
+        .assertIsDisplayed()
+        .performClick()
+
+      onNodeWithTag(TestTags.Details.Reviews.EMPTY).assertIsDisplayed()
     }
   }
 
@@ -305,7 +449,7 @@ class DetailsScreenTest : ComposeTest() {
       response = flowOf(Result.success(AccountMediaDetailsFactory.NotRated())),
     )
 
-    submitRateUseCase.mockSubmitRate(response = Result.success(Unit),)
+    submitRateUseCase.mockSubmitRate(response = Result.success(Unit))
 
     getMovieDetailsUseCase.mockFetchMediaDetails(
       response = flowOf(

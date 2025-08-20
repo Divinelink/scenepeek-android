@@ -81,7 +81,6 @@ fun FlatMediaList(
           onLongClick = onLongClick,
         )
         is MediaItem.Person -> CreditsItemCard(
-          // TODO FIX Duplicate model
           person = Person(
             id = search.id.toLong(),
             name = search.name,

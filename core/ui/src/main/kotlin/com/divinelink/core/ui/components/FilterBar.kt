@@ -30,10 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
+import com.divinelink.core.ui.TestTags
 
 /**
  * A composable that will display a list of filters.
@@ -106,7 +110,8 @@ private fun ClearButton(
   OutlinedButton(
     onClick = onClearClick,
     modifier = modifier
-      .size(40.dp),
+      .testTag(TestTags.Components.Button.CLEAR_FILTERS)
+      .size(MaterialTheme.dimensions.keyline_40),
     border = null,
     shape = CircleShape,
     contentPadding = PaddingValues(0.dp),

@@ -118,6 +118,23 @@ class DetailsViewStateProvider : PreviewParameterProvider<DetailsViewState> {
           mediaDetails = MediaDetailsFactory.TheOffice(),
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
         ),
+        DetailsViewState(
+          mediaId = MediaDetailsFactory.TheOffice().id,
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          selectedTabIndex = 1,
+          forms = DetailsFormFactory.Tv.error(),
+          mediaDetails = MediaDetailsFactory.TheOffice(),
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+        ),
+        DetailsViewState(
+          mediaId = MediaDetailsFactory.FightClub().id,
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          selectedTabIndex = MovieTab.Recommendations.order,
+          forms = DetailsFormFactory.Movie.error(),
+          mediaDetails = MediaDetailsFactory.FightClub(),
+        ),
       )
     }
 }
