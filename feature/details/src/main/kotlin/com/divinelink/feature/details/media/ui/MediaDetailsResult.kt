@@ -32,7 +32,7 @@ sealed class MediaDetailsResult {
     val reviews: List<Review>,
   ) : MediaDetailsResult()
 
-  data class SimilarSuccess(
+  data class RecommendedSuccess(
     val formOrder: Int,
     val similar: List<MediaItem.Media>,
   ) : MediaDetailsResult()

@@ -12,6 +12,7 @@ object TestTags {
     const val PULL_TO_REFRESH = "Pull to refresh"
 
     object Button {
+      const val CLEAR_FILTERS = "Clear filters button"
       const val SWITCH_VIEW = "Switch View Button"
     }
 

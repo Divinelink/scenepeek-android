@@ -125,6 +125,7 @@
 
   <string name="core_ui_error_generic_title">Something when wrong</string>
   <string name="core_ui_error_generic_description">Please try again.</string>
+  <string name="core_ui_error_contact_description">Please try again. If the problem persists, please contact the developer.</string>
 
   <string name="core_ui_jellyseerr_session_expired">Your Jellyseerr session has expired. Please login again.</string>
 

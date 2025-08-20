@@ -11,65 +11,38 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class TestMoviesRepository {
+class TestMediaRepository {
 
   val mock: MediaRepository = mock()
 
-  fun mockFetchFavoriteMovies(response: MediaListResult) {
+  fun mockFetchFavorites(response: MediaListResult) {
     whenever(
-      mock.fetchFavoriteMovies(),
+      mock.fetchFavorites(),
     ).thenReturn(
       flowOf(response),
     )
   }
 
-  fun mockFetchFavoriteTVSeries(response: MediaListResult) {
+  fun mockFetchPopularMovies(response: MediaListResult) {
     whenever(
-      mock.fetchFavoriteTVSeries(),
+      mock.fetchPopularMovies(any()),
     ).thenReturn(
       flowOf(response),
     )
   }
 
-  fun mockFetchFavoriteMoviesIds(response: Result<List<Pair<Int, MediaType>>>) {
+  fun mockFetchSearchMovies(response: MediaListResult) {
     whenever(
-      mock.fetchFavoriteIds(),
+      mock.fetchSearchMovies(any()),
     ).thenReturn(
       flowOf(response),
     )
   }
 
-  fun mockFetchPopularMovies(
-    request: MoviesRequestApi,
-    response: MediaListResult,
-  ) {
-    whenever(
-      mock.fetchPopularMovies(request),
-    ).thenReturn(
-      flowOf(response),
-    )
-  }
-
-  fun mockFetchSearchMovies(
-    request: SearchRequestApi,
-    response: MediaListResult,
-  ) {
-    whenever(
-      mock.fetchSearchMovies(request),
-    ).thenReturn(
-      flowOf(response),
-    )
-  }
-
-  suspend fun mockMarkAsFavorite(
-    media: MediaItem.Media,
-    response: Result<Unit>,
-  ) {
+  suspend fun mockMarkAsFavorite(media: MediaItem.Media) {
     whenever(
       mock.insertFavoriteMedia(media),
-    ).thenReturn(
-      response,
-    )
+    ).thenReturn(Unit)
   }
 
   suspend fun mockCheckFavorite(
@@ -91,7 +64,7 @@ class TestMoviesRepository {
   suspend fun mockRemoveFavorite(
     id: Int,
     mediaType: MediaType,
-    response: Result<Unit>,
+    response: Unit,
   ) {
     whenever(
       mock.removeFavoriteMedia(id, mediaType),

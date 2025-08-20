@@ -10,10 +10,9 @@ import com.divinelink.core.data.details.mapper.api.toSeriesCrewJobEntity
 import com.divinelink.core.data.details.mapper.map
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.ReviewsException
-import com.divinelink.core.data.details.model.SimilarException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.database.credits.dao.CreditsDao
-import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
@@ -42,6 +41,7 @@ import com.divinelink.core.network.trakt.mapper.map
 import com.divinelink.core.network.trakt.service.TraktService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -55,7 +55,7 @@ class ProdDetailsRepository(
   private val creditsDao: CreditsDao,
   private val omdbService: OMDbService,
   private val traktService: TraktService,
-  private val mediaDao: SqlMediaDao,
+  private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
 ) : DetailsRepository {
 
@@ -81,23 +81,39 @@ class ProdDetailsRepository(
 
   override fun fetchRecommendedMovies(
     request: MediaRequestApi.Movie,
-  ): Flow<Result<PaginationData<MediaItem.Media>>> = mediaRemote
-    .fetchRecommendedMovies(request)
-    .map { apiResponse ->
-      Result.success(apiResponse.map())
-    }.catch {
-      throw SimilarException()
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
+    mediaRemote.fetchRecommendedMovies(request),
+    mediaDao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
+    val mapped = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedMovies = mapped.list.map { media ->
+      (media as MediaItem.Media.Movie).copy(
+        isFavorite = media.id in favoriteSet,
+      )
     }
+
+    Result.success(mapped.copy(list = updatedMovies))
+  }
 
   override fun fetchRecommendedTv(
     request: MediaRequestApi.TV,
-  ): Flow<Result<PaginationData<MediaItem.Media>>> = mediaRemote
-    .fetchRecommendedTv(request)
-    .map { apiResponse ->
-      Result.success(apiResponse.map())
-    }.catch {
-      throw SimilarException()
+  ): Flow<Result<PaginationData<MediaItem.Media>>> = combine(
+    mediaRemote.fetchRecommendedTv(request),
+    mediaDao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteIds ->
+    val mapped = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedTv = mapped.list.map { media ->
+      (media as MediaItem.Media.TV).copy(
+        isFavorite = media.id in favoriteSet,
+      )
     }
+
+    Result.success(mapped.copy(list = updatedTv))
+  }
 
   override fun fetchVideos(request: MediaRequestApi): Flow<Result<List<Video>>> = mediaRemote
     .fetchVideos(request)

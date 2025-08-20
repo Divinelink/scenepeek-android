@@ -195,6 +195,8 @@ class ProdListRepositoryTest {
     )
     val mediaDao = ProdMediaDao(
       database = database,
+      dispatcher = testDispatcher,
+      clock = ClockFactory.augustFirst2021(),
     )
     repository = ProdListRepository(
       listDao = dao,

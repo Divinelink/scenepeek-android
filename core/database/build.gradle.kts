@@ -10,10 +10,6 @@ dependencies {
   api(projects.core.model)
   implementation(projects.core.commons)
 
-  implementation(libs.room.ktx)
-  implementation(libs.room.runtime)
-  ksp(libs.room.compiler)
-
   api(libs.sqldelight.android)
   api(libs.sqldelight.coroutines)
 

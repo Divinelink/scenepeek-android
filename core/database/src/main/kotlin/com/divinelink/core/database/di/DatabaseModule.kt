@@ -8,7 +8,7 @@ import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.database.list.ListDao
 import com.divinelink.core.database.list.ProdListDao
 import com.divinelink.core.database.media.dao.ProdMediaDao
-import com.divinelink.core.database.media.dao.SqlMediaDao
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import org.koin.core.module.dsl.bind
@@ -30,7 +30,7 @@ val databaseModule = module {
   singleOf(::ProdCreditsDao) { bind<CreditsDao>() }
   singleOf(::ProdPersonDao) { bind<PersonDao>() }
   singleOf(::ProdListDao) { bind<ListDao>() }
-  singleOf(::ProdMediaDao) { bind<SqlMediaDao>() }
+  singleOf(::ProdMediaDao) { bind<MediaDao>() }
 
   single { get<Database>().jellyseerrAccountDetailsQueries }
 }

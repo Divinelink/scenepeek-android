@@ -25,18 +25,13 @@ interface MediaRepository {
   /**
    * Fetch all popular movies that the user has marked as favorite.
    */
-  fun fetchFavoriteMovies(): Flow<MediaListResult>
-
-  /**
-   * Fetch all favorite tv series.
-   */
-  fun fetchFavoriteTVSeries(): Flow<MediaListResult>
+  fun fetchFavorites(): Flow<MediaListResult>
 
   /**
    * Fetch all favorite ids: movies, series and persons.
    * Uses [Flow] in order to observe changes to our favorite list.
    */
-  fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>>
+//  fun fetchFavoriteIds(): Flow<Result<List<Pair<Int, MediaType>>>>
 
   /**
    * Request movies through a search query. Uses pagination.
@@ -52,7 +47,7 @@ interface MediaRepository {
   /**
    * Add favorite [media] to local storage.
    */
-  suspend fun insertFavoriteMedia(media: MediaItem.Media): Result<Unit>
+  suspend fun insertFavoriteMedia(media: MediaItem.Media)
 
   /**
    * Remove favorite movie using its [id] from local storage.
@@ -60,7 +55,7 @@ interface MediaRepository {
   suspend fun removeFavoriteMedia(
     id: Int,
     mediaType: MediaType,
-  ): Result<Unit>
+  )
 
   suspend fun checkIfMediaIsFavorite(
     id: Int,

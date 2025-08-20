@@ -18,6 +18,15 @@ object DetailsFormFactory {
       }
     }
 
+    fun error() = MovieTab.entries.associate { tab ->
+      tab.order to when (tab) {
+        MovieTab.About -> DetailsForm.Error
+        MovieTab.Cast -> DetailsForm.Error
+        MovieTab.Recommendations -> DetailsForm.Error
+        MovieTab.Reviews -> DetailsForm.Error
+      }
+    }
+
     fun empty() = MovieTab.entries.associate { tab ->
       tab.order to when (tab) {
         MovieTab.About -> DetailsForm.Content(DetailsDataFactory.Empty.about())
@@ -45,6 +54,16 @@ object DetailsFormFactory {
         TvTab.Recommendations -> DetailsForm.Loading
         TvTab.Reviews -> DetailsForm.Loading
         TvTab.Seasons -> DetailsForm.Loading
+      }
+    }
+
+    fun error() = TvTab.entries.associate { tab ->
+      tab.order to when (tab) {
+        TvTab.About -> DetailsForm.Error
+        TvTab.Cast -> DetailsForm.Error
+        TvTab.Recommendations -> DetailsForm.Error
+        TvTab.Reviews -> DetailsForm.Error
+        TvTab.Seasons -> DetailsForm.Error
       }
     }
 

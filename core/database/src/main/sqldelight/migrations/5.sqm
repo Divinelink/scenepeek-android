@@ -36,3 +36,12 @@ FROM MediaItemEntity;
 DROP TABLE MediaItemEntity;
 
 ALTER TABLE MediaItemEntity_new RENAME TO MediaItemEntity;
+
+CREATE TABLE FavoriteMediaEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  mediaId INTEGER NOT NULL,
+  mediaType TEXT NOT NULL,
+  favoritedAt TEXT, -- ISO timestamp when favorited
+  FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
+  UNIQUE(mediaId, mediaType)
+);
