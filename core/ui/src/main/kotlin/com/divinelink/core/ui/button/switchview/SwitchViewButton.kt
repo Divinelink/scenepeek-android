@@ -29,6 +29,7 @@ import com.divinelink.core.ui.local.rememberViewModePreferences
 
 @Composable
 fun SwitchViewButton(
+  modifier: Modifier = Modifier,
   section: ViewableSection,
   onClick: () -> Unit,
 ) {
@@ -42,7 +43,7 @@ fun SwitchViewButton(
   }
 
   IconButton(
-    modifier = Modifier
+    modifier = modifier
       .clip(shape = MaterialTheme.shapes.large)
       .testTag(TestTags.Components.Button.SWITCH_VIEW),
     onClick = onClick,

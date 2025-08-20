@@ -25,6 +25,7 @@ import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun CreditFilterButton(
+  modifier: Modifier = Modifier,
   appliedFilters: List<CreditFilter>,
   onFilterClick: () -> Unit,
 ) {
@@ -33,7 +34,7 @@ fun CreditFilterButton(
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-    modifier = Modifier
+    modifier = modifier
       .clip(CircleShape)
       .testTag(TestTags.Components.FILTER_BUTTON)
       .background(MaterialTheme.colorScheme.surface)
