@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ fun KnownForSection(
   onMediaClick: (MediaItem) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
+  val state = rememberLazyListState()
   Column(
     modifier = Modifier
       .testTag(TestTags.Person.KNOWN_FOR_SECTION)
@@ -48,6 +50,7 @@ fun KnownForSection(
         modifier = Modifier.testTag(TestTags.Person.KNOWN_FOR_SECTION_LIST),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
         contentPadding = ListPaddingValues,
+        state = state,
       ) {
         items(
           items = list,
