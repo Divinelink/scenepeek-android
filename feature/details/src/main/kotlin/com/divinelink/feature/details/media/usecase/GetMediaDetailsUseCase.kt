@@ -115,7 +115,7 @@ open class GetMediaDetailsUseCase(
           is MediaRequestApi.Movie -> repository.fetchRecommendedMovies(parameters)
             .catch {
               Timber.e(it)
-              throw RecommendedException(MovieTab.Recommendations.order)
+              send(Result.failure(RecommendedException(MovieTab.Recommendations.order)))
             }
             .collect { result ->
               result.onSuccess {
@@ -132,7 +132,7 @@ open class GetMediaDetailsUseCase(
           is MediaRequestApi.TV -> repository.fetchRecommendedTv(parameters)
             .catch {
               Timber.e(it)
-              throw RecommendedException(TvTab.Recommendations.order)
+              send(Result.failure(RecommendedException(TvTab.Recommendations.order)))
             }
             .collect { result ->
               result.onSuccess {

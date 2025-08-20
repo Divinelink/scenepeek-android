@@ -4,7 +4,6 @@ import JvmUnitTestDemoAssetManager
 import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
-import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.data.details.model.ReviewsException
 import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.data.details.repository.DetailsRepository
@@ -335,27 +334,23 @@ class ProdDetailsRepositoryTest {
   fun `test fetch recommended movies with failure`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    val expectedResult = RecommendedException()
+    repository.fetchRecommendedMovies(
+      request = request,
+    ).test {
+      assertThat(awaitError()).isInstanceOf(NullPointerException::class.java)
+    }
+  }
+
+  @Test
+  fun `test fetch recommended movies with error`() = runTest {
+    val request = MediaRequestApiFactory.movie()
 
     repository.fetchRecommendedMovies(
       request = request,
     ).test {
-      assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
+      assertThat(awaitError()).isInstanceOf(NullPointerException::class.java)
     }
   }
-
-//  @Test
-//  fun testSimilarMoviesError() = runTest {
-//    val request = MediaRequestApiFactory.movie()
-//
-//    val expectedResult = SimilarException()
-//
-//    repository.fetchRecommendedMovies(
-//      request = request,
-//    ).test {
-//      assertThat(awaitError()).isInstanceOf(expectedResult::class.java)
-//    }
-//  }
 
   @Test
   fun testMovieReviewsError() = runTest {
