@@ -42,7 +42,6 @@ fun WatchlistButton(
         CircularProgressIndicator(modifier = Modifier.size(MaterialTheme.dimensions.keyline_24))
       } else {
         Icon(
-          modifier = Modifier.size(MaterialTheme.dimensions.keyline_24),
           imageVector = if (onWatchlist) {
             Icons.Filled.BookmarkAdded
           } else {
