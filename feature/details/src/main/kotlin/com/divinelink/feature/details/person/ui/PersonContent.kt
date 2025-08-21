@@ -222,32 +222,34 @@ fun PersonContent(
                   .fillMaxWidth()
                   .background(MaterialTheme.colorScheme.surface),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
               ) {
                 CreditFilterButton(
-                  modifier = Modifier.weight(1f),
                   appliedFilters = filters,
                   onFilterClick = {
                     showFilterBottomSheet = true
                   },
                 )
 
+                Spacer(modifier = Modifier.weight(1f))
+
                 if (filters.isEmpty()) {
                   AnimatedContent(
                     modifier = Modifier
-                      .weight(1f)
-                      .testTag(
-                        TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
-                      ),
+                      .testTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department)),
                     targetState = department,
                     label = "DepartmentTextAnimation",
                   ) { string ->
-                    Text(text = string)
+                    Text(
+                      text = string,
+                      style = MaterialTheme.typography.titleSmall,
+                    )
                   }
                 }
 
+                Spacer(modifier = Modifier.weight(1f))
+
                 SwitchViewButton(
-                  modifier = Modifier.weight(1f, fill = false),
                   onClick = onUpdateViewMode,
                   section = ViewableSection.PERSON_CREDITS,
                 )

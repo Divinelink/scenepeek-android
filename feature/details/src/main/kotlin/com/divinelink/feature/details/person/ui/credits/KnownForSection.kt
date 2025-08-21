@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -31,7 +29,6 @@ fun KnownForSection(
   onMediaClick: (MediaItem) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
-  val state = rememberLazyListState()
   Column(
     modifier = Modifier
       .testTag(TestTags.Person.KNOWN_FOR_SECTION)
@@ -45,25 +42,22 @@ fun KnownForSection(
       text = stringResource(id = R.string.feature_details_known_for_section),
     )
 
-    key(list) {
-      LazyRow(
-        modifier = Modifier.testTag(TestTags.Person.KNOWN_FOR_SECTION_LIST),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-        contentPadding = ListPaddingValues,
-        state = state,
-      ) {
-        items(
-          items = list,
-          key = { it.media.id },
-        ) { credit ->
-          MediaItem(
-            media = credit.media,
-            subtitle = credit.role.title,
-            showDate = true,
-            onClick = onMediaClick,
-            onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-          )
-        }
+    LazyRow(
+      modifier = Modifier.testTag(TestTags.Person.KNOWN_FOR_SECTION_LIST),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      contentPadding = ListPaddingValues,
+    ) {
+      items(
+        items = list,
+        key = { it.media.id },
+      ) { credit ->
+        MediaItem(
+          media = credit.media,
+          subtitle = credit.role.title,
+          showDate = true,
+          onClick = onMediaClick,
+          onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
+        )
       }
     }
   }

@@ -374,12 +374,10 @@ class PersonScreenTest : ComposeTest() {
         ),
       )
 
-      // We assert that the newly added items - that have higher ratings - are visible, while the
-      // older ones that have lower ratings are moved on the list. However our scroll position has
-      // not changed
-      onNodeWithText("8.6").assertIsNotDisplayed()
-      onNodeWithText("9.5").assertIsDisplayed()
-      onNodeWithText("9.4").assertIsDisplayed()
+      onNodeWithText("8.6").assertIsDisplayed()
+      onNodeWithText("9.6").assertIsNotDisplayed()
+      onNodeWithText("9.5").assertIsNotDisplayed()
+      onNodeWithText("9.4").assertIsNotDisplayed()
     }
   }
 
@@ -1001,8 +999,13 @@ class PersonScreenTest : ComposeTest() {
 
       // Verify TV Shows tab has no filters
       onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
-      onNodeWithText(getString(uiR.string.core_ui_filter)).assertIsDisplayed()
+      onNodeWithContentDescription(
+        getString(uiR.string.core_ui_filter_button_content_desc),
+      ).assertIsDisplayed()
       onNodeWithTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format("Acting")).assertIsDisplayed()
+
+      onNodeWithText("Movies").performClick()
+      onNodeWithText("Writing (1)").assertIsDisplayed()
     }
   }
 
