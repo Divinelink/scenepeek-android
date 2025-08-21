@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.credits.PersonRole
@@ -55,7 +54,7 @@ fun PersonItem(
     ) {
       MovieImage(
         path = person.profilePath,
-        modifier = Modifier.height(120.dp),
+        modifier = Modifier.height(MaterialTheme.dimensions.shortMediaCard),
         errorPlaceHolder = if (person.gender == Gender.FEMALE) {
           painterResource(id = R.drawable.core_ui_ic_female_person_placeholder)
         } else {

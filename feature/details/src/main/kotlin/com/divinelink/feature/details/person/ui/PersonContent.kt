@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.designsystem.theme.mediaCardSize
 import com.divinelink.core.fixtures.details.person.PersonDetailsFactory
 import com.divinelink.core.fixtures.model.person.credit.GroupedPersonCreditsSample
 import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory
@@ -98,7 +99,7 @@ fun PersonContent(
   val isGrid = rememberViewModePreferences(ViewableSection.PERSON_CREDITS) == ViewMode.GRID
 
   val grid = if (isGrid) {
-    GridCells.Adaptive(MaterialTheme.dimensions.shortMediaCard)
+    GridCells.Adaptive(mediaCardSize())
   } else {
     GridCells.Fixed(1)
   }

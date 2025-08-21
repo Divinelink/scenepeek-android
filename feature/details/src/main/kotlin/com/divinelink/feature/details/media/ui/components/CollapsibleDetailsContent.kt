@@ -133,21 +133,19 @@ fun CollapsibleDetailsContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       RatingButton(
-        modifier = Modifier.weight(3f),
+        modifier = Modifier.weight(4f),
         onClick = onAddRateClick,
         accountRating = userDetails?.beautifiedRating,
         isLoading = accountDataState[AccountDataSection.Rating] == true,
       )
 
       WatchlistButton(
-        modifier = Modifier.weight(1f),
         onWatchlist = isOnWatchlist,
         onClick = onAddToWatchListClick,
         isLoading = accountDataState[AccountDataSection.Watchlist] == true,
       )
 
       AddToListButton(
-        modifier = Modifier.weight(1f),
         onClick = {
           with(mediaDetails.toMediaItem()) {
             onNavigate(

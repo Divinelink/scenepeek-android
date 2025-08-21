@@ -21,6 +21,7 @@ fun ActionMenuContentScreenshots(
       ActionMenuContent(
         uiState = state,
         onAction = {},
+        onMarkAsFavorite = {},
       )
     }
   }
