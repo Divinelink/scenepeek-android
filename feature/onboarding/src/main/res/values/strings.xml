@@ -25,4 +25,10 @@
   <string name="feature_onboarding_v24_retry_failed_api_calls">- Fix TMDB\'s issue causing submit movie/tv-show rating, add to watchlist and add to list to fail</string>
   <string name="feature_onboarding_v24_add_loading_indicator">- Add loading indication when adding to watchlist and submitting rating</string>
   <string name="feature_onboarding_v24_update_changelog">- Display all unread changelogs on app update</string>
+
+  <string name="feature_onboarding_v25_support_emby_login">- [Jellyseerr] Add login support for Emby</string>
+  <string name="feature_onboarding_v25_redesign_ui_media_cards">- Redesign and simplify UI for movie and tv show cards</string>
+  <string name="feature_onboarding_v25_redesign_jellyseerr_login">- Redesign the login screen for Jellyseerr</string>
+  <string name="feature_onboarding_v25_media_action_menu">- Add action menu for movies and TV shows. You can now long press on any movie/TV show to easily share, add to list, and mark as favorite</string>
+  <string name="feature_onboarding_v25_fix_favorite_status">- Favorite status is now visible across all media cards</string>
 </resources>

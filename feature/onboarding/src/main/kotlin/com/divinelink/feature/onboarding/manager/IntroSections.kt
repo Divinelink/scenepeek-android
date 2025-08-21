@@ -59,11 +59,26 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v24_update_changelog)),
   )
 
+  val v25 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.17.0"),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_support_emby_login)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_redesign_ui_media_cards)),
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v25_redesign_jellyseerr_login),
+    ),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_media_action_menu)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_fix_favorite_status)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
   val changelogSections = mapOf(
     23 to v23,
     24 to v24,
+    25 to v25,
   )
 }
