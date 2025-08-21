@@ -45,3 +45,40 @@ CREATE TABLE FavoriteMediaEntity (
   FOREIGN KEY(mediaId, mediaType) REFERENCES MediaItemEntity(id, mediaType),
   UNIQUE(mediaId, mediaType)
 );
+
+-- Drop all existing data from PersonCreditsEntity (cascades to related tables)
+DELETE FROM PersonCreditsEntity;
+
+CREATE TABLE PersonCastCreditEntity_new (
+  id INTEGER NOT NULL,
+  creditId TEXT PRIMARY KEY NOT NULL,
+  personId INTEGER NOT NULL,
+  releaseDate TEXT,
+  firstAirDate TEXT,
+  creditOrder INTEGER,
+  character TEXT NOT NULL,
+  episodeCount INTEGER,
+  mediaType TEXT NOT NULL,
+  FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
+);
+
+DROP TABLE PersonCastCreditEntity;
+ALTER TABLE PersonCastCreditEntity_new RENAME TO PersonCastCreditEntity;
+
+DELETE FROM PersonCrewCreditEntity;
+
+CREATE TABLE PersonCrewCreditEntity_new (
+  id INTEGER NOT NULL,
+  creditId TEXT PRIMARY KEY NOT NULL,
+  personId INTEGER NOT NULL,
+  department TEXT NOT NULL,
+  job TEXT NOT NULL,
+  releaseDate TEXT,
+  firstAirDate TEXT,
+  mediaType TEXT NOT NULL,
+  episodeCount INTEGER,
+  FOREIGN KEY(personId) REFERENCES PersonCreditsEntity(id)
+);
+
+DROP TABLE PersonCrewCreditEntity;
+ALTER TABLE PersonCrewCreditEntity_new RENAME TO PersonCrewCreditEntity;

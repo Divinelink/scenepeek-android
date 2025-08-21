@@ -10,6 +10,11 @@ import com.divinelink.core.database.media.dao.ProdMediaDao
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.database.person.ProdPersonDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.bruceAlmighty
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.despicableMe
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.littleMissSunshine
+import com.divinelink.core.fixtures.model.person.credit.PersonCastCreditFactory.theOffice
 import com.divinelink.core.fixtures.model.person.credit.PersonCombinedCreditsFactory
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.network.Resource
@@ -108,6 +113,92 @@ class ProdPersonRepositoryTest {
     repository.fetchPersonCredits(id = 4495).test {
       awaitItem() shouldBe Resource.Loading(PersonCombinedCreditsFactory.sortedByDate())
       awaitItem() shouldBe Resource.Success(PersonCombinedCreditsFactory.sortedByDate())
+    }
+  }
+
+  @Test
+  fun `test fetchPersonCredits with favorite media`() = runTest {
+    dao.insertPersonCredits(id = 4495)
+    dao.insertPersonCastCredits(cast = PersonCastCreditEntityFactory.all())
+    dao.insertPersonCrewCredits(crew = PersonCrewCreditEntityFactory.sortedByDate())
+
+    PersonCombinedCreditsFactory.all().crew.forEach {
+      mediaDao.insertMedia(it.media)
+    }
+
+    PersonCombinedCreditsFactory.all().cast.forEach {
+      mediaDao.insertMedia(it.media)
+    }
+
+    repository.fetchPersonCredits(id = 4495).test {
+      awaitItem() shouldBe Resource.Loading(PersonCombinedCreditsFactory.sortedByDate())
+      awaitItem() shouldBe Resource.Success(PersonCombinedCreditsFactory.sortedByDate())
+
+      mediaDao.addToFavorites(
+        MediaItemFactory.theOffice().id,
+        MediaItemFactory.theOffice().mediaType,
+      )
+
+      awaitItem() shouldBe Resource.Success(
+        PersonCombinedCreditsFactory.sortedByDate().copy(
+          cast = listOf(
+            despicableMe(),
+            littleMissSunshine(),
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+            bruceAlmighty(),
+          ),
+        ),
+      )
+
+      awaitItem() shouldBe Resource.Success(
+        PersonCombinedCreditsFactory.sortedByDate().copy(
+          cast = listOf(
+            despicableMe(),
+            littleMissSunshine(),
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+            bruceAlmighty(),
+          ),
+        ),
+      )
+
+      mediaDao.addToFavorites(
+        MediaItemFactory.despicableMe().id,
+        MediaItemFactory.despicableMe().mediaType,
+      )
+
+      awaitItem() shouldBe Resource.Success(
+        PersonCombinedCreditsFactory.sortedByDate().copy(
+          cast = listOf(
+            despicableMe().copy(
+              media = MediaItemFactory.despicableMe().copy(isFavorite = false),
+            ),
+            littleMissSunshine(),
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+            bruceAlmighty(),
+          ),
+        ),
+      )
+
+      awaitItem() shouldBe Resource.Success(
+        PersonCombinedCreditsFactory.sortedByDate().copy(
+          cast = listOf(
+            despicableMe().copy(
+              media = MediaItemFactory.despicableMe().copy(isFavorite = true),
+            ),
+            littleMissSunshine(),
+            theOffice().copy(
+              media = MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+            bruceAlmighty(),
+          ),
+        ),
+      )
     }
   }
 

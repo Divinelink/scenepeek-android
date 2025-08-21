@@ -3,6 +3,7 @@ package com.divinelink.feature.details.person.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -221,6 +222,7 @@ fun PersonContent(
                   .fillMaxWidth()
                   .background(MaterialTheme.colorScheme.surface),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
               ) {
                 CreditFilterButton(
                   appliedFilters = filters,
@@ -233,13 +235,15 @@ fun PersonContent(
 
                 if (filters.isEmpty()) {
                   AnimatedContent(
-                    modifier = Modifier.testTag(
-                      TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department),
-                    ),
+                    modifier = Modifier
+                      .testTag(TestTags.Person.DEPARTMENT_STICKY_HEADER.format(department)),
                     targetState = department,
                     label = "DepartmentTextAnimation",
                   ) { string ->
-                    Text(text = string)
+                    Text(
+                      text = string,
+                      style = MaterialTheme.typography.titleSmall,
+                    )
                   }
                 }
 

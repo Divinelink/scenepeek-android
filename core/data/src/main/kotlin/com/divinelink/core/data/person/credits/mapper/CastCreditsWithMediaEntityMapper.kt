@@ -6,12 +6,15 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.credits.PersonCredit
 
-fun CastCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
+fun CastCreditsWithMedia.map(
+  isTvFavorite: Boolean,
+  isMovieFavorite: Boolean,
+) = when (MediaType.from(mediaType)) {
   MediaType.TV -> PersonCredit(
     creditId = creditId,
     media = MediaItem.Media.TV(
       id = id.toInt(),
-      name = name ?: "",
+      name = name,
       posterPath = posterPath,
       backdropPath = backdropPath,
       releaseDate = firstAirDate!!,
@@ -19,8 +22,7 @@ fun CastCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = false,
-      accountRating = null,
+      isFavorite = isTvFavorite,
     ),
     role = PersonRole.SeriesActor(
       character = character,
@@ -40,8 +42,7 @@ fun CastCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = false,
-      accountRating = null,
+      isFavorite = isMovieFavorite,
     ),
     role = PersonRole.MovieActor(
       character = character,

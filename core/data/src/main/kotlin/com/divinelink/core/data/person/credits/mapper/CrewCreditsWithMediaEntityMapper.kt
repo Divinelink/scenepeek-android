@@ -6,7 +6,10 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.credits.PersonCredit
 
-fun CrewCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
+fun CrewCreditsWithMedia.map(
+  isTvFavorite: Boolean,
+  isMovieFavorite: Boolean,
+) = when (MediaType.from(mediaType)) {
   MediaType.TV -> PersonCredit(
     media = MediaItem.Media.TV(
       id = id.toInt(),
@@ -18,7 +21,7 @@ fun CrewCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = false,
+      isFavorite = isTvFavorite,
     ),
     creditId = creditId,
     role = PersonRole.Crew(
@@ -39,7 +42,7 @@ fun CrewCreditsWithMedia.map() = when (MediaType.from(mediaType)) {
       voteCount = voteCount.toInt(),
       overview = overview,
       popularity = popularity,
-      isFavorite = false,
+      isFavorite = isMovieFavorite,
     ),
     creditId = creditId,
     role = PersonRole.Crew(

@@ -13,6 +13,7 @@ import com.divinelink.core.database.person.PersonChangeField
 import com.divinelink.core.database.person.PersonDao
 import com.divinelink.core.model.change.Changes
 import com.divinelink.core.model.details.person.PersonDetails
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.credits.PersonCombinedCredits
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.changes.mapper.map
@@ -22,6 +23,7 @@ import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import kotlin.time.Clock
@@ -52,9 +54,16 @@ class ProdPersonRepository(
   override fun fetchPersonCredits(id: Long): Flow<Resource<PersonCombinedCredits?>> =
     networkBoundResource(
       query = {
-        dao.fetchPersonCombinedCredits(id).map { credits ->
-          Timber.d("Person credits | ${credits?.id} | found in database")
-          credits?.map()
+        combine(
+          mediaDao.getFavoriteMediaIds(MediaType.TV),
+          mediaDao.getFavoriteMediaIds(MediaType.MOVIE),
+          dao.fetchPersonCombinedCredits(id),
+        ) { tvIds, movieIds, credits ->
+
+          credits?.map(
+            favoriteMovieIds = movieIds,
+            favoriteTvIds = tvIds,
+          )
         }
       },
       fetch = { service.fetchPersonCombinedCredits(id) },

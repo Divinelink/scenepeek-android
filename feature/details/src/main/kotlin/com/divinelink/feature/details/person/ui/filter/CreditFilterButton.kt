@@ -1,5 +1,6 @@
 package com.divinelink.feature.details.person.ui.filter
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,39 +27,50 @@ import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun CreditFilterButton(
+  modifier: Modifier = Modifier,
   appliedFilters: List<CreditFilter>,
   onFilterClick: () -> Unit,
 ) {
   val context = LocalContext.current
 
-  Row(
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
-    modifier = Modifier
-      .clip(CircleShape)
-      .testTag(TestTags.Components.FILTER_BUTTON)
-      .background(MaterialTheme.colorScheme.surface)
-      .clickable(onClick = onFilterClick)
-      .padding(
-        vertical = MaterialTheme.dimensions.keyline_8,
-        horizontal = MaterialTheme.dimensions.keyline_16,
-      ),
-  ) {
-    if (appliedFilters.isNotEmpty()) {
-      Text(
-        text = appliedFilters.joinToString { it.title.getString(context) },
-        color = MaterialTheme.colorScheme.primary,
-      )
+  AnimatedContent(
+    modifier = Modifier.testTag(TestTags.Components.FILTER_BUTTON),
+    targetState = appliedFilters.isEmpty(),
+  ) { isEmpty ->
+    if (isEmpty) {
+      IconButton(onFilterClick) {
+        Icon(
+          imageVector = Icons.Outlined.FilterList,
+          contentDescription = stringResource(uiR.string.core_ui_filter_button_content_desc),
+          tint = MaterialTheme.colorScheme.primary,
+        )
+      }
     } else {
-      Text(
-        text = stringResource(uiR.string.core_ui_filter),
-        color = MaterialTheme.colorScheme.primary,
-      )
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+        modifier = modifier
+          .clip(CircleShape)
+          .background(MaterialTheme.colorScheme.surface)
+          .clickable(onClick = onFilterClick)
+          .padding(
+            vertical = MaterialTheme.dimensions.keyline_8,
+            horizontal = MaterialTheme.dimensions.keyline_16,
+          ),
+      ) {
+        Text(
+          text = appliedFilters.joinToString { it.title.getString(context) },
+          color = MaterialTheme.colorScheme.primary,
+        )
+
+        if (appliedFilters.isNotEmpty()) {
+          Icon(
+            imageVector = Icons.Outlined.FilterList,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+          )
+        }
+      }
     }
-    Icon(
-      imageVector = Icons.Outlined.FilterList,
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.primary,
-    )
   }
 }
