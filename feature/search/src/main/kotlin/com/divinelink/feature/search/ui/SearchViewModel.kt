@@ -3,7 +3,6 @@ package com.divinelink.feature.search.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.search.FetchMultiInfoSearchUseCase
 import com.divinelink.core.domain.search.MultiSearchParameters
