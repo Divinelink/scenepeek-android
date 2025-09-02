@@ -1,5 +1,7 @@
 package com.divinelink.scenepeek.base.di
 
+import com.divinelink.core.commons.BuildConfigProvider
+import com.divinelink.scenepeek.provider.AndroidBuildConfigProvider
 import com.divinelink.scenepeek.ui.ThemedActivityDelegate
 import com.divinelink.scenepeek.ui.ThemedActivityDelegateImpl
 import kotlinx.coroutines.CoroutineScope
@@ -13,4 +15,8 @@ val appModule = module {
   single<CoroutineScope> { CoroutineScope(SupervisorJob()) }
 
   singleOf(::ThemedActivityDelegateImpl) { bind<ThemedActivityDelegate>() }
+
+  single<BuildConfigProvider> {
+    AndroidBuildConfigProvider()
+  }
 }
