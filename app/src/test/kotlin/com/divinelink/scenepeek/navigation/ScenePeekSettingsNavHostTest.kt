@@ -1,8 +1,5 @@
 package com.divinelink.scenepeek.navigation
 
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
@@ -49,7 +46,7 @@ import com.divinelink.core.testing.usecase.session.FakeCreateRequestTokenUseCase
 import com.divinelink.core.testing.usecase.session.FakeLogoutUseCase
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -63,6 +60,7 @@ import com.divinelink.feature.settings.app.appearance.usecase.material.you.GetMa
 import com.divinelink.feature.settings.app.appearance.usecase.material.you.SetMaterialYouUseCase
 import com.divinelink.feature.settings.app.details.DetailsPreferencesViewModel
 import com.divinelink.feature.tmdb.auth.TMDBAuthViewModel
+import com.divinelink.scenepeek.base.di.appModule
 import com.divinelink.scenepeek.base.di.navigationModule
 import com.divinelink.scenepeek.fakes.usecase.FakeGetFavoriteMoviesUseCase
 import com.divinelink.scenepeek.fakes.usecase.FakeGetPopularMoviesUseCase
@@ -100,6 +98,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     startKoin {
       androidContext(composeTestRule.activity)
       modules(
+        appModule,
         navigationModule,
       )
     }
@@ -126,9 +125,6 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       navController = TestNavHostController(LocalContext.current)
       navController.navigatorProvider.addNavigator(ComposeNavigator())
       navController.navigatorProvider.addNavigator(DialogNavigator())
-      val snackbarHostState = remember { SnackbarHostState() }
-      val coroutineScope = rememberCoroutineScope()
-
       val state = rememberScenePeekAppState(
         networkMonitor = TestNetworkMonitor(),
         onboardingManager = TestOnboardingManager(),
@@ -138,10 +134,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
       )
 
       ProvideScenePeekAppState(appState = state) {
-        ProvideSnackbarController(
-          snackbarHostState = snackbarHostState,
-          coroutineScope = coroutineScope,
-        ) {
+        PreviewLocalProvider {
           SharedTransitionScopeProvider {
             state.sharedTransitionScope = it
 

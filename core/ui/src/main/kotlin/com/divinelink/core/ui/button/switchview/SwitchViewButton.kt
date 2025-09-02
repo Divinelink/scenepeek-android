@@ -24,8 +24,8 @@ import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.local.LocalUiPreferences
-import com.divinelink.core.ui.local.rememberViewModePreferences
+import com.divinelink.core.ui.composition.LocalUiPreferences
+import com.divinelink.core.ui.composition.rememberViewModePreferences
 
 @Composable
 fun SwitchViewButton(

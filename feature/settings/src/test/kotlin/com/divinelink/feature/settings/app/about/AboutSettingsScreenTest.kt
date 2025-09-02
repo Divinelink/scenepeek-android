@@ -19,18 +19,21 @@ import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.app.SettingsScreen
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
-import com.divinelink.core.commons.R as CommonR
 
 class AboutSettingsScreenTest : ComposeTest() {
 
   private val releaseBuildConfigProvider = object : BuildConfigProvider {
     override val isDebug: Boolean = false
     override val buildType: String = "release"
+    override val versionName: String = "0.17.0"
+    override val versionData: String = "0.17.0 25"
   }
 
   private val debugBuildConfigProvider = object : BuildConfigProvider {
     override val isDebug: Boolean = true
     override val buildType: String = "debug"
+    override val versionName: String = "0.17.0 debug"
+    override val versionData: String = "0.17.0 debug 25"
   }
 
   @Test
@@ -43,7 +46,7 @@ class AboutSettingsScreenTest : ComposeTest() {
       )
     }
 
-    val version = getString(CommonR.string.version_name) + " debug"
+    val version = "0.17.0 debug"
 
     with(composeTestRule) {
       onNodeWithText(getString(R.string.feature_settings_about))
@@ -69,7 +72,7 @@ class AboutSettingsScreenTest : ComposeTest() {
       )
     }
 
-    val version = getString(CommonR.string.version_name)
+    val version = "0.17.0"
 
     with(composeTestRule) {
       onNodeWithText(
@@ -151,6 +154,7 @@ class AboutSettingsScreenTest : ComposeTest() {
           navigationRoute = route
         },
         animatedVisibilityScope = this,
+        buildConfigProvider = releaseBuildConfigProvider,
       )
     }
 
@@ -180,6 +184,7 @@ class AboutSettingsScreenTest : ComposeTest() {
           navigationRoute = route
         },
         animatedVisibilityScope = this,
+        buildConfigProvider = releaseBuildConfigProvider,
       )
     }
 

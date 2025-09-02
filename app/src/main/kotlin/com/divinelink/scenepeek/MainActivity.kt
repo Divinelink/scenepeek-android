@@ -18,6 +18,8 @@ import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.MainUiState
+import com.divinelink.core.ui.composition.LocalProvider
+import com.divinelink.scenepeek.provider.AndroidBuildConfigProvider
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -49,24 +51,30 @@ class MainActivity :
         selectedTheme = viewModel.theme.collectAsState().value,
       )
 
-      val appState = rememberScenePeekAppState(
+      val state = rememberScenePeekAppState(
         onboardingManager = onboardingManager,
         networkMonitor = networkMonitor,
         preferencesRepository = preferencesRepository,
         navigationProvider = navigationProviders,
       )
 
-      AppTheme(
-        useDarkTheme = darkTheme,
-        dynamicColor = viewModel.materialYou.collectAsState().value,
-        blackBackground = viewModel.blackBackgrounds.collectAsState().value,
+      LocalProvider(
+        snackbarHostState = state.snackbarHostState,
+        coroutineScope = state.scope,
+        buildConfigProvider = AndroidBuildConfigProvider(),
       ) {
-        ScenePeekApp(
-          state = appState,
-          uiState = viewModel.uiState.collectAsState().value,
-          uiEvent = viewModel.uiEvent.collectAsState().value,
-          onConsumeEvent = viewModel::consumeUiEvent,
-        )
+        AppTheme(
+          useDarkTheme = darkTheme,
+          dynamicColor = viewModel.materialYou.collectAsState().value,
+          blackBackground = viewModel.blackBackgrounds.collectAsState().value,
+        ) {
+          ScenePeekApp(
+            state = state,
+            uiState = viewModel.uiState.collectAsState().value,
+            uiEvent = viewModel.uiEvent.collectAsState().value,
+            onConsumeEvent = viewModel::consumeUiEvent,
+          )
+        }
       }
     }
   }

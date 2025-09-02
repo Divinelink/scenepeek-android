@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.divinelink.core.ui.local.LocalUiPreferences
+import com.divinelink.core.ui.composition.LocalUiPreferences
 
 class ScaffoldState internal constructor(
   density: Density,

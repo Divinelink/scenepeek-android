@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.local
+package com.divinelink.core.ui.composition
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf

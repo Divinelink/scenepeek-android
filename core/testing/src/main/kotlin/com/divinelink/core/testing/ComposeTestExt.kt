@@ -2,10 +2,7 @@ package com.divinelink.core.testing
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.data.network.TestNetworkMonitor
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -16,14 +13,11 @@ import com.divinelink.core.scaffold.ScaffoldState
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.ui.SharedTransitionScopeProvider
-import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 
 fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) {
   composeTestRule.setContent {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-
-    ProvideSnackbarController(snackbarHostState, coroutineScope) {
+    PreviewLocalProvider {
       AppTheme {
         content()
       }
@@ -43,7 +37,7 @@ fun ComposeTest.setVisibilityScopeContent(
       navigationProvider = listOf(),
     )
     ProvideScenePeekAppState(appState = state) {
-      ProvideSnackbarController(state.snackbarHostState, state.scope) {
+      PreviewLocalProvider {
         SharedTransitionScopeProvider { sharedTransitionScope ->
           state.sharedTransitionScope = sharedTransitionScope
           content(sharedTransitionScope)
@@ -66,7 +60,7 @@ fun ComposeTest.setScaffoldContent(
     )
 
     ProvideScenePeekAppState(appState = state) {
-      ProvideSnackbarController(state.snackbarHostState, state.scope) {
+      PreviewLocalProvider {
         SharedTransitionScopeProvider {
           state.sharedTransitionScope = it
 

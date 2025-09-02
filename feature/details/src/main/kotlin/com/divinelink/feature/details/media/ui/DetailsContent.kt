@@ -17,7 +17,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -78,8 +77,8 @@ import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
-import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.media.ui.collapsing.DynamicDetailsCollapsingToolbar
 import com.divinelink.feature.details.media.ui.fab.DetailsExpandableFloatingActionButton
@@ -453,8 +452,6 @@ private fun MediaDetailsContent(
 fun DetailsContentPreview(
   @PreviewParameter(DetailsViewStateProvider::class) viewState: DetailsViewState,
 ) {
-  val snackbarHostState = remember { SnackbarHostState() }
-  val coroutineScope = rememberCoroutineScope()
   SharedTransitionScopeProvider {
     val state = rememberScenePeekAppState(
       networkMonitor = TestNetworkMonitor(),
@@ -467,10 +464,7 @@ fun DetailsContentPreview(
       appState = state,
     ) {
       state.sharedTransitionScope = it
-      ProvideSnackbarController(
-        snackbarHostState = snackbarHostState,
-        coroutineScope = coroutineScope,
-      ) {
+      PreviewLocalProvider {
         AppTheme {
           Surface {
             DetailsContent(
