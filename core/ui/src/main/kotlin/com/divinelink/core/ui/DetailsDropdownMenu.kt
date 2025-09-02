@@ -1,6 +1,5 @@
 package com.divinelink.core.ui
 
-import android.content.Intent
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Surface
@@ -10,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -20,6 +18,7 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.externalUrl
 import com.divinelink.core.ui.components.dropdownmenu.ObfuscateSpoilersMenuItem
 import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
+import com.divinelink.core.ui.composition.LocalIntentManager
 
 @Composable
 fun DetailsDropdownMenu(
@@ -33,11 +32,9 @@ fun DetailsDropdownMenu(
   var showShareDialog by remember { mutableStateOf(false) }
 
   if (showShareDialog) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-      type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, mediaDetails.externalUrl())
+    mediaDetails.externalUrl()?.let { url ->
+      LocalIntentManager.current.shareText(url)
     }
-    LocalContext.current.startActivity(Intent.createChooser(shareIntent, "Share via"))
     showShareDialog = false
   }
 

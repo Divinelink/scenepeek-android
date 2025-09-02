@@ -7,39 +7,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.commons.BuildConfig
 import com.divinelink.core.commons.BuildConfigProvider
-import com.divinelink.core.commons.DefaultBuildConfigProvider
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.getString
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsExternalLinkItem
 import com.divinelink.feature.settings.components.SettingsScaffold
+import org.koin.compose.koinInject
 import com.divinelink.core.commons.R as commonR
 
 @Composable
 fun AboutSettingsScreen(
   onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
-  buildConfigProvider: BuildConfigProvider = DefaultBuildConfigProvider,
+  buildConfigProvider: BuildConfigProvider = koinInject(),
 ) {
   SettingsScaffold(
     animatedVisibilityScope = animatedVisibilityScope,
     title = stringResource(R.string.feature_settings_about),
     onNavigationClick = { onNavigate.invoke(Navigation.Back) },
   ) {
-    val version = UIText.ResourceText(commonR.string.version_name)
-
-    val buildVersion = if (buildConfigProvider.isDebug) {
-      UIText.StringText(version.getString() + " ${BuildConfig.BUILD_TYPE}")
-    } else {
-      version
-    }
-
     ScenePeekLazyColumn(
       modifier = Modifier.testTag(TestTags.Settings.About.SCROLLABLE_CONTENT),
     ) {
@@ -47,7 +36,7 @@ fun AboutSettingsScreen(
         AboutCard(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
           name = stringResource(commonR.string.core_commons_app_name),
-          version = buildVersion.getString(),
+          version = buildConfigProvider.versionName.lowercase(),
           github = "Divinelink",
           onNavigate = onNavigate,
         )

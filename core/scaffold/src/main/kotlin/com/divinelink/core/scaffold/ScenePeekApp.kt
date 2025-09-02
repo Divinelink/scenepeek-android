@@ -23,7 +23,6 @@ import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.network.NetworkStatusIndicator
-import com.divinelink.core.ui.snackbar.controller.ProvideSnackbarController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -98,15 +97,10 @@ fun ScenePeekApp(
       ProvideScenePeekAppState(
         appState = state,
       ) {
-        ProvideSnackbarController(
-          snackbarHostState = state.snackbarHostState,
-          coroutineScope = state.scope,
-        ) {
-          Surface(modifier = Modifier.fillMaxSize()) {
-            when (uiState) {
-              is MainUiState.Completed -> ScenePeekNavHost()
-              MainUiState.Loading -> LoadingContent()
-            }
+        Surface(modifier = Modifier.fillMaxSize()) {
+          when (uiState) {
+            is MainUiState.Completed -> ScenePeekNavHost()
+            MainUiState.Loading -> LoadingContent()
           }
         }
       }

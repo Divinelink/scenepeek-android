@@ -38,4 +38,3 @@ object PersonEntityFactory {
     insertedAt = "1628995200", // GMT: Sunday, 15 August 2021 02:40:00
   )
 }
-

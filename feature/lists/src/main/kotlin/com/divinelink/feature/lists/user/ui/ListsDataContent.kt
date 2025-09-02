@@ -43,8 +43,8 @@ import com.divinelink.core.ui.button.switchview.SwitchViewButton
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.composition.rememberViewModePreferences
 import com.divinelink.core.ui.list.ListItemCard
-import com.divinelink.core.ui.local.rememberViewModePreferences
 import com.divinelink.feature.lists.R
 import com.divinelink.feature.lists.user.ListsAction
 import kotlinx.coroutines.launch

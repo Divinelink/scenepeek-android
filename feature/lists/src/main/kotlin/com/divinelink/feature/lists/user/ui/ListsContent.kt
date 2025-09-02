@@ -22,7 +22,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
-import com.divinelink.core.ui.local.LocalUiPreferences
+import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.feature.lists.user.ListsAction
 import com.divinelink.feature.lists.user.ListsUiState
 import com.divinelink.feature.lists.user.ui.provider.ListsUiStateParameterProvider

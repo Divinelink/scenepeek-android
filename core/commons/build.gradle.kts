@@ -9,8 +9,6 @@ android {
     buildConfig = true
   }
   defaultConfig {
-    resValue("string", "version_name", libs.versions.version.name.get())
-
     buildConfigField("Integer", "VERSION_CODE", libs.versions.version.code.get())
   }
 }

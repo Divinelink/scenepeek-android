@@ -6,7 +6,6 @@ import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class ListDetailsResponseMapperTest {
 

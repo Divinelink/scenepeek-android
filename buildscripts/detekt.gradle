@@ -2,95 +2,91 @@ apply plugin: "io.gitlab.arturbosch.detekt"
 
 configurations { detekt }
 dependencies {
-    def detektVersion = "1.23.6"
-    detekt "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
-    detekt "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+  def detektVersion = "1.23.6"
+  detekt "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
+  detekt "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
 }
 
 task detektCi(type: JavaExec, group: "verification") {
-    description = "Run Kotlin static analysis on changed files."
-    group = "CI"
-    main = "io.gitlab.arturbosch.detekt.cli.Main"
-    classpath = configurations.detekt
+  description = "Run Kotlin static analysis on changed files."
+  group = "CI"
+  main = "io.gitlab.arturbosch.detekt.cli.Main"
+  classpath = configurations.detekt
 
-    doFirst {
-        def changedFilesList = getDiffedFilesFromBranch()
-
-        if (changedFilesList.isEmpty()) {
-            println("No kotlin files changed! Skipping task...")
-            // forces detekt to ignore all files
-            changedFilesList = "$rootDir/gradle"
-        } else {
-            println("Running detekt on the changed files:")
-            println(changedFilesList)
-        }
-
-        def reportDir = "${buildDir}/reports/detekt.html"
-        def params = [
-                "--input", "$changedFilesList",
-                "--config", "$rootDir/detekt.yml",
-                "--report", "html:$reportDir",
-                "--auto-correct"
-        ]
-        args(params)
-    }
-}
-
-task detektFormat(type: JavaExec, group: "verification") {
-    description = "Run Kotlin static analysis on changed files."
-    group = "CI"
-    main = "io.gitlab.arturbosch.detekt.cli.Main"
-    classpath = configurations.detekt
-
-    doFirst {
-        def params = [
-                "--config", "$rootDir/detekt.yml",
-                "--auto-correct"
-        ]
-        args(params)
-    }
-}
-
-private String getDiffedFilesFromBranch() {
-    def outputStream = new ByteArrayOutputStream()
-    def cmd = "path=\$(git rev-parse --show-toplevel) && git diff --diff-filter=d --name-only @{upstream} --relative | sed \"s,^,\$path/,\" | grep '\\.kt\\?\$'"
-    execute(cmd, outputStream)
-
-    if (outputStream.toString().isEmpty()) {
-        println("Diff cmd is Empty!")
-        return ""
-    }
-
-    // get comma separated string of files
-    return outputStream.toString()
-            .trim()
-            .replace("\n", ",")
-}
-
-private static def execute(cmd, output) {
-    ['sh', '-c', cmd].execute().waitForProcessOutput(output, System.err)
-}
-
-task RunUnitTests {
-    group 'CI'
-    description 'Runs all module\'s unit tests if there are changes in this module'
-
+  doFirst {
     def changedFilesList = getDiffedFilesFromBranch()
 
     if (changedFilesList.isEmpty()) {
-        println("No kotlin files changed! Skipping task...")
-        return
+      println("No kotlin files changed! Skipping task...")
+      // forces detekt to ignore all files
+      changedFilesList = "$rootDir/gradle"
     } else {
-        if (changedFilesList.contains("app")) {
-            println("Running tests:")
-            dependsOn(":app:testDebugUnitTest")
-        }
-        //N/A in project yet
-//        if (changedFilesList.contains("androidApp/")) {
-//            println("Running Android tests:")
-//            dependsOn(":androidApp:testStageMinApi28DebugUnitTest")
-//        }
-        println "Executed!"
+      println("Running detekt on the changed files:")
+      println(changedFilesList)
     }
+
+    def reportDir = "${buildDir}/reports/detekt.html"
+    def params = ["--input", "$changedFilesList",
+                  "--config", "$rootDir/detekt.yml",
+                  "--report", "html:$reportDir",
+                  "--auto-correct"]
+    args(params)
+  }
+}
+
+task detektFormat(type: JavaExec, group: "verification") {
+  description = "Run Kotlin static analysis on changed files."
+  group = "CI"
+  main = "io.gitlab.arturbosch.detekt.cli.Main"
+  classpath = configurations.detekt
+
+  doFirst {
+    def params = ["--config", "$rootDir/detekt.yml",
+                  "--auto-correct"]
+    args(params)
+  }
+}
+
+private String getDiffedFilesFromBranch() {
+  def outputStream = new ByteArrayOutputStream()
+  def cmd = "path=\$(git rev-parse --show-toplevel) && git diff --diff-filter=d --name-only @{upstream} --relative | sed \"s,^,\$path/,\" | grep '\\.kt\\?\$'"
+  execute(cmd, outputStream)
+
+  if (outputStream.toString().isEmpty()) {
+    println("Diff cmd is Empty!")
+    return ""
+  }
+
+  // get comma separated string of files
+  return outputStream.toString()
+      .trim()
+      .replace("\n", ",")
+}
+
+private static def execute(cmd, output) {
+  ['sh', '-c', cmd].execute().waitForProcessOutput(output, System.err)
+}
+
+task RunUnitTests {
+  group 'CI'
+  description 'Runs all module\'s unit tests if there are changes in this module'
+
+  def changedFilesList = getDiffedFilesFromBranch()
+
+  if (changedFilesList.isEmpty()) {
+    println("No kotlin files changed! Skipping task...")
+    return
+  } else {
+    if (changedFilesList.contains("app")) {
+      println("Running tests:")
+      dependsOn(":app:testDebugUnitTest")
+    }
+    //N/A in project yet
+    //        if (changedFilesList.contains("androidApp/")) {
+    //            println("Running Android tests:")
+    //            dependsOn(":androidApp:testStageMinApi28DebugUnitTest")
+    //        }
+    println "Executed!"
+  }
 }
 

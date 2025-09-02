@@ -68,8 +68,8 @@ import com.divinelink.core.ui.collapsing.CollapsingToolBarLayout
 import com.divinelink.core.ui.collapsing.rememberCollapsingToolBarState
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.canScrollToTop
-import com.divinelink.core.ui.local.LocalUiPreferences
-import com.divinelink.core.ui.local.rememberViewModePreferences
+import com.divinelink.core.ui.composition.LocalUiPreferences
+import com.divinelink.core.ui.composition.rememberViewModePreferences
 import com.divinelink.core.ui.tab.ScenePeekTabs
 import com.divinelink.feature.details.person.ui.credits.KnownForSection
 import com.divinelink.feature.details.person.ui.filter.CreditFilter

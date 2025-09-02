@@ -29,15 +29,12 @@ kover {
     variant("debug") {
       filters {
         excludes {
-          packages(
-              "com.divinelink.core.ui.provider",
+          packages("com.divinelink.core.ui.provider",
               "com.divinelink.core.ui.tab.custom",
               "com.divinelink.core.ui.collapsing",
 
-              ".provider",
-          )
-          classes(
-              "*ComposableSingletons*",
+              ".provider",)
+          classes("*ComposableSingletons*",
               "*BuildConfig*",
               "*Module*",
 
@@ -51,13 +48,10 @@ kover {
               "*Preview",
               "*ParameterProvider.kt",
 
-              "ConnectivityManagerNetworkMonitor.kt",
-          )
-          annotatedBy(
-              "androidx.compose.ui.tooling.preview.Preview",
+              "ConnectivityManagerNetworkMonitor.kt",)
+          annotatedBy("androidx.compose.ui.tooling.preview.Preview",
               "*.ExcludeFromKoverReport",
-              "com.divinelink.core.ui.Previews",
-          )
+              "com.divinelink.core.ui.Previews",)
         }
         includes {
           packages("com.divinelink")

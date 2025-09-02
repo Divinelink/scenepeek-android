@@ -10,9 +10,9 @@ import com.divinelink.core.testing.expectUiStates
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import kotlinx.coroutines.test.runTest
-import com.divinelink.feature.add.to.account.R as accountR
 import org.junit.Rule
 import kotlin.test.Test
+import com.divinelink.feature.add.to.account.R as accountR
 
 class ListDetailsViewModelTest {
 

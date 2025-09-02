@@ -132,7 +132,6 @@ class ExtensionsTest {
     assertThat(result).isEqualTo("2.9m")
   }
 
-
   @Test
   fun `test toShortString should return 1 3k when value is 1_350`() {
     val value = 1_350
