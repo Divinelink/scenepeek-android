@@ -1,6 +1,5 @@
 package com.divinelink.feature.details.person.ui
 
-import android.content.Intent
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Surface
@@ -10,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -21,6 +19,7 @@ import com.divinelink.core.model.person.Gender
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.dropdownmenu.ShareMenuItem
+import com.divinelink.core.ui.composition.LocalIntentManager
 
 @Composable
 fun PersonDropdownMenu(
@@ -31,11 +30,7 @@ fun PersonDropdownMenu(
   var showShareDialog by remember { mutableStateOf(false) }
 
   if (showShareDialog) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-      type = "text/plain"
-      putExtra(Intent.EXTRA_TEXT, person.shareUrl())
-    }
-    LocalContext.current.startActivity(Intent.createChooser(shareIntent, "Share via"))
+    LocalIntentManager.current.shareText(person.shareUrl())
     showShareDialog = false
   }
 

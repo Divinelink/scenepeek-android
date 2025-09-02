@@ -1,6 +1,5 @@
 package com.divinelink.feature.add.to.account.modal
 
-import android.content.Intent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +16,7 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.composition.LocalIntentManager
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.add.to.account.modal.ui.ActionMenuContent
 import com.divinelink.feature.add.to.account.modal.ui.provider.ActionMenuUiStateParameterProvider
@@ -39,15 +38,11 @@ fun ActionMenuModal(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-  val context = LocalContext.current
+  val intentManager = LocalIntentManager.current
 
   LaunchedEffect(Unit) {
     viewModel.shareUrl.collectLatest { url ->
-      val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, url)
-      }
-      context.startActivity(Intent.createChooser(shareIntent, "Share via"))
+      intentManager.shareText(url)
       onDismissRequest()
     }
   }
