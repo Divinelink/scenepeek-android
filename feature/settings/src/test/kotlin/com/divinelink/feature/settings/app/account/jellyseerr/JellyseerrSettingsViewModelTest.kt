@@ -15,6 +15,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
 import com.divinelink.core.testing.expectUiStates
+import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.launch
@@ -38,11 +39,12 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr(Result.failure(AppException.Unauthorized("401")))
+      .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+          dialogState = DialogState(
+            message = UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+            error = AppException.Unauthorized("401"),
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
@@ -66,11 +68,12 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr(Result.failure(AppException.Offline()))
+      .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(R.string.feature_settings_could_not_connect),
+          dialogState = DialogState(
+            message = UIText.ResourceText(R.string.feature_settings_could_not_connect),
+            error = AppException.Offline(),
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
@@ -94,11 +97,12 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr(Result.failure(AppException.SocketTimeout()))
+      .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.ResourceText(R.string.feature_settings_could_not_connect),
+          dialogState = DialogState(
+            message = UIText.ResourceText(R.string.feature_settings_could_not_connect),
+            error = AppException.SocketTimeout(),
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
@@ -122,11 +126,12 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr(Result.failure(InvalidStatusException(500)))
+      .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.StringText(InvalidStatusException(500).message!!),
+          dialogState = DialogState(
+            message = UIText.StringText(InvalidStatusException(500).message!!),
+            error = InvalidStatusException(500),
           ),
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
@@ -228,7 +233,7 @@ class JellyseerrSettingsViewModelTest {
   }
 
   @Test
-  fun `test dismissSnackbar removes snackbar`() = runTest {
+  fun `test dismissDialog removes dialog`() = runTest {
     testRobot
       .buildViewModel()
       .mockLoginJellyseerrResponse(Result.failure(InvalidStatusException(500)))
@@ -236,12 +241,27 @@ class JellyseerrSettingsViewModelTest {
       .onUsernameChange("username")
       .onPasswordChange("password")
       .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
-      .onLoginJellyseerr(Result.failure(InvalidStatusException(500)))
+      .onLoginJellyseerr()
       .assertUiState(
         createUiState(
-          snackbarMessage = SnackbarMessage.from(
-            UIText.StringText(InvalidStatusException(500).message!!),
+          jellyseerrState = JellyseerrState.Login(
+            isLoading = false,
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
+              username = Username("username"),
+              password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+            ),
           ),
+          dialogState = DialogState(
+            message = UIText.StringText(InvalidStatusException(500).message ?: ""),
+            error = InvalidStatusException(500),
+          ),
+        ),
+      )
+      .onDismissDialog()
+      .assertUiState(
+        createUiState(
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
@@ -253,10 +273,39 @@ class JellyseerrSettingsViewModelTest {
           ),
         ),
       )
+  }
+
+  @Test
+  fun `test dismissSnackbar removes snackbar`() = runTest {
+    testRobot
+      .buildViewModel()
+      .mockLoginJellyseerrResponse(Result.success(Unit))
+      .onUserAddressChange("http://localhost:8096")
+      .onUsernameChange("username")
+      .onPasswordChange("password")
+      .onSelectedJellyseerrLoginMethod(JellyseerrAuthMethod.JELLYSEERR)
+      .onLoginJellyseerr(
+        Result.failure(Exception("Failed to get account details")),
+      )
+      .assertUiState(
+        createUiState(
+          jellyseerrState = JellyseerrState.Login(
+            isLoading = false,
+            loginData = JellyseerrLoginData(
+              address = "http://localhost:8096",
+              username = Username("username"),
+              password = Password("password"),
+              authMethod = JellyseerrAuthMethod.JELLYSEERR,
+            ),
+          ),
+          snackbarMessage = SnackbarMessage.from(
+            UIText.StringText("Failed to get account details"),
+          ),
+        ),
+      )
       .onDismissSnackbar()
       .assertUiState(
         createUiState(
-          snackbarMessage = null,
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
@@ -340,11 +389,13 @@ class JellyseerrSettingsViewModelTest {
 
   private fun createUiState(
     snackbarMessage: SnackbarMessage? = null,
+    dialogState: DialogState? = null,
     jellyseerrState: JellyseerrState = JellyseerrState.Login(
       isLoading = false,
     ),
   ) = JellyseerrSettingsUiState(
     snackbarMessage = snackbarMessage,
+    dialogState = dialogState,
     jellyseerrState = jellyseerrState,
   )
 }

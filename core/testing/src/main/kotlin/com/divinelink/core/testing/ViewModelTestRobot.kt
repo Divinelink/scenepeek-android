@@ -13,7 +13,7 @@ abstract class ViewModelTestRobot<T> {
 }
 
 fun <T, R : ViewModelTestRobot<T>> R.assertUiState(expectedUiState: T) = apply {
-  assertThat((actualUiState as StateFlow).value).isEqualTo(expectedUiState)
+  assertThat((actualUiState as StateFlow).value.toString()).isEqualTo(expectedUiState.toString())
 }
 
 fun <T, R : ViewModelTestRobot<T>> R.assertUiStateNotEqualTo(expectedUiState: T) = apply {

@@ -11,5 +11,5 @@ class AndroidBuildConfigProvider : BuildConfigProvider {
   override val versionName: String
     get() = BuildConfig.VERSION_NAME
   override val versionData: String
-    get() = "${BuildConfig.VERSION_NAME} ${BuildConfig.VERSION_CODE}"
+    get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 }

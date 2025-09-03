@@ -8,6 +8,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+typealias UiString = R.string
+
 @Stable
 object UiTokens {
 

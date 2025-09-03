@@ -35,12 +35,12 @@ import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
+import com.divinelink.core.ui.UiString
 import com.divinelink.factories.VideoFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.scenepeek.R
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -229,7 +229,7 @@ class DetailsContentTest : ComposeTest() {
       .getString(detailsR.string.details__fatal_error_fetching_details)
 
     val okText = composeTestRule.activity
-      .getString(R.string.ok)
+      .getString(UiString.core_ui_okay)
 
     composeTestRule
       .onNodeWithText(errorText)

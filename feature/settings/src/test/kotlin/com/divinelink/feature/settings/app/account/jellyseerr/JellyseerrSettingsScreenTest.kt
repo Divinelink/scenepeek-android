@@ -422,6 +422,87 @@ class JellyseerrSettingsScreenTest : ComposeTest() {
     }
   }
 
+  @Test
+  fun `test login with error shows basic alert dialog with share error option`() = runTest {
+    val channel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+    loginJellyseerrUseCase.mockSuccess(
+      flowOf(Result.failure(Exception("Failed to login to your jellyseerr instance."))),
+    )
+    getJellyseerrDetailsUseCase.mockSuccess(channel)
+
+    val viewModel = setupViewModel()
+
+    setVisibilityScopeContent {
+      JellyseerrSettingsScreen(
+        viewModel = viewModel,
+        sharedTransitionScope = it,
+        onNavigateUp = {},
+        withNavigationBar = false,
+      )
+    }
+
+    with(composeTestRule) {
+      channel.send(Result.success(JellyseerrAccountDetailsResultFactory.signedOut()))
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
+
+      waitUntil {
+        onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD).isDisplayed()
+      }
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
+        .assertIsDisplayed()
+        .performClick()
+        .performTextInput("http://localhost:8080")
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+        hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+      )
+
+      onNodeWithTag(
+        TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
+      ).assertIsNotEnabled()
+
+      onNodeWithText("Emby").assertIsDisplayed().performClick()
+
+      onNodeWithTag(
+        TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON,
+      ).assertIsNotEnabled()
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD).assertIsDisplayed()
+      onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD)
+        .performClick()
+        .performTextInput(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!)
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD)
+        .performClick()
+        .performTextInput("password")
+
+      onNodeWithTag(
+        TestTags.Settings.Jellyseerr.USERNAME_TEXT_FIELD,
+      ).assert(hasText(loggedInJellyfin.getOrNull()?.accountDetails?.displayName!!))
+
+      onNodeWithTag(
+        TestTags.Settings.Jellyseerr.PASSWORD_TEXT_FIELD,
+      ).assert(hasText("••••••••"))
+
+      // Need to scroll to login button to make it visible on the screen because
+      // there's not enough space to display it.
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).performScrollToNode(
+        hasTestTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON),
+      )
+
+      onNodeWithTag(TestTags.Settings.Jellyseerr.JELLYSEERR_LOGIN_BUTTON).performClick()
+
+      // Failed to login
+      onNodeWithTag(TestTags.Settings.Jellyseerr.INITIAL_CONTENT).assertIsDisplayed()
+      onNodeWithTag(TestTags.Dialogs.SHARE_ERROR_BUTTON).assertIsDisplayed()
+      onNodeWithText("Failed to login to your jellyseerr instance.").assertIsDisplayed()
+    }
+  }
+
   private fun setupViewModel(): JellyseerrSettingsViewModel = JellyseerrSettingsViewModel(
     logoutJellyseerrUseCase = logoutJellyseerrUseCase.mock,
     getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
