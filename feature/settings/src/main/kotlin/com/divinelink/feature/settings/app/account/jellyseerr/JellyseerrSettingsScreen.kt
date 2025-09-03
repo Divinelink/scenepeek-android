@@ -2,7 +2,6 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
-
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.dialog.BasicDialog
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.settings.R
 import com.divinelink.feature.settings.components.SettingsScaffold
@@ -30,6 +30,13 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
     snackbarMessage = uiState.snackbarMessage,
     onDismissSnackbar = viewModel::dismissSnackbar,
   )
+
+  uiState.dialogState?.let { state ->
+    BasicDialog(
+      dialogState = state,
+      onDismissRequest = { viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnDismissDialog) },
+    )
+  }
 
   SettingsScaffold(
     animatedVisibilityScope = this@JellyseerrSettingsScreen,

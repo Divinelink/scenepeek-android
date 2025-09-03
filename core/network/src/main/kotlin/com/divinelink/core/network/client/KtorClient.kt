@@ -87,15 +87,15 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
     handleResponseExceptionWithRequest { cause, request ->
       Timber.e("Exception occurred: $cause, URL: ${request.url}")
       val dataError = when (cause) {
-        is SocketTimeoutException -> AppException.SocketTimeout(cause.message)
-        is ConnectTimeoutException -> AppException.ConnectionTimeout(cause.message)
-        is HttpRequestTimeoutException -> AppException.RequestTimeout(cause.message)
-        is SSLHandshakeException -> AppException.Ssl(cause.message)
-        is SerializationException -> AppException.Serialization(cause.message)
-        is ConnectException -> AppException.Offline(cause.message)
-        is UnknownHostException -> AppException.Offline(cause.message)
+        is SocketTimeoutException -> AppException.SocketTimeout(cause.toString())
+        is ConnectTimeoutException -> AppException.ConnectionTimeout(cause.toString())
+        is HttpRequestTimeoutException -> AppException.RequestTimeout(cause.toString())
+        is SSLHandshakeException -> AppException.Ssl(cause.toString())
+        is SerializationException -> AppException.Serialization(cause.toString())
+        is ConnectException -> AppException.Offline(cause.toString())
+        is UnknownHostException -> AppException.Offline(cause.toString())
         is AppException -> cause
-        else -> AppException.Unknown(cause.message)
+        else -> AppException.Unknown(cause.toString())
       }
       throw dataError
     }

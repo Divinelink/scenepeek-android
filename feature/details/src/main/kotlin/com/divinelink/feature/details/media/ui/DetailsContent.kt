@@ -68,6 +68,7 @@ import com.divinelink.core.ui.FavoriteButton
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedTransitionScopeProvider
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.AppTopAppBar
@@ -92,7 +93,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import com.divinelink.core.ui.R as uiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -305,7 +305,7 @@ fun DetailsContent(
         if (viewState.error != null) {
           SimpleAlertDialog(
             confirmClick = { onNavigate(Navigation.Back) },
-            confirmText = UIText.ResourceText(uiR.string.core_ui_ok),
+            confirmText = UIText.ResourceText(UiString.core_ui_okay),
             uiState = AlertDialogUiState(text = viewState.error),
           )
         }

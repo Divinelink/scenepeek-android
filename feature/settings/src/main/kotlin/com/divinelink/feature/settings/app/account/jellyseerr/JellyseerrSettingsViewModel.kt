@@ -13,6 +13,7 @@ import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrState
+import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.settings.R
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,30 +96,29 @@ class JellyseerrSettingsViewModel(
           .onCompletion {
             _uiState.setJellyseerrLoading(false)
           }.onEach { result ->
-            result
-              .onError<AppException.Unauthorized> {
-                _uiState.setSnackbarMessage(
-                  UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+            result.onFailure { error ->
+              val text = when (error) {
+                is AppException.Unauthorized -> UIText.ResourceText(
+                  R.string.feature_settings_invalid_credentials,
                 )
-              }.onError<AppException.Forbidden> {
-                _uiState.setSnackbarMessage(
-                  UIText.ResourceText(R.string.feature_settings_invalid_credentials),
+                is AppException.Forbidden -> UIText.ResourceText(
+                  R.string.feature_settings_invalid_credentials,
                 )
-              }.onError<AppException.Offline> {
-                _uiState.setSnackbarMessage(
-                  UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                is AppException.Offline -> UIText.ResourceText(
+                  R.string.feature_settings_could_not_connect,
                 )
-              }.onError<AppException.SocketTimeout> {
-                _uiState.setSnackbarMessage(
-                  UIText.ResourceText(R.string.feature_settings_could_not_connect),
+                is AppException.SocketTimeout -> UIText.ResourceText(
+                  R.string.feature_settings_could_not_connect,
                 )
-              }.onFailure {
-                _uiState.setSnackbarMessage(
-                  it.message?.let { message ->
-                    UIText.StringText(message)
-                  } ?: UIText.ResourceText(uiR.string.core_ui_error_retry),
-                )
+                else -> error.message?.let { message ->
+                  UIText.StringText(message)
+                } ?: UIText.ResourceText(uiR.string.core_ui_error_retry)
               }
+              _uiState.setErrorDialog(
+                text = text,
+                error = error,
+              )
+            }
           }.launchIn(viewModelScope)
       }
       JellyseerrInteraction.OnLogoutClick -> onLogout()
@@ -179,6 +179,9 @@ class JellyseerrSettingsViewModel(
           },
         )
       }
+      JellyseerrInteraction.OnDismissDialog -> _uiState.update {
+        it.copy(dialogState = null)
+      }
     }
   }
 
@@ -218,6 +221,20 @@ private fun MutableStateFlow<JellyseerrSettingsUiState>.setSnackbarMessage(text:
   update { uiState ->
     uiState.copy(
       snackbarMessage = SnackbarMessage.from(text = text),
+    )
+  }
+}
+
+private fun MutableStateFlow<JellyseerrSettingsUiState>.setErrorDialog(
+  text: UIText,
+  error: Throwable,
+) {
+  update { uiState ->
+    uiState.copy(
+      dialogState = DialogState(
+        message = text,
+        error = error,
+      ),
     )
   }
 }

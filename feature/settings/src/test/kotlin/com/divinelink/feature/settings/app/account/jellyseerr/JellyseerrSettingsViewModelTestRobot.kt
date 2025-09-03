@@ -64,8 +64,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnSelectLoginMethod(method))
   }
 
-  suspend fun onLoginJellyseerr(result: Result<JellyseerrAccountDetailsResult>) = apply {
-    accountDetailsChannel.send(result)
+  suspend fun onLoginJellyseerr(result: Result<JellyseerrAccountDetailsResult>? = null) = apply {
+    result?.let {
+      accountDetailsChannel.send(result)
+    }
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLoginClick)
   }
 
@@ -77,6 +79,10 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
 
   fun onDismissSnackbar() = apply {
     viewModel.dismissSnackbar()
+  }
+
+  fun onDismissDialog() = apply {
+    viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnDismissDialog)
   }
 
   override val actualUiState: Flow<JellyseerrSettingsUiState>

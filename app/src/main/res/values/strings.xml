@@ -1,5 +1,4 @@
 <resources>
-  <string name="ok">OK</string>
   <string name="close">Close</string>
   <string name="save">Save</string>
   <string name="update">Update</string>
@@ -9,7 +8,6 @@
 
   <!-- Error -->
   <string name="empty_field_error_message">%s is required.</string>
-  <string name="general_error_title">An error occurred</string>
   <string name="general_error_message">Something when wrong.</string>
 
   <string name="delete">Delete</string>

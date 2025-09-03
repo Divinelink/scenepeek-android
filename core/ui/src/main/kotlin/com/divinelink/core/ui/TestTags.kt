@@ -140,6 +140,7 @@ object TestTags {
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
+    const val SHARE_ERROR_BUTTON = "Share Error Button"
     const val DELETE_REQUEST = "Delete Request Dialog"
     const val REMOVE_ITEMS_FROM_LIST = "Remove Items From List"
 
