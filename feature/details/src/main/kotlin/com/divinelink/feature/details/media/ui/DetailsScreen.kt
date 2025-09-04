@@ -89,7 +89,7 @@ fun DetailsScreen(
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
       sheetState = rateBottomSheetState,
-      value = viewState.userDetails?.beautifiedRating,
+      value = viewState.userDetails.beautifiedRating,
       mediaTitle = viewState.mediaDetails?.title ?: "",
       onSubmitRate = {
         openRateBottomSheet = false
