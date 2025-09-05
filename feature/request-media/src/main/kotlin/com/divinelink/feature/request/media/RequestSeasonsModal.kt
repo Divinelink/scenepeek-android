@@ -1,34 +1,25 @@
 package com.divinelink.feature.request.media
+
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -37,12 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -61,6 +49,9 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
+import com.divinelink.feature.request.media.components.DestinationServerDropDownMenu
+import com.divinelink.feature.request.media.components.QualityProfileDropDownMenu
+import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -355,285 +346,6 @@ fun RequestSeasonsContentPreview() {
 //        onRequestClick = {},
 //        onDismissRequest = {},
 //      )
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DestinationServerDropDownMenu(
-  modifier: Modifier = Modifier,
-  options: List<SonarrInstance>,
-  currentInstance: LCEState<SonarrInstance>,
-  onUpdate: (SonarrInstance) -> Unit,
-) {
-  var expanded by remember { mutableStateOf(false) }
-
-  val rotationState by animateFloatAsState(
-    targetValue = if (expanded) 180f else 0f,
-    animationSpec = tween(durationMillis = 300),
-    label = "IconRotationAnimation",
-  )
-
-  ExposedDropdownMenuBox(
-    modifier = modifier.animateContentSize(),
-    expanded = expanded,
-    onExpandedChange = { expanded = !expanded },
-  ) {
-    Crossfade(currentInstance) { state ->
-      when (state) {
-        is LCEState.Content -> OutlinedTextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .menuAnchor(MenuAnchorType.PrimaryEditable),
-          readOnly = true,
-          value = state.data.name,
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
-          trailingIcon = {
-            Icon(
-              modifier = Modifier.rotate(rotationState),
-              imageVector = Icons.Filled.ArrowDropUp,
-              contentDescription = if (expanded) {
-                stringResource(UiString.core_ui_collapse)
-              } else {
-                stringResource(UiString.core_ui_expand)
-              },
-            )
-          },
-        )
-        LCEState.Error -> {
-          // Do nothing
-        }
-        LCEState.Loading -> OutlinedTextField(
-          modifier = Modifier.fillMaxWidth(),
-          readOnly = true,
-          enabled = false,
-          value = stringResource(UiString.core_ui_loading),
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
-        )
-      }
-    }
-
-    ExposedDropdownMenu(
-      expanded = expanded,
-      onDismissRequest = { expanded = false },
-    ) {
-      options.forEach { selectionOption ->
-        DropdownMenuItem(
-          text = {
-            Text(
-              text = selectionOption.name,
-              style = MaterialTheme.typography.bodyMedium,
-            )
-          },
-          onClick = {
-            onUpdate(selectionOption)
-            expanded = false
-          },
-          contentPadding = PaddingValues(
-            horizontal = MaterialTheme.dimensions.keyline_16,
-            vertical = MaterialTheme.dimensions.keyline_4,
-          ),
-        )
-      }
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun QualityProfileDropDownMenu(
-  modifier: Modifier = Modifier,
-  options: List<InstanceProfile>,
-  currentInstance: LCEState<InstanceProfile>,
-  onUpdate: (InstanceProfile) -> Unit,
-) {
-  var expanded by remember { mutableStateOf(false) }
-
-  val rotationState by animateFloatAsState(
-    targetValue = if (expanded) 180f else 0f,
-    animationSpec = tween(durationMillis = 300),
-    label = "IconRotationAnimation",
-  )
-
-  ExposedDropdownMenuBox(
-    modifier = modifier.animateContentSize(),
-    expanded = expanded,
-    onExpandedChange = { expanded = !expanded },
-  ) {
-    Crossfade(currentInstance) { state ->
-      when (state) {
-        is LCEState.Content -> OutlinedTextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .menuAnchor(MenuAnchorType.PrimaryEditable),
-          readOnly = true,
-          value = buildString {
-            append(state.data.name)
-            if (state.data.isDefault) {
-              append(
-                " (${stringResource(R.string.feature_request_media_default)})",
-              )
-            }
-          },
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_quality_profile)) },
-          trailingIcon = {
-            Icon(
-              modifier = Modifier.rotate(rotationState),
-              imageVector = Icons.Filled.ArrowDropUp,
-              contentDescription = if (expanded) {
-                stringResource(UiString.core_ui_collapse)
-              } else {
-                stringResource(UiString.core_ui_expand)
-              },
-            )
-          },
-        )
-        LCEState.Error -> {
-          // Do nothing
-        }
-        LCEState.Loading -> OutlinedTextField(
-          modifier = Modifier.fillMaxWidth(),
-          readOnly = true,
-          enabled = false,
-          value = stringResource(UiString.core_ui_loading),
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_quality_profile)) },
-        )
-      }
-    }
-
-    ExposedDropdownMenu(
-      expanded = expanded,
-      onDismissRequest = { expanded = false },
-    ) {
-      options.forEach { selectionOption ->
-        DropdownMenuItem(
-          text = {
-            Text(
-              text = buildString {
-                append(selectionOption.name)
-                if (selectionOption.isDefault) {
-                  append(
-                    " (${stringResource(R.string.feature_request_media_default)})",
-                  )
-                }
-              },
-              style = MaterialTheme.typography.bodyMedium,
-            )
-          },
-          onClick = {
-            onUpdate(selectionOption)
-            expanded = false
-          },
-          contentPadding = PaddingValues(
-            horizontal = MaterialTheme.dimensions.keyline_16,
-            vertical = MaterialTheme.dimensions.keyline_4,
-          ),
-        )
-      }
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RootFolderDropDownMenu(
-  modifier: Modifier = Modifier,
-  options: List<InstanceRootFolder>,
-  currentInstance: LCEState<InstanceRootFolder>,
-  onUpdate: (InstanceRootFolder) -> Unit,
-) {
-  var expanded by remember { mutableStateOf(false) }
-
-  val rotationState by animateFloatAsState(
-    targetValue = if (expanded) 180f else 0f,
-    animationSpec = tween(durationMillis = 300),
-    label = "IconRotationAnimation",
-  )
-
-  ExposedDropdownMenuBox(
-    modifier = modifier.animateContentSize(),
-    expanded = expanded,
-    onExpandedChange = { expanded = !expanded },
-  ) {
-    Crossfade(currentInstance) { state ->
-      when (state) {
-        is LCEState.Content -> OutlinedTextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .menuAnchor(MenuAnchorType.PrimaryEditable),
-          readOnly = true,
-          value = buildString {
-            append(state.data.path)
-            append(" (${state.data.freeSpace})")
-            if (state.data.isDefault) {
-              append(
-                " (${stringResource(R.string.feature_request_media_default)})",
-              )
-            }
-          },
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_root_folder)) },
-          trailingIcon = {
-            Icon(
-              modifier = Modifier.rotate(rotationState),
-              imageVector = Icons.Filled.ArrowDropUp,
-              contentDescription = if (expanded) {
-                stringResource(UiString.core_ui_collapse)
-              } else {
-                stringResource(UiString.core_ui_expand)
-              },
-            )
-          },
-        )
-        LCEState.Error -> {
-          // Do nothing
-        }
-        LCEState.Loading -> OutlinedTextField(
-          modifier = Modifier.fillMaxWidth(),
-          readOnly = true,
-          enabled = false,
-          value = stringResource(UiString.core_ui_loading),
-          onValueChange = {},
-          label = { Text(stringResource(R.string.feature_request_media_root_folder)) },
-        )
-      }
-    }
-
-    ExposedDropdownMenu(
-      expanded = expanded,
-      onDismissRequest = { expanded = false },
-    ) {
-      options.forEach { selectionOption ->
-        DropdownMenuItem(
-          text = {
-            Text(
-              text = buildString {
-                append(selectionOption.path)
-                append(" (${selectionOption.freeSpace})")
-                if (selectionOption.isDefault) {
-                  append(
-                    " (${stringResource(R.string.feature_request_media_default)})",
-                  )
-                }
-              },
-              style = MaterialTheme.typography.bodyMedium,
-            )
-          },
-          onClick = {
-            onUpdate(selectionOption)
-            expanded = false
-          },
-          contentPadding = PaddingValues(
-            horizontal = MaterialTheme.dimensions.keyline_16,
-            vertical = MaterialTheme.dimensions.keyline_4,
-          ),
-        )
-      }
     }
   }
 }
