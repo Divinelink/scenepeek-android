@@ -4,8 +4,10 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.RadarrInstanceResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.SonarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.flowOf
@@ -88,5 +90,13 @@ class TestJellyseerrService {
 
   suspend fun mockGetSonarrInstances(response: Result<List<SonarrInstanceResponse>>) {
     whenever(mock.getSonarrInstances()).thenReturn(response)
+  }
+
+  suspend fun mockGetRadarrInstanceDetails(response: Result<RadarrInstanceDetailsResponse>) {
+    whenever(mock.getRadarrInstanceDetails(any())).thenReturn(response)
+  }
+
+  suspend fun mockGetSonarrInstanceDetails(response: Result<SonarrInstanceDetailsResponse>) {
+    whenever(mock.getSonarrInstanceDetails(any())).thenReturn(response)
   }
 }

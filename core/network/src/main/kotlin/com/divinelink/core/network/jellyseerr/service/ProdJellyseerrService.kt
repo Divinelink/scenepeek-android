@@ -10,8 +10,10 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.RadarrInstanceResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.SonarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -181,6 +183,28 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     return runCatching {
       val url = "$hostAddress/api/v1/service/sonarr"
       restClient.get<List<SonarrInstanceResponse>>(url = url)
+    }
+  }
+
+  override suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetailsResponse> {
+    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+      MissingJellyseerrHostAddressException(),
+    )
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/service/radarr/$id"
+      restClient.get<RadarrInstanceDetailsResponse>(url = url)
+    }
+  }
+
+  override suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetailsResponse> {
+    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+      MissingJellyseerrHostAddressException(),
+    )
+
+    return runCatching {
+      val url = "$hostAddress/api/v1/service/sonarr/$id"
+      restClient.get<SonarrInstanceDetailsResponse>(url = url)
     }
   }
 }

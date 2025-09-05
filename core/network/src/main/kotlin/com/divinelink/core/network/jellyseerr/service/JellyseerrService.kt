@@ -6,8 +6,10 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.RadarrInstanceResponse
-import com.divinelink.core.network.jellyseerr.model.radarr.SonarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -40,4 +42,8 @@ interface JellyseerrService {
   suspend fun getRadarrInstances(): Result<List<RadarrInstanceResponse>>
 
   suspend fun getSonarrInstances(): Result<List<SonarrInstanceResponse>>
+
+  suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetailsResponse>
+
+  suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetailsResponse>
 }
