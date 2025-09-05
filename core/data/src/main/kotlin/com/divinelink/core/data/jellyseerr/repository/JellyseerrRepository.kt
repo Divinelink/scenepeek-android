@@ -4,6 +4,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.jellyseerr.radarr.RadarrInstance
+import com.divinelink.core.model.jellyseerr.radarr.SonarrInstance
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -41,4 +43,8 @@ interface JellyseerrRepository {
   suspend fun getMovieDetails(mediaId: Int): Flow<JellyseerrMediaInfo?>
 
   suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?>
+
+  suspend fun getRadarrInstances(): Result<List<RadarrInstance>>
+
+  suspend fun getSonarrInstances(): Result<List<SonarrInstance>>
 }

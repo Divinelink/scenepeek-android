@@ -1,6 +1,7 @@
 package com.divinelink.core.data.jellyseerr
 
 import app.cash.turbine.test
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.database.Database
@@ -10,9 +11,12 @@ import com.divinelink.core.fixtures.core.network.jellyseerr.model.movie.MovieInf
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
+import com.divinelink.core.fixtures.model.jellyseerr.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
+import com.divinelink.core.fixtures.model.jellyseerr.sonarr.SonarrInstanceFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
@@ -28,8 +32,12 @@ import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.radarr.RadarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.sonarr.SonarrInstanceResponseFactory
 import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -420,6 +428,46 @@ class ProdJellyseerrRepositoryTest {
     ).test {
       assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
       assertThat(awaitItem()).isEqualTo(Resource.Success(null))
+    }
+  }
+
+  @Test
+  fun `test get radarr instances with success`() = runTest {
+    remote.mockGetRadarrInstances(
+      Result.success(RadarrInstanceResponseFactory.all),
+    )
+
+    repository.getRadarrInstances().data shouldBe RadarrInstanceFactory.all
+  }
+
+  @Test
+  fun `test get sonarr instances with success`() = runTest {
+    remote.mockGetSonarrInstances(
+      Result.success(SonarrInstanceResponseFactory.all),
+    )
+
+    repository.getSonarrInstances().data shouldBe SonarrInstanceFactory.all
+  }
+
+  @Test
+  fun `test get radarr instances with failure`() = runTest {
+    remote.mockGetRadarrInstances(
+      Result.failure(Exception()),
+    )
+
+    shouldThrow<Exception> {
+      repository.getRadarrInstances().data
+    }
+  }
+
+  @Test
+  fun `test get sonarr instances with failure`() = runTest {
+    remote.mockGetSonarrInstances(
+      Result.failure(AppException.Unknown()),
+    )
+
+    shouldThrow<AppException.Unknown> {
+      repository.getSonarrInstances().data
     }
   }
 }

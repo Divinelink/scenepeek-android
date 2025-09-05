@@ -4,6 +4,8 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.radarr.RadarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.radarr.SonarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.flowOf
@@ -78,5 +80,13 @@ class TestJellyseerrService {
 
   suspend fun mockGetRequestDetails(response: Result<MediaInfoRequestResponse>) {
     whenever(mock.getRequestDetails(any())).thenReturn(flowOf(response))
+  }
+
+  suspend fun mockGetRadarrInstances(response: Result<List<RadarrInstanceResponse>>) {
+    whenever(mock.getRadarrInstances()).thenReturn(response)
+  }
+
+  suspend fun mockGetSonarrInstances(response: Result<List<SonarrInstanceResponse>>) {
+    whenever(mock.getSonarrInstances()).thenReturn(response)
   }
 }

@@ -102,12 +102,11 @@ fun ktorClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
   }
 }
 
-@OptIn(InternalSerializationApi::class)
 suspend inline fun <reified T : Any> HttpClient.get(url: String): T {
   try {
     val json = this.get(url).bodyAsText()
 
-    return localJson.decodeFromString(T::class.serializer(), json)
+    return localJson.decodeFromString<T>(json)
   } catch (e: Exception) {
     Timber.e("${e.message}")
     throw e
