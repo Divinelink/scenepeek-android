@@ -56,6 +56,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.getString
 
@@ -236,7 +237,7 @@ private fun AdvancedSection(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
   ) {
     Text(
-      text = stringResource(R.string.core_ui_advanced),
+      text = stringResource(UiString.core_ui_advanced),
       style = MaterialTheme.typography.headlineSmall,
     )
 

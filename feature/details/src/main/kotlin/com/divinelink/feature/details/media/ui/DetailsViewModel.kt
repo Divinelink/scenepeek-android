@@ -537,7 +537,7 @@ class DetailsViewModel(
                 ),
                 actionButtons = findTvActions(
                   tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
-                  updatedForms.second,
+                  seasons = updatedForms.second,
                 ),
               )
             }

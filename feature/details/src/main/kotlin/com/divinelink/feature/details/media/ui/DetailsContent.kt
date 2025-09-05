@@ -77,7 +77,7 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
+import com.divinelink.feature.request.media.RequestSeasonsModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs

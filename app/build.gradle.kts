@@ -106,6 +106,7 @@ dependencies {
   implementation(projects.feature.userData)
   implementation(projects.feature.lists)
   implementation(projects.feature.webview)
+  implementation(projects.feature.requestMedia)
 
   // Firebase
   implementation(platform(libs.firebase.bom))

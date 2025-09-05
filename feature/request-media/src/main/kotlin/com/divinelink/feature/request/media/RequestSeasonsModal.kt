@@ -1,6 +1,8 @@
-package com.divinelink.core.ui.components.modal.jellyseerr.request
-
+package com.divinelink.feature.request.media
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,46 +14,66 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
+import com.divinelink.core.model.jellyseerr.radarr.SonarrInstance
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestSeasonsModal(
   seasons: List<Season>,
+  viewModel: RequestSeasonsViewModel = koinViewModel(),
   onRequestClick: (List<Int>) -> Unit,
   onDismissRequest: () -> Unit,
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(seasons) {
+    viewModel.updateSeasons(seasons)
+  }
 
   ModalBottomSheet(
     modifier = Modifier.testTag(TestTags.Modal.REQUEST_SEASONS),
@@ -60,9 +82,10 @@ fun RequestSeasonsModal(
     sheetState = sheetState,
     content = {
       RequestSeasonsContent(
-        seasons = seasons,
+        state = uiState,
         onDismissRequest = onDismissRequest,
         onRequestClick = onRequestClick,
+        onUpdateInstance = viewModel::selectInstance,
       )
     },
   )
@@ -70,12 +93,13 @@ fun RequestSeasonsModal(
 
 @Composable
 private fun RequestSeasonsContent(
-  seasons: List<Season>,
+  state: RequestSeasonsUiState,
   onDismissRequest: () -> Unit,
   onRequestClick: (List<Int>) -> Unit,
+  onUpdateInstance: (SonarrInstance) -> Unit,
 ) {
   val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = seasons.filterNot { it.seasonNumber == 0 }
+  val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
 
   Box {
     LazyColumn(
@@ -206,6 +230,22 @@ private fun RequestSeasonsContent(
 
         HorizontalDivider()
       }
+
+      item {
+        Text(
+          modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+          text = stringResource(UiString.core_ui_advanced),
+          style = MaterialTheme.typography.headlineSmall,
+        )
+      }
+
+      item {
+        DestinationServerDropDownMenu(
+          options = state.instances,
+          currentInstance = state.selectedInstance,
+          onUpdate = onUpdateInstance,
+        )
+      }
     }
 
     Column(
@@ -259,11 +299,11 @@ private fun RequestSeasonsContent(
 private fun SelectSeasonsDialogPreview() {
   AppTheme {
     Surface {
-      RequestSeasonsModal(
-        seasons = SeasonFactory.allWithStatus(),
-        onRequestClick = {},
-        onDismissRequest = {},
-      )
+//      RequestSeasonsModal(
+// //        seasons = SeasonFactory.allWithStatus(),
+//        onRequestClick = {},
+//        onDismissRequest = {},
+//      )
     }
   }
 }
@@ -273,11 +313,84 @@ private fun SelectSeasonsDialogPreview() {
 fun RequestSeasonsContentPreview() {
   AppTheme {
     Surface {
-      RequestSeasonsContent(
-        seasons = SeasonFactory.allWithStatus(),
-        onRequestClick = {},
-        onDismissRequest = {},
-      )
+//      RequestSeasonsContent(
+//        seasons = SeasonFactory.allWithStatus(),
+//        onRequestClick = {},
+//        onDismissRequest = {},
+//      )
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DestinationServerDropDownMenu(
+  options: List<SonarrInstance>,
+  currentInstance: CurrentSonarrInstanceState,
+  onUpdate: (SonarrInstance) -> Unit,
+) {
+  var expanded by remember { mutableStateOf(false) }
+
+  val rotationState by animateFloatAsState(
+    targetValue = if (expanded) 180f else 0f,
+    animationSpec = tween(durationMillis = 300),
+    label = "IconRotationAnimation",
+  )
+
+  ExposedDropdownMenuBox(
+    expanded = expanded,
+    onExpandedChange = { expanded = !expanded },
+  ) {
+    Crossfade(currentInstance) { state ->
+      when (state) {
+        is CurrentSonarrInstanceState.Data -> OutlinedTextField(
+          modifier = Modifier
+            .fillMaxWidth()
+            .menuAnchor(MenuAnchorType.PrimaryEditable),
+          readOnly = true,
+          value = state.instance.name,
+          onValueChange = {},
+          label = { Text("Destination server") },
+          trailingIcon = {
+            Icon(
+              modifier = Modifier.rotate(rotationState),
+              imageVector = Icons.Filled.ArrowDropUp,
+              contentDescription = if (expanded) "Collapse" else "Expand",
+            )
+          },
+        )
+        CurrentSonarrInstanceState.Error -> {
+          // Do nothing
+        }
+        CurrentSonarrInstanceState.Loading -> OutlinedTextField(
+          modifier = Modifier
+            .fillMaxWidth()
+            .menuAnchor(MenuAnchorType.PrimaryEditable),
+          readOnly = true,
+          enabled = false,
+          value = "Loading...",
+          onValueChange = {},
+          label = { Text("Destination server") },
+        )
+      }
+    }
+
+    // Dropdown menu
+    ExposedDropdownMenu(
+      expanded = expanded,
+      onDismissRequest = { expanded = false },
+    ) {
+      options.forEach { selectionOption ->
+        // Menu items
+        DropdownMenuItem(
+          text = { Text(selectionOption.name) },
+          onClick = {
+            onUpdate(selectionOption)
+            expanded = false
+          },
+          contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+        )
+      }
     }
   }
 }
