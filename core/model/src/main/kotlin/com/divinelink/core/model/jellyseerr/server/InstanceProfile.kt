@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class InstanceProfile(
   val id: Int,
   val name: String,
+  val isDefault: Boolean,
 )

@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="feature_request_media_destination_server">Destination server</string>
+  <string name="feature_request_media_root_folder">Root folder</string>
+  <string name="feature_request_media_quality_profile">Quality profile</string>
+  <string name="feature_request_media_default">Default</string>
 </resources>

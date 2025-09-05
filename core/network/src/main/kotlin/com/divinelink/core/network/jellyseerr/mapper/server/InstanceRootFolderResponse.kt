@@ -4,8 +4,9 @@ import com.divinelink.core.commons.extensions.bytesToHumanReadable
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.network.jellyseerr.model.server.InstanceRootFolderResponse
 
-fun InstanceRootFolderResponse.map() = InstanceRootFolder(
+fun InstanceRootFolderResponse.map(isDefault: Boolean) = InstanceRootFolder(
   id = id,
   freeSpace = freeSpace.bytesToHumanReadable(),
   path = path,
+  isDefault = isDefault,
 )

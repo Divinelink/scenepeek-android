@@ -1,6 +1,7 @@
 package com.divinelink.feature.request.media
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,7 +23,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -52,10 +53,12 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
-import com.divinelink.core.model.jellyseerr.radarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.InstanceProfile
+import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
+import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import org.koin.androidx.compose.koinViewModel
@@ -86,6 +89,8 @@ fun RequestSeasonsModal(
         onDismissRequest = onDismissRequest,
         onRequestClick = onRequestClick,
         onUpdateInstance = viewModel::selectInstance,
+        onUpdateRootFolder = viewModel::selectRootFolder,
+        onUpdateQualityProfile = viewModel::selectQualityProfile,
       )
     },
   )
@@ -97,6 +102,8 @@ private fun RequestSeasonsContent(
   onDismissRequest: () -> Unit,
   onRequestClick: (List<Int>) -> Unit,
   onUpdateInstance: (SonarrInstance) -> Unit,
+  onUpdateQualityProfile: (InstanceProfile) -> Unit,
+  onUpdateRootFolder: (InstanceRootFolder) -> Unit,
 ) {
   val selectedSeasons = remember { mutableStateListOf<Int>() }
   val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
@@ -110,7 +117,7 @@ private fun RequestSeasonsContent(
       item {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-          text = stringResource(id = R.string.core_ui_request_series),
+          text = stringResource(id = UiString.core_ui_request_series),
           style = MaterialTheme.typography.headlineSmall,
         )
       }
@@ -145,21 +152,21 @@ private fun RequestSeasonsContent(
           )
 
           Text(
-            text = stringResource(R.string.core_ui_season),
+            text = stringResource(UiString.core_ui_season),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
           )
 
           Text(
-            text = stringResource(R.string.core_ui_episodes),
+            text = stringResource(UiString.core_ui_episodes),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
           )
 
           Text(
-            text = stringResource(R.string.core_ui_status),
+            text = stringResource(UiString.core_ui_status),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
@@ -203,7 +210,7 @@ private fun RequestSeasonsContent(
           )
 
           Text(
-            text = stringResource(id = R.string.core_ui_season_number, item.seasonNumber),
+            text = stringResource(id = UiString.core_ui_season_number, item.seasonNumber),
             overflow = TextOverflow.MiddleEllipsis,
             maxLines = 1,
             modifier = Modifier
@@ -240,10 +247,40 @@ private fun RequestSeasonsContent(
       }
 
       item {
-        DestinationServerDropDownMenu(
-          options = state.instances,
-          currentInstance = state.selectedInstance,
-          onUpdate = onUpdateInstance,
+        AnimatedVisibility(state.instances.size > 1) {
+          DestinationServerDropDownMenu(
+            modifier = Modifier.padding(
+              horizontal = MaterialTheme.dimensions.keyline_16,
+              vertical = MaterialTheme.dimensions.keyline_4,
+            ),
+            options = state.instances,
+            currentInstance = state.selectedInstance,
+            onUpdate = onUpdateInstance,
+          )
+        }
+      }
+
+      item {
+        QualityProfileDropDownMenu(
+          modifier = Modifier.padding(
+            horizontal = MaterialTheme.dimensions.keyline_16,
+            vertical = MaterialTheme.dimensions.keyline_4,
+          ),
+          options = state.profiles,
+          currentInstance = state.selectedProfile,
+          onUpdate = onUpdateQualityProfile,
+        )
+      }
+
+      item {
+        RootFolderDropDownMenu(
+          modifier = Modifier.padding(
+            horizontal = MaterialTheme.dimensions.keyline_16,
+            vertical = MaterialTheme.dimensions.keyline_4,
+          ),
+          options = state.rootFolders,
+          currentInstance = state.selectedRootFolder,
+          onUpdate = onUpdateRootFolder,
         )
       }
     }
@@ -257,7 +294,7 @@ private fun RequestSeasonsContent(
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
         onClick = { onDismissRequest() },
       ) {
-        Text(text = stringResource(id = R.string.core_ui_cancel))
+        Text(text = stringResource(id = UiString.core_ui_cancel))
       }
       Button(
         modifier = Modifier
@@ -271,10 +308,10 @@ private fun RequestSeasonsContent(
         },
       ) {
         val text = if (selectedSeasons.isEmpty()) {
-          stringResource(id = R.string.core_ui_select_seasons_button)
+          stringResource(id = UiString.core_ui_select_seasons_button)
         } else {
           pluralStringResource(
-            id = R.plurals.core_ui_request_series_button,
+            id = UiPlurals.core_ui_request_series_button,
             count = selectedSeasons.size,
             selectedSeasons.size,
           )
@@ -325,8 +362,9 @@ fun RequestSeasonsContentPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DestinationServerDropDownMenu(
+  modifier: Modifier = Modifier,
   options: List<SonarrInstance>,
-  currentInstance: CurrentSonarrInstanceState,
+  currentInstance: LCEState<SonarrInstance>,
   onUpdate: (SonarrInstance) -> Unit,
 ) {
   var expanded by remember { mutableStateOf(false) }
@@ -338,57 +376,262 @@ fun DestinationServerDropDownMenu(
   )
 
   ExposedDropdownMenuBox(
+    modifier = modifier.animateContentSize(),
     expanded = expanded,
     onExpandedChange = { expanded = !expanded },
   ) {
     Crossfade(currentInstance) { state ->
       when (state) {
-        is CurrentSonarrInstanceState.Data -> OutlinedTextField(
+        is LCEState.Content -> OutlinedTextField(
           modifier = Modifier
             .fillMaxWidth()
             .menuAnchor(MenuAnchorType.PrimaryEditable),
           readOnly = true,
-          value = state.instance.name,
+          value = state.data.name,
           onValueChange = {},
-          label = { Text("Destination server") },
+          label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
           trailingIcon = {
             Icon(
               modifier = Modifier.rotate(rotationState),
               imageVector = Icons.Filled.ArrowDropUp,
-              contentDescription = if (expanded) "Collapse" else "Expand",
+              contentDescription = if (expanded) {
+                stringResource(UiString.core_ui_collapse)
+              } else {
+                stringResource(UiString.core_ui_expand)
+              },
             )
           },
         )
-        CurrentSonarrInstanceState.Error -> {
+        LCEState.Error -> {
           // Do nothing
         }
-        CurrentSonarrInstanceState.Loading -> OutlinedTextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .menuAnchor(MenuAnchorType.PrimaryEditable),
+        LCEState.Loading -> OutlinedTextField(
+          modifier = Modifier.fillMaxWidth(),
           readOnly = true,
           enabled = false,
-          value = "Loading...",
+          value = stringResource(UiString.core_ui_loading),
           onValueChange = {},
-          label = { Text("Destination server") },
+          label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
         )
       }
     }
 
-    // Dropdown menu
     ExposedDropdownMenu(
       expanded = expanded,
       onDismissRequest = { expanded = false },
     ) {
       options.forEach { selectionOption ->
-        // Menu items
         DropdownMenuItem(
-          text = { Text(selectionOption.name) },
+          text = {
+            Text(
+              text = selectionOption.name,
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          },
           onClick = {
             onUpdate(selectionOption)
             expanded = false
           },
-          contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+          contentPadding = PaddingValues(
+            horizontal = MaterialTheme.dimensions.keyline_16,
+            vertical = MaterialTheme.dimensions.keyline_4,
+          ),
+        )
+      }
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun QualityProfileDropDownMenu(
+  modifier: Modifier = Modifier,
+  options: List<InstanceProfile>,
+  currentInstance: LCEState<InstanceProfile>,
+  onUpdate: (InstanceProfile) -> Unit,
+) {
+  var expanded by remember { mutableStateOf(false) }
+
+  val rotationState by animateFloatAsState(
+    targetValue = if (expanded) 180f else 0f,
+    animationSpec = tween(durationMillis = 300),
+    label = "IconRotationAnimation",
+  )
+
+  ExposedDropdownMenuBox(
+    modifier = modifier.animateContentSize(),
+    expanded = expanded,
+    onExpandedChange = { expanded = !expanded },
+  ) {
+    Crossfade(currentInstance) { state ->
+      when (state) {
+        is LCEState.Content -> OutlinedTextField(
+          modifier = Modifier
+            .fillMaxWidth()
+            .menuAnchor(MenuAnchorType.PrimaryEditable),
+          readOnly = true,
+          value = buildString {
+            append(state.data.name)
+            if (state.data.isDefault) {
+              append(
+                " (${stringResource(R.string.feature_request_media_default)})",
+              )
+            }
+          },
+          onValueChange = {},
+          label = { Text(stringResource(R.string.feature_request_media_quality_profile)) },
+          trailingIcon = {
+            Icon(
+              modifier = Modifier.rotate(rotationState),
+              imageVector = Icons.Filled.ArrowDropUp,
+              contentDescription = if (expanded) {
+                stringResource(UiString.core_ui_collapse)
+              } else {
+                stringResource(UiString.core_ui_expand)
+              },
+            )
+          },
+        )
+        LCEState.Error -> {
+          // Do nothing
+        }
+        LCEState.Loading -> OutlinedTextField(
+          modifier = Modifier.fillMaxWidth(),
+          readOnly = true,
+          enabled = false,
+          value = stringResource(UiString.core_ui_loading),
+          onValueChange = {},
+          label = { Text(stringResource(R.string.feature_request_media_quality_profile)) },
+        )
+      }
+    }
+
+    ExposedDropdownMenu(
+      expanded = expanded,
+      onDismissRequest = { expanded = false },
+    ) {
+      options.forEach { selectionOption ->
+        DropdownMenuItem(
+          text = {
+            Text(
+              text = buildString {
+                append(selectionOption.name)
+                if (selectionOption.isDefault) {
+                  append(
+                    " (${stringResource(R.string.feature_request_media_default)})",
+                  )
+                }
+              },
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          },
+          onClick = {
+            onUpdate(selectionOption)
+            expanded = false
+          },
+          contentPadding = PaddingValues(
+            horizontal = MaterialTheme.dimensions.keyline_16,
+            vertical = MaterialTheme.dimensions.keyline_4,
+          ),
+        )
+      }
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RootFolderDropDownMenu(
+  modifier: Modifier = Modifier,
+  options: List<InstanceRootFolder>,
+  currentInstance: LCEState<InstanceRootFolder>,
+  onUpdate: (InstanceRootFolder) -> Unit,
+) {
+  var expanded by remember { mutableStateOf(false) }
+
+  val rotationState by animateFloatAsState(
+    targetValue = if (expanded) 180f else 0f,
+    animationSpec = tween(durationMillis = 300),
+    label = "IconRotationAnimation",
+  )
+
+  ExposedDropdownMenuBox(
+    modifier = modifier.animateContentSize(),
+    expanded = expanded,
+    onExpandedChange = { expanded = !expanded },
+  ) {
+    Crossfade(currentInstance) { state ->
+      when (state) {
+        is LCEState.Content -> OutlinedTextField(
+          modifier = Modifier
+            .fillMaxWidth()
+            .menuAnchor(MenuAnchorType.PrimaryEditable),
+          readOnly = true,
+          value = buildString {
+            append(state.data.path)
+            append(" (${state.data.freeSpace})")
+            if (state.data.isDefault) {
+              append(
+                " (${stringResource(R.string.feature_request_media_default)})",
+              )
+            }
+          },
+          onValueChange = {},
+          label = { Text(stringResource(R.string.feature_request_media_root_folder)) },
+          trailingIcon = {
+            Icon(
+              modifier = Modifier.rotate(rotationState),
+              imageVector = Icons.Filled.ArrowDropUp,
+              contentDescription = if (expanded) {
+                stringResource(UiString.core_ui_collapse)
+              } else {
+                stringResource(UiString.core_ui_expand)
+              },
+            )
+          },
+        )
+        LCEState.Error -> {
+          // Do nothing
+        }
+        LCEState.Loading -> OutlinedTextField(
+          modifier = Modifier.fillMaxWidth(),
+          readOnly = true,
+          enabled = false,
+          value = stringResource(UiString.core_ui_loading),
+          onValueChange = {},
+          label = { Text(stringResource(R.string.feature_request_media_root_folder)) },
+        )
+      }
+    }
+
+    ExposedDropdownMenu(
+      expanded = expanded,
+      onDismissRequest = { expanded = false },
+    ) {
+      options.forEach { selectionOption ->
+        DropdownMenuItem(
+          text = {
+            Text(
+              text = buildString {
+                append(selectionOption.path)
+                append(" (${selectionOption.freeSpace})")
+                if (selectionOption.isDefault) {
+                  append(
+                    " (${stringResource(R.string.feature_request_media_default)})",
+                  )
+                }
+              },
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          },
+          onClick = {
+            onUpdate(selectionOption)
+            expanded = false
+          },
+          contentPadding = PaddingValues(
+            horizontal = MaterialTheme.dimensions.keyline_16,
+            vertical = MaterialTheme.dimensions.keyline_4,
+          ),
         )
       }
     }

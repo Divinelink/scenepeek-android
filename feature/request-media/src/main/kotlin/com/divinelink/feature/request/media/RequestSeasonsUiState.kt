@@ -1,26 +1,38 @@
 package com.divinelink.feature.request.media
 
 import com.divinelink.core.model.details.Season
-import com.divinelink.core.model.jellyseerr.radarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.InstanceProfile
+import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
+import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
 
 data class RequestSeasonsUiState(
   val seasons: List<Season>,
+  val is4k: Boolean,
   val isLoading: Boolean,
   val instances: List<SonarrInstance>,
-  val selectedInstance: CurrentSonarrInstanceState,
+  val profiles: List<InstanceProfile>,
+  val rootFolders: List<InstanceRootFolder>,
+  val selectedInstance: LCEState<SonarrInstance>,
+  val selectedProfile: LCEState<InstanceProfile>,
+  val selectedRootFolder: LCEState<InstanceRootFolder>,
 ) {
   companion object {
     fun initial(seasons: List<Season>) = RequestSeasonsUiState(
       seasons = seasons,
+      is4k = false,
       isLoading = true,
       instances = emptyList(),
-      selectedInstance = CurrentSonarrInstanceState.Loading,
+      profiles = emptyList(),
+      rootFolders = emptyList(),
+      selectedInstance = LCEState.Loading,
+      selectedProfile = LCEState.Loading,
+      selectedRootFolder = LCEState.Loading,
     )
   }
 }
 
-sealed interface CurrentSonarrInstanceState {
-  data object Error : CurrentSonarrInstanceState
-  data object Loading : CurrentSonarrInstanceState
-  data class Data(val instance: SonarrInstance) : CurrentSonarrInstanceState
+sealed interface LCEState<out T> {
+  data object Error : LCEState<Nothing>
+  data object Loading : LCEState<Nothing>
+  data class Content<T>(val data: T) : LCEState<T>
 }
