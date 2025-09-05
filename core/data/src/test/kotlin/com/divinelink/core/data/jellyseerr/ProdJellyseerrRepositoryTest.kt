@@ -11,9 +11,11 @@ import com.divinelink.core.fixtures.core.network.jellyseerr.model.movie.MovieInf
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
-import com.divinelink.core.fixtures.model.jellyseerr.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
-import com.divinelink.core.fixtures.model.jellyseerr.sonarr.SonarrInstanceFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
@@ -32,8 +34,10 @@ import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
-import com.divinelink.core.testing.factories.api.jellyseerr.response.radarr.RadarrInstanceResponseFactory
-import com.divinelink.core.testing.factories.api.jellyseerr.response.sonarr.SonarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceDetailsResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceDetailsResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceResponseFactory
 import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
 import io.kotest.assertions.throwables.shouldThrow
@@ -468,6 +472,46 @@ class ProdJellyseerrRepositoryTest {
 
     shouldThrow<AppException.Unknown> {
       repository.getSonarrInstances().data
+    }
+  }
+
+  @Test
+  fun `test get radarr instance details with success`() = runTest {
+    remote.mockGetRadarrInstanceDetails(
+      Result.success(RadarrInstanceDetailsResponseFactory.default),
+    )
+
+    repository.getRadarrInstanceDetails(0).data shouldBe RadarrInstanceDetailsFactory.radarr
+  }
+
+  @Test
+  fun `test get sonarr instance details with success`() = runTest {
+    remote.mockGetSonarrInstanceDetails(
+      Result.success(SonarrInstanceDetailsResponseFactory.default),
+    )
+
+    repository.getSonarrInstanceDetails(0).data shouldBe SonarrInstanceDetailsFactory.sonarr
+  }
+
+  @Test
+  fun `test get radarr instance details with failure`() = runTest {
+    remote.mockGetRadarrInstanceDetails(
+      Result.failure(Exception()),
+    )
+
+    shouldThrow<Exception> {
+      repository.getRadarrInstanceDetails(0).data
+    }
+  }
+
+  @Test
+  fun `test get sonarr instance details with failure`() = runTest {
+    remote.mockGetSonarrInstanceDetails(
+      Result.failure(AppException.Unknown()),
+    )
+
+    shouldThrow<AppException.Unknown> {
+      repository.getSonarrInstanceDetails(0).data
     }
   }
 }

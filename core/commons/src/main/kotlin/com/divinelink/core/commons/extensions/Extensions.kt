@@ -1,5 +1,7 @@
 package com.divinelink.core.commons.extensions
 
+import kotlin.math.ln
+import kotlin.math.pow
 import kotlin.math.round
 
 @Suppress("MagicNumber")
@@ -31,4 +33,26 @@ fun Int.toShortString(): String = when {
     }
   }
   else -> this.toString()
+}
+
+/**
+ * Converts a byte count (as Long) to a human-readable string with appropriate unit suffix.
+ * Units used: B, KB, MB, GB, TB, PB, EB, ZB, YB
+ * @param decimalPlaces Number of decimal places to show (default is 2)
+ * @return Formatted string like "1.50 KB", "2.34 GB", etc.
+ */
+fun Long.bytesToHumanReadable(decimalPlaces: Int = 2): String {
+  if (this == 0L) return "0 B"
+  if (this < 0) return "-${(-this).bytesToHumanReadable(decimalPlaces)}"
+
+  val units = listOf("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+  val base = 1024.0
+
+  val unitIndex = minOf((ln(this.toDouble()) / ln(base)).toInt(), units.size - 1)
+
+  val value = this.toDouble() / (base.pow(unitIndex))
+
+  val formattedValue = String.format("%.${decimalPlaces}f", value)
+
+  return "$formattedValue ${units[unitIndex]}"
 }

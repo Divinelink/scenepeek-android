@@ -2,11 +2,17 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
-import com.divinelink.core.network.jellyseerr.model.radarr.RadarrInstanceResponse
-import com.divinelink.core.testing.factories.api.jellyseerr.response.radarr.RadarrInstanceResponseFactory
-import com.divinelink.core.testing.factories.api.jellyseerr.response.sonarr.SonarrInstanceResponseFactory
-import com.divinelink.core.testing.factories.json.jellyseerr.radarr.RadarrInstanceResponseJson
-import com.divinelink.core.testing.factories.json.jellyseerr.sonarr.SonarrInstanceResponseJson
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
+import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceDetailsResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceDetailsResponseFactory
+import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceDetailsResponseJson
+import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceResponseJson
+import com.divinelink.core.testing.factories.json.jellyseerr.server.sonarr.SonarrInstanceDetailsResponseJson
+import com.divinelink.core.testing.factories.json.jellyseerr.server.sonarr.SonarrInstanceResponseJson
 import com.divinelink.core.testing.network.TestJellyseerrClient
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
@@ -90,5 +96,75 @@ class ProdJellyseerrServiceTest {
     )
 
     service.getSonarrInstances().data shouldBe SonarrInstanceResponseFactory.all
+  }
+
+  @Test
+  fun `test getSonarrDetailsInstances with success`() = runTest {
+    restClient.withAddress("http://localhost:5055")
+
+    restClient.mockGetResponse<SonarrInstanceDetailsResponse>(
+      url = "",
+      json = SonarrInstanceDetailsResponseJson.default,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.getSonarrInstanceDetails(id = 0).data shouldBe
+      SonarrInstanceDetailsResponseFactory.default
+  }
+
+  @Test
+  fun `test getSonarrDetailsInstances without host address`() = runTest {
+    restClient.mockGetResponse<SonarrInstanceDetailsResponse>(
+      url = "",
+      json = SonarrInstanceDetailsResponseJson.default,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    val exception = shouldThrow<MissingJellyseerrHostAddressException> {
+      service.getSonarrInstanceDetails(0).data
+    }
+
+    exception shouldBe MissingJellyseerrHostAddressException()
+  }
+
+  @Test
+  fun `test getRadarrDetailsInstances with success`() = runTest {
+    restClient.withAddress("http://localhost:5055")
+
+    restClient.mockGetResponse<RadarrInstanceDetailsResponse>(
+      url = "",
+      json = RadarrInstanceDetailsResponseJson.default,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.getRadarrInstanceDetails(id = 0).data shouldBe
+      RadarrInstanceDetailsResponseFactory.default
+  }
+
+  @Test
+  fun `test getRadarrDetailsInstances without host address`() = runTest {
+    restClient.mockGetResponse<RadarrInstanceDetailsResponse>(
+      url = "",
+      json = RadarrInstanceDetailsResponseJson.default,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    val exception = shouldThrow<MissingJellyseerrHostAddressException> {
+      service.getRadarrInstanceDetails(0).data
+    }
+
+    exception shouldBe MissingJellyseerrHostAddressException()
   }
 }

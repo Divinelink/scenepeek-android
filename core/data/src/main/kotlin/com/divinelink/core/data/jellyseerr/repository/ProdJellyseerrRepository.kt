@@ -11,14 +11,16 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.jellyseerr.radarr.RadarrInstance
-import com.divinelink.core.model.jellyseerr.radarr.SonarrInstance
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
+import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstance
+import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstanceDetails
+import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstanceDetails
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
-import com.divinelink.core.network.jellyseerr.mapper.radarr.map
-import com.divinelink.core.network.jellyseerr.mapper.sonarr.map
+import com.divinelink.core.network.jellyseerr.mapper.server.radarr.map
+import com.divinelink.core.network.jellyseerr.mapper.server.sonarr.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
@@ -124,5 +126,13 @@ class ProdJellyseerrRepository(
 
   override suspend fun getSonarrInstances(): Result<List<SonarrInstance>> = service
     .getSonarrInstances()
+    .map { it.map() }
+
+  override suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetails> = service
+    .getRadarrInstanceDetails(id)
+    .map { it.map() }
+
+  override suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetails> = service
+    .getSonarrInstanceDetails(id)
     .map { it.map() }
 }
