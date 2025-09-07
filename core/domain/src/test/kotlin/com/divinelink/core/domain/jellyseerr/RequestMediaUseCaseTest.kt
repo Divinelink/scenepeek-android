@@ -43,6 +43,9 @@ class RequestMediaUseCaseTest {
       mediaId = 123,
       is4k = false,
       seasons = emptyList(),
+      serverId = null,
+      profileId = null,
+      rootFolder = null,
     )
 
     useCase.invoke(params).collect {
@@ -72,6 +75,9 @@ class RequestMediaUseCaseTest {
       mediaId = 123,
       is4k = false,
       seasons = emptyList(),
+      serverId = null,
+      profileId = null,
+      rootFolder = null,
     )
 
     useCase.invoke(params).collect {
@@ -100,6 +106,9 @@ class RequestMediaUseCaseTest {
       mediaId = 123,
       is4k = false,
       seasons = emptyList(),
+      serverId = null,
+      profileId = null,
+      rootFolder = null,
     )
 
     val response = JellyseerrMediaRequestResponseFactory.tvPartially().copy(
@@ -137,6 +146,9 @@ class RequestMediaUseCaseTest {
       mediaId = 123,
       is4k = false,
       seasons = emptyList(),
+      serverId = null,
+      profileId = null,
+      rootFolder = null,
     )
 
     useCase.invoke(params).collect {
@@ -164,6 +176,9 @@ class RequestMediaUseCaseTest {
       mediaId = 123,
       is4k = false,
       seasons = emptyList(),
+      serverId = null,
+      profileId = null,
+      rootFolder = null,
     )
 
     useCase.invoke(params).collect {

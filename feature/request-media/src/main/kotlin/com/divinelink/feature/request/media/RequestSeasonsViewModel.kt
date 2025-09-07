@@ -55,16 +55,30 @@ class RequestSeasonsViewModel(
               instances = instances.filter { it.is4k == uiState.is4k },
             )
           }
-          if (default == null) {
+          if (instances.isEmpty()) {
             _uiState.update { uiState ->
-              uiState.copy(selectedInstance = LCEState.Error)
+              uiState.copy(
+                selectedInstance = LCEState.Error,
+                selectedProfile = LCEState.Error,
+                selectedRootFolder = LCEState.Error,
+              )
             }
           } else {
-            selectInstance(default)
+            if (default == null) {
+              selectInstance(instances.first())
+            } else {
+              selectInstance(default)
+            }
           }
         },
         onFailure = {
-          // Handle error
+          _uiState.update { uiState ->
+            uiState.copy(
+              selectedInstance = LCEState.Error,
+              selectedProfile = LCEState.Error,
+              selectedRootFolder = LCEState.Error,
+            )
+          }
         },
       )
     }
@@ -76,7 +90,7 @@ class RequestSeasonsViewModel(
     }
   }
 
-  fun selectInstance(instance: SonarrInstance) {
+  private fun selectInstance(instance: SonarrInstance) {
     if (instance == (uiState.value.selectedInstance as? LCEState.Content)?.data) return
 
     _uiState.update { uiState ->
@@ -112,25 +126,32 @@ class RequestSeasonsViewModel(
           }
         },
         onFailure = {
-          // Handle error
+          _uiState.update { uiState ->
+            uiState.copy(
+              profiles = emptyList(),
+              rootFolders = emptyList(),
+              selectedProfile = LCEState.Error,
+              selectedRootFolder = LCEState.Error,
+            )
+          }
         },
       )
     }
   }
 
-  fun selectQualityProfile(quality: InstanceProfile) {
+  private fun selectQualityProfile(quality: InstanceProfile) {
     _uiState.update { uiState ->
       uiState.copy(selectedProfile = LCEState.Content(quality))
     }
   }
 
-  fun selectRootFolder(folder: InstanceRootFolder) {
+  private fun selectRootFolder(folder: InstanceRootFolder) {
     _uiState.update { uiState ->
       uiState.copy(selectedRootFolder = LCEState.Content(folder))
     }
   }
 
-  fun onRequestMedia(seasons: List<Int>) {
+  private fun onRequestMedia(seasons: List<Int>) {
     requestMediaUseCase(
       JellyseerrRequestParams(
         mediaId = uiState.value.media.id,
@@ -202,15 +223,26 @@ class RequestSeasonsViewModel(
       }.launchIn(viewModelScope)
   }
 
-  fun dismissSnackbar() {
+  private fun dismissSnackbar() {
     _uiState.update { uiState ->
       uiState.copy(snackbarMessage = null)
     }
   }
 
-  fun dismissDialog() {
+  private fun dismissDialog() {
     _uiState.update { uiState ->
       uiState.copy(dialogState = null)
+    }
+  }
+
+  fun onAction(action: RequestSeasonAction) {
+    when (action) {
+      RequestSeasonAction.DismissSnackbar -> dismissSnackbar()
+      RequestSeasonAction.DismissDialog -> dismissDialog()
+      is RequestSeasonAction.RequestMedia -> onRequestMedia(action.seasons)
+      is RequestSeasonAction.SelectInstance -> selectInstance(action.instance)
+      is RequestSeasonAction.SelectQualityProfile -> selectQualityProfile(action.quality)
+      is RequestSeasonAction.SelectRootFolder -> selectRootFolder(action.folder)
     }
   }
 

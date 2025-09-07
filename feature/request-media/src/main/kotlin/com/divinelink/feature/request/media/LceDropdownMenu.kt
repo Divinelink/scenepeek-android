@@ -7,7 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -23,8 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,7 +67,7 @@ fun <T> LceDropdownMenu(
           trailingIcon = {
             Icon(
               modifier = Modifier.rotate(rotationState),
-              imageVector = Icons.Filled.ArrowDropUp,
+              imageVector = Icons.Filled.ArrowDropDown,
               contentDescription = if (expanded) {
                 stringResource(UiString.core_ui_collapse)
               } else {
@@ -80,7 +82,13 @@ fun <T> LceDropdownMenu(
         }
 
         LCEState.Loading -> OutlinedTextField(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier
+            .fillMaxWidth()
+            .testTag(
+              TestTags.Request.LOADING_DROPDOWN_MENU.format(
+                currentInstance.toString(),
+              ),
+            ),
           readOnly = true,
           enabled = false,
           value = stringResource(UiString.core_ui_loading),

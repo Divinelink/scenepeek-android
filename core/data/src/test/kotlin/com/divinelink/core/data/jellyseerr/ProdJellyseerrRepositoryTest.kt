@@ -450,7 +450,10 @@ class ProdJellyseerrRepositoryTest {
       Result.success(SonarrInstanceResponseFactory.all),
     )
 
-    repository.getSonarrInstances().data shouldBe SonarrInstanceFactory.all
+    repository.getSonarrInstances().data shouldBe listOf(
+      SonarrInstanceFactory.sonarr,
+      SonarrInstanceFactory.sonarr4K,
+    )
   }
 
   @Test

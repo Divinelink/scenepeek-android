@@ -8,14 +8,12 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
-import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.storage.FakePreferenceStorage
-import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
@@ -49,7 +47,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
   private val fakeSubmitRatingUseCase = FakeSubmitRatingUseCase()
   private val fakeDeleteRatingUseCase = FakeDeleteRatingUseCase()
   private val fakeAddToWatchListUseCase = FakeAddToWatchlistUseCase()
-  private val fakeRequestMediaUseCase = FakeRequestMediaUseCase()
   private val testFetchAllRatingsUseCase = TestFetchAllRatingsUseCase()
   private val testDeleteRequestUseCase = TestDeleteRequestUseCase()
   private val testDeleteMediaUseCase = TestDeleteMediaUseCase()
@@ -65,7 +62,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       submitRatingUseCase = fakeSubmitRatingUseCase.mock,
       deleteRatingUseCase = fakeDeleteRatingUseCase.mock,
       addToWatchlistUseCase = fakeAddToWatchListUseCase.mock,
-      requestMediaUseCase = fakeRequestMediaUseCase.mock,
       spoilersObfuscationUseCase = spoilersObfuscationUseCase,
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
@@ -84,18 +80,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun assertViewState(expectedViewState: DetailsViewState) = apply {
     assertThat(viewModel.viewState.value).isEqualTo(expectedViewState)
-  }
-
-  suspend fun expectJellyseerrAuthEmission() = apply {
-    viewModel.navigateToJellyseerrAuth.test {
-      awaitItem()
-    }
-  }
-
-  suspend fun expectNoJellyseerrAuthEmission() = apply {
-    viewModel.navigateToJellyseerrAuth.test {
-      expectNoEvents()
-    }
   }
 
   fun assertOpenUrlTab(validate: suspend TurbineTestContext<String>.() -> Unit) = apply {
@@ -118,10 +102,6 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     )
   }
 
-  fun mockRequestMedia(response: Flow<Result<MediaRequestResult>>) = apply {
-    fakeRequestMediaUseCase.mockSuccess(response = response)
-  }
-
   fun onSubmitRate(rating: Int) = apply {
     viewModel.onSubmitRate(rating)
   }
@@ -138,16 +118,12 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     viewModel.navigateToLogin(snackbarResult)
   }
 
-  fun onNavigateToJellyseerrLogin(snackbarResult: SnackbarResult) = apply {
-    viewModel.navigateToJellyseerrAuth(snackbarResult)
-  }
-
   fun onMarkAsFavorite() = apply {
     viewModel.onMarkAsFavorite()
   }
 
-  fun onRequestMedia(seasons: List<Int>) = apply {
-    viewModel.onRequestMedia(seasons)
+  fun onUpdateMediaInfo(mediaInfo: JellyseerrMediaInfo) = apply {
+    viewModel.onUpdateMediaInfo(mediaInfo)
   }
 
   fun onFetchAllRatings() = apply {

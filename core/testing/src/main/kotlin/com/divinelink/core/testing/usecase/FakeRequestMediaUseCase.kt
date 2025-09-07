@@ -1,5 +1,6 @@
 package com.divinelink.core.testing.usecase
 
+import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import kotlinx.coroutines.flow.Flow
@@ -22,5 +23,12 @@ class FakeRequestMediaUseCase {
     ).thenReturn(
       flowOf(Result.failure(throwable)),
     )
+  }
+
+  fun mockSuccess(
+    parameters: JellyseerrRequestParams,
+    response: Result<MediaRequestResult>,
+  ) {
+    whenever(mock.invoke(parameters)).thenReturn(flowOf(response))
   }
 }
