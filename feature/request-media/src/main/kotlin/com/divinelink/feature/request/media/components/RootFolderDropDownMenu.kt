@@ -12,6 +12,7 @@ import com.divinelink.feature.request.media.R
 @Composable
 fun RootFolderDropDownMenu(
   modifier: Modifier = Modifier,
+  enabled: Boolean,
   options: List<InstanceRootFolder>,
   currentInstance: LCEState<InstanceRootFolder>,
   onUpdate: (InstanceRootFolder) -> Unit,
@@ -19,6 +20,7 @@ fun RootFolderDropDownMenu(
   LceDropdownMenu(
     modifier = modifier,
     options = options,
+    enabled = enabled,
     currentInstance = currentInstance,
     label = { Text(stringResource(R.string.feature_request_media_root_folder)) },
     displayText = { folder ->

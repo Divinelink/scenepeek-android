@@ -18,6 +18,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
@@ -41,32 +42,66 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
+import com.divinelink.core.ui.components.dialog.TwoButtonDialog
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.request.media.components.DestinationServerDropDownMenu
 import com.divinelink.feature.request.media.components.QualityProfileDropDownMenu
 import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestSeasonsModal(
   seasons: List<Season>,
-  viewModel: RequestSeasonsViewModel = koinViewModel(),
-  onRequestClick: (List<Int>) -> Unit,
+  media: MediaItem.Media,
+  viewModel: RequestSeasonsViewModel = koinViewModel {
+    parametersOf(media)
+  },
   onDismissRequest: () -> Unit,
+  onNavigate: (Navigation) -> Unit,
+  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
   LaunchedEffect(seasons) {
     viewModel.updateSeasons(seasons)
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.updatedMediaInfo.collect {
+      onUpdateMediaInfo(it)
+    }
+  }
+
+  SnackbarMessageHandler(
+    snackbarMessage = uiState.snackbarMessage,
+    onDismissSnackbar = viewModel::dismissSnackbar,
+    onShowMessage = onDismissRequest,
+  )
+
+  uiState.dialogState?.let { state ->
+    TwoButtonDialog(
+      state = state,
+      onDismissRequest = viewModel::dismissDialog,
+      onDismiss = viewModel::dismissDialog,
+      onConfirm = {
+        viewModel.dismissDialog()
+        onNavigate(Navigation.JellyseerrSettingsRoute(withNavigationBar = true))
+      },
+    )
   }
 
   ModalBottomSheet(
@@ -78,7 +113,7 @@ fun RequestSeasonsModal(
       RequestSeasonsContent(
         state = uiState,
         onDismissRequest = onDismissRequest,
-        onRequestClick = onRequestClick,
+        onRequestClick = viewModel::onRequestMedia,
         onUpdateInstance = viewModel::selectInstance,
         onUpdateRootFolder = viewModel::selectRootFolder,
         onUpdateQualityProfile = viewModel::selectQualityProfile,
@@ -106,12 +141,23 @@ private fun RequestSeasonsContent(
         .padding(bottom = MaterialTheme.dimensions.keyline_96),
     ) {
       item {
+        AnimatedVisibility(state.isLoading) {
+          LinearProgressIndicator(
+            modifier = Modifier
+              .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+              .fillMaxWidth(),
+          )
+        }
+      }
+
+      item {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
           text = stringResource(id = UiString.core_ui_request_series),
           style = MaterialTheme.typography.headlineSmall,
         )
       }
+
       item {
         Row(
           modifier = Modifier
@@ -244,6 +290,7 @@ private fun RequestSeasonsContent(
               horizontal = MaterialTheme.dimensions.keyline_16,
               vertical = MaterialTheme.dimensions.keyline_4,
             ),
+            enabled = !state.isLoading,
             options = state.instances,
             currentInstance = state.selectedInstance,
             onUpdate = onUpdateInstance,
@@ -257,6 +304,7 @@ private fun RequestSeasonsContent(
             horizontal = MaterialTheme.dimensions.keyline_16,
             vertical = MaterialTheme.dimensions.keyline_4,
           ),
+          enabled = !state.isLoading,
           options = state.profiles,
           currentInstance = state.selectedProfile,
           onUpdate = onUpdateQualityProfile,
@@ -269,6 +317,7 @@ private fun RequestSeasonsContent(
             horizontal = MaterialTheme.dimensions.keyline_16,
             vertical = MaterialTheme.dimensions.keyline_4,
           ),
+          enabled = !state.isLoading,
           options = state.rootFolders,
           currentInstance = state.selectedRootFolder,
           onUpdate = onUpdateRootFolder,
@@ -292,11 +341,8 @@ private fun RequestSeasonsContent(
           .fillMaxWidth()
           .padding(bottom = MaterialTheme.dimensions.keyline_8)
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-        enabled = selectedSeasons.isNotEmpty(),
-        onClick = {
-          onRequestClick(selectedSeasons)
-          onDismissRequest()
-        },
+        enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
+        onClick = { onRequestClick(selectedSeasons) },
       ) {
         val text = if (selectedSeasons.isEmpty()) {
           stringResource(id = UiString.core_ui_select_seasons_button)

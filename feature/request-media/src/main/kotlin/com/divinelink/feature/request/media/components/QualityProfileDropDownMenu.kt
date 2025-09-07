@@ -12,6 +12,7 @@ import com.divinelink.feature.request.media.R
 @Composable
 fun QualityProfileDropDownMenu(
   modifier: Modifier = Modifier,
+  enabled: Boolean,
   options: List<InstanceProfile>,
   currentInstance: LCEState<InstanceProfile>,
   onUpdate: (InstanceProfile) -> Unit,
@@ -19,6 +20,7 @@ fun QualityProfileDropDownMenu(
   LceDropdownMenu(
     modifier = modifier,
     options = options,
+    enabled = enabled,
     currentInstance = currentInstance,
     label = { Text(stringResource(R.string.feature_request_media_quality_profile)) },
     displayText = { profile ->

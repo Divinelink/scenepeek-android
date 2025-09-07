@@ -31,6 +31,7 @@ import com.divinelink.core.ui.UiString
 @Composable
 fun <T> LceDropdownMenu(
   modifier: Modifier = Modifier,
+  enabled: Boolean,
   options: List<T>,
   currentInstance: LCEState<T>,
   label: @Composable () -> Unit,
@@ -59,6 +60,7 @@ fun <T> LceDropdownMenu(
           readOnly = true,
           value = displayText(state.data),
           onValueChange = {},
+          enabled = enabled,
           label = label,
           trailingIcon = {
             Icon(

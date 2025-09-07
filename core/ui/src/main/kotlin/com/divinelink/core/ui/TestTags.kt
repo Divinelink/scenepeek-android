@@ -137,6 +137,7 @@ object TestTags {
   }
 
   object Dialogs {
+    const val TWO_BUTTON_DIALOG = "Two Button Dialog"
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"
     const val DISMISS_BUTTON = "Dialog Dismiss Button"

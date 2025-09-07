@@ -12,12 +12,14 @@ import com.divinelink.feature.request.media.R
 @Composable
 fun DestinationServerDropDownMenu(
   modifier: Modifier = Modifier,
+  enabled: Boolean,
   options: List<SonarrInstance>,
   currentInstance: LCEState<SonarrInstance>,
   onUpdate: (SonarrInstance) -> Unit,
 ) {
   LceDropdownMenu(
     modifier = modifier,
+    enabled = enabled,
     options = options,
     currentInstance = currentInstance,
     label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
