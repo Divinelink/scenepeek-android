@@ -136,6 +136,10 @@ class RequestSeasonsViewModel(
         mediaId = uiState.value.media.id,
         mediaType = uiState.value.media.mediaType.value,
         seasons = seasons,
+        is4k = uiState.value.is4k,
+        serverId = (uiState.value.selectedInstance as? LCEState.Content)?.data?.id,
+        profileId = (uiState.value.selectedProfile as? LCEState.Content)?.data?.id,
+        rootFolder = (uiState.value.selectedRootFolder as? LCEState.Content)?.data?.path,
       ),
     )
       .onStart {

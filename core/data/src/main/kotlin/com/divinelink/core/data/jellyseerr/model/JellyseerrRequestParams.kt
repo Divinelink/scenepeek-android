@@ -5,6 +5,7 @@ data class JellyseerrRequestParams(
   val mediaId: Int,
   val is4k: Boolean = false,
   val seasons: List<Int>,
-//  val profileId: Int,
-//  val rootFolder: String,
+  val serverId: Int?,
+  val profileId: Int?,
+  val rootFolder: String?,
 )

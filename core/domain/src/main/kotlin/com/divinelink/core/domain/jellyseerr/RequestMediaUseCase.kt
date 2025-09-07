@@ -35,6 +35,9 @@ class RequestMediaUseCase(
           mediaId = parameters.mediaId,
           is4k = parameters.is4k,
           seasons = parameters.seasons,
+          serverId = parameters.serverId,
+          profileId = parameters.profileId,
+          rootFolder = parameters.rootFolder,
         ),
       )
 

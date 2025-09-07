@@ -8,4 +8,7 @@ data class JellyseerrRequestMediaBodyApi(
   val mediaId: Int,
   val is4k: Boolean,
   val seasons: List<Int>,
+  val serverId: Int? = null,
+  val profileId: Int? = null,
+  val rootFolder: String? = null,
 )
