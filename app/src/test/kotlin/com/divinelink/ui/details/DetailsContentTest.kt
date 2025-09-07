@@ -21,6 +21,8 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.DetailActionItem
@@ -32,7 +34,9 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
+import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
@@ -41,13 +45,31 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.request.media.RequestSeasonsViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.mock.declare
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.core.ui.R as uiR
 import com.divinelink.feature.details.R as detailsR
 
 class DetailsContentTest : ComposeTest() {
+
+  @BeforeTest
+  fun setup() {
+    startKoin {
+      androidContext(composeTestRule.activity)
+    }
+  }
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
+  }
 
   @Test
   fun clickMarkAsFavoriteTest() {
@@ -65,7 +87,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -80,7 +102,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     val markAsFavoriteContentDescription = composeTestRule.activity
-      .getString(uiR.string.core_ui_mark_as_favorite_button_content_description)
+      .getString(UiString.core_ui_mark_as_favorite_button_content_description)
 
     composeTestRule
       .onNodeWithContentDescription(markAsFavoriteContentDescription)
@@ -103,7 +125,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -139,7 +161,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -175,7 +197,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -211,7 +233,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -257,7 +279,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -296,7 +318,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -311,7 +333,7 @@ class DetailsContentTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      val userScore = getString(uiR.string.core_ui_tmdb_user_score)
+      val userScore = getString(UiString.core_ui_tmdb_user_score)
 
       onAllNodesWithText(userScore)
         .onLast()
@@ -346,7 +368,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -388,7 +410,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -404,7 +426,7 @@ class DetailsContentTest : ComposeTest() {
 
     composeTestRule
       .onAllNodesWithContentDescription(
-        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
+        label = getString(UiString.core_ui_add_to_watchlist_content_desc),
       )
       .onLast()
       .assertExists()
@@ -429,7 +451,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -445,7 +467,7 @@ class DetailsContentTest : ComposeTest() {
 
     composeTestRule
       .onAllNodesWithContentDescription(
-        label = getString(uiR.string.core_ui_remove_from_watchlist_content_desc),
+        label = getString(UiString.core_ui_remove_from_watchlist_content_desc),
       )
       .onLast()
       .assertExists()
@@ -480,7 +502,7 @@ class DetailsContentTest : ComposeTest() {
             },
           )
         },
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -496,20 +518,20 @@ class DetailsContentTest : ComposeTest() {
 
     with(composeTestRule) {
       onAllNodesWithContentDescription(
-        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
+        label = getString(UiString.core_ui_add_to_watchlist_content_desc),
       )
         .onFirst()
         .assertIsDisplayed()
         .performClick()
 
       onAllNodesWithContentDescription(
-        label = getString(uiR.string.core_ui_add_to_watchlist_content_desc),
+        label = getString(UiString.core_ui_add_to_watchlist_content_desc),
       )
         .onFirst()
         .assertIsNotDisplayed()
 
       onAllNodesWithContentDescription(
-        label = getString(uiR.string.core_ui_remove_from_watchlist_content_desc),
+        label = getString(UiString.core_ui_remove_from_watchlist_content_desc),
       )
         .onFirst()
         .assertIsDisplayed()
@@ -533,7 +555,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -572,7 +594,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -588,7 +610,7 @@ class DetailsContentTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
-      onNodeWithTag(TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_share)))
+      onNodeWithTag(TestTags.Menu.MENU_ITEM.format(getString(UiString.core_ui_share)))
         .assertIsDisplayed()
         .performClick()
     }
@@ -608,7 +630,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -629,7 +651,19 @@ class DetailsContentTest : ComposeTest() {
   }
 
   @Test
-  fun `test open request dialog for tv show`() {
+  fun `test open request dialog for tv show`() = runTest {
+    val repository = TestJellyseerrRepository()
+
+    repository.mockGetSonarrInstances(Result.success(SonarrInstanceFactory.all))
+    repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
+
+    declare {
+      RequestSeasonsViewModel(
+        media = MediaItemFactory.theOffice(),
+        repository = repository.mock,
+        requestMediaUseCase = FakeRequestMediaUseCase().mock,
+      )
+    }
     setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(
@@ -649,7 +683,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -662,20 +696,17 @@ class DetailsContentTest : ComposeTest() {
         animatedVisibilityScope = this,
       )
     }
-    composeTestRule
-      .onNodeWithText(getString(detailsR.string.feature_details_request))
-      .assertIsNotDisplayed()
 
-    composeTestRule
-      .onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON)
-      .performClick()
+    with(composeTestRule) {
+      onNodeWithText(getString(detailsR.string.feature_details_request)).assertIsNotDisplayed()
+      onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
 
-    composeTestRule
-      .onNodeWithText(getString(detailsR.string.feature_details_request))
-      .assertIsDisplayed()
-      .performClick()
+      onNodeWithText(getString(detailsR.string.feature_details_request))
+        .assertIsDisplayed()
+        .performClick()
 
-    composeTestRule.onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+    }
   }
 
   @Test
@@ -699,7 +730,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -747,7 +778,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {
@@ -767,7 +798,7 @@ class DetailsContentTest : ComposeTest() {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_hide_total_episodes_item)),
+        TestTags.Menu.MENU_ITEM.format(getString(UiString.core_ui_hide_total_episodes_item)),
       )
         .assertIsDisplayed()
         .performClick()
@@ -795,7 +826,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {
@@ -815,7 +846,7 @@ class DetailsContentTest : ComposeTest() {
       onNodeWithTag(TestTags.Menu.MENU_BUTTON_VERTICAL).performClick()
       onNodeWithTag(TestTags.Menu.DROPDOWN_MENU).assertIsDisplayed()
       onNodeWithTag(
-        TestTags.Menu.MENU_ITEM.format(getString(uiR.string.core_ui_show_total_episodes_item)),
+        TestTags.Menu.MENU_ITEM.format(getString(UiString.core_ui_show_total_episodes_item)),
       )
         .assertIsDisplayed()
         .performClick()
@@ -842,7 +873,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -886,7 +917,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -932,7 +963,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -977,7 +1008,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1024,7 +1055,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1073,7 +1104,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1116,7 +1147,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1152,7 +1183,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1188,7 +1219,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1224,7 +1255,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1266,7 +1297,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1305,7 +1336,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1341,7 +1372,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1378,7 +1409,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1415,7 +1446,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1451,7 +1482,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1494,7 +1525,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},
@@ -1530,7 +1561,7 @@ class DetailsContentTest : ComposeTest() {
         onConsumeSnackbar = {},
         onAddRateClick = {},
         onAddToWatchlistClick = {},
-        requestMedia = {},
+        onUpdateMediaInfo = {},
         onViewAllCreditsClick = {},
         onPersonClick = {},
         onObfuscateSpoilers = {},

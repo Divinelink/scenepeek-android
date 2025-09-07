@@ -34,7 +34,9 @@ fun AnimatedVisibilityScope.JellyseerrSettingsScreen(
   uiState.dialogState?.let { state ->
     BasicDialog(
       dialogState = state,
-      onDismissRequest = { viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnDismissDialog) },
+      onDismissRequest = {
+        viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnDismissDialog)
+      },
     )
   }
 

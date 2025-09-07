@@ -1,7 +1,6 @@
 package com.divinelink.feature.details.media.ui
 
 import androidx.annotation.VisibleForTesting
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
-import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.domain.details.media.FetchAllRatingsUseCase
@@ -17,7 +15,6 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.domain.jellyseerr.DeleteRequestParameters
 import com.divinelink.core.domain.jellyseerr.DeleteRequestUseCase
-import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.AccountDataSection
 import com.divinelink.core.model.details.DetailActionItem
@@ -31,7 +28,6 @@ import com.divinelink.core.model.details.isAvailable
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
@@ -55,9 +51,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -71,7 +65,6 @@ class DetailsViewModel(
   private val submitRatingUseCase: SubmitRatingUseCase,
   private val deleteRatingUseCase: DeleteRatingUseCase,
   private val addToWatchlistUseCase: AddToWatchlistUseCase,
-  private val requestMediaUseCase: RequestMediaUseCase,
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
@@ -120,9 +113,6 @@ class DetailsViewModel(
 
   private val _openUrlTab = Channel<String>()
   val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
-
-  private val _navigateToJellyseerrAuth = Channel<Unit>()
-  val navigateToJellyseerrAuth: Flow<Unit> = _navigateToJellyseerrAuth.receiveAsFlow()
 
   fun onMarkAsFavorite() {
     viewModelScope.launch {
@@ -487,103 +477,40 @@ class DetailsViewModel(
     }
   }
 
-  fun onRequestMedia(seasons: List<Int>) {
-    requestMediaUseCase(
-      JellyseerrRequestParams(
-        mediaId = viewState.value.mediaId,
-        mediaType = viewState.value.mediaType.value,
-        seasons = seasons,
-      ),
-    )
-      .onStart {
-        _viewState.update { viewState ->
-          viewState.copy(isLoading = true)
-        }
+  fun onUpdateMediaInfo(mediaInfo: JellyseerrMediaInfo) {
+    if (viewState.value.mediaType == MediaType.TV) {
+      val updatedForms = getUpdatedSeasonForms(
+        tvInfo = mediaInfo,
+        overrideSeasonStatus = false,
+      )
+
+      val jellyseerrInfo = if (mediaInfo.status == JellyseerrStatus.Media.UNKNOWN) {
+        viewState.value.jellyseerrMediaInfo
+      } else {
+        mediaInfo
       }
-      .onCompletion {
-        _viewState.update { viewState ->
-          viewState.copy(isLoading = false)
-        }
+
+      _viewState.update { viewState ->
+        viewState.copy(
+          jellyseerrMediaInfo = jellyseerrInfo,
+          forms = updatedForms.first,
+          mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+            seasons = updatedForms.second,
+          ),
+          actionButtons = findTvActions(
+            tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
+            seasons = updatedForms.second,
+          ),
+        )
       }
-      .onEach { result ->
-        result.onSuccess { response ->
-          val message = response.message?.let { message ->
-            UIText.StringText(message)
-          } ?: UIText.ResourceText(
-            R.string.feature_details_jellyseerr_success_media_request,
-            viewState.value.mediaDetails?.title ?: "",
-          )
-
-          if (viewState.value.mediaType == MediaType.TV) {
-            val tvInfo = response.mediaInfo
-            val updatedForms = getUpdatedSeasonForms(
-              tvInfo = tvInfo,
-              overrideSeasonStatus = false,
-            )
-
-            val jellyseerrInfo = if (tvInfo.status == JellyseerrStatus.Media.UNKNOWN) {
-              viewState.value.jellyseerrMediaInfo
-            } else {
-              tvInfo
-            }
-
-            _viewState.update { viewState ->
-              viewState.copy(
-                snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaInfo = jellyseerrInfo,
-                forms = updatedForms.first,
-                mediaDetails = (viewState.mediaDetails as? TV)?.copy(
-                  seasons = updatedForms.second,
-                ),
-                actionButtons = findTvActions(
-                  tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
-                  updatedForms.second,
-                ),
-              )
-            }
-          } else {
-            _viewState.update { viewState ->
-              viewState.copy(
-                snackbarMessage = SnackbarMessage.from(message),
-                jellyseerrMediaInfo = response.mediaInfo,
-                actionButtons = findMovieActions(response.mediaInfo.status),
-              )
-            }
-          }
-        }.onFailure { error ->
-          when (error) {
-            is AppException.Forbidden -> setSnackbarMessage(
-              SnackbarMessage.from(
-                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-                duration = SnackbarDuration.Long,
-                onSnackbarResult = ::navigateToLogin,
-              ),
-            )
-            is AppException.Unauthorized -> setSnackbarMessage(
-              SnackbarMessage.from(
-                text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-                actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-                duration = SnackbarDuration.Long,
-                onSnackbarResult = ::navigateToJellyseerrAuth,
-              ),
-            )
-            is AppException.Conflict -> setSnackbarMessage(
-              SnackbarMessage.from(
-                text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
-              ),
-            )
-            else -> setSnackbarMessage(
-              SnackbarMessage.from(
-                text = UIText.ResourceText(
-                  R.string.feature_details_jellyseerr_request_failed,
-                  viewState.value.mediaDetails?.title ?: "",
-                ),
-              ),
-            )
-          }
-        }
-      }.launchIn(viewModelScope)
+    } else {
+      _viewState.update { viewState ->
+        viewState.copy(
+          jellyseerrMediaInfo = mediaInfo,
+          actionButtons = findMovieActions(mediaInfo.status),
+        )
+      }
+    }
   }
 
   fun onObfuscateSpoilers() {
@@ -602,16 +529,6 @@ class DetailsViewModel(
           navigateToLogin = true,
           snackbarMessage = null,
         )
-      }
-    }
-  }
-
-  @VisibleForTesting
-  fun navigateToJellyseerrAuth(snackbarResult: SnackbarResult) {
-    if (snackbarResult == SnackbarResult.ActionPerformed) {
-      viewModelScope.launch {
-        _navigateToJellyseerrAuth.send(Unit)
-        consumeSnackbarMessage()
       }
     }
   }
@@ -790,14 +707,6 @@ class DetailsViewModel(
             }
           }
       }
-    }
-  }
-
-  private fun setSnackbarMessage(snackbarMessage: SnackbarMessage) {
-    _viewState.update { viewState ->
-      viewState.copy(
-        snackbarMessage = snackbarMessage,
-      )
     }
   }
 

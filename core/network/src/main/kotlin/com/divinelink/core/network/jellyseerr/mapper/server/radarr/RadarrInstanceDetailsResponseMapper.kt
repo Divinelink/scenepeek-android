@@ -6,6 +6,10 @@ import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstance
 
 fun RadarrInstanceDetailsResponse.map() = RadarrInstanceDetails(
   server = server.map(),
-  profiles = profiles.map { it.map() },
-  rootFolders = rootFolders.map { it.map() },
+  profiles = profiles.map { it.map(server.activeProfileId == it.id) },
+  rootFolders = rootFolders.map {
+    it.map(
+      isDefault = server.activeDirectory == it.path,
+    )
+  },
 )

@@ -86,6 +86,7 @@
   <string name="core_ui_clear_data_movie_description">This will irreversibly remove all data for this movie, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
   <string name="core_ui_clear_data_series_description">This will irreversibly remove all data for this series, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
 
+  <string name="core_ui_loading">Loading…</string>
   <string name="core_ui_load_more">Loading more…</string>
 
   <string name="popular_movie__rating">Rating</string>
@@ -170,4 +171,6 @@
   <string name="core_ui_select_all">Select all</string>
   <string name="core_ui_deselect_all">Deselect all</string>
   <string name="core_ui_filter_button_content_desc">Filter credits</string>
+  <string name="core_ui_collapse">Collapse</string>
+  <string name="core_ui_expand">Expand</string>
 </resources>

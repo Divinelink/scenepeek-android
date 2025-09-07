@@ -663,7 +663,6 @@ class ScenePeekAppTest : ComposeTest() {
         submitRatingUseCase = submitRatingUseCase.mock,
         deleteRatingUseCase = deleteRatingUseCase.mock,
         addToWatchlistUseCase = addToWatchlistUseCase.mock,
-        requestMediaUseCase = requestMediaUseCase.mock,
         spoilersObfuscationUseCase = spoilersObfuscationUseCase,
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         deleteRequestUseCase = deleteRequestUseCase.mock,

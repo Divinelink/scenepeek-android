@@ -137,6 +137,7 @@ object TestTags {
   }
 
   object Dialogs {
+    const val TWO_BUTTON_DIALOG = "Two Button Dialog"
     const val ALERT_DIALOG = "Dialogs Alert Dialog"
     const val CONFIRM_BUTTON = "Dialog Confirm Button"
     const val DISMISS_BUTTON = "Dialog Dismiss Button"
@@ -157,6 +158,15 @@ object TestTags {
     const val BOTTOM_SHEET = "Modal Bottom Sheet"
 
     const val DELETE_BUTTON = "Delete button for id %s"
+  }
+
+  object Request {
+    const val LOADING_DROPDOWN_MENU = "Loading DropDown Menu %s"
+    const val CONTENT_DROPDOWN_MENU = "Content DropDown Menu %s"
+
+    const val DESTINATION_SERVER_MENU = "Destination Server Dropdown %s"
+    const val QUALITY_PROFILE_MENU = "Quality Profile Dropdown %s"
+    const val ROOT_FOLDER_MENU = "Root Folder Dropdown %s"
   }
 
   object Settings {

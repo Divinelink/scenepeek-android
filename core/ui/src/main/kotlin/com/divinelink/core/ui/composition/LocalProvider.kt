@@ -2,12 +2,14 @@ package com.divinelink.core.ui.composition
 
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import com.divinelink.core.commons.BuildConfigProvider
+import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
 import com.divinelink.core.ui.manager.createIntentManager
 import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
@@ -47,6 +49,12 @@ fun PreviewLocalProvider(content: @Composable () -> Unit) {
     snackbarHostState = snackbarHostState,
     coroutineScope = coroutineScope,
     buildConfigProvider = PreviewBuildConfigProvider(),
-    content = content,
+    content = {
+      AppTheme {
+        Surface {
+          content()
+        }
+      }
+    },
   )
 }

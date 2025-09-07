@@ -1,7 +1,9 @@
 package com.divinelink.core.model.details
 
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Season(
   val id: Int,
   val name: String,

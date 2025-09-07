@@ -13,6 +13,15 @@ object SonarrInstanceFactory {
     activeProfileId = 6,
   )
 
+  val anime = SonarrInstance(
+    id = 0,
+    name = "Animarr",
+    is4k = false,
+    isDefault = false,
+    activeDirectory = "/data/anime",
+    activeProfileId = 2,
+  )
+
   val sonarr4K = SonarrInstance(
     id = 1,
     name = "Sonarr 4K",
@@ -24,6 +33,7 @@ object SonarrInstanceFactory {
 
   val all = listOf(
     sonarr,
+    anime,
     sonarr4K,
   )
 }

@@ -79,12 +79,6 @@ fun DetailsScreen(
     }
   }
 
-  LaunchedEffect(Unit) {
-    viewModel.navigateToJellyseerrAuth.collect {
-      onNavigate(Navigation.JellyseerrSettingsRoute(withNavigationBar = true))
-    }
-  }
-
   if (openRateBottomSheet) {
     RateModalBottomSheet(
       modifier = Modifier.testTag(TestTags.Details.RATE_DIALOG),
@@ -133,7 +127,6 @@ fun DetailsScreen(
       onConsumeSnackbar = viewModel::consumeSnackbarMessage,
       onAddRateClick = { openRateBottomSheet = true },
       onAddToWatchlistClick = viewModel::onAddToWatchlist,
-      requestMedia = viewModel::onRequestMedia,
       onObfuscateSpoilers = viewModel::onObfuscateSpoilers,
       onViewAllCreditsClick = {
         viewState.mediaDetails?.id?.let { id ->
@@ -153,6 +146,7 @@ fun DetailsScreen(
       onPlayTrailerClick = { videoUrl = it },
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
+      onUpdateMediaInfo = viewModel::onUpdateMediaInfo,
     )
 
     OverlayScreen(

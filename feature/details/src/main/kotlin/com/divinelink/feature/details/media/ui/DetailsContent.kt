@@ -52,7 +52,9 @@ import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
+import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
@@ -77,7 +79,6 @@ import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
 import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestSeasonsModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
@@ -89,6 +90,7 @@ import com.divinelink.feature.details.media.ui.forms.recommendation.Recommendati
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
+import com.divinelink.feature.request.media.RequestSeasonsModal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -98,7 +100,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun DetailsContent(
   viewState: DetailsViewState,
-  modifier: Modifier = Modifier,
   onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   onMarkAsFavoriteClicked: () -> Unit,
@@ -107,7 +108,6 @@ fun DetailsContent(
   onConsumeSnackbar: () -> Unit,
   onAddRateClick: () -> Unit,
   onAddToWatchlistClick: () -> Unit,
-  requestMedia: (List<Int>) -> Unit,
   onViewAllCreditsClick: () -> Unit,
   onObfuscateSpoilers: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
@@ -115,6 +115,7 @@ fun DetailsContent(
   onPlayTrailerClick: (String) -> Unit,
   onDeleteRequest: (Int) -> Unit,
   onDeleteMedia: (Boolean) -> Unit,
+  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -136,16 +137,15 @@ fun DetailsContent(
     when (viewState.mediaDetails) {
       is TV -> RequestSeasonsModal(
         seasons = viewState.mediaDetails.seasons,
-        onRequestClick = {
-          requestMedia(it)
-          showRequestModal = false
-        },
+        media = viewState.mediaDetails.toMediaItem(),
         onDismissRequest = { showRequestModal = false },
+        onNavigate = onNavigate,
+        onUpdateMediaInfo = onUpdateMediaInfo,
       )
       is Movie -> RequestMovieModal(
         onDismissRequest = { showRequestModal = false },
         onConfirm = {
-          requestMedia(emptyList())
+//          requestMedia(emptyList())
           showRequestModal = false
         },
         title = viewState.mediaDetails.title,
@@ -468,7 +468,6 @@ fun DetailsContentPreview(
         AppTheme {
           Surface {
             DetailsContent(
-              modifier = Modifier,
               viewState = viewState,
               animatedVisibilityScope = this,
               onNavigate = {},
@@ -477,7 +476,6 @@ fun DetailsContentPreview(
               onConsumeSnackbar = {},
               onAddRateClick = {},
               onAddToWatchlistClick = {},
-              requestMedia = {},
               onPersonClick = {},
               onViewAllCreditsClick = {},
               onObfuscateSpoilers = {},
@@ -486,6 +484,7 @@ fun DetailsContentPreview(
               onPlayTrailerClick = {},
               onDeleteRequest = {},
               onDeleteMedia = {},
+              onUpdateMediaInfo = {},
             )
           }
         }

@@ -1,8 +1,6 @@
 package com.divinelink.scenepeek.details.ui
 
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
-import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
 import com.divinelink.core.fixtures.details.media.DetailsFormFactory
@@ -25,7 +23,6 @@ import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
@@ -1497,7 +1494,7 @@ class DetailsViewModelTest {
   }
 
   @Test
-  fun `test request movie with null success message`() = runTest {
+  fun `test update media info for movie`() = runTest {
     testRobot
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1509,66 +1506,13 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .mockRequestMedia(
-        response = flowOf(Result.success(JellyseerrMediaRequestResponseFactory.movie())),
-      )
       .withNavArguments(mediaId, MediaType.MOVIE)
       .buildViewModel()
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          actionButtons = listOf(
-            DetailActionItem.Rate,
-            DetailActionItem.Watchlist,
-            DetailActionItem.List,
-            DetailActionItem.ManageMovie,
-          ),
-          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.available(),
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(
-              R.string.feature_details_jellyseerr_success_media_request,
-              movieDetails.title,
-            ),
-          ),
-        ),
+      .onUpdateMediaInfo(
+        JellyseerrMediaRequestResponseFactory.movie().copy(
+          message = "Success",
+        ).mediaInfo,
       )
-  }
-
-  @Test
-  fun `test request movie with success message`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(
-        response = flowOf(
-          Result.success(
-            JellyseerrMediaRequestResponseFactory.movie().copy(
-              message = "Success",
-            ),
-          ),
-        ),
-      )
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .onRequestMedia(emptyList())
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.MOVIE,
@@ -1588,15 +1532,12 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.StringText("Success"),
-          ),
         ),
       )
   }
 
   @Test
-  fun `test request tv with success updates current seasons`() = runTest {
+  fun `test update media info for tv with success updates current seasons`() = runTest {
     testRobot
       .mockFetchMediaDetails(
         response = flowOf(
@@ -1609,15 +1550,6 @@ class DetailsViewModelTest {
           Result.success(
             MediaDetailsResult.JellyseerrDetailsSuccess(
               JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(
-        response = flowOf(
-          Result.success(
-            JellyseerrMediaRequestResponseFactory.tvAllRequested().copy(
-              message = "Success",
             ),
           ),
         ),
@@ -1650,7 +1582,7 @@ class DetailsViewModelTest {
           ),
         ),
       )
-      .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
+      .onUpdateMediaInfo(JellyseerrMediaRequestResponseFactory.tvAllRequested().mediaInfo)
       .assertViewState(
         DetailsViewState(
           mediaType = MediaType.TV,
@@ -1666,304 +1598,11 @@ class DetailsViewModelTest {
           mediaDetails = tvDetails.copy(
             seasons = SeasonFactory.allRequested().filterNot { it.seasonNumber == 0 },
           ),
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.StringText("Success"),
-          ),
           actionButtons = listOf(
             DetailActionItem.Rate,
             DetailActionItem.Watchlist,
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test request tv with current status and unknown response wont update status`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = tvDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-          Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
-              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(
-        response = flowOf(
-          Result.success(
-            JellyseerrMediaRequestResponseFactory.tvFailure(),
-          ),
-        ),
-      )
-      .withNavArguments(mediaId, MediaType.TV)
-      .buildViewModel()
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.TV,
-          tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
-            withAbout(DetailsDataFactory.Tv.about())
-            withSeasons(
-              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
-            )
-          },
-          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
-          ),
-          actionButtons = listOf(
-            DetailActionItem.Rate,
-            DetailActionItem.Watchlist,
-            DetailActionItem.List,
-            DetailActionItem.ManageTvShow,
-            DetailActionItem.Request,
-          ),
-        ),
-      )
-      .onRequestMedia(listOf(3, 4, 5, 6, 7, 8, 9))
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.TV,
-          tabs = TvTab.entries,
-          forms = DetailsFormFactory.Tv.loading().toTvWzd {
-            withAbout(DetailsDataFactory.Tv.about())
-            withSeasons(DetailsDataFactory.Tv.seasonsPartiallyAvailable())
-          },
-          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = tvDetails.copy(
-            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
-          ),
-          actionButtons = listOf(
-            DetailActionItem.Rate,
-            DetailActionItem.Watchlist,
-            DetailActionItem.List,
-            DetailActionItem.ManageTvShow,
-            DetailActionItem.Request,
-          ),
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.StringText("Request failed"),
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test request with forbidden 403 prompts to re-login`() = runTest {
-    val viewModel: DetailsViewModel
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(flowOf(Result.failure(AppException.Forbidden())))
-      .withNavArguments(
-        id = mediaId,
-        mediaType = MediaType.MOVIE,
-      )
-      .buildViewModel().also {
-        viewModel = it.getViewModel()
-      }
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-            duration = SnackbarDuration.Long,
-            onSnackbarResult = viewModel::navigateToLogin,
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test jellyseerr request with 401 prompts to re-login`() = runTest {
-    val viewModel: DetailsViewModel
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(flowOf(Result.failure(AppException.Unauthorized("401"))))
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel().also {
-        viewModel = it.getViewModel()
-      }
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-            duration = SnackbarDuration.Long,
-            onSnackbarResult = viewModel::navigateToJellyseerrAuth,
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test navigate to jellyseerr auth`() = runTest {
-    val viewModel: DetailsViewModel
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(flowOf(Result.failure(AppException.Unauthorized("401"))))
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel().also {
-        viewModel = it.getViewModel()
-      }
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(uiR.string.core_ui_jellyseerr_session_expired),
-            actionLabelText = UIText.ResourceText(uiR.string.core_ui_login),
-            duration = SnackbarDuration.Long,
-            onSnackbarResult = viewModel::navigateToJellyseerrAuth,
-          ),
-        ),
-      )
-      .expectNoJellyseerrAuthEmission()
-      .onNavigateToJellyseerrLogin(SnackbarResult.ActionPerformed)
-      .expectJellyseerrAuthEmission()
-  }
-
-  @Test
-  fun `test request with conflict 409 informs that movie already exists`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(flowOf(Result.failure(AppException.Conflict())))
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(R.string.feature_details_jellyseerr_request_exists),
-          ),
-        ),
-      )
-  }
-
-  @Test
-  fun `test request with generic error show generic message`() = runTest {
-    testRobot
-      .mockFetchMediaDetails(
-        response = flowOf(
-          Result.success(
-            MediaDetailsResult.DetailsSuccess(
-              mediaDetails = movieDetails,
-              ratingSource = RatingSource.TMDB,
-            ),
-          ),
-        ),
-      )
-      .mockRequestMedia(flowOf(Result.failure(InvalidStatusException(500))))
-      .withNavArguments(mediaId, MediaType.MOVIE)
-      .buildViewModel()
-      .onRequestMedia(emptyList())
-      .assertViewState(
-        DetailsViewState(
-          mediaType = MediaType.MOVIE,
-          tabs = MovieTab.entries,
-          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
-            withAbout(DetailsDataFactory.Movie.about())
-            withCast(DetailsDataFactory.Movie.cast())
-          },
-          mediaId = mediaId,
-          isLoading = false,
-          userDetails = AccountMediaDetails.initial,
-          mediaDetails = movieDetails,
-          snackbarMessage = SnackbarMessage.from(
-            text = UIText.ResourceText(
-              R.string.feature_details_jellyseerr_request_failed,
-              movieDetails.title,
-            ),
           ),
         ),
       )

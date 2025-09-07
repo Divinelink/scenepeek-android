@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components.modal.jellyseerr.request
+package com.divinelink.feature.request.media
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -15,15 +15,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -33,63 +30,77 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.divinelink.core.designsystem.theme.AppTheme
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.fixtures.details.season.SeasonFactory
-import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
+import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiPlurals
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RequestSeasonsModal(
-  seasons: List<Season>,
-  onRequestClick: (List<Int>) -> Unit,
-  onDismissRequest: () -> Unit,
-) {
-  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-  ModalBottomSheet(
-    modifier = Modifier.testTag(TestTags.Modal.REQUEST_SEASONS),
-    shape = MaterialTheme.shapes.extraLarge,
-    onDismissRequest = onDismissRequest,
-    sheetState = sheetState,
-    content = {
-      RequestSeasonsContent(
-        seasons = seasons,
-        onDismissRequest = onDismissRequest,
-        onRequestClick = onRequestClick,
-      )
-    },
-  )
-}
+import com.divinelink.core.ui.components.dialog.TwoButtonDialog
+import com.divinelink.core.ui.composition.PreviewLocalProvider
+import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.feature.request.media.components.DestinationServerDropDownMenu
+import com.divinelink.feature.request.media.components.QualityProfileDropDownMenu
+import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
+import com.divinelink.feature.request.media.provider.RequestSeasonUiStateProvider
 
 @Composable
-private fun RequestSeasonsContent(
-  seasons: List<Season>,
+internal fun RequestSeasonsContent(
+  state: RequestSeasonsUiState,
   onDismissRequest: () -> Unit,
-  onRequestClick: (List<Int>) -> Unit,
+  onAction: (RequestSeasonAction) -> Unit,
+  onNavigate: (Navigation) -> Unit,
 ) {
   val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = seasons.filterNot { it.seasonNumber == 0 }
+  val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
+
+  SnackbarMessageHandler(
+    snackbarMessage = state.snackbarMessage,
+    onDismissSnackbar = { onAction(RequestSeasonAction.DismissSnackbar) },
+    onShowMessage = onDismissRequest,
+  )
+
+  state.dialogState?.let { dialogState ->
+    TwoButtonDialog(
+      state = dialogState,
+      onDismissRequest = { onAction(RequestSeasonAction.DismissDialog) },
+      onDismiss = { onAction(RequestSeasonAction.DismissDialog) },
+      onConfirm = {
+        onAction(RequestSeasonAction.DismissDialog)
+        onNavigate(Navigation.JellyseerrSettingsRoute(withNavigationBar = true))
+      },
+    )
+  }
 
   Box {
+    AnimatedVisibility(state.isLoading) {
+      LinearProgressIndicator(
+        modifier = Modifier
+          .align(Alignment.TopCenter)
+          .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+          .fillMaxWidth(),
+      )
+    }
     LazyColumn(
       modifier = Modifier
-        .padding(vertical = MaterialTheme.dimensions.keyline_24)
-        .padding(bottom = MaterialTheme.dimensions.keyline_96),
+        .testTag(TestTags.LAZY_COLUMN)
+        .padding(
+          top = MaterialTheme.dimensions.keyline_8,
+          bottom = MaterialTheme.dimensions.keyline_96,
+        ),
     ) {
       item {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-          text = stringResource(id = R.string.core_ui_request_series),
+          text = stringResource(id = UiString.core_ui_request_series),
           style = MaterialTheme.typography.headlineSmall,
         )
       }
+
       item {
         Row(
           modifier = Modifier
@@ -121,21 +132,21 @@ private fun RequestSeasonsContent(
           )
 
           Text(
-            text = stringResource(R.string.core_ui_season),
+            text = stringResource(UiString.core_ui_season),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
           )
 
           Text(
-            text = stringResource(R.string.core_ui_episodes),
+            text = stringResource(UiString.core_ui_episodes),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
           )
 
           Text(
-            text = stringResource(R.string.core_ui_status),
+            text = stringResource(UiString.core_ui_status),
             modifier = Modifier
               .weight(1f),
             style = MaterialTheme.typography.titleSmall,
@@ -179,7 +190,7 @@ private fun RequestSeasonsContent(
           )
 
           Text(
-            text = stringResource(id = R.string.core_ui_season_number, item.seasonNumber),
+            text = stringResource(id = UiString.core_ui_season_number, item.seasonNumber),
             overflow = TextOverflow.MiddleEllipsis,
             maxLines = 1,
             modifier = Modifier
@@ -206,6 +217,79 @@ private fun RequestSeasonsContent(
 
         HorizontalDivider()
       }
+
+      item {
+        if (
+          state.selectedInstance !is LCEState.Error ||
+          state.selectedProfile !is LCEState.Error ||
+          state.selectedRootFolder !is LCEState.Error
+        ) {
+          Text(
+            modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+            text = stringResource(UiString.core_ui_advanced),
+            style = MaterialTheme.typography.headlineSmall,
+          )
+        }
+      }
+
+      item {
+        AnimatedVisibility(state.instances.size > 1) {
+          DestinationServerDropDownMenu(
+            modifier = Modifier
+              .testTag(
+                TestTags.Request.DESTINATION_SERVER_MENU.format(
+                  state.selectedInstance::class.simpleName,
+                ),
+              )
+              .padding(
+                horizontal = MaterialTheme.dimensions.keyline_16,
+                vertical = MaterialTheme.dimensions.keyline_4,
+              ),
+            enabled = !state.isLoading,
+            options = state.instances,
+            currentInstance = state.selectedInstance,
+            onUpdate = { onAction(RequestSeasonAction.SelectInstance(it)) },
+          )
+        }
+      }
+
+      item {
+        QualityProfileDropDownMenu(
+          modifier = Modifier
+            .testTag(
+              TestTags.Request.QUALITY_PROFILE_MENU.format(
+                state.selectedProfile::class.simpleName,
+              ),
+            )
+            .padding(
+              horizontal = MaterialTheme.dimensions.keyline_16,
+              vertical = MaterialTheme.dimensions.keyline_4,
+            ),
+          enabled = !state.isLoading,
+          options = state.profiles,
+          currentInstance = state.selectedProfile,
+          onUpdate = { onAction(RequestSeasonAction.SelectQualityProfile(it)) },
+        )
+      }
+
+      item {
+        RootFolderDropDownMenu(
+          modifier = Modifier
+            .testTag(
+              TestTags.Request.ROOT_FOLDER_MENU.format(
+                state.selectedRootFolder::class.simpleName,
+              ),
+            )
+            .padding(
+              horizontal = MaterialTheme.dimensions.keyline_16,
+              vertical = MaterialTheme.dimensions.keyline_4,
+            ),
+          enabled = !state.isLoading,
+          options = state.rootFolders,
+          currentInstance = state.selectedRootFolder,
+          onUpdate = { onAction(RequestSeasonAction.SelectRootFolder(it)) },
+        )
+      }
     }
 
     Column(
@@ -217,24 +301,21 @@ private fun RequestSeasonsContent(
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
         onClick = { onDismissRequest() },
       ) {
-        Text(text = stringResource(id = R.string.core_ui_cancel))
+        Text(text = stringResource(id = UiString.core_ui_cancel))
       }
       Button(
         modifier = Modifier
           .fillMaxWidth()
           .padding(bottom = MaterialTheme.dimensions.keyline_8)
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-        enabled = selectedSeasons.isNotEmpty(),
-        onClick = {
-          onRequestClick(selectedSeasons)
-          onDismissRequest()
-        },
+        enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
+        onClick = { onAction(RequestSeasonAction.RequestMedia(selectedSeasons)) },
       ) {
         val text = if (selectedSeasons.isEmpty()) {
-          stringResource(id = R.string.core_ui_select_seasons_button)
+          stringResource(id = UiString.core_ui_select_seasons_button)
         } else {
           pluralStringResource(
-            id = R.plurals.core_ui_request_series_button,
+            id = UiPlurals.core_ui_request_series_button,
             count = selectedSeasons.size,
             selectedSeasons.size,
           )
@@ -254,30 +335,17 @@ private fun RequestSeasonsContent(
   }
 }
 
-@Previews
 @Composable
-private fun SelectSeasonsDialogPreview() {
-  AppTheme {
-    Surface {
-      RequestSeasonsModal(
-        seasons = SeasonFactory.allWithStatus(),
-        onRequestClick = {},
-        onDismissRequest = {},
-      )
-    }
-  }
-}
-
 @Previews
-@Composable
-fun RequestSeasonsContentPreview() {
-  AppTheme {
-    Surface {
-      RequestSeasonsContent(
-        seasons = SeasonFactory.allWithStatus(),
-        onRequestClick = {},
-        onDismissRequest = {},
-      )
-    }
+fun RequestSeasonsContentPreview(
+  @PreviewParameter(RequestSeasonUiStateProvider::class) uiState: RequestSeasonsUiState,
+) {
+  PreviewLocalProvider {
+    RequestSeasonsContent(
+      state = uiState,
+      onDismissRequest = {},
+      onNavigate = {},
+      onAction = {},
+    )
   }
 }
