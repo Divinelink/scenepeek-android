@@ -135,21 +135,21 @@ private fun RequestSeasonsContent(
   val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
 
   Box {
+    AnimatedVisibility(state.isLoading) {
+      LinearProgressIndicator(
+        modifier = Modifier
+          .align(Alignment.TopCenter)
+          .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+          .fillMaxWidth(),
+      )
+    }
     LazyColumn(
       modifier = Modifier
-        .padding(vertical = MaterialTheme.dimensions.keyline_24)
-        .padding(bottom = MaterialTheme.dimensions.keyline_96),
+        .padding(
+          top = MaterialTheme.dimensions.keyline_8,
+          bottom = MaterialTheme.dimensions.keyline_96,
+        ),
     ) {
-      item {
-        AnimatedVisibility(state.isLoading) {
-          LinearProgressIndicator(
-            modifier = Modifier
-              .testTag(TestTags.LINEAR_LOADING_INDICATOR)
-              .fillMaxWidth(),
-          )
-        }
-      }
-
       item {
         Text(
           modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
