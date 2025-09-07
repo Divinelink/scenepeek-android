@@ -20,7 +20,7 @@
   <string name="feature_settings_not_logged_in">Not logged in</string>
   <string name="feature_settings_sign_in_to_access_features">Sign in to access TMDB features</string>
 
-  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in using your %s account. Do you want to logout?</string>
+  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in as %s. Do you want to logout?</string>
 
   <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
   <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
