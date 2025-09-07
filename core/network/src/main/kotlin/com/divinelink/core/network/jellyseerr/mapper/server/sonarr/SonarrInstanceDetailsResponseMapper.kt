@@ -6,10 +6,10 @@ import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstance
 
 fun SonarrInstanceDetailsResponse.map() = SonarrInstanceDetails(
   server = server.map(),
-  profiles = profiles.map { it.map(server.isDefault && server.activeProfileId == it.id) },
+  profiles = profiles.map { it.map(server.activeProfileId == it.id) },
   rootFolders = rootFolders.map {
     it.map(
-      isDefault = server.isDefault && server.activeDirectory == it.path,
+      isDefault = server.activeDirectory == it.path,
     )
   },
 )

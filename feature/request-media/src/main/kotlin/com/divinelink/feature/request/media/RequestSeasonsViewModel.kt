@@ -77,11 +77,19 @@ class RequestSeasonsViewModel(
   }
 
   fun selectInstance(instance: SonarrInstance) {
+    if (instance == (uiState.value.selectedInstance as? LCEState.Content)?.data) return
+
     _uiState.update { uiState ->
       uiState.copy(selectedInstance = LCEState.Content(instance))
     }
 
     viewModelScope.launch {
+      _uiState.update { uiState ->
+        uiState.copy(
+          selectedProfile = LCEState.Loading,
+          selectedRootFolder = LCEState.Loading,
+        )
+      }
       repository.getSonarrInstanceDetails(instance.id).fold(
         onSuccess = { result ->
           _uiState.update { uiState ->

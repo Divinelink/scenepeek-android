@@ -23,7 +23,14 @@ fun DestinationServerDropDownMenu(
     options = options,
     currentInstance = currentInstance,
     label = { Text(stringResource(R.string.feature_request_media_destination_server)) },
-    displayText = { it.name },
+    displayText = {
+      buildString {
+        append(it.name)
+        if (it.isDefault) {
+          append(" (${stringResource(R.string.feature_request_media_default)})")
+        }
+      }
+    },
     onUpdate = onUpdate,
   )
 }
