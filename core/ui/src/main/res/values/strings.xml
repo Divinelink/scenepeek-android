@@ -105,9 +105,9 @@
 
   <string name="core_ui_select_seasons_button">Select season(s)</string>
   <string name="core_ui_season_number">Season %d</string>
+  <string name="core_ui_request">Request</string>
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
-  <string name="core_ui_request_confirmation_text">Do you want to request %s?</string>
 
   <string name="core_ui_delete_request_title">Delete request</string>
   <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>

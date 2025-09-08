@@ -5,11 +5,14 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
@@ -562,8 +565,12 @@ class RequestSeasonsModalTest : ComposeTest() {
         .assertIsDisplayed()
         .performScrollToIndex(14)
 
-      onNodeWithTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Error")).assertIsDisplayed()
-      onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Error")).assertIsDisplayed()
+      onNodeWithText(
+        getString(R.string.feature_request_media_quality_profile),
+      ).assertIsNotDisplayed()
+      onNodeWithText(
+        getString(R.string.feature_request_media_root_folder),
+      ).assertIsNotDisplayed()
     }
   }
 
@@ -596,8 +603,12 @@ class RequestSeasonsModalTest : ComposeTest() {
         .assertIsDisplayed()
         .performScrollToIndex(14)
 
-      onNodeWithTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Error")).assertIsDisplayed()
-      onNodeWithTag(TestTags.Request.ROOT_FOLDER_MENU.format("Error")).assertIsDisplayed()
+      onNodeWithText(
+        getString(R.string.feature_request_media_quality_profile),
+      ).assertIsNotDisplayed()
+      onNodeWithText(
+        getString(R.string.feature_request_media_root_folder),
+      ).assertIsNotDisplayed()
     }
   }
 
@@ -851,21 +862,14 @@ class RequestSeasonsModalTest : ComposeTest() {
 
       onNodeWithTag(TestTags.LAZY_COLUMN)
         .performScrollToNode(
-          hasTestTag(TestTags.Request.DESTINATION_SERVER_MENU.format("Content")),
+          hasText("Sonarr (Default)"),
         )
 
       onNodeWithText("Sonarr (Default)").assertIsDisplayed()
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(
-          hasTestTag(TestTags.Request.QUALITY_PROFILE_MENU.format("Error")),
-        )
-      onNodeWithText("Quality profile").assertIsNotDisplayed()
+      onNodeWithTag(TestTags.LAZY_COLUMN).performTouchInput { swipeDown() }
 
-      onNodeWithTag(TestTags.LAZY_COLUMN)
-        .performScrollToNode(
-          hasTestTag(TestTags.Request.ROOT_FOLDER_MENU.format("Error")),
-        )
+      onNodeWithText("Quality profile").assertIsNotDisplayed()
       onNodeWithText("Root folders").assertIsNotDisplayed()
     }
   }

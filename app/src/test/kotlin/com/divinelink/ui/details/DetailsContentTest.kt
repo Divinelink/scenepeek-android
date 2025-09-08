@@ -21,6 +21,8 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -718,7 +720,27 @@ class DetailsContentTest : ComposeTest() {
   }
 
   @Test
-  fun `test open request dialog for movie`() {
+  fun `test open request dialog for movie`() = runTest {
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+
+    getServerInstancesUseCase.mockResponse(
+      Result.success(RadarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(RadarrInstanceDetailsFactory.radarr),
+    )
+
+    declare {
+      RequestMediaViewModel(
+        media = MediaItemFactory.FightClub(),
+        requestMediaUseCase = FakeRequestMediaUseCase().mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      )
+    }
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(

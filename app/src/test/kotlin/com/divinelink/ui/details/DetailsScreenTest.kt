@@ -25,6 +25,8 @@ import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFact
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul2
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul3
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -824,104 +826,123 @@ class DetailsScreenTest : ComposeTest() {
     }
   }
 
-  // TODO Uncomment after decoupling movie request modal
-//  @Test
-//  fun `test request movie and delete request afterwards`() = runTest {
-//    getMovieDetailsUseCase.mockFetchMediaDetails(
-//      response = flowOf(
-//        Result.success(
-//          MediaDetailsResult.DetailsSuccess(
-//            mediaDetails = MediaDetailsFactory.FightClub(),
-//            ratingSource = RatingSource.TMDB,
-//          ),
-//        ),
-//        Result.success(
-//          MediaDetailsResult.ActionButtonsSuccess(
-//            listOf(
-//              DetailActionItem.Rate,
-//              DetailActionItem.Watchlist,
-//              DetailActionItem.Request,
-//            ),
-//          ),
-//        ),
-//      ),
-//    )
-//
-//    requestMediaUseCase.mockSuccess(
-//      response = flowOf(
-//        Result.success(JellyseerrMediaRequestResponseFactory.movieWithRequest()),
-//      ),
-//    )
-//
-//    val viewModel = DetailsViewModel(
-//      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
-//      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
-//      submitRatingUseCase = submitRateUseCase.mock,
-//      deleteRatingUseCase = deleteRatingUseCase.mock,
-//      addToWatchlistUseCase = addToWatchlistUseCase.mock,
-//      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
-//      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
-//      deleteRequestUseCase = deleteRequestUseCase.mock,
-//      deleteMediaUseCase = deleteMediaUseCase.mock,
-//      savedStateHandle = SavedStateHandle(
-//        mapOf(
-//          "id" to 0,
-//          "isFavorite" to false,
-//          "mediaType" to MediaType.MOVIE,
-//        ),
-//      ),
-//    )
-//
-//    setVisibilityScopeContent {
-//      DetailsScreen(
-//        onNavigate = {},
-//        viewModel = viewModel,
-//        animatedVisibilityScope = this,
-//      )
-//    }
-//
-//    with(composeTestRule) {
-//      onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
-//
-//      onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
-//        .assertIsDisplayed()
-//        .performClick()
-//
-//      onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
-//
-//      onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
-//
-//      onAllNodesWithTag(TestTags.Components.STATUS_PILL.format("Available"))
-//        .onFirst()
-//        .assertIsDisplayed()
-//
-//      // Delete request from now on
-//      onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
-//      onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
-//        .assertIsNotDisplayed()
-//
-//      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_movie))
-//        .assertIsDisplayed()
-//        .performClick()
-//
-//      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
-//      onNodeWithTag(
-//        TestTags.Modal.DELETE_BUTTON.format(JellyseerrRequestFactory.movie().id),
-//      ).performClick()
-//
-//      onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsDisplayed()
-//
-//      deleteRequestUseCase.mockSuccess(
-//        response = flowOf(Result.success(JellyseerrMediaInfoFactory.Movie.unknown())),
-//      )
-//
-//      onNodeWithText(getString(R.string.core_ui_delete)).performClick()
-//
-//      onAllNodesWithTag(TestTags.Components.STATUS_PILL.format("Available"))
-//        .onFirst()
-//        .assertIsNotDisplayed()
-//    }
-//  }
+  @Test
+  fun `test request movie and delete request afterwards`() = runTest {
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+
+    getServerInstancesUseCase.mockResponse(
+      Result.success(RadarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(RadarrInstanceDetailsFactory.radarr),
+    )
+
+    declare {
+      RequestMediaViewModel(
+        media = MediaItemFactory.FightClub(),
+        requestMediaUseCase = requestMediaUseCase.mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      )
+    }
+
+    getMovieDetailsUseCase.mockFetchMediaDetails(
+      response = flowOf(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = MediaDetailsFactory.FightClub(),
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+        Result.success(
+          MediaDetailsResult.ActionButtonsSuccess(
+            listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.Request,
+            ),
+          ),
+        ),
+      ),
+    )
+
+    requestMediaUseCase.mockSuccess(
+      response = flowOf(
+        Result.success(JellyseerrMediaRequestResponseFactory.movieWithRequest()),
+      ),
+    )
+
+    val viewModel = DetailsViewModel(
+      getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
+      onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
+      submitRatingUseCase = submitRateUseCase.mock,
+      deleteRatingUseCase = deleteRatingUseCase.mock,
+      addToWatchlistUseCase = addToWatchlistUseCase.mock,
+      spoilersObfuscationUseCase = spoilersObfuscationUseCase,
+      fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
+      deleteRequestUseCase = deleteRequestUseCase.mock,
+      deleteMediaUseCase = deleteMediaUseCase.mock,
+      savedStateHandle = SavedStateHandle(
+        mapOf(
+          "id" to 0,
+          "isFavorite" to false,
+          "mediaType" to MediaType.MOVIE,
+        ),
+      ),
+    )
+
+    setVisibilityScopeContent {
+      DetailsScreen(
+        onNavigate = {},
+        viewModel = viewModel,
+        animatedVisibilityScope = this,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
+
+      onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
+        .assertIsDisplayed()
+        .performClick()
+
+      onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
+
+      onAllNodesWithTag(TestTags.Components.STATUS_PILL.format("Available"))
+        .onFirst()
+        .assertIsDisplayed()
+
+      // Delete request from now on
+      onNodeWithTag(TestTags.Components.ExpandableFab.BUTTON).performClick()
+      onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
+        .assertIsNotDisplayed()
+
+      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_movie))
+        .assertIsDisplayed()
+        .performClick()
+
+      onNodeWithTag(TestTags.Modal.BOTTOM_SHEET).assertIsDisplayed()
+      onNodeWithTag(
+        TestTags.Modal.DELETE_BUTTON.format(JellyseerrRequestFactory.movie().id),
+      ).performClick()
+
+      onNodeWithTag(TestTags.Dialogs.DELETE_REQUEST).assertIsDisplayed()
+
+      deleteRequestUseCase.mockSuccess(
+        response = flowOf(Result.success(JellyseerrMediaInfoFactory.Movie.unknown())),
+      )
+
+      onNodeWithText(getString(R.string.core_ui_delete)).performClick()
+
+      onAllNodesWithTag(TestTags.Components.STATUS_PILL.format("Available"))
+        .onFirst()
+        .assertIsNotDisplayed()
+    }
+  }
 
   @Test
   fun `test request tv seasons and delete request afterwards`() = runTest {

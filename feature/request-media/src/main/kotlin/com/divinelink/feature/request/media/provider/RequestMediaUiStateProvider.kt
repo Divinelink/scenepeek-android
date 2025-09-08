@@ -5,6 +5,7 @@ import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.InstanceProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.InstanceRootFolderFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -70,6 +71,16 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
       selectedInstance = LCEState.Content(SonarrInstanceFactory.anime),
+      selectedProfile = LCEState.Content(InstanceProfileFactory.sd.copy(isDefault = true)),
+      selectedRootFolder = LCEState.Content(InstanceRootFolderFactory.tv.copy(isDefault = false)),
+    ),
+    RequestMediaUiState.initial(
+      seasons = emptyList(),
+      media = MediaItemFactory.FightClub(),
+    ).copy(
+      instances = RadarrInstanceFactory.all,
+      profiles = InstanceProfileFactory.movie,
+      selectedInstance = LCEState.Content(RadarrInstanceFactory.radarr),
       selectedProfile = LCEState.Content(InstanceProfileFactory.sd.copy(isDefault = true)),
       selectedRootFolder = LCEState.Content(InstanceRootFolderFactory.tv.copy(isDefault = false)),
     ),

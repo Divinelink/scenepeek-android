@@ -3,45 +3,59 @@ package com.divinelink.feature.request.media
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.testing.ComposeTest
+import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.setContentWithTheme
+import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
-import com.google.common.truth.Truth.assertThat
+import com.divinelink.core.ui.UiString
+import com.divinelink.feature.request.media.movie.RequestMovieModal
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class RequestMovieModalTest : ComposeTest() {
 
+  private val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+  private val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+  private val requestMediaUseCase = FakeRequestMediaUseCase()
+
   @Test
-  fun `test show request movie dialog`() {
-    var onDismissRequest = false
-    var onConfirm = false
+  fun `test show request movie dialog`() = runTest {
+    getServerInstancesUseCase.mockResponse(
+      Result.success(RadarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(RadarrInstanceDetailsFactory.radarr),
+    )
+
+    val viewModel = RequestMediaViewModel(
+      media = MediaItemFactory.FightClub(),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+    )
 
     setContentWithTheme {
       RequestMovieModal(
-        title = "Taxi Driver",
-        onDismissRequest = {
-          onDismissRequest = true
-        },
-        onConfirm = {
-          onConfirm = true
-        },
+        viewModel = viewModel,
+        media = MediaItemFactory.FightClub(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
-
-    composeTestRule.onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
-
-    composeTestRule
-      .onNodeWithText("Do you want to request Taxi Driver?")
-      .assertIsDisplayed()
-
-    assertThat(onDismissRequest).isTrue()
-    assertThat(onConfirm).isTrue()
-
-    composeTestRule.onNodeWithText("Cancel").performClick()
-    assertThat(onDismissRequest).isTrue()
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
+      onNodeWithText(getString(UiString.core_ui_request_movie)).assertIsDisplayed()
+    }
   }
 }
