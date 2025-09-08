@@ -34,9 +34,10 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
@@ -652,16 +653,23 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open request dialog for tv show`() = runTest {
-    val repository = TestJellyseerrRepository()
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
 
-    repository.mockGetSonarrInstances(Result.success(SonarrInstanceFactory.all))
-    repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
 
     declare {
       RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
-        repository = repository.mock,
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
     setVisibilityScopeContent {

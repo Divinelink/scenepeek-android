@@ -41,12 +41,13 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
 import com.divinelink.core.testing.usecase.TestFetchAllRatingsUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.testing.usecase.TestSpoilersObfuscationUseCase
 import com.divinelink.core.ui.R
@@ -924,16 +925,23 @@ class DetailsScreenTest : ComposeTest() {
 
   @Test
   fun `test request tv seasons and delete request afterwards`() = runTest {
-    val repository = TestJellyseerrRepository()
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
 
-    repository.mockGetSonarrInstances(Result.success(SonarrInstanceFactory.all))
-    repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
 
     declare {
       RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
-        repository = repository.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
 

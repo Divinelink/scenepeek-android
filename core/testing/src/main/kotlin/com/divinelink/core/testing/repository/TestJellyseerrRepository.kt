@@ -70,7 +70,7 @@ class TestJellyseerrRepository {
     whenever(mock.getTvDetails(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockGetRadarrInstances(response: Result<List<RadarrInstance>>) {
+  suspend fun mockGetRadarrInstances(response: Result<List<ServerInstance.Radarr>>) {
     whenever(mock.getRadarrInstances()).thenReturn(response)
   }
 
@@ -78,7 +78,7 @@ class TestJellyseerrRepository {
     whenever(mock.getSonarrInstances()).thenReturn(response)
   }
 
-  suspend fun mockGetRadarrDetails(response: Result<RadarrInstanceDetails>) {
+  suspend fun mockGetRadarrDetails(response: Result<ServerInstanceDetails>) {
     whenever(mock.getRadarrInstanceDetails(any())).thenReturn(response)
   }
 
