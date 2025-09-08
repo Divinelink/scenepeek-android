@@ -5,10 +5,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
-import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstance
-import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstanceDetails
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstanceDetails
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
@@ -46,11 +44,11 @@ interface JellyseerrRepository {
 
   suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?>
 
-  suspend fun getRadarrInstances(): Result<List<RadarrInstance>>
+  suspend fun getRadarrInstances(): Result<List<ServerInstance>>
 
-  suspend fun getSonarrInstances(): Result<List<SonarrInstance>>
+  suspend fun getSonarrInstances(): Result<List<ServerInstance>>
 
-  suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetails>
+  suspend fun getRadarrInstanceDetails(id: Int): Result<ServerInstanceDetails>
 
-  suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetails>
+  suspend fun getSonarrInstanceDetails(id: Int): Result<ServerInstanceDetails>
 }

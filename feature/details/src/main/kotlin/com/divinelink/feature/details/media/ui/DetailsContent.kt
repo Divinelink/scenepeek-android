@@ -78,7 +78,6 @@ import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.dialog.AlertDialogUiState
 import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.ManageJellyseerrMediaModal
-import com.divinelink.core.ui.components.modal.jellyseerr.request.RequestMovieModal
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.core.ui.tab.ScenePeekTabs
@@ -90,7 +89,8 @@ import com.divinelink.feature.details.media.ui.forms.recommendation.Recommendati
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
-import com.divinelink.feature.request.media.RequestSeasonsModal
+import com.divinelink.feature.request.media.movie.RequestMovieModal
+import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -143,12 +143,10 @@ fun DetailsContent(
         onUpdateMediaInfo = onUpdateMediaInfo,
       )
       is Movie -> RequestMovieModal(
+        media = viewState.mediaDetails.toMediaItem(),
         onDismissRequest = { showRequestModal = false },
-        onConfirm = {
-//          requestMedia(emptyList())
-          showRequestModal = false
-        },
-        title = viewState.mediaDetails.title,
+        onNavigate = onNavigate,
+        onUpdateMediaInfo = onUpdateMediaInfo,
       )
       null -> {
         // Do nothing

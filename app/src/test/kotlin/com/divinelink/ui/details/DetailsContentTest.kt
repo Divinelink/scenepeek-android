@@ -21,6 +21,8 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
@@ -34,9 +36,10 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
-import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
+import com.divinelink.core.testing.usecase.TestGetServerInstancesUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.TestTags.LOADING_CONTENT
 import com.divinelink.core.ui.UiString
@@ -45,7 +48,7 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.feature.request.media.RequestSeasonsViewModel
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.koin.android.ext.koin.androidContext
@@ -652,16 +655,23 @@ class DetailsContentTest : ComposeTest() {
 
   @Test
   fun `test open request dialog for tv show`() = runTest {
-    val repository = TestJellyseerrRepository()
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
 
-    repository.mockGetSonarrInstances(Result.success(SonarrInstanceFactory.all))
-    repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
 
     declare {
-      RequestSeasonsViewModel(
+      RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
-        repository = repository.mock,
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
     setVisibilityScopeContent {
@@ -710,7 +720,27 @@ class DetailsContentTest : ComposeTest() {
   }
 
   @Test
-  fun `test open request dialog for movie`() {
+  fun `test open request dialog for movie`() = runTest {
+    val getServerInstancesUseCase = TestGetServerInstancesUseCase()
+    val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+
+    getServerInstancesUseCase.mockResponse(
+      Result.success(RadarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockResponse(
+      Result.success(RadarrInstanceDetailsFactory.radarr),
+    )
+
+    declare {
+      RequestMediaViewModel(
+        media = MediaItemFactory.FightClub(),
+        requestMediaUseCase = FakeRequestMediaUseCase().mock,
+        getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      )
+    }
+
     setVisibilityScopeContent {
       DetailsContent(
         viewState = DetailsViewState(

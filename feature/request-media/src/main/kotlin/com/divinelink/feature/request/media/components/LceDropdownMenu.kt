@@ -1,4 +1,4 @@
-package com.divinelink.feature.request.media
+package com.divinelink.feature.request.media.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
+import com.divinelink.feature.request.media.LCEState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
