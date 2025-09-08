@@ -31,4 +31,7 @@
   <string name="feature_onboarding_v25_redesign_jellyseerr_login">- Redesign the login screen for Jellyseerr</string>
   <string name="feature_onboarding_v25_media_action_menu">- Add action menu for movies and TV shows. You can now long press on any movie/TV show to easily share, add to list, and mark as favorite</string>
   <string name="feature_onboarding_v25_fix_favorite_status">- Favorite status is now visible across all media cards</string>
+
+  <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings">- [Jellyseerr] Add advanced settings on movie/tv-show request</string>
+  <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings_extra">You can now select destination server, quality profile and root folder when requesting a media!</string>
 </resources>

@@ -73,6 +73,20 @@ object IntroSections {
     IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v25_fix_favorite_status)),
   )
 
+  val v26 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.18.0"),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v26_jellyseerr_request_advanced_settings),
+    ),
+    IntroSection.Text(
+      UIText.ResourceText(
+        R.string.feature_onboarding_v26_jellyseerr_request_advanced_settings_extra,
+      ),
+    ),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -80,5 +94,6 @@ object IntroSections {
     23 to v23,
     24 to v24,
     25 to v25,
+    26 to v26,
   )
 }
