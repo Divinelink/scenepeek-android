@@ -3,23 +3,22 @@ package com.divinelink.feature.request.media
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.media.MediaItem
-import com.divinelink.core.ui.components.dialog.DialogState
 import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
-data class RequestSeasonsUiState(
+data class RequestMediaUiState(
   val seasons: List<Season>,
   val media: MediaItem.Media,
   val is4k: Boolean,
   val isLoading: Boolean,
   val snackbarMessage: SnackbarMessage?,
   val dialogState: TwoButtonDialogState?,
-  val instances: List<SonarrInstance>,
+  val instances: List<ServerInstance>,
   val profiles: List<InstanceProfile>,
   val rootFolders: List<InstanceRootFolder>,
-  val selectedInstance: LCEState<SonarrInstance>,
+  val selectedInstance: LCEState<ServerInstance>,
   val selectedProfile: LCEState<InstanceProfile>,
   val selectedRootFolder: LCEState<InstanceRootFolder>,
 ) {
@@ -27,7 +26,7 @@ data class RequestSeasonsUiState(
     fun initial(
       seasons: List<Season>,
       media: MediaItem.Media,
-    ) = RequestSeasonsUiState(
+    ) = RequestMediaUiState(
       seasons = seasons,
       media = media,
       is4k = false,

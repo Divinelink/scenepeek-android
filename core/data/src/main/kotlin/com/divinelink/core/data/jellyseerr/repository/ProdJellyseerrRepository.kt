@@ -12,10 +12,8 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
-import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstance
-import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstanceDetails
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstanceDetails
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
@@ -120,19 +118,19 @@ class ProdJellyseerrRepository(
     .getTvDetails(mediaId)
     .map { it.getOrNull()?.mediaInfo?.map() }
 
-  override suspend fun getRadarrInstances(): Result<List<RadarrInstance>> = service
+  override suspend fun getRadarrInstances(): Result<List<ServerInstance>> = service
     .getRadarrInstances()
     .map { it.map() }
 
-  override suspend fun getSonarrInstances(): Result<List<SonarrInstance>> = service
+  override suspend fun getSonarrInstances(): Result<List<ServerInstance>> = service
     .getSonarrInstances()
     .map { it.map() }
 
-  override suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetails> = service
+  override suspend fun getRadarrInstanceDetails(id: Int): Result<ServerInstanceDetails> = service
     .getRadarrInstanceDetails(id)
     .map { it.map() }
 
-  override suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetails> = service
+  override suspend fun getSonarrInstanceDetails(id: Int): Result<ServerInstanceDetails> = service
     .getSonarrInstanceDetails(id)
     .map { it.map() }
 }

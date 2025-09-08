@@ -90,7 +90,7 @@ import com.divinelink.feature.details.media.ui.forms.recommendation.Recommendati
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
-import com.divinelink.feature.request.media.RequestSeasonsModal
+import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged

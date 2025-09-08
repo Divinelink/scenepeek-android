@@ -1,10 +1,10 @@
 package com.divinelink.core.fixtures.model.jellyseerr.server.radarr
 
-import com.divinelink.core.model.jellyseerr.server.radarr.RadarrInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
 
 object RadarrInstanceFactory {
 
-  val radarr = RadarrInstance(
+  val radarr = ServerInstance.Radarr(
     id = 0,
     name = "Radarr",
     is4k = false,
@@ -13,7 +13,7 @@ object RadarrInstanceFactory {
     activeProfileId = 6,
   )
 
-  val radarr4K = RadarrInstance(
+  val radarr4K = ServerInstance.Radarr(
     id = 1,
     name = "4K Radarr",
     is4k = true,
@@ -22,7 +22,7 @@ object RadarrInstanceFactory {
     activeProfileId = 5,
   )
 
-  val radarrSecondary = RadarrInstance(
+  val radarrSecondary = ServerInstance.Radarr(
     id = 2,
     name = "Secondary Radarr",
     is4k = false,

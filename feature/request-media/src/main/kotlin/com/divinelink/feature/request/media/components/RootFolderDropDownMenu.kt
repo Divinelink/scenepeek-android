@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.feature.request.media.LCEState
-import com.divinelink.feature.request.media.LceDropdownMenu
 import com.divinelink.feature.request.media.R
 
 @Composable

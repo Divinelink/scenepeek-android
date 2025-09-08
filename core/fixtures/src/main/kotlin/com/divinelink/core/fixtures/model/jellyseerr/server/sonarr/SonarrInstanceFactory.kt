@@ -1,10 +1,10 @@
 package com.divinelink.core.fixtures.model.jellyseerr.server.sonarr
 
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
 
 object SonarrInstanceFactory {
 
-  val sonarr = SonarrInstance(
+  val sonarr = ServerInstance.Sonarr(
     id = 0,
     name = "Sonarr",
     is4k = false,
@@ -13,7 +13,7 @@ object SonarrInstanceFactory {
     activeProfileId = 6,
   )
 
-  val anime = SonarrInstance(
+  val anime = ServerInstance.Sonarr(
     id = 0,
     name = "Animarr",
     is4k = false,
@@ -22,7 +22,7 @@ object SonarrInstanceFactory {
     activeProfileId = 2,
   )
 
-  val sonarr4K = SonarrInstance(
+  val sonarr4K = ServerInstance.Sonarr(
     id = 1,
     name = "Sonarr 4K",
     is4k = true,

@@ -55,7 +55,7 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
-import com.divinelink.feature.request.media.RequestSeasonsViewModel
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeDeleteRatingUseCase
@@ -930,7 +930,7 @@ class DetailsScreenTest : ComposeTest() {
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
     declare {
-      RequestSeasonsViewModel(
+      RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
         repository = repository.mock,
         requestMediaUseCase = requestMediaUseCase.mock,

@@ -3,7 +3,8 @@ package com.divinelink.feature.request.media
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
-import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.domain.jellyseerr.GetServerInstanceDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetServerInstancesUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Season
@@ -11,7 +12,7 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
@@ -28,14 +29,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RequestSeasonsViewModel(
+class RequestMediaViewModel(
   media: MediaItem.Media,
-  private val repository: JellyseerrRepository,
+  private val getServerInstancesUseCase: GetServerInstancesUseCase,
+  private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(
-    RequestSeasonsUiState.initial(
+    RequestMediaUiState.initial(
       seasons = emptyList(),
       media = media,
     ),
@@ -47,7 +49,7 @@ class RequestSeasonsViewModel(
 
   init {
     viewModelScope.launch {
-      repository.getSonarrInstances().fold(
+      getServerInstancesUseCase(media.mediaType).fold(
         onSuccess = { instances ->
           val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }
           _uiState.update { uiState ->
@@ -90,7 +92,7 @@ class RequestSeasonsViewModel(
     }
   }
 
-  private fun selectInstance(instance: SonarrInstance) {
+  private fun selectInstance(instance: ServerInstance) {
     if (instance == (uiState.value.selectedInstance as? LCEState.Content)?.data) return
 
     _uiState.update { uiState ->
@@ -104,7 +106,12 @@ class RequestSeasonsViewModel(
           selectedRootFolder = LCEState.Loading,
         )
       }
-      repository.getSonarrInstanceDetails(instance.id).fold(
+      getServerInstanceDetailsUseCase(
+        parameters = GetServerInstanceDetailsUseCase.Parameters(
+          mediaType = uiState.value.media.mediaType,
+          serverId = instance.id,
+        ),
+      ).fold(
         onSuccess = { result ->
           _uiState.update { uiState ->
             val defaultProfile = result.profiles.find { it.id == instance.activeProfileId }
@@ -235,14 +242,14 @@ class RequestSeasonsViewModel(
     }
   }
 
-  fun onAction(action: RequestSeasonAction) {
+  fun onAction(action: RequestMediaAction) {
     when (action) {
-      RequestSeasonAction.DismissSnackbar -> dismissSnackbar()
-      RequestSeasonAction.DismissDialog -> dismissDialog()
-      is RequestSeasonAction.RequestMedia -> onRequestMedia(action.seasons)
-      is RequestSeasonAction.SelectInstance -> selectInstance(action.instance)
-      is RequestSeasonAction.SelectQualityProfile -> selectQualityProfile(action.quality)
-      is RequestSeasonAction.SelectRootFolder -> selectRootFolder(action.folder)
+      RequestMediaAction.DismissSnackbar -> dismissSnackbar()
+      RequestMediaAction.DismissDialog -> dismissDialog()
+      is RequestMediaAction.RequestMedia -> onRequestMedia(action.seasons)
+      is RequestMediaAction.SelectInstance -> selectInstance(action.instance)
+      is RequestMediaAction.SelectQualityProfile -> selectQualityProfile(action.quality)
+      is RequestMediaAction.SelectRootFolder -> selectRootFolder(action.folder)
     }
   }
 

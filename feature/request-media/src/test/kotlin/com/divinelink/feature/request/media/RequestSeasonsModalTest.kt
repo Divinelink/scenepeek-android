@@ -29,6 +29,7 @@ import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.snackbar.SnackbarMessage
+import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -46,7 +47,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -78,7 +79,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
       repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-      val viewModel = RequestSeasonsViewModel(
+      val viewModel = RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
         repository = repository.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
@@ -112,7 +113,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -157,7 +158,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -210,7 +211,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -248,7 +249,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -288,7 +289,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -329,7 +330,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     requestMediaUseCase.mockFailure(AppException.Forbidden())
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -376,7 +377,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     requestMediaUseCase.mockFailure(AppException.Unauthorized())
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -422,7 +423,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     requestMediaUseCase.mockFailure(AppException.Conflict())
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -464,7 +465,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     requestMediaUseCase.mockFailure(AppException.Unknown())
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -505,7 +506,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       response = Result.success(emptyList()),
     )
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -540,7 +541,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       response = Result.failure(AppException.Unknown()),
     )
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -577,7 +578,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -622,7 +623,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -665,7 +666,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -722,7 +723,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       response = Result.success(JellyseerrMediaRequestResponseFactory.tvPartially()),
     )
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
@@ -783,7 +784,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     repository.mockGetSonarrDetails(Result.failure(AppException.Unknown()))
 
-    val viewModel = RequestSeasonsViewModel(
+    val viewModel = RequestMediaViewModel(
       media = MediaItemFactory.theOffice(),
       repository = repository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,

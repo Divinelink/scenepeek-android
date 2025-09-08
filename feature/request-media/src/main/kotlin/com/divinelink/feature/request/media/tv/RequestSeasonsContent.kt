@@ -1,4 +1,4 @@
-package com.divinelink.feature.request.media
+package com.divinelink.feature.request.media.tv
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -43,16 +43,19 @@ import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.dialog.TwoButtonDialog
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
+import com.divinelink.feature.request.media.LCEState
+import com.divinelink.feature.request.media.RequestMediaAction
+import com.divinelink.feature.request.media.RequestMediaUiState
 import com.divinelink.feature.request.media.components.DestinationServerDropDownMenu
 import com.divinelink.feature.request.media.components.QualityProfileDropDownMenu
 import com.divinelink.feature.request.media.components.RootFolderDropDownMenu
-import com.divinelink.feature.request.media.provider.RequestSeasonUiStateProvider
+import com.divinelink.feature.request.media.provider.RequestMediaUiStateProvider
 
 @Composable
 internal fun RequestSeasonsContent(
-  state: RequestSeasonsUiState,
+  state: RequestMediaUiState,
   onDismissRequest: () -> Unit,
-  onAction: (RequestSeasonAction) -> Unit,
+  onAction: (RequestMediaAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
   val selectedSeasons = remember { mutableStateListOf<Int>() }
@@ -60,17 +63,17 @@ internal fun RequestSeasonsContent(
 
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
-    onDismissSnackbar = { onAction(RequestSeasonAction.DismissSnackbar) },
+    onDismissSnackbar = { onAction(RequestMediaAction.DismissSnackbar) },
     onShowMessage = onDismissRequest,
   )
 
   state.dialogState?.let { dialogState ->
     TwoButtonDialog(
       state = dialogState,
-      onDismissRequest = { onAction(RequestSeasonAction.DismissDialog) },
-      onDismiss = { onAction(RequestSeasonAction.DismissDialog) },
+      onDismissRequest = { onAction(RequestMediaAction.DismissDialog) },
+      onDismiss = { onAction(RequestMediaAction.DismissDialog) },
       onConfirm = {
-        onAction(RequestSeasonAction.DismissDialog)
+        onAction(RequestMediaAction.DismissDialog)
         onNavigate(Navigation.JellyseerrSettingsRoute(withNavigationBar = true))
       },
     )
@@ -248,7 +251,7 @@ internal fun RequestSeasonsContent(
             enabled = !state.isLoading,
             options = state.instances,
             currentInstance = state.selectedInstance,
-            onUpdate = { onAction(RequestSeasonAction.SelectInstance(it)) },
+            onUpdate = { onAction(RequestMediaAction.SelectInstance(it)) },
           )
         }
       }
@@ -268,7 +271,7 @@ internal fun RequestSeasonsContent(
           enabled = !state.isLoading,
           options = state.profiles,
           currentInstance = state.selectedProfile,
-          onUpdate = { onAction(RequestSeasonAction.SelectQualityProfile(it)) },
+          onUpdate = { onAction(RequestMediaAction.SelectQualityProfile(it)) },
         )
       }
 
@@ -287,7 +290,7 @@ internal fun RequestSeasonsContent(
           enabled = !state.isLoading,
           options = state.rootFolders,
           currentInstance = state.selectedRootFolder,
-          onUpdate = { onAction(RequestSeasonAction.SelectRootFolder(it)) },
+          onUpdate = { onAction(RequestMediaAction.SelectRootFolder(it)) },
         )
       }
     }
@@ -309,7 +312,7 @@ internal fun RequestSeasonsContent(
           .padding(bottom = MaterialTheme.dimensions.keyline_8)
           .padding(horizontal = MaterialTheme.dimensions.keyline_16),
         enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
-        onClick = { onAction(RequestSeasonAction.RequestMedia(selectedSeasons)) },
+        onClick = { onAction(RequestMediaAction.RequestMedia(selectedSeasons)) },
       ) {
         val text = if (selectedSeasons.isEmpty()) {
           stringResource(id = UiString.core_ui_select_seasons_button)
@@ -338,7 +341,7 @@ internal fun RequestSeasonsContent(
 @Composable
 @Previews
 fun RequestSeasonsContentPreview(
-  @PreviewParameter(RequestSeasonUiStateProvider::class) uiState: RequestSeasonsUiState,
+  @PreviewParameter(RequestMediaUiStateProvider::class) uiState: RequestMediaUiState,
 ) {
   PreviewLocalProvider {
     RequestSeasonsContent(

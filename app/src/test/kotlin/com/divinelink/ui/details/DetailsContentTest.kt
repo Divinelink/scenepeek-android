@@ -45,7 +45,7 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
-import com.divinelink.feature.request.media.RequestSeasonsViewModel
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.koin.android.ext.koin.androidContext
@@ -658,7 +658,7 @@ class DetailsContentTest : ComposeTest() {
     repository.mockGetSonarrDetails(Result.success(SonarrInstanceDetailsFactory.sonarr))
 
     declare {
-      RequestSeasonsViewModel(
+      RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
         repository = repository.mock,
         requestMediaUseCase = FakeRequestMediaUseCase().mock,

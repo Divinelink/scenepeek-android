@@ -4,18 +4,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.model.jellyseerr.server.sonarr.SonarrInstance
+import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.feature.request.media.LCEState
-import com.divinelink.feature.request.media.LceDropdownMenu
 import com.divinelink.feature.request.media.R
 
 @Composable
 fun DestinationServerDropDownMenu(
   modifier: Modifier = Modifier,
   enabled: Boolean,
-  options: List<SonarrInstance>,
-  currentInstance: LCEState<SonarrInstance>,
-  onUpdate: (SonarrInstance) -> Unit,
+  options: List<ServerInstance>,
+  currentInstance: LCEState<ServerInstance>,
+  onUpdate: (ServerInstance) -> Unit,
 ) {
   LceDropdownMenu(
     modifier = modifier,

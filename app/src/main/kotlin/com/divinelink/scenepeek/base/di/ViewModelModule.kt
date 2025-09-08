@@ -12,7 +12,7 @@ import com.divinelink.feature.lists.details.ListDetailsViewModel
 import com.divinelink.feature.lists.user.ListsViewModel
 import com.divinelink.feature.onboarding.ui.IntroViewModel
 import com.divinelink.feature.profile.ProfileViewModel
-import com.divinelink.feature.request.media.RequestSeasonsViewModel
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.feature.search.ui.SearchViewModel
 import com.divinelink.feature.settings.app.account.AccountSettingsViewModel
 import com.divinelink.feature.settings.app.account.jellyseerr.JellyseerrSettingsViewModel
@@ -46,7 +46,7 @@ val appViewModelModule = module {
   viewModelOf(::CreateListViewModel)
   viewModelOf(::SelectBackdropViewModel)
   viewModelOf(::ActionMenuViewModel)
-  viewModelOf(::RequestSeasonsViewModel)
+  viewModelOf(::RequestMediaViewModel)
 
   // Components
   viewModelOf(::SwitchViewButtonViewModel)
