@@ -9,12 +9,12 @@
 .externalNativeBuild
 .idea/assetWizardSettings.xml
 app/release/output-metadata.json
-app/release/app-release.apk
 
 app/schemas/*
 
 # Built application files
 *.apk
+*.aab
 *.ap_
 /.idea/sonarlint/
 

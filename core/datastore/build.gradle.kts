@@ -1,6 +1,8 @@
 plugins {
   alias(libs.plugins.divinelink.android.library)
   alias(libs.plugins.divinelink.android.koin)
+
+  alias(libs.plugins.kotlin.serialization)
 }
 
 android {

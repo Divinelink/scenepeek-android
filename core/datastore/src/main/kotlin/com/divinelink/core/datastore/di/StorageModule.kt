@@ -11,6 +11,8 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.account.AccountDetailsSerializer
 import com.divinelink.core.datastore.account.AccountPreferenceStorage
 import com.divinelink.core.datastore.account.AccountStorage
+import com.divinelink.core.datastore.auth.DataStoreSavedStateStorage
+import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.destroyEncryptedSharedPreferencesAndRebuild
 import com.divinelink.core.datastore.getEncryptedSharedPreferences
 import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
@@ -31,6 +33,7 @@ private val Context.uiSettingsDataStore by preferencesDataStore(DatastoreUiStora
 private val Context.onboardingDataStore by preferencesDataStore(
   DataStoreOnboardingStorage.PREFS_NAME,
 )
+private val Context.savedStateDataStore by preferencesDataStore("saved_state")
 
 val storageModule = module {
 
@@ -52,6 +55,15 @@ val storageModule = module {
   single<UiSettingsStorage> {
     val context: Context = get()
     DatastoreUiStorage(context.uiSettingsDataStore)
+  }
+
+  single<SavedStateStorage> {
+    val context: Context = get()
+    DataStoreSavedStateStorage(
+      dataStore = context.savedStateDataStore,
+      json = get(),
+      scope = get(),
+    )
   }
 
   single<EncryptedStorage> {
