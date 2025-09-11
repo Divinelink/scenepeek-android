@@ -15,7 +15,6 @@ import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAccountRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.last
@@ -79,7 +78,6 @@ class FetchUserDataUseCaseTest {
   @Test
   fun `test fetch tv watchlist with success`() = runTest {
     sessionStorage = SessionStorage(
-      storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
@@ -124,7 +122,6 @@ class FetchUserDataUseCaseTest {
   @Test
   fun `test fetch movies watchlist with success`() = runTest {
     sessionStorage = SessionStorage(
-      storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
@@ -169,7 +166,6 @@ class FetchUserDataUseCaseTest {
   @Test
   fun `test fetch rated tv with success`() = runTest {
     sessionStorage = SessionStorage(
-      storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
@@ -214,7 +210,6 @@ class FetchUserDataUseCaseTest {
   @Test
   fun `test fetch rated movies with success`() = runTest {
     sessionStorage = SessionStorage(
-      storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
@@ -259,7 +254,6 @@ class FetchUserDataUseCaseTest {
   @Test
   fun `test canFetchMore is false when page is greater than total pages`() = runTest {
     sessionStorage = SessionStorage(
-      storage = FakePreferenceStorage(),
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,

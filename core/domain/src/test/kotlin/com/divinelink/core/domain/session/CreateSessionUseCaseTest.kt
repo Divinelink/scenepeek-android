@@ -11,7 +11,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestSessionRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -25,8 +24,7 @@ class CreateSessionUseCaseTest {
 
   val repository = TestSessionRepository()
 
-  val storage = SessionStorage(
-    storage = FakePreferenceStorage(),
+  private val storage = SessionStorage(
     encryptedStorage = FakeEncryptedPreferenceStorage(),
     accountStorage = FakeAccountStorage(),
   )

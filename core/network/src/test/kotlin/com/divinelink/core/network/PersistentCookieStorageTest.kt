@@ -1,7 +1,7 @@
 package com.divinelink.core.network
 
 import com.divinelink.core.network.client.PersistentCookieStorage
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 import com.google.common.truth.Truth.assertThat
 import io.ktor.http.Url
 import kotlinx.coroutines.test.runTest
@@ -28,9 +28,7 @@ class PersistentCookieStorageTest {
   fun `test get cookie when cookie is null`() = runTest {
     // Given
     val cookieStorage = PersistentCookieStorage(
-      FakeEncryptedPreferenceStorage(
-        jellyseerrAuthCookie = null,
-      ),
+      storage = TestSavedStateStorage(),
     )
 
     // When
@@ -51,9 +49,9 @@ class PersistentCookieStorageTest {
       "SameSite=Lax"
 
     val cookieStorage = PersistentCookieStorage(
-      FakeEncryptedPreferenceStorage(
-        jellyseerrAuthCookie = cookieString,
-      ),
+      storage = TestSavedStateStorage().apply {
+        setJellyseerrAuthCookie(cookieString)
+      },
     )
 
     // When

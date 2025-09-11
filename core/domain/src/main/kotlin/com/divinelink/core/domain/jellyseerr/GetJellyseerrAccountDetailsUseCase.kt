@@ -30,7 +30,7 @@ class GetJellyseerrAccountDetailsUseCase(
         .selectedJellyseerrAccount
         .distinctUntilChanged()
         .collect { account ->
-          if (account?.address != null) {
+          if (account != null) {
             repository.getJellyseerrAccountDetails(
               address = account.address,
               refresh = parameters,

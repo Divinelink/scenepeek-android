@@ -22,9 +22,9 @@ class RequestMediaUseCase(
 
   override fun execute(parameters: JellyseerrRequestParams): Flow<Result<MediaRequestResult>> =
     flow {
-      val address = authRepository.selectedJellyseerrAccount.first()?.address
+      val account = authRepository.selectedJellyseerrAccount.first()
 
-      if (address == null) {
+      if (account == null) {
         emit(Result.failure(MissingJellyseerrHostAddressException()))
         return@flow
       }

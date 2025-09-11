@@ -10,7 +10,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.google.common.truth.Truth.assertThat
@@ -159,7 +158,6 @@ class AddToWatchlistUseCaseTest {
     sessionId: String?,
     accessToken: AccessToken? = null,
   ) = SessionStorage(
-    storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(
       sessionId = sessionId,
       accessToken = accessToken?.accessToken,

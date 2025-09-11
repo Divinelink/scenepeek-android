@@ -14,13 +14,14 @@ class LogoutJellyseerrUseCase(
 ) : UseCase<Unit, Unit>(dispatcher.default) {
 
   override suspend fun execute(parameters: Unit) {
-    val address = authRepository.selectedJellyseerrAccount.first()?.address
-    if (address == null) {
+    val account = authRepository.selectedJellyseerrAccount.first()
+
+    if (account == null) {
       authRepository.clearSelectedJellyseerrAccount()
       repository.clearJellyseerrAccountDetails()
       Result.success(Unit)
     } else {
-      val response = repository.logout(address)
+      val response = repository.logout(account.address)
         .onFailure {
           authRepository.clearSelectedJellyseerrAccount()
           repository.clearJellyseerrAccountDetails()

@@ -1,15 +1,12 @@
 package com.divinelink.core.network.client
 
 import JvmUnitTestDemoAssetManager
-import com.divinelink.core.datastore.EncryptedStorage
-import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 import com.google.common.truth.Truth.assertThat
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.mock.MockEngine
@@ -23,11 +20,7 @@ import kotlin.test.assertFailsWith
 class JellyseerrRestClientTest {
 
   private lateinit var client: JellyseerrRestClient
-  private lateinit var encryptedStorage: EncryptedStorage
-  private lateinit var datastore: PreferenceStorage
   private lateinit var engine: HttpClientEngine
-
-  private val address = "http://localhost:8080"
 
   @Test
   fun `test unauthorized request triggers reAuthentication`() = runTest {
@@ -37,9 +30,9 @@ class JellyseerrRestClientTest {
       val requestHistory = mutableListOf<Pair<String, HttpStatusCode>>()
 
       val expectedRequests = listOf(
-        "http://localhost:8080/api/v1/request" to HttpStatusCode.Unauthorized,
-        "http://localhost:8080/api/v1/auth/local" to HttpStatusCode.OK,
-        "http://localhost:8080/api/v1/request" to HttpStatusCode.OK,
+        "http://localhost:5055/api/v1/request" to HttpStatusCode.Unauthorized,
+        "http://localhost:5055/api/v1/auth/local" to HttpStatusCode.OK,
+        "http://localhost:5055/api/v1/request" to HttpStatusCode.OK,
       )
 
       var requestCount = 0
@@ -69,24 +62,16 @@ class JellyseerrRestClientTest {
         }
       }
 
-      encryptedStorage = FakeEncryptedPreferenceStorage(
-        jellyseerrPassword = "testPassword",
-      )
-      datastore = FakePreferenceStorage(
-        jellyseerrAccount = "testAccount",
-        jellyseerrAddress = address,
-        jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-      )
-
       client = JellyseerrRestClient(
         engine = engine,
-        encryptedStorage = encryptedStorage,
-        storage = datastore,
+        savedStateStorage = TestSavedStateStorage().apply {
+          setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+        },
       )
 
       // Initial request
       client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
+        url = "http://localhost:5055/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
 
@@ -100,10 +85,10 @@ class JellyseerrRestClientTest {
     val requestHistory = mutableListOf<Pair<String, HttpStatusCode>>()
 
     val expectedRequests = listOf(
-      "http://localhost:8080/api/v1/request" to HttpStatusCode.Unauthorized,
-      "http://localhost:8080/api/v1/auth/local" to HttpStatusCode.Unauthorized,
-      "http://localhost:8080/api/v1/request" to HttpStatusCode.Unauthorized,
-      "http://localhost:8080/api/v1/auth/local" to HttpStatusCode.Unauthorized,
+      "http://localhost:5055/api/v1/request" to HttpStatusCode.Unauthorized,
+      "http://localhost:5055/api/v1/auth/local" to HttpStatusCode.Unauthorized,
+      "http://localhost:5055/api/v1/request" to HttpStatusCode.Unauthorized,
+      "http://localhost:5055/api/v1/auth/local" to HttpStatusCode.Unauthorized,
     )
 
     engine = MockEngine { request ->
@@ -124,24 +109,16 @@ class JellyseerrRestClientTest {
       }
     }
 
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-    )
-
     client = JellyseerrRestClient(
       engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
+      savedStateStorage = TestSavedStateStorage().apply {
+        setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+      },
     )
 
     assertFailsWith<AppException.Unauthorized> {
       client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
+        url = "http://localhost:5055/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
     }
@@ -159,25 +136,16 @@ class JellyseerrRestClientTest {
       )
     }
 
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = null,
-    )
-
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-    )
-
     client = JellyseerrRestClient(
       engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
+      savedStateStorage = TestSavedStateStorage().apply {
+        setJellyseerrAccount(JellyseerrAccountFactory.cup10())
+      },
     )
 
     assertFailsWith<AppException.Unauthorized> {
       client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
+        url = "http://localhost:5055/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
     }
@@ -192,124 +160,14 @@ class JellyseerrRestClientTest {
       )
     }
 
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = null,
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-    )
-
     client = JellyseerrRestClient(
       engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
+      savedStateStorage = TestSavedStateStorage(),
     )
 
     assertFailsWith<AppException.Unauthorized> {
       client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
-        body = JellyseerrRequestMediaBodyApiFactory.movie(),
-      )
-    }
-  }
-
-  @Test
-  fun `test reAuthentication without address throws InvalidCredentials`() = runTest {
-    engine = MockEngine {
-      respond(
-        content = "Failed to authenticate",
-        status = HttpStatusCode.Unauthorized,
-      )
-    }
-
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = null,
-      jellyseerrSignInMethod = JellyseerrAuthMethod.JELLYSEERR.name,
-    )
-
-    client = JellyseerrRestClient(
-      engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
-    )
-
-    assertFailsWith<AppException.Unauthorized> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
-        body = JellyseerrRequestMediaBodyApiFactory.movie(),
-      )
-    }
-  }
-
-  @Test
-  fun `test reAuthentication without signInMethod throws InvalidCredentials`() = runTest {
-    engine = MockEngine {
-      respond(
-        content = "Failed to authenticate",
-        status = HttpStatusCode.Unauthorized,
-      )
-    }
-
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = null,
-    )
-
-    client = JellyseerrRestClient(
-      engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
-    )
-
-    assertFailsWith<AppException.Unauthorized> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
-        body = JellyseerrRequestMediaBodyApiFactory.movie(),
-      )
-    }
-  }
-
-  @Test
-  fun `test reAuthentication with invalid sign in method throws InvalidCredentials`() = runTest {
-    engine = MockEngine {
-      respond(
-        content = "Failed to authenticate",
-        status = HttpStatusCode.Unauthorized,
-      )
-    }
-
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      jellyseerrPassword = "testPassword",
-    )
-
-    datastore = FakePreferenceStorage(
-      jellyseerrAccount = "testAccount",
-      jellyseerrAddress = address,
-      jellyseerrSignInMethod = "invalid method",
-    )
-
-    client = JellyseerrRestClient(
-      engine = engine,
-      encryptedStorage = encryptedStorage,
-      storage = datastore,
-    )
-
-    assertFailsWith<AppException.Unauthorized> {
-      client.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
-        url = "http://localhost:8080/api/v1/request",
+        url = "http://localhost:5055/api/v1/request",
         body = JellyseerrRequestMediaBodyApiFactory.movie(),
       )
     }
