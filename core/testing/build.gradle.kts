@@ -18,6 +18,8 @@ dependencies {
 
   api(libs.androidx.navigation.testing)
 
+  implementation(libs.kotlinx.serialization.json)
+
   debugApi(libs.compose.ui.test.manifest)
 
   implementation(projects.core.ui)

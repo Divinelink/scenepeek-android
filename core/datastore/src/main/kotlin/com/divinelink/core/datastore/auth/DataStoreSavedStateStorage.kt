@@ -52,7 +52,6 @@ class DataStoreSavedStateStorage(
   override suspend fun setJellyseerrAuthCookie(cookie: String) {
     val accountId = Uuid.random().toHexDashString()
     updateState { state ->
-
       state.copy(
         selectedJellyseerrAccountId = accountId,
         jellyseerrAuthCookies = state.jellyseerrAuthCookies.plus(accountId to cookie),
@@ -77,10 +76,13 @@ class DataStoreSavedStateStorage(
 
   private suspend fun updateState(update: (ConcreteSavedState) -> ConcreteSavedState) {
     dataStore.edit { preferences ->
-      val encrypted = preferences[SAVED_STATE_KEY] ?: return@edit
-      val currentState = json.decodeFromString<ConcreteSavedState>(
-        encryptor.decrypt(secret = EncryptionSecretKey.SAVED_STATE_KEY, ciphertext = encrypted),
-      ) as ConcreteSavedState
+      val currentState = preferences[SAVED_STATE_KEY]?.let { encrypted ->
+        val decrypted = encryptor.decrypt(
+          secret = EncryptionSecretKey.SAVED_STATE_KEY,
+          ciphertext = encrypted,
+        )
+        json.decodeFromString<ConcreteSavedState>(decrypted)
+      } ?: InitialSavedState
 
       preferences[SAVED_STATE_KEY] = encryptor.encrypt(
         secret = EncryptionSecretKey.SAVED_STATE_KEY,
