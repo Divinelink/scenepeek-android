@@ -13,16 +13,23 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
     .savedState
     .map { it.isJellyseerrEnabled() }
 
-  override val jellyseerrAccount: Flow<SavedState.JellyseerrAccount?> = savedStateStorage
+  override val jellyseerrAccounts: Flow<Map<String, SavedState.JellyseerrAccount>> =
+    savedStateStorage
+      .savedState
+      .map { it.jellyseerrAccounts }
+      .distinctUntilChanged()
+
+  override val selectedJellyseerrAccount: Flow<SavedState.JellyseerrAccount?> = savedStateStorage
     .savedState
-    .map { it.jellyseerr }
-    .distinctUntilChanged()
+    .map {
+      it.jellyseerrAccounts[it.selectedJellyseerrAccountId]
+    }
 
   override suspend fun updateJellyseerrAccount(account: SavedState.JellyseerrAccount) {
     savedStateStorage.setJellyseerrAccount(account)
   }
 
-  override suspend fun clearJellyseerrAccount() {
-    savedStateStorage.setJellyseerrAccount(null)
+  override suspend fun clearSelectedJellyseerrAccount() {
+    savedStateStorage.clearSelectedJellyseerrAccount()
   }
 }

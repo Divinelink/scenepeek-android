@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package com.divinelink.core.datastore.auth
 
 import androidx.datastore.core.DataStore
@@ -11,8 +13,11 @@ import com.divinelink.core.datastore.crypto.EncryptionSecretKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class DataStoreSavedStateStorage(
   private val encryptor: DataEncryptor,
@@ -32,17 +37,54 @@ class DataStoreSavedStateStorage(
     initialValue = InitialSavedState,
   )
 
-  override suspend fun setJellyseerrAccount(account: JellyseerrAccount?) {
-    dataStore.edit { preferences ->
-      val currentState = preferences[SAVED_STATE_KEY]?.let { jsonString ->
-        json.decodeFromString<ConcreteSavedState>(jsonString)
-      } ?: ConcreteSavedState()
+  override suspend fun setJellyseerrAccount(account: JellyseerrAccount) = updateState { state ->
+    requireNotNull(state.selectedJellyseerrAccountId) {
+      "There's no connected jellyseerr account"
+    }
 
-      val newState = currentState.copy(jellyseerr = account)
+    state.copy(
+      jellyseerrAccounts = state.jellyseerrAccounts.plus(
+        state.selectedJellyseerrAccountId to account,
+      ),
+    )
+  }
+
+  override suspend fun setJellyseerrAuthCookie(cookie: String) {
+    val accountId = Uuid.random().toHexDashString()
+    updateState { state ->
+
+      state.copy(
+        selectedJellyseerrAccountId = accountId,
+        jellyseerrAuthCookies = state.jellyseerrAuthCookies.plus(accountId to cookie),
+      )
+    }
+    // Suspend till cookie has been saved and is readable
+    savedState.first { it.jellyseerrAuthCookies[accountId] != null }
+  }
+
+  override suspend fun clearSelectedJellyseerrAccount() = updateState { state ->
+    val uuid = state.selectedJellyseerrAccountId
+    if (uuid == null) {
+      state
+    } else {
+      state.copy(
+        jellyseerrAuthCookies = state.jellyseerrAuthCookies.minus(uuid),
+        jellyseerrAccounts = state.jellyseerrAccounts.minus(uuid),
+        selectedJellyseerrAccountId = state.jellyseerrAccounts.keys.minus(uuid).firstOrNull(),
+      )
+    }
+  }
+
+  private suspend fun updateState(update: (ConcreteSavedState) -> ConcreteSavedState) {
+    dataStore.edit { preferences ->
+      val encrypted = preferences[SAVED_STATE_KEY] ?: return@edit
+      val currentState = json.decodeFromString<ConcreteSavedState>(
+        encryptor.decrypt(secret = EncryptionSecretKey.SAVED_STATE_KEY, ciphertext = encrypted),
+      ) as ConcreteSavedState
 
       preferences[SAVED_STATE_KEY] = encryptor.encrypt(
         secret = EncryptionSecretKey.SAVED_STATE_KEY,
-        text = json.encodeToString(newState),
+        text = json.encodeToString<ConcreteSavedState>(update(currentState)),
       )
     }
   }
@@ -53,6 +95,10 @@ class DataStoreSavedStateStorage(
   }
 }
 
-val InitialSavedState: SavedState = ConcreteSavedState()
+val InitialSavedState: ConcreteSavedState = ConcreteSavedState(
+  jellyseerrAccounts = emptyMap(),
+  jellyseerrAuthCookies = emptyMap(),
+  selectedJellyseerrAccountId = null,
+)
 
-fun SavedState.isJellyseerrEnabled(): Boolean = jellyseerr != null
+fun SavedState.isJellyseerrEnabled(): Boolean = jellyseerrAccounts.keys.isNotEmpty()

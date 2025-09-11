@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
   val isJellyseerrEnabled: Flow<Boolean>
-  val jellyseerrAccount: Flow<SavedState.JellyseerrAccount?>
+  val jellyseerrAccounts: Flow<Map<String, SavedState.JellyseerrAccount>>
+  val selectedJellyseerrAccount: Flow<SavedState.JellyseerrAccount?>
 
   suspend fun updateJellyseerrAccount(account: SavedState.JellyseerrAccount)
-  suspend fun clearJellyseerrAccount()
+  suspend fun clearSelectedJellyseerrAccount()
 }

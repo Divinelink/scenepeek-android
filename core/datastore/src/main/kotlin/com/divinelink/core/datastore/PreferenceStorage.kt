@@ -7,9 +7,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ACCOUNT
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_ADDRESS
-import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_JELLYSEERR_AUTH_METHOD
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
@@ -36,18 +33,6 @@ interface PreferenceStorage {
 
   suspend fun setSpoilersObfuscation(isEnabled: Boolean)
   val spoilersObfuscation: Flow<Boolean>
-
-  suspend fun clearJellyseerrAddress()
-  suspend fun setJellyseerrAddress(address: String)
-  val jellyseerrAddress: Flow<String?>
-
-  suspend fun clearJellyseerrAccount()
-  suspend fun setJellyseerrAccount(account: String)
-  val jellyseerrAccount: Flow<String?>
-
-  suspend fun clearJellyseerrSignInMethod()
-  suspend fun setJellyseerrAuthMethod(authMethod: String)
-  val jellyseerrAuthMethod: Flow<String?>
 
   suspend fun setMovieRatingSource(ratingSource: RatingSource)
   val movieRatingSource: Flow<RatingSource>
@@ -77,10 +62,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_SERIES_TOTAL_EPISODES_OBFUSCATION = booleanPreferencesKey(
       "settings.series.episode.obfuscation",
     )
-
-    val PREF_JELLYSEERR_ADDRESS = stringPreferencesKey("jellyseerr.address")
-    val PREF_JELLYSEERR_ACCOUNT = stringPreferencesKey("jellyseerr.account")
-    val PREF_JELLYSEERR_AUTH_METHOD = stringPreferencesKey("jellyseerr.sign.in.method")
 
     val PREF_MOVIE_RATING_SOURCE = stringPreferencesKey("movie.rating.source")
     val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
@@ -128,54 +109,6 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
   override val spoilersObfuscation = dataStore.data.mapLatest {
     it[PREF_SERIES_TOTAL_EPISODES_OBFUSCATION] ?: false
   }.distinctUntilChanged()
-
-  override suspend fun clearJellyseerrAddress() {
-    dataStore.edit {
-      it.remove(PREF_JELLYSEERR_ADDRESS)
-    }
-  }
-
-  override suspend fun setJellyseerrAddress(address: String) {
-    dataStore.edit {
-      it[PREF_JELLYSEERR_ADDRESS] = address
-    }
-  }
-
-  override val jellyseerrAddress: Flow<String?> = dataStore.data.mapLatest {
-    it[PREF_JELLYSEERR_ADDRESS]
-  }.distinctUntilChanged()
-
-  override suspend fun clearJellyseerrAccount() {
-    dataStore.edit {
-      it.remove(PREF_JELLYSEERR_ACCOUNT)
-    }
-  }
-
-  override suspend fun setJellyseerrAccount(account: String) {
-    dataStore.edit {
-      it[PREF_JELLYSEERR_ACCOUNT] = account
-    }
-  }
-
-  override val jellyseerrAccount: Flow<String?> = dataStore.data.map {
-    it[PREF_JELLYSEERR_ACCOUNT]
-  }
-
-  override suspend fun clearJellyseerrSignInMethod() {
-    dataStore.edit {
-      it.remove(PREF_JELLYSEERR_AUTH_METHOD)
-    }
-  }
-
-  override suspend fun setJellyseerrAuthMethod(authMethod: String) {
-    dataStore.edit {
-      it[PREF_JELLYSEERR_AUTH_METHOD] = authMethod
-    }
-  }
-
-  override val jellyseerrAuthMethod: Flow<String?> = dataStore.data.map {
-    it[PREF_JELLYSEERR_AUTH_METHOD]
-  }
 
   override suspend fun setMovieRatingSource(ratingSource: RatingSource) {
     dataStore.edit { it[PREF_MOVIE_RATING_SOURCE] = ratingSource.value }

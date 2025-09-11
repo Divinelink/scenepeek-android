@@ -2,6 +2,7 @@ package com.divinelink.core.datastore
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.security.KeyStore
@@ -18,14 +19,6 @@ interface EncryptedStorage {
   suspend fun clearTmdbAccountId()
   suspend fun setTmdbAccountId(accountId: String)
   val tmdbAccountId: String?
-
-  suspend fun clearJellyseerrAuthCookie()
-  suspend fun setJellyseerrAuthCookie(cookie: String)
-  val jellyseerrAuthCookie: String?
-
-  suspend fun clearJellyseerrPassword()
-  suspend fun setJellyseerrPassword(password: String)
-  val jellyseerrPassword: String?
 }
 
 class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPreferences) :
@@ -33,22 +26,20 @@ class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPrefere
 
   object PreferencesKeys {
     const val SECRET_TMDB_SESSION_ID = "secret.tmdb.token.id"
-    const val SECRET_JELLYSEERR_AUTH_COOKIE = "secret.jellyseerr.auth.cookie"
-    const val SECRET_JELLYSEERR_PASSWORD = "secret.jellyseerr.password"
 
     const val SECRET_TMDB_ACCESS_TOKEN = "secret.tmdb.access.token"
     const val SECRET_TMDB_ACCOUNT_ID = "secret.tmdb.account.id"
   }
 
   override suspend fun setSessionId(sessionId: String) {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       putString(PreferencesKeys.SECRET_TMDB_SESSION_ID, sessionId)
       apply()
     }
   }
 
   override suspend fun clearSession() {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       remove(PreferencesKeys.SECRET_TMDB_SESSION_ID)
       apply()
     }
@@ -58,14 +49,13 @@ class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPrefere
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_SESSION_ID, null)
 
   override suspend fun clearAccessToken() {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       remove(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN)
-      apply()
     }
   }
 
   override suspend fun setAccessToken(accessToken: String) {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       putString(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN, accessToken)
       apply()
     }
@@ -75,14 +65,14 @@ class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPrefere
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_ACCESS_TOKEN, null)
 
   override suspend fun clearTmdbAccountId() {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       remove(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID)
       apply()
     }
   }
 
   override suspend fun setTmdbAccountId(accountId: String) {
-    with(encryptedPreferences.edit()) {
+    encryptedPreferences.edit {
       putString(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID, accountId)
       apply()
     }
@@ -90,40 +80,6 @@ class EncryptedPreferenceStorage(private val encryptedPreferences: SharedPrefere
 
   override val tmdbAccountId: String?
     get() = encryptedPreferences.getString(PreferencesKeys.SECRET_TMDB_ACCOUNT_ID, null)
-
-  override suspend fun clearJellyseerrAuthCookie() {
-    with(encryptedPreferences.edit()) {
-      remove(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE)
-      apply()
-    }
-  }
-
-  override suspend fun setJellyseerrAuthCookie(cookie: String) {
-    with(encryptedPreferences.edit()) {
-      putString(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE, cookie)
-      apply()
-    }
-  }
-
-  override val jellyseerrAuthCookie: String?
-    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_AUTH_COOKIE, null)
-
-  override suspend fun clearJellyseerrPassword() {
-    with(encryptedPreferences.edit()) {
-      remove(PreferencesKeys.SECRET_JELLYSEERR_PASSWORD)
-      apply()
-    }
-  }
-
-  override suspend fun setJellyseerrPassword(password: String) {
-    with(encryptedPreferences.edit()) {
-      putString(PreferencesKeys.SECRET_JELLYSEERR_PASSWORD, password)
-      apply()
-    }
-  }
-
-  override val jellyseerrPassword: String?
-    get() = encryptedPreferences.getString(PreferencesKeys.SECRET_JELLYSEERR_PASSWORD, null)
 }
 
 /**

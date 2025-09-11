@@ -5,7 +5,10 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import kotlinx.serialization.Serializable
 
 interface SavedState {
-  val jellyseerr: JellyseerrAccount?
+  val jellyseerrAccounts: Map<String, JellyseerrAccount>
+  val jellyseerrAuthCookies: Map<String, String>
+
+  val selectedJellyseerrAccountId: String?
 
   @Serializable
   data class JellyseerrAccount(
@@ -17,4 +20,28 @@ interface SavedState {
 }
 
 @Serializable
-data class ConcreteSavedState(override val jellyseerr: JellyseerrAccount? = null) : SavedState
+data class ConcreteSavedState(
+  override val jellyseerrAccounts: Map<String, JellyseerrAccount>,
+  override val jellyseerrAuthCookies: Map<String, String>,
+  override val selectedJellyseerrAccountId: String?,
+) : SavedState
+
+val SavedStateStorage.selectedJellyseerrId
+  get() = savedState
+    .value
+    .selectedJellyseerrAccountId
+
+val SavedStateStorage.selectedJellyseerrAccount
+  get() = savedState
+    .value
+    .jellyseerrAccounts[selectedJellyseerrId]
+
+val SavedStateStorage.selectedJellyseerrAuthCookie
+  get() = savedState
+    .value
+    .jellyseerrAuthCookies[selectedJellyseerrId]
+
+val SavedStateStorage.selectedJellyseerrHostAddress
+  get() = savedState
+    .value
+    .jellyseerrAccounts[selectedJellyseerrId]?.address

@@ -1,9 +1,9 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.datastore.EncryptedStorage
-import com.divinelink.core.datastore.PreferenceStorage
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.selectedJellyseerrAccount
+import com.divinelink.core.datastore.auth.selectedJellyseerrHostAddress
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.toRequestBodyApi
 import io.ktor.client.HttpClient
@@ -14,24 +14,23 @@ import io.ktor.client.statement.HttpReceivePipeline
 import io.ktor.client.statement.request
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Url
-import kotlinx.coroutines.flow.first
 
 class JellyseerrRestClient(
   engine: HttpClientEngine,
-  private val encryptedStorage: EncryptedStorage,
-  private val storage: PreferenceStorage,
+  private val savedStateStorage: SavedStateStorage,
 ) {
 
   companion object {
     const val AUTH_ENDPOINT = "/api/v1/auth"
   }
 
-  suspend fun hostAddress(): String? = storage.jellyseerrAddress.first()
+  val hostAddress: String?
+    get() = savedStateStorage.selectedJellyseerrHostAddress
 
   val client: HttpClient = ktorClient(engine)
     .config {
       install(HttpCookies) {
-        storage = PersistentCookieStorage(encryptedStorage)
+        storage = PersistentCookieStorage(storage = savedStateStorage)
       }
 
       install(HttpRequestRetry) {
@@ -56,22 +55,16 @@ class JellyseerrRestClient(
     }
 
   private suspend fun reAuthenticate() {
-    val account = storage.jellyseerrAccount.first()
-    val password = encryptedStorage.jellyseerrPassword
-    val address = storage.jellyseerrAddress.first()
-    val signInMethod = storage.jellyseerrAuthMethod.first()
-
-    if (account == null || password == null || address == null || signInMethod == null) {
-      throw AppException.Unauthorized("Invalid jellyseerr authentication. Please log in again.")
-    }
-
-    val loginMethod = JellyseerrAuthMethod.from(signInMethod)
+    val account = savedStateStorage.selectedJellyseerrAccount
       ?: throw AppException.Unauthorized("Invalid jellyseerr authentication. Please log in again.")
 
-    val body = loginMethod.toRequestBodyApi(account, password)
+    val body = account.authMethod.toRequestBodyApi(
+      username = account.account,
+      password = account.password,
+    )
 
     post<JellyseerrLoginRequestBodyApi, Unit>(
-      url = "$address$AUTH_ENDPOINT/${loginMethod.endpoint}",
+      url = "${account.address}$AUTH_ENDPOINT/${account.authMethod.endpoint}",
       body = body,
     )
   }
