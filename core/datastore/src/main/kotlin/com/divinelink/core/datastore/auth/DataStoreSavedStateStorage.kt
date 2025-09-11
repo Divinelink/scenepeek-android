@@ -103,4 +103,5 @@ val InitialSavedState: ConcreteSavedState = ConcreteSavedState(
   selectedJellyseerrAccountId = null,
 )
 
-fun SavedState.isJellyseerrEnabled(): Boolean = jellyseerrAccounts.keys.isNotEmpty()
+fun SavedState.isJellyseerrEnabled(): Boolean = jellyseerrAccounts.keys.isNotEmpty() &&
+  jellyseerrAuthCookies.keys.isNotEmpty()

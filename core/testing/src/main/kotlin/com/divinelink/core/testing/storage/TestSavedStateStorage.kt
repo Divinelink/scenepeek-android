@@ -34,12 +34,12 @@ class TestSavedStateStorage(
   }
 
   override suspend fun setJellyseerrAuthCookie(cookie: String) {
-    accountCounter++
-
     _savedState.value = _savedState.value.copy(
       selectedJellyseerrAccountId = accountId,
       jellyseerrAuthCookies = _savedState.value.jellyseerrAuthCookies + (accountId to cookie),
     )
+
+    accountCounter++
   }
 
   override suspend fun clearSelectedJellyseerrAccount() {
@@ -48,6 +48,7 @@ class TestSavedStateStorage(
 
     _savedState.value = currentState.copy(
       selectedJellyseerrAccountId = null,
+      jellyseerrAccounts = currentState.jellyseerrAccounts - selectedId,
       jellyseerrAuthCookies = currentState.jellyseerrAuthCookies - selectedId,
     )
   }
