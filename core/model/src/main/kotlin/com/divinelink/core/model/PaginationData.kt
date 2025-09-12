@@ -9,3 +9,4 @@ data class PaginationData<T>(
   fun canLoadMore(): Boolean = page < totalPages
   fun isEmpty(): Boolean = list.isEmpty()
 }
+
