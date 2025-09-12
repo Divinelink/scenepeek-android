@@ -6,4 +6,5 @@ sealed interface ProfileAction {
   data object Login : ProfileAction
   data class NavigateToUserData(val section: UserDataSection) : ProfileAction
   data object NavigateToLists : ProfileAction
+  data object NavigateToRequests : ProfileAction
 }
