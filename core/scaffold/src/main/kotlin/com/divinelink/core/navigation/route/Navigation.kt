@@ -119,4 +119,7 @@ sealed interface Navigation {
     @Serializable
     data class Media(val encodedMediaItem: String) : ActionMenuRoute
   }
+
+  @Serializable
+  data object JellyseerrRequestsRoute : Navigation
 }

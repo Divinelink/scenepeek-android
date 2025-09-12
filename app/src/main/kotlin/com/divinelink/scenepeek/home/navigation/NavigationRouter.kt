@@ -55,6 +55,8 @@ fun NavController.findNavigation(route: Navigation) {
     is Navigation.WebViewRoute -> navigateToWebView(route)
 
     is Navigation.ActionMenuRoute.Media -> openDefaultActionMenuModal(route)
+    Navigation.JellyseerrRequestsRoute -> {
+    }
 
     // This is from top level navigation
     Navigation.HomeRoute -> {

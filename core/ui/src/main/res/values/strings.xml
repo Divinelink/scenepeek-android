@@ -138,6 +138,7 @@
   <string name="core_ui_section_watchlist">Watchlist</string>
   <string name="core_ui_section_ratings">Ratings</string>
   <string name="core_ui_section_lists">Lists</string>
+  <string name="core_ui_section_requests">Requests</string>
 
   <string name="core_ui_login_title">Login to your account</string>
 

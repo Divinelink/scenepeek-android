@@ -12,17 +12,27 @@ class ProfileUiStateParameterProvider : PreviewParameterProvider<ProfileUiState>
   override val values: Sequence<ProfileUiState> = sequenceOf(
     ProfileUiState(
       accountUiState = TMDBAccountUiState.Anonymous,
+      isJellyseerrEnabled = false,
     ),
     ProfileUiState(
       accountUiState = TMDBAccountUiState.Initial,
+      isJellyseerrEnabled = false,
     ),
     ProfileUiState(
       accountUiState = TMDBAccountUiState.Error,
+      isJellyseerrEnabled = false,
     ),
     ProfileUiState(
       accountUiState = TMDBAccountUiState.LoggedIn(
         TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
       ),
+      isJellyseerrEnabled = false,
+    ),
+    ProfileUiState(
+      accountUiState = TMDBAccountUiState.LoggedIn(
+        TMDBAccount.LoggedIn(AccountDetailsFactory.Pinkman()),
+      ),
+      isJellyseerrEnabled = true,
     ),
   )
 }
