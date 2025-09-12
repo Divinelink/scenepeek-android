@@ -103,6 +103,7 @@ dependencies {
   implementation(projects.feature.tmdbAuth)
   implementation(projects.feature.onboarding)
   implementation(projects.feature.profile)
+  implementation(projects.feature.requests)
   implementation(projects.feature.userData)
   implementation(projects.feature.lists)
   implementation(projects.feature.webview)

@@ -17,6 +17,7 @@ import com.divinelink.feature.lists.user.navigation.listsScreen
 import com.divinelink.feature.onboarding.navigation.fullscreenOnboarding
 import com.divinelink.feature.onboarding.navigation.modalOnboarding
 import com.divinelink.feature.profile.navigation.profileScreen
+import com.divinelink.feature.requests.ui.navigation.requestsScreen
 import com.divinelink.feature.search.navigation.searchScreen
 import com.divinelink.feature.settings.navigation.about.aboutSettingsScreen
 import com.divinelink.feature.settings.navigation.account.accountSettingsScreen
@@ -243,6 +244,13 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.WebViewRoute>()) {
     { navController, _ ->
       webViewScreen(navController::findNavigation)
+    }
+  }
+
+  // Requests Navigation
+  single<NavGraphExtension>(named<Navigation.JellyseerrRequestsRoute>()) {
+    { navController, _ ->
+      requestsScreen(navController::findNavigation)
     }
   }
 
