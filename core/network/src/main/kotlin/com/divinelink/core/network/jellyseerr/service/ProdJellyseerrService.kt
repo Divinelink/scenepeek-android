@@ -2,6 +2,7 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.request.MediaRequestFilter
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
@@ -10,6 +11,7 @@ import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyAp
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.requests.MediaRequestsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
@@ -204,5 +206,18 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       val url = "$hostAddress/api/v1/service/sonarr/$id"
       restClient.get<SonarrInstanceDetailsResponse>(url = url)
     }
+  }
+
+  override suspend fun getRequests(
+    skip: Int,
+    filter: MediaRequestFilter,
+  ): Flow<Result<MediaRequestsResponse>> = flow {
+    requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
+
+    val url = "${restClient.hostAddress}/api/v1/request" +
+      "?filter=${filter.name.lowercase()}" +
+      "&skip=$skip"
+
+    restClient.get<MediaRequestsResponse>(url = url)
   }
 }

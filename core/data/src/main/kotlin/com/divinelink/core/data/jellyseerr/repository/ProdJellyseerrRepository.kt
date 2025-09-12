@@ -1,18 +1,22 @@
 package com.divinelink.core.data.jellyseerr.repository
 
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
+import com.divinelink.core.model.jellyseerr.JellyseerrRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.jellyseerr.request.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
+import com.divinelink.core.network.jellyseerr.mapper.requests.map
 import com.divinelink.core.network.jellyseerr.mapper.server.radarr.map
 import com.divinelink.core.network.jellyseerr.mapper.server.sonarr.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
@@ -107,4 +111,16 @@ class ProdJellyseerrRepository(
   override suspend fun getSonarrInstanceDetails(id: Int): Result<ServerInstanceDetails> = service
     .getSonarrInstanceDetails(id)
     .map { it.map() }
+
+  override suspend fun getRequests(
+    page: Int,
+    filter: MediaRequestFilter,
+  ): Flow<Result<JellyseerrRequests>> = service
+    .getRequests(
+      skip = (page - 1) * 10,
+      filter = filter,
+    )
+    .map {
+      Result.success(it.data.map())
+    }
 }
