@@ -3,7 +3,6 @@ package com.divinelink.core.data.jellyseerr.repository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
-import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.database.JellyseerrAccountDetailsQueries
 import com.divinelink.core.database.jellyseerr.mapper.map
@@ -146,7 +145,5 @@ class ProdJellyseerrRepository(
       skip = (page - 1) * 10,
       filter = filter,
     )
-    .map {
-      Result.success(it.data.map())
-    }
+    .map { Result.success(it.map()) }
 }

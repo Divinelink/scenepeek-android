@@ -68,14 +68,13 @@ fun AnimatedVisibilityScope.RequestsScreen(
         },
       )
     },
-    floatingActionButton = {
-    },
     content = {
       Column {
         Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
 
         RequestsContent(
-          uiState = uiState,
+          state = uiState,
+          onNavigate = onNavigate,
           action = { action ->
           },
         )
