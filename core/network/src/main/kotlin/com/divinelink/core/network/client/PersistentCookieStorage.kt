@@ -1,6 +1,7 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.datastore.EncryptedStorage
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.selectedJellyseerrAuthCookie
 import io.ktor.client.plugins.cookies.CookiesStorage
 import io.ktor.http.Cookie
 import io.ktor.http.CookieEncoding
@@ -10,15 +11,19 @@ import io.ktor.util.date.GMTDate
 /**
  * A [CookiesStorage] implementation that stores cookies in an encrypted storage.
  */
-class PersistentCookieStorage(val storage: EncryptedStorage) : CookiesStorage {
+class PersistentCookieStorage(val storage: SavedStateStorage) : CookiesStorage {
+
+  private val storedCookie
+    get() = storage.selectedJellyseerrAuthCookie
+
   override suspend fun get(requestUrl: Url): List<Cookie> {
     val cookies = mutableListOf<Cookie>()
 
-    val storedCookie = storage.jellyseerrAuthCookie ?: return cookies
-
-    val cookie = stringToCookie(storedCookie)
-    if (cookie != null && !cookie.isExpired()) {
-      cookies.add(cookie)
+    storedCookie?.let { cookieString ->
+      val cookie = stringToCookie(cookieString)
+      if (cookie != null && !cookie.isExpired()) {
+        cookies.add(cookie)
+      }
     }
     return cookies
   }

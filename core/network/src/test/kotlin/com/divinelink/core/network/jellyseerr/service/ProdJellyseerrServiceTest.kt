@@ -9,6 +9,7 @@ import com.divinelink.core.testing.factories.api.jellyseerr.response.server.rada
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceResponseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceDetailsResponseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceResponseFactory
+import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
 import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceDetailsResponseJson
 import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceResponseJson
 import com.divinelink.core.testing.factories.json.jellyseerr.server.sonarr.SonarrInstanceDetailsResponseJson
@@ -50,7 +51,7 @@ class ProdJellyseerrServiceTest {
 
   @Test
   fun `test getRadarrInstances with success`() = runTest {
-    restClient.withAddress("http://localhost:5055")
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
 
     restClient.mockGetResponse<List<RadarrInstanceResponse>>(
       url = "",
@@ -84,7 +85,7 @@ class ProdJellyseerrServiceTest {
 
   @Test
   fun `test getSonarrInstances with success`() = runTest {
-    restClient.withAddress("http://localhost:5055")
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
 
     restClient.mockGetResponse<List<RadarrInstanceResponse>>(
       url = "",
@@ -100,7 +101,7 @@ class ProdJellyseerrServiceTest {
 
   @Test
   fun `test getSonarrDetailsInstances with success`() = runTest {
-    restClient.withAddress("http://localhost:5055")
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
 
     restClient.mockGetResponse<SonarrInstanceDetailsResponse>(
       url = "",
@@ -135,7 +136,7 @@ class ProdJellyseerrServiceTest {
 
   @Test
   fun `test getRadarrDetailsInstances with success`() = runTest {
-    restClient.withAddress("http://localhost:5055")
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
 
     restClient.mockGetResponse<RadarrInstanceDetailsResponse>(
       url = "",

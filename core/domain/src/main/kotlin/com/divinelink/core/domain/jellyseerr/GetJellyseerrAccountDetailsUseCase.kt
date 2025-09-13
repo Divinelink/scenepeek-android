@@ -2,8 +2,8 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ data class JellyseerrAccountDetailsResult(
 )
 
 class GetJellyseerrAccountDetailsUseCase(
-  private val storage: PreferenceStorage,
+  private val authRepository: AuthRepository,
   private val repository: JellyseerrRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Boolean, JellyseerrAccountDetailsResult>(dispatcher.default) {
@@ -26,13 +26,13 @@ class GetJellyseerrAccountDetailsUseCase(
    */
   override fun execute(parameters: Boolean): Flow<Result<JellyseerrAccountDetailsResult>> =
     channelFlow {
-      storage
-        .jellyseerrAddress
+      authRepository
+        .selectedJellyseerrAccount
         .distinctUntilChanged()
-        .collect { address ->
-          if (address != null) {
+        .collect { account ->
+          if (account != null) {
             repository.getJellyseerrAccountDetails(
-              address = address,
+              address = account.address,
               refresh = parameters,
             ).collect { result ->
               when (result) {
@@ -40,7 +40,7 @@ class GetJellyseerrAccountDetailsUseCase(
                 is Resource.Loading<JellyseerrAccountDetails?> -> send(
                   Result.success(
                     JellyseerrAccountDetailsResult(
-                      address = address,
+                      address = account.address,
                       accountDetails = result.data,
                     ),
                   ),
@@ -48,7 +48,7 @@ class GetJellyseerrAccountDetailsUseCase(
                 is Resource.Success<JellyseerrAccountDetails?> -> send(
                   Result.success(
                     JellyseerrAccountDetailsResult(
-                      address = address,
+                      address = account.address,
                       accountDetails = result.data,
                     ),
                   ),

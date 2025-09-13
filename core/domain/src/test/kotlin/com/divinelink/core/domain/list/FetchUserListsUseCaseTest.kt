@@ -12,7 +12,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -272,7 +271,6 @@ class FetchUserListsUseCaseTest {
     accountDetailsId: String?,
     accessToken: AccessToken? = null,
   ) = SessionStorage(
-    storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(
       sessionId = "123",
       accessToken = accessToken?.accessToken,

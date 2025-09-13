@@ -4,8 +4,6 @@ import com.divinelink.core.datastore.EncryptedStorage
 
 open class FakeEncryptedPreferenceStorage(
   override var sessionId: String? = null,
-  override var jellyseerrAuthCookie: String? = null,
-  override var jellyseerrPassword: String? = null,
   override var accessToken: String? = null,
   override var tmdbAccountId: String? = null,
 ) : EncryptedStorage {
@@ -16,22 +14,6 @@ open class FakeEncryptedPreferenceStorage(
 
   override suspend fun setSessionId(sessionId: String) {
     this.sessionId = sessionId
-  }
-
-  override suspend fun clearJellyseerrAuthCookie() {
-    this.jellyseerrAuthCookie = null
-  }
-
-  override suspend fun setJellyseerrAuthCookie(cookie: String) {
-    this.jellyseerrAuthCookie = cookie
-  }
-
-  override suspend fun clearJellyseerrPassword() {
-    this.jellyseerrPassword = null
-  }
-
-  override suspend fun setJellyseerrPassword(password: String) {
-    this.jellyseerrPassword = password
   }
 
   override suspend fun clearAccessToken() {

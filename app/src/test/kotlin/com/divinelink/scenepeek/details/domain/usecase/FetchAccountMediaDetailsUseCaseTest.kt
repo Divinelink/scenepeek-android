@@ -11,7 +11,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.feature.details.media.usecase.FetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
@@ -159,7 +158,6 @@ class FetchAccountMediaDetailsUseCaseTest {
     sessionId: String?,
     accountStorage: FakeAccountStorage = FakeAccountStorage(),
   ) = SessionStorage(
-    storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
     accountStorage = accountStorage,
   )

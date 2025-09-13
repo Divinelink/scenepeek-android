@@ -3,9 +3,7 @@ package com.divinelink.scenepeek.base.storage
 import app.cash.turbine.test
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
@@ -65,74 +63,6 @@ class DataStorePreferenceStorageTest {
     storage.setBlackBackgrounds(false)
 
     assertThat(storage.isBlackBackgroundsEnabled.first()).isFalse()
-  }
-
-  @Test
-  fun `test setJellyseerrAddress`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    assertThat(storage.jellyseerrAddress.first()).isEqualTo(null)
-
-    storage.setJellyseerrAddress("http://localhost:5050")
-    assertThat(storage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
-  }
-
-  @Test
-  fun `test clearJellyseerrAddress`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setJellyseerrAddress("http://localhost:5050")
-    assertThat(storage.jellyseerrAddress.first()).isEqualTo("http://localhost:5050")
-
-    storage.clearJellyseerrAddress()
-    assertThat(storage.jellyseerrAddress.first()).isEqualTo(null)
-  }
-
-  @Test
-  fun `test setJellyseerrAccount`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-    assertThat(storage.jellyseerrAccount.first()).isEqualTo(null)
-
-    val displayName = JellyseerrAccountDetailsFactory.jellyseerr().displayName
-
-    storage.setJellyseerrAccount(displayName)
-    assertThat(storage.jellyseerrAccount.first()).isEqualTo(displayName)
-  }
-
-  @Test
-  fun `test clearJellyseerrAccount`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-    val displayName = JellyseerrAccountDetailsFactory.jellyseerr().displayName
-
-    storage.setJellyseerrAccount(displayName)
-    assertThat(storage.jellyseerrAccount.first()).isEqualTo(displayName)
-
-    storage.clearJellyseerrAccount()
-    assertThat(storage.jellyseerrAccount.first()).isEqualTo(null)
-  }
-
-  @Test
-  fun `test setJellyseerrSignInMethod`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-    assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
-
-    storage.setJellyseerrAuthMethod(JellyseerrAuthMethod.JELLYSEERR.name)
-    assertThat(
-      storage.jellyseerrAuthMethod.first(),
-    ).isEqualTo(JellyseerrAuthMethod.JELLYSEERR.name)
-  }
-
-  @Test
-  fun `test clearJellyseerrSignInMethod`() = runTest {
-    storage = DataStorePreferenceStorage(fakeDataStore)
-
-    storage.setJellyseerrAuthMethod(JellyseerrAuthMethod.JELLYSEERR.name)
-    assertThat(
-      storage.jellyseerrAuthMethod.first(),
-    ).isEqualTo(JellyseerrAuthMethod.JELLYSEERR.name)
-
-    storage.clearJellyseerrSignInMethod()
-    assertThat(storage.jellyseerrAuthMethod.first()).isEqualTo(null)
   }
 
   @Test

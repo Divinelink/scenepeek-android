@@ -9,9 +9,6 @@ class FakePreferenceStorage(
   selectedTheme: String = "",
   isMaterialYouEnabled: Boolean = false,
   isBlackBackgroundsEnabled: Boolean = false,
-  jellyseerrAddress: String? = null,
-  jellyseerrAccount: String? = null,
-  jellyseerrSignInMethod: String? = null,
   spoilersObfuscation: Boolean = false,
   movieRatingSource: RatingSource = RatingSource.TMDB,
   tvRatingSource: RatingSource = RatingSource.TMDB,
@@ -27,15 +24,6 @@ class FakePreferenceStorage(
 
   private val _isBlackBackgroundsEnabled = MutableStateFlow(isBlackBackgroundsEnabled)
   override val isBlackBackgroundsEnabled = _isBlackBackgroundsEnabled
-
-  private val _jellyseerrAddress = MutableStateFlow(jellyseerrAddress)
-  override val jellyseerrAddress: Flow<String?> = _jellyseerrAddress
-
-  private val _jellyseerrAccount = MutableStateFlow(jellyseerrAccount)
-  override val jellyseerrAccount: Flow<String?> = _jellyseerrAccount
-
-  private val _jellyseerrAuthMethod = MutableStateFlow(jellyseerrSignInMethod)
-  override val jellyseerrAuthMethod: Flow<String?> = _jellyseerrAuthMethod
 
   private val _spoilersObfuscation = MutableStateFlow(spoilersObfuscation)
   override val spoilersObfuscation: Flow<Boolean> = _spoilersObfuscation
@@ -62,30 +50,6 @@ class FakePreferenceStorage(
 
   override suspend fun setBlackBackgrounds(isEnabled: Boolean) {
     _isBlackBackgroundsEnabled.value = isEnabled
-  }
-
-  override suspend fun clearJellyseerrAddress() {
-    _jellyseerrAddress.value = null
-  }
-
-  override suspend fun setJellyseerrAddress(address: String) {
-    _jellyseerrAddress.value = address
-  }
-
-  override suspend fun clearJellyseerrAccount() {
-    _jellyseerrAccount.value = null
-  }
-
-  override suspend fun setJellyseerrAccount(account: String) {
-    _jellyseerrAccount.value = account
-  }
-
-  override suspend fun clearJellyseerrSignInMethod() {
-    _jellyseerrAuthMethod.value = null
-  }
-
-  override suspend fun setJellyseerrAuthMethod(authMethod: String) {
-    _jellyseerrAuthMethod.value = authMethod
   }
 
   override suspend fun setSpoilersObfuscation(isEnabled: Boolean) {

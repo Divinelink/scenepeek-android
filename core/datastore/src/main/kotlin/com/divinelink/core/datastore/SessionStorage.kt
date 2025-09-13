@@ -5,7 +5,6 @@ import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.session.AccessToken
 
 class SessionStorage(
-  val storage: PreferenceStorage,
   val encryptedStorage: EncryptedStorage,
   val accountStorage: AccountStorage,
 ) {
@@ -34,25 +33,5 @@ class SessionStorage(
     encryptedStorage.clearAccessToken()
     encryptedStorage.clearTmdbAccountId()
     accountStorage.clearAccountDetails()
-  }
-
-  suspend fun setJellyseerrSession(
-    username: String,
-    address: String,
-    authMethod: String,
-    password: String,
-  ) {
-    storage.setJellyseerrAccount(username)
-    storage.setJellyseerrAddress(address)
-    storage.setJellyseerrAuthMethod(authMethod)
-    encryptedStorage.setJellyseerrPassword(password)
-  }
-
-  suspend fun clearJellyseerrSession() {
-    encryptedStorage.clearJellyseerrPassword()
-    encryptedStorage.clearJellyseerrAuthCookie()
-    storage.clearJellyseerrAccount()
-    storage.clearJellyseerrSignInMethod()
-    storage.clearJellyseerrAddress()
   }
 }

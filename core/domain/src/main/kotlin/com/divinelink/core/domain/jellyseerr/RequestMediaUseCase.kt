@@ -2,9 +2,9 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -16,15 +16,15 @@ import kotlinx.coroutines.flow.last
 
 class RequestMediaUseCase(
   private val repository: JellyseerrRepository,
-  private val storage: PreferenceStorage,
+  private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<JellyseerrRequestParams, MediaRequestResult>(dispatcher.default) {
 
   override fun execute(parameters: JellyseerrRequestParams): Flow<Result<MediaRequestResult>> =
     flow {
-      val address = storage.jellyseerrAddress.first()
+      val account = authRepository.selectedJellyseerrAccount.first()
 
-      if (address == null) {
+      if (account == null) {
         emit(Result.failure(MissingJellyseerrHostAddressException()))
         return@flow
       }

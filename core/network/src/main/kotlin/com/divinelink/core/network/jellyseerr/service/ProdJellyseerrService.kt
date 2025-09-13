@@ -69,9 +69,9 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   override suspend fun requestMedia(
     body: JellyseerrRequestMediaBodyApi,
   ): Flow<JellyseerrRequestMediaResponse> = flow {
-    requireNotNull(restClient.hostAddress()) { throw MissingJellyseerrHostAddressException() }
+    requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
 
-    val url = "${restClient.hostAddress()}/api/v1/request"
+    val url = "${restClient.hostAddress}/api/v1/request"
 
     val response = restClient.post<JellyseerrRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
       url = url,
@@ -83,14 +83,14 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
   override suspend fun getRequestDetails(requestId: Int): Flow<Result<MediaInfoRequestResponse>> =
     flow {
-      val hostAddress = restClient.hostAddress()
+      val hostAddress = restClient.hostAddress
       if (hostAddress == null) {
         emit(Result.failure(MissingJellyseerrHostAddressException()))
         return@flow
       }
 
       val result = runCatching {
-        val url = "${restClient.hostAddress()}/api/v1/request/$requestId"
+        val url = "${restClient.hostAddress}/api/v1/request/$requestId"
         restClient.get<MediaInfoRequestResponse>(url = url)
       }
 
@@ -98,7 +98,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     }
 
   override suspend fun deleteRequest(mediaId: Int): Result<Unit> {
-    val hostAddress = restClient.hostAddress()
+    val hostAddress = restClient.hostAddress
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
     return runCatching {
@@ -111,7 +111,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
    * Removes a media item. The `MANAGE_REQUESTS` permission is required to perform this action.
    */
   override suspend fun deleteMedia(mediaId: Int): Result<Unit> {
-    val hostAddress = restClient.hostAddress()
+    val hostAddress = restClient.hostAddress
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
     return runCatching {
@@ -124,7 +124,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
    * Removes a media file from radarr/sonarr.
    */
   override suspend fun deleteFile(mediaId: Int): Result<Unit> {
-    val hostAddress = restClient.hostAddress()
+    val hostAddress = restClient.hostAddress
       ?: return Result.failure(MissingJellyseerrHostAddressException())
 
     return runCatching {
@@ -136,14 +136,14 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   override suspend fun getMovieDetails(
     mediaId: Int,
   ): Flow<Result<JellyseerrMovieDetailsResponse>> = flow {
-    val hostAddress = restClient.hostAddress()
+    val hostAddress = restClient.hostAddress
     if (hostAddress == null) {
       emit(Result.failure(MissingJellyseerrHostAddressException()))
       return@flow
     }
 
     val result = runCatching {
-      val url = "${restClient.hostAddress()}/api/v1/movie/$mediaId"
+      val url = "${restClient.hostAddress}/api/v1/movie/$mediaId"
       restClient.get<JellyseerrMovieDetailsResponse>(url = url)
     }
     emit(result)
@@ -151,21 +151,21 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
   override suspend fun getTvDetails(mediaId: Int): Flow<Result<JellyseerrTvDetailsResponse>> =
     flow {
-      val hostAddress = restClient.hostAddress()
+      val hostAddress = restClient.hostAddress
       if (hostAddress == null) {
         emit(Result.failure(MissingJellyseerrHostAddressException()))
         return@flow
       }
 
       val result = runCatching {
-        val url = "${restClient.hostAddress()}/api/v1/tv/$mediaId"
+        val url = "${restClient.hostAddress}/api/v1/tv/$mediaId"
         restClient.get<JellyseerrTvDetailsResponse>(url = url)
       }
       emit(result)
     }
 
   override suspend fun getRadarrInstances(): Result<List<RadarrInstanceResponse>> = runCatching {
-    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+    val hostAddress = restClient.hostAddress ?: return Result.failure(
       MissingJellyseerrHostAddressException(),
     )
 
@@ -176,7 +176,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   }
 
   override suspend fun getSonarrInstances(): Result<List<SonarrInstanceResponse>> = runCatching {
-    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+    val hostAddress = restClient.hostAddress ?: return Result.failure(
       MissingJellyseerrHostAddressException(),
     )
 
@@ -187,7 +187,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   }
 
   override suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetailsResponse> {
-    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+    val hostAddress = restClient.hostAddress ?: return Result.failure(
       MissingJellyseerrHostAddressException(),
     )
 
@@ -198,7 +198,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   }
 
   override suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetailsResponse> {
-    val hostAddress = restClient.hostAddress() ?: return Result.failure(
+    val hostAddress = restClient.hostAddress ?: return Result.failure(
       MissingJellyseerrHostAddressException(),
     )
 

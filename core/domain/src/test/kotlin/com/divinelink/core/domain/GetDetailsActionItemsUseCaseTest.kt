@@ -2,7 +2,7 @@ package com.divinelink.core.domain
 
 import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.testing.MainDispatcherRule
-import com.divinelink.core.testing.storage.FakePreferenceStorage
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -15,9 +15,13 @@ class GetDetailsActionItemsUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
+  private val authRepository: TestAuthRepository = TestAuthRepository()
+
   @Test
   fun `test detail action items without jellyseerr account`() = runTest {
-    val useCase = createGetDetailsActionItemsUseCase(FakePreferenceStorage())
+    authRepository.mockJellyseerrEnabled(false)
+
+    val useCase = createUseCase()
 
     useCase.invoke(Unit).first().let { result ->
       assertThat(result.isSuccess).isTrue()
@@ -33,9 +37,9 @@ class GetDetailsActionItemsUseCaseTest {
 
   @Test
   fun `test detail action items with jellyseerr account`() = runTest {
-    val useCase = createGetDetailsActionItemsUseCase(
-      FakePreferenceStorage(jellyseerrAccount = "jellyseerr_account"),
-    )
+    authRepository.mockJellyseerrEnabled(true)
+
+    val useCase = createUseCase()
 
     useCase.invoke(Unit).first().let { result ->
       assertThat(result.isSuccess).isTrue()
@@ -50,9 +54,8 @@ class GetDetailsActionItemsUseCaseTest {
     }
   }
 
-  private fun createGetDetailsActionItemsUseCase(storage: FakePreferenceStorage) =
-    GetDetailsActionItemsUseCase(
-      storage = storage,
-      dispatcher = testDispatcher,
-    )
+  private fun createUseCase() = GetDetailsActionItemsUseCase(
+    authRepository = authRepository.mock,
+    dispatcher = testDispatcher,
+  )
 }

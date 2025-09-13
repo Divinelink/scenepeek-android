@@ -8,7 +8,6 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
-import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.google.common.truth.Truth.assertThat
@@ -127,7 +126,6 @@ class DeleteRatingUseCaseTest {
   }
 
   private fun createSessionStorage(sessionId: String?) = SessionStorage(
-    storage = FakePreferenceStorage(),
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
     accountStorage = FakeAccountStorage(),
   )
