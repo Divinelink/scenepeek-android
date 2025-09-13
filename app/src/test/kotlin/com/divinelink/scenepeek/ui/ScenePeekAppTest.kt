@@ -39,6 +39,7 @@ import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
@@ -106,6 +107,7 @@ class ScenePeekAppTest : ComposeTest() {
 
   // Profile use cases
   private lateinit var getAccountDetailsUseCaseTest: FakeGetAccountDetailsUseCase
+  private lateinit var authRepository: TestAuthRepository
 
   // DETAILS use cases
   private lateinit var getMediaDetailsUseCase: FakeGetMediaDetailsUseCase
@@ -134,6 +136,7 @@ class ScenePeekAppTest : ComposeTest() {
     getFavoriteMoviesUseCase = FakeGetFavoriteMoviesUseCase()
 
     getAccountDetailsUseCaseTest = FakeGetAccountDetailsUseCase()
+    authRepository = TestAuthRepository()
 
     getMediaDetailsUseCase = FakeGetMediaDetailsUseCase()
     submitRatingUseCase = FakeSubmitRatingUseCase()
@@ -225,6 +228,8 @@ class ScenePeekAppTest : ComposeTest() {
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
+    authRepository.mockJellyseerrEnabled(true)
+
     declare {
       HomeViewModel(
         getPopularMoviesUseCase = popularMoviesUseCase.mock,
@@ -237,6 +242,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       ProfileViewModel(
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+        authRepository = authRepository.mock,
       )
     }
 
@@ -628,6 +634,8 @@ class ScenePeekAppTest : ComposeTest() {
       response = Result.success(MediaItemFactory.MoviesList()),
     )
 
+    authRepository.mockJellyseerrEnabled(false)
+
     getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
 
     getMediaDetailsUseCase.mockFetchMediaDetails(
@@ -653,6 +661,7 @@ class ScenePeekAppTest : ComposeTest() {
     declare {
       ProfileViewModel(
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+        authRepository = authRepository.mock,
       )
     }
 

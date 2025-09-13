@@ -28,6 +28,7 @@ object MediaInfoRequestResponseFactory {
       status = JellyseerrStatus.Media.DELETED.status,
       tmdbId = 123,
       requests = emptyList(),
+      mediaType = "tv",
     ),
   )
 
@@ -48,6 +49,7 @@ object MediaInfoRequestResponseFactory {
       status = JellyseerrStatus.Media.PENDING.status,
       tmdbId = 123,
       requests = emptyList(),
+      mediaType = "tv",
     ),
   )
 
@@ -75,6 +77,7 @@ object MediaInfoRequestResponseFactory {
       status = JellyseerrStatus.Media.AVAILABLE.status,
       tmdbId = 123,
       requests = emptyList(),
+      mediaType = "tv",
     ),
   )
 

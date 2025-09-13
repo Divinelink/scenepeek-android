@@ -206,6 +206,12 @@ object TestTags {
     }
   }
 
+  object Jellyseerr {
+    object Requests {
+      const val SCAFFOLD = "Jellyseerr Requests Scaffold"
+    }
+  }
+
   object Menu {
     const val MENU_BUTTON_VERTICAL = "Menu Button Vertical"
     const val DROPDOWN_MENU = "Dropdown Menu"

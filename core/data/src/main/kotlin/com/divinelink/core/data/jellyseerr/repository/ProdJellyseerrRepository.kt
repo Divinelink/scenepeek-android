@@ -9,14 +9,17 @@ import com.divinelink.core.database.jellyseerr.mapper.map
 import com.divinelink.core.database.jellyseerr.mapper.mapToEntity
 import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.JellyseerrRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.jellyseerr.request.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.mapper.movie.map
+import com.divinelink.core.network.jellyseerr.mapper.requests.map
 import com.divinelink.core.network.jellyseerr.mapper.server.radarr.map
 import com.divinelink.core.network.jellyseerr.mapper.server.sonarr.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
@@ -133,4 +136,14 @@ class ProdJellyseerrRepository(
   override suspend fun getSonarrInstanceDetails(id: Int): Result<ServerInstanceDetails> = service
     .getSonarrInstanceDetails(id)
     .map { it.map() }
+
+  override suspend fun getRequests(
+    page: Int,
+    filter: MediaRequestFilter,
+  ): Flow<Result<JellyseerrRequests>> = service
+    .getRequests(
+      skip = (page - 1) * 10,
+      filter = filter,
+    )
+    .map { Result.success(it.map()) }
 }

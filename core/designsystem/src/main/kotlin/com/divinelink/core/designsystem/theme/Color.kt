@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 // Seed #FF004872
@@ -176,6 +178,7 @@ data class ExtendedColors(
   val brightOrange: Color = PrimitiveColors.brightOrange,
   val limeYellow: Color = PrimitiveColors.limeYellow,
   val emeraldGreen: Color = PrimitiveColors.emeraldGreen,
+  val jellyseerrGradientBrush: Brush = PrimitiveColors.jellyseerrGradientBrush,
 )
 
 private data object PrimitiveColors {
@@ -185,4 +188,12 @@ private data object PrimitiveColors {
   val brightOrange = Color(0xFFFF5722)
   val limeYellow = Color(234, 179, 8, 255)
   val emeraldGreen = Color(34, 197, 94, 255)
+  val jellyseerrGradientBrush = Brush.linearGradient(
+    colors = listOf(
+      Color(0xFF818cf8),
+      Color(0xFFc084fc),
+    ),
+    start = Offset.Zero,
+    end = Offset.Infinite,
+  )
 }
