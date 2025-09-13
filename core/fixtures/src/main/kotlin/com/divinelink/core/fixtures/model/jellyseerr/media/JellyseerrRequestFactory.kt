@@ -3,6 +3,8 @@ package com.divinelink.core.fixtures.model.jellyseerr.media
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 
 object JellyseerrRequestFactory {
 
@@ -13,6 +15,10 @@ object JellyseerrRequestFactory {
     requestDate = "June 22, 2025",
     requester = JellyseerrRequesterFactory.bob(),
     seasons = emptyList(),
+    media = MediaReference(
+      mediaId = 1234567,
+      mediaType = MediaType.MOVIE,
+    ),
   )
 
   object Tv {
@@ -26,6 +32,10 @@ object JellyseerrRequestFactory {
         SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Season.PENDING),
         SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Season.PENDING),
       ),
+      media = MediaReference(
+        mediaId = 1234567,
+        mediaType = MediaType.TV,
+      ),
     )
 
     fun betterCallSaul2() = JellyseerrRequest(
@@ -36,6 +46,10 @@ object JellyseerrRequestFactory {
       requestDate = "June 21, 2025",
       seasons = listOf(
         SeasonRequest(seasonNumber = 5, status = JellyseerrStatus.Season.PROCESSING),
+      ),
+      media = MediaReference(
+        mediaId = 1234567,
+        mediaType = MediaType.TV,
       ),
     )
 
@@ -48,6 +62,10 @@ object JellyseerrRequestFactory {
       seasons = listOf(
         SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Season.PROCESSING),
         SeasonRequest(seasonNumber = 6, status = JellyseerrStatus.Season.PENDING),
+      ),
+      media = MediaReference(
+        mediaId = 1234567,
+        mediaType = MediaType.TV,
       ),
     )
 

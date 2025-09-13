@@ -211,13 +211,13 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   override suspend fun getRequests(
     skip: Int,
     filter: MediaRequestFilter,
-  ): Flow<Result<MediaRequestsResponse>> = flow {
+  ): Flow<MediaRequestsResponse> = flow {
     requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
 
     val url = "${restClient.hostAddress}/api/v1/request" +
       "?filter=${filter.name.lowercase()}" +
       "&skip=$skip"
 
-    restClient.get<MediaRequestsResponse>(url = url)
+    emit(restClient.get<MediaRequestsResponse>(url = url))
   }
 }

@@ -120,7 +120,5 @@ class ProdJellyseerrRepository(
       skip = (page - 1) * 10,
       filter = filter,
     )
-    .map {
-      Result.success(it.data.map())
-    }
+    .map { Result.success(it.map()) }
 }

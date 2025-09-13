@@ -6,6 +6,8 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
+import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.google.common.truth.Truth.assertThat
@@ -43,6 +45,10 @@ class TvInfoResponseMapper {
                 SeasonRequest(seasonNumber = 6, status = JellyseerrStatus.Media.PENDING),
                 SeasonRequest(seasonNumber = 7, status = JellyseerrStatus.Media.PENDING),
               ),
+              media = MediaReference(
+                mediaId = 254834,
+                mediaType = MediaType.MOVIE,
+              ),
             ),
             JellyseerrRequest(
               id = 593,
@@ -57,6 +63,10 @@ class TvInfoResponseMapper {
                 SeasonRequest(seasonNumber = 9, status = JellyseerrStatus.Media.PENDING),
                 SeasonRequest(seasonNumber = 8, status = JellyseerrStatus.Media.PENDING),
               ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
+              ),
             ),
             JellyseerrRequest(
               id = 594,
@@ -69,6 +79,10 @@ class TvInfoResponseMapper {
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Media.UNKNOWN),
+              ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
               ),
             ),
             JellyseerrRequest(
@@ -83,6 +97,10 @@ class TvInfoResponseMapper {
               seasons = listOf(
                 SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Media.PENDING),
               ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
+              ),
             ),
             JellyseerrRequest(
               id = 603,
@@ -95,6 +113,10 @@ class TvInfoResponseMapper {
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Media.PENDING),
+              ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
               ),
             ),
             JellyseerrRequest(
@@ -109,6 +131,10 @@ class TvInfoResponseMapper {
               seasons = listOf(
                 SeasonRequest(seasonNumber = 4, status = JellyseerrStatus.Media.PENDING),
               ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
+              ),
             ),
             JellyseerrRequest(
               id = 630,
@@ -121,6 +147,10 @@ class TvInfoResponseMapper {
               requestDate = "June 26, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Media.UNKNOWN),
+              ),
+              media = MediaReference(
+                mediaId = 44264,
+                mediaType = MediaType.TV,
               ),
             ),
           ),
