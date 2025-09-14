@@ -8,7 +8,9 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
@@ -22,6 +24,8 @@ import kotlinx.coroutines.flow.Flow
 interface DetailsRepository {
 
   fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>>
+
+  fun fetchMediaItem(media: MediaReference): Flow<Resource<MediaItem.Media?>>
 
   fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>>
 

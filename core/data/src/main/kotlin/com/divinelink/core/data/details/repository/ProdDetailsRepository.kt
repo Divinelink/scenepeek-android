@@ -22,7 +22,9 @@ import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.find.map
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -35,6 +37,7 @@ import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.tv.map
 import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.core.network.networkBoundResource
 import com.divinelink.core.network.omdb.mapper.map
 import com.divinelink.core.network.omdb.service.OMDbService
 import com.divinelink.core.network.trakt.mapper.map
@@ -44,6 +47,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -70,6 +74,37 @@ class ProdDetailsRepository(
     }.catch {
       throw MediaDetailsException()
     }
+
+  override fun fetchMediaItem(media: MediaReference): Flow<Resource<MediaItem.Media?>> =
+    networkBoundResource(
+      query = {
+        val isFavorite = mediaDao.isMediaFavorite(
+          mediaId = media.mediaId,
+          mediaType = media.mediaType,
+        )
+        val mediaItem = when (val item = mediaDao.fetchMedia(media)) {
+          is MediaItem.Media.Movie -> item.copy(isFavorite = isFavorite)
+          is MediaItem.Media.TV -> item.copy(isFavorite = isFavorite)
+          null -> null
+        }
+
+        flowOf(mediaItem)
+      },
+      fetch = {
+        mediaRemote.fetchDetails(
+          request = if (media.mediaType == MediaType.TV) {
+            MediaRequestApi.TV(seriesId = media.mediaId)
+          } else {
+            MediaRequestApi.Movie(movieId = media.mediaId)
+          },
+          appendToResponse = false,
+        ).first()
+      },
+      saveFetchResult = { remoteData ->
+        mediaDao.insertMedia(remoteData.toDomainMedia().toMediaItem())
+      },
+      shouldFetch = { it == null },
+    )
 
   override fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote
     .fetchReviews(request)
