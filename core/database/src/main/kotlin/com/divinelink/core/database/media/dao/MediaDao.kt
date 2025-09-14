@@ -14,7 +14,7 @@ interface MediaDao {
 
   fun insertMediaEntities(media: List<MediaItemEntity>)
 
-  fun insertMedia(media: List<MediaItem.Media>)
+  fun insertMediaList(media: List<MediaItem.Media>)
 
   fun fetchAllFavorites(): Flow<List<MediaItem.Media>>
 

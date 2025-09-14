@@ -49,7 +49,7 @@ class ProdMediaDaoTest {
     dao.fetchMedia(MediaItemFactory.theWire().toStub()) shouldBe null
     dao.fetchMedia(MediaItemFactory.theOffice().toStub()) shouldBe null
 
-    dao.insertMedia(MediaItemFactory.tvAll())
+    dao.insertMediaList(MediaItemFactory.tvAll())
 
     dao.fetchMedia(MediaItemFactory.theWire().toStub()) shouldBe MediaItemFactory.theWire()
     dao.fetchMedia(MediaItemFactory.theOffice().toStub()) shouldBe MediaItemFactory.theOffice()

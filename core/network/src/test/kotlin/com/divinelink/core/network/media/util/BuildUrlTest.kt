@@ -11,6 +11,7 @@ class BuildUrlTest {
     val url = buildFetchDetailsUrl(
       id = 1234,
       media = MediaType.TV,
+      appendToResponse = true,
     )
 
     assertThat(url).isEqualTo(
@@ -19,14 +20,41 @@ class BuildUrlTest {
   }
 
   @Test
+  fun `test buildFetchDetailsUrl for TV with append to response false`() {
+    val url = buildFetchDetailsUrl(
+      id = 1234,
+      media = MediaType.TV,
+      appendToResponse = false,
+    )
+
+    assertThat(url).isEqualTo(
+      "https://api.themoviedb.org/3/tv/1234?language=en-US",
+    )
+  }
+
+  @Test
   fun `test buildFetchDetailsUrl for MOVIE`() {
     val url = buildFetchDetailsUrl(
       id = 1234,
       media = MediaType.MOVIE,
+      appendToResponse = true,
     )
 
     assertThat(url).isEqualTo(
       "https://api.themoviedb.org/3/movie/1234?language=en-US&append_to_response=credits",
+    )
+  }
+
+  @Test
+  fun `test buildFetchDetailsUrl for MOVIE with append to response false`() {
+    val url = buildFetchDetailsUrl(
+      id = 1234,
+      media = MediaType.MOVIE,
+      appendToResponse = false,
+    )
+
+    assertThat(url).isEqualTo(
+      "https://api.themoviedb.org/3/movie/1234?language=en-US",
     )
   }
 
