@@ -19,6 +19,8 @@ import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.media.toStub
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.client.localJson
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -51,6 +53,7 @@ import com.divinelink.factories.api.ReviewsResultsApiFactory
 import com.divinelink.factories.api.account.states.AccountMediaDetailsResponseApiFactory
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -161,7 +164,7 @@ class ProdDetailsRepositoryTest {
 
     val expectedResult = movieDetails
 
-    mediaRemote.mockFetchMovieDetails(
+    mediaRemote.mockFetchDetails(
       request = request,
       response = flowOf(detailsResponseApi),
     )
@@ -184,7 +187,7 @@ class ProdDetailsRepositoryTest {
         val serializer = DetailsResponseApi.serializer()
         val tvDetailsResponse = localJson.decodeFromString(serializer, json)
 
-        mediaRemote.mockFetchMovieDetails(
+        mediaRemote.mockFetchDetails(
           request = request,
           response = flowOf(tvDetailsResponse),
         )
@@ -204,7 +207,7 @@ class ProdDetailsRepositoryTest {
   fun `test fetch details with success also adds media item to database`() = runTest {
     val request = MediaRequestApiFactory.movie()
 
-    mediaRemote.mockFetchMovieDetails(
+    mediaRemote.mockFetchDetails(
       request = request,
       response = flowOf(detailsResponseApi),
     )
@@ -689,5 +692,81 @@ class ProdDetailsRepositoryTest {
         ),
       ),
     )
+  }
+
+  @Test
+  fun `test fetch movie item without cached data inserts item to database`() = runTest {
+    mediaDao.mockFetchMediaWithInsert()
+    mediaDao.mockCheckIfFavorite(
+      id = MediaItemFactory.FightClub().id,
+      mediaType = MediaType.MOVIE,
+      result = false,
+    )
+    mediaRemote.mockFetchDetails(
+      request = MediaRequestApi.Movie(
+        movieId = MediaItemFactory.FightClub().id,
+      ),
+      appendToResponse = false,
+      response = flowOf(detailsResponseApi),
+    )
+
+    repository.fetchMediaItem(MediaItemFactory.FightClub().toStub()).test {
+      awaitItem() shouldBe Resource.Loading(null)
+      awaitItem() shouldBe Resource.Success(MediaItemFactory.FightClub())
+      awaitComplete()
+      mediaDao.verifyItemInserted(detailsResponseApi.toDomainMedia().toMediaItem())
+    }
+  }
+
+  @Test
+  fun `test fetch tv item without cached data inserts item to database`() = runTest {
+    mediaDao.mockFetchMediaWithInsert()
+    mediaDao.mockCheckIfFavorite(
+      id = MediaItemFactory.theOffice().id,
+      mediaType = MediaType.TV,
+      result = false,
+    )
+    val response = JvmUnitTestDemoAssetManager
+      .open("details-tv.json")
+      .use {
+        val json = it.readBytes().decodeToString().trimIndent()
+        val serializer = DetailsResponseApi.serializer()
+        val tvDetailsResponse = localJson.decodeFromString(serializer, json)
+
+        tvDetailsResponse
+      }
+
+    mediaRemote.mockFetchDetails(
+      request = MediaRequestApi.TV(
+        seriesId = MediaItemFactory.theOffice().id,
+      ),
+      appendToResponse = false,
+      response = flowOf(response),
+    )
+
+    repository.fetchMediaItem(MediaItemFactory.theOffice().toStub()).test {
+      awaitItem() shouldBe Resource.Loading(null)
+      awaitItem() shouldBe Resource.Success(MediaItemFactory.theOffice())
+      awaitComplete()
+      mediaDao.verifyItemInserted(response.toDomainMedia().toMediaItem())
+    }
+  }
+
+  @Test
+  fun `test fetch media item that exists in database does not fetches from network`() = runTest {
+    mediaDao.mockFetchMedia(MediaItemFactory.FightClub())
+    mediaDao.mockCheckIfFavorite(
+      id = MediaItemFactory.FightClub().id,
+      mediaType = MediaType.MOVIE,
+      result = true,
+    )
+
+    mediaRemote.verifyNoInteractions()
+
+    repository.fetchMediaItem(MediaItemFactory.FightClub().toStub()).test {
+      awaitItem() shouldBe Resource.Loading(MediaItemFactory.FightClub().copy(isFavorite = true))
+      awaitItem() shouldBe Resource.Success(MediaItemFactory.FightClub().copy(isFavorite = true))
+      awaitComplete()
+    }
   }
 }

@@ -4,6 +4,7 @@ import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -38,6 +39,21 @@ class TestMediaDao {
     ).thenReturn(
       result,
     )
+  }
+
+  fun mockFetchMedia(mediaItem: MediaItem.Media?) {
+    whenever(mock.fetchMedia(any())).thenReturn(mediaItem)
+  }
+
+  fun mockFetchMediaWithInsert() {
+    var storedItem: MediaItem.Media? = null
+
+    whenever(mock.insertMedia(any())).thenAnswer { invocation ->
+      storedItem = invocation.getArgument(0)
+      Unit
+    }
+
+    whenever(mock.fetchMedia(any())).thenAnswer { storedItem }
   }
 
   fun verifyInsertFavoriteMovie(id: Int) {

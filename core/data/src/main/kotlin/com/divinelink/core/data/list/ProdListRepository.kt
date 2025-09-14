@@ -69,7 +69,7 @@ class ProdListRepository(
     saveFetchResult = { remoteData ->
       val details = remoteData.data.map()
 
-      mediaDao.insertMedia(details.media)
+      mediaDao.insertMediaList(details.media)
       listDao.insertListDetails(
         page = page,
         details = details,

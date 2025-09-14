@@ -71,8 +71,15 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     emit(response)
   }
 
-  override fun fetchDetails(request: MediaRequestApi): Flow<DetailsResponseApi> = flow {
-    val url = buildFetchDetailsUrl(media = request.mediaType, id = request.id)
+  override fun fetchDetails(
+    request: MediaRequestApi,
+    appendToResponse: Boolean,
+  ): Flow<DetailsResponseApi> = flow {
+    val url = buildFetchDetailsUrl(
+      media = request.mediaType,
+      id = request.id,
+      appendToResponse = appendToResponse,
+    )
 
     val response = restClient.get<DetailsResponseApi>(url = url)
 

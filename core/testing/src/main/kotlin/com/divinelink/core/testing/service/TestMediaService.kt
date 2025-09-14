@@ -21,6 +21,7 @@ import com.divinelink.core.network.media.service.MediaService
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TestMediaService {
@@ -49,12 +50,13 @@ class TestMediaService {
     )
   }
 
-  fun mockFetchMovieDetails(
+  fun mockFetchDetails(
     request: MediaRequestApi,
     response: Flow<DetailsResponseApi>,
+    appendToResponse: Boolean = true,
   ) {
     whenever(
-      mock.fetchDetails(request),
+      mock.fetchDetails(request = request, appendToResponse = appendToResponse),
     ).thenReturn(
       response,
     )
@@ -162,5 +164,9 @@ class TestMediaService {
     ).thenReturn(
       response,
     )
+  }
+
+  fun verifyNoInteractions() {
+    verifyNoInteractions(mock)
   }
 }

@@ -24,7 +24,7 @@ class ProdMediaDao(
     database.mediaItemEntityQueries.insertMediaItem(media.map())
   }
 
-  override fun insertMedia(media: List<MediaItem.Media>) {
+  override fun insertMediaList(media: List<MediaItem.Media>) {
     media.forEach {
       insertMedia(it)
     }

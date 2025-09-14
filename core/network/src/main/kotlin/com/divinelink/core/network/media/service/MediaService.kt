@@ -30,7 +30,10 @@ interface MediaService {
   @Deprecated("Use fetchMultiInfo instead")
   fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi>
 
-  fun fetchDetails(request: MediaRequestApi): Flow<DetailsResponseApi>
+  fun fetchDetails(
+    request: MediaRequestApi,
+    appendToResponse: Boolean,
+  ): Flow<DetailsResponseApi>
 
   fun fetchReviews(request: MediaRequestApi): Flow<ReviewsResponseApi>
 
