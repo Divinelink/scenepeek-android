@@ -77,7 +77,7 @@ sealed class DetailsResponseApi {
     val video: Boolean,
     @SerialName("vote_average") override val voteAverage: Double,
     @SerialName("vote_count") override val voteCount: Int,
-    val credits: CreditsApi,
+    val credits: CreditsApi? = null, // TODO credits call should be made separately
     val status: String? = null,
   ) : DetailsResponseApi()
 
@@ -103,7 +103,7 @@ sealed class DetailsResponseApi {
     @SerialName("seasons") val seasons: List<SeasonResponseApi>,
     @SerialName("number_of_seasons") val numberOfSeasons: Int,
     @SerialName("number_of_episodes") val numberOfEpisodes: Int,
-    @SerialName("external_ids") val externalIds: ExternalIdsApi,
+    @SerialName("external_ids") val externalIds: ExternalIdsApi? = null,
     @SerialName("last_air_date") val lastAirDate: String? = null,
     @SerialName("next_episode_to_air") val nextEpisodeToAir: NextEpisodeToAirResponse? = null,
     @SerialName("production_companies") override val companies: List<ProductionCompany>,
@@ -129,8 +129,8 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
   genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
-  creators = this.credits.crew.map(),
-  cast = this.credits.cast.toActors(),
+  creators = this.credits?.crew?.map(),
+  cast = this.credits?.cast?.toActors() ?: emptyList(),
   runtime = this.runtime.toHourMinuteFormat(),
   isFavorite = false,
   imdbId = this.imdbId,
@@ -174,7 +174,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   numberOfSeasons = this.numberOfSeasons,
   creators = this.createdBy.map(),
   seasons = this.seasons.map(),
-  imdbId = this.externalIds.imdbId,
+  imdbId = this.externalIds?.imdbId,
   popularity = popularity,
   information = MediaDetailsInformation.TV(
     originalTitle = this.originalName,

@@ -60,7 +60,7 @@ class ProdDetailsRepository(
 ) : DetailsRepository {
 
   override fun fetchMediaDetails(request: MediaRequestApi): Flow<Result<MediaDetails>> = mediaRemote
-    .fetchDetails(request)
+    .fetchDetails(request = request, appendToResponse = true)
     .map { apiResponse ->
       val details = apiResponse.toDomainMedia()
       val mediaItem = details.toMediaItem()
