@@ -75,8 +75,7 @@ fun AnimatedVisibilityScope.RequestsScreen(
         RequestsContent(
           state = uiState,
           onNavigate = onNavigate,
-          action = { action ->
-          },
+          action = viewModel::onAction,
         )
       }
     },

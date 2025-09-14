@@ -28,6 +28,12 @@ class ProfileViewModel(
 
   init {
     fetchAccountDetails()
+
+    viewModelScope.launch {
+      authRepository.isJellyseerrEnabled.collect { isEnabled ->
+        _uiState.update { it.copy(isJellyseerrEnabled = isEnabled) }
+      }
+    }
   }
 
   private fun fetchAccountDetails() {
@@ -56,10 +62,6 @@ class ProfileViewModel(
               it.copy(accountUiState = TMDBAccountUiState.Error)
             }
           }
-      }
-
-      authRepository.isJellyseerrEnabled.collect { isEnabled ->
-        _uiState.update { it.copy(isJellyseerrEnabled = isEnabled) }
       }
     }
   }

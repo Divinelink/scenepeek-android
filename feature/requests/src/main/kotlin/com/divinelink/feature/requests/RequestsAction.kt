@@ -1,4 +1,8 @@
 package com.divinelink.feature.requests
 
-sealed interface RequestsAction
+import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 
+sealed interface RequestsAction {
+  data object LoadMore : RequestsAction
+  data class FetchMediaItem(val request: RequestUiItem) : RequestsAction
+}

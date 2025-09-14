@@ -78,11 +78,13 @@ fun ProfileContent(
       )
     }
 
-    item {
-      ProfileSectionItem(
-        section = ProfileSection.Requests,
-        onClick = { userInteraction(ProfileAction.NavigateToRequests) },
-      )
+    if (uiState.isJellyseerrEnabled) {
+      item {
+        ProfileSectionItem(
+          section = ProfileSection.Requests,
+          onClick = { userInteraction(ProfileAction.NavigateToRequests) },
+        )
+      }
     }
 
     item {

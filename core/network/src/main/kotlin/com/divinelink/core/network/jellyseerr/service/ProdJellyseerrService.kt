@@ -216,6 +216,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
     val url = "${restClient.hostAddress}/api/v1/request" +
       "?filter=${filter.name.lowercase()}" +
+      "&take=5" +
       "&skip=$skip"
 
     emit(restClient.get<MediaRequestsResponse>(url = url))
