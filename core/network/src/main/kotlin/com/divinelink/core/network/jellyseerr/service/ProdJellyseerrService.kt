@@ -4,8 +4,8 @@ import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
-import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
@@ -50,12 +50,10 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       emit(response)
     }
 
-  override suspend fun fetchAccountDetails(
-    address: String,
-  ): Flow<JellyseerrAccountDetailsResponseApi> = flow {
+  override suspend fun fetchProfile(address: String): Flow<JellyseerrProfileResponse> = flow {
     val url = "$address$AUTH_ENDPOINT/me"
 
-    val response = restClient.get<JellyseerrAccountDetailsResponseApi>(url = url)
+    val response = restClient.get<JellyseerrProfileResponse>(url = url)
 
     emit(response)
   }

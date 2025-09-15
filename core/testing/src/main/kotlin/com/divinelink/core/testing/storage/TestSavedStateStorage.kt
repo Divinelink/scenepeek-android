@@ -2,13 +2,15 @@ package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.auth.ConcreteSavedState
 import com.divinelink.core.datastore.auth.SavedState
-import com.divinelink.core.datastore.auth.SavedState.JellyseerrAccount
+import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TestSavedStateStorage(
-  jellyseerrAccounts: Map<String, JellyseerrAccount> = emptyMap(),
+  jellyseerrCredentials: Map<String, JellyseerrCredentials> = emptyMap(),
+  jellyseerrProfiles: Map<String, JellyseerrProfile> = emptyMap(),
   jellyseerrAuthCookies: Map<String, String> = emptyMap(),
   selectedJellyseerrAccountId: String? = null,
 ) : SavedStateStorage {
@@ -18,24 +20,32 @@ class TestSavedStateStorage(
 
   private val _savedState = MutableStateFlow(
     ConcreteSavedState(
-      jellyseerrAccounts = jellyseerrAccounts,
+      jellyseerrCredentials = jellyseerrCredentials,
+      jellyseerrProfiles = jellyseerrProfiles,
       jellyseerrAuthCookies = jellyseerrAuthCookies,
-      selectedJellyseerrAccountId = selectedJellyseerrAccountId,
+      selectedJellyseerrId = selectedJellyseerrAccountId,
     ),
   )
 
   override val savedState: StateFlow<SavedState> = _savedState
 
-  override suspend fun setJellyseerrAccount(account: JellyseerrAccount) {
+  override suspend fun setJellyseerrCredentials(credentials: JellyseerrCredentials) {
     _savedState.value = _savedState.value.copy(
-      selectedJellyseerrAccountId = accountId,
-      jellyseerrAccounts = _savedState.value.jellyseerrAccounts + (accountId to account),
+      selectedJellyseerrId = accountId,
+      jellyseerrCredentials = _savedState.value.jellyseerrCredentials + (accountId to credentials),
+    )
+  }
+
+  override suspend fun setJellyseerrProfile(profile: JellyseerrProfile) {
+    _savedState.value = _savedState.value.copy(
+      selectedJellyseerrId = accountId,
+      jellyseerrProfiles = _savedState.value.jellyseerrProfiles + (accountId to profile),
     )
   }
 
   override suspend fun setJellyseerrAuthCookie(cookie: String) {
     _savedState.value = _savedState.value.copy(
-      selectedJellyseerrAccountId = accountId,
+      selectedJellyseerrId = accountId,
       jellyseerrAuthCookies = _savedState.value.jellyseerrAuthCookies + (accountId to cookie),
     )
 
@@ -44,11 +54,12 @@ class TestSavedStateStorage(
 
   override suspend fun clearSelectedJellyseerrAccount() {
     val currentState = _savedState.value
-    val selectedId = currentState.selectedJellyseerrAccountId ?: return
+    val selectedId = currentState.selectedJellyseerrId ?: return
 
     _savedState.value = currentState.copy(
-      selectedJellyseerrAccountId = null,
-      jellyseerrAccounts = currentState.jellyseerrAccounts - selectedId,
+      selectedJellyseerrId = null,
+      jellyseerrProfiles = currentState.jellyseerrProfiles - selectedId,
+      jellyseerrCredentials = currentState.jellyseerrCredentials - selectedId,
       jellyseerrAuthCookies = currentState.jellyseerrAuthCookies - selectedId,
     )
   }

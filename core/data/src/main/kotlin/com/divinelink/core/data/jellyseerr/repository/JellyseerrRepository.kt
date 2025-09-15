@@ -1,7 +1,7 @@
 package com.divinelink.core.data.jellyseerr.repository
 
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
@@ -17,16 +17,10 @@ interface JellyseerrRepository {
 
   suspend fun signInWithJellyseerr(loginData: JellyseerrLoginData): Flow<Result<Unit>>
 
-  suspend fun getRemoteAccountDetails(address: String): Flow<Result<JellyseerrAccountDetails>>
-
-  suspend fun getJellyseerrAccountDetails(
+  suspend fun getJellyseerrProfile(
     refresh: Boolean,
     address: String,
-  ): Flow<Resource<JellyseerrAccountDetails?>>
-
-  suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails)
-
-  suspend fun clearJellyseerrAccountDetails()
+  ): Flow<Resource<JellyseerrProfile?>>
 
   suspend fun logout(address: String): Result<Unit>
 

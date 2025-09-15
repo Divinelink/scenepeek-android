@@ -1,6 +1,6 @@
 package com.divinelink.core.testing.service
 
-import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
@@ -13,6 +13,7 @@ import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TestJellyseerrService {
@@ -34,9 +35,9 @@ class TestJellyseerrService {
     )
   }
 
-  suspend fun mockFetchAccountDetails(response: JellyseerrAccountDetailsResponseApi) {
+  suspend fun mockFetchProfile(response: JellyseerrProfileResponse) {
     whenever(
-      mock.fetchAccountDetails(address = any()),
+      mock.fetchProfile(address = any()),
     ).thenReturn(
       flowOf(response),
     )
@@ -98,5 +99,9 @@ class TestJellyseerrService {
 
   suspend fun mockGetSonarrInstanceDetails(response: Result<SonarrInstanceDetailsResponse>) {
     whenever(mock.getSonarrInstanceDetails(any())).thenReturn(response)
+  }
+
+  fun verifyNoInteractions() {
+    verifyNoInteractions(mock)
   }
 }

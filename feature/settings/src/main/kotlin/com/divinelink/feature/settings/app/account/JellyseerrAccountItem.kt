@@ -21,7 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.ui.IconWrapper
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
@@ -33,7 +34,7 @@ import com.divinelink.core.ui.R as uiR
 
 @Composable
 fun JellyseerrAccountItem(
-  accountDetails: JellyseerrAccountDetails?,
+  accountDetails: JellyseerrProfile?,
   transitionScope: SharedTransitionScope,
   animatedVisibilityScope: AnimatedVisibilityScope,
   onNavigateToJellyseerrLogin: () -> Unit,
@@ -134,14 +135,7 @@ private fun AccountItemPreview() {
       )
 
       JellyseerrAccountItem(
-        accountDetails = JellyseerrAccountDetails(
-          id = 1,
-          displayName = "John Doe",
-          avatar = "https://example.com/avatar.jpg",
-          requestCount = 100,
-          email = null,
-          createdAt = "August 9th, 2021",
-        ),
+        accountDetails = JellyseerrProfileFactory.jellyfin(),
         transitionScope = it,
         animatedVisibilityScope = this@SharedTransitionScopeProvider,
         onNavigateToJellyseerrLogin = {},

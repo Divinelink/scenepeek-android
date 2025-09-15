@@ -159,7 +159,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       AccountSettingsViewModel(
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
-        getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
+        getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         logoutUseCase = FakeLogoutUseCase().mock,
       )
     }
@@ -188,7 +188,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       AccountSettingsViewModel(
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
-        getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
+        getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         logoutUseCase = FakeLogoutUseCase().mock,
       )
     }
@@ -196,7 +196,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       JellyseerrSettingsViewModel(
         logoutJellyseerrUseCase = FakeLogoutJellyseerrUseCase().mock,
-        getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
+        getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         loginJellyseerrUseCase = FakeLoginJellyseerrUseCase().mock,
       )
     }
@@ -381,7 +381,7 @@ class ScenePeekSettingsNavHostTest : ComposeTest() {
     declare {
       AccountSettingsViewModel(
         getAccountDetailsUseCase = FakeGetAccountDetailsUseCase().mock,
-        getJellyseerrDetailsUseCase = FakeGetJellyseerrDetailsUseCase().mock,
+        getJellyseerrProfileUseCase = FakeGetJellyseerrDetailsUseCase().mock,
         logoutUseCase = FakeLogoutUseCase().mock,
       )
     }

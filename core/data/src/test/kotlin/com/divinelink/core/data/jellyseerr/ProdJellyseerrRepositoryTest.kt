@@ -8,7 +8,7 @@ import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.JellyseerrRequestMediaResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.MediaInfoRequestResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.movie.MovieInfoResponseFactory
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
@@ -26,7 +26,8 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.network.Resource
-import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
+import com.divinelink.core.network.jellyseerr.mapper.map
+import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
@@ -38,11 +39,13 @@ import com.divinelink.core.testing.factories.api.jellyseerr.response.server.rada
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceResponseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceDetailsResponseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceResponseFactory
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.service.TestJellyseerrService
 import com.google.common.truth.Truth.assertThat
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.BeforeTest
@@ -57,6 +60,7 @@ class ProdJellyseerrRepositoryTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private val remote = TestJellyseerrService()
+  private val authRepository = TestAuthRepository()
 
   private lateinit var database: Database
 
@@ -66,7 +70,7 @@ class ProdJellyseerrRepositoryTest {
 
     repository = ProdJellyseerrRepository(
       service = remote.mock,
-      queries = database.jellyseerrAccountDetailsQueries,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
   }
@@ -157,26 +161,6 @@ class ProdJellyseerrRepositoryTest {
     )
 
     assertThat(result.first()).isEqualTo(Result.success(mappedResponse))
-  }
-
-  @Test
-  fun `test getRemoteJellyseerrAccountDetails after insertion`() = runTest {
-    val domain = JellyseerrAccountDetailsFactory.jellyfin()
-
-    remote.mockFetchAccountDetails(
-      JellyseerrAccountDetailsResponseApi(
-        id = domain.id,
-        email = domain.email!!,
-        displayName = domain.displayName,
-        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
-        requestCount = domain.requestCount,
-        createdAt = domain.createdAt,
-      ),
-    )
-
-    val result = repository.getRemoteAccountDetails("http://localhost:5000")
-
-    assertThat(result.first()).isEqualTo(Result.success(JellyseerrAccountDetailsFactory.jellyfin()))
   }
 
   @Test
@@ -382,57 +366,58 @@ class ProdJellyseerrRepositoryTest {
   }
 
   @Test
-  fun `test getJellyseerrAccountDetails always fetches from local data`() = runTest {
-    val domain = JellyseerrAccountDetailsFactory.jellyfin()
+  fun `test getJellyseerrProfile with refresh fetches from remote`() = runTest {
+    val domain = JellyseerrProfileFactory.jellyfin()
+    val remoteProfile = JellyseerrProfileResponse(
+      id = domain.id,
+      email = domain.email!!,
+      displayName = domain.displayName,
+      avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
+      requestCount = domain.requestCount,
+      createdAt = domain.createdAt,
+      permissions = 7082016L,
+    )
 
-    remote.mockFetchAccountDetails(
-      JellyseerrAccountDetailsResponseApi(
-        id = domain.id,
-        email = domain.email!!,
-        displayName = domain.displayName,
-        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
-        requestCount = domain.requestCount,
-        createdAt = domain.createdAt,
+    authRepository.mockSelectedJellyseerrProfile(
+      flowOf(
+        null,
+        remoteProfile.map("http://192.168.1.50:5055"),
       ),
     )
 
-    repository.getJellyseerrAccountDetails(
+    remote.mockFetchProfile(remoteProfile)
+
+    repository.getJellyseerrProfile(
       refresh = true,
       address = "http://192.168.1.50:5055",
     ).test {
       assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
+      assertThat(awaitItem()).isEqualTo(Resource.Success(null))
       assertThat(awaitItem()).isEqualTo(
         Resource.Success(
-          JellyseerrAccountDetailsFactory.jellyfin().copy(
+          JellyseerrProfileFactory.jellyfin().copy(
             avatar = "http://192.168.1.50:5055/avatarproxy/1dde62cf4a2c436d95e17b9",
           ),
         ),
       )
+      awaitComplete()
     }
   }
 
   @Test
-  fun `test getJellyseerrAccountDetails with refresh false does not fetch from remote`() = runTest {
-    val domain = JellyseerrAccountDetailsFactory.jellyfin()
+  fun `test getJellyseerrProfile with refresh false does not fetch from remote`() = runTest {
+    authRepository.mockSelectedJellyseerrProfile(flowOf(JellyseerrProfileFactory.jellyseerr()))
 
-    remote.mockFetchAccountDetails(
-      JellyseerrAccountDetailsResponseApi(
-        id = domain.id,
-        email = domain.email!!,
-        displayName = domain.displayName,
-        avatar = "/avatarproxy/1dde62cf4a2c436d95e17b9",
-        requestCount = domain.requestCount,
-        createdAt = domain.createdAt,
-      ),
-    )
-
-    repository.getJellyseerrAccountDetails(
+    repository.getJellyseerrProfile(
       refresh = false,
       address = "http://192.168.1.50:5055",
     ).test {
-      assertThat(awaitItem()).isEqualTo(Resource.Loading(null))
-      assertThat(awaitItem()).isEqualTo(Resource.Success(null))
+      assertThat(awaitItem()).isEqualTo(Resource.Loading(JellyseerrProfileFactory.jellyseerr()))
+      assertThat(awaitItem()).isEqualTo(Resource.Success(JellyseerrProfileFactory.jellyseerr()))
+      awaitComplete()
     }
+
+    remote.verifyNoInteractions()
   }
 
   @Test

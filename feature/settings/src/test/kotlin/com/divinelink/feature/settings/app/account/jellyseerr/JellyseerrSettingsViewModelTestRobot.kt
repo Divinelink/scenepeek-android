@@ -1,6 +1,6 @@
 package com.divinelink.feature.settings.app.account.jellyseerr
 
-import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.testing.ViewModelTestRobot
 import com.divinelink.core.testing.usecase.FakeGetJellyseerrDetailsUseCase
@@ -18,14 +18,14 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
 
   private lateinit var viewModel: JellyseerrSettingsViewModel
 
-  private val accountDetailsChannel: Channel<Result<JellyseerrAccountDetailsResult>> = Channel()
+  private val accountDetailsChannel: Channel<Result<JellyseerrProfileResult>> = Channel()
 
   override fun buildViewModel() = apply {
     getJellyseerrDetailsUseCase.mockSuccess(accountDetailsChannel)
 
     viewModel = JellyseerrSettingsViewModel(
       logoutJellyseerrUseCase = logoutJellyseerrUseCase.mock,
-      getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrDetailsUseCase.mock,
       loginJellyseerrUseCase = loginJellyseerrUseCase.mock,
     )
   }
@@ -43,7 +43,7 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
   }
 
   suspend fun mockJellyseerrAccountDetailsResponse(
-    response: Result<JellyseerrAccountDetailsResult>,
+    response: Result<JellyseerrProfileResult>,
   ) = apply {
     accountDetailsChannel.send(response)
   }
@@ -64,14 +64,14 @@ class JellyseerrSettingsViewModelTestRobot : ViewModelTestRobot<JellyseerrSettin
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnSelectLoginMethod(method))
   }
 
-  suspend fun onLoginJellyseerr(result: Result<JellyseerrAccountDetailsResult>? = null) = apply {
+  suspend fun onLoginJellyseerr(result: Result<JellyseerrProfileResult>? = null) = apply {
     result?.let {
       accountDetailsChannel.send(result)
     }
     viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLoginClick)
   }
 
-  suspend fun onLogoutJellyseerr(accountDetailsResult: Result<JellyseerrAccountDetailsResult>) =
+  suspend fun onLogoutJellyseerr(accountDetailsResult: Result<JellyseerrProfileResult>) =
     apply {
       accountDetailsChannel.send(accountDetailsResult)
       viewModel.onJellyseerrInteraction(JellyseerrInteraction.OnLogoutClick)

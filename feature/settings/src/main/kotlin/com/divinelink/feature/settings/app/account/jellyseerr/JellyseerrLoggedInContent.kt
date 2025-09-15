@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.SharedElementKeys
@@ -177,14 +177,7 @@ private fun JellyseerrLoggedInContentPreview() {
       animatedVisibilityScope = this,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = false,
-        accountDetails = JellyseerrAccountDetails(
-          id = 1,
-          avatar = "https://www.example.com/avatar.jpg",
-          displayName = "Display Name",
-          requestCount = 100,
-          email = "jellyseerr@info.com",
-          createdAt = "2023-08-19T00:00:00Z",
-        ),
+        accountDetails = JellyseerrProfileFactory.jellyseerr(),
         address = "http://localhost:5055",
       ),
       onLogoutClock = {},
@@ -201,14 +194,7 @@ private fun JellyseerrLoggedInContentLoadingPreview() {
       animatedVisibilityScope = this,
       jellyseerrState = JellyseerrState.LoggedIn(
         isLoading = true,
-        accountDetails = JellyseerrAccountDetails(
-          id = 1,
-          avatar = "https://www.example.com/avatar.jpg",
-          displayName = "Display Name",
-          requestCount = 100,
-          email = "jellyseerr@info.com",
-          createdAt = "2023-08-19T00:00:00Z",
-        ),
+        accountDetails = JellyseerrProfileFactory.jellyfin(),
         address = "http://localhost:5055",
       ),
       onLogoutClock = {},

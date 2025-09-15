@@ -1,15 +1,18 @@
 package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.datastore.auth.SavedState
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -26,8 +29,11 @@ class LoginJellyseerrUseCaseTest {
   @Test
   fun `test loginJellyseerr with Jellyfin login method`() = runTest {
     repository.mockSignInWithJellyfin(Result.success(Unit))
-    repository.mockGetRemoteAccountDetails(
-      Result.success(JellyseerrAccountDetailsFactory.jellyfin()),
+    repository.mockGetJellyseerrProfile(
+      flowOf(
+        Resource.Loading(null),
+        Resource.Success(JellyseerrProfileFactory.jellyfin()),
+      ),
     )
 
     val useCase = LoginJellyseerrUseCase(
@@ -47,7 +53,7 @@ class LoginJellyseerrUseCaseTest {
       assertThat(it.isSuccess).isTrue()
       assertThat(it.getOrNull()).isEqualTo(Unit)
       authRepository.verifyAccountUpdated(
-        SavedState.JellyseerrAccount(
+        SavedState.JellyseerrCredentials(
           account = "jellyfinUsername",
           password = "password",
           address = "http://localhost:8096",
@@ -60,8 +66,11 @@ class LoginJellyseerrUseCaseTest {
   @Test
   fun `test loginJellyseerr with Jellyseerr login method`() = runTest {
     repository.mockSignInWithJellyseerr(Result.success(Unit))
-    repository.mockGetRemoteAccountDetails(
-      Result.success(JellyseerrAccountDetailsFactory.jellyseerr()),
+    repository.mockGetJellyseerrProfile(
+      flowOf(
+        Resource.Loading(null),
+        Resource.Success(JellyseerrProfileFactory.jellyseerr()),
+      ),
     )
 
     val useCase = LoginJellyseerrUseCase(
@@ -81,7 +90,7 @@ class LoginJellyseerrUseCaseTest {
       assertThat(it.isSuccess).isTrue()
       assertThat(it.getOrNull()).isEqualTo(Unit)
       authRepository.verifyAccountUpdated(
-        SavedState.JellyseerrAccount(
+        SavedState.JellyseerrCredentials(
           account = "jellyseerrUsername",
           password = "password",
           address = "http://localhost:8096",
@@ -94,9 +103,7 @@ class LoginJellyseerrUseCaseTest {
   @Test
   fun `test loginJellyseerr with jellyseerr auth method but failed remote details`() = runTest {
     repository.mockSignInWithJellyseerr(Result.success(Unit))
-    repository.mockGetRemoteAccountDetails(
-      Result.failure(Exception()),
-    )
+    repository.mockGetJellyseerrProfile(flowOf(Resource.Error(Exception())))
 
     val useCase = LoginJellyseerrUseCase(
       repository = repository.mock,
@@ -111,19 +118,15 @@ class LoginJellyseerrUseCaseTest {
         address = "http://localhost:8096",
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
-    ).collect {
-      assertThat(it.isFailure).isTrue()
-      assertThat(it.getOrNull()).isNull()
-      authRepository.verifyNoInteractionsForUpdateJellyseerrAccount()
-    }
+    ).first()
+
+    repository.verifyGetJellyseerrProfile()
   }
 
   @Test
   fun `test loginJellyseerr with jellyfin auth method but failed remote details`() = runTest {
     repository.mockSignInWithJellyfin(Result.success(Unit))
-    repository.mockGetRemoteAccountDetails(
-      Result.failure(Exception()),
-    )
+    repository.mockGetJellyseerrProfile(flowOf(Resource.Error(Exception())))
 
     val useCase = LoginJellyseerrUseCase(
       repository = repository.mock,
@@ -138,11 +141,9 @@ class LoginJellyseerrUseCaseTest {
         address = "http://localhost:8096",
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
-    ).collect {
-      assertThat(it.isFailure).isTrue()
-      assertThat(it.getOrNull()).isNull()
-      authRepository.verifyNoInteractionsForUpdateJellyseerrAccount()
-    }
+    ).first()
+
+    repository.verifyGetJellyseerrProfile()
   }
 
   @Test

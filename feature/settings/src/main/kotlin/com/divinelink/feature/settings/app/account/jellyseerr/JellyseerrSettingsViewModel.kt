@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.commons.domain.onError
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
 import com.divinelink.core.model.Password
@@ -29,7 +29,7 @@ import com.divinelink.core.ui.R as uiR
 
 class JellyseerrSettingsViewModel(
   private val logoutJellyseerrUseCase: LogoutJellyseerrUseCase,
-  getJellyseerrDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
+  getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   private val loginJellyseerrUseCase: LoginJellyseerrUseCase,
 ) : ViewModel() {
 
@@ -38,12 +38,12 @@ class JellyseerrSettingsViewModel(
 
   init {
     viewModelScope.launch {
-      getJellyseerrDetailsUseCase.invoke(true)
+      getJellyseerrProfileUseCase.invoke(true)
         .distinctUntilChanged()
         .collect { result ->
           result.onSuccess {
             val accountDetailsResult = result.data
-            if (accountDetailsResult.accountDetails == null) {
+            if (accountDetailsResult.profile == null) {
               _uiState.update {
                 it.copy(
                   jellyseerrState = JellyseerrState.Login(
@@ -58,7 +58,7 @@ class JellyseerrSettingsViewModel(
               _uiState.update {
                 it.copy(
                   jellyseerrState = JellyseerrState.LoggedIn(
-                    accountDetails = accountDetailsResult.accountDetails!!,
+                    accountDetails = accountDetailsResult.profile!!,
                     isLoading = false,
                     address = accountDetailsResult.address,
                   ),

@@ -867,7 +867,7 @@ class ScenePeekAppTest : ComposeTest() {
       IntroViewModel(
         markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-        getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+        getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
         onboardingManager = onboardingManager,
       )
     }
@@ -933,7 +933,7 @@ class ScenePeekAppTest : ComposeTest() {
       IntroViewModel(
         markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
         getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-        getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+        getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
         onboardingManager = onboardingManager,
       )
     }

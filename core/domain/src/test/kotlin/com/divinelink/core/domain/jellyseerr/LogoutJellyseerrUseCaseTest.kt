@@ -20,7 +20,7 @@ class LogoutJellyseerrUseCaseTest {
 
   @Test
   fun `test logout jellyseerr with null account`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(null)
+    authRepository.mockSelectedJellyseerrCredentials(null)
 
     val useCase = LogoutJellyseerrUseCase(
       repository = repository.mock,
@@ -32,12 +32,11 @@ class LogoutJellyseerrUseCaseTest {
 
     assertThat(result).isEqualTo(Result.success(Unit))
     authRepository.verifyClearSelectedJellyseerrAccount()
-    repository.verifyClearJellyseerrAccountDetails()
   }
 
   @Test
   fun `test logout jellyseerr with success`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockLogout(Result.success(Unit))
 
@@ -52,12 +51,11 @@ class LogoutJellyseerrUseCaseTest {
     assertThat(result.isSuccess).isTrue()
     assertThat(result).isEqualTo(Result.success(Unit))
     authRepository.verifyClearSelectedJellyseerrAccount()
-    repository.verifyClearJellyseerrAccountDetails()
   }
 
   @Test
   fun `test logout jellyseerr with failure`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockLogout(Result.failure(Exception("Logout failed.")))
 
@@ -74,12 +72,11 @@ class LogoutJellyseerrUseCaseTest {
     assertThat(result.exceptionOrNull()?.message).isEqualTo("Logout failed.")
 
     authRepository.verifyClearSelectedJellyseerrAccount()
-    repository.verifyClearJellyseerrAccountDetails()
   }
 
   @Test
   fun `test logout jellyseerr with failure clears session data`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockLogout(Result.failure(Exception("Logout failed.")))
 
@@ -91,7 +88,6 @@ class LogoutJellyseerrUseCaseTest {
 
     val response = useCase.invoke(Unit)
 
-    repository.verifyClearJellyseerrAccountDetails()
     authRepository.verifyClearSelectedJellyseerrAccount()
 
     assertThat(response.toString()).isEqualTo(

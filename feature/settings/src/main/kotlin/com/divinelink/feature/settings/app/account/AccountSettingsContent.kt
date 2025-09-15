@@ -55,7 +55,7 @@ fun AccountSettingsContent(
       JellyseerrAccountItem(
         transitionScope = transitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
-        accountDetails = uiState.jellyseerrAccountDetails,
+        accountDetails = uiState.jellyseerrProfile,
         onNavigateToJellyseerrLogin = onNavigateToJellyseerrLogin,
       )
     }

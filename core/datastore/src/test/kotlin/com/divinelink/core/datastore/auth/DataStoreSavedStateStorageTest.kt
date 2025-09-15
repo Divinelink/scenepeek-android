@@ -69,19 +69,19 @@ class DataStoreSavedStateStorageTest {
   @Test
   fun `test set jellyseerr account without selected account id`() = runTest {
     shouldThrow<IllegalArgumentException> {
-      dataStore.setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+      dataStore.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
     }
   }
 
   @Test
   fun `test set jellyseerr account with selected account`() = runTest {
     dataStore.setJellyseerrAuthCookie("test-cookie-value")
-    dataStore.setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    dataStore.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     dataStore.savedState.test {
       val first = awaitItem()
 
-      first.jellyseerrAccounts.values shouldContainExactly listOf(
+      first.jellyseerrCredentials.values shouldContainExactly listOf(
         JellyseerrAccountFactory.zabaob(),
       )
     }

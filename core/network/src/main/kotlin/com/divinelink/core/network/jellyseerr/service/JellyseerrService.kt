@@ -1,7 +1,7 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.network.jellyseerr.model.JellyseerrAccountDetailsResponseApi
+import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
@@ -19,7 +19,7 @@ interface JellyseerrService {
 
   suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit>
 
-  suspend fun fetchAccountDetails(address: String): Flow<JellyseerrAccountDetailsResponseApi>
+  suspend fun fetchProfile(address: String): Flow<JellyseerrProfileResponse>
 
   suspend fun logout(address: String): Result<Unit>
 

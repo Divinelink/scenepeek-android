@@ -65,7 +65,7 @@ class JellyseerrRestClientTest {
       client = JellyseerrRestClient(
         engine = engine,
         savedStateStorage = TestSavedStateStorage().apply {
-          setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+          setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
         },
       )
 
@@ -112,7 +112,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       savedStateStorage = TestSavedStateStorage().apply {
-        setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+        setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
       },
     )
 
@@ -139,7 +139,7 @@ class JellyseerrRestClientTest {
     client = JellyseerrRestClient(
       engine = engine,
       savedStateStorage = TestSavedStateStorage().apply {
-        setJellyseerrAccount(JellyseerrAccountFactory.cup10())
+        setJellyseerrCredentials(JellyseerrAccountFactory.cup10())
       },
     )
 

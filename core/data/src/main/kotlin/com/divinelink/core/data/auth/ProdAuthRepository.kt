@@ -3,6 +3,7 @@ package com.divinelink.core.data.auth
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.isJellyseerrEnabled
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -13,20 +14,27 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
     .savedState
     .map { it.isJellyseerrEnabled() }
 
-  override val jellyseerrAccounts: Flow<Map<String, SavedState.JellyseerrAccount>> =
+  override val jellyseerrCredentials: Flow<Map<String, SavedState.JellyseerrCredentials>> =
     savedStateStorage
       .savedState
-      .map { it.jellyseerrAccounts }
+      .map { it.jellyseerrCredentials }
       .distinctUntilChanged()
 
-  override val selectedJellyseerrAccount: Flow<SavedState.JellyseerrAccount?> = savedStateStorage
-    .savedState
-    .map {
-      it.jellyseerrAccounts[it.selectedJellyseerrAccountId]
-    }
+  override val selectedJellyseerrCredentials: Flow<SavedState.JellyseerrCredentials?> =
+    savedStateStorage
+      .savedState
+      .map { it.jellyseerrCredentials[it.selectedJellyseerrId] }
 
-  override suspend fun updateJellyseerrAccount(account: SavedState.JellyseerrAccount) {
-    savedStateStorage.setJellyseerrAccount(account)
+  override val selectedJellyseerrProfile: Flow<JellyseerrProfile?> = savedStateStorage
+    .savedState
+    .map { it.jellyseerrProfiles[it.selectedJellyseerrId] }
+
+  override suspend fun updateJellyseerrCredentials(account: SavedState.JellyseerrCredentials) {
+    savedStateStorage.setJellyseerrCredentials(account)
+  }
+
+  override suspend fun updateJellyseerrProfile(profile: JellyseerrProfile) {
+    savedStateStorage.setJellyseerrProfile(profile)
   }
 
   override suspend fun clearSelectedJellyseerrAccount() {

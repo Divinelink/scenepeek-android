@@ -2,7 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
@@ -27,9 +27,9 @@ class GetJellyseerrDetailsUseCaseTest {
 
   @Test
   fun `test get jellyseerr account details with null storage data`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(null)
+    authRepository.mockSelectedJellyseerrCredentials(null)
 
-    val useCase = GetJellyseerrAccountDetailsUseCase(
+    val useCase = GetJellyseerrProfileUseCase(
       authRepository = authRepository.mock,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -45,13 +45,13 @@ class GetJellyseerrDetailsUseCaseTest {
 
   @Test
   fun `test get jellyseerr account details with storage data`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
-    repository.mockGetAccountDetails(
-      flowOf(Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr())),
+    repository.mockGetJellyseerrProfile(
+      flowOf(Resource.Success(JellyseerrProfileFactory.jellyseerr())),
     )
 
-    val useCase = GetJellyseerrAccountDetailsUseCase(
+    val useCase = GetJellyseerrProfileUseCase(
       authRepository = authRepository.mock,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -65,13 +65,13 @@ class GetJellyseerrDetailsUseCaseTest {
 
   @Test
   fun `test get remote jellyseerr without active account`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(null)
+    authRepository.mockSelectedJellyseerrCredentials(null)
 
-    repository.mockGetAccountDetails(
-      flowOf(Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr())),
+    repository.mockGetJellyseerrProfile(
+      flowOf(Resource.Success(JellyseerrProfileFactory.jellyseerr())),
     )
 
-    val useCase = GetJellyseerrAccountDetailsUseCase(
+    val useCase = GetJellyseerrProfileUseCase(
       authRepository = authRepository.mock,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -87,16 +87,16 @@ class GetJellyseerrDetailsUseCaseTest {
 
   @Test
   fun `test get remote jellyseerr account details without local data and address`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
-    repository.mockGetAccountDetails(
+    repository.mockGetJellyseerrProfile(
       flowOf(
         Resource.Success(null),
-        Resource.Success(JellyseerrAccountDetailsFactory.jellyseerr()),
+        Resource.Success(JellyseerrProfileFactory.jellyseerr()),
       ),
     )
 
-    val useCase = GetJellyseerrAccountDetailsUseCase(
+    val useCase = GetJellyseerrProfileUseCase(
       authRepository = authRepository.mock,
       repository = repository.mock,
       dispatcher = testDispatcher,
@@ -115,16 +115,16 @@ class GetJellyseerrDetailsUseCaseTest {
 
   @Test
   fun `test get remote jellyseerr account details with failure and no local data`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
-    repository.mockGetAccountDetails(
+    repository.mockGetJellyseerrProfile(
       flowOf(
         Resource.Success(null),
         Resource.Error(Exception("Error")),
       ),
     )
 
-    val useCase = GetJellyseerrAccountDetailsUseCase(
+    val useCase = GetJellyseerrProfileUseCase(
       authRepository = authRepository.mock,
       repository = repository.mock,
       dispatcher = testDispatcher,

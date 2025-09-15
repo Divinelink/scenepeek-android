@@ -11,8 +11,8 @@ class TestJellyseerrClient {
   lateinit var client: JellyseerrRestClient
   var storage: SavedStateStorage = TestSavedStateStorage()
 
-  suspend fun withAccount(account: SavedState.JellyseerrAccount) = apply {
-    storage.setJellyseerrAccount(account)
+  suspend fun withAccount(account: SavedState.JellyseerrCredentials) = apply {
+    storage.setJellyseerrCredentials(account)
   }
 
   suspend inline fun <reified T : Any> mockGetResponse(

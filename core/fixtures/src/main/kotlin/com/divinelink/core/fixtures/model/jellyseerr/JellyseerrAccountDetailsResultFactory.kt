@@ -1,26 +1,26 @@
 package com.divinelink.core.fixtures.model.jellyseerr
 
-import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 
 object JellyseerrAccountDetailsResultFactory {
 
-  fun initial() = JellyseerrAccountDetailsResult(
+  fun initial() = JellyseerrProfileResult(
     address = "",
-    accountDetails = null,
+    profile = null,
   )
 
-  fun signedOut() = JellyseerrAccountDetailsResult(
+  fun signedOut() = JellyseerrProfileResult(
     address = "http://localhost:5055",
-    accountDetails = null,
+    profile = null,
   )
 
-  fun jellyfin() = JellyseerrAccountDetailsResult(
+  fun jellyfin() = JellyseerrProfileResult(
     address = "http://localhost:5055",
-    accountDetails = JellyseerrAccountDetailsFactory.jellyfin(),
+    profile = JellyseerrProfileFactory.jellyfin(),
   )
 
-  fun jellyseerr() = JellyseerrAccountDetailsResult(
+  fun jellyseerr() = JellyseerrProfileResult(
     address = "http://localhost:5055",
-    accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+    profile = JellyseerrProfileFactory.jellyseerr(),
   )
 }

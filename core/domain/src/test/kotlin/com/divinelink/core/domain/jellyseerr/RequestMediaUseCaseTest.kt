@@ -29,7 +29,7 @@ class RequestMediaUseCaseTest {
 
   @Test
   fun `test requestMedia with null account throws exception`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(null)
+    authRepository.mockSelectedJellyseerrCredentials(null)
 
     val useCase = RequestMediaUseCase(
       repository = repository.mock,
@@ -58,7 +58,7 @@ class RequestMediaUseCaseTest {
 
   @Test
   fun `test requestMedia with success and success request details response`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.movie()))
     repository.mockRequestDetails(Result.success(JellyseerrRequestFactory.movie()))
@@ -89,7 +89,7 @@ class RequestMediaUseCaseTest {
 
   @Test
   fun `test tv series requestMedia with success and success request details response`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.tvPartially()))
     repository.mockRequestDetails(Result.success(betterCallSaul2()))
@@ -129,7 +129,7 @@ class RequestMediaUseCaseTest {
 
   @Test
   fun `test requestMedia with success and success request with null details response`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockRequestMedia(Result.success(JellyseerrMediaRequestResponseFactory.movie()))
     repository.mockRequestDetails(Result.failure(Exception("Request details not found")))
@@ -160,7 +160,7 @@ class RequestMediaUseCaseTest {
 
   @Test
   fun `test requestMedia with failure`() = runTest {
-    authRepository.mockSelectedJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+    authRepository.mockSelectedJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
     repository.mockRequestMedia(Result.failure(IllegalArgumentException("Something went wrong")))
 

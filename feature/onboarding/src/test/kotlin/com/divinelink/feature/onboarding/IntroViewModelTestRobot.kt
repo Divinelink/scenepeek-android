@@ -1,7 +1,7 @@
 package com.divinelink.feature.onboarding
 
 import app.cash.turbine.test
-import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.manager.TestOnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.onboarding.IntroSection
@@ -29,7 +29,7 @@ class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = onboardingManager,
     )
   }
@@ -57,7 +57,7 @@ class IntroViewModelTestRobot : ViewModelTestRobot<OnboardingUiState>() {
     getAccountDetailsUseCase.mockSuccess(response)
   }
 
-  fun mockGetJellyseerrAccountDetails(response: Result<JellyseerrAccountDetailsResult>) = apply {
+  fun mockGetJellyseerrAccountDetails(response: Result<JellyseerrProfileResult>) = apply {
     getJellyseerrAccountDetailsUseCase.mockSuccess(response)
   }
 }

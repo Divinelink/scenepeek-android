@@ -31,6 +31,4 @@ val databaseModule = module {
   singleOf(::ProdPersonDao) { bind<PersonDao>() }
   singleOf(::ProdListDao) { bind<ListDao>() }
   singleOf(::ProdMediaDao) { bind<MediaDao>() }
-
-  single { get<Database>().jellyseerrAccountDetailsQueries }
 }

@@ -5,14 +5,14 @@ import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 
 object JellyseerrAccountFactory {
 
-  fun cup10() = SavedState.JellyseerrAccount(
+  fun cup10() = SavedState.JellyseerrCredentials(
     address = "http://localhost:8080",
     account = "Cup10",
     authMethod = JellyseerrAuthMethod.JELLYFIN,
     password = "123456789",
   )
 
-  fun zabaob() = SavedState.JellyseerrAccount(
+  fun zabaob() = SavedState.JellyseerrCredentials(
     address = "http://localhost:5055",
     account = "Zabaob",
     authMethod = JellyseerrAuthMethod.JELLYSEERR,

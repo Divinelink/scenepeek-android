@@ -4,9 +4,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -203,11 +203,11 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   @Test
   fun `test observe jellyseerr account`() = runTest {
-    val jellyseerrChannel = Channel<Result<JellyseerrAccountDetailsResult>>()
+    val jellyseerrChannel = Channel<Result<JellyseerrProfileResult>>()
     getJellyseerrDetailsUseCase.mockSuccess(jellyseerrChannel)
     val viewModel = setupViewModel()
 
-    val account = JellyseerrAccountDetailsFactory.jellyseerr()
+    val account = JellyseerrProfileFactory.jellyseerr()
 
     setVisibilityScopeContent {
       AccountSettingsScreen(
@@ -225,9 +225,9 @@ class AccountSettingsScreenTest : ComposeTest() {
 
       jellyseerrChannel.send(
         Result.success(
-          JellyseerrAccountDetailsResult(
+          JellyseerrProfileResult(
             address = "",
-            accountDetails = account,
+            profile = account,
           ),
         ),
       )
@@ -237,7 +237,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
       jellyseerrChannel.send(
         Result.success(
-          JellyseerrAccountDetailsResult(address = "", accountDetails = null),
+          JellyseerrProfileResult(address = "", profile = null),
         ),
       )
 
@@ -248,7 +248,7 @@ class AccountSettingsScreenTest : ComposeTest() {
 
   private fun setupViewModel(): AccountSettingsViewModel = AccountSettingsViewModel(
     getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-    getJellyseerrDetailsUseCase = getJellyseerrDetailsUseCase.mock,
+    getJellyseerrProfileUseCase = getJellyseerrDetailsUseCase.mock,
     logoutUseCase = logoutUseCase.mock,
   )
 }
