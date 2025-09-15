@@ -24,10 +24,12 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
     savedStateStorage
       .savedState
       .map { it.jellyseerrCredentials[it.selectedJellyseerrId] }
+      .distinctUntilChanged()
 
   override val selectedJellyseerrProfile: Flow<JellyseerrProfile?> = savedStateStorage
     .savedState
     .map { it.jellyseerrProfiles[it.selectedJellyseerrId] }
+    .distinctUntilChanged()
 
   override suspend fun updateJellyseerrCredentials(account: SavedState.JellyseerrCredentials) {
     savedStateStorage.setJellyseerrCredentials(account)

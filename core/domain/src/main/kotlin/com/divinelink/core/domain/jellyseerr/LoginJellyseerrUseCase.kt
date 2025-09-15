@@ -27,11 +27,6 @@ class LoginJellyseerrUseCase(
 
     result.last().fold(
       onSuccess = {
-        repository.getJellyseerrProfile(
-          refresh = true,
-          address = parameters.address,
-        )
-
         authRepository.updateJellyseerrCredentials(
           SavedState.JellyseerrCredentials(
             account = parameters.username.value,
@@ -41,7 +36,12 @@ class LoginJellyseerrUseCase(
           ),
         )
 
-        emit(Result.success(Unit))
+        repository.getJellyseerrProfile(
+          refresh = true,
+          address = parameters.address,
+        ).collect {
+          emit(Result.success(Unit))
+        }
       },
       onFailure = {
         emit(Result.failure(it))

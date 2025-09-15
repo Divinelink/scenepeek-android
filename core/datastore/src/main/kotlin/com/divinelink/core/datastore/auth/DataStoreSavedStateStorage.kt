@@ -80,11 +80,12 @@ class DataStoreSavedStateStorage(
     if (uuid == null) {
       state
     } else {
+      val updatedCredentials = state.jellyseerrCredentials.minus(uuid)
       state.copy(
         jellyseerrAuthCookies = state.jellyseerrAuthCookies.minus(uuid),
-        jellyseerrCredentials = state.jellyseerrCredentials.minus(uuid),
+        jellyseerrCredentials = updatedCredentials,
         jellyseerrProfiles = state.jellyseerrProfiles.minus(uuid),
-        selectedJellyseerrId = state.jellyseerrCredentials.keys.minus(uuid).firstOrNull(),
+        selectedJellyseerrId = updatedCredentials.keys.firstOrNull(),
       )
     }
   }
