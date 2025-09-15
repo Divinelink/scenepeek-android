@@ -1,6 +1,8 @@
 package com.divinelink.scenepeek.main.ui
 
 import android.net.Uri
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -10,6 +12,7 @@ import com.divinelink.core.navigation.route.Navigation.PersonRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -210,5 +213,23 @@ class MainViewModelTest {
       .buildViewModel()
       .onHandleDeeplink(url)
       .assertUiEvent(MainUiEvent.None)
+  }
+
+  @Test
+  fun `test refresh jellyseerr session is executed only once`() = runTest {
+    robot
+      .mockGetJellyseerrProfile(
+        flowOf(
+          Result.success(JellyseerrProfileResult("", null)),
+          Result.success(
+            JellyseerrProfileResult(
+              "http://192.168.1.10:5055",
+              JellyseerrProfileFactory.jellyseerr(),
+            ),
+          ),
+        ),
+      )
+      .buildViewModel()
+      .verifyJellyseerrRefreshSession(1)
   }
 }
