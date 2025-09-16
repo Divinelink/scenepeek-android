@@ -1348,7 +1348,7 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(movieDetails, RatingSource.TMDB)),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.pending(),
             ),
           ),
@@ -1386,7 +1386,7 @@ class DetailsViewModelTest {
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.available(),
             ),
           ),
@@ -1438,7 +1438,7 @@ class DetailsViewModelTest {
           launch {
             channel.send(
               Result.success(
-                MediaDetailsResult.JellyseerrDetailsSuccess(
+                MediaDetailsResult.JellyseerrDetails.Requested(
                   JellyseerrMediaInfoFactory.Tv.available(),
                 ),
               ),
@@ -1548,7 +1548,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
             ),
           ),
@@ -1990,7 +1990,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2069,7 +2069,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
             ),
           ),
@@ -2186,7 +2186,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2265,7 +2265,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2343,7 +2343,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2421,7 +2421,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2545,7 +2545,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
             ),
           ),

@@ -201,17 +201,21 @@ open class GetMediaDetailsUseCase(
           is MediaRequestApi.Movie -> jellyseerrRepository.getMovieDetails(parameters.movieId)
             .catch { Timber.e(it) }
             .collect { result ->
-              result?.status?.let {
-                detailsCompleted.await()
-                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              detailsCompleted.await()
+              if (result == null) {
+                send(Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested))
+              } else {
+                send(Result.success(MediaDetailsResult.JellyseerrDetails.Requested(result)))
               }
             }
           is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
             .catch { Timber.e(it) }
             .collect { result ->
-              result?.status?.let {
-                detailsCompleted.await()
-                send(Result.success(MediaDetailsResult.JellyseerrDetailsSuccess(result)))
+              detailsCompleted.await()
+              if (result == null) {
+                send(Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested))
+              } else {
+                send(Result.success(MediaDetailsResult.JellyseerrDetails.Requested(result)))
               }
             }
           MediaRequestApi.Unknown -> throw InvalidMediaTypeException()

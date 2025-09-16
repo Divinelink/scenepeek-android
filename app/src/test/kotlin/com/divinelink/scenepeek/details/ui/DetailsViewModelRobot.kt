@@ -13,6 +13,7 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
@@ -54,6 +55,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
   )
+  private val authRepository = TestAuthRepository()
 
   override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
@@ -66,6 +68,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
       deleteMediaUseCase = testDeleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,

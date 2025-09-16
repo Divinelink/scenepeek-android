@@ -39,6 +39,7 @@ import com.divinelink.core.scaffold.rememberScenePeekAppState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeFetchMultiInfoSearchUseCase
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
@@ -117,6 +118,7 @@ class ScenePeekAppTest : ComposeTest() {
   private lateinit var fetchAllRatingsUseCase: TestFetchAllRatingsUseCase
   private lateinit var deleteRequestUseCase: TestDeleteRequestUseCase
   private lateinit var deleteMediaUseCase: TestDeleteMediaUseCase
+  private lateinit var authRepository: TestAuthRepository
 
   // Onboarding use cases
   private val markOnboardingCompleteUseCase = TestMarkOnboardingCompleteUseCase()
@@ -667,6 +669,7 @@ class ScenePeekAppTest : ComposeTest() {
         fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
         deleteRequestUseCase = deleteRequestUseCase.mock,
         deleteMediaUseCase = deleteMediaUseCase.mock,
+        authRepository = authRepository.mock,
         savedStateHandle = SavedStateHandle(
           mapOf(
             "id" to 1,

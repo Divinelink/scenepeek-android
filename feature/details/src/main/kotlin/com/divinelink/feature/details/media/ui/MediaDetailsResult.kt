@@ -41,7 +41,10 @@ sealed class MediaDetailsResult {
 
   data class CreditsSuccess(val aggregateCredits: AggregateCredits) : MediaDetailsResult()
 
-  data class JellyseerrDetailsSuccess(val info: JellyseerrMediaInfo) : MediaDetailsResult()
+  sealed interface JellyseerrDetails {
+    data object NotRequested : MediaDetailsResult()
+    data class Requested(val info: JellyseerrMediaInfo) : MediaDetailsResult()
+  }
 
   data class MenuOptionsSuccess(val menuOptions: List<DetailsMenuOptions>) : MediaDetailsResult()
 

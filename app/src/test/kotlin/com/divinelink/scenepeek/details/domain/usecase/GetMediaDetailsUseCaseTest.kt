@@ -817,13 +817,46 @@ class GetMediaDetailsUseCaseTest {
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.JellyseerrDetailsSuccess(
+          MediaDetailsResult.JellyseerrDetails.Requested(
             info = JellyseerrMediaInfoFactory.Movie.pending(),
           ),
         ),
       )
     }
   }
+
+  @Test
+  fun `test jellyseerr getMovieDetails with success and null media info returns not requested`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      jellyseerrRepository.mockGetMovieDetails(null)
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(movieRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(movieDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested),
+        )
+      }
+    }
 
   @Test
   fun `test jellyseerr getTvDetails with success also awaits for details to respond`() = runTest {
@@ -852,13 +885,46 @@ class GetMediaDetailsUseCaseTest {
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.JellyseerrDetailsSuccess(
+          MediaDetailsResult.JellyseerrDetails.Requested(
             info = JellyseerrMediaInfoFactory.Tv.available(),
           ),
         ),
       )
     }
   }
+
+  @Test
+  fun `test jellyseerr getTvDetails with success and null media info returns not requested`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      jellyseerrRepository.mockGetTvDetails(null)
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(tvRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(tvDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested),
+        )
+      }
+    }
 
   private fun createGetMediaDetailsUseCase() = GetMediaDetailsUseCase(
     repository = repository.mock,

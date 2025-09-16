@@ -145,6 +145,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -211,6 +212,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -277,6 +279,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -357,6 +360,7 @@ class DetailsScreenTest : ComposeTest() {
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
+          authRepository = authRepository.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 0,
@@ -436,6 +440,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -493,6 +498,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -587,6 +593,7 @@ class DetailsScreenTest : ComposeTest() {
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
+          authRepository = authRepository.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -658,6 +665,7 @@ class DetailsScreenTest : ComposeTest() {
           fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
           deleteRequestUseCase = deleteRequestUseCase.mock,
           deleteMediaUseCase = deleteMediaUseCase.mock,
+          authRepository = authRepository.mock,
           savedStateHandle = SavedStateHandle(
             mapOf(
               "id" to 2316,
@@ -715,6 +723,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -775,6 +784,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -887,6 +897,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
@@ -1006,6 +1017,7 @@ class DetailsScreenTest : ComposeTest() {
       fetchAllRatingsUseCase = fetchAllRatingsUseCase.mock,
       deleteRequestUseCase = deleteRequestUseCase.mock,
       deleteMediaUseCase = deleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to 0,
