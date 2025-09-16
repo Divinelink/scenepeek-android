@@ -38,3 +38,6 @@ enum class ProfilePermission(val value: Long) {
       .filter { it != NONE && (bitmask and it.value) != 0L }
   }
 }
+
+fun List<ProfilePermission>.canPerform(permission: ProfilePermission): Boolean =
+  this.contains(permission)

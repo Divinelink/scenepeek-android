@@ -43,6 +43,7 @@ import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
@@ -81,18 +82,6 @@ import com.divinelink.feature.details.R as detailsR
 
 class DetailsScreenTest : ComposeTest() {
 
-  @BeforeTest
-  fun setup() {
-    startKoin {
-      androidContext(composeTestRule.activity)
-    }
-  }
-
-  @AfterTest
-  fun tearDown() {
-    stopKoin()
-  }
-
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
@@ -107,6 +96,19 @@ class DetailsScreenTest : ComposeTest() {
   private val spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
   private val deleteRequestUseCase = TestDeleteRequestUseCase()
   private val deleteMediaUseCase = TestDeleteMediaUseCase()
+  private val authRepository = TestAuthRepository()
+
+  @BeforeTest
+  fun setup() {
+    startKoin {
+      androidContext(composeTestRule.activity)
+    }
+  }
+
+  @AfterTest
+  fun tearDown() {
+    stopKoin()
+  }
 
   @Test
   fun `test switch between movie tabs`() = runTest {
@@ -844,6 +846,7 @@ class DetailsScreenTest : ComposeTest() {
         media = MediaItemFactory.FightClub(),
         requestMediaUseCase = requestMediaUseCase.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        authRepository = authRepository.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
@@ -961,6 +964,7 @@ class DetailsScreenTest : ComposeTest() {
       RequestMediaViewModel(
         media = MediaItemFactory.theOffice(),
         requestMediaUseCase = requestMediaUseCase.mock,
+        authRepository = authRepository.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )

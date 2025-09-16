@@ -36,6 +36,7 @@ import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -671,6 +672,7 @@ class DetailsContentTest : ComposeTest() {
         media = MediaItemFactory.theOffice(),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+        authRepository = TestAuthRepository().mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
@@ -736,6 +738,7 @@ class DetailsContentTest : ComposeTest() {
       RequestMediaViewModel(
         media = MediaItemFactory.FightClub(),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
+        authRepository = TestAuthRepository().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )

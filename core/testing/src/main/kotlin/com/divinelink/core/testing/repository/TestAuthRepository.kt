@@ -3,16 +3,21 @@ package com.divinelink.core.testing.repository
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
+import com.divinelink.core.model.jellyseerr.ProfilePermission
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TestAuthRepository {
   val mock: AuthRepository = mock()
+
+  init {
+    mockPermissions(flowOf(ProfilePermission.entries))
+  }
 
   fun mockJellyseerrEnabled(isEnabled: Boolean) {
     whenever(mock.isJellyseerrEnabled).thenReturn(flowOf(isEnabled))
@@ -20,6 +25,14 @@ class TestAuthRepository {
 
   fun mockJellyseerrCredentials(accounts: Map<String, SavedState.JellyseerrCredentials>) {
     whenever(mock.jellyseerrCredentials).thenReturn(flowOf(accounts))
+  }
+
+  fun mockPermissions(permissions: Flow<List<ProfilePermission>>) {
+    whenever(mock.profilePermissions).thenReturn(permissions)
+  }
+
+  fun mockPermissions(permissions: Channel<List<ProfilePermission>>) {
+    whenever(mock.profilePermissions).thenReturn(permissions.consumeAsFlow())
   }
 
   fun mockSelectedJellyseerrCredentials(credentials: SavedState.JellyseerrCredentials?) {
@@ -36,22 +49,5 @@ class TestAuthRepository {
 
   suspend fun verifyClearSelectedJellyseerrAccount() {
     verify(mock).clearSelectedJellyseerrAccount()
-  }
-
-  suspend fun mockSelectedProfileProfileWithUpdate() {
-    var profile: JellyseerrProfile? = null
-
-    whenever(mock.selectedJellyseerrProfile).thenAnswer { invocation ->
-      profile = invocation.getArgument(0)
-      Unit
-    }
-
-    whenever(
-      mock.updateJellyseerrProfile(any()),
-    ).thenAnswer { profile }
-  }
-
-  fun verifyNoInteractionsForUpdateJellyseerrAccount() {
-    verifyNoInteractions(mock)
   }
 }

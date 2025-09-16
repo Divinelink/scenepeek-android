@@ -23,7 +23,7 @@ class ProdAuthRepositoryTest {
 
       savedStateStorage.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
-      awaitItem() shouldBe false
+      expectNoEvents()
 
       savedStateStorage.setJellyseerrAuthCookie("test-cookie-value")
 

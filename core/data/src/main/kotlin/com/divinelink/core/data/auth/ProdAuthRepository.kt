@@ -3,7 +3,9 @@ package com.divinelink.core.data.auth
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.isJellyseerrEnabled
+import com.divinelink.core.datastore.auth.profilePermissions
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
+import com.divinelink.core.model.jellyseerr.ProfilePermission
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -12,7 +14,13 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
 
   override val isJellyseerrEnabled: Flow<Boolean> = savedStateStorage
     .savedState
-    .map { it.isJellyseerrEnabled() }
+    .map { it.isJellyseerrEnabled }
+    .distinctUntilChanged()
+
+  override val profilePermissions: Flow<List<ProfilePermission>> = savedStateStorage
+    .savedState
+    .map { it.profilePermissions }
+    .distinctUntilChanged()
 
   override val jellyseerrCredentials: Flow<Map<String, SavedState.JellyseerrCredentials>> =
     savedStateStorage

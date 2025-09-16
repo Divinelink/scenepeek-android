@@ -236,9 +236,9 @@ fun RequestMediaContent(
 
       item {
         if (
-          state.selectedInstance !is LCEState.Error ||
-          state.selectedProfile !is LCEState.Error ||
-          state.selectedRootFolder !is LCEState.Error
+          state.selectedInstance !is LCEState.Idle ||
+          state.selectedProfile !is LCEState.Idle ||
+          state.selectedRootFolder !is LCEState.Idle
         ) {
           Text(
             modifier = Modifier

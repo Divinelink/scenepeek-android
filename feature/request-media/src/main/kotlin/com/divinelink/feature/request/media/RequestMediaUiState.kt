@@ -1,6 +1,7 @@
 package com.divinelink.feature.request.media
 
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.jellyseerr.ProfilePermission
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
@@ -15,6 +16,7 @@ data class RequestMediaUiState(
   val isLoading: Boolean,
   val snackbarMessage: SnackbarMessage?,
   val dialogState: TwoButtonDialogState?,
+  val permissions: List<ProfilePermission>,
   val instances: List<ServerInstance>,
   val profiles: List<InstanceProfile>,
   val rootFolders: List<InstanceRootFolder>,
@@ -33,6 +35,7 @@ data class RequestMediaUiState(
       isLoading = false,
       snackbarMessage = null,
       dialogState = null,
+      permissions = emptyList(),
       instances = emptyList(),
       profiles = emptyList(),
       rootFolders = emptyList(),
@@ -44,7 +47,7 @@ data class RequestMediaUiState(
 }
 
 sealed interface LCEState<out T> {
-  data object Error : LCEState<Nothing>
+  data object Idle : LCEState<Nothing>
   data object Loading : LCEState<Nothing>
   data class Content<T>(val data: T) : LCEState<T>
 }

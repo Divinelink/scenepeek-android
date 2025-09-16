@@ -14,8 +14,8 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.model.jellyseerr.JellyseerrState
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent

@@ -21,11 +21,13 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanc
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.jellyseerr.ProfilePermission
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -35,6 +37,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -43,6 +46,100 @@ class RequestSeasonsModalTest : ComposeTest() {
   private val getServerInstancesUseCase = TestGetServerInstancesUseCase()
   private val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
   private val requestMediaUseCase = FakeRequestMediaUseCase()
+  private val authRepository = TestAuthRepository()
+
+  @Test
+  fun `test initialise modal without advanced permission hides advanced options`() = runTest {
+    authRepository.mockPermissions(flowOf(emptyList()))
+
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
+
+    val viewModel = RequestMediaViewModel(
+      media = MediaItemFactory.theOffice(),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+    )
+
+    setContentWithTheme {
+      RequestSeasonsModal(
+        seasons = SeasonFactory.all(),
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN)
+        .assertIsDisplayed()
+        .performScrollToIndex(14)
+
+      onNodeWithText(
+        getString(R.string.feature_request_media_destination_server),
+      ).assertIsNotDisplayed()
+
+      onNodeWithText(
+        getString(R.string.feature_request_media_quality_profile),
+      ).assertIsNotDisplayed()
+
+      onNodeWithText(
+        getString(R.string.feature_request_media_root_folder),
+      ).assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `test observe profile permissions`() = runTest {
+    authRepository.mockPermissions(flowOf(listOf(), ProfilePermission.entries))
+
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+
+    getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
+
+    val viewModel = RequestMediaViewModel(
+      media = MediaItemFactory.theOffice(),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+    )
+
+    setContentWithTheme {
+      RequestSeasonsModal(
+        seasons = SeasonFactory.all(),
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN)
+        .performScrollToNode(
+          hasText("Sonarr (Default)"),
+        )
+
+      onNodeWithText("Sonarr (Default)").assertIsDisplayed()
+      onNodeWithText("Quality profile").assertIsNotDisplayed()
+      onNodeWithText("Root folders").assertIsNotDisplayed()
+    }
+  }
 
   @Test
   fun `test show request tv show dialog`() = runTest {
@@ -58,6 +155,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -91,6 +189,7 @@ class RequestSeasonsModalTest : ComposeTest() {
         media = MediaItemFactory.theOffice(),
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
+        authRepository = authRepository.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
       )
 
@@ -128,6 +227,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -176,6 +276,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -232,6 +333,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -273,6 +375,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -316,6 +419,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -360,6 +464,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -410,6 +515,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -459,6 +565,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -504,6 +611,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -544,6 +652,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -582,6 +691,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -626,6 +736,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -674,6 +785,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -720,6 +832,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -781,6 +894,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
@@ -843,6 +957,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 

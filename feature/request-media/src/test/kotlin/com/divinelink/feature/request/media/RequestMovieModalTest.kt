@@ -5,11 +5,10 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
-import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
-import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -25,6 +24,7 @@ class RequestMovieModalTest : ComposeTest() {
   private val getServerInstancesUseCase = TestGetServerInstancesUseCase()
   private val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
   private val requestMediaUseCase = FakeRequestMediaUseCase()
+  private val authRepository = TestAuthRepository()
 
   @Test
   fun `test show request movie dialog`() = runTest {
@@ -40,6 +40,7 @@ class RequestMovieModalTest : ComposeTest() {
       media = MediaItemFactory.FightClub(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
     )
 
