@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JellyseerrProfileResponse(
-  val id: Long,
+  val id: Int,
   val email: String,
   val displayName: String,
   val avatar: String? = null,
-  val requestCount: Long,
+  val requestCount: Int,
   val createdAt: String,
   val permissions: Long,
 )

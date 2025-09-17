@@ -29,7 +29,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -45,7 +44,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
@@ -58,6 +56,7 @@ import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.JellyseerrStatusPill
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.getString
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,6 +68,7 @@ fun ManageJellyseerrMediaModal(
   onDeleteRequest: (Int) -> Unit,
   onDismissRequest: () -> Unit,
   onDeleteMedia: (deleteFile: Boolean) -> Unit,
+  showAdvancedOptions: Boolean,
 ) {
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   var dialogInfo by remember { mutableStateOf<JellyseerrDialogInfo?>(null) }
@@ -111,6 +111,7 @@ fun ManageJellyseerrMediaModal(
         onClearData = {
           dialogInfo = JellyseerrDialogInfo.ClearData(mediaType == MediaType.MOVIE)
         },
+        showAdvancedOptions = showAdvancedOptions,
       )
     },
   )
@@ -124,6 +125,7 @@ fun ManageJellyseerrMediaContent(
   onDeleteRequest: (Int) -> Unit,
   onRemoveMedia: () -> Unit,
   onClearData: () -> Unit,
+  showAdvancedOptions: Boolean,
 ) {
   LazyColumn(
     modifier = Modifier
@@ -162,19 +164,21 @@ fun ManageJellyseerrMediaContent(
       }
     }
 
-    item {
-      MediaSection(
-        mediaType = mediaType,
-        onClick = onRemoveMedia,
-      )
-    }
+    if (showAdvancedOptions) {
+      item {
+        MediaSection(
+          mediaType = mediaType,
+          onClick = onRemoveMedia,
+        )
+      }
 
-    item {
-      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
-      AdvancedSection(
-        mediaType = mediaType,
-        onClick = onClearData,
-      )
+      item {
+        Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_16))
+        AdvancedSection(
+          mediaType = mediaType,
+          onClick = onClearData,
+        )
+      }
     }
   }
 }
@@ -412,35 +416,49 @@ private fun RequesterDisplay(requester: JellyseerrRequester) {
 
 @Composable
 @Previews
-fun ManageJellyseerrMediaContentPreview() {
-  AppTheme {
-    Surface {
-      ManageJellyseerrMediaContent(
-        requests = JellyseerrRequestFactory.Tv.all(),
-        mediaType = MediaType.TV,
-        isLoading = false,
-        onDeleteRequest = {},
-        onRemoveMedia = {},
-        onClearData = {},
-      )
-    }
+fun ManageJellyseerrMediaContentAdvancedPreview() {
+  PreviewLocalProvider {
+    ManageJellyseerrMediaContent(
+      requests = JellyseerrRequestFactory.Tv.all(),
+      mediaType = MediaType.TV,
+      isLoading = false,
+      onDeleteRequest = {},
+      onRemoveMedia = {},
+      onClearData = {},
+      showAdvancedOptions = true,
+    )
   }
 }
 
 @Composable
 @Preview
 fun ManageJellyseerrMediaContentLoadingPreview() {
-  AppTheme {
-    Surface {
-      ManageJellyseerrMediaContent(
-        requests = listOf(JellyseerrRequestFactory.movie()),
-        mediaType = MediaType.MOVIE,
-        isLoading = true,
-        onDeleteRequest = {},
-        onRemoveMedia = {},
-        onClearData = {},
-      )
-    }
+  PreviewLocalProvider {
+    ManageJellyseerrMediaContent(
+      requests = listOf(JellyseerrRequestFactory.movie()),
+      mediaType = MediaType.MOVIE,
+      isLoading = true,
+      onDeleteRequest = {},
+      onRemoveMedia = {},
+      onClearData = {},
+      showAdvancedOptions = true,
+    )
+  }
+}
+
+@Composable
+@Preview
+fun ManageJellyseerrMediaContentPreview() {
+  PreviewLocalProvider {
+    ManageJellyseerrMediaContent(
+      requests = listOf(JellyseerrRequestFactory.movie()),
+      mediaType = MediaType.MOVIE,
+      isLoading = false,
+      onDeleteRequest = {},
+      onRemoveMedia = {},
+      onClearData = {},
+      showAdvancedOptions = false,
+    )
   }
 }
 

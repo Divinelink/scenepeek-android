@@ -16,7 +16,7 @@ class TestAuthRepository {
   val mock: AuthRepository = mock()
 
   init {
-    mockPermissions(flowOf(ProfilePermission.entries))
+    mockPermissions(flowOf(emptyList()))
   }
 
   fun mockJellyseerrEnabled(isEnabled: Boolean) {

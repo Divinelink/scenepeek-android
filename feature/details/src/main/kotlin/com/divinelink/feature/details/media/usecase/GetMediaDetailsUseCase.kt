@@ -3,6 +3,7 @@ package com.divinelink.feature.details.media.usecase
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.InvalidMediaTypeException
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.MediaDetailsParams
@@ -17,15 +18,19 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.jellyseerr.canManageRequests
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -37,6 +42,7 @@ open class GetMediaDetailsUseCase(
   private val jellyseerrRepository: JellyseerrRepository,
   private val mediaRepository: MediaRepository,
   private val preferenceStorage: PreferenceStorage,
+  private val authRepository: AuthRepository,
   private val fetchAccountMediaDetailsUseCase: FetchAccountMediaDetailsUseCase,
   private val getMenuItemsUseCase: GetDropdownMenuItemsUseCase,
   private val getDetailsActionItemsUseCase: GetDetailsActionItemsUseCase,
@@ -205,7 +211,7 @@ open class GetMediaDetailsUseCase(
               if (result == null) {
                 send(Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested))
               } else {
-                send(Result.success(MediaDetailsResult.JellyseerrDetails.Requested(result)))
+                filterRequestsBasedOnPermission(result)
               }
             }
           is MediaRequestApi.TV -> jellyseerrRepository.getTvDetails(parameters.seriesId)
@@ -215,7 +221,7 @@ open class GetMediaDetailsUseCase(
               if (result == null) {
                 send(Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested))
               } else {
-                send(Result.success(MediaDetailsResult.JellyseerrDetails.Requested(result)))
+                filterRequestsBasedOnPermission(result)
               }
             }
           MediaRequestApi.Unknown -> throw InvalidMediaTypeException()
@@ -257,6 +263,29 @@ open class GetMediaDetailsUseCase(
           }
       }
     }
+
+  /**
+   * Calculates requests based on user permissions.
+   * Display all requests if user has MANAGE_REQUESTS permission.
+   * Otherwise displays only user's requests.
+   */
+  private suspend fun ProducerScope<Result<MediaDetailsResult>>.filterRequestsBasedOnPermission(
+    result: JellyseerrMediaInfo,
+  ) {
+    val permissions = authRepository.profilePermissions.first()
+
+    val filteredResults = if (permissions.canManageRequests()) {
+      result
+    } else {
+      val currentUserId = authRepository.selectedJellyseerrProfile.first()?.id
+      result.copy(
+        requests = result.requests.filter { it.requester.id == currentUserId },
+      )
+    }
+    send(
+      Result.success(MediaDetailsResult.JellyseerrDetails.Requested(filteredResults)),
+    )
+  }
 
   private suspend fun fetchIMDbDetails(details: MediaDetails): MediaDetails {
     if (details.imdbId == null) {

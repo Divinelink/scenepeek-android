@@ -27,6 +27,7 @@
   <string name="feature_details_jellyseerr_failed_request_delete">Failed to delete request</string>
   <string name="feature_details_request">Request</string>
   <string name="feature_details_manage_movie">Manage movie</string>
+  <string name="feature_details_manage_movie_TEST">TEST</string>
   <string name="feature_details_manage_tv">Manage series</string>
   <string name="feature_details_season">Season %s</string>
 

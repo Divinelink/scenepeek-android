@@ -88,6 +88,16 @@ object JellyseerrMediaInfoFactory {
       ),
     )
 
+    fun emptyRequests() = JellyseerrMediaInfo(
+      mediaId = 134,
+      requests = emptyList(),
+      status = JellyseerrStatus.Media.PARTIALLY_AVAILABLE,
+      seasons = listOf(
+        SeasonRequest(1, JellyseerrStatus.Media.AVAILABLE),
+        SeasonRequest(2, JellyseerrStatus.Media.PARTIALLY_AVAILABLE),
+      ),
+    )
+
     fun unknown() = JellyseerrMediaInfo(
       mediaId = 134,
       requests = emptyList(),

@@ -54,6 +54,7 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
+import com.divinelink.core.model.jellyseerr.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
@@ -170,6 +171,7 @@ fun DetailsContent(
       isLoading = viewState.isLoading,
       mediaType = viewState.mediaType,
       onDeleteMedia = onDeleteMedia,
+      showAdvancedOptions = viewState.permissions.canManageRequests(),
     )
   }
 
@@ -358,6 +360,7 @@ private fun MediaDetailsContent(
     status = uiState.jellyseerrMediaInfo?.status,
     ratingSource = uiState.ratingSource,
     hasTrailer = trailer?.key != null,
+    canManageRequests = uiState.canManageRequests,
     onAddToWatchlistClick = onAddToWatchlistClick,
     onAddRateClick = onAddRateClick,
     onShowAllRatingsClick = viewAllRatingsClick,

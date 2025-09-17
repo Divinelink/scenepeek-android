@@ -1,8 +1,9 @@
 package com.divinelink.core.model.details.actions
 
 import com.divinelink.core.model.details.DetailActionItem
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 
-class DetailActionsBuilder {
+class DetailActionsBuilder internal constructor() {
   private val actions = mutableListOf<DetailActionItem>()
 
   init {
@@ -26,8 +27,11 @@ class DetailActionsBuilder {
   fun withManageTv(
     canManage: Boolean,
     withPermission: Boolean,
+    requests: List<JellyseerrRequest>,
   ): DetailActionsBuilder = apply {
-    if (canManage && withPermission) actions.add(DetailActionItem.ManageTvShow)
+    if (canManage && (withPermission || requests.isNotEmpty())) {
+      actions.add(DetailActionItem.ManageTvShow)
+    }
   }
 
   fun build(): List<DetailActionItem> = actions.toList()

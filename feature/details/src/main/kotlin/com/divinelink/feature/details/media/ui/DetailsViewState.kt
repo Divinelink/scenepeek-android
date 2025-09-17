@@ -13,6 +13,7 @@ import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -70,4 +71,8 @@ data class DetailsViewState(
     )
     null -> null
   }
+
+  val canManageRequests
+    get() = permissions.canManageRequests() ||
+      jellyseerrMediaInfo?.requests?.isNotEmpty() == true
 }

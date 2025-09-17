@@ -30,6 +30,7 @@ fun DynamicDetailsCollapsingToolbar(
   userDetails: AccountMediaDetails?,
   status: JellyseerrStatus.Media?,
   hasTrailer: Boolean,
+  canManageRequests: Boolean,
   onAddToWatchlistClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
@@ -57,6 +58,7 @@ fun DynamicDetailsCollapsingToolbar(
         onShowAllRatingsClick = onShowAllRatingsClick,
         onWatchTrailerClick = onWatchTrailerClick,
         onOpenManageModal = onOpenManageModal,
+        canManageRequests = canManageRequests,
         onNavigate = onNavigate,
       )
     }.first().measure(constraints)
@@ -94,6 +96,7 @@ fun DynamicDetailsCollapsingToolbar(
               status = status,
               isOnWatchlist = userDetails?.watchlist == true,
               hasTrailer = hasTrailer,
+              canManageRequests = canManageRequests,
               userDetails = userDetails,
               ratingSource = ratingSource,
               ratingCount = mediaDetails.ratingCount,

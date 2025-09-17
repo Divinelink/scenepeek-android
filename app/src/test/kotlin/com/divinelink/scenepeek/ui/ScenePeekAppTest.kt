@@ -146,6 +146,7 @@ class ScenePeekAppTest : ComposeTest() {
     spoilersObfuscationUseCase = TestSpoilersObfuscationUseCase().useCase()
     deleteRequestUseCase = TestDeleteRequestUseCase()
     deleteMediaUseCase = TestDeleteMediaUseCase()
+    authRepository = TestAuthRepository()
 
     startKoin {
       androidContext(composeTestRule.activity)
