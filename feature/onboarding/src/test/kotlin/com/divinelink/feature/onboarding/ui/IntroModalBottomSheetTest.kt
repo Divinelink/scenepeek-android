@@ -27,7 +27,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
         sections = IntroSections.onboardingSections,
       ),
@@ -51,7 +51,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
         sections = IntroSections.onboardingSections,
       ),
@@ -73,7 +73,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
         sections = listOf(IntroSections.tmdb),
       ),
@@ -104,7 +104,7 @@ class IntroModalBottomSheetTest : ComposeTest() {
     viewModel = IntroViewModel(
       markOnboardingCompleteUseCase = markOnboardingCompleteUseCase.mock,
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
-      getJellyseerrAccountDetailsUseCase = getJellyseerrAccountDetailsUseCase.mock,
+      getJellyseerrProfileUseCase = getJellyseerrAccountDetailsUseCase.mock,
       onboardingManager = TestOnboardingManager(
         sections = listOf(IntroSections.jellyseerr),
       ),

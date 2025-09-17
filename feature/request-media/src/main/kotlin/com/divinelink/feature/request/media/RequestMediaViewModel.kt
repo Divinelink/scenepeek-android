@@ -2,6 +2,7 @@ package com.divinelink.feature.request.media
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.domain.jellyseerr.GetServerInstanceDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetServerInstancesUseCase
@@ -9,6 +10,8 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.exception.AppException
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.canPerform
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
@@ -21,6 +24,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -34,6 +38,7 @@ class RequestMediaViewModel(
   private val getServerInstancesUseCase: GetServerInstancesUseCase,
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  authRepository: AuthRepository,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(
@@ -48,40 +53,50 @@ class RequestMediaViewModel(
   val updatedMediaInfo: Flow<JellyseerrMediaInfo> = _updatedMediaInfo.receiveAsFlow()
 
   init {
+    authRepository
+      .profilePermissions
+      .distinctUntilChanged()
+      .onEach { permissions ->
+        _uiState.update { it.copy(permissions = permissions) }
+      }
+      .launchIn(viewModelScope)
+
     viewModelScope.launch {
-      getServerInstancesUseCase(media.mediaType).fold(
-        onSuccess = { instances ->
-          val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }
-          _uiState.update { uiState ->
-            uiState.copy(
-              instances = instances.filter { it.is4k == uiState.is4k },
-            )
-          }
-          if (instances.isEmpty()) {
+      if (uiState.value.permissions.canPerform(ProfilePermission.REQUEST_ADVANCED)) {
+        getServerInstancesUseCase(media.mediaType).fold(
+          onSuccess = { instances ->
+            val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }
             _uiState.update { uiState ->
               uiState.copy(
-                selectedInstance = LCEState.Error,
-                selectedProfile = LCEState.Error,
-                selectedRootFolder = LCEState.Error,
+                instances = instances.filter { it.is4k == uiState.is4k },
               )
             }
-          } else {
-            if (default == null) {
-              selectInstance(instances.first())
+            if (instances.isEmpty()) {
+              hideAdvancedOptions()
             } else {
-              selectInstance(default)
+              if (default == null) {
+                selectInstance(instances.first())
+              } else {
+                selectInstance(default)
+              }
             }
-          }
-        },
-        onFailure = {
-          _uiState.update { uiState ->
-            uiState.copy(
-              selectedInstance = LCEState.Error,
-              selectedProfile = LCEState.Error,
-              selectedRootFolder = LCEState.Error,
-            )
-          }
-        },
+          },
+          onFailure = {
+            hideAdvancedOptions()
+          },
+        )
+      } else {
+        hideAdvancedOptions()
+      }
+    }
+  }
+
+  private fun hideAdvancedOptions() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        selectedInstance = LCEState.Idle,
+        selectedProfile = LCEState.Idle,
+        selectedRootFolder = LCEState.Idle,
       )
     }
   }
@@ -120,12 +135,12 @@ class RequestMediaViewModel(
               profiles = result.profiles,
               rootFolders = result.rootFolders,
               selectedProfile = if (defaultProfile == null) {
-                LCEState.Error
+                LCEState.Idle
               } else {
                 LCEState.Content(defaultProfile)
               },
               selectedRootFolder = if (defaultRootFolder == null) {
-                LCEState.Error
+                LCEState.Idle
               } else {
                 LCEState.Content(defaultRootFolder)
               },
@@ -137,8 +152,8 @@ class RequestMediaViewModel(
             uiState.copy(
               profiles = emptyList(),
               rootFolders = emptyList(),
-              selectedProfile = LCEState.Error,
-              selectedRootFolder = LCEState.Error,
+              selectedProfile = LCEState.Idle,
+              selectedRootFolder = LCEState.Idle,
             )
           }
         },

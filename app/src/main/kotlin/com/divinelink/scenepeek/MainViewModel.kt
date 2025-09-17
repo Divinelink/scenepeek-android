@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
 import com.divinelink.core.domain.FindByIdUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -17,11 +18,13 @@ import com.divinelink.scenepeek.ui.ThemedActivityDelegate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
   private val findByIdUseCase: FindByIdUseCase,
+  private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
   ThemedActivityDelegate by themedActivityDelegate {
@@ -31,6 +34,10 @@ class MainViewModel(
 
   private val _uiEvent: MutableStateFlow<MainUiEvent> = MutableStateFlow(MainUiEvent.None)
   val uiEvent: StateFlow<MainUiEvent> = _uiEvent
+
+  init {
+    refreshJellyseerrSession()
+  }
 
   private fun updateUiEvent(event: MainUiEvent) {
     _uiEvent.value = event
@@ -128,6 +135,12 @@ class MainViewModel(
       ),
     )
   }
+
+  private fun refreshJellyseerrSession() {
+    getJellyseerrProfileUseCase
+      .invoke(true)
+      .launchIn(viewModelScope)
+  }
 }
 
 private fun handleSchemeIMDB(
@@ -171,33 +184,3 @@ private fun Uri.isForTMDB(): Boolean = scheme == "scenepeek" &&
 
 private fun Uri.isForIMDB(): Boolean = scheme == "https" &&
   (host == "imdb.com" || host == "www.imdb.com" || host == "m.imdb.com")
-
-/**
- * Activate remote config once Main Activity starts.
- * This is crucial since we can fetch data from remote config and then update our UI
- * once we're ready.
- */
-/*
-  init {
-    setRemoteConfig()
-  }
-
-  fun retryFetchRemoteConfig() {
-    setRemoteConfig()
-  }
-
-  private fun setRemoteConfig() {
-    _uiState.value = MainViewState.Loading
-    viewModelScope.launch {
-      val result = setRemoteConfigUseCase.invoke(Unit)
-
-      if (result.isSuccess) {
-        _uiState.value = MainViewState.Completed
-      } else {
-        _uiState.value = MainViewState.Error(
-          UIText.StringText("Something went wrong. Trying again..."),
-        )
-      }
-    }
-  }
- */

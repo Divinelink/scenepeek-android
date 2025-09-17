@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.GetAccountDetailsUseCase
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.session.LogoutUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.account.TMDBAccount
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class AccountSettingsViewModel(
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
-  getJellyseerrDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
+  getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
 
@@ -38,18 +38,18 @@ class AccountSettingsViewModel(
   init {
     fetchAccountDetails()
 
-    getJellyseerrDetailsUseCase.invoke(false)
+    getJellyseerrProfileUseCase.invoke(false)
       .distinctUntilChanged()
       .onEach { result ->
         result
-          .onSuccess { jellyseerrDetails ->
+          .onSuccess { jellyseerr ->
             _viewState.update {
-              it.copy(jellyseerrAccountDetails = jellyseerrDetails.accountDetails)
+              it.copy(jellyseerrProfile = jellyseerr.profile)
             }
           }
           .onFailure {
             _viewState.update {
-              it.copy(jellyseerrAccountDetails = null)
+              it.copy(jellyseerrProfile = null)
             }
           }
       }.launchIn(viewModelScope)

@@ -2,8 +2,8 @@ package com.divinelink.feature.settings.app.account.jellyseerr
 
 import com.divinelink.core.commons.exception.ApiClientException
 import com.divinelink.core.commons.exception.InvalidStatusException
-import com.divinelink.core.domain.jellyseerr.JellyseerrAccountDetailsResult
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
@@ -152,15 +152,15 @@ class JellyseerrSettingsViewModelTest {
       .buildViewModel()
       .mockJellyseerrAccountDetailsResponse(
         Result.success(
-          JellyseerrAccountDetailsResult(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+          JellyseerrProfileResult(
+            profile = JellyseerrProfileFactory.jellyseerr(),
             address = "http://localhost:5055",
           ),
         ),
       ).assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
           ),
@@ -183,7 +183,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
           ),
@@ -213,7 +213,7 @@ class JellyseerrSettingsViewModelTest {
       .assertUiState(
         createUiState(
           jellyseerrState = JellyseerrState.LoggedIn(
-            accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+            accountDetails = JellyseerrProfileFactory.jellyseerr(),
             isLoading = false,
             address = "http://localhost:5055",
           ),
@@ -369,7 +369,7 @@ class JellyseerrSettingsViewModelTest {
           createUiState(
             jellyseerrState = JellyseerrState.LoggedIn(
               isLoading = false,
-              accountDetails = JellyseerrAccountDetailsFactory.jellyseerr(),
+              accountDetails = JellyseerrProfileFactory.jellyseerr(),
               address = "http://localhost:5055",
             ),
           ),

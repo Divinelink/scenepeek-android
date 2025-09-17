@@ -3,7 +3,7 @@ package com.divinelink.feature.onboarding.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.domain.GetAccountDetailsUseCase
-import com.divinelink.core.domain.jellyseerr.GetJellyseerrAccountDetailsUseCase
+import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.onboarding.MarkOnboardingCompleteUseCase
 import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.model.account.TMDBAccount
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class IntroViewModel(
   private val markOnboardingCompleteUseCase: MarkOnboardingCompleteUseCase,
   private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
-  private val getJellyseerrAccountDetailsUseCase: GetJellyseerrAccountDetailsUseCase,
+  private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   onboardingManager: OnboardingManager,
 ) : ViewModel() {
 
@@ -91,9 +91,9 @@ class IntroViewModel(
 
   private fun fetchJellyseerrAccountJob() {
     viewModelScope.launch {
-      getJellyseerrAccountDetailsUseCase.invoke(true).collect { result ->
+      getJellyseerrProfileUseCase.invoke(true).collect { result ->
         result.onSuccess { accountResult ->
-          if (accountResult.accountDetails == null) return@collect
+          if (accountResult.profile == null) return@collect
 
           _uiState.update { uiState ->
             uiState.copy(

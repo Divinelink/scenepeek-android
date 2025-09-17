@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsException
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.domain.MarkAsFavoriteUseCase
@@ -21,6 +22,7 @@ import com.divinelink.core.model.details.DetailActionItem
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.details.TV
+import com.divinelink.core.model.details.actions.buildActions
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.clearSeasonsStatus
 import com.divinelink.core.model.details.externalUrl
@@ -29,6 +31,9 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
@@ -50,6 +55,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -68,6 +74,7 @@ class DetailsViewModel(
   private val deleteRequestUseCase: DeleteRequestUseCase,
   private val spoilersObfuscationUseCase: SpoilersObfuscationUseCase,
   private val deleteMediaUseCase: DeleteMediaUseCase,
+  authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -131,6 +138,14 @@ class DetailsViewModel(
   }
 
   init {
+    authRepository
+      .profilePermissions
+      .distinctUntilChanged()
+      .onEach { permissions ->
+        _viewState.update { it.copy(permissions = permissions) }
+      }
+      .launchIn(viewModelScope)
+
     val requestApi = when (viewState.value.mediaType) {
       MediaType.TV -> MediaRequestApi.TV(route.id)
       MediaType.MOVIE -> MediaRequestApi.Movie(route.id)
@@ -235,11 +250,11 @@ class DetailsViewModel(
                 )
               }
 
-              is MediaDetailsResult.JellyseerrDetailsSuccess -> {
-                val jellyseerrData = (result.data as? MediaDetailsResult.JellyseerrDetailsSuccess)
-                  ?: return@onSuccess
+              is MediaDetailsResult.JellyseerrDetails.Requested -> {
+                val data = result.data as MediaDetailsResult.JellyseerrDetails.Requested
+
                 if (viewState.mediaType == MediaType.TV) {
-                  val tvInfo = jellyseerrData.info
+                  val tvInfo = data.info
                   val updatedForms = getUpdatedSeasonForms(
                     tvInfo = tvInfo,
                     overrideSeasonStatus = true,
@@ -251,15 +266,33 @@ class DetailsViewModel(
                     mediaDetails = (viewState.mediaDetails as? TV)?.copy(
                       seasons = updatedForms.second,
                     ),
-                    actionButtons = findTvActions(tvInfo.status, updatedForms.second),
+                    actionButtons = findTvActions(
+                      info = tvInfo,
+                      seasons = updatedForms.second,
+                      permissions = viewState.permissions,
+                    ),
                   )
                 } else {
                   viewState.copy(
-                    jellyseerrMediaInfo = jellyseerrData.info,
-                    actionButtons = findMovieActions(jellyseerrData.info.status),
+                    jellyseerrMediaInfo = data.info,
+                    actionButtons = findMovieActions(
+                      info = data.info,
+                      permissions = viewState.permissions,
+                    ),
                   )
                 }
               }
+
+              is MediaDetailsResult.JellyseerrDetails.NotRequested -> viewState.copy(
+                actionButtons = buildActions {
+                  withRequest(
+                    canRequest = true,
+                    withPermission = viewState.permissions.canRequest(
+                      isTV = viewState.mediaType == MediaType.TV,
+                    ),
+                  )
+                },
+              )
 
               is MediaDetailsResult.AccountDetailsSuccess -> {
                 val successData = (result.data as MediaDetailsResult.AccountDetailsSuccess)
@@ -478,38 +511,48 @@ class DetailsViewModel(
   }
 
   fun onUpdateMediaInfo(mediaInfo: JellyseerrMediaInfo) {
-    if (viewState.value.mediaType == MediaType.TV) {
-      val updatedForms = getUpdatedSeasonForms(
-        tvInfo = mediaInfo,
-        overrideSeasonStatus = false,
-      )
-
-      val jellyseerrInfo = if (mediaInfo.status == JellyseerrStatus.Media.UNKNOWN) {
-        viewState.value.jellyseerrMediaInfo
+    viewModelScope.launch {
+      if (viewState.value.mediaType == MediaType.TV) {
+        updateTvMediaInfo(mediaInfo)
       } else {
-        mediaInfo
+        _viewState.update { viewState ->
+          viewState.copy(
+            jellyseerrMediaInfo = mediaInfo,
+            actionButtons = findMovieActions(
+              info = mediaInfo,
+              permissions = viewState.permissions,
+            ),
+          )
+        }
       }
+    }
+  }
 
-      _viewState.update { viewState ->
-        viewState.copy(
-          jellyseerrMediaInfo = jellyseerrInfo,
-          forms = updatedForms.first,
-          mediaDetails = (viewState.mediaDetails as? TV)?.copy(
-            seasons = updatedForms.second,
-          ),
-          actionButtons = findTvActions(
-            tvStatus = jellyseerrInfo?.status ?: JellyseerrStatus.Media.UNKNOWN,
-            seasons = updatedForms.second,
-          ),
-        )
-      }
+  private fun updateTvMediaInfo(mediaInfo: JellyseerrMediaInfo) {
+    val updatedForms = getUpdatedSeasonForms(
+      tvInfo = mediaInfo,
+      overrideSeasonStatus = false,
+    )
+
+    val jellyseerrInfo = if (mediaInfo.status == JellyseerrStatus.Media.UNKNOWN) {
+      viewState.value.jellyseerrMediaInfo
     } else {
-      _viewState.update { viewState ->
-        viewState.copy(
-          jellyseerrMediaInfo = mediaInfo,
-          actionButtons = findMovieActions(mediaInfo.status),
-        )
-      }
+      mediaInfo
+    }
+
+    _viewState.update { viewState ->
+      viewState.copy(
+        jellyseerrMediaInfo = jellyseerrInfo,
+        forms = updatedForms.first,
+        mediaDetails = (viewState.mediaDetails as? TV)?.copy(
+          seasons = updatedForms.second,
+        ),
+        actionButtons = findTvActions(
+          info = jellyseerrInfo,
+          seasons = updatedForms.second,
+          permissions = viewState.permissions,
+        ),
+      )
     }
   }
 
@@ -607,8 +650,9 @@ class DetailsViewModel(
                       seasons = updatedForms.second,
                     ),
                     actionButtons = findTvActions(
-                      tvStatus = mediaInfo.status,
-                      updatedForms.second,
+                      info = mediaInfo,
+                      seasons = updatedForms.second,
+                      permissions = viewState.permissions,
                     ),
                     isLoading = false,
                     snackbarMessage = SnackbarMessage.from(
@@ -620,7 +664,10 @@ class DetailsViewModel(
                 } else {
                   viewState.copy(
                     jellyseerrMediaInfo = mediaInfo,
-                    actionButtons = findMovieActions(mediaInfo.status),
+                    actionButtons = findMovieActions(
+                      info = mediaInfo,
+                      permissions = viewState.permissions,
+                    ),
                     isLoading = false,
                     snackbarMessage = SnackbarMessage.from(
                       text = UIText.ResourceText(
@@ -664,9 +711,13 @@ class DetailsViewModel(
               viewState.copy(
                 isLoading = false,
                 jellyseerrMediaInfo = null,
-                actionButtons = buildList {
-                  addAll(DetailActionItem.defaultItems)
-                  add(DetailActionItem.Request)
+                actionButtons = buildActions {
+                  withRequest(
+                    canRequest = true,
+                    withPermission = viewState.permissions.canRequest(
+                      isTV = viewState.mediaType == MediaType.TV,
+                    ),
+                  )
                 },
                 snackbarMessage = SnackbarMessage.from(
                   text = UIText.ResourceText(
@@ -772,25 +823,40 @@ class DetailsViewModel(
   }
 
   private fun findTvActions(
-    tvStatus: JellyseerrStatus,
+    info: JellyseerrMediaInfo?,
+    permissions: List<ProfilePermission>,
     seasons: List<Season>,
-  ): List<DetailActionItem> = buildList {
-    addAll(DetailActionItem.defaultItems)
-    if (seasons.any { it.isAvailable() } || tvStatus != JellyseerrStatus.Media.UNKNOWN) {
-      add(DetailActionItem.ManageTvShow)
-    }
-    if (seasons.any { it.canBeRequested() }) {
-      add(DetailActionItem.Request)
-    }
+  ): List<DetailActionItem> = buildActions {
+    val status = info?.status
+
+    withManageTv(
+      canManage = seasons.any { it.isAvailable() } || status != JellyseerrStatus.Media.UNKNOWN,
+      withPermission = permissions.canManageRequests(),
+      requests = info?.requests ?: emptyList(),
+    )
+
+    withRequest(
+      canRequest = seasons.any { it.canBeRequested() } && permissions.canRequest(isTV = true),
+      withPermission = permissions.canRequest(isTV = true),
+    )
   }
 
-  private fun findMovieActions(status: JellyseerrStatus.Media): List<DetailActionItem> = buildList {
-    addAll(DetailActionItem.defaultItems)
-    if (status == JellyseerrStatus.Media.UNKNOWN) {
-      add(DetailActionItem.Request)
-    } else {
-      add(DetailActionItem.ManageMovie)
-    }
+  private fun findMovieActions(
+    info: JellyseerrMediaInfo,
+    permissions: List<ProfilePermission>,
+  ): List<DetailActionItem> = buildActions {
+    /**
+     * Display ManageMovie action if user has MANAGE_REQUESTS permissions or requests are not empty.
+     */
+    withManageMovie(
+      canManage = info.status != JellyseerrStatus.Media.UNKNOWN,
+      withPermission = permissions.canManageRequests() || info.requests.isNotEmpty(),
+    )
+
+    withRequest(
+      canRequest = info.status == JellyseerrStatus.Media.UNKNOWN,
+      withPermission = permissions.canRequest(isTV = false),
+    )
   }
 
   private fun setSectionState(

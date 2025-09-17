@@ -1,14 +1,14 @@
 package com.divinelink.core.model.jellyseerr
 
-import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
-class JellyseerrAccountDetailsTest {
+class JellyseerrProfileTest {
 
   @Test
   fun `test formattedCreatedAt with unparsable date`() {
-    val jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyfin().copy(
+    val jellyseerrAccountDetails = JellyseerrProfileFactory.jellyfin().copy(
       createdAt = "2021-01-01T00:00:00Z",
     )
 
@@ -19,7 +19,7 @@ class JellyseerrAccountDetailsTest {
 
   @Test
   fun `test formattedCreatedAt with correct date`() {
-    val jellyseerrAccountDetails = JellyseerrAccountDetailsFactory.jellyfin()
+    val jellyseerrAccountDetails = JellyseerrProfileFactory.jellyfin()
 
     assertThat(jellyseerrAccountDetails.formattedCreatedAt).isEqualTo(
       "August 19, 2023",

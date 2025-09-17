@@ -1,14 +1,10 @@
 package com.divinelink.core.data.jellyseerr.repository
 
-import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
-import com.divinelink.core.database.JellyseerrAccountDetailsQueries
-import com.divinelink.core.database.jellyseerr.mapper.map
-import com.divinelink.core.database.jellyseerr.mapper.mapToEntity
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
@@ -29,7 +25,7 @@ import kotlinx.coroutines.flow.map
 
 class ProdJellyseerrRepository(
   private val service: JellyseerrService,
-  private val queries: JellyseerrAccountDetailsQueries,
+  private val authRepository: AuthRepository,
   val dispatcher: DispatcherProvider,
 ) : JellyseerrRepository {
 
@@ -43,43 +39,21 @@ class ProdJellyseerrRepository(
       .signInWithJellyseerr(loginData)
       .map { Result.success(Unit) }
 
-  override suspend fun getRemoteAccountDetails(
-    address: String,
-  ): Flow<Result<JellyseerrAccountDetails>> = service
-    .fetchAccountDetails(address)
-    .map { Result.success(it.map(address)) }
-
-  override suspend fun getJellyseerrAccountDetails(
+  override suspend fun getJellyseerrProfile(
     refresh: Boolean,
     address: String,
-  ): Flow<Resource<JellyseerrAccountDetails?>> = networkBoundResource(
+  ): Flow<Resource<JellyseerrProfile?>> = networkBoundResource(
     query = {
-      queries
-        .selectAll()
-        .asFlow()
-        .mapToOneOrNull(context = dispatcher.io)
-        .map { entity ->
-          entity?.map()
-        }
+      authRepository.selectedJellyseerrProfile
     },
     fetch = {
-      service.fetchAccountDetails(address).first().map(address)
+      service.fetchProfile(address).first().map(address)
     },
     saveFetchResult = { remoteData ->
-      queries.removeAccountDetails()
-      queries.insertAccountDetails(remoteData.mapToEntity())
+      authRepository.updateJellyseerrProfile(remoteData)
     },
     shouldFetch = { refresh },
   )
-
-  override suspend fun insertJellyseerrAccountDetails(accountDetails: JellyseerrAccountDetails) {
-    queries.removeAccountDetails()
-    queries.insertAccountDetails(accountDetails.mapToEntity())
-  }
-
-  override suspend fun clearJellyseerrAccountDetails() {
-    queries.removeAccountDetails()
-  }
 
   override suspend fun logout(address: String): Result<Unit> = service.logout(address)
     .map { Result.success(Unit) }

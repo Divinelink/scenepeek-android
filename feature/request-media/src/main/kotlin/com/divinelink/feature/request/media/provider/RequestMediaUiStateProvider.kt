@@ -50,9 +50,9 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ).copy(
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
-      selectedInstance = LCEState.Error,
+      selectedInstance = LCEState.Idle,
       selectedProfile = LCEState.Content(InstanceProfileFactory.hd7201080),
-      selectedRootFolder = LCEState.Error,
+      selectedRootFolder = LCEState.Idle,
     ),
     RequestMediaUiState.initial(
       seasons = listOf(SeasonFactory.season1()),
@@ -60,9 +60,9 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ).copy(
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
-      selectedInstance = LCEState.Error,
-      selectedProfile = LCEState.Error,
-      selectedRootFolder = LCEState.Error,
+      selectedInstance = LCEState.Idle,
+      selectedProfile = LCEState.Idle,
+      selectedRootFolder = LCEState.Idle,
     ),
     RequestMediaUiState.initial(
       seasons = listOf(SeasonFactory.season1()),

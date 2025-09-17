@@ -8,11 +8,8 @@ import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.map
 
 class LoginJellyseerrUseCase(
   private val repository: JellyseerrRepository,
@@ -30,10 +27,8 @@ class LoginJellyseerrUseCase(
 
     result.last().fold(
       onSuccess = {
-        val details = repository.getRemoteAccountDetails(parameters.address).first().getOrThrow()
-
-        authRepository.updateJellyseerrAccount(
-          SavedState.JellyseerrAccount(
+        authRepository.updateJellyseerrCredentials(
+          SavedState.JellyseerrCredentials(
             account = parameters.username.value,
             address = parameters.address,
             authMethod = parameters.authMethod,
@@ -41,9 +36,12 @@ class LoginJellyseerrUseCase(
           ),
         )
 
-        repository.insertJellyseerrAccountDetails(details)
-
-        emit(Result.success(Unit))
+        repository.getJellyseerrProfile(
+          refresh = true,
+          address = parameters.address,
+        ).collect {
+          emit(Result.success(Unit))
+        }
       },
       onFailure = {
         emit(Result.failure(it))

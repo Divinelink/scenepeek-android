@@ -1,7 +1,7 @@
 package com.divinelink.core.network.client
 
 import com.divinelink.core.datastore.auth.SavedStateStorage
-import com.divinelink.core.datastore.auth.selectedJellyseerrAccount
+import com.divinelink.core.datastore.auth.selectedJellyseerrCredentials
 import com.divinelink.core.datastore.auth.selectedJellyseerrHostAddress
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
@@ -55,7 +55,7 @@ class JellyseerrRestClient(
     }
 
   private suspend fun reAuthenticate() {
-    val account = savedStateStorage.selectedJellyseerrAccount
+    val account = savedStateStorage.selectedJellyseerrCredentials
       ?: throw AppException.Unauthorized("Invalid jellyseerr authentication. Please log in again.")
 
     val body = account.authMethod.toRequestBodyApi(

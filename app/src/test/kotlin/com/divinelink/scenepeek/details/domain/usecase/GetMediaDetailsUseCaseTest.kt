@@ -7,7 +7,10 @@ import com.divinelink.core.data.details.model.VideosException
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingDetailsFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul1
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory.Tv.betterCallSaul2
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.details.DetailsMenuOptions
 import com.divinelink.core.model.details.MediaDetails
@@ -16,12 +19,14 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.api.media.MediaRequestApiFactory
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
 import com.divinelink.core.testing.repository.TestJellyseerrRepository
 import com.divinelink.core.testing.repository.TestMediaRepository
@@ -52,6 +57,7 @@ class GetMediaDetailsUseCaseTest {
   private lateinit var repository: TestDetailsRepository
   private lateinit var moviesRepository: TestMediaRepository
   private lateinit var jellyseerrRepository: TestJellyseerrRepository
+  private lateinit var authRepository: TestAuthRepository
 
   private lateinit var fakeFetchAccountMediaDetailsUseCase: FakeFetchAccountMediaDetailsUseCase
   private lateinit var fakeGetDropdownMenuItemsUseCase: FakeGetDropdownMenuItemsUseCase
@@ -68,6 +74,7 @@ class GetMediaDetailsUseCaseTest {
     repository = TestDetailsRepository()
     moviesRepository = TestMediaRepository()
     jellyseerrRepository = TestJellyseerrRepository()
+    authRepository = TestAuthRepository()
     fakeFetchAccountMediaDetailsUseCase = FakeFetchAccountMediaDetailsUseCase()
     fakeGetDropdownMenuItemsUseCase = FakeGetDropdownMenuItemsUseCase()
     fakeGetDetailsActionItemsUseCase = FakeGetDetailsActionItemsUseCase()
@@ -795,6 +802,7 @@ class GetMediaDetailsUseCaseTest {
     val channel = Channel<Result<MediaDetails>>()
 
     repository.mockFetchMediaDetails(channel)
+    authRepository.mockSelectedJellyseerrProfile(flowOf(null))
     jellyseerrRepository.mockGetMovieDetails(JellyseerrMediaInfoFactory.Movie.pending())
 
     val useCase = createGetMediaDetailsUseCase()
@@ -817,7 +825,7 @@ class GetMediaDetailsUseCaseTest {
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.JellyseerrDetailsSuccess(
+          MediaDetailsResult.JellyseerrDetails.Requested(
             info = JellyseerrMediaInfoFactory.Movie.pending(),
           ),
         ),
@@ -826,10 +834,46 @@ class GetMediaDetailsUseCaseTest {
   }
 
   @Test
+  fun `test jellyseerr getMovieDetails with success and null media info returns not requested`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      authRepository.mockPermissions(flowOf(ProfilePermission.entries))
+      jellyseerrRepository.mockGetMovieDetails(null)
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(movieRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(movieDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested),
+        )
+      }
+    }
+
+  @Test
   fun `test jellyseerr getTvDetails with success also awaits for details to respond`() = runTest {
     val channel = Channel<Result<MediaDetails>>()
 
     repository.mockFetchMediaDetails(channel)
+    authRepository.mockPermissions(flowOf(ProfilePermission.entries))
+    authRepository.mockSelectedJellyseerrProfile(flowOf(null))
     jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.available())
 
     val useCase = createGetMediaDetailsUseCase()
@@ -852,8 +896,174 @@ class GetMediaDetailsUseCaseTest {
 
       assertThat(awaitItem()).isEqualTo(
         Result.success(
-          MediaDetailsResult.JellyseerrDetailsSuccess(
+          MediaDetailsResult.JellyseerrDetails.Requested(
             info = JellyseerrMediaInfoFactory.Tv.available(),
+          ),
+        ),
+      )
+    }
+  }
+
+  @Test
+  fun `test jellyseerr getTvDetails with success and null media info returns not requested`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      jellyseerrRepository.mockGetTvDetails(null)
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(tvRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(tvDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(MediaDetailsResult.JellyseerrDetails.NotRequested),
+        )
+      }
+    }
+
+  @Test
+  fun `test jellyseerr getMovieDetails without manage request permission should filter requests`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      jellyseerrRepository.mockGetMovieDetails(
+        JellyseerrMediaInfoFactory.Movie.availableWithRequest(),
+      )
+      authRepository.mockSelectedJellyseerrProfile(
+        flowOf(JellyseerrProfileFactory.jellyfin()),
+      )
+      authRepository.mockPermissions(flowOf(emptyList()))
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(movieRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(movieDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Movie.availableWithRequest(),
+            ),
+          ),
+        )
+      }
+    }
+
+  @Test
+  fun `test jellyseerr getMovieDetails with request from another user and no permissions`() =
+    runTest {
+      val channel = Channel<Result<MediaDetails>>()
+
+      repository.mockFetchMediaDetails(channel)
+      jellyseerrRepository.mockGetMovieDetails(
+        JellyseerrMediaInfoFactory.Movie.availableWithRequest(),
+      )
+      authRepository.mockSelectedJellyseerrProfile(
+        flowOf(JellyseerrProfileFactory.jellyseerr()),
+      )
+      authRepository.mockPermissions(flowOf(emptyList()))
+
+      val useCase = createGetMediaDetailsUseCase()
+
+      useCase(movieRequest).test {
+        assertThat(awaitItem().toString()).isEqualTo(
+          Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+            .toString(),
+        )
+
+        channel.trySend(Result.success(movieDetails))
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        )
+
+        assertThat(awaitItem()).isEqualTo(
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Movie.available(),
+            ),
+          ),
+        )
+      }
+    }
+
+  @Test
+  fun `test jellyseerr getTvDetails with request from another user and no permissions`() = runTest {
+    val channel = Channel<Result<MediaDetails>>()
+
+    repository.mockFetchMediaDetails(channel)
+    jellyseerrRepository.mockGetMovieDetails(
+      JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+    )
+    authRepository.mockSelectedJellyseerrProfile(
+      flowOf(JellyseerrProfileFactory.jellyseerr()),
+    )
+    authRepository.mockPermissions(flowOf(emptyList()))
+
+    val useCase = createGetMediaDetailsUseCase()
+
+    useCase(movieRequest).test {
+      assertThat(awaitItem().toString()).isEqualTo(
+        Result.failure<Exception>(RecommendedException(MovieTab.Recommendations.order))
+          .toString(),
+      )
+
+      channel.trySend(Result.success(tvDetails))
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.DetailsSuccess(
+            mediaDetails = tvDetails,
+            ratingSource = RatingSource.TMDB,
+          ),
+        ),
+      )
+
+      assertThat(awaitItem()).isEqualTo(
+        Result.success(
+          MediaDetailsResult.JellyseerrDetails.Requested(
+            JellyseerrMediaInfoFactory.Tv.partiallyAvailable().copy(
+              requests = listOf(
+                betterCallSaul1(),
+                betterCallSaul2(),
+              ),
+            ),
           ),
         ),
       )
@@ -868,6 +1078,7 @@ class GetMediaDetailsUseCaseTest {
     fetchAccountMediaDetailsUseCase = fakeFetchAccountMediaDetailsUseCase.mock,
     getMenuItemsUseCase = fakeGetDropdownMenuItemsUseCase.mock,
     getDetailsActionItemsUseCase = fakeGetDetailsActionItemsUseCase.mock,
+    authRepository = authRepository.mock,
     preferenceStorage = preferenceStorage,
   )
 }

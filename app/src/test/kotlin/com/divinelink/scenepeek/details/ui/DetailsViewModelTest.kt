@@ -24,6 +24,7 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -55,12 +56,9 @@ class DetailsViewModelTest {
   val mainDispatcherRule = MainDispatcherRule()
 
   private val mediaId = 1234
-
   private val similarMovies = MediaItemFactory.MoviesList()
-
   private val movieDetails = MediaDetailsFactory.FightClub()
   private val tvDetails = MediaDetailsFactory.TheOffice()
-
   private val reviewsList = ReviewFactory.ReviewList()
 
   private fun defaultDetails(
@@ -1344,11 +1342,12 @@ class DetailsViewModelTest {
   @Test
   fun `test on JellyseerrDetailsSuccess movie MediaDetailsResult updates media status`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(movieDetails, RatingSource.TMDB)),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.pending(),
             ),
           ),
@@ -1375,6 +1374,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -1382,11 +1382,12 @@ class DetailsViewModelTest {
   @Test
   fun `test on JellyseerrDetailsSuccess tv MediaDetailsResult update seasons status`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(MediaDetailsResult.DetailsSuccess(tvDetails, RatingSource.TMDB)),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.available(),
             ),
           ),
@@ -1416,6 +1417,7 @@ class DetailsViewModelTest {
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -1425,6 +1427,7 @@ class DetailsViewModelTest {
     val channel = Channel<Result<MediaDetailsResult>>()
     testRobot
       .mockFetchMediaDetails(channel)
+      .mockPermissions(ProfilePermission.entries)
       .withNavArguments(mediaId, MediaType.TV)
       .buildViewModel()
       .expectUiStates(
@@ -1438,7 +1441,7 @@ class DetailsViewModelTest {
           launch {
             channel.send(
               Result.success(
-                MediaDetailsResult.JellyseerrDetailsSuccess(
+                MediaDetailsResult.JellyseerrDetails.Requested(
                   JellyseerrMediaInfoFactory.Tv.available(),
                 ),
               ),
@@ -1453,6 +1456,7 @@ class DetailsViewModelTest {
             jellyseerrMediaInfo = null,
             mediaId = mediaId,
             isLoading = true,
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.TV,
@@ -1466,6 +1470,7 @@ class DetailsViewModelTest {
             isLoading = false,
             userDetails = AccountMediaDetails.initial,
             mediaDetails = tvDetails,
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.TV,
@@ -1488,6 +1493,7 @@ class DetailsViewModelTest {
               DetailActionItem.ManageTvShow,
               DetailActionItem.Request,
             ),
+            permissions = ProfilePermission.entries,
           ),
         ),
       )
@@ -1496,6 +1502,7 @@ class DetailsViewModelTest {
   @Test
   fun `test update media info for movie`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -1532,6 +1539,7 @@ class DetailsViewModelTest {
           isLoading = false,
           userDetails = AccountMediaDetails.initial,
           mediaDetails = movieDetails,
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -1539,6 +1547,7 @@ class DetailsViewModelTest {
   @Test
   fun `test update media info for tv with success updates current seasons`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -1548,7 +1557,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
             ),
           ),
@@ -1580,6 +1589,7 @@ class DetailsViewModelTest {
             DetailActionItem.ManageTvShow,
             DetailActionItem.Request,
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
       .onUpdateMediaInfo(JellyseerrMediaRequestResponseFactory.tvAllRequested().mediaInfo)
@@ -1604,6 +1614,7 @@ class DetailsViewModelTest {
             DetailActionItem.List,
             DetailActionItem.ManageTvShow,
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -1981,6 +1992,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteRequest on TV media with success overrides seasons`() {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -1990,7 +2002,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2019,6 +2031,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteRequest(
@@ -2053,6 +2066,7 @@ class DetailsViewModelTest {
               R.string.feature_details_jellyseerr_success_request_delete,
             ),
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -2060,6 +2074,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteRequest on Movie media with success updates status`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2069,7 +2084,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
             ),
           ),
@@ -2096,6 +2111,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteRequest(
@@ -2126,6 +2142,7 @@ class DetailsViewModelTest {
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.MOVIE,
@@ -2145,6 +2162,7 @@ class DetailsViewModelTest {
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.MOVIE,
@@ -2169,6 +2187,7 @@ class DetailsViewModelTest {
                 R.string.feature_details_jellyseerr_success_request_delete,
               ),
             ),
+            permissions = ProfilePermission.entries,
           ),
         ),
       )
@@ -2177,6 +2196,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteRequest on TV media with failure`() {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2186,7 +2206,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2215,6 +2235,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteRequest(
@@ -2249,6 +2270,7 @@ class DetailsViewModelTest {
               R.string.feature_details_jellyseerr_failed_request_delete,
             ),
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -2256,6 +2278,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV media with success`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2265,7 +2288,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2294,6 +2317,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteMedia(
@@ -2327,6 +2351,7 @@ class DetailsViewModelTest {
               "The Office",
             ),
           ),
+          permissions = ProfilePermission.entries,
         ),
       )
   }
@@ -2334,6 +2359,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV with success`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2343,7 +2369,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2372,6 +2398,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteMedia(
@@ -2399,6 +2426,7 @@ class DetailsViewModelTest {
             DetailActionItem.Request,
           ),
           jellyseerrMediaInfo = null,
+          permissions = ProfilePermission.entries,
           snackbarMessage = SnackbarMessage.from(
             text = UIText.ResourceText(
               R.string.feature_details_jellyseerr_success_media_delete,
@@ -2412,6 +2440,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on TV with failure`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2421,7 +2450,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Tv.requested(),
             ),
           ),
@@ -2450,6 +2479,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteMedia(
@@ -2479,6 +2509,7 @@ class DetailsViewModelTest {
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
             snackbarMessage = null,
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.TV,
@@ -2501,6 +2532,7 @@ class DetailsViewModelTest {
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.requested(),
             snackbarMessage = null,
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.TV,
@@ -2528,6 +2560,7 @@ class DetailsViewModelTest {
                 "The Office",
               ),
             ),
+            permissions = ProfilePermission.entries,
           ),
         ),
       )
@@ -2536,6 +2569,7 @@ class DetailsViewModelTest {
   @Test
   fun `test onDeleteMedia and file on Movie with success`() = runTest {
     testRobot
+      .mockPermissions(ProfilePermission.entries)
       .mockFetchMediaDetails(
         response = flowOf(
           Result.success(
@@ -2545,7 +2579,7 @@ class DetailsViewModelTest {
             ),
           ),
           Result.success(
-            MediaDetailsResult.JellyseerrDetailsSuccess(
+            MediaDetailsResult.JellyseerrDetails.Requested(
               JellyseerrMediaInfoFactory.Movie.processing(),
             ),
           ),
@@ -2572,6 +2606,7 @@ class DetailsViewModelTest {
           ),
           ratingSource = RatingSource.TMDB,
           jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+          permissions = ProfilePermission.entries,
         ),
       )
       .mockDeleteMedia(response = Result.success(Unit))
@@ -2587,7 +2622,7 @@ class DetailsViewModelTest {
             },
             mediaId = mediaId,
             isLoading = false,
-            userDetails = _root_ide_package_.com.divinelink.core.model.account.AccountMediaDetails.Companion.initial,
+            userDetails = AccountMediaDetails.initial,
             mediaDetails = movieDetails,
             actionButtons = listOf(
               DetailActionItem.Rate,
@@ -2596,6 +2631,7 @@ class DetailsViewModelTest {
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.MOVIE,
@@ -2615,6 +2651,7 @@ class DetailsViewModelTest {
               DetailActionItem.ManageMovie,
             ),
             jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Movie.processing(),
+            permissions = ProfilePermission.entries,
           ),
           DetailsViewState(
             mediaType = MediaType.MOVIE,
@@ -2640,7 +2677,147 @@ class DetailsViewModelTest {
                 "Fight Club",
               ),
             ),
+            permissions = ProfilePermission.entries,
           ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test fetch media info without manage permissions and requests does not add manage action`() =
+    runTest {
+      testRobot
+        .mockPermissions(emptyList())
+        .mockFetchMediaDetails(
+          response = flowOf(
+            Result.success(
+              MediaDetailsResult.DetailsSuccess(
+                mediaDetails = tvDetails,
+                ratingSource = RatingSource.TMDB,
+              ),
+            ),
+            Result.success(
+              MediaDetailsResult.JellyseerrDetails.Requested(
+                JellyseerrMediaInfoFactory.Tv.emptyRequests(),
+              ),
+            ),
+          ),
+        )
+        .withNavArguments(mediaId, MediaType.TV)
+        .buildViewModel()
+        .assertViewState(
+          DetailsViewState(
+            mediaType = MediaType.TV,
+            tabs = TvTab.entries,
+            forms = DetailsFormFactory.Tv.loading().toTvWzd {
+              withAbout(DetailsDataFactory.Tv.about())
+              withSeasons(
+                DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+              )
+            },
+            jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.emptyRequests(),
+            mediaId = mediaId,
+            isLoading = false,
+            userDetails = AccountMediaDetails.initial,
+            mediaDetails = tvDetails.copy(
+              seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+            ),
+            actionButtons = listOf(
+              DetailActionItem.Rate,
+              DetailActionItem.Watchlist,
+              DetailActionItem.List,
+            ),
+          ),
+        )
+    }
+
+  @Test
+  fun `test fetch media info with only requests adds manage action`() = runTest {
+    testRobot
+      .mockPermissions(emptyList())
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = tvDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+          Result.success(
+            MediaDetailsResult.JellyseerrDetails.Requested(
+              JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.TV)
+      .buildViewModel()
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.TV,
+          tabs = TvTab.entries,
+          forms = DetailsFormFactory.Tv.loading().toTvWzd {
+            withAbout(DetailsDataFactory.Tv.about())
+            withSeasons(
+              DetailsDataFactory.Tv.seasonsPartiallyAvailable(),
+            )
+          },
+          jellyseerrMediaInfo = JellyseerrMediaInfoFactory.Tv.partiallyAvailable(),
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = tvDetails.copy(
+            seasons = SeasonFactory.partiallyAvailable().filterNot { it.seasonNumber == 0 },
+          ),
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageTvShow,
+          ),
+        ),
+      )
+  }
+
+  @Test
+  fun `test update media info for movie with request and no permission`() = runTest {
+    testRobot
+      .mockPermissions(emptyList())
+      .mockFetchMediaDetails(
+        response = flowOf(
+          Result.success(
+            MediaDetailsResult.DetailsSuccess(
+              mediaDetails = movieDetails,
+              ratingSource = RatingSource.TMDB,
+            ),
+          ),
+        ),
+      )
+      .withNavArguments(mediaId, MediaType.MOVIE)
+      .buildViewModel()
+      .onUpdateMediaInfo(
+        JellyseerrMediaRequestResponseFactory.movieWithRequest().mediaInfo,
+      )
+      .assertViewState(
+        DetailsViewState(
+          mediaType = MediaType.MOVIE,
+          tabs = MovieTab.entries,
+          forms = DetailsFormFactory.Movie.loading().toMovieWzd {
+            withAbout(DetailsDataFactory.Movie.about())
+            withCast(DetailsDataFactory.Movie.cast())
+          },
+          actionButtons = listOf(
+            DetailActionItem.Rate,
+            DetailActionItem.Watchlist,
+            DetailActionItem.List,
+            DetailActionItem.ManageMovie,
+          ),
+          jellyseerrMediaInfo = JellyseerrMediaRequestResponseFactory.movieWithRequest().mediaInfo,
+          mediaId = mediaId,
+          isLoading = false,
+          userDetails = AccountMediaDetails.initial,
+          mediaDetails = movieDetails,
+          permissions = emptyList(),
         ),
       )
   }

@@ -33,7 +33,10 @@ class TvInfoResponseMapper {
               id = 580,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 5, status = JellyseerrStatus.Media.PENDING),
@@ -45,7 +48,10 @@ class TvInfoResponseMapper {
               id = 593,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.FAILED,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 9, status = JellyseerrStatus.Media.PENDING),
@@ -56,7 +62,10 @@ class TvInfoResponseMapper {
               id = 594,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.DECLINED,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Media.UNKNOWN),
@@ -66,7 +75,10 @@ class TvInfoResponseMapper {
               id = 602,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 2, status = JellyseerrStatus.Media.PENDING),
@@ -76,7 +88,10 @@ class TvInfoResponseMapper {
               id = 603,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 25, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 1, status = JellyseerrStatus.Media.PENDING),
@@ -86,7 +101,10 @@ class TvInfoResponseMapper {
               id = 626,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
-              requester = JellyseerrRequester(displayName = "Admin"),
+              requester = JellyseerrRequester(
+                id = 1,
+                displayName = "Admin",
+              ),
               requestDate = "June 26, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 4, status = JellyseerrStatus.Media.PENDING),
@@ -96,7 +114,10 @@ class TvInfoResponseMapper {
               id = 630,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.PENDING,
-              requester = JellyseerrRequester(displayName = "ScenePeek"),
+              requester = JellyseerrRequester(
+                id = 6,
+                displayName = "ScenePeek",
+              ),
               requestDate = "June 26, 2025",
               seasons = listOf(
                 SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Media.UNKNOWN),

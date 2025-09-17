@@ -1,6 +1,7 @@
 package com.divinelink.core.data.auth
 
 import app.cash.turbine.test
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
 import com.divinelink.core.testing.storage.TestSavedStateStorage
 import io.kotest.matchers.shouldBe
@@ -9,17 +10,20 @@ import kotlin.test.Test
 
 class ProdAuthRepositoryTest {
 
-  private val savedStateStorage = TestSavedStateStorage()
-  private val repository = ProdAuthRepository(savedStateStorage)
+  private lateinit var savedStateStorage: TestSavedStateStorage
+  private lateinit var repository: ProdAuthRepository
 
   @Test
   fun `test isJellyseerrEnabled is true when accountIds are not empty`() = runTest {
+    savedStateStorage = TestSavedStateStorage()
+    repository = ProdAuthRepository(savedStateStorage)
+
     repository.isJellyseerrEnabled.test {
       awaitItem() shouldBe false
 
-      savedStateStorage.setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+      savedStateStorage.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
-      awaitItem() shouldBe false
+      expectNoEvents()
 
       savedStateStorage.setJellyseerrAuthCookie("test-cookie-value")
 
@@ -29,16 +33,19 @@ class ProdAuthRepositoryTest {
 
   @Test
   fun `test jellyseerrAccounts`() = runTest {
-    repository.jellyseerrAccounts.test {
+    savedStateStorage = TestSavedStateStorage()
+    repository = ProdAuthRepository(savedStateStorage)
+
+    repository.jellyseerrCredentials.test {
       awaitItem() shouldBe emptyMap()
 
-      savedStateStorage.setJellyseerrAccount(JellyseerrAccountFactory.zabaob())
+      savedStateStorage.setJellyseerrCredentials(JellyseerrAccountFactory.zabaob())
 
       awaitItem() shouldBe mapOf(
         "account_1" to JellyseerrAccountFactory.zabaob(),
       )
 
-      savedStateStorage.setJellyseerrAccount(JellyseerrAccountFactory.cup10())
+      savedStateStorage.setJellyseerrCredentials(JellyseerrAccountFactory.cup10())
 
       awaitItem() shouldBe mapOf(
         "account_1" to JellyseerrAccountFactory.cup10(),
@@ -47,28 +54,79 @@ class ProdAuthRepositoryTest {
   }
 
   @Test
-  fun `test updateJellyseerrAccount sets jellyseerrAccount`() = runTest {
-    savedStateStorage.savedState.value.jellyseerrAccounts shouldBe emptyMap()
+  fun `test updateJellyseerrCredentials sets jellyseerrCredentials`() = runTest {
+    savedStateStorage = TestSavedStateStorage()
+    repository = ProdAuthRepository(savedStateStorage)
 
-    repository.updateJellyseerrAccount(JellyseerrAccountFactory.cup10())
+    savedStateStorage.savedState.value.jellyseerrCredentials shouldBe emptyMap()
 
-    savedStateStorage.savedState.value.jellyseerrAccounts shouldBe mapOf(
+    repository.updateJellyseerrCredentials(JellyseerrAccountFactory.cup10())
+
+    savedStateStorage.savedState.value.jellyseerrCredentials shouldBe mapOf(
       "account_1" to JellyseerrAccountFactory.cup10(),
     )
   }
 
   @Test
+  fun `test updateJellyseerrProfile sets jellyseerrProfile`() = runTest {
+    savedStateStorage = TestSavedStateStorage()
+    repository = ProdAuthRepository(savedStateStorage)
+
+    savedStateStorage.savedState.value.jellyseerrCredentials shouldBe emptyMap()
+
+    repository.updateJellyseerrProfile(JellyseerrProfileFactory.jellyseerr())
+
+    savedStateStorage.savedState.value.jellyseerrProfiles shouldBe mapOf(
+      "account_1" to JellyseerrProfileFactory.jellyseerr(),
+    )
+  }
+
+  @Test
   fun `test clearSelectedJellyseerrAccount`() = runTest {
-    savedStateStorage.savedState.value.jellyseerrAccounts shouldBe emptyMap()
+    savedStateStorage = TestSavedStateStorage(
+      jellyseerrCredentials = mapOf(
+        "account_1" to JellyseerrAccountFactory.cup10(),
+        "account_2" to JellyseerrAccountFactory.zabaob(),
+      ),
+      jellyseerrProfiles = mapOf(
+        "account_1" to JellyseerrProfileFactory.jellyseerr(),
+        "account_2" to JellyseerrProfileFactory.jellyfin(),
+      ),
+      jellyseerrAuthCookies = mapOf(
+        "account_1" to "test-cookie-value_1",
+        "account_2" to "test-cookie-value_2",
+      ),
+      selectedJellyseerrAccountId = "account_1",
+    )
+    repository = ProdAuthRepository(savedStateStorage)
 
-    repository.updateJellyseerrAccount(JellyseerrAccountFactory.cup10())
-
-    savedStateStorage.savedState.value.jellyseerrAccounts shouldBe mapOf(
+    savedStateStorage.savedState.value.jellyseerrCredentials shouldBe mapOf(
       "account_1" to JellyseerrAccountFactory.cup10(),
+      "account_2" to JellyseerrAccountFactory.zabaob(),
+    )
+
+    savedStateStorage.savedState.value.jellyseerrProfiles shouldBe mapOf(
+      "account_1" to JellyseerrProfileFactory.jellyseerr(),
+      "account_2" to JellyseerrProfileFactory.jellyfin(),
+    )
+
+    savedStateStorage.savedState.value.jellyseerrAuthCookies shouldBe mapOf(
+      "account_1" to "test-cookie-value_1",
+      "account_2" to "test-cookie-value_2",
     )
 
     repository.clearSelectedJellyseerrAccount()
 
-    savedStateStorage.savedState.value.jellyseerrAccounts shouldBe emptyMap()
+    savedStateStorage.savedState.value.jellyseerrCredentials shouldBe mapOf(
+      "account_2" to JellyseerrAccountFactory.zabaob(),
+    )
+
+    savedStateStorage.savedState.value.jellyseerrProfiles shouldBe mapOf(
+      "account_2" to JellyseerrProfileFactory.jellyfin(),
+    )
+
+    savedStateStorage.savedState.value.jellyseerrAuthCookies shouldBe mapOf(
+      "account_2" to "test-cookie-value_2",
+    )
   }
 }

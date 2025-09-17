@@ -58,6 +58,7 @@ fun CollapsibleDetailsContent(
   ratingCount: RatingCount,
   ratingSource: RatingSource,
   hasTrailer: Boolean,
+  canManageRequests: Boolean,
   onAddToWatchListClick: () -> Unit,
   onAddRateClick: () -> Unit,
   onShowAllRatingsClick: () -> Unit,
@@ -99,7 +100,11 @@ fun CollapsibleDetailsContent(
             JellyseerrStatusPill(
               modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
               status = status,
-              onClick = onOpenManageModal,
+              onClick = if (canManageRequests) {
+                { onOpenManageModal() }
+              } else {
+                null
+              },
             )
           }
         }

@@ -8,11 +8,13 @@ import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.storage.FakePreferenceStorage
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteRequestUseCase
@@ -28,6 +30,7 @@ import com.divinelink.scenepeek.fakes.usecase.details.FakeSubmitRatingUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 
@@ -54,6 +57,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
     preferenceStorage = FakePreferenceStorage(),
     dispatcherProvider = mainDispatcherRule.testDispatcher,
   )
+  private val authRepository = TestAuthRepository()
 
   override fun buildViewModel() = apply {
     viewModel = DetailsViewModel(
@@ -66,6 +70,7 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
       fetchAllRatingsUseCase = testFetchAllRatingsUseCase.mock,
       deleteRequestUseCase = testDeleteRequestUseCase.mock,
       deleteMediaUseCase = testDeleteMediaUseCase.mock,
+      authRepository = authRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,
@@ -218,5 +223,9 @@ class DetailsViewModelRobot : ViewModelTestRobot<DetailsViewState>() {
 
   fun mockFetchAllRatingsUseCase(response: Channel<Result<Pair<RatingSource, RatingDetails>>>) =
     apply { testFetchAllRatingsUseCase.mockSuccess(response) }
+
+  fun mockPermissions(permission: List<ProfilePermission>) = apply {
+    authRepository.mockPermissions(flowOf(permission))
+  }
   // End Mock Functions
 }

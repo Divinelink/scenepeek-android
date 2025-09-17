@@ -1,17 +1,21 @@
 package com.divinelink.core.datastore.auth
 
-import com.divinelink.core.datastore.auth.SavedState.JellyseerrAccount
+import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
 interface SavedState {
-  val jellyseerrAccounts: Map<String, JellyseerrAccount>
+  val jellyseerrCredentials: Map<String, JellyseerrCredentials>
+  val jellyseerrProfiles: Map<String, JellyseerrProfile>
   val jellyseerrAuthCookies: Map<String, String>
 
-  val selectedJellyseerrAccountId: String?
+  val selectedJellyseerrId: String?
 
   @Serializable
-  data class JellyseerrAccount(
+  data class JellyseerrCredentials(
     val address: String,
     val account: String,
     val authMethod: JellyseerrAuthMethod,
@@ -21,20 +25,37 @@ interface SavedState {
 
 @Serializable
 data class ConcreteSavedState(
-  override val jellyseerrAccounts: Map<String, JellyseerrAccount>,
+  override val jellyseerrCredentials: Map<String, JellyseerrCredentials>,
+  override val jellyseerrProfiles: Map<String, JellyseerrProfile>,
   override val jellyseerrAuthCookies: Map<String, String>,
-  override val selectedJellyseerrAccountId: String?,
+  override val selectedJellyseerrId: String?,
 ) : SavedState
+
+val SavedStateStorage.observedSelectedJellyseerrId
+  get() = savedState
+    .map { it.selectedJellyseerrId }
+    .distinctUntilChanged()
+
+val SavedState.isJellyseerrEnabled
+  get() = jellyseerrCredentials.keys.isNotEmpty() && jellyseerrAuthCookies.keys.isNotEmpty()
+
+val SavedState.profilePermissions
+  get() = jellyseerrProfiles[selectedJellyseerrId]?.permissions ?: emptyList()
 
 val SavedStateStorage.selectedJellyseerrId
   get() = savedState
     .value
-    .selectedJellyseerrAccountId
+    .selectedJellyseerrId
 
-val SavedStateStorage.selectedJellyseerrAccount
+val SavedStateStorage.selectedJellyseerrCredentials
   get() = savedState
     .value
-    .jellyseerrAccounts[selectedJellyseerrId]
+    .jellyseerrCredentials[selectedJellyseerrId]
+
+val SavedStateStorage.selectedJellyseerrProfile
+  get() = savedState
+    .value
+    .jellyseerrProfiles[selectedJellyseerrId]
 
 val SavedStateStorage.selectedJellyseerrAuthCookie
   get() = savedState
@@ -44,4 +65,4 @@ val SavedStateStorage.selectedJellyseerrAuthCookie
 val SavedStateStorage.selectedJellyseerrHostAddress
   get() = savedState
     .value
-    .jellyseerrAccounts[selectedJellyseerrId]?.address
+    .jellyseerrCredentials[selectedJellyseerrId]?.address

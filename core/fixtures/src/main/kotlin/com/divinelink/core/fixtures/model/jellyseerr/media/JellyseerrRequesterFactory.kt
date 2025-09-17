@@ -5,10 +5,12 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrRequester
 object JellyseerrRequesterFactory {
 
   fun bob() = JellyseerrRequester(
+    id = 1,
     displayName = "Bob Odenkirk",
   )
 
   fun rhea() = JellyseerrRequester(
+    id = 2,
     displayName = "Rhea Seehorn",
   )
 }

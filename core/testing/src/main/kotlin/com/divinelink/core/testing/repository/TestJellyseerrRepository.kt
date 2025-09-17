@@ -1,7 +1,7 @@
 package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
-import com.divinelink.core.model.jellyseerr.JellyseerrAccountDetails
+import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
@@ -26,16 +26,12 @@ class TestJellyseerrRepository {
     whenever(mock.signInWithJellyseerr(any())).thenReturn(flowOf(response))
   }
 
-  suspend fun mockGetRemoteAccountDetails(response: Result<JellyseerrAccountDetails>) {
-    whenever(mock.getRemoteAccountDetails(any())).thenReturn(flowOf(response))
+  suspend fun mockGetJellyseerrProfile(response: Flow<Resource<JellyseerrProfile?>>) {
+    whenever(mock.getJellyseerrProfile(any(), any())).thenReturn(response)
   }
 
-  suspend fun mockGetAccountDetails(response: Flow<Resource<JellyseerrAccountDetails?>>) {
-    whenever(mock.getJellyseerrAccountDetails(any(), any())).thenReturn(response)
-  }
-
-  suspend fun verifyClearJellyseerrAccountDetails() {
-    verify(mock).clearJellyseerrAccountDetails()
+  suspend fun verifyGetJellyseerrProfile() {
+    verify(mock).getJellyseerrProfile(any(), any())
   }
 
   suspend fun mockLogout(response: Result<Unit>) {

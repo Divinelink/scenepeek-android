@@ -78,7 +78,7 @@ fun <T> LceDropdownMenu(
           },
         )
 
-        LCEState.Error -> {
+        LCEState.Idle -> {
           // Optionally show error UI, or leave empty as before
         }
 
