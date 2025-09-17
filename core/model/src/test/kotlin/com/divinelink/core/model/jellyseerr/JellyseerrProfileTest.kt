@@ -4,7 +4,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
-class JellyseerrAccountDetailsTest {
+class JellyseerrProfileTest {
 
   @Test
   fun `test formattedCreatedAt with unparsable date`() {

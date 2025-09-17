@@ -1,4 +1,4 @@
-package com.divinelink.core.model.jellyseerr
+package com.divinelink.core.model.jellyseerr.permission
 
 enum class ProfilePermission(val value: Long) {
   NONE(0),
@@ -38,23 +38,3 @@ enum class ProfilePermission(val value: Long) {
       .filter { it != NONE && (bitmask and it.value) != 0L }
   }
 }
-
-fun List<ProfilePermission>.canPerform(permission: ProfilePermission): Boolean = contains(
-  permission,
-)
-
-fun List<ProfilePermission>.canManageRequests() = contains(ProfilePermission.MANAGE_REQUESTS)
-
-fun List<ProfilePermission>.canRequest(tv: Boolean) = contains(ProfilePermission.REQUEST) ||
-  if (tv) {
-    contains(ProfilePermission.REQUEST_TV)
-  } else {
-    contains(ProfilePermission.REQUEST_MOVIE)
-  }
-
-fun List<ProfilePermission>.canRequest4K(tv: Boolean) = contains(ProfilePermission.REQUEST_4K) ||
-  if (tv) {
-    contains(ProfilePermission.REQUEST_4K_TV)
-  } else {
-    contains(ProfilePermission.REQUEST_4K_MOVIE)
-  }

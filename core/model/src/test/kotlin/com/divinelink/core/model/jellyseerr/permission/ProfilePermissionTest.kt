@@ -1,4 +1,4 @@
-package com.divinelink.core.model.jellyseerr
+package com.divinelink.core.model.jellyseerr.permission
 
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test

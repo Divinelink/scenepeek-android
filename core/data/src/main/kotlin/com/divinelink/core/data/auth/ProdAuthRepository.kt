@@ -5,7 +5,7 @@ import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.isJellyseerrEnabled
 import com.divinelink.core.datastore.auth.profilePermissions
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

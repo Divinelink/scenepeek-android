@@ -2,7 +2,7 @@ package com.divinelink.core.data.auth
 
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

@@ -24,7 +24,7 @@ import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.SessionException
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab

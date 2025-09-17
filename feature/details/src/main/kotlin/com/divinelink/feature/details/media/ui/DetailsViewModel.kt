@@ -31,9 +31,9 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.exception.SessionException
-import com.divinelink.core.model.jellyseerr.ProfilePermission
-import com.divinelink.core.model.jellyseerr.canManageRequests
-import com.divinelink.core.model.jellyseerr.canRequest
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaType
@@ -288,7 +288,7 @@ class DetailsViewModel(
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
-                      tv = viewState.mediaType == MediaType.TV,
+                      isTV = viewState.mediaType == MediaType.TV,
                     ),
                   )
                 },
@@ -715,7 +715,7 @@ class DetailsViewModel(
                   withRequest(
                     canRequest = true,
                     withPermission = viewState.permissions.canRequest(
-                      tv = viewState.mediaType == MediaType.TV,
+                      isTV = viewState.mediaType == MediaType.TV,
                     ),
                   )
                 },
@@ -836,8 +836,8 @@ class DetailsViewModel(
     )
 
     withRequest(
-      canRequest = seasons.any { it.canBeRequested() } && permissions.canRequest(tv = true),
-      withPermission = permissions.canRequest(tv = true),
+      canRequest = seasons.any { it.canBeRequested() } && permissions.canRequest(isTV = true),
+      withPermission = permissions.canRequest(isTV = true),
     )
   }
 
@@ -855,7 +855,7 @@ class DetailsViewModel(
 
     withRequest(
       canRequest = info.status == JellyseerrStatus.Media.UNKNOWN,
-      withPermission = permissions.canRequest(tv = false),
+      withPermission = permissions.canRequest(isTV = false),
     )
   }
 

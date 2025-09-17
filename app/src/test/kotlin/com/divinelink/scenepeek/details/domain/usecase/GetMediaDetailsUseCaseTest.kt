@@ -19,7 +19,7 @@ import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
 import com.divinelink.core.model.details.video.VideoSite
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.network.media.model.MediaRequestApi

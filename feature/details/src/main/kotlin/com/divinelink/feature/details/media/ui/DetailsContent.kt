@@ -54,7 +54,7 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.jellyseerr.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem

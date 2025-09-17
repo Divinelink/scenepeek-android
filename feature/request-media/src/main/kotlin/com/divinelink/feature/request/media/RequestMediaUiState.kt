@@ -1,7 +1,7 @@
 package com.divinelink.feature.request.media
 
 import com.divinelink.core.model.details.Season
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance

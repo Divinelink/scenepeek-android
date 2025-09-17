@@ -21,8 +21,8 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanc
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.ProfilePermission
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -724,6 +724,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test update destination server`() = runTest {
+    authRepository.mockEnableAllPermissions()
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -773,6 +774,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test update quality profile`() = runTest {
+    authRepository.mockEnableAllPermissions()
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -820,10 +822,10 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test update root folder`() = runTest {
+    authRepository.mockEnableAllPermissions()
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
-
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
@@ -868,11 +870,10 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test request season with updated properties`() = runTest {
     var mediaInfo: JellyseerrMediaInfo? = null
-
+    authRepository.mockEnableAllPermissions()
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
-
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
@@ -951,6 +952,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       Result.success(SonarrInstanceFactory.all),
     )
 
+    authRepository.mockEnableAllPermissions()
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(

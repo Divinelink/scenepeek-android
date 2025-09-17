@@ -1,7 +1,7 @@
 package com.divinelink.core.fixtures.model.jellyseerr
 
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 
 object JellyseerrProfileFactory {
 

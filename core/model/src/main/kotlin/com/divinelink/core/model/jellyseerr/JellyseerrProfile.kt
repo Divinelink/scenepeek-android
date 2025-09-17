@@ -1,6 +1,7 @@
 package com.divinelink.core.model.jellyseerr
 
 import com.divinelink.core.commons.extensions.localizeIsoDate
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.serialization.Serializable
 
 @Serializable

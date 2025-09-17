@@ -3,7 +3,7 @@ package com.divinelink.core.testing.repository
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
-import com.divinelink.core.model.jellyseerr.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -33,6 +33,12 @@ class TestAuthRepository {
 
   fun mockPermissions(permissions: Channel<List<ProfilePermission>>) {
     whenever(mock.profilePermissions).thenReturn(permissions.consumeAsFlow())
+  }
+
+  fun mockEnableAllPermissions() {
+    whenever(mock.profilePermissions).thenReturn(
+      flowOf(ProfilePermission.entries),
+    )
   }
 
   fun mockSelectedJellyseerrCredentials(credentials: SavedState.JellyseerrCredentials?) {

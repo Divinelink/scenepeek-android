@@ -12,8 +12,8 @@ import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.details.rating.RatingSource
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.jellyseerr.ProfilePermission
-import com.divinelink.core.model.jellyseerr.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType

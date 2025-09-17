@@ -7,8 +7,8 @@ import app.cash.turbine.test
 import com.divinelink.core.domain.credits.SpoilersObfuscationUseCase
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.ProfilePermission
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
