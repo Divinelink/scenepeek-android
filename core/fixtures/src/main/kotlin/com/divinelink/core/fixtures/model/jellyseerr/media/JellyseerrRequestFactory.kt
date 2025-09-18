@@ -20,6 +20,7 @@ object JellyseerrRequestFactory {
       mediaType = MediaType.MOVIE,
     ),
     profileName = null,
+    canRemove = false,
   )
 
   object Tv {
@@ -38,6 +39,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      canRemove = false,
     )
 
     fun betterCallSaul2() = JellyseerrRequest(
@@ -54,6 +56,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      canRemove = false,
     )
 
     fun betterCallSaul3() = JellyseerrRequest(
@@ -71,6 +74,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      canRemove = false,
     )
 
     fun all() = listOf(

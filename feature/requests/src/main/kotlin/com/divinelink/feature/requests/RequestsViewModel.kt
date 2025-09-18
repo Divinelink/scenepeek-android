@@ -2,6 +2,7 @@ package com.divinelink.feature.requests
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.model.DataState
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -22,6 +25,7 @@ import timber.log.Timber
 class RequestsViewModel(
   private val repository: JellyseerrRepository,
   private val detailsRepository: DetailsRepository,
+  private val authRepository: AuthRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<RequestsUiState> = MutableStateFlow(
@@ -43,6 +47,14 @@ class RequestsViewModel(
     }
 
   init {
+    authRepository
+      .profilePermissions
+      .distinctUntilChanged()
+      .onEach { permissions ->
+        _uiState.update { it.copy(permissions = permissions) }
+      }
+      .launchIn(viewModelScope)
+
     viewModelScope.launch {
       requestsFlow.collect { response ->
         response.fold(
@@ -80,6 +92,20 @@ class RequestsViewModel(
     when (action) {
       is RequestsAction.FetchMediaItem -> fetchMediaItem(action.request)
       RequestsAction.LoadMore -> incrementPage()
+      is RequestsAction.ApproveRequest -> {
+      }
+      is RequestsAction.DeclineRequest -> {
+      }
+      is RequestsAction.CancelRequest -> {
+      }
+      is RequestsAction.EditRequest -> {
+      }
+      is RequestsAction.DeleteRequest -> {
+      }
+      is RequestsAction.RemoveFromServer -> {
+      }
+      is RequestsAction.RetryRequest -> {
+      }
     }
   }
 

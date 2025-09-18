@@ -11,6 +11,7 @@ data class JellyseerrRequest(
   val requestDate: String,
   val seasons: List<SeasonRequest>,
   val profileName: String?,
+  val canRemove: Boolean,
 )
 
 data class SeasonRequest(

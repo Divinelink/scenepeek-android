@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -32,12 +31,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
+import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.jellyseerr.permission.canPerform
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
@@ -50,11 +52,16 @@ import com.divinelink.core.ui.coil.OpaqueBackdropImage
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.SeasonPill
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
 import com.divinelink.feature.requests.R
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsUiState
+import com.divinelink.feature.requests.ui.buttons.ApprovedActionButtons
+import com.divinelink.feature.requests.ui.buttons.DeclinedActionButtons
+import com.divinelink.feature.requests.ui.buttons.FailedActionButtons
+import com.divinelink.feature.requests.ui.buttons.PendingActionButtons
 import com.divinelink.feature.requests.ui.provider.RequestsUiStateParameterProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -155,6 +162,8 @@ fun RequestsScrollableContent(
               )
             },
             onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
+            onAction = action,
+            canManageRequest = state.permissions.canPerform(ProfilePermission.MANAGE_REQUESTS),
           )
         }
 
@@ -175,12 +184,12 @@ fun RequestsScrollableContent(
 @Composable
 fun RequestMediaItem(
   modifier: Modifier = Modifier,
+  canManageRequest: Boolean,
   item: RequestUiItem,
+  onAction: (RequestsAction) -> Unit,
   onClick: (MediaItem.Media) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
 ) {
-  if (item.mediaState == null) return
-
   AnimatedContent(
     modifier = modifier,
     targetState = item.mediaState,
@@ -194,7 +203,7 @@ fun RequestMediaItem(
   ) { state ->
     when (state) {
       is ItemState.Data -> Card(
-        modifier = Modifier
+        modifier = modifier
           .combinedClickable(
             onClick = { onClick(state.item) },
             onLongClick = { onLongClick(state.item) },
@@ -289,6 +298,12 @@ fun RequestMediaItem(
             item.request.profileName?.let { profileName ->
               ProfileNameSection(profileName)
             }
+
+            ActionButtons(
+              request = item.request,
+              onAction = onAction,
+              canManageRequest = canManageRequest,
+            )
           }
         }
       }
@@ -296,6 +311,41 @@ fun RequestMediaItem(
       null -> {
         // Do nothing
       }
+    }
+  }
+}
+
+@Composable
+fun ActionButtons(
+  request: JellyseerrRequest,
+  canManageRequest: Boolean,
+  onAction: (RequestsAction) -> Unit,
+) {
+  when (request.requestStatus) {
+    JellyseerrStatus.Request.PENDING -> PendingActionButtons(
+      hasPermission = canManageRequest,
+      onAction = onAction,
+      request = request,
+    )
+    JellyseerrStatus.Request.APPROVED -> ApprovedActionButtons(
+      hasPermission = canManageRequest,
+      onAction = onAction,
+      request = request,
+    )
+
+    JellyseerrStatus.Request.DECLINED -> DeclinedActionButtons(
+      hasPermission = canManageRequest,
+      onAction = onAction,
+      request = request,
+    )
+
+    JellyseerrStatus.Request.FAILED -> FailedActionButtons(
+      hasPermission = canManageRequest,
+      onAction = onAction,
+      request = request,
+    )
+    JellyseerrStatus.Request.UNKNOWN -> {
+      // Do nothing
     }
   }
 }
@@ -325,13 +375,11 @@ private fun ProfileNameSection(profileName: String) {
 fun RequestsContentPreview(
   @PreviewParameter(RequestsUiStateParameterProvider::class) state: RequestsUiState,
 ) {
-  AppTheme {
-    Surface {
-      RequestsContent(
-        state = state,
-        action = {},
-        onNavigate = {},
-      )
-    }
+  PreviewLocalProvider {
+    RequestsContent(
+      state = state,
+      action = {},
+      onNavigate = {},
+    )
   }
 }

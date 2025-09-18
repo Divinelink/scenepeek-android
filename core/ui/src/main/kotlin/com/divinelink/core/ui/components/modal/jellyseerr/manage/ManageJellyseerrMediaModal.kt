@@ -470,7 +470,7 @@ sealed class JellyseerrDialogInfo(
 ) {
   data class DeleteRequest(val requestId: Int) :
     JellyseerrDialogInfo(
-      title = UIText.ResourceText(R.string.core_ui_delete_request_title),
+      title = UIText.ResourceText(R.string.core_ui_delete_request),
       message = UIText.ResourceText(R.string.core_ui_delete_request_confirmation_text),
     )
 
