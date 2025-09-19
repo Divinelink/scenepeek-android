@@ -12,6 +12,7 @@ fun List<MediaInfoRequestResponse>?.map() = this?.map { it.map() } ?: emptyList(
 
 fun MediaInfoRequestResponse.map() = JellyseerrRequest(
   id = id,
+  jellyseerrMediaId = media.id,
   media = MediaReference(
     mediaId = media.tmdbId,
     mediaType = MediaType.from(media.mediaType),

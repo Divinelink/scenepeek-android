@@ -9,24 +9,33 @@ import com.divinelink.feature.requests.ui.ActionButton
 @Composable
 fun FailedActionButtons(
   request: JellyseerrRequest,
+  enabled: Boolean,
   hasPermission: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   Column {
     if (hasPermission) {
       ActionButton.Retry(
+        enabled = enabled,
         onClick = { onAction(RequestsAction.RetryRequest(request.id)) },
       )
 
       ActionButton.DeleteRequest(
+        enabled = enabled,
         onClick = { onAction(RequestsAction.DeleteRequest(request.id)) },
       )
 
       if (request.canRemove) {
         ActionButton.RemoveFromServer(
           mediaType = request.media.mediaType,
+          enabled = enabled,
           onClick = {
-            onAction(RequestsAction.RemoveFromServer(request.id, request.media.mediaType))
+            onAction(
+              RequestsAction.RemoveFromServer(
+                mediaId = request.jellyseerrMediaId,
+                requestId = request.id,
+              ),
+            )
           },
         )
       }

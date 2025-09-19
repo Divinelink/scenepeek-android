@@ -9,20 +9,24 @@ import com.divinelink.feature.requests.ui.ActionButton
 @Composable
 fun ApprovedActionButtons(
   request: JellyseerrRequest,
+  enabled: Boolean,
   hasPermission: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   if (hasPermission) {
     Column {
-      ActionButton.DeleteRequest { onAction(RequestsAction.DeleteRequest(request.id)) }
+      ActionButton.DeleteRequest(enabled = enabled) {
+        onAction(RequestsAction.DeleteRequest(request.id))
+      }
 
       ActionButton.RemoveFromServer(
+        enabled = enabled,
         mediaType = request.media.mediaType,
         onClick = {
           onAction(
             RequestsAction.RemoveFromServer(
-              id = request.id,
-              mediaType = request.media.mediaType,
+              mediaId = request.jellyseerrMediaId,
+              requestId = request.id,
             ),
           )
         },

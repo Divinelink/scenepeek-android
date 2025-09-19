@@ -10,6 +10,7 @@ object JellyseerrRequestFactory {
 
   fun movie() = JellyseerrRequest(
     id = 1,
+    jellyseerrMediaId = 5,
     mediaStatus = JellyseerrStatus.Media.AVAILABLE,
     requestStatus = JellyseerrStatus.Request.PENDING,
     requestDate = "June 22, 2025",
@@ -26,6 +27,7 @@ object JellyseerrRequestFactory {
   object Tv {
     fun betterCallSaul1() = JellyseerrRequest(
       id = 2,
+      jellyseerrMediaId = 5,
       mediaStatus = JellyseerrStatus.Media.DELETED,
       requestStatus = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
@@ -44,6 +46,7 @@ object JellyseerrRequestFactory {
 
     fun betterCallSaul2() = JellyseerrRequest(
       id = 3,
+      jellyseerrMediaId = 5,
       mediaStatus = JellyseerrStatus.Media.PENDING,
       requestStatus = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.rhea(),
@@ -61,6 +64,7 @@ object JellyseerrRequestFactory {
 
     fun betterCallSaul3() = JellyseerrRequest(
       id = 4,
+      jellyseerrMediaId = 5,
       mediaStatus = JellyseerrStatus.Media.AVAILABLE,
       requestStatus = JellyseerrStatus.Request.DECLINED,
       requester = JellyseerrRequesterFactory.bob(),

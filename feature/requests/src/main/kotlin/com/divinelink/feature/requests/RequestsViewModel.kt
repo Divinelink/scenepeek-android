@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
+import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.setLoading
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +27,7 @@ import timber.log.Timber
 class RequestsViewModel(
   private val repository: JellyseerrRepository,
   private val detailsRepository: DetailsRepository,
+  private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
 ) : ViewModel() {
 
@@ -98,13 +102,105 @@ class RequestsViewModel(
       }
       is RequestsAction.EditRequest -> {
       }
-      is RequestsAction.DeleteRequest -> {
+      is RequestsAction.DeleteRequest -> viewModelScope.launch {
+        setLoading(
+          requestId = action.id,
+          loading = true,
+        )
+
+        repository.deleteRequest(action.id).fold(
+          onSuccess = {
+            removeItem(action.id)
+          },
+          onFailure = {
+            setLoading(
+              requestId = action.id,
+              loading = true,
+            )
+          },
+        )
       }
       is RequestsAction.RemoveFromServer -> {
+        setLoading(
+          requestId = action.requestId,
+          loading = true,
+        )
+
+        viewModelScope.launch {
+          deleteMediaUseCase.invoke(
+            DeleteMediaParameters(
+              mediaId = action.mediaId,
+              deleteFile = true,
+            ),
+          ).fold(
+            onSuccess = {
+              removeItem(action.requestId)
+            },
+            onFailure = {
+              setLoading(
+                requestId = action.requestId,
+                loading = false,
+              )
+            },
+          )
+        }
       }
       is RequestsAction.RetryRequest -> {
       }
       is RequestsAction.UpdateFilter -> updateFilter(action)
+    }
+  }
+
+  private fun setLoading(
+    requestId: Int,
+    loading: Boolean,
+  ) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { item ->
+          item.copy(
+            mediaState = item.mediaState.setLoading(loading),
+          )
+        },
+      )
+    }
+  }
+
+  private fun removeItem(requestId: Int) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { _ -> null },
+      )
+    }
+  }
+
+  private fun updateUiStateByRequestId(
+    requestId: Int,
+    transform: (RequestUiItem) -> RequestUiItem?,
+  ): RequestsUiState {
+    return _uiState.value.let { currentState ->
+      val data = currentState.data as? DataState.Data ?: return currentState
+      val pages = data.pages
+
+      val pageKey =
+        findPageForRequestId(pages = pages, requestId = requestId) ?: return currentState
+      val currentList = pages[pageKey] ?: return currentState
+
+      val updatedList = currentList.mapNotNull { uiItem ->
+        if (uiItem.request.id == requestId) {
+          transform(uiItem)
+        } else {
+          uiItem
+        }
+      }
+
+      val newPages = pages.toMutableMap().apply {
+        this[pageKey] = updatedList
+      }.toMap()
+
+      currentState.copy(data = DataState.Data(newPages))
     }
   }
 
@@ -171,7 +267,14 @@ class RequestsViewModel(
 
       val updatedList = listToUpdate.map { uiItem ->
         if (uiItem.request.id == request.request.id) {
-          uiItem.copy(mediaState = mediaItem?.let { item -> ItemState.Data(item) })
+          uiItem.copy(
+            mediaState = mediaItem?.let { item ->
+              ItemState.Data(
+                item = item,
+                loading = false,
+              )
+            },
+          )
         } else {
           uiItem
         }

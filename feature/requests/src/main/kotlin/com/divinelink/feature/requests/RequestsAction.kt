@@ -2,7 +2,6 @@ package com.divinelink.feature.requests
 
 import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
-import com.divinelink.core.model.media.MediaType
 
 sealed interface RequestsAction {
   data object LoadMore : RequestsAction
@@ -15,8 +14,8 @@ sealed interface RequestsAction {
   data class DeclineRequest(val id: Int) : RequestsAction
   data class DeleteRequest(val id: Int) : RequestsAction
   data class RemoveFromServer(
-    val id: Int,
-    val mediaType: MediaType,
+    val mediaId: Int,
+    val requestId: Int,
   ) : RequestsAction
 
   data class EditRequest(val id: Int) : RequestsAction

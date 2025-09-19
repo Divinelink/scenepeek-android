@@ -8,11 +8,13 @@ import com.divinelink.feature.requests.ui.ActionButton
 @Composable
 fun DeclinedActionButtons(
   request: JellyseerrRequest,
+  enabled: Boolean,
   hasPermission: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   if (hasPermission) {
     ActionButton.DeleteRequest(
+      enabled = enabled,
       onClick = { onAction(RequestsAction.DeleteRequest(request.id)) },
     )
   }

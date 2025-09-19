@@ -4,6 +4,7 @@ import com.divinelink.core.model.media.MediaReference
 
 data class JellyseerrRequest(
   val id: Int,
+  val jellyseerrMediaId: Int,
   val media: MediaReference,
   val mediaStatus: JellyseerrStatus.Media,
   val requestStatus: JellyseerrStatus.Request,
