@@ -2,7 +2,7 @@ package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.model.jellyseerr.request.MediaRequestFilter
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
@@ -215,7 +215,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
     requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
 
     val url = "${restClient.hostAddress}/api/v1/request" +
-      "?filter=${filter.name.lowercase()}" +
+      "?filter=${filter.value}" +
       "&take=5" +
       "&skip=$skip"
 

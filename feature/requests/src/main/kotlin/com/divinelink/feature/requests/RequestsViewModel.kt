@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ import timber.log.Timber
 class RequestsViewModel(
   private val repository: JellyseerrRepository,
   private val detailsRepository: DetailsRepository,
-  private val authRepository: AuthRepository,
+  authRepository: AuthRepository,
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<RequestsUiState> = MutableStateFlow(
@@ -34,7 +33,6 @@ class RequestsViewModel(
   val uiState: StateFlow<RequestsUiState> = _uiState
 
   private val requestsFlow = _uiState
-    .map { it.copy(loading = true) }
     .distinctUntilChanged { old, new ->
       old.filter == new.filter && old.page == new.page
     }
@@ -77,8 +75,8 @@ class RequestsViewModel(
                   )
                   DataState.Initial -> DataState.Data(mapOf(1 to requestUiItems))
                 },
-                loading = false,
-                canLoadMore = result.pageInfo.pages != result.pageInfo.page,
+                loadingMore = false,
+                canLoadMore = result.pageInfo.pages >= result.pageInfo.page,
                 error = null,
               )
             }
@@ -106,36 +104,56 @@ class RequestsViewModel(
       }
       is RequestsAction.RetryRequest -> {
       }
+      is RequestsAction.UpdateFilter -> updateFilter(action)
     }
   }
 
-  private fun incrementPage() {
-    if (uiState.value.canLoadMore) {
-      _uiState.update { uiState ->
-        uiState.copy(page = uiState.page + 1)
+  private fun updateFilter(action: RequestsAction.UpdateFilter) {
+    _uiState.update { uiState ->
+      if (action.filter == uiState.filter) {
+        uiState
+      } else {
+        uiState.copy(
+          filter = action.filter,
+          page = 1,
+          data = DataState.Initial,
+        )
       }
     }
   }
 
-  private fun fetchMediaItem(request: RequestUiItem) {
-    viewModelScope.launch {
-      detailsRepository.fetchMediaItem(request.request.media)
-        .collect { result ->
-          when (result) {
-            is Resource.Error -> updateMediaItem(
-              request = request,
-              mediaItem = null,
-            )
-            is Resource.Loading -> updateMediaItem(
-              request = request,
-              mediaItem = result.data,
-            )
-            is Resource.Success -> updateMediaItem(
-              request = request,
-              mediaItem = result.data,
-            )
+  private fun incrementPage() {
+    if (uiState.value.canLoadMore && !uiState.value.loadingMore) {
+      _uiState.update { uiState ->
+        uiState.copy(
+          loadingMore = true,
+          page = uiState.page + 1,
+        )
+      }
+    }
+  }
+
+  private fun fetchMediaItem(item: RequestUiItem) {
+    if (item.mediaState !is ItemState.Data) {
+      viewModelScope.launch {
+        detailsRepository.fetchMediaItem(item.request.media)
+          .collect { result ->
+            when (result) {
+              is Resource.Error -> updateMediaItem(
+                request = item,
+                mediaItem = null,
+              )
+              is Resource.Loading -> updateMediaItem(
+                request = item,
+                mediaItem = result.data,
+              )
+              is Resource.Success -> updateMediaItem(
+                request = item,
+                mediaItem = result.data,
+              )
+            }
           }
-        }
+      }
     }
   }
 

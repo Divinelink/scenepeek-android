@@ -1,11 +1,14 @@
 package com.divinelink.feature.requests
 
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.media.MediaType
 
 sealed interface RequestsAction {
   data object LoadMore : RequestsAction
   data class FetchMediaItem(val request: RequestUiItem) : RequestsAction
+
+  data class UpdateFilter(val filter: MediaRequestFilter) : RequestsAction
 
   data class ApproveRequest(val id: Int) : RequestsAction
   data class CancelRequest(val id: Int) : RequestsAction

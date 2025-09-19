@@ -1,12 +1,12 @@
 package com.divinelink.feature.requests.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onFirstVisible
@@ -35,6 +36,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
@@ -54,7 +56,7 @@ import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.modal.jellyseerr.manage.SeasonPill
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.media.MediaImage
-import com.divinelink.core.ui.skeleton.DetailedMediaItemSkeleton
+import com.divinelink.core.ui.skeleton.RequestItemSkeleton
 import com.divinelink.feature.requests.R
 import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsUiState
@@ -109,72 +111,96 @@ fun RequestsScrollableContent(
   val scrollState = rememberLazyListState()
 
   scrollState.EndlessScrollHandler(
-    buffer = 4,
+    buffer = 2,
     onLoadMore = { action(RequestsAction.LoadMore) },
   )
+
+  LaunchedEffect(state.filter) {
+    scrollState.scrollToItem(0)
+  }
 
   ScenePeekLazyColumn(
     modifier = Modifier
       .fillMaxSize()
       .testTag(TestTags.Components.MEDIA_LIST_CONTENT),
     state = scrollState,
-    contentPadding = PaddingValues(
-      top = MaterialTheme.dimensions.keyline_16,
-      start = MaterialTheme.dimensions.keyline_16,
-      end = MaterialTheme.dimensions.keyline_16,
-    ),
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
+    stickyHeader {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(MaterialTheme.colorScheme.surface),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      ) {
+        FilterButton(
+          filter = state.filter,
+          filters = MediaRequestFilter.entries,
+          onApplyFilter = { action(RequestsAction.UpdateFilter(it)) },
+        )
+      }
+    }
+
     when (state.data) {
       is DataState.Initial -> items(5) {
-        DetailedMediaItemSkeleton()
+        RequestItemSkeleton(
+          modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_12),
+        )
       }
 
-      is DataState.Data -> if (state.data.isEmpty) {
-        item {
-          Text(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(MaterialTheme.dimensions.keyline_32),
-            text = "No requests available",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
-          )
-        }
-      } else {
-        items(
-          items = state.data.data,
-          key = { it.request.id },
-        ) { request ->
-
-          RequestMediaItem(
-            modifier = Modifier.onFirstVisible {
-              action.invoke(RequestsAction.FetchMediaItem(request))
-            },
-            item = request,
-            onClick = {
-              onNavigate(
-                Navigation.DetailsRoute(
-                  mediaType = it.mediaType,
-                  id = it.id,
-                  isFavorite = it.isFavorite,
-                ),
-              )
-            },
-            onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-            onAction = action,
-            canManageRequest = state.permissions.canPerform(ProfilePermission.MANAGE_REQUESTS),
-          )
-        }
-
-        if (state.canLoadMore) {
-          items(3) {
-            DetailedMediaItemSkeleton()
+      is DataState.Data -> {
+        if (state.data.isEmpty) {
+          item {
+            Text(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.dimensions.keyline_32),
+              text = stringResource(R.string.feature_requests_no_requests_available),
+              textAlign = TextAlign.Center,
+              style = MaterialTheme.typography.titleMedium,
+            )
           }
-        }
+        } else {
+          items(
+            items = state.data.data,
+            key = { it.request.id },
+          ) { request ->
 
-        item {
-          Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
+            RequestMediaItem(
+              modifier = Modifier
+                .padding(horizontal = MaterialTheme.dimensions.keyline_12)
+                .onFirstVisible(minFractionVisible = 0.1f) {
+                  action.invoke(RequestsAction.FetchMediaItem(request))
+                },
+              item = request,
+              onClick = {
+                onNavigate(
+                  Navigation.DetailsRoute(
+                    mediaType = it.mediaType,
+                    id = it.id,
+                    isFavorite = it.isFavorite,
+                  ),
+                )
+              },
+              onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
+              onAction = action,
+              canManageRequest = state.permissions.canPerform(ProfilePermission.MANAGE_REQUESTS),
+            )
+          }
+
+          if (state.canLoadMore && state.loadingMore) {
+            items(2) {
+              RequestItemSkeleton(
+                modifier = Modifier
+                  .padding(horizontal = MaterialTheme.dimensions.keyline_12),
+              )
+            }
+          }
+
+          item {
+            Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
+          }
         }
       }
     }
@@ -203,7 +229,7 @@ fun RequestMediaItem(
   ) { state ->
     when (state) {
       is ItemState.Data -> Card(
-        modifier = modifier
+        modifier = Modifier
           .combinedClickable(
             onClick = { onClick(state.item) },
             onLongClick = { onLongClick(state.item) },
@@ -307,7 +333,7 @@ fun RequestMediaItem(
           }
         }
       }
-      ItemState.Loading -> DetailedMediaItemSkeleton()
+      ItemState.Loading -> RequestItemSkeleton()
       null -> {
         // Do nothing
       }

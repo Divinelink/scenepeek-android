@@ -1,7 +1,7 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
-import com.divinelink.core.model.jellyseerr.request.MediaRequestFilter
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
