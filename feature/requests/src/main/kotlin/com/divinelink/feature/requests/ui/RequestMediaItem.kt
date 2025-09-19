@@ -123,9 +123,8 @@ fun LazyItemScope.RequestMediaItem(
               color = MaterialTheme.colorScheme.onSurfaceVariant,
               text = stringResource(UiString.core_ui_status),
             )
-            JellyseerrStatusPill(
-              status = item.request.mediaStatus,
-            )
+
+            JellyseerrStatusPill(status = item.request.status)
           }
 
           Row(

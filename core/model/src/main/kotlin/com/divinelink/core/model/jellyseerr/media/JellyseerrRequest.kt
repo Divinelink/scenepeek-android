@@ -13,7 +13,14 @@ data class JellyseerrRequest(
   val seasons: List<SeasonRequest>,
   val profileName: String?,
   val canRemove: Boolean,
-)
+) {
+  val status: JellyseerrStatus
+    get() = when (requestStatus) {
+      JellyseerrStatus.Request.DECLINED -> requestStatus
+      JellyseerrStatus.Request.FAILED -> requestStatus
+      else -> mediaStatus
+    }
+}
 
 data class SeasonRequest(
   val seasonNumber: Int,
