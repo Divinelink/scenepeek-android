@@ -34,6 +34,16 @@
   <string name="core_model_onboarding_added_header">Added</string>
   <string name="core_model_onboarding_fixed_header">Fixed/Improved</string>
 
+  <string name="all">All</string>
+  <string name="approved">Approved</string>
+  <string name="available">Available</string>
+  <string name="pending">Pending</string>
+  <string name="processing">Processing</string>
+  <string name="unavailable">Unavailable</string>
+  <string name="failed">Failed</string>
+  <string name="deleted">Deleted</string>
+  <string name="completed">Completed</string>
+
   <!-- Language Names -->
   <string name="language_english">English</string>
   <string name="language_spanish">Spanish</string>

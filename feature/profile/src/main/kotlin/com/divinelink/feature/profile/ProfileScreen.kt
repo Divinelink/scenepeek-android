@@ -45,6 +45,7 @@ fun AnimatedVisibilityScope.ProfileScreen(
                 Navigation.UserDataRoute(userInteraction.section),
               )
               ProfileAction.NavigateToLists -> onNavigate(Navigation.ListsRoute)
+              ProfileAction.NavigateToRequests -> onNavigate(Navigation.JellyseerrRequestsRoute)
             }
           },
         )

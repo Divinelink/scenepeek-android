@@ -1,11 +1,13 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.requests.MediaRequestsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
@@ -46,4 +48,9 @@ interface JellyseerrService {
   suspend fun getRadarrInstanceDetails(id: Int): Result<RadarrInstanceDetailsResponse>
 
   suspend fun getSonarrInstanceDetails(id: Int): Result<SonarrInstanceDetailsResponse>
+
+  suspend fun getRequests(
+    skip: Int,
+    filter: MediaRequestFilter,
+  ): Flow<MediaRequestsResponse>
 }

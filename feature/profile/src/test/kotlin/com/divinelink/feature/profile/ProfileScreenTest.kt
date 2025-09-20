@@ -1,14 +1,17 @@
 package com.divinelink.feature.profile
 
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.fixtures.model.account.TMDBAccountFactory
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeGetAccountDetailsUseCase
 import com.divinelink.core.ui.R
@@ -20,6 +23,7 @@ import kotlin.test.Test
 class ProfileScreenTest : ComposeTest() {
 
   private val getAccountDetailsUseCase = FakeGetAccountDetailsUseCase()
+  private val authRepository = TestAuthRepository()
 
   private lateinit var viewModel: ProfileViewModel
 
@@ -27,9 +31,10 @@ class ProfileScreenTest : ComposeTest() {
   fun `test navigate to login when logged out`() {
     var navigateToTMDBAuthCalled = false
     getAccountDetailsUseCase.mockSuccess(flowOf(Result.success(TMDBAccountFactory.anonymous())))
-
+    authRepository.mockJellyseerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -52,9 +57,10 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to watchlist`() {
     var userDataSection: UserDataSection? = null
-
+    authRepository.mockJellyseerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -77,9 +83,10 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to ratings`() {
     var userDataSection: UserDataSection? = null
-
+    authRepository.mockJellyseerrEnabled(false)
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -100,9 +107,11 @@ class ProfileScreenTest : ComposeTest() {
   @Test
   fun `test navigate to lists`() {
     var navigateToLists = false
+    authRepository.mockJellyseerrEnabled(false)
 
     viewModel = ProfileViewModel(
       getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+      authRepository = authRepository.mock,
     )
 
     setVisibilityScopeContent {
@@ -120,6 +129,34 @@ class ProfileScreenTest : ComposeTest() {
       onNodeWithText("Lists").performClick()
 
       navigateToLists shouldBe true
+    }
+  }
+
+  @Test
+  fun `test navigate jellyseerr requests`() {
+    var route: Navigation? = null
+    authRepository.mockJellyseerrEnabled(true)
+
+    viewModel = ProfileViewModel(
+      getAccountDetailsUseCase = getAccountDetailsUseCase.mock,
+      authRepository = authRepository.mock,
+    )
+
+    setVisibilityScopeContent {
+      ProfileScreen(
+        viewModel = viewModel,
+        onNavigate = {
+          route = it
+        },
+      )
+    }
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Profile.CONTENT).performScrollToNode(
+        hasText("Requests"),
+      )
+      onNodeWithText("Requests").performClick()
+
+      route shouldBe Navigation.JellyseerrRequestsRoute
     }
   }
 }

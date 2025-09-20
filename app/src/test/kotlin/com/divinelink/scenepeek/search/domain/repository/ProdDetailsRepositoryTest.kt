@@ -697,10 +697,8 @@ class ProdDetailsRepositoryTest {
   @Test
   fun `test fetch movie item without cached data inserts item to database`() = runTest {
     mediaDao.mockFetchMediaWithInsert()
-    mediaDao.mockCheckIfFavorite(
-      id = MediaItemFactory.FightClub().id,
-      mediaType = MediaType.MOVIE,
-      result = false,
+    mediaDao.mockFetchFavoriteMovieIds(
+      flowOf(emptyList()),
     )
     mediaRemote.mockFetchDetails(
       request = MediaRequestApi.Movie(
@@ -721,6 +719,9 @@ class ProdDetailsRepositoryTest {
   @Test
   fun `test fetch tv item without cached data inserts item to database`() = runTest {
     mediaDao.mockFetchMediaWithInsert()
+    mediaDao.mockFetchFavoriteTvIds(
+      flowOf(emptyList()),
+    )
     mediaDao.mockCheckIfFavorite(
       id = MediaItemFactory.theOffice().id,
       mediaType = MediaType.TV,
@@ -755,10 +756,8 @@ class ProdDetailsRepositoryTest {
   @Test
   fun `test fetch media item that exists in database does not fetches from network`() = runTest {
     mediaDao.mockFetchMedia(MediaItemFactory.FightClub())
-    mediaDao.mockCheckIfFavorite(
-      id = MediaItemFactory.FightClub().id,
-      mediaType = MediaType.MOVIE,
-      result = true,
+    mediaDao.mockFetchFavoriteMovieIds(
+      flowOf(listOf(MediaItemFactory.FightClub().id)),
     )
 
     mediaRemote.verifyNoInteractions()

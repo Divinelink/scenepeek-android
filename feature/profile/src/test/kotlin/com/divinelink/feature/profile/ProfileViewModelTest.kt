@@ -21,7 +21,7 @@ class ProfileViewModelTest {
       .mockFetchAccountDetails(flowOf(Result.success(TMDBAccountFactory.loggedIn())))
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.LoggedIn(
             TMDBAccountFactory.loggedIn(),
           ),
@@ -35,7 +35,7 @@ class ProfileViewModelTest {
       .mockFetchAccountDetails(flowOf(Result.success(TMDBAccountFactory.anonymous())))
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.Anonymous,
         ),
       )
@@ -47,7 +47,7 @@ class ProfileViewModelTest {
       .mockFetchAccountDetails(flowOf(Result.failure(Exception("Network Error"))))
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.Error,
         ),
       )
@@ -64,7 +64,7 @@ class ProfileViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.LoggedIn(
             TMDBAccountFactory.loggedIn(),
           ),
@@ -83,7 +83,7 @@ class ProfileViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.Anonymous,
         ),
       )
@@ -100,9 +100,35 @@ class ProfileViewModelTest {
       )
       .buildViewModel()
       .assertUiState(
-        ProfileUiState(
+        createState(
           accountUiState = TMDBAccountUiState.Error,
         ),
       )
   }
+
+  @Test
+  fun `test jellyseerr feature enabled`() {
+    robot
+      .mockFetchAccountDetails(
+        flowOf(
+          Result.success(TMDBAccountFactory.anonymous()),
+        ),
+      )
+      .mockJellyseerrEnabled(true)
+      .buildViewModel()
+      .assertUiState(
+        createState(
+          accountUiState = TMDBAccountUiState.Anonymous,
+          isJellyseerrEnabled = true,
+        ),
+      )
+  }
+
+  private fun createState(
+    accountUiState: TMDBAccountUiState = TMDBAccountUiState.Initial,
+    isJellyseerrEnabled: Boolean = false,
+  ) = ProfileUiState(
+    accountUiState = accountUiState,
+    isJellyseerrEnabled = isJellyseerrEnabled,
+  )
 }

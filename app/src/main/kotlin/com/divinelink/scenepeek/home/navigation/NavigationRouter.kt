@@ -11,6 +11,7 @@ import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
 import com.divinelink.core.navigation.route.navigateToOnboarding
 import com.divinelink.core.navigation.route.navigateToPerson
+import com.divinelink.core.navigation.route.navigateToRequests
 import com.divinelink.core.navigation.route.navigateToSearchFromHome
 import com.divinelink.core.navigation.route.navigateToSearchFromTab
 import com.divinelink.core.navigation.route.navigateToTMDBAuth
@@ -55,6 +56,7 @@ fun NavController.findNavigation(route: Navigation) {
     is Navigation.WebViewRoute -> navigateToWebView(route)
 
     is Navigation.ActionMenuRoute.Media -> openDefaultActionMenuModal(route)
+    Navigation.JellyseerrRequestsRoute -> navigateToRequests()
 
     // This is from top level navigation
     Navigation.HomeRoute -> {

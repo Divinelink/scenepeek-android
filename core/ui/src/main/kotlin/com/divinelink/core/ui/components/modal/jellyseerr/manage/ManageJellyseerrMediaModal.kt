@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -353,8 +354,9 @@ private fun LazyItemScope.RequestItem(
               ),
             )
 
-            Row(
+            FlowRow(
               horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+              verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
             ) {
               request.seasons.forEach {
                 SeasonPill(season = it.seasonNumber)
@@ -381,7 +383,7 @@ private fun LazyItemScope.RequestItem(
 }
 
 @Composable
-private fun SeasonPill(season: Int) {
+fun SeasonPill(season: Int) {
   Text(
     modifier = Modifier
       .background(
@@ -399,7 +401,7 @@ private fun SeasonPill(season: Int) {
 }
 
 @Composable
-private fun RequesterDisplay(requester: JellyseerrRequester) {
+fun RequesterDisplay(requester: JellyseerrRequester) {
   Row(
     modifier = Modifier,
     verticalAlignment = Alignment.CenterVertically,
@@ -468,7 +470,7 @@ sealed class JellyseerrDialogInfo(
 ) {
   data class DeleteRequest(val requestId: Int) :
     JellyseerrDialogInfo(
-      title = UIText.ResourceText(R.string.core_ui_delete_request_title),
+      title = UIText.ResourceText(R.string.core_ui_delete_request),
       message = UIText.ResourceText(R.string.core_ui_delete_request_confirmation_text),
     )
 

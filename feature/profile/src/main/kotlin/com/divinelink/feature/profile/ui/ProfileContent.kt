@@ -78,6 +78,15 @@ fun ProfileContent(
       )
     }
 
+    if (uiState.isJellyseerrEnabled) {
+      item {
+        ProfileSectionItem(
+          section = ProfileSection.Requests,
+          onClick = { userInteraction(ProfileAction.NavigateToRequests) },
+        )
+      }
+    }
+
     item {
       Spacer(
         modifier = Modifier.height(LocalBottomNavigationPadding.current),
@@ -92,7 +101,8 @@ private fun ProfileSectionItem(
   onClick: () -> Unit,
 ) {
   ElevatedCard(
-    modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
+    modifier = Modifier
+      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
     onClick = onClick,
   ) {
     Row(
@@ -103,6 +113,7 @@ private fun ProfileSectionItem(
       Icon(
         imageVector = section.icon,
         contentDescription = null,
+
         modifier = Modifier.padding(MaterialTheme.dimensions.keyline_8),
       )
 

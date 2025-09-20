@@ -78,17 +78,21 @@ class ProdDetailsRepository(
   override fun fetchMediaItem(media: MediaReference): Flow<Resource<MediaItem.Media?>> =
     networkBoundResource(
       query = {
-        val isFavorite = mediaDao.isMediaFavorite(
-          mediaId = media.mediaId,
-          mediaType = media.mediaType,
-        )
-        val mediaItem = when (val item = mediaDao.fetchMedia(media)) {
-          is MediaItem.Media.Movie -> item.copy(isFavorite = isFavorite)
-          is MediaItem.Media.TV -> item.copy(isFavorite = isFavorite)
-          null -> null
-        }
+        combine(
+          flowOf(mediaDao.fetchMedia(media)),
+          mediaDao.getFavoriteMediaIds(mediaType = media.mediaType),
+        ) { mediaItem, favoriteIds ->
+          when (mediaItem) {
+            is MediaItem.Media.Movie -> mediaItem.copy(
+              isFavorite = favoriteIds.contains(mediaItem.id),
+            )
+            is MediaItem.Media.TV -> mediaItem.copy(
+              isFavorite = favoriteIds.contains(mediaItem.id),
+            )
 
-        flowOf(mediaItem)
+            null -> null
+          }
+        }
       },
       fetch = {
         mediaRemote.fetchDetails(

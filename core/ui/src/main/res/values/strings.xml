@@ -6,6 +6,9 @@
   <string name="core_ui_delete">Delete</string>
   <string name="core_ui_share_error_details">Share error details</string>
 
+  <string name="core_ui_approve">Approve</string>
+  <string name="core_ui_decline">Decline</string>
+
   <string name="core_ui_save">Save</string>
   <string name="core_ui_play_trailer">Watch Trailer</string>
 
@@ -109,7 +112,9 @@
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
 
-  <string name="core_ui_delete_request_title">Delete request</string>
+  <string name="core_ui_edit_request">Edit request</string>
+  <string name="core_ui_cancel_request">Cancel request</string>
+  <string name="core_ui_delete_request">Delete request</string>
   <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>
 
   <string name="core_ui_clear_media_title">Clear data</string>
@@ -138,6 +143,7 @@
   <string name="core_ui_section_watchlist">Watchlist</string>
   <string name="core_ui_section_ratings">Ratings</string>
   <string name="core_ui_section_lists">Lists</string>
+  <string name="core_ui_section_requests">Requests</string>
 
   <string name="core_ui_login_title">Login to your account</string>
 
@@ -170,6 +176,7 @@
   <string name="core_ui_close_multiple_select">Close multiple select</string>
   <string name="core_ui_select_all">Select all</string>
   <string name="core_ui_deselect_all">Deselect all</string>
+  <string name="core_ui_filter_button">Filter button</string>
   <string name="core_ui_filter_button_content_desc">Filter credits</string>
   <string name="core_ui_collapse">Collapse</string>
   <string name="core_ui_expand">Expand</string>
