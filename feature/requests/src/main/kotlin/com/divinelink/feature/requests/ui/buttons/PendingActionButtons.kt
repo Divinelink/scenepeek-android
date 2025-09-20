@@ -44,7 +44,7 @@ fun PendingActionButtons(
       }
       ActionButton.EditRequest(
         enabled = enabled,
-      ) { onAction(RequestsAction.DeclineRequest(request.id)) }
+      ) { onAction(RequestsAction.EditRequest(request.id)) }
     }
   } else {
     Column(

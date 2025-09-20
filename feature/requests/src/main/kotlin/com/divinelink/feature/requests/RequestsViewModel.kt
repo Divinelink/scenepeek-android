@@ -9,7 +9,9 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.setLoading
 import com.divinelink.core.network.Resource
@@ -94,60 +96,124 @@ class RequestsViewModel(
     when (action) {
       is RequestsAction.FetchMediaItem -> fetchMediaItem(action.request)
       RequestsAction.LoadMore -> incrementPage()
-      is RequestsAction.ApproveRequest -> {
-      }
-      is RequestsAction.DeclineRequest -> {
-      }
-      is RequestsAction.CancelRequest -> {
-      }
+      is RequestsAction.ApproveRequest -> updateRequestStatus(
+        requestId = action.id,
+        status = RequestStatusUpdate.APPROVE,
+      )
+      is RequestsAction.DeclineRequest -> updateRequestStatus(
+        requestId = action.id,
+        status = RequestStatusUpdate.DECLINE,
+      )
+      is RequestsAction.CancelRequest -> deleteRequest(action.id)
+      is RequestsAction.DeleteRequest -> deleteRequest(action.id)
+      is RequestsAction.RemoveFromServer -> removeFromServer(action)
+      is RequestsAction.RetryRequest -> retryRequest(action.id)
+      is RequestsAction.UpdateFilter -> updateFilter(action)
       is RequestsAction.EditRequest -> {
       }
-      is RequestsAction.DeleteRequest -> viewModelScope.launch {
-        setLoading(
-          requestId = action.id,
-          loading = true,
-        )
+    }
+  }
 
-        repository.deleteRequest(action.id).fold(
-          onSuccess = {
-            removeItem(action.id)
-          },
-          onFailure = {
-            setLoading(
-              requestId = action.id,
-              loading = true,
-            )
-          },
-        )
-      }
-      is RequestsAction.RemoveFromServer -> {
-        setLoading(
-          requestId = action.requestId,
-          loading = true,
-        )
+  private fun updateRequestStatus(
+    requestId: Int,
+    status: RequestStatusUpdate,
+  ) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
 
-        viewModelScope.launch {
-          deleteMediaUseCase.invoke(
-            DeleteMediaParameters(
-              mediaId = action.mediaId,
-              deleteFile = true,
-            ),
-          ).fold(
-            onSuccess = {
-              removeItem(action.requestId)
-            },
-            onFailure = {
-              setLoading(
-                requestId = action.requestId,
-                loading = false,
-              )
-            },
+      repository.updateRequestStatus(
+        requestId = requestId,
+        status = status,
+      ).fold(
+        onSuccess = { response ->
+          updateItemStatus(
+            requestId = requestId,
+            mediaStatus = response.mediaStatus,
+            requestStatus = response.requestStatus,
           )
-        }
-      }
-      is RequestsAction.RetryRequest -> {
-      }
-      is RequestsAction.UpdateFilter -> updateFilter(action)
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun deleteRequest(requestId: Int) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
+
+      repository.deleteRequest(requestId).fold(
+        onSuccess = {
+          removeItem(requestId)
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun retryRequest(requestId: Int) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
+
+      repository.retryRequest(requestId).fold(
+        onSuccess = { response ->
+          updateItemStatus(
+            requestId = requestId,
+            mediaStatus = response.mediaStatus,
+            requestStatus = response.requestStatus,
+          )
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun removeFromServer(action: RequestsAction.RemoveFromServer) {
+    setLoading(
+      requestId = action.requestId,
+      loading = true,
+    )
+
+    viewModelScope.launch {
+      deleteMediaUseCase.invoke(
+        DeleteMediaParameters(
+          mediaId = action.mediaId,
+          deleteFile = true,
+        ),
+      ).fold(
+        onSuccess = {
+          removeItem(action.requestId)
+        },
+        onFailure = {
+          setLoading(
+            requestId = action.requestId,
+            loading = false,
+          )
+        },
+      )
     }
   }
 
@@ -172,6 +238,27 @@ class RequestsViewModel(
       updateUiStateByRequestId(
         requestId = requestId,
         transform = { _ -> null },
+      )
+    }
+  }
+
+  private fun updateItemStatus(
+    requestId: Int,
+    mediaStatus: JellyseerrStatus.Media,
+    requestStatus: JellyseerrStatus.Request,
+  ) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { item ->
+          item.copy(
+            mediaState = item.mediaState.setLoading(false),
+            request = item.request.copy(
+              mediaStatus = mediaStatus,
+              requestStatus = requestStatus,
+            ),
+          )
+        },
       )
     }
   }

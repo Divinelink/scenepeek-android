@@ -1,12 +1,13 @@
 package com.divinelink.core.data.jellyseerr.repository
 
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.JellyseerrRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
@@ -47,6 +48,13 @@ interface JellyseerrRepository {
   suspend fun getRadarrInstanceDetails(id: Int): Result<ServerInstanceDetails>
 
   suspend fun getSonarrInstanceDetails(id: Int): Result<ServerInstanceDetails>
+
+  suspend fun updateRequestStatus(
+    requestId: Int,
+    status: RequestStatusUpdate,
+  ): Result<JellyseerrRequest>
+
+  suspend fun retryRequest(requestId: Int): Result<JellyseerrRequest>
 
   suspend fun getRequests(
     page: Int,
