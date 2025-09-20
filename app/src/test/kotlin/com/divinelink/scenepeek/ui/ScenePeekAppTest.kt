@@ -107,7 +107,6 @@ class ScenePeekAppTest : ComposeTest() {
 
   // Profile use cases
   private lateinit var getAccountDetailsUseCaseTest: FakeGetAccountDetailsUseCase
-  private lateinit var authRepository: TestAuthRepository
 
   // DETAILS use cases
   private lateinit var getMediaDetailsUseCase: FakeGetMediaDetailsUseCase

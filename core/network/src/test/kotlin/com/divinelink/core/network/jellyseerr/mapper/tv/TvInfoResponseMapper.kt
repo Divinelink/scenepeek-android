@@ -49,6 +49,8 @@ class TvInfoResponseMapper {
                 mediaId = 254834,
                 mediaType = MediaType.MOVIE,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 593,
@@ -67,6 +69,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 594,
@@ -84,6 +88,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 602,
@@ -101,6 +107,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 603,
@@ -118,6 +126,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 626,
@@ -135,6 +145,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
             JellyseerrRequest(
               id = 630,
@@ -152,6 +164,8 @@ class TvInfoResponseMapper {
                 mediaId = 44264,
                 mediaType = MediaType.TV,
               ),
+              profileName = null,
+              canRemove = false,
             ),
           ),
           seasons = listOf(

@@ -2,14 +2,13 @@ package com.divinelink.core.data.jellyseerr.repository
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.data.auth.AuthRepository
-import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.JellyseerrRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.map
 class ProdJellyseerrRepository(
   private val service: JellyseerrService,
   private val authRepository: AuthRepository,
-  private val detailsRepository: DetailsRepository,
   val dispatcher: DispatcherProvider,
 ) : JellyseerrRepository {
 
