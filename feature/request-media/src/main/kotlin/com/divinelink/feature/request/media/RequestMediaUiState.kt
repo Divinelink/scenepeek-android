@@ -10,6 +10,7 @@ import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class RequestMediaUiState(
+  val isEditMode: Boolean,
   val seasons: List<Season>,
   val media: MediaItem.Media,
   val is4k: Boolean,
@@ -26,9 +27,11 @@ data class RequestMediaUiState(
 ) {
   companion object {
     fun initial(
+      isEditMode: Boolean,
       seasons: List<Season>,
       media: MediaItem.Media,
     ) = RequestMediaUiState(
+      isEditMode = isEditMode,
       seasons = seasons,
       media = media,
       is4k = false,

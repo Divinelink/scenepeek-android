@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RequestMediaViewModel(
+  isEditMode: Boolean,
   media: MediaItem.Media,
   private val getServerInstancesUseCase: GetServerInstancesUseCase,
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
@@ -42,6 +43,7 @@ class RequestMediaViewModel(
 
   private val _uiState = MutableStateFlow(
     RequestMediaUiState.initial(
+      isEditMode = isEditMode,
       seasons = emptyList(),
       media = media,
     ),

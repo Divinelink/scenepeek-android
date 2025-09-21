@@ -23,10 +23,11 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestSeasonsModal(
+  isEditMode: Boolean,
   seasons: List<Season>,
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel {
-    parametersOf(media)
+    parametersOf(media, isEditMode)
   },
   onDismissRequest: () -> Unit,
   onNavigate: (Navigation) -> Unit,

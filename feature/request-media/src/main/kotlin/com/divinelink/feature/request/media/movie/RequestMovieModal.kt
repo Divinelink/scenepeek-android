@@ -14,17 +14,18 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.feature.request.media.RequestMediaContent
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestMovieModal(
+  isEditMode: Boolean,
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel {
-    parametersOf(media)
+    parametersOf(media, isEditMode)
   },
   onDismissRequest: () -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,

@@ -853,6 +853,7 @@ class DetailsScreenTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
+        isEditMode = false,
         media = MediaItemFactory.FightClub(),
         requestMediaUseCase = requestMediaUseCase.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
@@ -973,6 +974,7 @@ class DetailsScreenTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
+        isEditMode = false,
         media = MediaItemFactory.theOffice(),
         requestMediaUseCase = requestMediaUseCase.mock,
         authRepository = authRepository.mock,
@@ -1022,7 +1024,7 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE,
+          "mediaType" to MediaType.TV,
         ),
       ),
     )
@@ -1056,7 +1058,7 @@ class DetailsScreenTest : ComposeTest() {
       onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
         .assertIsNotDisplayed()
 
-      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_movie))
+      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_tv))
         .assertIsDisplayed()
         .performClick()
 

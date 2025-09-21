@@ -59,6 +59,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -68,6 +69,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -109,6 +111,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -118,6 +121,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -152,6 +156,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -161,6 +166,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         seasons = SeasonFactory.allWithStatus(),
@@ -186,6 +192,7 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
 
       val viewModel = RequestMediaViewModel(
+        isEditMode = false,
         media = MediaItemFactory.theOffice(),
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -195,6 +202,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
       setContentWithTheme {
         RequestSeasonsModal(
+          isEditMode = false,
           viewModel = viewModel,
           media = MediaItemFactory.theOffice(),
           seasons = SeasonFactory.allWithStatus(),
@@ -224,6 +232,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -233,6 +242,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -273,6 +283,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -282,6 +293,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -330,6 +342,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -339,6 +352,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -372,6 +386,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -381,6 +396,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -416,6 +432,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -425,6 +442,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.allWithStatus(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -461,6 +479,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Forbidden())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -470,6 +489,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -512,6 +532,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Unauthorized())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -521,6 +542,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -562,6 +584,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Conflict())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -571,6 +594,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -608,6 +632,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -617,6 +642,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -649,6 +675,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstancesUseCase.mockResponse(Result.success(emptyList()))
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -658,6 +685,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -688,6 +716,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstancesUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -697,6 +726,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -734,6 +764,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -743,6 +774,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -784,6 +816,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -793,6 +826,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -831,6 +865,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -840,6 +875,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -892,6 +928,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -901,6 +938,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
@@ -956,6 +994,7 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
+      isEditMode = false,
       media = MediaItemFactory.theOffice(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -965,6 +1004,7 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestSeasonsModal(
+        isEditMode = false,
         seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
