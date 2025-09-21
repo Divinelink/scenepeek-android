@@ -21,6 +21,7 @@ import com.divinelink.core.network.jellyseerr.mapper.requests.map
 import com.divinelink.core.network.jellyseerr.mapper.server.radarr.map
 import com.divinelink.core.network.jellyseerr.mapper.server.sonarr.map
 import com.divinelink.core.network.jellyseerr.mapper.tv.map
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.service.JellyseerrService
 import com.divinelink.core.network.networkBoundResource
@@ -135,4 +136,10 @@ class ProdJellyseerrRepository(
   override suspend fun retryRequest(requestId: Int): Result<JellyseerrRequest> = service
     .retryRequest(requestId = requestId)
     .map { it.map() }
+
+  override suspend fun editRequest(
+    body: JellyseerrEditRequestMediaBodyApi,
+  ): Flow<Result<MediaRequestResult>> = service
+    .updateRequest(body)
+    .map { Result.success(it.data.map()) }
 }

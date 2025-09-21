@@ -11,12 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.colors
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -24,7 +30,9 @@ import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.NavigateUpButton
+import com.divinelink.feature.request.media.RequestMediaModal
 import com.divinelink.feature.requests.R
+import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.feature.requests.RequestsViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,11 +43,32 @@ fun AnimatedVisibilityScope.RequestsScreen(
   viewModel: RequestsViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  var showRequestModal by remember {
+    mutableStateOf<Pair<MediaItem.Media, JellyseerrRequest>?>(null)
+  }
 
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
   val topAppBarColor = TopAppBarDefaults.topAppBarColors(
     scrolledContainerColor = MaterialTheme.colorScheme.surface,
   )
+
+  LaunchedEffect(Unit) {
+    viewModel.displayRequestModal.collect {
+      showRequestModal = it
+    }
+  }
+
+  showRequestModal?.let { request ->
+    RequestMediaModal(
+      media = request.first,
+      request = request.second,
+      mediaType = request.first.mediaType,
+      seasons = emptyList(),
+      onDismissRequest = { showRequestModal = null },
+      onUpdateMediaInfo = { viewModel.onAction(RequestsAction.UpdateRequestInfo(it)) },
+      onNavigate = onNavigate,
+    )
+  }
 
   rememberScaffoldState(
     animatedVisibilityScope = this,

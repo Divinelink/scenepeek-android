@@ -6,6 +6,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
@@ -78,6 +79,23 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       url = url,
       body = body,
     )
+
+    emit(response)
+  }
+
+  override suspend fun updateRequest(
+    body: JellyseerrEditRequestMediaBodyApi,
+  ): Flow<Result<JellyseerrRequestMediaResponse>> = flow {
+    requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
+
+    val url = "${restClient.hostAddress}/api/v1/request/${body.requestId}"
+
+    val response = runCatching {
+      restClient.put<JellyseerrEditRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
+        url = url,
+        body = body,
+      )
+    }
 
     emit(response)
   }

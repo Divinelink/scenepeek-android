@@ -135,7 +135,7 @@ fun DetailsContent(
 
   if (showRequestModal) {
     RequestMediaModal(
-      isEditMode = false,
+      request = null,
       mediaType = viewState.mediaType,
       media = viewState.mediaDetails?.toMediaItem(),
       seasons = (viewState.mediaDetails as? TV)?.seasons ?: emptyList(),

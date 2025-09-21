@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
@@ -22,11 +23,11 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestMovieModal(
-  isEditMode: Boolean,
+  request: JellyseerrRequest?,
   media: MediaItem.Media,
-  viewModel: RequestMediaViewModel = koinViewModel {
-    parametersOf(media, isEditMode)
-  },
+  viewModel: RequestMediaViewModel = koinViewModel(
+    key = media.uniqueIdentifier,
+  ) { parametersOf(media) },
   onDismissRequest: () -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
   onNavigate: (Navigation) -> Unit,
@@ -38,6 +39,10 @@ fun RequestMovieModal(
     viewModel.updatedMediaInfo.collect {
       onUpdateMediaInfo(it)
     }
+  }
+
+  LaunchedEffect(request) {
+    viewModel.updateRequest(request)
   }
 
   ModalBottomSheet(

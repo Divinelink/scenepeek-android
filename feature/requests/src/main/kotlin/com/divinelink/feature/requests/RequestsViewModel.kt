@@ -9,12 +9,15 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.setLoading
 import com.divinelink.core.network.Resource
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,6 +25,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -37,6 +41,10 @@ class RequestsViewModel(
     RequestsUiState.initial,
   )
   val uiState: StateFlow<RequestsUiState> = _uiState
+
+  private val _displayRequestModal = Channel<Pair<MediaItem.Media, JellyseerrRequest>>()
+  val displayRequestModal: Flow<Pair<MediaItem.Media, JellyseerrRequest>> =
+    _displayRequestModal.receiveAsFlow()
 
   private val requestsFlow = _uiState
     .distinctUntilChanged { old, new ->
@@ -109,7 +117,22 @@ class RequestsViewModel(
       is RequestsAction.RemoveFromServer -> removeFromServer(action)
       is RequestsAction.RetryRequest -> retryRequest(action.id)
       is RequestsAction.UpdateFilter -> updateFilter(action)
-      is RequestsAction.EditRequest -> {
+      is RequestsAction.EditRequest -> sendDisplayEditModal(action)
+      is RequestsAction.UpdateRequestInfo -> {
+        Timber.d(action.mediaInfo.toString())
+      }
+    }
+  }
+
+  private fun sendDisplayEditModal(action: RequestsAction.EditRequest) {
+    viewModelScope.launch {
+      val itemState = (uiState.value.data as? DataState.Data)
+        ?.data
+        ?.find { it.request.id == action.request.id }
+        ?.mediaState as? ItemState.Data
+
+      itemState?.item?.let { mediaItem ->
+        _displayRequestModal.trySend(mediaItem to action.request)
       }
     }
   }

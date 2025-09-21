@@ -1,6 +1,8 @@
 package com.divinelink.feature.requests
 
 import com.divinelink.core.model.filter.MediaRequestFilter
+import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 
 sealed interface RequestsAction {
@@ -18,6 +20,8 @@ sealed interface RequestsAction {
     val requestId: Int,
   ) : RequestsAction
 
-  data class EditRequest(val id: Int) : RequestsAction
+  data class EditRequest(val request: JellyseerrRequest) : RequestsAction
   data class RetryRequest(val id: Int) : RequestsAction
+
+  data class UpdateRequestInfo(val mediaInfo: JellyseerrMediaInfo) : RequestsAction
 }

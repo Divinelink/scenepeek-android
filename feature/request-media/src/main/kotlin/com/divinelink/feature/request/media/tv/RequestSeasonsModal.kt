@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
@@ -23,12 +24,12 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestSeasonsModal(
-  isEditMode: Boolean,
+  request: JellyseerrRequest?,
   seasons: List<Season>,
   media: MediaItem.Media,
-  viewModel: RequestMediaViewModel = koinViewModel {
-    parametersOf(media, isEditMode)
-  },
+  viewModel: RequestMediaViewModel = koinViewModel(
+    key = media.uniqueIdentifier,
+  ) { parametersOf(media) },
   onDismissRequest: () -> Unit,
   onNavigate: (Navigation) -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
@@ -38,6 +39,10 @@ fun RequestSeasonsModal(
 
   LaunchedEffect(seasons) {
     viewModel.updateSeasons(seasons)
+  }
+
+  LaunchedEffect(request) {
+    viewModel.updateRequest(request)
   }
 
   LaunchedEffect(Unit) {

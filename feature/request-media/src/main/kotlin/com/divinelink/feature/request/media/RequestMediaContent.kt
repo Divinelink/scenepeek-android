@@ -103,7 +103,9 @@ fun RequestMediaContent(
       item {
         JellyseerrGradientText(
           modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
-          text = if (state.media.mediaType == MediaType.TV) {
+          text = if (state.isEditMode) {
+            stringResource(id = UiString.core_ui_request_pending_request)
+          } else if (state.media.mediaType == MediaType.TV) {
             stringResource(id = UiString.core_ui_request_series)
           } else {
             stringResource(id = UiString.core_ui_request_movie)
@@ -336,14 +338,20 @@ fun RequestMediaContent(
       if (state.media.mediaType == MediaType.TV) {
         RequestSeasonsButton(selectedSeasons, state, onAction)
       } else {
-        RequestMovieButton(onAction)
+        RequestMovieButton(
+          isEditMode = state.isEditMode,
+          onAction = onAction,
+        )
       }
     }
   }
 }
 
 @Composable
-private fun RequestMovieButton(onAction: (RequestMediaAction) -> Unit) {
+private fun RequestMovieButton(
+  isEditMode: Boolean,
+  onAction: (RequestMediaAction) -> Unit,
+) {
   Button(
     modifier = Modifier
       .fillMaxWidth()
@@ -359,7 +367,13 @@ private fun RequestMovieButton(onAction: (RequestMediaAction) -> Unit) {
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Icon(Icons.Default.Download, null)
-      Text(text = stringResource(id = UiString.core_ui_request))
+      Text(
+        text = if (isEditMode) {
+          stringResource(id = UiString.core_ui_edit_request)
+        } else {
+          stringResource(id = UiString.core_ui_request)
+        },
+      )
     }
   }
 }
@@ -378,7 +392,9 @@ private fun RequestSeasonsButton(
     enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
     onClick = { onAction(RequestMediaAction.RequestMedia(selectedSeasons)) },
   ) {
-    val text = if (selectedSeasons.isEmpty()) {
+    val text = if (state.isEditMode) {
+      stringResource(id = UiString.core_ui_edit_request)
+    } else if (selectedSeasons.isEmpty()) {
       stringResource(id = UiString.core_ui_select_seasons_button)
     } else {
       pluralStringResource(

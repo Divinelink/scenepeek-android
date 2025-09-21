@@ -111,6 +111,7 @@
   <string name="core_ui_request">Request</string>
   <string name="core_ui_request_movie">Request movie</string>
   <string name="core_ui_request_series">Request series</string>
+  <string name="core_ui_request_pending_request">Pending request</string>
 
   <string name="core_ui_edit_request">Edit request</string>
   <string name="core_ui_cancel_request">Cancel request</string>

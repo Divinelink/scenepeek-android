@@ -3,6 +3,7 @@ package com.divinelink.feature.request.media
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
@@ -11,7 +12,7 @@ import com.divinelink.feature.request.media.tv.RequestSeasonsModal
 
 @Composable
 fun RequestMediaModal(
-  isEditMode: Boolean,
+  request: JellyseerrRequest?,
   mediaType: MediaType,
   media: MediaItem.Media?,
   seasons: List<Season>,
@@ -23,7 +24,7 @@ fun RequestMediaModal(
 
   when (mediaType) {
     MediaType.TV -> RequestSeasonsModal(
-      isEditMode = isEditMode,
+      request = request,
       seasons = seasons,
       media = media,
       onDismissRequest = onDismissRequest,
@@ -31,7 +32,7 @@ fun RequestMediaModal(
       onUpdateMediaInfo = onUpdateMediaInfo,
     )
     MediaType.MOVIE -> RequestMovieModal(
-      isEditMode = isEditMode,
+      request = request,
       media = media,
       onDismissRequest = onDismissRequest,
       onUpdateMediaInfo = onUpdateMediaInfo,

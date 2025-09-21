@@ -1,6 +1,7 @@
 package com.divinelink.feature.request.media
 
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
@@ -10,7 +11,7 @@ import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 
 data class RequestMediaUiState(
-  val isEditMode: Boolean,
+  val request: JellyseerrRequest?,
   val seasons: List<Season>,
   val media: MediaItem.Media,
   val is4k: Boolean,
@@ -25,15 +26,17 @@ data class RequestMediaUiState(
   val selectedProfile: LCEState<InstanceProfile>,
   val selectedRootFolder: LCEState<InstanceRootFolder>,
 ) {
+  val isEditMode
+    get() = request != null
+
   companion object {
     fun initial(
-      isEditMode: Boolean,
       seasons: List<Season>,
       media: MediaItem.Media,
     ) = RequestMediaUiState(
-      isEditMode = isEditMode,
       seasons = seasons,
       media = media,
+      request = null,
       is4k = false,
       isLoading = false,
       snackbarMessage = null,
