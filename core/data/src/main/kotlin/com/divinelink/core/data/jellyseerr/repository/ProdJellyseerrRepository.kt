@@ -1,6 +1,7 @@
 package com.divinelink.core.data.jellyseerr.repository
 
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.model.filter.MediaRequestFilter
@@ -10,6 +11,7 @@ import com.divinelink.core.model.jellyseerr.JellyseerrRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
@@ -119,5 +121,18 @@ class ProdJellyseerrRepository(
       skip = (page - 1) * 5,
       filter = filter,
     )
-    .map { Result.success(it.map()) }
+    .map { Result.success(it.data.map()) }
+
+  override suspend fun updateRequestStatus(
+    requestId: Int,
+    status: RequestStatusUpdate,
+  ): Result<JellyseerrRequest> = service
+    .updateRequestStatus(
+      requestId = requestId,
+      status = status,
+    ).map { it.map() }
+
+  override suspend fun retryRequest(requestId: Int): Result<JellyseerrRequest> = service
+    .retryRequest(requestId = requestId)
+    .map { it.map() }
 }

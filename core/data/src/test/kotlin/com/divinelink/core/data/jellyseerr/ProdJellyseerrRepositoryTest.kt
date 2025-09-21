@@ -8,7 +8,9 @@ import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.JellyseerrRequestMediaResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.MediaInfoRequestResponseFactory
 import com.divinelink.core.fixtures.core.network.jellyseerr.model.movie.MovieInfoResponseFactory
+import com.divinelink.core.fixtures.core.network.jellyseerr.model.requests.MediaRequestsResponseFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
+import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrRequestsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
@@ -20,11 +22,13 @@ import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.jellyseerr.mapper.map
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
@@ -501,5 +505,86 @@ class ProdJellyseerrRepositoryTest {
     shouldThrow<AppException.Unknown> {
       repository.getSonarrInstanceDetails(0).data
     }
+  }
+
+  @Test
+  fun `test getRequests with success`() = runTest {
+    remote.mockGetRequests(
+      page = 1,
+      filter = MediaRequestFilter.All,
+      response = Result.success(MediaRequestsResponseFactory.All.page1),
+    )
+
+    repository.getRequests(
+      page = 1,
+      filter = MediaRequestFilter.All,
+    ).test {
+      awaitItem().toString() shouldBe Result.success(JellyseerrRequestsFactory.All.page1).toString()
+
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test getRequests with failure`() = runTest {
+    remote.mockGetRequests(
+      page = 1,
+      filter = MediaRequestFilter.All,
+      response = Result.failure(AppException.Unknown()),
+    )
+
+    repository.getRequests(
+      page = 1,
+      filter = MediaRequestFilter.All,
+    ).test {
+      awaitError() shouldBe AppException.Unknown()
+      awaitError() shouldBe AppException.Unknown()
+    }
+  }
+
+  @Test
+  fun `test updateRequestStatus with success`() = runTest {
+    remote.mockUpdateRequestStatus(
+      response = Result.success(MediaInfoRequestResponseFactory.betterCallSaul1()),
+    )
+
+    repository.updateRequestStatus(
+      requestId = 1,
+      status = RequestStatusUpdate.APPROVE,
+    ).toString() shouldBe Result.success(JellyseerrRequestFactory.Tv.betterCallSaul1()).toString()
+  }
+
+  @Test
+  fun `test updateRequestStatus with failure`() = runTest {
+    remote.mockUpdateRequestStatus(
+      response = Result.failure(AppException.Unknown()),
+    )
+
+    repository.updateRequestStatus(
+      requestId = 1,
+      status = RequestStatusUpdate.APPROVE,
+    ).toString() shouldBe Result.failure<Exception>(AppException.Unknown()).toString()
+  }
+
+  @Test
+  fun `test retryRequest with success`() = runTest {
+    remote.mockRetryRequest(
+      response = Result.success(MediaInfoRequestResponseFactory.betterCallSaul1()),
+    )
+
+    repository.retryRequest(
+      requestId = 1,
+    ).toString() shouldBe Result.success(JellyseerrRequestFactory.Tv.betterCallSaul1()).toString()
+  }
+
+  @Test
+  fun `test retryRequest with failure`() = runTest {
+    remote.mockRetryRequest(
+      response = Result.failure(AppException.Unknown()),
+    )
+
+    repository.retryRequest(
+      requestId = 1,
+    ).toString() shouldBe Result.failure<Exception>(AppException.Unknown()).toString()
   }
 }

@@ -33,11 +33,13 @@ object ActionButton {
   @Composable
   fun Approve(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier,
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_approve),
       vector = Icons.Default.Done,
       color = MaterialTheme.colors.emeraldGreen,
@@ -47,11 +49,13 @@ object ActionButton {
   @Composable
   fun Decline(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier,
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_decline),
       vector = Icons.Default.Close,
       color = MaterialTheme.colors.crimsonRed,
@@ -61,11 +65,13 @@ object ActionButton {
   @Composable
   fun EditRequest(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_edit_request),
       vector = Icons.Default.Edit,
       color = MaterialTheme.colors.vibrantPurple,
@@ -75,11 +81,13 @@ object ActionButton {
   @Composable
   fun Retry(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_retry),
       vector = Icons.Default.Autorenew,
       color = MaterialTheme.colors.vibrantPurple,
@@ -89,11 +97,13 @@ object ActionButton {
   @Composable
   fun CancelRequest(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_cancel_request),
       vector = Icons.Default.Close,
       color = MaterialTheme.colors.crimsonRed,
@@ -103,11 +113,13 @@ object ActionButton {
   @Composable
   fun DeleteRequest(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_delete_request),
       vector = Icons.Default.Delete,
       color = MaterialTheme.colors.crimsonRed,
@@ -117,17 +129,20 @@ object ActionButton {
   @Composable
   fun RemoveFromServer(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     mediaType: MediaType,
     onClick: () -> Unit,
   ) {
     if (mediaType == MediaType.TV) {
       RemoveFromSonarr(
         modifier = modifier,
+        enabled = enabled,
         onClick = onClick,
       )
     } else {
       RemoveFromRadarr(
         modifier = modifier,
+        enabled = enabled,
         onClick = onClick,
       )
     }
@@ -136,11 +151,13 @@ object ActionButton {
   @Composable
   private fun RemoveFromSonarr(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_remove_from_sonarr),
       vector = Icons.Default.Delete,
       color = MaterialTheme.colors.crimsonRed,
@@ -150,11 +167,13 @@ object ActionButton {
   @Composable
   private fun RemoveFromRadarr(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit,
   ) {
     ActionButton(
       modifier = modifier.fillMaxWidth(),
       onClick = onClick,
+      enabled = enabled,
       text = stringResource(UiString.core_ui_remove_from_radarr),
       vector = Icons.Default.Delete,
       color = MaterialTheme.colors.crimsonRed,
@@ -165,12 +184,14 @@ object ActionButton {
   private fun ActionButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enabled: Boolean,
     text: String,
     vector: ImageVector,
     color: Color,
   ) {
     Button(
       modifier = modifier,
+      enabled = enabled,
       colors = ButtonDefaults.buttonColors().copy(
         containerColor = color,
       ),
@@ -200,19 +221,26 @@ fun ActionButtonPreviews() {
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
     ) {
-      ActionButton.Approve { }
+      ActionButton.Approve(enabled = true) { }
+      ActionButton.Approve(enabled = false) { }
 
-      ActionButton.Decline { }
+      ActionButton.Decline(enabled = true) { }
+      ActionButton.Decline(enabled = false) { }
 
-      ActionButton.Retry { }
+      ActionButton.Retry(enabled = true) { }
+      ActionButton.Retry(enabled = false) { }
 
-      ActionButton.EditRequest { }
+      ActionButton.EditRequest(enabled = true) { }
+      ActionButton.EditRequest(enabled = false) { }
 
-      ActionButton.DeleteRequest { }
+      ActionButton.DeleteRequest(enabled = true) { }
+      ActionButton.DeleteRequest(enabled = false) { }
 
-      ActionButton.RemoveFromServer(mediaType = MediaType.TV) { }
+      ActionButton.RemoveFromServer(enabled = true, mediaType = MediaType.TV) { }
+      ActionButton.RemoveFromServer(enabled = false, mediaType = MediaType.TV) { }
 
-      ActionButton.RemoveFromServer(mediaType = MediaType.MOVIE) { }
+      ActionButton.RemoveFromServer(enabled = true, mediaType = MediaType.MOVIE) { }
+      ActionButton.RemoveFromServer(enabled = false, mediaType = MediaType.MOVIE) { }
     }
   }
 }

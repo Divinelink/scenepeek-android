@@ -143,6 +143,26 @@ class ProfilePermissionExtensionsTest {
   }
 
   @Test
+  fun `test canRequestAdvanced without permission is false`() {
+    emptyList<ProfilePermission>().canRequestAdvanced() shouldBe false
+  }
+
+  @Test
+  fun `test canRequestAdvanced as admin is true`() {
+    listOf(ProfilePermission.ADMIN).canRequestAdvanced() shouldBe true
+  }
+
+  @Test
+  fun `test canRequestAdvanced with REQUEST_ADVANCED is true`() {
+    listOf(ProfilePermission.REQUEST_ADVANCED).canRequestAdvanced() shouldBe true
+  }
+
+  @Test
+  fun `test canRequestAdvanced with MANAGE_REQUESTS is true`() {
+    listOf(ProfilePermission.MANAGE_REQUESTS).canRequestAdvanced() shouldBe true
+  }
+
+  @Test
   fun `test isAdmin with ADMIN permission is true`() {
     listOf(ProfilePermission.ADMIN).isAdmin shouldBe true
   }

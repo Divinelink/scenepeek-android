@@ -17,6 +17,7 @@ import com.divinelink.feature.requests.ui.ActionButton
 @Composable
 fun PendingActionButtons(
   request: JellyseerrRequest,
+  enabled: Boolean,
   hasPermission: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
@@ -32,14 +33,18 @@ fun PendingActionButtons(
       ) {
         ActionButton.Approve(
           modifier = Modifier.weight(1f),
+          enabled = enabled,
           onClick = { onAction(RequestsAction.ApproveRequest(request.id)) },
         )
         ActionButton.Decline(
           modifier = Modifier.weight(1f),
+          enabled = enabled,
           onClick = { onAction(RequestsAction.DeclineRequest(request.id)) },
         )
       }
-      ActionButton.EditRequest { onAction(RequestsAction.DeclineRequest(request.id)) }
+      ActionButton.EditRequest(
+        enabled = enabled,
+      ) { onAction(RequestsAction.EditRequest(request.id)) }
     }
   } else {
     Column(
@@ -48,10 +53,14 @@ fun PendingActionButtons(
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
       if (request.media.mediaType == MediaType.TV) {
-        ActionButton.EditRequest { onAction(RequestsAction.EditRequest(request.id)) }
+        ActionButton.EditRequest(
+          enabled = enabled,
+        ) { onAction(RequestsAction.EditRequest(request.id)) }
       }
 
-      ActionButton.CancelRequest { onAction(RequestsAction.CancelRequest(request.id)) }
+      ActionButton.CancelRequest(
+        enabled = enabled,
+      ) { onAction(RequestsAction.CancelRequest(request.id)) }
     }
   }
 }

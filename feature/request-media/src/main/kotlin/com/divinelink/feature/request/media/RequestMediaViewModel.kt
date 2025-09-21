@@ -10,9 +10,8 @@ import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.exception.AppException
-import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
-import com.divinelink.core.model.jellyseerr.permission.canPerform
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
@@ -62,7 +61,7 @@ class RequestMediaViewModel(
       .launchIn(viewModelScope)
 
     viewModelScope.launch {
-      if (uiState.value.permissions.canPerform(ProfilePermission.REQUEST_ADVANCED)) {
+      if (uiState.value.permissions.canRequestAdvanced()) {
         getServerInstancesUseCase(media.mediaType).fold(
           onSuccess = { instances ->
             val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }

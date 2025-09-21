@@ -5,10 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
+import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.setLoading
 import com.divinelink.core.network.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +29,7 @@ import timber.log.Timber
 class RequestsViewModel(
   private val repository: JellyseerrRepository,
   private val detailsRepository: DetailsRepository,
+  private val deleteMediaUseCase: DeleteMediaUseCase,
   authRepository: AuthRepository,
 ) : ViewModel() {
 
@@ -90,21 +96,198 @@ class RequestsViewModel(
     when (action) {
       is RequestsAction.FetchMediaItem -> fetchMediaItem(action.request)
       RequestsAction.LoadMore -> incrementPage()
-      is RequestsAction.ApproveRequest -> {
-      }
-      is RequestsAction.DeclineRequest -> {
-      }
-      is RequestsAction.CancelRequest -> {
-      }
+      is RequestsAction.ApproveRequest -> updateRequestStatus(
+        requestId = action.id,
+        status = RequestStatusUpdate.APPROVE,
+      )
+      is RequestsAction.DeclineRequest -> updateRequestStatus(
+        requestId = action.id,
+        status = RequestStatusUpdate.DECLINE,
+      )
+      is RequestsAction.CancelRequest -> deleteRequest(action.id)
+      is RequestsAction.DeleteRequest -> deleteRequest(action.id)
+      is RequestsAction.RemoveFromServer -> removeFromServer(action)
+      is RequestsAction.RetryRequest -> retryRequest(action.id)
+      is RequestsAction.UpdateFilter -> updateFilter(action)
       is RequestsAction.EditRequest -> {
       }
-      is RequestsAction.DeleteRequest -> {
+    }
+  }
+
+  private fun updateRequestStatus(
+    requestId: Int,
+    status: RequestStatusUpdate,
+  ) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
+
+      repository.updateRequestStatus(
+        requestId = requestId,
+        status = status,
+      ).fold(
+        onSuccess = { response ->
+          updateItemStatus(
+            requestId = requestId,
+            mediaStatus = response.mediaStatus,
+            requestStatus = response.requestStatus,
+          )
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun deleteRequest(requestId: Int) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
+
+      repository.deleteRequest(requestId).fold(
+        onSuccess = {
+          removeItem(requestId)
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun retryRequest(requestId: Int) {
+    viewModelScope.launch {
+      setLoading(
+        requestId = requestId,
+        loading = true,
+      )
+
+      repository.retryRequest(requestId).fold(
+        onSuccess = { response ->
+          updateItemStatus(
+            requestId = requestId,
+            mediaStatus = response.mediaStatus,
+            requestStatus = response.requestStatus,
+          )
+        },
+        onFailure = {
+          setLoading(
+            requestId = requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun removeFromServer(action: RequestsAction.RemoveFromServer) {
+    setLoading(
+      requestId = action.requestId,
+      loading = true,
+    )
+
+    viewModelScope.launch {
+      deleteMediaUseCase.invoke(
+        DeleteMediaParameters(
+          mediaId = action.mediaId,
+          deleteFile = true,
+        ),
+      ).fold(
+        onSuccess = {
+          removeItem(action.requestId)
+        },
+        onFailure = {
+          setLoading(
+            requestId = action.requestId,
+            loading = false,
+          )
+        },
+      )
+    }
+  }
+
+  private fun setLoading(
+    requestId: Int,
+    loading: Boolean,
+  ) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { item ->
+          item.copy(
+            mediaState = item.mediaState.setLoading(loading),
+          )
+        },
+      )
+    }
+  }
+
+  private fun removeItem(requestId: Int) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { _ -> null },
+      )
+    }
+  }
+
+  private fun updateItemStatus(
+    requestId: Int,
+    mediaStatus: JellyseerrStatus.Media,
+    requestStatus: JellyseerrStatus.Request,
+  ) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = requestId,
+        transform = { item ->
+          item.copy(
+            mediaState = item.mediaState.setLoading(false),
+            request = item.request.copy(
+              mediaStatus = mediaStatus,
+              requestStatus = requestStatus,
+            ),
+          )
+        },
+      )
+    }
+  }
+
+  private fun updateUiStateByRequestId(
+    requestId: Int,
+    transform: (RequestUiItem) -> RequestUiItem?,
+  ): RequestsUiState {
+    return _uiState.value.let { currentState ->
+      val data = currentState.data as? DataState.Data ?: return currentState
+      val pages = data.pages
+
+      val pageKey =
+        findPageForRequestId(pages = pages, requestId = requestId) ?: return currentState
+      val currentList = pages[pageKey] ?: return currentState
+
+      val updatedList = currentList.mapNotNull { uiItem ->
+        if (uiItem.request.id == requestId) {
+          transform(uiItem)
+        } else {
+          uiItem
+        }
       }
-      is RequestsAction.RemoveFromServer -> {
-      }
-      is RequestsAction.RetryRequest -> {
-      }
-      is RequestsAction.UpdateFilter -> updateFilter(action)
+
+      val newPages = pages.toMutableMap().apply {
+        this[pageKey] = updatedList
+      }.toMap()
+
+      currentState.copy(data = DataState.Data(newPages))
     }
   }
 
@@ -171,7 +354,14 @@ class RequestsViewModel(
 
       val updatedList = listToUpdate.map { uiItem ->
         if (uiItem.request.id == request.request.id) {
-          uiItem.copy(mediaState = mediaItem?.let { item -> ItemState.Data(item) })
+          uiItem.copy(
+            mediaState = mediaItem?.let { item ->
+              ItemState.Data(
+                item = item,
+                loading = false,
+              )
+            },
+          )
         } else {
           uiItem
         }

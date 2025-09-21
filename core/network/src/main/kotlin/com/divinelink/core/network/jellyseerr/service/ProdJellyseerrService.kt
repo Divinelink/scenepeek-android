@@ -1,8 +1,9 @@
 package com.divinelink.core.network.jellyseerr.service
 
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
-import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.filter.MediaRequestFilter
+import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.network.client.JellyseerrRestClient
 import com.divinelink.core.network.client.JellyseerrRestClient.Companion.AUTH_ENDPOINT
 import com.divinelink.core.network.jellyseerr.model.JellyseerrLoginRequestBodyApi
@@ -211,7 +212,7 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
   override suspend fun getRequests(
     skip: Int,
     filter: MediaRequestFilter,
-  ): Flow<MediaRequestsResponse> = flow {
+  ): Flow<Result<MediaRequestsResponse>> = flow {
     requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
 
     val url = "${restClient.hostAddress}/api/v1/request" +
@@ -219,6 +220,26 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
       "&take=5" +
       "&skip=$skip"
 
-    emit(restClient.get<MediaRequestsResponse>(url = url))
+    val result = runCatching { restClient.get<MediaRequestsResponse>(url = url) }
+    emit(result)
+  }
+
+  override suspend fun updateRequestStatus(
+    requestId: Int,
+    status: RequestStatusUpdate,
+  ): Result<MediaInfoRequestResponse> {
+    requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
+
+    val url = "${restClient.hostAddress}/api/v1/request/$requestId/${status.value}"
+
+    return runCatching { restClient.post<Unit, MediaInfoRequestResponse>(url = url, body = Unit) }
+  }
+
+  override suspend fun retryRequest(requestId: Int): Result<MediaInfoRequestResponse> {
+    requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
+
+    val url = "${restClient.hostAddress}/api/v1/request/$requestId/retry"
+
+    return runCatching { restClient.post<Unit, MediaInfoRequestResponse>(url = url, body = Unit) }
   }
 }
