@@ -31,12 +31,13 @@ data class RequestMediaUiState(
 
   companion object {
     fun initial(
+      request: JellyseerrRequest?,
       seasons: List<Season>,
       media: MediaItem.Media,
     ) = RequestMediaUiState(
       seasons = seasons,
       media = media,
-      request = null,
+      request = request,
       is4k = false,
       isLoading = false,
       snackbarMessage = null,

@@ -17,7 +17,6 @@ import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
-import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class RequestMediaViewModel(
-  media: MediaItem.Media,
+  data: RequestMediaEntryData,
   private val getServerInstancesUseCase: GetServerInstancesUseCase,
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
@@ -48,8 +47,9 @@ class RequestMediaViewModel(
 
   private val _uiState = MutableStateFlow(
     RequestMediaUiState.initial(
+      request = data.request,
+      media = data.media,
       seasons = emptyList(),
-      media = media,
     ),
   )
   val uiState = _uiState.asStateFlow()
@@ -71,9 +71,8 @@ class RequestMediaViewModel(
 
     viewModelScope.launch {
       if (uiState.value.permissions.canRequestAdvanced()) {
-        getServerInstancesUseCase(media.mediaType).fold(
+        getServerInstancesUseCase(uiState.value.media.mediaType).fold(
           onSuccess = { instances ->
-            val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }
             _uiState.update { uiState ->
               uiState.copy(
                 instances = instances.filter { it.is4k == uiState.is4k },
@@ -82,11 +81,19 @@ class RequestMediaViewModel(
             if (instances.isEmpty()) {
               hideAdvancedOptions()
             } else {
-              if (default == null) {
-                selectInstance(instances.first())
-              } else {
-                selectInstance(default)
+              val preferredInstance = when {
+                uiState.value.request != null -> instances.find {
+                  uiState.value.request!!.serverId == it.id && it.is4k == uiState.value.is4k
+                }
+                else -> instances.find { it.isDefault && it.is4k == uiState.value.is4k }
               }
+              val usePreselected = uiState.value.request != null && preferredInstance != null
+              val instanceToSelect = preferredInstance ?: instances.first()
+
+              selectInstance(
+                instance = instanceToSelect,
+                usePreselected = usePreselected,
+              )
             }
           },
           onFailure = {
@@ -115,13 +122,10 @@ class RequestMediaViewModel(
     }
   }
 
-  fun updateRequest(request: JellyseerrRequest?) {
-    _uiState.update { uiState ->
-      uiState.copy(request = request)
-    }
-  }
-
-  private fun selectInstance(instance: ServerInstance) {
+  private fun selectInstance(
+    instance: ServerInstance,
+    usePreselected: Boolean,
+  ) {
     if (instance == (uiState.value.selectedInstance as? LCEState.Content)?.data) return
 
     _uiState.update { uiState ->
@@ -143,8 +147,18 @@ class RequestMediaViewModel(
       ).fold(
         onSuccess = { result ->
           _uiState.update { uiState ->
-            val defaultProfile = result.profiles.find { it.id == instance.activeProfileId }
-            val defaultRootFolder = result.rootFolders.find { it.path == instance.activeDirectory }
+            val defaultProfile = result.profiles.find { profile ->
+              profile.id == when {
+                usePreselected -> uiState.request?.profileId
+                else -> instance.activeProfileId
+              }
+            }
+            val defaultRootFolder = result.rootFolders.find { folder ->
+              folder.path == when {
+                usePreselected -> uiState.request?.rootFolder
+                else -> instance.activeDirectory
+              }
+            }
             uiState.copy(
               profiles = result.profiles,
               rootFolders = result.rootFolders,
@@ -330,7 +344,10 @@ class RequestMediaViewModel(
       } else {
         onRequestMedia(action.seasons)
       }
-      is RequestMediaAction.SelectInstance -> selectInstance(action.instance)
+      is RequestMediaAction.SelectInstance -> selectInstance(
+        instance = action.instance,
+        usePreselected = false,
+      )
       is RequestMediaAction.SelectQualityProfile -> selectQualityProfile(action.quality)
       is RequestMediaAction.SelectRootFolder -> selectRootFolder(action.folder)
     }

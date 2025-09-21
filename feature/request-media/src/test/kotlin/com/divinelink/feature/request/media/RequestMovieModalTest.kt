@@ -50,6 +50,7 @@ class RequestMovieModalTest : ComposeTest() {
         media = MediaItemFactory.FightClub(),
         onDismissRequest = {},
         onNavigate = {},
+        onUpdateRequestInfo = {},
         onUpdateMediaInfo = {},
       )
     }

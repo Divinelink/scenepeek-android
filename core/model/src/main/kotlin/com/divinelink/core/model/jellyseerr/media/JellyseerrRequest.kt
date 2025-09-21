@@ -1,7 +1,9 @@
 package com.divinelink.core.model.jellyseerr.media
 
 import com.divinelink.core.model.media.MediaReference
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class JellyseerrRequest(
   val id: Int,
   val jellyseerrMediaId: Int,
@@ -11,9 +13,11 @@ data class JellyseerrRequest(
   val requester: JellyseerrRequester,
   val requestDate: String,
   val seasons: List<SeasonRequest>,
-  val profileId: Int?,
   val profileName: String?,
   val canRemove: Boolean,
+  val profileId: Int? = null,
+  val serverId: Int? = null,
+  val rootFolder: String? = null,
 ) {
   val status: JellyseerrStatus
     get() = when (requestStatus) {
@@ -23,6 +27,7 @@ data class JellyseerrRequest(
     }
 }
 
+@Serializable
 data class SeasonRequest(
   val seasonNumber: Int,
   val status: JellyseerrStatus,

@@ -16,6 +16,7 @@ import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
 import com.divinelink.feature.request.media.RequestMediaContent
+import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -27,7 +28,7 @@ fun RequestMovieModal(
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
     key = media.uniqueIdentifier,
-  ) { parametersOf(media) },
+  ) { parametersOf(RequestMediaEntryData(request = request, media = media)) },
   onDismissRequest: () -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
   onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},
@@ -46,10 +47,6 @@ fun RequestMovieModal(
     viewModel.updatedRequest.collect {
       onUpdateRequestInfo(it)
     }
-  }
-
-  LaunchedEffect(request) {
-    viewModel.updateRequest(request)
   }
 
   ModalBottomSheet(

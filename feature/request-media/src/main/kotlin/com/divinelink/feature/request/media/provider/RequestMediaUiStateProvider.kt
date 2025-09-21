@@ -17,18 +17,22 @@ import com.divinelink.feature.request.media.RequestMediaUiState
 class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState?> {
   override val values: Sequence<RequestMediaUiState?> = sequenceOf(
     RequestMediaUiState.initial(
+      request = null,
       seasons = SeasonFactory.all(),
       media = MediaItemFactory.theOffice(),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = SeasonFactory.allWithStatus(),
       media = MediaItemFactory.theOffice(),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = SeasonFactory.partiallyAvailable(),
       media = MediaItemFactory.theOffice(),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
@@ -36,6 +40,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedInstance = LCEState.Content(SonarrInstanceDetailsFactory.sonarr.server),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
@@ -46,6 +51,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedRootFolder = LCEState.Content(InstanceRootFolderFactory.tv),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
@@ -56,6 +62,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedRootFolder = LCEState.Idle,
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
@@ -66,6 +73,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedRootFolder = LCEState.Idle,
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
@@ -76,6 +84,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedRootFolder = LCEState.Content(InstanceRootFolderFactory.tv.copy(isDefault = false)),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = emptyList(),
       media = MediaItemFactory.FightClub(),
     ).copy(
@@ -86,6 +95,7 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
       selectedRootFolder = LCEState.Content(InstanceRootFolderFactory.tv.copy(isDefault = false)),
     ),
     RequestMediaUiState.initial(
+      request = null,
       seasons = emptyList(),
       media = MediaItemFactory.FightClub(),
     ).copy(
