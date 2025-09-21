@@ -33,6 +33,7 @@ object MediaRequestsResponseFactory {
           seasons = emptyList(),
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = "SD",
+          profileId = 2,
           canRemove = true,
         ),
         MediaInfoRequestResponse(

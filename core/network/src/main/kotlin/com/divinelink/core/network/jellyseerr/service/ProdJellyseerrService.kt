@@ -85,13 +85,13 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
   override suspend fun updateRequest(
     body: JellyseerrEditRequestMediaBodyApi,
-  ): Flow<Result<JellyseerrRequestMediaResponse>> = flow {
+  ): Flow<Result<MediaInfoRequestResponse>> = flow {
     requireNotNull(restClient.hostAddress) { throw MissingJellyseerrHostAddressException() }
 
     val url = "${restClient.hostAddress}/api/v1/request/${body.requestId}"
 
     val response = runCatching {
-      restClient.put<JellyseerrEditRequestMediaBodyApi, JellyseerrRequestMediaResponse>(
+      restClient.put<JellyseerrEditRequestMediaBodyApi, MediaInfoRequestResponse>(
         url = url,
         body = body,
       )

@@ -17,7 +17,8 @@ fun RequestMediaModal(
   media: MediaItem.Media?,
   seasons: List<Season>,
   onDismissRequest: () -> Unit,
-  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
+  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
+  onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},
   onNavigate: (Navigation) -> Unit,
 ) {
   if (media == null) return
@@ -29,6 +30,7 @@ fun RequestMediaModal(
       media = media,
       onDismissRequest = onDismissRequest,
       onNavigate = onNavigate,
+      onUpdateRequestInfo = onUpdateRequestInfo,
       onUpdateMediaInfo = onUpdateMediaInfo,
     )
     MediaType.MOVIE -> RequestMovieModal(
@@ -36,6 +38,7 @@ fun RequestMediaModal(
       media = media,
       onDismissRequest = onDismissRequest,
       onUpdateMediaInfo = onUpdateMediaInfo,
+      onUpdateRequestInfo = onUpdateRequestInfo,
       onNavigate = onNavigate,
     )
     else -> {

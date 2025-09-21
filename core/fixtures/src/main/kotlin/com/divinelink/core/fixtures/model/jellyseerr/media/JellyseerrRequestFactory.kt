@@ -21,6 +21,7 @@ object JellyseerrRequestFactory {
       mediaType = MediaType.MOVIE,
     ),
     profileName = null,
+    profileId = null,
     canRemove = false,
   )
 
@@ -41,6 +42,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      profileId = null,
       canRemove = false,
     )
 
@@ -59,6 +61,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      profileId = null,
       canRemove = false,
     )
 
@@ -78,6 +81,7 @@ object JellyseerrRequestFactory {
         mediaType = MediaType.TV,
       ),
       profileName = null,
+      profileId = null,
       canRemove = false,
     )
 

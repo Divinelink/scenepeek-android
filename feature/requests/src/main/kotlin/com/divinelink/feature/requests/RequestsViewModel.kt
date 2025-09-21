@@ -118,9 +118,7 @@ class RequestsViewModel(
       is RequestsAction.RetryRequest -> retryRequest(action.id)
       is RequestsAction.UpdateFilter -> updateFilter(action)
       is RequestsAction.EditRequest -> sendDisplayEditModal(action)
-      is RequestsAction.UpdateRequestInfo -> {
-        Timber.d(action.mediaInfo.toString())
-      }
+      is RequestsAction.UpdateRequestInfo -> updateRequestInfo(action.request)
     }
   }
 
@@ -280,6 +278,20 @@ class RequestsViewModel(
               mediaStatus = mediaStatus,
               requestStatus = requestStatus,
             ),
+          )
+        },
+      )
+    }
+  }
+
+  private fun updateRequestInfo(request: JellyseerrRequest) {
+    _uiState.update {
+      updateUiStateByRequestId(
+        requestId = request.id,
+        transform = { item ->
+          item.copy(
+            mediaState = item.mediaState.setLoading(false),
+            request = request,
           )
         },
       )

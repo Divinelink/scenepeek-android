@@ -57,6 +57,9 @@ class RequestMediaViewModel(
   private val _updatedMediaInfo = Channel<JellyseerrMediaInfo>()
   val updatedMediaInfo: Flow<JellyseerrMediaInfo> = _updatedMediaInfo.receiveAsFlow()
 
+  private val _updatedRequest = Channel<JellyseerrRequest>()
+  val updatedRequest: Flow<JellyseerrRequest> = _updatedRequest.receiveAsFlow()
+
   init {
     authRepository
       .profilePermissions
@@ -275,13 +278,22 @@ class RequestMediaViewModel(
         .collect {
           it.fold(
             onSuccess = { response ->
-              val message = response.message?.let { message ->
-                UIText.StringText(message)
-              } ?: UIText.ResourceText(R.string.feature_request_media_update_request_success)
+              val profileName = uiState
+                .value
+                .profiles
+                .find { profile -> profile.id == response.profileId }
+
+              val message = UIText.ResourceText(
+                R.string.feature_request_media_update_request_success,
+              )
 
               setSnackbarMessage(SnackbarMessage.from(text = message))
 
-              _updatedMediaInfo.send(response.mediaInfo)
+              _updatedRequest.send(
+                response.copy(
+                  profileName = profileName?.name,
+                ),
+              )
             },
             onFailure = {
               setSnackbarMessage(

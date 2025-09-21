@@ -32,6 +32,7 @@ object JellyseerrRequestsFactory {
           requestDate = "September 21, 2025",
           seasons = emptyList(),
           profileName = "SD",
+          profileId = 2,
           canRemove = true,
         ),
         JellyseerrRequest(
@@ -47,6 +48,7 @@ object JellyseerrRequestsFactory {
           requestDate = "September 20, 2025",
           seasons = emptyList(),
           profileName = null,
+          profileId = null,
           canRemove = false,
         ),
         JellyseerrRequest(
@@ -62,6 +64,7 @@ object JellyseerrRequestsFactory {
           requestDate = "September 20, 2025",
           seasons = emptyList(),
           profileName = null,
+          profileId = null,
           canRemove = false,
         ),
         JellyseerrRequest(
@@ -77,6 +80,7 @@ object JellyseerrRequestsFactory {
           requestDate = "September 20, 2025",
           seasons = emptyList(),
           profileName = null,
+          profileId = null,
           canRemove = true,
         ),
         JellyseerrRequest(
@@ -92,6 +96,7 @@ object JellyseerrRequestsFactory {
           requestDate = "September 20, 2025",
           seasons = emptyList(),
           profileName = null,
+          profileId = null,
           canRemove = false,
         ),
 

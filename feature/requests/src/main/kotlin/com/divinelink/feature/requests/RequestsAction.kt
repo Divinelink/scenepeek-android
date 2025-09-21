@@ -23,5 +23,5 @@ sealed interface RequestsAction {
   data class EditRequest(val request: JellyseerrRequest) : RequestsAction
   data class RetryRequest(val id: Int) : RequestsAction
 
-  data class UpdateRequestInfo(val mediaInfo: JellyseerrMediaInfo) : RequestsAction
+  data class UpdateRequestInfo(val request: JellyseerrRequest) : RequestsAction
 }

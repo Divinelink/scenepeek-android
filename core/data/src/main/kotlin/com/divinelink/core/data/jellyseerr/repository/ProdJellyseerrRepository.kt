@@ -139,7 +139,7 @@ class ProdJellyseerrRepository(
 
   override suspend fun editRequest(
     body: JellyseerrEditRequestMediaBodyApi,
-  ): Flow<Result<MediaRequestResult>> = service
+  ): Flow<Result<JellyseerrRequest>> = service
     .updateRequest(body)
     .map { Result.success(it.data.map()) }
 }

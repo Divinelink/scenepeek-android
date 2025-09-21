@@ -669,7 +669,6 @@ class DetailsContentTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        isEditMode = false,
         media = MediaItemFactory.theOffice(),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
@@ -737,7 +736,6 @@ class DetailsContentTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        isEditMode = false,
         media = MediaItemFactory.FightClub(),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         authRepository = TestAuthRepository().mock,

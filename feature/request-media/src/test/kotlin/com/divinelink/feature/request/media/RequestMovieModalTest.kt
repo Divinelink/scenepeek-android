@@ -37,7 +37,6 @@ class RequestMovieModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
       media = MediaItemFactory.FightClub(),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
@@ -47,7 +46,6 @@ class RequestMovieModalTest : ComposeTest() {
 
     setContentWithTheme {
       RequestMovieModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.FightClub(),
         onDismissRequest = {},

@@ -62,5 +62,5 @@ interface JellyseerrRepository {
     filter: MediaRequestFilter,
   ): Flow<Result<JellyseerrRequests>>
 
-  suspend fun editRequest(body: JellyseerrEditRequestMediaBodyApi): Flow<Result<MediaRequestResult>>
+  suspend fun editRequest(body: JellyseerrEditRequestMediaBodyApi): Flow<Result<JellyseerrRequest>>
 }

@@ -33,7 +33,7 @@ interface JellyseerrService {
 
   suspend fun updateRequest(
     body: JellyseerrEditRequestMediaBodyApi,
-  ): Flow<Result<JellyseerrRequestMediaResponse>>
+  ): Flow<Result<MediaInfoRequestResponse>>
 
   suspend fun deleteRequest(mediaId: Int): Result<Unit>
 

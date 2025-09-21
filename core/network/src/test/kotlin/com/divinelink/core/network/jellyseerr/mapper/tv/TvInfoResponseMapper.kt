@@ -51,6 +51,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.MOVIE,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -72,6 +73,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -92,6 +94,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -112,6 +115,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -132,6 +136,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -152,6 +157,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
             JellyseerrRequest(
@@ -172,6 +178,7 @@ class TvInfoResponseMapper {
                 mediaType = MediaType.TV,
               ),
               profileName = null,
+              profileId = null,
               canRemove = false,
             ),
           ),

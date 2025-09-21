@@ -29,7 +29,8 @@ fun RequestMovieModal(
     key = media.uniqueIdentifier,
   ) { parametersOf(media) },
   onDismissRequest: () -> Unit,
-  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
+  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
+  onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},
   onNavigate: (Navigation) -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -38,6 +39,12 @@ fun RequestMovieModal(
   LaunchedEffect(Unit) {
     viewModel.updatedMediaInfo.collect {
       onUpdateMediaInfo(it)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.updatedRequest.collect {
+      onUpdateRequestInfo(it)
     }
   }
 

@@ -32,6 +32,7 @@ fun RequestSeasonsModal(
   ) { parametersOf(media) },
   onDismissRequest: () -> Unit,
   onNavigate: (Navigation) -> Unit,
+  onUpdateRequestInfo: (JellyseerrRequest) -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -48,6 +49,12 @@ fun RequestSeasonsModal(
   LaunchedEffect(Unit) {
     viewModel.updatedMediaInfo.collect {
       onUpdateMediaInfo(it)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.updatedRequest.collect {
+      onUpdateRequestInfo(it)
     }
   }
 
