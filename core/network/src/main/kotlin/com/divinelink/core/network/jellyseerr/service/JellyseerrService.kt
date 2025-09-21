@@ -60,5 +60,5 @@ interface JellyseerrService {
   suspend fun getRequests(
     skip: Int,
     filter: MediaRequestFilter,
-  ): Flow<MediaRequestsResponse>
+  ): Flow<Result<MediaRequestsResponse>>
 }

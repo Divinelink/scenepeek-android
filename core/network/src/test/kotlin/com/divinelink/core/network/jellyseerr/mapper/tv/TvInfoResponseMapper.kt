@@ -33,6 +33,7 @@ class TvInfoResponseMapper {
           requests = listOf(
             JellyseerrRequest(
               id = 580,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
               requester = JellyseerrRequester(
@@ -54,6 +55,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 593,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.FAILED,
               requester = JellyseerrRequester(
@@ -74,6 +76,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 594,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.DECLINED,
               requester = JellyseerrRequester(
@@ -93,6 +96,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 602,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
               requester = JellyseerrRequester(
@@ -112,6 +116,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 603,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
               requester = JellyseerrRequester(
@@ -131,6 +136,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 626,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.APPROVED,
               requester = JellyseerrRequester(
@@ -150,6 +156,7 @@ class TvInfoResponseMapper {
             ),
             JellyseerrRequest(
               id = 630,
+              jellyseerrMediaId = 44264,
               mediaStatus = JellyseerrStatus.Media.PROCESSING,
               requestStatus = JellyseerrStatus.Request.PENDING,
               requester = JellyseerrRequester(

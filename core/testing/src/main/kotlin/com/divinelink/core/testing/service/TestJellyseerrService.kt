@@ -1,9 +1,11 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.network.jellyseerr.model.JellyseerrProfileResponse
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.movie.JellyseerrMovieDetailsResponse
+import com.divinelink.core.network.jellyseerr.model.requests.MediaRequestsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
@@ -99,6 +101,27 @@ class TestJellyseerrService {
 
   suspend fun mockGetSonarrInstanceDetails(response: Result<SonarrInstanceDetailsResponse>) {
     whenever(mock.getSonarrInstanceDetails(any())).thenReturn(response)
+  }
+
+  suspend fun mockGetRequests(
+    page: Int,
+    filter: MediaRequestFilter,
+    response: Result<MediaRequestsResponse>,
+  ) {
+    whenever(
+      mock.getRequests(
+        skip = (page - 1) * 5,
+        filter = filter,
+      ),
+    ).thenReturn(flowOf(response))
+  }
+
+  suspend fun mockUpdateRequestStatus(response: Result<MediaInfoRequestResponse>) {
+    whenever(mock.updateRequestStatus(any(), any())).thenReturn(response)
+  }
+
+  suspend fun mockRetryRequest(response: Result<MediaInfoRequestResponse>) {
+    whenever(mock.retryRequest(any())).thenReturn(response)
   }
 
   fun verifyNoInteractions() {

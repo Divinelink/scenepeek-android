@@ -1,11 +1,30 @@
 package com.divinelink.core.fixtures.core.network.jellyseerr.model
 
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaResponse
 import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 
 object MediaInfoRequestResponseFactory {
+
+  val together = MediaInfoRequestResponse(
+    id = 800,
+    status = JellyseerrStatus.Media.PENDING.status,
+    media = JellyseerrRequestMediaResponse.MediaResponse(
+      id = 677,
+      mediaType = MediaType.MOVIE.value,
+      status = 2,
+      tmdbId = 1242011,
+      requests = null,
+    ),
+    createdAt = "2025-09-20T10:55:03.000Z",
+    updatedAt = "2025-09-20T10:55:03.000Z",
+    seasons = emptyList(),
+    requestedBy = RequestedByResponseFactory.scenepeek,
+    profileName = null,
+    canRemove = null,
+  )
 
   fun betterCallSaul1() = MediaInfoRequestResponse(
     id = 2,

@@ -1,7 +1,14 @@
 package com.divinelink.core.network.jellyseerr.service
 
+import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.fixtures.core.network.jellyseerr.model.MediaInfoRequestResponseFactory
+import com.divinelink.core.fixtures.core.network.jellyseerr.model.requests.MediaRequestsResponseFactory
 import com.divinelink.core.model.exception.MissingJellyseerrHostAddressException
+import com.divinelink.core.model.filter.MediaRequestFilter
+import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
+import com.divinelink.core.network.jellyseerr.model.MediaInfoRequestResponse
+import com.divinelink.core.network.jellyseerr.model.requests.MediaRequestsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceDetailsResponse
 import com.divinelink.core.network.jellyseerr.model.server.radarr.RadarrInstanceResponse
 import com.divinelink.core.network.jellyseerr.model.server.sonarr.SonarrInstanceDetailsResponse
@@ -10,6 +17,8 @@ import com.divinelink.core.testing.factories.api.jellyseerr.response.server.rada
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceDetailsResponseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.sonarr.SonarrInstanceResponseFactory
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
+import com.divinelink.core.testing.factories.json.jellyseerr.model.MediaInfoRequestResponseJson
+import com.divinelink.core.testing.factories.json.jellyseerr.model.MediaRequestsResponseJsonFactory
 import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceDetailsResponseJson
 import com.divinelink.core.testing.factories.json.jellyseerr.server.radarr.RadarrInstanceResponseJson
 import com.divinelink.core.testing.factories.json.jellyseerr.server.sonarr.SonarrInstanceDetailsResponseJson
@@ -167,5 +176,120 @@ class ProdJellyseerrServiceTest {
     }
 
     exception shouldBe MissingJellyseerrHostAddressException()
+  }
+
+  @Test
+  fun `test retryRequest with success`() = runTest {
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
+
+    restClient.mockPostResponse<MediaInfoRequestResponse>(
+      url = "",
+      json = MediaInfoRequestResponseJson.together,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.retryRequest(800).data shouldBe MediaInfoRequestResponseFactory.together
+  }
+
+  @Test
+  fun `test retryRequest without host address`() = runTest {
+    restClient.mockGetResponse<MediaInfoRequestResponse>(
+      url = "",
+      json = MediaInfoRequestResponseJson.together,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    val exception = shouldThrow<MissingJellyseerrHostAddressException> {
+      service.retryRequest(800).data
+    }
+
+    exception shouldBe MissingJellyseerrHostAddressException()
+  }
+
+  @Test
+  fun `test updateRequestStatus with success`() = runTest {
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
+
+    restClient.mockPostResponse<MediaInfoRequestResponse>(
+      url = "",
+      json = MediaInfoRequestResponseJson.together,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.updateRequestStatus(
+      requestId = 800,
+      status = RequestStatusUpdate.APPROVE,
+    ).data shouldBe MediaInfoRequestResponseFactory.together
+  }
+
+  @Test
+  fun `test updateRequestStatus without host address`() = runTest {
+    restClient.mockPostResponse<MediaInfoRequestResponse>(
+      url = "",
+      json = MediaInfoRequestResponseJson.together,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    val exception = shouldThrow<MissingJellyseerrHostAddressException> {
+      service.updateRequestStatus(
+        requestId = 800,
+        status = RequestStatusUpdate.APPROVE,
+      ).data
+    }
+
+    exception shouldBe MissingJellyseerrHostAddressException()
+  }
+
+  @Test
+  fun `test getRequests with success`() = runTest {
+    restClient.withAccount(JellyseerrAccountFactory.zabaob())
+
+    restClient.mockGetResponse<MediaRequestsResponse>(
+      url = "",
+      json = MediaRequestsResponseJsonFactory.All.page1,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.getRequests(
+      skip = 0,
+      filter = MediaRequestFilter.All,
+    ).test {
+      awaitItem() shouldBe Result.success(MediaRequestsResponseFactory.All.page1)
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test getRequests without host address`() = runTest {
+    restClient.mockGetResponse<MediaRequestsResponse>(
+      url = "",
+      json = MediaRequestsResponseJsonFactory.All.page1,
+    )
+
+    service = ProdJellyseerrService(
+      restClient = restClient.client,
+    )
+
+    service.getRequests(
+      skip = 0,
+      filter = MediaRequestFilter.All,
+    ).test {
+      awaitError() shouldBe MissingJellyseerrHostAddressException()
+    }
   }
 }

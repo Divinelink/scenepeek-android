@@ -1,6 +1,7 @@
 package com.divinelink.core.data.jellyseerr.repository
 
 import com.divinelink.core.commons.domain.DispatcherProvider
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
 import com.divinelink.core.model.filter.MediaRequestFilter
@@ -120,7 +121,7 @@ class ProdJellyseerrRepository(
       skip = (page - 1) * 5,
       filter = filter,
     )
-    .map { Result.success(it.map()) }
+    .map { Result.success(it.data.map()) }
 
   override suspend fun updateRequestStatus(
     requestId: Int,

@@ -27,7 +27,7 @@ object JellyseerrRequestFactory {
   object Tv {
     fun betterCallSaul1() = JellyseerrRequest(
       id = 2,
-      jellyseerrMediaId = 5,
+      jellyseerrMediaId = 1,
       mediaStatus = JellyseerrStatus.Media.DELETED,
       requestStatus = JellyseerrStatus.Request.PENDING,
       requester = JellyseerrRequesterFactory.rhea(),
@@ -37,7 +37,7 @@ object JellyseerrRequestFactory {
         SeasonRequest(seasonNumber = 3, status = JellyseerrStatus.Season.PENDING),
       ),
       media = MediaReference(
-        mediaId = 1234567,
+        mediaId = 123,
         mediaType = MediaType.TV,
       ),
       profileName = null,
@@ -46,7 +46,7 @@ object JellyseerrRequestFactory {
 
     fun betterCallSaul2() = JellyseerrRequest(
       id = 3,
-      jellyseerrMediaId = 5,
+      jellyseerrMediaId = 1,
       mediaStatus = JellyseerrStatus.Media.PENDING,
       requestStatus = JellyseerrStatus.Request.APPROVED,
       requester = JellyseerrRequesterFactory.rhea(),
@@ -55,7 +55,7 @@ object JellyseerrRequestFactory {
         SeasonRequest(seasonNumber = 5, status = JellyseerrStatus.Season.PROCESSING),
       ),
       media = MediaReference(
-        mediaId = 1234567,
+        mediaId = 123,
         mediaType = MediaType.TV,
       ),
       profileName = null,
@@ -64,7 +64,7 @@ object JellyseerrRequestFactory {
 
     fun betterCallSaul3() = JellyseerrRequest(
       id = 4,
-      jellyseerrMediaId = 5,
+      jellyseerrMediaId = 1,
       mediaStatus = JellyseerrStatus.Media.AVAILABLE,
       requestStatus = JellyseerrStatus.Request.DECLINED,
       requester = JellyseerrRequesterFactory.bob(),
@@ -74,7 +74,7 @@ object JellyseerrRequestFactory {
         SeasonRequest(seasonNumber = 6, status = JellyseerrStatus.Season.PENDING),
       ),
       media = MediaReference(
-        mediaId = 1234567,
+        mediaId = 123,
         mediaType = MediaType.TV,
       ),
       profileName = null,
