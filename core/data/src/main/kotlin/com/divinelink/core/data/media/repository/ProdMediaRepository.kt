@@ -72,7 +72,7 @@ class ProdMediaRepository(
     }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media) {
-    dao.insertMedia(media)
+    dao.insertMedia(media, null)
     dao.addToFavorites(mediaId = media.id, mediaType = media.mediaType)
   }
 

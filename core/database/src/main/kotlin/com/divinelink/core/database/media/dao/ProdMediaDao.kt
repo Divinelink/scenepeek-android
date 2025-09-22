@@ -5,8 +5,11 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.database.Database
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.database.SeasonEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
@@ -20,13 +23,22 @@ class ProdMediaDao(
   private val clock: Clock,
 ) : MediaDao {
 
-  override fun insertMedia(media: MediaItem.Media) = database.transaction {
+  override fun insertMedia(
+    media: MediaItem.Media,
+    seasons: List<Season>?,
+  ) = database.transaction {
     database.mediaItemEntityQueries.insertMediaItem(media.map())
+    seasons?.let {
+      insertSeasons(media.id, seasons)
+    }
   }
 
   override fun insertMediaList(media: List<MediaItem.Media>) {
     media.forEach {
-      insertMedia(it)
+      insertMedia(
+        media = it,
+        seasons = null,
+      )
     }
   }
 
@@ -117,5 +129,50 @@ class ProdMediaDao(
       mediaId = mediaId.toLong(),
       mediaType = mediaType.value,
     ).executeAsOneOrNull() == true
+  }
+
+  override fun fetchSeasons(id: Int): Flow<List<Season>> = database.transactionWithResult {
+    database
+      .seasonEntityQueries
+      .fetchSeasons(id.toLong())
+      .asFlow()
+      .mapToList(dispatcher.io)
+      .map {
+        it.map { entity ->
+          Season(
+            id = entity.id.toInt(),
+            name = entity.name,
+            overview = entity.overview,
+            posterPath = entity.posterPath,
+            airDate = entity.airDate,
+            episodeCount = entity.episodeCount.toInt(),
+            voteAverage = entity.voteAverage,
+            seasonNumber = entity.seasonNumber.toInt(),
+            status = JellyseerrStatus.from(entity.status),
+          )
+        }
+      }
+  }
+
+  override fun insertSeasons(
+    id: Int,
+    seasons: List<Season>,
+  ) = database.transaction {
+    seasons.forEach { season ->
+      database.seasonEntityQueries.insertSeason(
+        SeasonEntity = SeasonEntity(
+          mediaId = id.toLong(),
+          id = season.id.toLong(),
+          overview = season.overview,
+          name = season.name,
+          posterPath = season.posterPath,
+          airDate = season.airDate,
+          episodeCount = season.episodeCount.toLong(),
+          voteAverage = season.voteAverage,
+          seasonNumber = season.seasonNumber.toLong(),
+          status = season.status?.value,
+        ),
+      )
+    }
   }
 }

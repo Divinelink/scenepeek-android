@@ -1,0 +1,13 @@
+CREATE TABLE SeasonEntity (
+  mediaId INTEGER NOT NULL,
+  id INTEGER NOT NULL,
+  overview TEXT NOT NULL,
+  name TEXT NOT NULL,
+  posterPath TEXT,
+  airDate TEXT NOT NULL,
+  episodeCount INTEGER NOT NULL,
+  voteAverage REAL NOT NULL,
+  seasonNumber INTEGER NOT NULL,
+  status TEXT,
+  UNIQUE(mediaId, id, seasonNumber)
+);
