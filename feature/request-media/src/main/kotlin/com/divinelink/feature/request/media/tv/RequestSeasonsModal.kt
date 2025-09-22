@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
@@ -26,7 +25,6 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun RequestSeasonsModal(
   request: JellyseerrRequest?,
-  seasons: List<Season>,
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
     key = media.uniqueIdentifier,
@@ -35,7 +33,6 @@ fun RequestSeasonsModal(
       RequestMediaEntryData(
         request = request,
         media = media,
-        seasons = seasons,
       ),
     )
   },

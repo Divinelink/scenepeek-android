@@ -63,7 +63,6 @@ fun AnimatedVisibilityScope.RequestsScreen(
       media = request.first,
       request = request.second,
       mediaType = request.first.mediaType,
-      seasons = emptyList(),
       onDismissRequest = { showRequestModal = null },
       onUpdateRequestInfo = { viewModel.onAction(RequestsAction.UpdateRequestInfo(it)) },
       onNavigate = onNavigate,

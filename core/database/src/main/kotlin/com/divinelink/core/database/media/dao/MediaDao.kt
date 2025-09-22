@@ -2,6 +2,7 @@ package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
@@ -27,6 +28,12 @@ interface MediaDao {
   fun insertSeasons(
     id: Int,
     seasons: List<Season>,
+  )
+
+  fun updateSeasonStatus(
+    mediaId: Int,
+    seasons: List<SeasonRequest>,
+    override: Boolean,
   )
 
   fun fetchSeasons(id: Int): Flow<List<Season>>

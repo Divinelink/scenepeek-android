@@ -123,7 +123,7 @@ class ProdDetailsRepository(
           },
         )
       },
-      shouldFetch = { it != null },
+      shouldFetch = { it == null },
     )
 
   override fun fetchMediaReviews(request: MediaRequestApi): Flow<Result<List<Review>>> = mediaRemote

@@ -29,7 +29,15 @@ VALUES ?;
 
 fetchSeasons:
 SELECT * FROM SeasonEntity
+WHERE mediaId = ?
+ORDER BY seasonNumber;
+
+updateSeasonStatus:
+UPDATE SeasonEntity
+SET status = ?
+WHERE mediaId = ? AND seasonNumber = ?;
+
+clearAllSeasonStatuses:
+UPDATE SeasonEntity
+SET status = NULL
 WHERE mediaId = ?;
-
--- id = ? AND mediaType = ?;
-

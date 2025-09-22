@@ -4,6 +4,7 @@ import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.mapper.map
+import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.filter.MediaRequestFilter
 import com.divinelink.core.model.jellyseerr.JellyseerrLoginData
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.map
 class ProdJellyseerrRepository(
   private val service: JellyseerrService,
   private val authRepository: AuthRepository,
+  private val mediaDao: MediaDao,
   val dispatcher: DispatcherProvider,
 ) : JellyseerrRepository {
 
@@ -68,7 +70,19 @@ class ProdJellyseerrRepository(
     body: JellyseerrRequestMediaBodyApi,
   ): Flow<Result<MediaRequestResult>> = service
     .requestMedia(body)
-    .map { Result.success(it.map()) }
+    .map {
+      val result = it.map()
+
+      result.mediaInfo.seasons.let { seasons ->
+        mediaDao.updateSeasonStatus(
+          mediaId = body.mediaId,
+          seasons = seasons,
+          override = false,
+        )
+      }
+
+      Result.success(it.map())
+    }
 
   override suspend fun deleteRequest(requestId: Int): Result<Unit> = service
     .deleteRequest(requestId)
@@ -96,7 +110,18 @@ class ProdJellyseerrRepository(
 
   override suspend fun getTvDetails(mediaId: Int): Flow<JellyseerrMediaInfo?> = service
     .getTvDetails(mediaId)
-    .map { it.getOrNull()?.mediaInfo?.map() }
+    .map {
+      val mediaInfo = it.getOrNull()?.mediaInfo?.map()
+
+      val seasons = mediaInfo?.seasons ?: emptyList()
+      mediaDao.updateSeasonStatus(
+        mediaId = mediaId,
+        seasons = seasons,
+        override = true,
+      )
+
+      mediaInfo
+    }
 
   override suspend fun getRadarrInstances(): Result<List<ServerInstance>> = service
     .getRadarrInstances()

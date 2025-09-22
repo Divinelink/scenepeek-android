@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.jellyseerr.GetServerInstanceDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetServerInstancesUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
@@ -16,6 +17,7 @@ import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
@@ -41,6 +43,7 @@ class RequestMediaViewModel(
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
   private val jellyseerrRepository: JellyseerrRepository,
+  mediaRepository: MediaRepository,
   authRepository: AuthRepository,
 ) : ViewModel() {
 
@@ -48,7 +51,6 @@ class RequestMediaViewModel(
     RequestMediaUiState.initial(
       request = data.request,
       media = data.media,
-      seasons = data.seasons,
     ),
   )
   val uiState = _uiState.asStateFlow()
@@ -67,6 +69,21 @@ class RequestMediaViewModel(
         _uiState.update { it.copy(permissions = permissions) }
       }
       .launchIn(viewModelScope)
+
+    if (uiState.value.media.mediaType == MediaType.TV) {
+      mediaRepository
+        .fetchTvSeasons(id = data.media.id)
+        .distinctUntilChanged()
+        .onEach { result ->
+          result.fold(
+            onSuccess = { seasons ->
+              _uiState.update { it.copy(seasons = seasons) }
+            },
+            onFailure = {},
+          )
+        }
+        .launchIn(viewModelScope)
+    }
 
     viewModelScope.launch {
       if (uiState.value.permissions.canRequestAdvanced()) {

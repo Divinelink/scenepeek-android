@@ -18,32 +18,36 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
   override val values: Sequence<RequestMediaUiState?> = sequenceOf(
     RequestMediaUiState.initial(
       request = null,
-      seasons = SeasonFactory.all(),
-      media = MediaItemFactory.theOffice(),
-    ),
-    RequestMediaUiState.initial(
-      request = null,
-      seasons = SeasonFactory.allWithStatus(),
-      media = MediaItemFactory.theOffice(),
-    ),
-    RequestMediaUiState.initial(
-      request = null,
-      seasons = SeasonFactory.partiallyAvailable(),
-      media = MediaItemFactory.theOffice(),
-    ),
-    RequestMediaUiState.initial(
-      request = null,
-      seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
+      seasons = SeasonFactory.all(),
+    ),
+    RequestMediaUiState.initial(
+      request = null,
+      media = MediaItemFactory.theOffice(),
+    ).copy(
+      seasons = SeasonFactory.allWithStatus(),
+
+    ),
+    RequestMediaUiState.initial(
+      request = null,
+      media = MediaItemFactory.theOffice(),
+    ).copy(
+      seasons = SeasonFactory.partiallyAvailable(),
+    ),
+    RequestMediaUiState.initial(
+      request = null,
+      media = MediaItemFactory.theOffice(),
+    ).copy(
+      seasons = listOf(SeasonFactory.season1()),
       instances = SonarrInstanceFactory.all,
       selectedInstance = LCEState.Content(SonarrInstanceDetailsFactory.sonarr.server),
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
+      seasons = listOf(SeasonFactory.season1()),
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
       selectedInstance = LCEState.Content(SonarrInstanceDetailsFactory.sonarr.server),
@@ -52,9 +56,9 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
+      seasons = listOf(SeasonFactory.season1()),
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
       selectedInstance = LCEState.Idle,
@@ -63,9 +67,9 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
+      seasons = listOf(SeasonFactory.season1()),
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
       selectedInstance = LCEState.Idle,
@@ -74,9 +78,9 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = listOf(SeasonFactory.season1()),
       media = MediaItemFactory.theOffice(),
     ).copy(
+      seasons = listOf(SeasonFactory.season1()),
       instances = SonarrInstanceFactory.all,
       profiles = InstanceProfileFactory.tv,
       selectedInstance = LCEState.Content(SonarrInstanceFactory.anime),
@@ -85,7 +89,6 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = emptyList(),
       media = MediaItemFactory.FightClub(),
     ).copy(
       instances = RadarrInstanceFactory.all,
@@ -96,7 +99,6 @@ class RequestMediaUiStateProvider : PreviewParameterProvider<RequestMediaUiState
     ),
     RequestMediaUiState.initial(
       request = null,
-      seasons = emptyList(),
       media = MediaItemFactory.FightClub(),
     ).copy(
       request = JellyseerrRequestFactory.movie(),

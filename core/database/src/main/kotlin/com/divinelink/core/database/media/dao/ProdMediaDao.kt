@@ -10,6 +10,7 @@ import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
@@ -172,6 +173,24 @@ class ProdMediaDao(
           seasonNumber = season.seasonNumber.toLong(),
           status = season.status?.value,
         ),
+      )
+    }
+  }
+
+  override fun updateSeasonStatus(
+    mediaId: Int,
+    seasons: List<SeasonRequest>,
+    override: Boolean,
+  ) = database.transaction {
+    if (override) {
+      database.seasonEntityQueries.clearAllSeasonStatuses(mediaId.toLong())
+    }
+
+    seasons.forEach { season ->
+      database.seasonEntityQueries.updateSeasonStatus(
+        status = season.status.value,
+        mediaId = mediaId.toLong(),
+        seasonNumber = season.seasonNumber.toLong(),
       )
     }
   }

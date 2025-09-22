@@ -5,14 +5,14 @@ import com.divinelink.core.model.R
 sealed interface JellyseerrStatus {
   val status: Int
   val resourceId: Int
-  val value: String
+  val value: String?
 
   enum class Request(
     override val status: Int,
     override val resourceId: Int,
-    override val value: String,
+    override val value: String?,
   ) : JellyseerrStatus {
-    UNKNOWN(0, R.string.core_model_status_unknown, "request-unknown"),
+    UNKNOWN(0, R.string.core_model_status_unknown, null),
     PENDING(1, R.string.core_model_request_status_pending, "request-pending"),
     APPROVED(2, R.string.core_model_request_status_approved, "request-approved"),
     DECLINED(3, R.string.core_model_request_status_declined, "request-declined"),
@@ -30,9 +30,9 @@ sealed interface JellyseerrStatus {
   enum class Season(
     override val status: Int,
     override val resourceId: Int,
-    override val value: String,
+    override val value: String?,
   ) : JellyseerrStatus {
-    UNKNOWN(0, R.string.core_model_status_unknown, "season-unknown"),
+    UNKNOWN(0, R.string.core_model_status_unknown, null),
     PENDING(1, R.string.core_model_request_status_pending, "season-pending"),
     PROCESSING(2, R.string.core_model_status_requested, "season-processing"),
     ;
@@ -48,9 +48,9 @@ sealed interface JellyseerrStatus {
   enum class Media(
     override val status: Int,
     override val resourceId: Int,
-    override val value: String,
+    override val value: String?,
   ) : JellyseerrStatus {
-    UNKNOWN(1, R.string.core_model_status_unknown, "media-unknown"),
+    UNKNOWN(1, R.string.core_model_status_unknown, null),
     PENDING(2, R.string.core_model_status_pending, "media-requested"),
     PROCESSING(3, R.string.core_model_status_requested, "media-pending"),
     PARTIALLY_AVAILABLE(

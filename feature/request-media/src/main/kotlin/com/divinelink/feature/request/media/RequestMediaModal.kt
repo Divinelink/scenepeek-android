@@ -1,7 +1,6 @@
 package com.divinelink.feature.request.media
 
 import androidx.compose.runtime.Composable
-import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
@@ -15,7 +14,6 @@ fun RequestMediaModal(
   request: JellyseerrRequest?,
   mediaType: MediaType,
   media: MediaItem.Media?,
-  seasons: List<Season>,
   onDismissRequest: () -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
   onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},
@@ -26,7 +24,6 @@ fun RequestMediaModal(
   when (mediaType) {
     MediaType.TV -> RequestSeasonsModal(
       request = request,
-      seasons = seasons,
       media = media,
       onDismissRequest = onDismissRequest,
       onNavigate = onNavigate,

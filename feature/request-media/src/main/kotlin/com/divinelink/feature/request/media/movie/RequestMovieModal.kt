@@ -33,7 +33,6 @@ fun RequestMovieModal(
       RequestMediaEntryData(
         request = request,
         media = media,
-        seasons = emptyList(),
       ),
     )
   },
