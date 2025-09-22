@@ -28,7 +28,15 @@ fun RequestMovieModal(
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
     key = media.uniqueIdentifier,
-  ) { parametersOf(RequestMediaEntryData(request = request, media = media)) },
+  ) {
+    parametersOf(
+      RequestMediaEntryData(
+        request = request,
+        media = media,
+        seasons = emptyList(),
+      ),
+    )
+  },
   onDismissRequest: () -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
   onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},

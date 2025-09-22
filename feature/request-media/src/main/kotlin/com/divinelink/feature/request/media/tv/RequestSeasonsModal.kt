@@ -30,7 +30,15 @@ fun RequestSeasonsModal(
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
     key = media.uniqueIdentifier,
-  ) { parametersOf(RequestMediaEntryData(request = request, media = media)) },
+  ) {
+    parametersOf(
+      RequestMediaEntryData(
+        request = request,
+        media = media,
+        seasons = seasons,
+      ),
+    )
+  },
   onDismissRequest: () -> Unit,
   onNavigate: (Navigation) -> Unit,
   onUpdateRequestInfo: (JellyseerrRequest) -> Unit,
@@ -38,10 +46,6 @@ fun RequestSeasonsModal(
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-  LaunchedEffect(seasons) {
-    viewModel.updateSeasons(seasons)
-  }
 
   LaunchedEffect(Unit) {
     viewModel.updatedMediaInfo.collect {
