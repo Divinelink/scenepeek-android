@@ -35,6 +35,8 @@ object MediaRequestsResponseFactory {
           profileName = "SD",
           profileId = 2,
           canRemove = true,
+          serverId = null,
+          rootFolder = null,
         ),
         MediaInfoRequestResponse(
           id = 802,
@@ -52,6 +54,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 801,
@@ -69,6 +74,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 800,
@@ -86,6 +94,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = true,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 799,
@@ -103,6 +114,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
       ),
     )

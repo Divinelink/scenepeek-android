@@ -41,6 +41,7 @@ val localJson = Json {
   isLenient = true
   coerceInputValues = true
   ignoreUnknownKeys = true
+  explicitNulls = false
 }
 
 private val timeoutMillis = 30_000L
