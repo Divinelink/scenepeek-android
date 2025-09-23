@@ -215,12 +215,12 @@ class RequestMediaViewModel(
     }
   }
 
-  private fun onRequestMedia(seasons: List<Int>) {
+  private fun onRequestMedia() {
     requestMediaUseCase(
       JellyseerrRequestParams(
         mediaId = uiState.value.media.id,
         mediaType = uiState.value.media.mediaType.value,
-        seasons = seasons,
+        seasons = uiState.value.selectedSeasons,
         is4k = uiState.value.is4k,
         serverId = (uiState.value.selectedInstance as? LCEState.Content)?.data?.id,
         profileId = (uiState.value.selectedProfile as? LCEState.Content)?.data?.id,
@@ -287,14 +287,14 @@ class RequestMediaViewModel(
       }.launchIn(viewModelScope)
   }
 
-  private fun onEditRequest(seasons: List<Int>) {
+  private fun onEditRequest() {
     viewModelScope.launch {
       jellyseerrRepository.editRequest(
         JellyseerrEditRequestMediaBodyApi(
           requestId = uiState.value.request?.id,
           mediaId = uiState.value.media.id,
           mediaType = uiState.value.media.mediaType.value,
-          seasons = seasons,
+          seasons = uiState.value.selectedSeasons,
           is4k = uiState.value.is4k,
           serverId = (uiState.value.selectedInstance as? LCEState.Content)?.data?.id,
           profileId = (uiState.value.selectedProfile as? LCEState.Content)?.data?.id,
@@ -337,6 +337,35 @@ class RequestMediaViewModel(
     }
   }
 
+  private fun cancelRequest() {
+    val requestId = uiState.value.request?.id ?: return
+
+    viewModelScope.launch {
+      jellyseerrRepository.deleteRequest(
+        requestId = requestId,
+      ).fold(
+        onSuccess = {
+          setSnackbarMessage(
+            SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_request_media_cancel_request_success,
+              ),
+            ),
+          )
+        },
+        onFailure = {
+          setSnackbarMessage(
+            SnackbarMessage.from(
+              text = UIText.ResourceText(
+                R.string.feature_request_media_cancel_request_failure,
+              ),
+            ),
+          )
+        },
+      )
+    }
+  }
+
   private fun dismissSnackbar() {
     _uiState.update { uiState ->
       uiState.copy(snackbarMessage = null)
@@ -353,11 +382,12 @@ class RequestMediaViewModel(
     when (action) {
       RequestMediaAction.DismissSnackbar -> dismissSnackbar()
       RequestMediaAction.DismissDialog -> dismissDialog()
-      is RequestMediaAction.RequestMedia -> if (uiState.value.isEditMode) {
-        onEditRequest(action.seasons)
+      RequestMediaAction.RequestMedia -> if (uiState.value.isEditMode) {
+        onEditRequest()
       } else {
-        onRequestMedia(action.seasons)
+        onRequestMedia()
       }
+      RequestMediaAction.CancelRequest -> cancelRequest()
       is RequestMediaAction.SelectInstance -> selectInstance(
         instance = action.instance,
         usePreselected = false,

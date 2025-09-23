@@ -1,12 +1,12 @@
 package com.divinelink.feature.request.media
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,24 +14,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
@@ -39,8 +42,8 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.button.action.ActionButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.dialog.TwoButtonDialog
 import com.divinelink.core.ui.composition.PreviewLocalProvider
@@ -58,6 +61,13 @@ fun RequestMediaContent(
   onAction: (RequestMediaAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
+  val density = LocalDensity.current
+  val showCancelRequest by remember(state.selectedSeasons) {
+    derivedStateOf { state.isEditMode && state.selectedSeasons.isEmpty() }
+  }
+
+  var actionsSize by remember { mutableStateOf(0.dp) }
+
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
     onDismissSnackbar = { onAction(RequestMediaAction.DismissSnackbar) },
@@ -90,9 +100,8 @@ fun RequestMediaContent(
         .testTag(TestTags.LAZY_COLUMN)
         .padding(
           top = MaterialTheme.dimensions.keyline_8,
-          bottom = MaterialTheme.dimensions.keyline_96,
+          bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
         ),
-      contentPadding = PaddingValues(bottom = MaterialTheme.dimensions.keyline_16),
     ) {
       item {
         JellyseerrGradientText(
@@ -303,92 +312,67 @@ fun RequestMediaContent(
     }
 
     Column(
-      modifier = Modifier.align(Alignment.BottomCenter),
+      modifier = Modifier
+        .onSizeChanged {
+          with(density) {
+            actionsSize = it.height.toDp()
+          }
+        }
+        .align(Alignment.BottomCenter)
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16),
     ) {
       ElevatedButton(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        modifier = Modifier.fillMaxWidth(),
         onClick = { onDismissRequest() },
       ) {
         Text(text = stringResource(id = UiString.core_ui_cancel))
       }
       if (state.media.mediaType == MediaType.TV) {
-        RequestSeasonsButton(state, onAction)
+        AnimatedContent(targetState = showCancelRequest) { showCancel ->
+          if (showCancel) {
+            ActionButton.CancelRequest(
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.CancelRequest) },
+            )
+          } else if (state.isEditMode) {
+            ActionButton.EditRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          } else {
+            ActionButton.RequestTVShow(
+              enabled = state.isReady,
+              selectedSeasons = state.selectedSeasons.size,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          }
+        }
       } else {
-        RequestMovieButton(
-          isEditMode = state.isEditMode,
-          onAction = onAction,
-        )
-      }
-    }
-  }
-}
-
-@Composable
-private fun RequestMovieButton(
-  isEditMode: Boolean,
-  onAction: (RequestMediaAction) -> Unit,
-) {
-  Button(
-    modifier = Modifier
-      .fillMaxWidth()
-      .testTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON)
-      .padding(bottom = MaterialTheme.dimensions.keyline_8)
-      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-    onClick = {
-      onAction(RequestMediaAction.RequestMedia(emptyList()))
-    },
-  ) {
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Icon(Icons.Default.Download, null)
-      Text(
-        text = if (isEditMode) {
-          stringResource(id = UiString.core_ui_edit_request)
+        if (state.isEditMode) {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            ActionButton.CancelRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.CancelRequest) },
+            )
+            ActionButton.EditRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          }
         } else {
-          stringResource(id = UiString.core_ui_request)
-        },
-      )
-    }
-  }
-}
-
-@Composable
-private fun RequestSeasonsButton(
-  state: RequestMediaUiState,
-  onAction: (RequestMediaAction) -> Unit,
-) {
-  Button(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(bottom = MaterialTheme.dimensions.keyline_8)
-      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-    enabled = state.selectedSeasons.isNotEmpty() && !state.isLoading,
-    onClick = { onAction(RequestMediaAction.RequestMedia(state.selectedSeasons)) },
-  ) {
-    val text = if (state.isEditMode) {
-      stringResource(id = UiString.core_ui_edit_request)
-    } else if (state.selectedSeasons.isEmpty()) {
-      stringResource(id = UiString.core_ui_select_seasons_button)
-    } else {
-      pluralStringResource(
-        id = UiPlurals.core_ui_request_series_button,
-        count = state.selectedSeasons.size,
-        state.selectedSeasons.size,
-      )
-    }
-
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      AnimatedVisibility(state.selectedSeasons.isNotEmpty()) {
-        Icon(Icons.Default.Download, null)
+          ActionButton.RequestMovie(
+            enabled = state.isReady,
+            onClick = { onAction(RequestMediaAction.RequestMedia) },
+          )
+        }
       }
-      Text(text = text)
     }
   }
 }

@@ -5,7 +5,8 @@ import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 
 sealed interface RequestMediaAction {
-  data class RequestMedia(val seasons: List<Int>) : RequestMediaAction
+  data object RequestMedia : RequestMediaAction
+  data object CancelRequest : RequestMediaAction
   data class SelectRootFolder(val folder: InstanceRootFolder) : RequestMediaAction
   data class SelectQualityProfile(val quality: InstanceProfile) : RequestMediaAction
   data class SelectInstance(val instance: ServerInstance) : RequestMediaAction

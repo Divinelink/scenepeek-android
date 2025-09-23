@@ -162,7 +162,6 @@ object TestTags {
 
   object Request {
     const val LOADING_DROPDOWN_MENU = "Loading DropDown Menu %s"
-    const val CONTENT_DROPDOWN_MENU = "Content DropDown Menu %s"
 
     const val DESTINATION_SERVER_MENU = "Destination Server Dropdown %s"
     const val QUALITY_PROFILE_MENU = "Quality Profile Dropdown %s"
@@ -227,9 +226,7 @@ object TestTags {
 
   object Lists {
     const val SCROLLABLE_CONTENT = "Lists Scrollable Content View Mode %s"
-    const val CONTENT = "Lists Content"
     const val SCREEN = "Lists Screen"
-    const val ERROR_CONTENT = "Lists Error Content"
 
     const val PULL_TO_REFRESH = "List Pull To Refresh"
     const val DETAILS_SCREEN = "List Details Screen"

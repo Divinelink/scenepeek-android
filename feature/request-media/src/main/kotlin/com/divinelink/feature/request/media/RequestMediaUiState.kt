@@ -42,6 +42,12 @@ data class RequestMediaUiState(
         ?: emptyList()
       ).plus(validSeasons.filter { it.canBeRequested() }.map { it.seasonNumber })
 
+  val isReady
+    get() = selectedProfile !is LCEState.Loading &&
+      selectedRootFolder !is LCEState.Loading &&
+      selectedInstance !is LCEState.Loading &&
+      !isLoading
+
   companion object {
     fun initial(
       request: JellyseerrRequest?,
