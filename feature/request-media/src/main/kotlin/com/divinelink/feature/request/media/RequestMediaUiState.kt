@@ -1,6 +1,7 @@
 package com.divinelink.feature.request.media
 
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
@@ -25,9 +26,21 @@ data class RequestMediaUiState(
   val selectedInstance: LCEState<ServerInstance>,
   val selectedProfile: LCEState<InstanceProfile>,
   val selectedRootFolder: LCEState<InstanceRootFolder>,
+  val selectedSeasons: List<Int>,
 ) {
   val isEditMode
     get() = request != null
+
+  val validSeasons
+    get() = seasons.filterNot { it.seasonNumber == 0 }
+
+  val requestableSeasons
+    get() = (
+      request
+        ?.seasons
+        ?.map { it.seasonNumber }
+        ?: emptyList()
+      ).plus(validSeasons.filter { it.canBeRequested() }.map { it.seasonNumber })
 
   companion object {
     fun initial(
@@ -48,6 +61,7 @@ data class RequestMediaUiState(
       selectedInstance = LCEState.Loading,
       selectedProfile = LCEState.Loading,
       selectedRootFolder = LCEState.Loading,
+      selectedSeasons = request?.seasons?.map { it.seasonNumber } ?: emptyList(),
     )
   }
 }

@@ -77,7 +77,11 @@ class RequestMediaViewModel(
         .onEach { result ->
           result.fold(
             onSuccess = { seasons ->
-              _uiState.update { it.copy(seasons = seasons) }
+              _uiState.update {
+                it.copy(
+                  seasons = seasons,
+                )
+              }
             },
             onFailure = {},
           )
@@ -360,6 +364,36 @@ class RequestMediaViewModel(
       )
       is RequestMediaAction.SelectQualityProfile -> selectQualityProfile(action.quality)
       is RequestMediaAction.SelectRootFolder -> selectRootFolder(action.folder)
+      is RequestMediaAction.SelectAllSeasons -> toggleAllSeasons(action.selectAll)
+      is RequestMediaAction.SelectSeason -> selectSeason(action)
+    }
+  }
+
+  private fun toggleAllSeasons(selectAll: Boolean) {
+    val update = if (selectAll) {
+      uiState.value.requestableSeasons.map { seasonNumber ->
+        seasonNumber
+      }
+    } else {
+      emptyList()
+    }
+
+    _uiState.update {
+      it.copy(selectedSeasons = update)
+    }
+  }
+
+  private fun selectSeason(action: RequestMediaAction.SelectSeason) {
+    val selectedSeasons = uiState.value.selectedSeasons
+
+    val update = if (selectedSeasons.contains(action.number)) {
+      selectedSeasons.filterNot { it == action.number }
+    } else {
+      selectedSeasons.plus(action.number)
+    }
+
+    _uiState.update {
+      it.copy(selectedSeasons = update)
     }
   }
 

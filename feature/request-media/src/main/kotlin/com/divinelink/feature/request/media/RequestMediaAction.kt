@@ -9,6 +9,8 @@ sealed interface RequestMediaAction {
   data class SelectRootFolder(val folder: InstanceRootFolder) : RequestMediaAction
   data class SelectQualityProfile(val quality: InstanceProfile) : RequestMediaAction
   data class SelectInstance(val instance: ServerInstance) : RequestMediaAction
+  data class SelectAllSeasons(val selectAll: Boolean) : RequestMediaAction
+  data class SelectSeason(val number: Int) : RequestMediaAction
   data object DismissSnackbar : RequestMediaAction
   data object DismissDialog : RequestMediaAction
 }

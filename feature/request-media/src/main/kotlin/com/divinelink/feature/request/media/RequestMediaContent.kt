@@ -25,9 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -61,9 +58,6 @@ fun RequestMediaContent(
   onAction: (RequestMediaAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
-  val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
-
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
     onDismissSnackbar = { onAction(RequestMediaAction.DismissSnackbar) },
@@ -130,19 +124,10 @@ fun RequestMediaContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
           ) {
             Switch(
-              checked = selectedSeasons.size == validSeasons.filter { it.canBeRequested() }.size,
-              enabled = validSeasons.any { it.canBeRequested() },
+              checked = state.selectedSeasons.size == state.requestableSeasons.size,
+              enabled = state.requestableSeasons.isNotEmpty(),
               onCheckedChange = {
-                if (it) {
-                  selectedSeasons.clear()
-                  selectedSeasons.addAll(
-                    validSeasons.mapIndexedNotNull { index, season ->
-                      if (!season.isAvailable()) index + 1 else null
-                    },
-                  )
-                } else {
-                  selectedSeasons.clear()
-                }
+                onAction(RequestMediaAction.SelectAllSeasons(selectAll = it))
               },
               modifier = Modifier
                 .testTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH)
@@ -173,34 +158,27 @@ fun RequestMediaContent(
         }
 
         items(
-          items = validSeasons,
+          items = state.validSeasons,
           key = { it.seasonNumber },
         ) { item ->
           Row(
             modifier = Modifier
               .fillMaxWidth()
               .testTag(TestTags.Dialogs.SEASON_ROW.format(item.seasonNumber))
-              .clickable(enabled = item.canBeRequested()) {
-                if (item.canBeRequested()) {
-                  if (selectedSeasons.contains(item.seasonNumber)) {
-                    selectedSeasons.remove(item.seasonNumber)
-                  } else {
-                    selectedSeasons.add(item.seasonNumber)
-                  }
-                }
+              .clickable(
+                enabled = item.seasonNumber in state.requestableSeasons || item.canBeRequested(),
+              ) {
+                onAction(RequestMediaAction.SelectSeason(item.seasonNumber))
               },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
           ) {
             Switch(
-              checked = selectedSeasons.contains(item.seasonNumber) || item.isAvailable(),
-              enabled = item.canBeRequested(),
+              checked = item.seasonNumber in state.selectedSeasons ||
+                (item.seasonNumber !in state.requestableSeasons) && item.isAvailable(),
+              enabled = item.seasonNumber in state.requestableSeasons || item.canBeRequested(),
               onCheckedChange = {
-                if (it) {
-                  selectedSeasons.add(item.seasonNumber)
-                } else {
-                  selectedSeasons.remove(item.seasonNumber)
-                }
+                onAction(RequestMediaAction.SelectSeason(item.seasonNumber))
               },
               modifier = Modifier
                 .testTag(TestTags.Dialogs.SEASON_SWITCH.format(item.seasonNumber))
@@ -336,7 +314,7 @@ fun RequestMediaContent(
         Text(text = stringResource(id = UiString.core_ui_cancel))
       }
       if (state.media.mediaType == MediaType.TV) {
-        RequestSeasonsButton(selectedSeasons, state, onAction)
+        RequestSeasonsButton(state, onAction)
       } else {
         RequestMovieButton(
           isEditMode = state.isEditMode,
@@ -380,7 +358,6 @@ private fun RequestMovieButton(
 
 @Composable
 private fun RequestSeasonsButton(
-  selectedSeasons: SnapshotStateList<Int>,
   state: RequestMediaUiState,
   onAction: (RequestMediaAction) -> Unit,
 ) {
@@ -389,18 +366,18 @@ private fun RequestSeasonsButton(
       .fillMaxWidth()
       .padding(bottom = MaterialTheme.dimensions.keyline_8)
       .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-    enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
-    onClick = { onAction(RequestMediaAction.RequestMedia(selectedSeasons)) },
+    enabled = state.selectedSeasons.isNotEmpty() && !state.isLoading,
+    onClick = { onAction(RequestMediaAction.RequestMedia(state.selectedSeasons)) },
   ) {
     val text = if (state.isEditMode) {
       stringResource(id = UiString.core_ui_edit_request)
-    } else if (selectedSeasons.isEmpty()) {
+    } else if (state.selectedSeasons.isEmpty()) {
       stringResource(id = UiString.core_ui_select_seasons_button)
     } else {
       pluralStringResource(
         id = UiPlurals.core_ui_request_series_button,
-        count = selectedSeasons.size,
-        selectedSeasons.size,
+        count = state.selectedSeasons.size,
+        state.selectedSeasons.size,
       )
     }
 
@@ -408,7 +385,7 @@ private fun RequestSeasonsButton(
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      AnimatedVisibility(selectedSeasons.isNotEmpty()) {
+      AnimatedVisibility(state.selectedSeasons.isNotEmpty()) {
         Icon(Icons.Default.Download, null)
       }
       Text(text = text)

@@ -27,7 +27,7 @@ fun RequestSeasonsModal(
   request: JellyseerrRequest?,
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
-    key = media.uniqueIdentifier,
+    key = media.uniqueIdentifier + request?.id,
   ) {
     parametersOf(
       RequestMediaEntryData(
