@@ -20,14 +20,16 @@ import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalUuidApi::class)
 @Composable
 fun RequestSeasonsModal(
   request: JellyseerrRequest?,
   media: MediaItem.Media,
   viewModel: RequestMediaViewModel = koinViewModel(
-    key = media.uniqueIdentifier + request?.id,
+    key = Uuid.random().toHexString(),
   ) {
     parametersOf(
       RequestMediaEntryData(

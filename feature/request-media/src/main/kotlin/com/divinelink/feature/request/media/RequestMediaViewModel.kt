@@ -90,6 +90,12 @@ class RequestMediaViewModel(
           )
         }
         .launchIn(viewModelScope)
+
+      viewModelScope.launch {
+        jellyseerrRepository
+          .getTvDetails(data.media.id)
+          .launchIn(viewModelScope)
+      }
     }
 
     viewModelScope.launch {
