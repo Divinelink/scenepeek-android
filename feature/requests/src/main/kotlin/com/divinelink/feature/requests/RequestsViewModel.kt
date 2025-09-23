@@ -118,7 +118,10 @@ class RequestsViewModel(
       is RequestsAction.RetryRequest -> retryRequest(action.id)
       is RequestsAction.UpdateFilter -> updateFilter(action)
       is RequestsAction.EditRequest -> sendDisplayEditModal(action)
+
+      // Callback actions
       is RequestsAction.UpdateRequestInfo -> updateRequestInfo(action.request)
+      is RequestsAction.OnRequestCanceled -> removeItem(action.requestId)
     }
   }
 

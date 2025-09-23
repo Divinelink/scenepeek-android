@@ -61,6 +61,9 @@ class RequestMediaViewModel(
   private val _updatedRequest = Channel<JellyseerrRequest>()
   val updatedRequest: Flow<JellyseerrRequest> = _updatedRequest.receiveAsFlow()
 
+  private val _onCancelRequest = Channel<Int>()
+  val onCancelRequest: Flow<Int> = _onCancelRequest.receiveAsFlow()
+
   init {
     authRepository
       .profilePermissions
@@ -289,6 +292,8 @@ class RequestMediaViewModel(
 
   private fun onEditRequest() {
     viewModelScope.launch {
+      _uiState.update { it.copy(isLoading = true) }
+
       jellyseerrRepository.editRequest(
         JellyseerrEditRequestMediaBodyApi(
           requestId = uiState.value.request?.id,
@@ -315,7 +320,12 @@ class RequestMediaViewModel(
                 R.string.feature_request_media_update_request_success,
               )
 
-              setSnackbarMessage(SnackbarMessage.from(text = message))
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(text = message),
+                )
+              }
 
               _updatedRequest.send(
                 response.copy(
@@ -324,13 +334,16 @@ class RequestMediaViewModel(
               )
             },
             onFailure = {
-              setSnackbarMessage(
-                SnackbarMessage.from(
-                  text = UIText.ResourceText(
-                    R.string.feature_request_media_update_request_failure,
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_request_media_update_request_failure,
+                    ),
                   ),
-                ),
-              )
+                )
+              }
             },
           )
         }
@@ -341,26 +354,36 @@ class RequestMediaViewModel(
     val requestId = uiState.value.request?.id ?: return
 
     viewModelScope.launch {
+      _uiState.update { it.copy(isLoading = true) }
+
       jellyseerrRepository.deleteRequest(
         requestId = requestId,
       ).fold(
         onSuccess = {
-          setSnackbarMessage(
-            SnackbarMessage.from(
-              text = UIText.ResourceText(
-                R.string.feature_request_media_cancel_request_success,
+          _onCancelRequest.send(requestId)
+
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_request_media_cancel_request_success,
+                ),
               ),
-            ),
-          )
+            )
+          }
         },
         onFailure = {
-          setSnackbarMessage(
-            SnackbarMessage.from(
-              text = UIText.ResourceText(
-                R.string.feature_request_media_cancel_request_failure,
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_request_media_cancel_request_failure,
+                ),
               ),
-            ),
-          )
+            )
+          }
         },
       )
     }

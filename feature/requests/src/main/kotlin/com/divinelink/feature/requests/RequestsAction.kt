@@ -24,4 +24,5 @@ sealed interface RequestsAction {
   data class RetryRequest(val id: Int) : RequestsAction
 
   data class UpdateRequestInfo(val request: JellyseerrRequest) : RequestsAction
+  data class OnRequestCanceled(val requestId: Int) : RequestsAction
 }

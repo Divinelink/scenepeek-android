@@ -38,6 +38,7 @@ fun RequestSeasonsModal(
   },
   onDismissRequest: () -> Unit,
   onNavigate: (Navigation) -> Unit,
+  onCancelRequest: (requestId: Int) -> Unit,
   onUpdateRequestInfo: (JellyseerrRequest) -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
 ) {
@@ -53,6 +54,12 @@ fun RequestSeasonsModal(
   LaunchedEffect(Unit) {
     viewModel.updatedRequest.collect {
       onUpdateRequestInfo(it)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.onCancelRequest.collect {
+      onCancelRequest(it)
     }
   }
 
