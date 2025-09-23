@@ -9,6 +9,7 @@ import com.divinelink.core.domain.jellyseerr.DeleteMediaParameters
 import com.divinelink.core.domain.jellyseerr.DeleteMediaUseCase
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.ItemState
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.RequestUiItem
@@ -16,19 +17,19 @@ import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.setLoading
 import com.divinelink.core.network.Resource
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class RequestsViewModel(
   private val repository: JellyseerrRepository,
@@ -46,18 +47,6 @@ class RequestsViewModel(
   val displayRequestModal: Flow<Pair<MediaItem.Media, JellyseerrRequest>> =
     _displayRequestModal.receiveAsFlow()
 
-  private val requestsFlow = _uiState
-    .distinctUntilChanged { old, new ->
-      old.filter == new.filter && old.page == new.page
-    }
-    .flatMapMerge { state ->
-      repository
-        .getRequests(page = state.page, filter = state.filter)
-        .catch { error ->
-          Timber.e(error, "Failed to load requests")
-        }
-    }
-
   init {
     authRepository
       .profilePermissions
@@ -68,42 +57,13 @@ class RequestsViewModel(
       .launchIn(viewModelScope)
 
     viewModelScope.launch {
-      requestsFlow.collect { response ->
-        response.fold(
-          onFailure = {
-            // Handle error
-          },
-          onSuccess = { result ->
-            _uiState.update { uiState ->
-              val requestUiItems = result.results.map { request ->
-                RequestUiItem(
-                  request = request,
-                  mediaState = ItemState.Loading,
-                )
-              }
-
-              uiState.copy(
-                data = when (uiState.data) {
-                  is DataState.Data -> DataState.Data(
-                    uiState.data.pages + (result.pageInfo.page to requestUiItems),
-                  )
-                  DataState.Initial -> DataState.Data(mapOf(1 to requestUiItems))
-                },
-                loadingMore = false,
-                canLoadMore = result.pageInfo.pages >= result.pageInfo.page,
-                error = null,
-              )
-            }
-          },
-        )
-      }
+      fetchRequests(isRefreshing = false)
     }
   }
 
   fun onAction(action: RequestsAction) {
     when (action) {
       is RequestsAction.FetchMediaItem -> fetchMediaItem(action.request)
-      RequestsAction.LoadMore -> incrementPage()
       is RequestsAction.ApproveRequest -> updateRequestStatus(
         requestId = action.id,
         status = RequestStatusUpdate.APPROVE,
@@ -118,6 +78,8 @@ class RequestsViewModel(
       is RequestsAction.RetryRequest -> retryRequest(action.id)
       is RequestsAction.UpdateFilter -> updateFilter(action)
       is RequestsAction.EditRequest -> sendDisplayEditModal(action)
+      RequestsAction.LoadMore -> incrementPage()
+      RequestsAction.Refresh -> refresh()
 
       // Callback actions
       is RequestsAction.UpdateRequestInfo -> updateRequestInfo(action.request)
@@ -309,8 +271,11 @@ class RequestsViewModel(
       val data = currentState.data as? DataState.Data ?: return currentState
       val pages = data.pages
 
-      val pageKey =
-        findPageForRequestId(pages = pages, requestId = requestId) ?: return currentState
+      val pageKey = findPageForRequestId(
+        pages = pages,
+        requestId = requestId,
+      ) ?: return currentState
+
       val currentList = pages[pageKey] ?: return currentState
 
       val updatedList = currentList.mapNotNull { uiItem ->
@@ -341,6 +306,10 @@ class RequestsViewModel(
         )
       }
     }
+
+    viewModelScope.launch {
+      fetchRequests(isRefreshing = false)
+    }
   }
 
   private fun incrementPage() {
@@ -351,8 +320,82 @@ class RequestsViewModel(
           page = uiState.page + 1,
         )
       }
+      viewModelScope.launch {
+        fetchRequests(isRefreshing = false)
+      }
     }
   }
+
+  private fun refresh() {
+    _uiState.update { uiState ->
+      uiState.copy(
+        refreshing = true,
+        page = 1,
+      )
+    }
+
+    viewModelScope.launch {
+      delay(250)
+      fetchRequests(isRefreshing = true)
+    }
+  }
+
+  private suspend fun fetchRequests(isRefreshing: Boolean) = repository
+    .getRequests(
+      page = if (isRefreshing) 1 else uiState.value.page,
+      filter = uiState.value.filter,
+    )
+    .catch { error ->
+      emit(Result.failure(error))
+    }
+    .distinctUntilChanged()
+    .onEach { response ->
+      response.fold(
+        onFailure = { throwable ->
+          val error = when (throwable) {
+            is AppException.Offline -> BlankSlateState.Offline
+            else -> BlankSlateState.Contact
+          }
+
+          _uiState.update { uiState ->
+            uiState.copy(
+              error = error,
+              loadingMore = false,
+              refreshing = false,
+              canLoadMore = false,
+            )
+          }
+        },
+        onSuccess = { result ->
+          _uiState.update { uiState ->
+            val requestUiItems = result.results.map { request ->
+              RequestUiItem(
+                request = request,
+                mediaState = ItemState.Loading,
+              )
+            }
+
+            uiState.copy(
+              data = if (uiState.refreshing) {
+                DataState.Data(mapOf(1 to requestUiItems))
+              } else {
+                when (uiState.data) {
+                  is DataState.Data -> DataState.Data(
+                    uiState.data.pages + (result.pageInfo.page to requestUiItems),
+                  )
+                  DataState.Initial -> DataState.Data(mapOf(1 to requestUiItems))
+                }
+              },
+              loadingMore = false,
+              refreshing = false,
+              canLoadMore = result.pageInfo.pages >= result.pageInfo.page,
+              error = null,
+            )
+          }
+        },
+      )
+    }
+    .launchIn(viewModelScope)
 
   private fun fetchMediaItem(item: RequestUiItem) {
     if (item.mediaState !is ItemState.Data) {

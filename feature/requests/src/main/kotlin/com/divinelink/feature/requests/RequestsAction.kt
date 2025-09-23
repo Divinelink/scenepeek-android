@@ -6,6 +6,7 @@ import com.divinelink.core.model.jellyseerr.media.RequestUiItem
 
 sealed interface RequestsAction {
   data object LoadMore : RequestsAction
+  data object Refresh : RequestsAction
   data class FetchMediaItem(val request: RequestUiItem) : RequestsAction
 
   data class UpdateFilter(val filter: MediaRequestFilter) : RequestsAction
