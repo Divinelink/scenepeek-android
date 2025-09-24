@@ -15,19 +15,27 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
 import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
 import com.divinelink.core.fixtures.model.jellyseerr.request.JellyseerrMediaRequestResponseFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.InstanceProfileFactory
+import com.divinelink.core.fixtures.model.jellyseerr.server.InstanceRootFolderFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestJellyseerrRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setContentWithTheme
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -47,6 +55,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   private val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
   private val requestMediaUseCase = FakeRequestMediaUseCase()
   private val authRepository = TestAuthRepository()
+  private val mediaRepository = TestMediaRepository()
+  private val jellyseerrRepository = TestJellyseerrRepository()
 
   @Test
   fun `test initialise modal without advanced permission hides advanced options`() = runTest {
@@ -57,25 +67,32 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -102,6 +119,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test observe profile permissions`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     authRepository.mockPermissions(flowOf(listOf(), ProfilePermission.entries))
 
     getServerInstancesUseCase.mockResponse(
@@ -111,23 +130,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -147,6 +171,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test show request tv show dialog`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -156,23 +182,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
-        seasons = SeasonFactory.allWithStatus(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -185,6 +216,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test request tv show dialog confirm button is disabled without selected seasons`() =
     runTest {
+      mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+      jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
       getServerInstancesUseCase.mockResponse(Result.success(SonarrInstanceFactory.all))
 
       getServerInstanceDetailsUseCase.mockResponse(
@@ -192,23 +225,28 @@ class RequestSeasonsModalTest : ComposeTest() {
       )
 
       val viewModel = RequestMediaViewModel(
-        isEditMode = false,
-        media = MediaItemFactory.theOffice(),
+        data = RequestMediaEntryData(
+          request = null,
+          media = MediaItemFactory.theOffice(),
+        ),
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
         authRepository = authRepository.mock,
         requestMediaUseCase = requestMediaUseCase.mock,
+        jellyseerrRepository = jellyseerrRepository.mock,
+        mediaRepository = mediaRepository.mock,
       )
 
       setContentWithTheme {
         RequestSeasonsModal(
-          isEditMode = false,
           viewModel = viewModel,
           media = MediaItemFactory.theOffice(),
-          seasons = SeasonFactory.allWithStatus(),
           onDismissRequest = {},
           onNavigate = {},
           onUpdateMediaInfo = {},
+          onCancelRequest = {},
+          onUpdateRequestInfo = {},
+          request = null,
         )
       }
 
@@ -223,6 +261,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test request tv show dialog confirm button is enabled with selected seasons`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -232,23 +272,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
-        seasons = SeasonFactory.all(),
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -274,6 +319,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test re-selecting seasons removes them`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -283,23 +330,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
-        seasons = SeasonFactory.all(),
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -333,6 +385,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test request tv show dialog toggle all switch`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -342,23 +396,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
-        seasons = SeasonFactory.all(),
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -377,6 +436,8 @@ class RequestSeasonsModalTest : ComposeTest() {
 
   @Test
   fun `test request tv show dialog toggle all after already have selected few seasons`() = runTest {
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -386,23 +447,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
-        seasons = SeasonFactory.all(),
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -430,25 +496,32 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.allWithStatus(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -477,20 +550,24 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     requestMediaUseCase.mockFailure(AppException.Forbidden())
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -498,6 +575,9 @@ class RequestSeasonsModalTest : ComposeTest() {
           route = it
         },
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -524,7 +604,8 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
-
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
@@ -532,18 +613,20 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Unauthorized())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -551,6 +634,9 @@ class RequestSeasonsModalTest : ComposeTest() {
           route = it
         },
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -576,7 +662,8 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
-
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
@@ -584,23 +671,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     requestMediaUseCase.mockFailure(AppException.Conflict())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -628,27 +720,33 @@ class RequestSeasonsModalTest : ComposeTest() {
     getServerInstanceDetailsUseCase.mockResponse(
       Result.success(SonarrInstanceDetailsFactory.sonarr),
     )
-
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     requestMediaUseCase.mockFailure(AppException.Unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -673,25 +771,31 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test fetch details with empty instances does not show advanced options`() = runTest {
     getServerInstancesUseCase.mockResponse(Result.success(emptyList()))
-
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -714,25 +818,32 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test fetch details with failure`() = runTest {
     getServerInstancesUseCase.mockFailure(AppException.Unknown())
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -755,6 +866,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test update destination server`() = runTest {
     authRepository.mockEnableAllPermissions()
+    mediaRepository.mockFetchTvSeasons(response = Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -764,23 +877,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -807,6 +925,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test update quality profile`() = runTest {
     authRepository.mockEnableAllPermissions()
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -816,23 +936,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -857,6 +982,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test update root folder`() = runTest {
     authRepository.mockEnableAllPermissions()
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
     )
@@ -865,23 +992,28 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -906,6 +1038,8 @@ class RequestSeasonsModalTest : ComposeTest() {
   @Test
   fun `test request season with updated properties`() = runTest {
     var mediaInfo: JellyseerrMediaInfo? = null
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
     authRepository.mockEnableAllPermissions()
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
@@ -928,18 +1062,20 @@ class RequestSeasonsModalTest : ComposeTest() {
     )
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
 
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
@@ -947,6 +1083,9 @@ class RequestSeasonsModalTest : ComposeTest() {
         onUpdateMediaInfo = {
           mediaInfo = it
         },
+        request = null,
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
       )
     }
 
@@ -966,7 +1105,7 @@ class RequestSeasonsModalTest : ComposeTest() {
         .performClick()
 
       onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed().performClick()
-      onNodeWithText("HD data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
+      onNodeWithText("data/tv (1.78 TB) (Default)").assertIsNotDisplayed()
 
       onNodeWithText("Request 9 seasons")
         .assertIsDisplayed()
@@ -992,25 +1131,31 @@ class RequestSeasonsModalTest : ComposeTest() {
 
     authRepository.mockEnableAllPermissions()
     getServerInstanceDetailsUseCase.mockFailure(AppException.Unknown())
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
 
     val viewModel = RequestMediaViewModel(
-      isEditMode = false,
-      media = MediaItemFactory.theOffice(),
+      data = RequestMediaEntryData(
+        request = null,
+        media = MediaItemFactory.theOffice(),
+      ),
       getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
       getServerInstancesUseCase = getServerInstancesUseCase.mock,
       authRepository = authRepository.mock,
       requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
     )
-
     setContentWithTheme {
       RequestSeasonsModal(
-        isEditMode = false,
-        seasons = SeasonFactory.all(),
         viewModel = viewModel,
         media = MediaItemFactory.theOffice(),
         onDismissRequest = {},
         onNavigate = {},
         onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
       )
     }
 
@@ -1028,6 +1173,307 @@ class RequestSeasonsModalTest : ComposeTest() {
 
       onNodeWithText("Quality profile").assertIsNotDisplayed()
       onNodeWithText("Root folders").assertIsNotDisplayed()
+    }
+  }
+
+  @Test
+  fun `test initialise modal with request sets preselected advanced values`() = runTest {
+    getServerInstancesUseCase.mockResponse(
+      Result.success(SonarrInstanceFactory.all),
+    )
+    authRepository.mockEnableAllPermissions()
+    getServerInstanceDetailsUseCase.mockResponse(
+      response = Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = JellyseerrRequestFactory.Tv.theOffice1(),
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = {},
+        request = null,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithTag(TestTags.Modal.REQUEST_SEASONS).assertIsDisplayed()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasText("Animarr"),
+      )
+
+      onNodeWithText("Animarr").assertIsDisplayed()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasText("Quality profile"),
+      )
+
+      onNodeWithText("Quality profile").assertIsDisplayed()
+      onNodeWithText("Any").assertIsDisplayed()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasText("/data/anime (1.78 TB)"),
+      )
+
+      onNodeWithText("Root folder").assertIsDisplayed()
+      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
+    }
+  }
+
+  @Test
+  fun `test with request and selected seasons edit request button is shown`() = runTest {
+    var cancelRequestId: Int? = null
+
+    authRepository.mockEnableAllPermissions()
+    getServerInstancesUseCase.mockResponse(
+      response = Result.success(SonarrInstanceFactory.all),
+    )
+    getServerInstanceDetailsUseCase.mockResponse(
+      response = Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = JellyseerrRequestFactory.Tv.theOffice1(),
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = { requestId ->
+          cancelRequestId = requestId
+        },
+        onUpdateRequestInfo = {},
+        request = null,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText("Edit request").assertIsDisplayed()
+
+      // Pre-selected season from request is enabled
+      // Toggle off first requested season
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+        .assertIsDisplayed()
+        .assertIsEnabled()
+        .performClick()
+
+      onNodeWithText("Edit request").assertIsDisplayed()
+
+      // Requested season that is not on the request is not enabled
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(2))
+        .assertIsDisplayed()
+        .assertIsNotEnabled()
+
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(3))
+        .assertIsDisplayed()
+        .assertIsNotEnabled()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
+      )
+
+      // Toggle off second requested season
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
+        .assertIsDisplayed()
+        .assertIsEnabled()
+        .performClick()
+
+      // All requested season are toggled off - cancel request is shown
+      onNodeWithText("Edit request").assertIsNotDisplayed()
+      onNodeWithText("Cancel request").assertIsDisplayed().performClick()
+
+      cancelRequestId shouldBe JellyseerrRequestFactory.Tv.theOffice1().id
+    }
+  }
+
+  @Test
+  fun `test cancel request with failure`() = runTest {
+    var cancelRequestId: Int? = null
+
+    authRepository.mockEnableAllPermissions()
+    getServerInstancesUseCase.mockResponse(
+      response = Result.success(SonarrInstanceFactory.all),
+    )
+    getServerInstanceDetailsUseCase.mockResponse(
+      response = Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+    jellyseerrRepository.mockDeleteRequest(Result.failure(AppException.Unknown()))
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = JellyseerrRequestFactory.Tv.theOffice1(),
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = { requestId ->
+          cancelRequestId = requestId
+        },
+        onUpdateRequestInfo = {},
+        request = null,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText("Edit request").assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+        .assertIsDisplayed()
+        .assertIsEnabled()
+        .performClick()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasTestTag(TestTags.Dialogs.SEASON_SWITCH.format(6)),
+      )
+
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(6))
+        .assertIsDisplayed()
+        .assertIsEnabled()
+        .performClick()
+
+      onNodeWithText("Cancel request").assertIsDisplayed().performClick()
+
+      cancelRequestId shouldBe null
+    }
+  }
+
+  @Test
+  fun `test edit request`() = runTest {
+    var jellyseerrRequest: JellyseerrRequest? = null
+
+    authRepository.mockEnableAllPermissions()
+    getServerInstancesUseCase.mockResponse(
+      response = Result.success(SonarrInstanceFactory.all),
+    )
+    getServerInstanceDetailsUseCase.mockResponse(
+      response = Result.success(SonarrInstanceDetailsFactory.sonarr),
+    )
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.allWithStatus()))
+    jellyseerrRepository.mockGetTvDetails(JellyseerrMediaInfoFactory.Tv.unknown())
+    jellyseerrRepository.mockEditRequest(
+      request = JellyseerrEditRequestMediaBodyApi(
+        requestId = 5,
+        mediaType = MediaType.TV.value,
+        mediaId = 2316,
+        is4k = false,
+        seasons = listOf(6),
+        serverId = 1,
+        profileId = 3,
+        rootFolder = "/data/tv",
+      ),
+      response = Result.success(
+        JellyseerrRequestFactory.Tv.theOffice1().copy(
+          profileName = InstanceProfileFactory.hd720.name,
+          profileId = InstanceProfileFactory.hd720.id,
+          rootFolder = InstanceRootFolderFactory.tv.path,
+        ),
+      ),
+    )
+
+    val viewModel = RequestMediaViewModel(
+      data = RequestMediaEntryData(
+        request = JellyseerrRequestFactory.Tv.theOffice1(),
+        media = MediaItemFactory.theOffice(),
+      ),
+      getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
+      getServerInstancesUseCase = getServerInstancesUseCase.mock,
+      authRepository = authRepository.mock,
+      requestMediaUseCase = requestMediaUseCase.mock,
+      jellyseerrRepository = jellyseerrRepository.mock,
+      mediaRepository = mediaRepository.mock,
+    )
+    setContentWithTheme {
+      RequestSeasonsModal(
+        viewModel = viewModel,
+        media = MediaItemFactory.theOffice(),
+        onDismissRequest = {},
+        onNavigate = {},
+        onUpdateMediaInfo = {},
+        onCancelRequest = {},
+        onUpdateRequestInfo = { updateInfo ->
+          jellyseerrRequest = updateInfo
+        },
+        request = null,
+      )
+    }
+
+    with(composeTestRule) {
+      onNodeWithText("Edit request").assertIsDisplayed()
+
+      onNodeWithTag(TestTags.Dialogs.SEASON_SWITCH.format(1))
+        .assertIsDisplayed()
+        .assertIsEnabled()
+        .performClick()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasText("Quality profile"),
+      )
+
+      onNodeWithText("Quality profile").performClick()
+      onNodeWithText(InstanceProfileFactory.hd720.name).performClick()
+
+      onNodeWithTag(TestTags.LAZY_COLUMN).performScrollToNode(
+        hasText("Root folder"),
+      )
+
+      // Preselected folder path
+      onNodeWithText("/data/anime (1.78 TB)").assertIsDisplayed()
+      onNodeWithText("Root folder").performClick()
+
+      onNodeWithText("/data/tv (1.78 TB) (Default)").performClick()
+
+      onNodeWithText("Edit request").assertIsDisplayed().performClick()
+      jellyseerrRequest shouldBe JellyseerrRequestFactory.Tv.theOffice1().copy(
+        profileName = InstanceProfileFactory.hd720.name,
+        profileId = InstanceProfileFactory.hd720.id,
+        rootFolder = InstanceRootFolderFactory.tv.path,
+      )
     }
   }
 }

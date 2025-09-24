@@ -81,9 +81,7 @@ class RequestMediaViewModel(
           result.fold(
             onSuccess = { seasons ->
               _uiState.update {
-                it.copy(
-                  seasons = seasons,
-                )
+                it.copy(seasons = seasons)
               }
             },
             onFailure = {},

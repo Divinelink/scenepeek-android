@@ -2,6 +2,7 @@ package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.media.repository.MediaListResult
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.flowOf
@@ -57,6 +58,10 @@ class TestMediaRepository {
     whenever(
       mock.checkIfMediaIsFavorite(any(), any()),
     ).thenReturn(response)
+  }
+
+  fun mockFetchTvSeasons(response: Result<List<Season>>) {
+    whenever(mock.fetchTvSeasons(any())).thenReturn(flowOf(response))
   }
 
   suspend fun mockRemoveFavorite(

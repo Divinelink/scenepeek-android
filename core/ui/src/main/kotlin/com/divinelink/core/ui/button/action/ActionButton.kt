@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +33,7 @@ import com.divinelink.core.designsystem.theme.colors
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.PreviewLocalProvider
@@ -190,7 +192,9 @@ object ActionButton {
     onClick: () -> Unit,
   ) {
     ActionButton(
-      modifier = modifier.fillMaxWidth(),
+      modifier = modifier
+        .fillMaxWidth()
+        .testTag(TestTags.ActionButton.REQUEST_MOVIE_BUTTON),
       onClick = onClick,
       enabled = enabled,
       text = stringResource(UiString.core_ui_request),

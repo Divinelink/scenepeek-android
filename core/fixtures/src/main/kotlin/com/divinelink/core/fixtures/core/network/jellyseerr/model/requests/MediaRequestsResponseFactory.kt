@@ -35,8 +35,8 @@ object MediaRequestsResponseFactory {
           profileName = "SD",
           profileId = 2,
           canRemove = true,
-          serverId = null,
-          rootFolder = null,
+          serverId = 0,
+          rootFolder = "/data/media/movies",
         ),
         MediaInfoRequestResponse(
           id = 802,

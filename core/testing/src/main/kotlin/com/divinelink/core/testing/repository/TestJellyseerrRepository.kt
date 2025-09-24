@@ -8,10 +8,12 @@ import com.divinelink.core.model.jellyseerr.request.MediaRequestResult
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -80,5 +82,16 @@ class TestJellyseerrRepository {
 
   suspend fun mockGetSonarrDetails(response: Result<ServerInstanceDetails>) {
     whenever(mock.getSonarrInstanceDetails(any())).thenReturn(response)
+  }
+
+  suspend fun mockEditRequest(
+    request: JellyseerrEditRequestMediaBodyApi,
+    response: Result<JellyseerrRequest>,
+  ) {
+    whenever(mock.editRequest(request)).thenReturn(flowOf(response))
+  }
+
+  suspend fun verifyTvDetailsInteractions(times: Int) {
+    verify(mock, times(times)).getTvDetails(any())
   }
 }

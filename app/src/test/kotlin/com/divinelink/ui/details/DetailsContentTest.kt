@@ -21,6 +21,7 @@ import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.details.rating.RatingCountFactory
+import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
@@ -37,6 +38,8 @@ import com.divinelink.core.model.tab.TvTab
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestJellyseerrRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestGetServerInstanceDetailsUseCase
@@ -49,6 +52,7 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory.toWizard
 import com.divinelink.feature.details.media.ui.DetailsContent
 import com.divinelink.feature.details.media.ui.DetailsViewState
+import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -658,6 +662,11 @@ class DetailsContentTest : ComposeTest() {
   fun `test open request dialog for tv show`() = runTest {
     val getServerInstancesUseCase = TestGetServerInstancesUseCase()
     val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+    val jellyseerrRepository = TestJellyseerrRepository()
+    val mediaRepository = TestMediaRepository()
+
+    jellyseerrRepository.mockGetTvDetails(response = JellyseerrMediaInfoFactory.Tv.emptyRequests())
+    mediaRepository.mockFetchTvSeasons(response = Result.success(emptyList()))
 
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
@@ -669,10 +678,12 @@ class DetailsContentTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        media = MediaItemFactory.theOffice(),
+        data = RequestMediaEntryData(request = null, media = MediaItemFactory.theOffice()),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         authRepository = TestAuthRepository().mock,
+        jellyseerrRepository = jellyseerrRepository.mock,
+        mediaRepository = mediaRepository.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
       )
     }
@@ -736,11 +747,13 @@ class DetailsContentTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        media = MediaItemFactory.FightClub(),
+        data = RequestMediaEntryData(request = null, media = MediaItemFactory.FightClub()),
         requestMediaUseCase = FakeRequestMediaUseCase().mock,
         authRepository = TestAuthRepository().mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
+        jellyseerrRepository = TestJellyseerrRepository().mock,
+        mediaRepository = TestMediaRepository().mock,
       )
     }
 

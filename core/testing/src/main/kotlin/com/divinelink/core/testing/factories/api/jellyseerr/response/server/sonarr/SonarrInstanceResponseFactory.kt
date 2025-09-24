@@ -18,7 +18,7 @@ object SonarrInstanceResponseFactory {
   )
 
   val sonarr4K = SonarrInstanceResponse(
-    id = 1,
+    id = 2,
     name = "Sonarr 4K",
     is4k = true,
     isDefault = true,

@@ -14,7 +14,7 @@ interface MediaDao {
 
   fun insertMedia(
     media: MediaItem.Media,
-    seasons: List<Season>?,
+    seasons: List<Season>? = null,
   )
 
   fun insertMediaEntities(media: List<MediaItemEntity>)

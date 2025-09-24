@@ -33,6 +33,8 @@ object JellyseerrRequestsFactory {
           seasons = emptyList(),
           profileName = "SD",
           profileId = 2,
+          serverId = 0,
+          rootFolder = "/data/media/movies",
           canRemove = true,
         ),
         JellyseerrRequest(
