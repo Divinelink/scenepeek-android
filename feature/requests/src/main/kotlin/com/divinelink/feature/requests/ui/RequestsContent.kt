@@ -161,8 +161,8 @@ fun RequestsScrollableContent(
               },
               onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
               onAction = action,
-              canManageRequest = state.permissions.canManageRequests(),
-              canRequestAdvanced = state.permissions.canRequestAdvanced(),
+              canManageRequest = state.permissions.canManageRequests,
+              canRequestAdvanced = state.permissions.canRequestAdvanced,
             )
           }
 

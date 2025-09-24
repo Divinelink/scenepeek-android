@@ -3,13 +3,11 @@ package com.divinelink.core.model.jellyseerr.permission
 fun List<ProfilePermission>.canPerform(permission: ProfilePermission): Boolean = isAdmin ||
   contains(permission)
 
-fun List<ProfilePermission>.canManageRequests() = isAdmin || canPerform(
-  ProfilePermission.MANAGE_REQUESTS,
-)
+val List<ProfilePermission>.canManageRequests
+  get() = isAdmin || canPerform(ProfilePermission.MANAGE_REQUESTS)
 
-fun List<ProfilePermission>.canRequestAdvanced() = isAdmin ||
-  canPerform(ProfilePermission.MANAGE_REQUESTS) ||
-  canPerform(ProfilePermission.REQUEST_ADVANCED)
+val List<ProfilePermission>.canRequestAdvanced
+  get() = isAdmin || canManageRequests || canPerform(ProfilePermission.REQUEST_ADVANCED)
 
 fun List<ProfilePermission>.canRequest(isTV: Boolean) = isAdmin ||
   contains(ProfilePermission.REQUEST) ||

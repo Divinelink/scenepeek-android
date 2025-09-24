@@ -160,7 +160,7 @@ fun DetailsContent(
       isLoading = viewState.isLoading,
       mediaType = viewState.mediaType,
       onDeleteMedia = onDeleteMedia,
-      showAdvancedOptions = viewState.permissions.canManageRequests(),
+      showAdvancedOptions = viewState.permissions.canManageRequests,
     )
   }
 

@@ -831,7 +831,7 @@ class DetailsViewModel(
 
     withManageTv(
       canManage = seasons.any { it.isAvailable() } || status != JellyseerrStatus.Media.UNKNOWN,
-      withPermission = permissions.canManageRequests(),
+      withPermission = permissions.canManageRequests,
       requests = info?.requests ?: emptyList(),
     )
 
@@ -850,7 +850,7 @@ class DetailsViewModel(
      */
     withManageMovie(
       canManage = info.status != JellyseerrStatus.Media.UNKNOWN,
-      withPermission = permissions.canManageRequests() || info.requests.isNotEmpty(),
+      withPermission = permissions.canManageRequests || info.requests.isNotEmpty(),
     )
 
     withRequest(

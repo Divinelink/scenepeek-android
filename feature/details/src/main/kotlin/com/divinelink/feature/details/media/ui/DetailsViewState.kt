@@ -73,6 +73,5 @@ data class DetailsViewState(
   }
 
   val canManageRequests
-    get() = permissions.canManageRequests() ||
-      jellyseerrMediaInfo?.requests?.isNotEmpty() == true
+    get() = permissions.canManageRequests || jellyseerrMediaInfo?.requests?.isNotEmpty() == true
 }

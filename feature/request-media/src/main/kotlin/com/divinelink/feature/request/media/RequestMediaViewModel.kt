@@ -97,7 +97,7 @@ class RequestMediaViewModel(
     }
 
     viewModelScope.launch {
-      if (uiState.value.permissions.canRequestAdvanced()) {
+      if (uiState.value.permissions.canRequestAdvanced) {
         getServerInstancesUseCase(uiState.value.media.mediaType).fold(
           onSuccess = { instances ->
             _uiState.update { uiState ->

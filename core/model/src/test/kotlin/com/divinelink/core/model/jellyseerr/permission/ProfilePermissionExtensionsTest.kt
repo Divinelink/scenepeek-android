@@ -26,18 +26,18 @@ class ProfilePermissionExtensionsTest {
 
   @Test
   fun `test canManageRequests as admin is true`() {
-    listOf(ProfilePermission.ADMIN).canManageRequests() shouldBe true
+    listOf(ProfilePermission.ADMIN).canManageRequests shouldBe true
   }
 
   @Test
   fun `test canManageRequests with MANAGE_REQUESTS permission is true`() {
-    listOf(ProfilePermission.MANAGE_REQUESTS).canManageRequests() shouldBe true
+    listOf(ProfilePermission.MANAGE_REQUESTS).canManageRequests shouldBe true
   }
 
   @Test
   fun `test canManageRequests without permission is false`() {
-    emptyList<ProfilePermission>().canManageRequests() shouldBe false
-    listOf(ProfilePermission.REQUEST).canManageRequests() shouldBe false
+    emptyList<ProfilePermission>().canManageRequests shouldBe false
+    listOf(ProfilePermission.REQUEST).canManageRequests shouldBe false
   }
 
   @Test
@@ -144,22 +144,22 @@ class ProfilePermissionExtensionsTest {
 
   @Test
   fun `test canRequestAdvanced without permission is false`() {
-    emptyList<ProfilePermission>().canRequestAdvanced() shouldBe false
+    emptyList<ProfilePermission>().canRequestAdvanced shouldBe false
   }
 
   @Test
   fun `test canRequestAdvanced as admin is true`() {
-    listOf(ProfilePermission.ADMIN).canRequestAdvanced() shouldBe true
+    listOf(ProfilePermission.ADMIN).canRequestAdvanced shouldBe true
   }
 
   @Test
   fun `test canRequestAdvanced with REQUEST_ADVANCED is true`() {
-    listOf(ProfilePermission.REQUEST_ADVANCED).canRequestAdvanced() shouldBe true
+    listOf(ProfilePermission.REQUEST_ADVANCED).canRequestAdvanced shouldBe true
   }
 
   @Test
   fun `test canRequestAdvanced with MANAGE_REQUESTS is true`() {
-    listOf(ProfilePermission.MANAGE_REQUESTS).canRequestAdvanced() shouldBe true
+    listOf(ProfilePermission.MANAGE_REQUESTS).canRequestAdvanced shouldBe true
   }
 
   @Test
@@ -185,7 +185,7 @@ class ProfilePermissionExtensionsTest {
     permissions.canRequest(isTV = false) shouldBe true
     permissions.canRequest4K(isTV = true) shouldBe true
     permissions.canRequest4K(isTV = false) shouldBe true
-    permissions.canManageRequests() shouldBe true
+    permissions.canManageRequests shouldBe true
     permissions.isAdmin shouldBe true
   }
 
@@ -201,7 +201,7 @@ class ProfilePermissionExtensionsTest {
     permissions.canRequest(isTV = false) shouldBe false
     permissions.canRequest4K(isTV = true) shouldBe false
     permissions.canRequest4K(isTV = false) shouldBe true
-    permissions.canManageRequests() shouldBe true
+    permissions.canManageRequests shouldBe true
     permissions.isAdmin shouldBe false
   }
 
@@ -213,7 +213,7 @@ class ProfilePermissionExtensionsTest {
     permissions.canRequest(isTV = false) shouldBe false
     permissions.canRequest4K(isTV = true) shouldBe false
     permissions.canRequest4K(isTV = false) shouldBe false
-    permissions.canManageRequests() shouldBe false
+    permissions.canManageRequests shouldBe false
     permissions.isAdmin shouldBe false
     permissions.canPerform(ProfilePermission.REQUEST) shouldBe false
   }
