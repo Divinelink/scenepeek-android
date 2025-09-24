@@ -10,17 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.feature.requests.RequestsAction
 import com.divinelink.core.ui.button.action.ActionButton
+import com.divinelink.feature.requests.RequestsAction
 
 @Composable
 fun PendingActionButtons(
   request: JellyseerrRequest,
   enabled: Boolean,
-  hasPermission: Boolean,
+  canManageRequests: Boolean,
+  canRequestAdvanced: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
-  if (hasPermission) {
+  if (canManageRequests) {
     Column(
       modifier = Modifier.fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,9 +52,11 @@ fun PendingActionButtons(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
-      ActionButton.EditRequest(
-        enabled = enabled,
-      ) { onAction(RequestsAction.EditRequest(request)) }
+      if (canRequestAdvanced) {
+        ActionButton.EditRequest(
+          enabled = enabled,
+        ) { onAction(RequestsAction.EditRequest(request)) }
+      }
 
       ActionButton.CancelRequest(
         enabled = enabled,

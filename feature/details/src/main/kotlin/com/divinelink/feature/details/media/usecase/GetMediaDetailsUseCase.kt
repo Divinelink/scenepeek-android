@@ -18,8 +18,8 @@ import com.divinelink.core.model.details.MediaDetails
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.rating.RatingSource
-import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
@@ -274,7 +274,7 @@ open class GetMediaDetailsUseCase(
   ) {
     val permissions = authRepository.profilePermissions.first()
 
-    val filteredResults = if (permissions.canManageRequests()) {
+    val filteredResults = if (permissions.canManageRequests) {
       result
     } else {
       val currentUserId = authRepository.selectedJellyseerrProfile.first()?.id
