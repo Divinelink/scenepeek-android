@@ -72,6 +72,7 @@ sealed interface JellyseerrStatus {
 
   companion object {
     fun from(value: String?): JellyseerrStatus? = when {
+      value == null -> null
       Request.from(value) != null -> Request.from(value)
       Media.from(value) != null -> Media.from(value)
       Season.from(value) != null -> Season.from(value)

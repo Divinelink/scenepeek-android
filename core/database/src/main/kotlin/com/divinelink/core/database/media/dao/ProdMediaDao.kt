@@ -188,8 +188,8 @@ class ProdMediaDao(
 
     seasons.forEach { season ->
       database.seasonEntityQueries.updateSeasonStatus(
-        status = season.status.value,
         mediaId = mediaId.toLong(),
+        status = season.status.value,
         seasonNumber = season.seasonNumber.toLong(),
       )
     }
