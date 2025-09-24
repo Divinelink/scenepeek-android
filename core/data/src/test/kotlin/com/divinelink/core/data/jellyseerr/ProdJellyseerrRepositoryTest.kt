@@ -37,6 +37,7 @@ import com.divinelink.core.network.jellyseerr.model.tv.JellyseerrTvDetailsRespon
 import com.divinelink.core.network.jellyseerr.model.tv.TvInfoResponse
 import com.divinelink.core.network.jellyseerr.model.tv.TvSeasonResponse
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.dao.TestMediaDao
 import com.divinelink.core.testing.database.TestDatabaseFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.JellyseerrRequestMediaBodyApiFactory
 import com.divinelink.core.testing.factories.api.jellyseerr.response.server.radarr.RadarrInstanceDetailsResponseFactory
@@ -65,6 +66,7 @@ class ProdJellyseerrRepositoryTest {
 
   private val remote = TestJellyseerrService()
   private val authRepository = TestAuthRepository()
+  private val mediaDao = TestMediaDao()
 
   private lateinit var database: Database
 
@@ -75,6 +77,7 @@ class ProdJellyseerrRepositoryTest {
     repository = ProdJellyseerrRepository(
       service = remote.mock,
       authRepository = authRepository.mock,
+      mediaDao = mediaDao.mock,
       dispatcher = testDispatcher,
     )
   }

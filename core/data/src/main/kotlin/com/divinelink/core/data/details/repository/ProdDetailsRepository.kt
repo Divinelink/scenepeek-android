@@ -17,6 +17,7 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.account.AccountMediaDetails
 import com.divinelink.core.model.credits.AggregateCredits
 import com.divinelink.core.model.details.MediaDetails
+import com.divinelink.core.model.details.TV
 import com.divinelink.core.model.details.rating.RatingDetails
 import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.model.details.toMediaItem
@@ -69,7 +70,14 @@ class ProdDetailsRepository(
       val details = apiResponse.toDomainMedia()
       val mediaItem = details.toMediaItem()
 
-      mediaDao.insertMedia(mediaItem)
+      mediaDao.insertMedia(
+        media = mediaItem,
+        seasons = if (details is TV) {
+          details.seasons
+        } else {
+          null
+        },
+      )
       Result.success(details)
     }.catch {
       throw MediaDetailsException()
@@ -105,7 +113,15 @@ class ProdDetailsRepository(
         ).first()
       },
       saveFetchResult = { remoteData ->
-        mediaDao.insertMedia(remoteData.toDomainMedia().toMediaItem())
+        val mediaDetails = remoteData.toDomainMedia()
+        mediaDao.insertMedia(
+          media = mediaDetails.toMediaItem(),
+          seasons = if (mediaDetails is TV) {
+            mediaDetails.seasons
+          } else {
+            null
+          },
+        )
       },
       shouldFetch = { it == null },
     )

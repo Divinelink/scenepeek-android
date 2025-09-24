@@ -19,6 +19,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.details.model.RecommendedException
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrMediaInfoFactory
 import com.divinelink.core.fixtures.model.jellyseerr.media.JellyseerrRequestFactory
@@ -44,6 +45,8 @@ import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.details.credits.AggregatedCreditsFactory
 import com.divinelink.core.testing.getString
 import com.divinelink.core.testing.repository.TestAuthRepository
+import com.divinelink.core.testing.repository.TestJellyseerrRepository
+import com.divinelink.core.testing.repository.TestMediaRepository
 import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.FakeRequestMediaUseCase
 import com.divinelink.core.testing.usecase.TestDeleteMediaUseCase
@@ -59,6 +62,7 @@ import com.divinelink.factories.details.domain.model.account.AccountMediaDetails
 import com.divinelink.feature.details.media.ui.DetailsScreen
 import com.divinelink.feature.details.media.ui.DetailsViewModel
 import com.divinelink.feature.details.media.ui.MediaDetailsResult
+import com.divinelink.feature.request.media.RequestMediaEntryData
 import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.scenepeek.fakes.usecase.FakeGetMediaDetailsUseCase
 import com.divinelink.scenepeek.fakes.usecase.details.FakeAddToWatchlistUseCase
@@ -853,11 +857,13 @@ class DetailsScreenTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        media = MediaItemFactory.FightClub(),
+        data = RequestMediaEntryData(request = null, media = MediaItemFactory.FightClub()),
         requestMediaUseCase = requestMediaUseCase.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         authRepository = authRepository.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
+        jellyseerrRepository = TestJellyseerrRepository().mock,
+        mediaRepository = TestMediaRepository().mock,
       )
     }
 
@@ -924,7 +930,7 @@ class DetailsScreenTest : ComposeTest() {
 
       onNodeWithTag(TestTags.Modal.REQUEST_MOVIE).assertIsDisplayed()
 
-      onNodeWithTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON).performClick()
+      onNodeWithTag(TestTags.ActionButton.REQUEST_MOVIE_BUTTON).performClick()
 
       onAllNodesWithTag(TestTags.Components.STATUS_PILL.format("Available"))
         .onFirst()
@@ -962,6 +968,11 @@ class DetailsScreenTest : ComposeTest() {
   fun `test request tv seasons and delete request afterwards`() = runTest {
     val getServerInstancesUseCase = TestGetServerInstancesUseCase()
     val getServerInstanceDetailsUseCase = TestGetServerInstanceDetailsUseCase()
+    val mediaRepository = TestMediaRepository()
+    val jellyseerrRepository = TestJellyseerrRepository()
+
+    mediaRepository.mockFetchTvSeasons(Result.success(SeasonFactory.all()))
+    jellyseerrRepository.mockGetTvDetails(response = JellyseerrMediaInfoFactory.Tv.unknown())
 
     getServerInstancesUseCase.mockResponse(
       Result.success(SonarrInstanceFactory.all),
@@ -973,11 +984,16 @@ class DetailsScreenTest : ComposeTest() {
 
     declare {
       RequestMediaViewModel(
-        media = MediaItemFactory.theOffice(),
+        data = RequestMediaEntryData(
+          request = null,
+          media = MediaItemFactory.theOffice(),
+        ),
         requestMediaUseCase = requestMediaUseCase.mock,
         authRepository = authRepository.mock,
         getServerInstanceDetailsUseCase = getServerInstanceDetailsUseCase.mock,
         getServerInstancesUseCase = getServerInstancesUseCase.mock,
+        jellyseerrRepository = jellyseerrRepository.mock,
+        mediaRepository = mediaRepository.mock,
       )
     }
 
@@ -1022,7 +1038,7 @@ class DetailsScreenTest : ComposeTest() {
         mapOf(
           "id" to 0,
           "isFavorite" to false,
-          "mediaType" to MediaType.MOVIE,
+          "mediaType" to MediaType.TV,
         ),
       ),
     )
@@ -1056,7 +1072,7 @@ class DetailsScreenTest : ComposeTest() {
       onNodeWithContentDescription(getString(detailsR.string.feature_details_request))
         .assertIsNotDisplayed()
 
-      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_movie))
+      onNodeWithContentDescription(getString(detailsR.string.feature_details_manage_tv))
         .assertIsDisplayed()
         .performClick()
 

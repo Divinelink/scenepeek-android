@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.feature.requests.RequestsAction
-import com.divinelink.feature.requests.ui.ActionButton
+import com.divinelink.core.ui.button.action.ActionButton
 
 @Composable
 fun FailedActionButtons(

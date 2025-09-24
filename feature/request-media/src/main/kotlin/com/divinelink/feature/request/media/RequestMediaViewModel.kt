@@ -4,18 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.jellyseerr.model.JellyseerrRequestParams
+import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
+import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.domain.jellyseerr.GetServerInstanceDetailsUseCase
 import com.divinelink.core.domain.jellyseerr.GetServerInstancesUseCase
 import com.divinelink.core.domain.jellyseerr.RequestMediaUseCase
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.jellyseerr.server.InstanceProfile
 import com.divinelink.core.model.jellyseerr.server.InstanceRootFolder
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
-import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.components.dialog.TwoButtonDialogState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
@@ -23,6 +26,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -31,25 +35,34 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class RequestMediaViewModel(
-  media: MediaItem.Media,
+  data: RequestMediaEntryData,
   private val getServerInstancesUseCase: GetServerInstancesUseCase,
   private val getServerInstanceDetailsUseCase: GetServerInstanceDetailsUseCase,
   private val requestMediaUseCase: RequestMediaUseCase,
+  private val jellyseerrRepository: JellyseerrRepository,
+  mediaRepository: MediaRepository,
   authRepository: AuthRepository,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(
     RequestMediaUiState.initial(
-      seasons = emptyList(),
-      media = media,
+      request = data.request,
+      media = data.media,
     ),
   )
   val uiState = _uiState.asStateFlow()
 
   private val _updatedMediaInfo = Channel<JellyseerrMediaInfo>()
   val updatedMediaInfo: Flow<JellyseerrMediaInfo> = _updatedMediaInfo.receiveAsFlow()
+
+  private val _updatedRequest = Channel<JellyseerrRequest>()
+  val updatedRequest: Flow<JellyseerrRequest> = _updatedRequest.receiveAsFlow()
+
+  private val _onCancelRequest = Channel<Int>()
+  val onCancelRequest: Flow<Int> = _onCancelRequest.receiveAsFlow()
 
   init {
     authRepository
@@ -60,11 +73,33 @@ class RequestMediaViewModel(
       }
       .launchIn(viewModelScope)
 
+    if (uiState.value.media.mediaType == MediaType.TV) {
+      mediaRepository
+        .fetchTvSeasons(id = data.media.id)
+        .distinctUntilChanged()
+        .onEach { result ->
+          result.fold(
+            onSuccess = { seasons ->
+              _uiState.update {
+                it.copy(seasons = seasons)
+              }
+            },
+            onFailure = {},
+          )
+        }
+        .launchIn(viewModelScope)
+
+      viewModelScope.launch {
+        jellyseerrRepository
+          .getTvDetails(data.media.id)
+          .launchIn(viewModelScope)
+      }
+    }
+
     viewModelScope.launch {
       if (uiState.value.permissions.canRequestAdvanced()) {
-        getServerInstancesUseCase(media.mediaType).fold(
+        getServerInstancesUseCase(uiState.value.media.mediaType).fold(
           onSuccess = { instances ->
-            val default = instances.find { it.isDefault && it.is4k == uiState.value.is4k }
             _uiState.update { uiState ->
               uiState.copy(
                 instances = instances.filter { it.is4k == uiState.is4k },
@@ -73,11 +108,19 @@ class RequestMediaViewModel(
             if (instances.isEmpty()) {
               hideAdvancedOptions()
             } else {
-              if (default == null) {
-                selectInstance(instances.first())
-              } else {
-                selectInstance(default)
+              val preferredInstance = when {
+                uiState.value.request != null -> instances.find {
+                  uiState.value.request!!.serverId == it.id && it.is4k == uiState.value.is4k
+                }
+                else -> instances.find { it.isDefault && it.is4k == uiState.value.is4k }
               }
+              val usePreselected = uiState.value.request != null && preferredInstance != null
+              val instanceToSelect = preferredInstance ?: instances.first()
+
+              selectInstance(
+                instance = instanceToSelect,
+                usePreselected = usePreselected,
+              )
             }
           },
           onFailure = {
@@ -100,13 +143,10 @@ class RequestMediaViewModel(
     }
   }
 
-  fun updateSeasons(seasons: List<Season>) {
-    _uiState.update { uiState ->
-      uiState.copy(seasons = seasons)
-    }
-  }
-
-  private fun selectInstance(instance: ServerInstance) {
+  private fun selectInstance(
+    instance: ServerInstance,
+    usePreselected: Boolean,
+  ) {
     if (instance == (uiState.value.selectedInstance as? LCEState.Content)?.data) return
 
     _uiState.update { uiState ->
@@ -128,8 +168,18 @@ class RequestMediaViewModel(
       ).fold(
         onSuccess = { result ->
           _uiState.update { uiState ->
-            val defaultProfile = result.profiles.find { it.id == instance.activeProfileId }
-            val defaultRootFolder = result.rootFolders.find { it.path == instance.activeDirectory }
+            val defaultProfile = result.profiles.find { profile ->
+              profile.id == when {
+                usePreselected -> uiState.request?.profileId
+                else -> instance.activeProfileId
+              }
+            }
+            val defaultRootFolder = result.rootFolders.find { folder ->
+              folder.path == when {
+                usePreselected -> uiState.request?.rootFolder
+                else -> instance.activeDirectory
+              }
+            }
             uiState.copy(
               profiles = result.profiles,
               rootFolders = result.rootFolders,
@@ -172,12 +222,12 @@ class RequestMediaViewModel(
     }
   }
 
-  private fun onRequestMedia(seasons: List<Int>) {
+  private fun onRequestMedia() {
     requestMediaUseCase(
       JellyseerrRequestParams(
         mediaId = uiState.value.media.id,
         mediaType = uiState.value.media.mediaType.value,
-        seasons = seasons,
+        seasons = uiState.value.selectedSeasons,
         is4k = uiState.value.is4k,
         serverId = (uiState.value.selectedInstance as? LCEState.Content)?.data?.id,
         profileId = (uiState.value.selectedProfile as? LCEState.Content)?.data?.id,
@@ -244,6 +294,105 @@ class RequestMediaViewModel(
       }.launchIn(viewModelScope)
   }
 
+  private fun onEditRequest() {
+    viewModelScope.launch {
+      _uiState.update { it.copy(isLoading = true) }
+
+      jellyseerrRepository.editRequest(
+        JellyseerrEditRequestMediaBodyApi(
+          requestId = uiState.value.request?.id,
+          mediaId = uiState.value.media.id,
+          mediaType = uiState.value.media.mediaType.value,
+          seasons = uiState.value.selectedSeasons,
+          is4k = uiState.value.is4k,
+          serverId = (uiState.value.selectedInstance as? LCEState.Content)?.data?.id,
+          profileId = (uiState.value.selectedProfile as? LCEState.Content)?.data?.id,
+          rootFolder = (uiState.value.selectedRootFolder as? LCEState.Content)?.data?.path,
+        ),
+      )
+        .catch { Timber.d(it) }
+        .distinctUntilChanged()
+        .collect {
+          it.fold(
+            onSuccess = { response ->
+              val profileName = uiState
+                .value
+                .profiles
+                .find { profile -> profile.id == response.profileId }
+
+              val message = UIText.ResourceText(
+                R.string.feature_request_media_update_request_success,
+              )
+
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(text = message),
+                )
+              }
+
+              _updatedRequest.send(
+                response.copy(
+                  profileName = profileName?.name,
+                ),
+              )
+            },
+            onFailure = {
+              _uiState.update { uiState ->
+                uiState.copy(
+                  isLoading = false,
+                  snackbarMessage = SnackbarMessage.from(
+                    text = UIText.ResourceText(
+                      R.string.feature_request_media_update_request_failure,
+                    ),
+                  ),
+                )
+              }
+            },
+          )
+        }
+    }
+  }
+
+  private fun cancelRequest() {
+    val requestId = uiState.value.request?.id ?: return
+
+    viewModelScope.launch {
+      _uiState.update { it.copy(isLoading = true) }
+
+      jellyseerrRepository.deleteRequest(
+        requestId = requestId,
+      ).fold(
+        onSuccess = {
+          _onCancelRequest.send(requestId)
+
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_request_media_cancel_request_success,
+                ),
+              ),
+            )
+          }
+        },
+        onFailure = {
+          _uiState.update {
+            it.copy(
+              isLoading = false,
+              snackbarMessage = SnackbarMessage.from(
+                text = UIText.ResourceText(
+                  R.string.feature_request_media_cancel_request_failure,
+                ),
+              ),
+            )
+          }
+        },
+      )
+    }
+  }
+
   private fun dismissSnackbar() {
     _uiState.update { uiState ->
       uiState.copy(snackbarMessage = null)
@@ -260,10 +409,48 @@ class RequestMediaViewModel(
     when (action) {
       RequestMediaAction.DismissSnackbar -> dismissSnackbar()
       RequestMediaAction.DismissDialog -> dismissDialog()
-      is RequestMediaAction.RequestMedia -> onRequestMedia(action.seasons)
-      is RequestMediaAction.SelectInstance -> selectInstance(action.instance)
+      RequestMediaAction.RequestMedia -> if (uiState.value.isEditMode) {
+        onEditRequest()
+      } else {
+        onRequestMedia()
+      }
+      RequestMediaAction.CancelRequest -> cancelRequest()
+      is RequestMediaAction.SelectInstance -> selectInstance(
+        instance = action.instance,
+        usePreselected = false,
+      )
       is RequestMediaAction.SelectQualityProfile -> selectQualityProfile(action.quality)
       is RequestMediaAction.SelectRootFolder -> selectRootFolder(action.folder)
+      is RequestMediaAction.SelectAllSeasons -> toggleAllSeasons(action.selectAll)
+      is RequestMediaAction.SelectSeason -> selectSeason(action)
+    }
+  }
+
+  private fun toggleAllSeasons(selectAll: Boolean) {
+    val update = if (selectAll) {
+      uiState.value.requestableSeasons.map { seasonNumber ->
+        seasonNumber
+      }
+    } else {
+      emptyList()
+    }
+
+    _uiState.update {
+      it.copy(selectedSeasons = update)
+    }
+  }
+
+  private fun selectSeason(action: RequestMediaAction.SelectSeason) {
+    val selectedSeasons = uiState.value.selectedSeasons
+
+    val update = if (selectedSeasons.contains(action.number)) {
+      selectedSeasons.filterNot { it == action.number }
+    } else {
+      selectedSeasons.plus(action.number)
+    }
+
+    _uiState.update {
+      it.copy(selectedSeasons = update)
     }
   }
 

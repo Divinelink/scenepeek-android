@@ -1,12 +1,12 @@
 package com.divinelink.feature.request.media
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,27 +14,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.details.canBeRequested
 import com.divinelink.core.model.details.isAvailable
@@ -42,8 +42,8 @@ import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.button.action.ActionButton
 import com.divinelink.core.ui.components.JellyseerrStatusPill
 import com.divinelink.core.ui.components.dialog.TwoButtonDialog
 import com.divinelink.core.ui.composition.PreviewLocalProvider
@@ -61,8 +61,12 @@ fun RequestMediaContent(
   onAction: (RequestMediaAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
-  val selectedSeasons = remember { mutableStateListOf<Int>() }
-  val validSeasons = state.seasons.filterNot { it.seasonNumber == 0 }
+  val density = LocalDensity.current
+  val showCancelRequest by remember(state.selectedSeasons) {
+    derivedStateOf { state.isEditMode && state.selectedSeasons.isEmpty() }
+  }
+
+  var actionsSize by remember { mutableStateOf(0.dp) }
 
   SnackbarMessageHandler(
     snackbarMessage = state.snackbarMessage,
@@ -96,14 +100,15 @@ fun RequestMediaContent(
         .testTag(TestTags.LAZY_COLUMN)
         .padding(
           top = MaterialTheme.dimensions.keyline_8,
-          bottom = MaterialTheme.dimensions.keyline_96,
+          bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
         ),
-      contentPadding = PaddingValues(bottom = MaterialTheme.dimensions.keyline_16),
     ) {
       item {
         JellyseerrGradientText(
           modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
-          text = if (state.media.mediaType == MediaType.TV) {
+          text = if (state.isEditMode) {
+            stringResource(id = UiString.core_ui_request_pending_request)
+          } else if (state.media.mediaType == MediaType.TV) {
             stringResource(id = UiString.core_ui_request_series)
           } else {
             stringResource(id = UiString.core_ui_request_movie)
@@ -128,19 +133,10 @@ fun RequestMediaContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
           ) {
             Switch(
-              checked = selectedSeasons.size == validSeasons.filter { it.canBeRequested() }.size,
-              enabled = validSeasons.any { it.canBeRequested() },
+              checked = state.selectedSeasons.size == state.requestableSeasons.size,
+              enabled = state.requestableSeasons.isNotEmpty(),
               onCheckedChange = {
-                if (it) {
-                  selectedSeasons.clear()
-                  selectedSeasons.addAll(
-                    validSeasons.mapIndexedNotNull { index, season ->
-                      if (!season.isAvailable()) index + 1 else null
-                    },
-                  )
-                } else {
-                  selectedSeasons.clear()
-                }
+                onAction(RequestMediaAction.SelectAllSeasons(selectAll = it))
               },
               modifier = Modifier
                 .testTag(TestTags.Dialogs.TOGGLE_ALL_SEASONS_SWITCH)
@@ -171,34 +167,27 @@ fun RequestMediaContent(
         }
 
         items(
-          items = validSeasons,
+          items = state.validSeasons,
           key = { it.seasonNumber },
         ) { item ->
           Row(
             modifier = Modifier
               .fillMaxWidth()
               .testTag(TestTags.Dialogs.SEASON_ROW.format(item.seasonNumber))
-              .clickable(enabled = item.canBeRequested()) {
-                if (item.canBeRequested()) {
-                  if (selectedSeasons.contains(item.seasonNumber)) {
-                    selectedSeasons.remove(item.seasonNumber)
-                  } else {
-                    selectedSeasons.add(item.seasonNumber)
-                  }
-                }
+              .clickable(
+                enabled = item.seasonNumber in state.requestableSeasons || item.canBeRequested(),
+              ) {
+                onAction(RequestMediaAction.SelectSeason(item.seasonNumber))
               },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
           ) {
             Switch(
-              checked = selectedSeasons.contains(item.seasonNumber) || item.isAvailable(),
-              enabled = item.canBeRequested(),
+              checked = item.seasonNumber in state.selectedSeasons ||
+                (item.seasonNumber !in state.requestableSeasons) && item.isAvailable(),
+              enabled = item.seasonNumber in state.requestableSeasons || item.canBeRequested(),
               onCheckedChange = {
-                if (it) {
-                  selectedSeasons.add(item.seasonNumber)
-                } else {
-                  selectedSeasons.remove(item.seasonNumber)
-                }
+                onAction(RequestMediaAction.SelectSeason(item.seasonNumber))
               },
               modifier = Modifier
                 .testTag(TestTags.Dialogs.SEASON_SWITCH.format(item.seasonNumber))
@@ -323,79 +312,67 @@ fun RequestMediaContent(
     }
 
     Column(
-      modifier = Modifier.align(Alignment.BottomCenter),
+      modifier = Modifier
+        .onSizeChanged {
+          with(density) {
+            actionsSize = it.height.toDp()
+          }
+        }
+        .align(Alignment.BottomCenter)
+        .padding(horizontal = MaterialTheme.dimensions.keyline_16),
     ) {
       ElevatedButton(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = MaterialTheme.dimensions.keyline_16),
+        modifier = Modifier.fillMaxWidth(),
         onClick = { onDismissRequest() },
       ) {
         Text(text = stringResource(id = UiString.core_ui_cancel))
       }
       if (state.media.mediaType == MediaType.TV) {
-        RequestSeasonsButton(selectedSeasons, state, onAction)
+        AnimatedContent(targetState = showCancelRequest) { showCancel ->
+          if (showCancel) {
+            ActionButton.CancelRequest(
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.CancelRequest) },
+            )
+          } else if (state.isEditMode) {
+            ActionButton.EditRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          } else {
+            ActionButton.RequestTVShow(
+              enabled = state.isReady,
+              selectedSeasons = state.selectedSeasons.size,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          }
+        }
       } else {
-        RequestMovieButton(onAction)
+        if (state.isEditMode) {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            ActionButton.CancelRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.CancelRequest) },
+            )
+            ActionButton.EditRequest(
+              modifier = Modifier.weight(1f),
+              enabled = state.isReady,
+              onClick = { onAction(RequestMediaAction.RequestMedia) },
+            )
+          }
+        } else {
+          ActionButton.RequestMovie(
+            enabled = state.isReady,
+            onClick = { onAction(RequestMediaAction.RequestMedia) },
+          )
+        }
       }
-    }
-  }
-}
-
-@Composable
-private fun RequestMovieButton(onAction: (RequestMediaAction) -> Unit) {
-  Button(
-    modifier = Modifier
-      .fillMaxWidth()
-      .testTag(TestTags.Dialogs.REQUEST_MOVIE_BUTTON)
-      .padding(bottom = MaterialTheme.dimensions.keyline_8)
-      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-    onClick = {
-      onAction(RequestMediaAction.RequestMedia(emptyList()))
-    },
-  ) {
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Icon(Icons.Default.Download, null)
-      Text(text = stringResource(id = UiString.core_ui_request))
-    }
-  }
-}
-
-@Composable
-private fun RequestSeasonsButton(
-  selectedSeasons: SnapshotStateList<Int>,
-  state: RequestMediaUiState,
-  onAction: (RequestMediaAction) -> Unit,
-) {
-  Button(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(bottom = MaterialTheme.dimensions.keyline_8)
-      .padding(horizontal = MaterialTheme.dimensions.keyline_16),
-    enabled = selectedSeasons.isNotEmpty() && !state.isLoading,
-    onClick = { onAction(RequestMediaAction.RequestMedia(selectedSeasons)) },
-  ) {
-    val text = if (selectedSeasons.isEmpty()) {
-      stringResource(id = UiString.core_ui_select_seasons_button)
-    } else {
-      pluralStringResource(
-        id = UiPlurals.core_ui_request_series_button,
-        count = selectedSeasons.size,
-        selectedSeasons.size,
-      )
-    }
-
-    Row(
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      AnimatedVisibility(selectedSeasons.isNotEmpty()) {
-        Icon(Icons.Default.Download, null)
-      }
-      Text(text = text)
     }
   }
 }

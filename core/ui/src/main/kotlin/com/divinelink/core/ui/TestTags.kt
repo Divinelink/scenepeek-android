@@ -148,7 +148,6 @@ object TestTags {
     const val TOGGLE_ALL_SEASONS_SWITCH = "Season Toggle All Switch"
     const val SEASON_SWITCH = "Season Switch %s"
     const val SEASON_ROW = "Season Row %s"
-    const val REQUEST_MOVIE_BUTTON = "Request Movie Button"
   }
 
   object Modal {
@@ -162,7 +161,6 @@ object TestTags {
 
   object Request {
     const val LOADING_DROPDOWN_MENU = "Loading DropDown Menu %s"
-    const val CONTENT_DROPDOWN_MENU = "Content DropDown Menu %s"
 
     const val DESTINATION_SERVER_MENU = "Destination Server Dropdown %s"
     const val QUALITY_PROFILE_MENU = "Quality Profile Dropdown %s"
@@ -227,9 +225,7 @@ object TestTags {
 
   object Lists {
     const val SCROLLABLE_CONTENT = "Lists Scrollable Content View Mode %s"
-    const val CONTENT = "Lists Content"
     const val SCREEN = "Lists Screen"
-    const val ERROR_CONTENT = "Lists Error Content"
 
     const val PULL_TO_REFRESH = "List Pull To Refresh"
     const val DETAILS_SCREEN = "List Details Screen"
@@ -275,5 +271,9 @@ object TestTags {
   object Shimmer {
     const val HALF_LINE = "Shimmer Half Line - %s"
     const val LINE = "Shimmer Line - %s"
+  }
+
+  object ActionButton {
+    const val REQUEST_MOVIE_BUTTON = "Request Movie Button"
   }
 }

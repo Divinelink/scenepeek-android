@@ -54,9 +54,7 @@ fun RequestsContent(
 ) {
   PullToRefreshBox(
     isRefreshing = state.refreshing,
-    onRefresh = {
-      // TODO
-    },
+    onRefresh = { action(RequestsAction.Refresh) },
     modifier = Modifier
       .wrapContentSize()
       .testTag(TestTags.Components.PULL_TO_REFRESH),
@@ -67,9 +65,7 @@ fun RequestsContent(
           .padding(horizontal = MaterialTheme.dimensions.keyline_16)
           .padding(bottom = LocalBottomNavigationPadding.current),
         uiState = state.error,
-        onRetry = {
-          // TODO
-        },
+        onRetry = { action(RequestsAction.Refresh) },
       )
 
       state.data is DataState.Initial || state.data is DataState.Data -> RequestsScrollableContent(

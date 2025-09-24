@@ -1,6 +1,7 @@
 package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
@@ -72,7 +73,7 @@ class ProdMediaRepository(
     }
 
   override suspend fun insertFavoriteMedia(media: MediaItem.Media) {
-    dao.insertMedia(media)
+    dao.insertMedia(media, null)
     dao.addToFavorites(mediaId = media.id, mediaType = media.mediaType)
   }
 
@@ -96,5 +97,9 @@ class ProdMediaRepository(
     ).also {
       return Result.success(it)
     }
+  }
+
+  override fun fetchTvSeasons(id: Int): Flow<Result<List<Season>>> = dao.fetchSeasons(id).map {
+    Result.success(it)
   }
 }

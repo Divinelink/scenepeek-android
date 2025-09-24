@@ -17,6 +17,7 @@ val commonModule = module {
       isLenient = true
       coerceInputValues = true
       ignoreUnknownKeys = true
+      explicitNulls = false
     }
   }
 

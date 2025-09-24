@@ -54,9 +54,9 @@ import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.toMediaItem
 import com.divinelink.core.model.details.video.Video
-import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
@@ -90,8 +90,7 @@ import com.divinelink.feature.details.media.ui.forms.recommendation.Recommendati
 import com.divinelink.feature.details.media.ui.forms.reviews.ReviewsFormContent
 import com.divinelink.feature.details.media.ui.forms.seasons.SeasonsFormContent
 import com.divinelink.feature.details.media.ui.provider.DetailsViewStateProvider
-import com.divinelink.feature.request.media.movie.RequestMovieModal
-import com.divinelink.feature.request.media.tv.RequestSeasonsModal
+import com.divinelink.feature.request.media.RequestMediaModal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -135,24 +134,14 @@ fun DetailsContent(
   )
 
   if (showRequestModal) {
-    when (viewState.mediaDetails) {
-      is TV -> RequestSeasonsModal(
-        seasons = viewState.mediaDetails.seasons,
-        media = viewState.mediaDetails.toMediaItem(),
-        onDismissRequest = { showRequestModal = false },
-        onNavigate = onNavigate,
-        onUpdateMediaInfo = onUpdateMediaInfo,
-      )
-      is Movie -> RequestMovieModal(
-        media = viewState.mediaDetails.toMediaItem(),
-        onDismissRequest = { showRequestModal = false },
-        onNavigate = onNavigate,
-        onUpdateMediaInfo = onUpdateMediaInfo,
-      )
-      null -> {
-        // Do nothing
-      }
-    }
+    RequestMediaModal(
+      request = null,
+      mediaType = viewState.mediaType,
+      media = viewState.mediaDetails?.toMediaItem(),
+      onDismissRequest = { showRequestModal = false },
+      onUpdateMediaInfo = onUpdateMediaInfo,
+      onNavigate = onNavigate,
+    )
   }
 
   LaunchedEffect(viewState.jellyseerrMediaInfo) {

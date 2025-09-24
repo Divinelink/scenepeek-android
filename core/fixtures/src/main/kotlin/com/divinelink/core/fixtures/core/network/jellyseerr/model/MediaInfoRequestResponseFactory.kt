@@ -24,6 +24,9 @@ object MediaInfoRequestResponseFactory {
     requestedBy = RequestedByResponseFactory.scenepeek,
     profileName = null,
     canRemove = null,
+    serverId = null,
+    profileId = null,
+    rootFolder = null,
   )
 
   fun betterCallSaul1() = MediaInfoRequestResponse(
@@ -49,6 +52,11 @@ object MediaInfoRequestResponseFactory {
       requests = emptyList(),
       mediaType = "tv",
     ),
+    serverId = null,
+    profileId = null,
+    rootFolder = null,
+    profileName = null,
+    canRemove = null,
   )
 
   fun betterCallSaul2() = MediaInfoRequestResponse(
@@ -70,6 +78,11 @@ object MediaInfoRequestResponseFactory {
       requests = emptyList(),
       mediaType = "tv",
     ),
+    serverId = null,
+    profileId = null,
+    rootFolder = null,
+    profileName = null,
+    canRemove = null,
   )
 
   /**
@@ -98,6 +111,11 @@ object MediaInfoRequestResponseFactory {
       requests = emptyList(),
       mediaType = "tv",
     ),
+    serverId = null,
+    profileId = null,
+    rootFolder = null,
+    profileName = null,
+    canRemove = null,
   )
 
   fun all() = listOf(

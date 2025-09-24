@@ -33,7 +33,10 @@ object MediaRequestsResponseFactory {
           seasons = emptyList(),
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = "SD",
+          profileId = 2,
           canRemove = true,
+          serverId = 0,
+          rootFolder = "/data/media/movies",
         ),
         MediaInfoRequestResponse(
           id = 802,
@@ -51,6 +54,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 801,
@@ -68,6 +74,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 800,
@@ -85,6 +94,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = true,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
         MediaInfoRequestResponse(
           id = 799,
@@ -102,6 +114,9 @@ object MediaRequestsResponseFactory {
           requestedBy = RequestedByResponseFactory.scenepeek,
           profileName = null,
           canRemove = false,
+          serverId = null,
+          rootFolder = null,
+          profileId = null,
         ),
       ),
     )

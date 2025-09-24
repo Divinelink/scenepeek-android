@@ -27,6 +27,9 @@ fun MediaInfoRequestResponse.map() = JellyseerrRequest(
     )
   },
   requestDate = createdAt.localizeIsoDate(),
+  profileId = profileId,
+  serverId = serverId,
+  rootFolder = rootFolder,
   profileName = profileName,
   canRemove = canRemove == true,
 )

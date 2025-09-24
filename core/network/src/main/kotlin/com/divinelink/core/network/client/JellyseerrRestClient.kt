@@ -71,6 +71,11 @@ class JellyseerrRestClient(
 
   suspend inline fun <reified T : Any> get(url: String): T = client.get(url)
 
+  suspend inline fun <reified T : Any, reified V : Any> put(
+    url: String,
+    body: T,
+  ): V = client.put(url, body)
+
   suspend inline fun <reified T : Any, reified V : Any> post(
     url: String,
     body: T,

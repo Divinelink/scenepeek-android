@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.dao
 
 import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import kotlinx.coroutines.flow.Flow
@@ -13,8 +14,11 @@ class TestMediaDao {
 
   val mock: MediaDao = mock()
 
-  fun verifyItemInserted(item: MediaItem.Media) {
-    verify(mock).insertMedia(item)
+  fun verifyItemInserted(
+    item: MediaItem.Media,
+    seasons: List<Season>? = null,
+  ) {
+    verify(mock).insertMedia(item, seasons)
   }
 
   fun mockFetchFavorites(result: Flow<List<MediaItem.Media>>) {
@@ -45,10 +49,13 @@ class TestMediaDao {
     whenever(mock.fetchMedia(any())).thenReturn(mediaItem)
   }
 
-  fun mockFetchMediaWithInsert() {
+  fun mockFetchMediaWithInsert(
+    mediaItem: MediaItem.Media,
+    seasons: List<Season>? = null,
+  ) {
     var storedItem: MediaItem.Media? = null
 
-    whenever(mock.insertMedia(any())).thenAnswer { invocation ->
+    whenever(mock.insertMedia(mediaItem, seasons)).thenAnswer { invocation ->
       storedItem = invocation.getArgument(0)
       Unit
     }

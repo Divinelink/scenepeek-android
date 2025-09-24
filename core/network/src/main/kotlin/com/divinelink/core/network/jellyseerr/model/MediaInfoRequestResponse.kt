@@ -12,6 +12,9 @@ data class MediaInfoRequestResponse(
   val updatedAt: String,
   val seasons: List<TvSeasonResponse>,
   val requestedBy: RequestedByResponse,
-  val profileName: String? = null,
-  val canRemove: Boolean? = null,
+  val serverId: Int?,
+  val profileId: Int?,
+  val rootFolder: String?,
+  val profileName: String?,
+  val canRemove: Boolean?,
 )

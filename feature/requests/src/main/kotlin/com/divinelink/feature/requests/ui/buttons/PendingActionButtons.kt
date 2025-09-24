@@ -10,9 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
-import com.divinelink.core.model.media.MediaType
 import com.divinelink.feature.requests.RequestsAction
-import com.divinelink.feature.requests.ui.ActionButton
+import com.divinelink.core.ui.button.action.ActionButton
 
 @Composable
 fun PendingActionButtons(
@@ -44,7 +43,7 @@ fun PendingActionButtons(
       }
       ActionButton.EditRequest(
         enabled = enabled,
-      ) { onAction(RequestsAction.EditRequest(request.id)) }
+      ) { onAction(RequestsAction.EditRequest(request)) }
     }
   } else {
     Column(
@@ -52,11 +51,9 @@ fun PendingActionButtons(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
     ) {
-      if (request.media.mediaType == MediaType.TV) {
-        ActionButton.EditRequest(
-          enabled = enabled,
-        ) { onAction(RequestsAction.EditRequest(request.id)) }
-      }
+      ActionButton.EditRequest(
+        enabled = enabled,
+      ) { onAction(RequestsAction.EditRequest(request)) }
 
       ActionButton.CancelRequest(
         enabled = enabled,

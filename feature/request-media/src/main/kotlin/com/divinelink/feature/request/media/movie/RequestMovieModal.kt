@@ -11,23 +11,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.model.jellyseerr.media.JellyseerrMediaInfo
+import com.divinelink.core.model.jellyseerr.media.JellyseerrRequest
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.TestTags
-import com.divinelink.feature.request.media.RequestMediaViewModel
 import com.divinelink.feature.request.media.RequestMediaContent
+import com.divinelink.feature.request.media.RequestMediaEntryData
+import com.divinelink.feature.request.media.RequestMediaViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequestMovieModal(
+  request: JellyseerrRequest?,
   media: MediaItem.Media,
-  viewModel: RequestMediaViewModel = koinViewModel {
-    parametersOf(media)
+  viewModel: RequestMediaViewModel = koinViewModel(
+    key = media.uniqueIdentifier,
+  ) {
+    parametersOf(
+      RequestMediaEntryData(
+        request = request,
+        media = media,
+      ),
+    )
   },
   onDismissRequest: () -> Unit,
-  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
+  onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit = {},
+  onUpdateRequestInfo: (JellyseerrRequest) -> Unit = {},
+  onCancelRequest: (requestId: Int) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,6 +48,18 @@ fun RequestMovieModal(
   LaunchedEffect(Unit) {
     viewModel.updatedMediaInfo.collect {
       onUpdateMediaInfo(it)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.updatedRequest.collect {
+      onUpdateRequestInfo(it)
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    viewModel.onCancelRequest.collect {
+      onCancelRequest(it)
     }
   }
 

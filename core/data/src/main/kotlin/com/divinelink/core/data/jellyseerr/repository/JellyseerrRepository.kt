@@ -11,6 +11,7 @@ import com.divinelink.core.model.jellyseerr.request.RequestStatusUpdate
 import com.divinelink.core.model.jellyseerr.server.ServerInstance
 import com.divinelink.core.model.jellyseerr.server.ServerInstanceDetails
 import com.divinelink.core.network.Resource
+import com.divinelink.core.network.jellyseerr.model.JellyseerrEditRequestMediaBodyApi
 import com.divinelink.core.network.jellyseerr.model.JellyseerrRequestMediaBodyApi
 import kotlinx.coroutines.flow.Flow
 
@@ -60,4 +61,6 @@ interface JellyseerrRepository {
     page: Int,
     filter: MediaRequestFilter,
   ): Flow<Result<JellyseerrRequests>>
+
+  suspend fun editRequest(body: JellyseerrEditRequestMediaBodyApi): Flow<Result<JellyseerrRequest>>
 }

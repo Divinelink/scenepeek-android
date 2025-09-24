@@ -14,7 +14,7 @@ object SonarrInstanceFactory {
   )
 
   val anime = ServerInstance.Sonarr(
-    id = 0,
+    id = 1,
     name = "Animarr",
     is4k = false,
     isDefault = false,
@@ -23,7 +23,7 @@ object SonarrInstanceFactory {
   )
 
   val sonarr4K = ServerInstance.Sonarr(
-    id = 1,
+    id = 2,
     name = "Sonarr 4K",
     is4k = true,
     isDefault = true,

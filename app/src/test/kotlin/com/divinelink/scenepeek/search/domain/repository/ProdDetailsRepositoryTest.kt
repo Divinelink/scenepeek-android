@@ -11,6 +11,7 @@ import com.divinelink.core.data.details.repository.ProdDetailsRepository
 import com.divinelink.core.database.credits.dao.ProdCreditsDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
+import com.divinelink.core.fixtures.details.season.SeasonFactory
 import com.divinelink.core.fixtures.model.details.MediaDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.MoviesList
@@ -696,7 +697,7 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun `test fetch movie item without cached data inserts item to database`() = runTest {
-    mediaDao.mockFetchMediaWithInsert()
+    mediaDao.mockFetchMediaWithInsert(MediaItemFactory.FightClub())
     mediaDao.mockFetchFavoriteMovieIds(
       flowOf(emptyList()),
     )
@@ -718,7 +719,10 @@ class ProdDetailsRepositoryTest {
 
   @Test
   fun `test fetch tv item without cached data inserts item to database`() = runTest {
-    mediaDao.mockFetchMediaWithInsert()
+    mediaDao.mockFetchMediaWithInsert(
+      mediaItem = MediaItemFactory.theOffice(),
+      seasons = SeasonFactory.all(),
+    )
     mediaDao.mockFetchFavoriteTvIds(
       flowOf(emptyList()),
     )
@@ -749,7 +753,10 @@ class ProdDetailsRepositoryTest {
       awaitItem() shouldBe Resource.Loading(null)
       awaitItem() shouldBe Resource.Success(MediaItemFactory.theOffice())
       awaitComplete()
-      mediaDao.verifyItemInserted(response.toDomainMedia().toMediaItem())
+      mediaDao.verifyItemInserted(
+        item = response.toDomainMedia().toMediaItem(),
+        seasons = SeasonFactory.all(),
+      )
     }
   }
 
