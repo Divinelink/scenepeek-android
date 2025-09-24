@@ -29,8 +29,8 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DataState
 import com.divinelink.core.model.filter.MediaRequestFilter
-import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
-import com.divinelink.core.model.jellyseerr.permission.canPerform
+import com.divinelink.core.model.jellyseerr.permission.canManageRequests
+import com.divinelink.core.model.jellyseerr.permission.canRequestAdvanced
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
@@ -161,7 +161,8 @@ fun RequestsScrollableContent(
               },
               onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
               onAction = action,
-              canManageRequest = state.permissions.canPerform(ProfilePermission.MANAGE_REQUESTS),
+              canManageRequest = state.permissions.canManageRequests(),
+              canRequestAdvanced = state.permissions.canRequestAdvanced(),
             )
           }
 

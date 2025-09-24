@@ -45,6 +45,7 @@ import com.divinelink.feature.requests.ui.buttons.PendingActionButtons
 fun LazyItemScope.RequestMediaItem(
   modifier: Modifier = Modifier,
   canManageRequest: Boolean,
+  canRequestAdvanced: Boolean,
   item: RequestUiItem,
   onAction: (RequestsAction) -> Unit,
   onClick: (MediaItem.Media) -> Unit,
@@ -152,6 +153,7 @@ fun LazyItemScope.RequestMediaItem(
             request = item.request,
             enabled = !state.loading,
             onAction = onAction,
+            canRequestAdvanced = canRequestAdvanced,
             canManageRequest = canManageRequest,
           )
 
@@ -201,11 +203,13 @@ fun ActionButtons(
   request: JellyseerrRequest,
   enabled: Boolean,
   canManageRequest: Boolean,
+  canRequestAdvanced: Boolean,
   onAction: (RequestsAction) -> Unit,
 ) {
   when (request.requestStatus) {
     JellyseerrStatus.Request.PENDING -> PendingActionButtons(
-      hasPermission = canManageRequest,
+      canManageRequests = canManageRequest,
+      canRequestAdvanced = canRequestAdvanced,
       onAction = onAction,
       enabled = enabled,
       request = request,
