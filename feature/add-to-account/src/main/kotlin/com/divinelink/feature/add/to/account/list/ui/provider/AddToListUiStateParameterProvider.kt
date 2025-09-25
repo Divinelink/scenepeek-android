@@ -23,6 +23,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 1,
       loadingMore = false,
+      addedToLists = emptySet(),
+      itemsChecked = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -32,6 +34,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 1,
       loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -45,6 +49,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 2,
       loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -58,6 +64,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 2,
       loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -71,6 +79,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 2,
       loadingMore = true,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -89,6 +99,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 2,
       loadingMore = true,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -107,6 +119,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 2,
       loadingMore = true,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -127,6 +141,8 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       ),
       page = 2,
       loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
     ),
     AddToListUiState(
       media = MediaItemFactory.theWire().toStub(),
@@ -136,6 +152,22 @@ class AddToListUiStateParameterProvider : PreviewParameterProvider<AddToListUiSt
       error = null,
       page = 1,
       loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = emptySet(),
+    ),
+    AddToListUiState(
+      media = MediaItemFactory.theWire().toStub(),
+      isLoading = false,
+      lists = ListData.Data(ListItemFactory.page1()),
+      displayMessage = null,
+      error = null,
+      page = 1,
+      loadingMore = false,
+      itemsChecked = emptySet(),
+      addedToLists = setOf(
+        ListItemFactory.shows().id,
+        ListItemFactory.recommended().id,
+      ),
     ),
   )
 }

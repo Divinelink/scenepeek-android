@@ -86,6 +86,7 @@ fun AddToListContent(
 
       uiState.lists is ListData.Data -> ListsDataContent(
         data = uiState.lists.data,
+        addedToLists = uiState.addedToLists,
         action = action,
       )
     }
