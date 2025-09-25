@@ -87,6 +87,25 @@ object IntroSections {
     ),
   )
 
+  val v27 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.19.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v27_jellyseerr_requests_screen),
+    ),
+    IntroSection.SecondaryHeader.Features,
+    IntroSection.Text(
+      UIText.ResourceText(
+        R.string.feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists,
+      ),
+    ),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v27_jellyseerr_encryption),
+    ),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -95,5 +114,6 @@ object IntroSections {
     24 to v24,
     25 to v25,
     26 to v26,
+    27 to v27,
   )
 }

@@ -34,4 +34,8 @@
 
   <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings">- [Jellyseerr] Add advanced settings on movie/tv-show request</string>
   <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings_extra">You can now select destination server, quality profile and root folder when requesting a media!</string>
+
+  <string name="feature_onboarding_v27_jellyseerr_requests_screen">- [Jellyseerr] Add requests screen where the user can view and edit all their requests. Head over to Profile > Requests and give it a go!</string>
+  <string name="feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists">- [TMDB] Show the lists that the media is added to when adding it to lists.</string>
+  <string name="feature_onboarding_v27_jellyseerr_encryption">- Improve encryption implementation when storing the jellyseerr account. If you were connected to Jellyseerr previously you have been signed out and you need to re-login.</string>
 </resources>
