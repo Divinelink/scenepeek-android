@@ -1,12 +1,16 @@
 package com.divinelink.core.ui.list
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.ListItemBackdropImage
 import com.divinelink.core.ui.components.VisibilityBadge
 
@@ -23,6 +29,7 @@ import com.divinelink.core.ui.components.VisibilityBadge
 fun ListItemCard(
   modifier: Modifier = Modifier,
   listItem: ListItem,
+  isAdded: Boolean,
   onClick: (ListItem) -> Unit,
 ) {
   Card(
@@ -65,9 +72,22 @@ fun ListItemCard(
         )
       }
 
-      VisibilityBadge(
-        isPublic = listItem.public,
-      )
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
+      ) {
+        AnimatedVisibility(isAdded) {
+          Icon(
+            imageVector = Icons.Default.Done,
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = stringResource(UiString.core_ui_added_on_list, listItem.name),
+          )
+        }
+
+        VisibilityBadge(
+          isPublic = listItem.public,
+        )
+      }
     }
   }
 }

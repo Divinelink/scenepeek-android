@@ -44,4 +44,9 @@ interface ListRepository {
     listId: Int,
     items: List<MediaReference>,
   ): Result<Int>
+
+  suspend fun getItemStatus(
+    listId: Int,
+    item: MediaReference,
+  ): Result<Boolean>
 }

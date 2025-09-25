@@ -12,9 +12,11 @@ import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.network.list.model.remove.RemoveItemsRequest
 import com.divinelink.core.network.list.model.remove.RemoveItemsResponse
+import com.divinelink.core.network.list.model.status.ItemStatusResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import com.divinelink.core.network.list.util.buildFetchListDetailsUrl
+import com.divinelink.core.network.list.util.buildListItemStatusUrl
 import com.divinelink.core.network.list.util.buildListItemsUrl
 import com.divinelink.core.network.list.util.buildListUrl
 import com.divinelink.core.network.list.util.buildListWithIdUrl
@@ -105,5 +107,17 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
       url = url,
       body = RemoveItemsRequest.fromMediaReference(items),
     )
+  }
+
+  override suspend fun checkItemStatus(
+    listId: Int,
+    item: MediaReference,
+  ): Result<ItemStatusResponse> = runCatching {
+    val url = buildListItemStatusUrl(
+      listId = listId,
+      media = item,
+    )
+
+    client.get<ItemStatusResponse>(url = url)
   }
 }

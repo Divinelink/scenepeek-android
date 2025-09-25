@@ -5,11 +5,14 @@ import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import kotlinx.coroutines.flow.Flow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class TestListRepository {
@@ -50,5 +53,28 @@ class TestListRepository {
 
   suspend fun mockRemoveItems(result: Result<Int>) {
     whenever(mock.removeItems(any(), any())).thenReturn(result)
+  }
+
+  suspend fun mockGetItemStatus(
+    listId: Int,
+    item: MediaReference,
+    result: Result<Boolean>,
+  ) {
+    whenever(mock.getItemStatus(listId, item)).thenReturn(result)
+  }
+
+  suspend fun mockGetItemStatus(result: Result<Boolean>) {
+    whenever(mock.getItemStatus(any(), any())).thenReturn(result)
+  }
+
+  suspend fun verifyGetItemStatus(
+    listId: Int,
+    item: MediaReference,
+    times: Int,
+  ) {
+    verify(mock, times(times)).getItemStatus(
+      listId = listId,
+      item = item,
+    )
   }
 }

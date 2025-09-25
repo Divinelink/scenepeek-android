@@ -7,6 +7,7 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.ViewModelTestRobot
+import com.divinelink.core.testing.repository.TestListRepository
 import com.divinelink.core.testing.usecase.TestAddItemToListUseCase
 import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.google.common.truth.Truth.assertThat
@@ -18,6 +19,7 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
 
   private val fetchUserListsUseCase = TestFetchUserListsUseCase()
   private val addItemToListUseCase = TestAddItemToListUseCase()
+  private val listRepository = TestListRepository()
 
   private lateinit var viewModel: AddToListViewModel
   private lateinit var navArgs: AddToListRoute
@@ -29,6 +31,7 @@ class AddToListViewModelTestRobot : ViewModelTestRobot<AddToListUiState>() {
     viewModel = AddToListViewModel(
       fetchUserListsUseCase = fetchUserListsUseCase.mock,
       addItemToListUseCase = addItemToListUseCase.mock,
+      repository = listRepository.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
           "id" to navArgs.id,

@@ -181,11 +181,21 @@ class ProdListRepository(
       items = items,
     )
     .map { response ->
-      val successfullyRemoved = response.results
+      val successfullyRemoved = response
+        .results
         .map { MediaReference(it.mediaId, mediaType = MediaType.from(it.mediaType)) }
 
       listDao.removeMediaFromList(listId, successfullyRemoved)
 
       successfullyRemoved.size
     }
+
+  override suspend fun getItemStatus(
+    listId: Int,
+    item: MediaReference,
+  ): Result<Boolean> = service
+    .checkItemStatus(
+      listId = listId,
+      item = item,
+    ).map { it.success }
 }

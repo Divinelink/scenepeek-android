@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onFirstVisible
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +29,7 @@ import com.divinelink.feature.add.to.account.list.AddToListAction
 @Composable
 fun ListsDataContent(
   data: PaginationData<ListItem>,
+  addedToLists: Set<Int>,
   action: (AddToListAction) -> Unit,
 ) {
   val scrollState = rememberLazyListState()
@@ -66,11 +68,16 @@ fun ListsDataContent(
         items = data.list,
       ) { listItem ->
         ListItemCard(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier
+            .fillMaxWidth()
+            .onFirstVisible {
+              action(AddToListAction.CheckItemStatus(listItem.id))
+            },
           listItem = listItem,
           onClick = {
             action(AddToListAction.OnListClick(listItem.id))
           },
+          isAdded = listItem.id in addedToLists,
         )
       }
     }

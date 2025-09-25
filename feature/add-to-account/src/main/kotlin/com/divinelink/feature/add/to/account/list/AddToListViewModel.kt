@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.commons.domain.onError
+import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.domain.list.AddItemParameters
 import com.divinelink.core.domain.list.AddItemToListUseCase
 import com.divinelink.core.domain.list.FetchUserListsUseCase
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 class AddToListViewModel(
   private val fetchUserListsUseCase: FetchUserListsUseCase,
   private val addItemToListUseCase: AddItemToListUseCase,
+  private val repository: ListRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -103,6 +105,7 @@ class AddToListViewModel(
     when (action) {
       AddToListAction.LoadMore -> onLoadMore()
       is AddToListAction.OnListClick -> addToList(action.id)
+      is AddToListAction.CheckItemStatus -> checkItemStatus(action)
 
       AddToListAction.ConsumeDisplayMessage -> _uiState.update { uiState ->
         uiState.copy(
@@ -111,6 +114,22 @@ class AddToListViewModel(
       }
       AddToListAction.Login -> viewModelScope.launch {
         _navigateToTMDBAuth.send(Unit)
+      }
+    }
+  }
+
+  private fun checkItemStatus(action: AddToListAction.CheckItemStatus) {
+    viewModelScope.launch {
+      if (action.id in uiState.value.itemsChecked) return@launch
+      _uiState.update { it.copy(itemsChecked = it.itemsChecked.plus(action.id)) }
+
+      repository.getItemStatus(
+        listId = action.id,
+        item = uiState.value.media,
+      ).onSuccess {
+        _uiState.update { uiState ->
+          uiState.copy(addedToLists = uiState.addedToLists.plus(action.id))
+        }
       }
     }
   }
@@ -145,6 +164,7 @@ class AddToListViewModel(
 
                 uiState.copy(
                   isLoading = false,
+                  addedToLists = uiState.addedToLists.plus(listId),
                   displayMessage = DisplayMessage.Success(
                     UIText.ResourceText(
                       R.string.feature_add_to_account_item_added_to_list_success,

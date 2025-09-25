@@ -143,6 +143,7 @@ fun ListsDataContent(
                 .animateItem()
                 .animateContentSize(),
               listItem = listItem,
+              isAdded = false,
               onClick = {
                 userInteraction(
                   ListsAction.OnListClick(

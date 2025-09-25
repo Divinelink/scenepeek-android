@@ -1,5 +1,6 @@
 package com.divinelink.core.network.list.util
 
+import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
 import io.ktor.http.buildUrl
@@ -35,4 +36,18 @@ internal fun buildListWithIdUrl(id: Int): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V4 + "/list/$id"
+}.toString()
+
+internal fun buildListItemStatusUrl(
+  listId: Int,
+  media: MediaReference,
+): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V4 + "/list/$listId/item_status"
+
+  parameters.apply {
+    append("media_id", media.mediaId.toString())
+    append("media_type", media.mediaType.value)
+  }
 }.toString()

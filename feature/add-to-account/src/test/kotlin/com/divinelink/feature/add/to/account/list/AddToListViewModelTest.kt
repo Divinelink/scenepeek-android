@@ -322,6 +322,7 @@ class AddToListViewModelTest {
             ),
             isLoading = false,
             loadingMore = false,
+            addedToLists = setOf(8452376),
             displayMessage = DisplayMessage.Success(
               UIText.ResourceText(
                 R.string.feature_add_to_account_item_added_to_list_success,
