@@ -2,6 +2,8 @@ package com.divinelink.feature.lists.details
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -12,6 +14,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
+import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
@@ -128,6 +131,9 @@ class ListDetailsScreenTest : ComposeTest() {
         swipeDown()
       }
 
+      waitUntil {
+        onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).isNotDisplayed()
+      }
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
 
       onNodeWithText("The Wire").assertIsDisplayed()

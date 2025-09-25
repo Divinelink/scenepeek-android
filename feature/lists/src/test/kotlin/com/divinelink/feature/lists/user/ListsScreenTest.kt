@@ -2,6 +2,7 @@ package com.divinelink.feature.lists.user
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -22,6 +23,7 @@ import com.divinelink.core.testing.usecase.TestFetchUserListsUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class ListsScreenTest : ComposeTest() {
@@ -81,7 +83,7 @@ class ListsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test refresh list`() {
+  fun `test refresh list`() = runTest {
     fetchUserListsUseCase.mockResponse(
       Result.success(ListItemFactory.page2()),
     )
@@ -108,6 +110,9 @@ class ListsScreenTest : ComposeTest() {
         swipeDown()
       }
 
+      waitUntil {
+        onNodeWithText(ListItemFactory.movies().name).isDisplayed()
+      }
       onNodeWithText(ListItemFactory.movies().name).assertIsDisplayed()
     }
   }

@@ -16,6 +16,7 @@ import com.divinelink.core.navigation.route.Navigation.ListDetailsRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.snackbar.SnackbarMessage
 import com.divinelink.feature.add.to.account.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -61,6 +62,10 @@ class ListDetailsViewModel(
     }
 
     viewModelScope.launch {
+      if (isRefreshing) {
+        delay(250)
+      }
+
       fetchListDetailsUseCase.invoke(
         FetchListParameters(
           listId = uiState.value.id,

@@ -12,6 +12,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.lists.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -50,6 +51,10 @@ class ListsViewModel(private val fetchUserListsUseCase: FetchUserListsUseCase) :
       )
     }
     viewModelScope.launch {
+      if (isRefreshing) {
+        delay(250)
+      }
+
       fetchUserListsUseCase(
         UserListsParameters(
           page = if (isRefreshing) 1 else uiState.value.page,
