@@ -7,6 +7,7 @@ import com.divinelink.core.network.list.model.create.CreateListRequest
 import com.divinelink.core.network.list.model.create.CreateListResponse
 import com.divinelink.core.network.list.model.details.ListDetailsResponse
 import com.divinelink.core.network.list.model.remove.RemoveItemsResponse
+import com.divinelink.core.network.list.model.status.ItemStatusResponse
 import com.divinelink.core.network.list.model.update.UpdateListRequest
 import com.divinelink.core.network.list.model.update.UpdateListResponse
 import kotlinx.coroutines.flow.Flow
@@ -41,4 +42,9 @@ interface ListService {
     listId: Int,
     items: List<MediaReference>,
   ): Result<RemoveItemsResponse>
+
+  suspend fun checkItemStatus(
+    listId: Int,
+    item: MediaReference,
+  ): Result<ItemStatusResponse>
 }
