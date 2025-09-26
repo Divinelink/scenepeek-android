@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_BLACK_BACKGROUNDS
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_EPISODES_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MATERIAL_YOU
+import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_METADATA_LANGUAGE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_MOVIE_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SEASONS_RATING_SOURCE
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
@@ -15,6 +16,7 @@ import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.
 import com.divinelink.core.datastore.DataStorePreferenceStorage.PreferencesKeys.PREF_TV_RATING_SOURCE
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -45,6 +47,9 @@ interface PreferenceStorage {
 
   suspend fun setSeasonsRatingSource(ratingSource: RatingSource)
   val seasonsRatingSource: Flow<RatingSource>
+
+  suspend fun setMetadataLanguage(language: Language)
+  val metadataLanguage: Flow<Language>
 }
 
 class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) :
@@ -67,6 +72,8 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
     val PREF_TV_RATING_SOURCE = stringPreferencesKey("tv.rating.source")
     val PREF_EPISODES_RATING_SOURCE = stringPreferencesKey("episodes.rating.source")
     val PREF_SEASONS_RATING_SOURCE = stringPreferencesKey("seasons.rating.source")
+
+    val PREF_METADATA_LANGUAGE = stringPreferencesKey("metadata.language")
   }
 
   override suspend fun selectTheme(theme: String) {
@@ -140,5 +147,13 @@ class DataStorePreferenceStorage(private val dataStore: DataStore<Preferences>) 
 
   override val seasonsRatingSource: Flow<RatingSource> = dataStore.data.map { it ->
     it[PREF_SEASONS_RATING_SOURCE]?.let { RatingSource.from(it) } ?: RatingSource.TMDB
+  }.distinctUntilChanged()
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    dataStore.edit { it[PREF_METADATA_LANGUAGE] = language.code }
+  }
+
+  override val metadataLanguage: Flow<Language> = dataStore.data.map {
+    it[PREF_METADATA_LANGUAGE]?.let { code -> Language.fromCode(code) } ?: Language.ENGLISH
   }.distinctUntilChanged()
 }

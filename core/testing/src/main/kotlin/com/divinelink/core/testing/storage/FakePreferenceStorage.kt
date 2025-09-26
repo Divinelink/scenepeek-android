@@ -2,6 +2,7 @@ package com.divinelink.core.testing.storage
 
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -14,6 +15,7 @@ class FakePreferenceStorage(
   tvRatingSource: RatingSource = RatingSource.TMDB,
   episodesRatingSource: RatingSource = RatingSource.TMDB,
   seasonsRatingSource: RatingSource = RatingSource.TMDB,
+  metadataLanguage: Language = Language.ENGLISH,
 ) : PreferenceStorage {
 
   private val _selectedTheme = MutableStateFlow(selectedTheme)
@@ -39,6 +41,9 @@ class FakePreferenceStorage(
 
   private val _seasonsRatingSource = MutableStateFlow(seasonsRatingSource)
   override val seasonsRatingSource: Flow<RatingSource> = _seasonsRatingSource
+
+  private val _metadataLanguage = MutableStateFlow(metadataLanguage)
+  override val metadataLanguage: Flow<Language> = _metadataLanguage
 
   override suspend fun selectTheme(theme: String) {
     _selectedTheme.value = theme
@@ -70,5 +75,9 @@ class FakePreferenceStorage(
 
   override suspend fun setSeasonsRatingSource(ratingSource: RatingSource) {
     _seasonsRatingSource.value = ratingSource
+  }
+
+  override suspend fun setMetadataLanguage(language: Language) {
+    _metadataLanguage.value = language
   }
 }

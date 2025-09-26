@@ -4,8 +4,10 @@ import app.cash.turbine.test
 import com.divinelink.core.datastore.DataStorePreferenceStorage
 import com.divinelink.core.designsystem.theme.Theme
 import com.divinelink.core.model.details.rating.RatingSource
+import com.divinelink.core.model.locale.Language
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.runner.RunWith
@@ -241,6 +243,19 @@ class DataStorePreferenceStorageTest {
       storage.setSeasonsRatingSource(RatingSource.TMDB)
 
       expectNoEvents()
+    }
+  }
+
+  @Test
+  fun `test set and observe metadata language`() = runTest {
+    storage = DataStorePreferenceStorage(fakeDataStore)
+
+    storage.metadataLanguage.test {
+      awaitItem() shouldBe Language.ENGLISH
+
+      storage.setMetadataLanguage(Language.ARABIC)
+
+      awaitItem() shouldBe Language.ARABIC
     }
   }
 }
