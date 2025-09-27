@@ -10,6 +10,13 @@ with [Jetpack Compose](https://developer.android.com/compose). The application p
 information about movies &amp; television shows and other forms of entertainment. It includes
 information such as cast and crew, plot summaries, user reviews, ratings, and more.
 
+## Screenshots
+| Home | Details | Ratings | Lists |
+|:----:|:-------:|:-------:|:-----:|
+| <img width="270" height="585" alt="Home Screen" src="https://github.com/user-attachments/assets/4d12550c-5069-4c80-a2cd-eff762a9a7dc" /> | <img width="270" height="585" alt="Details Screen" src="https://github.com/user-attachments/assets/eea755e9-9d17-4dbb-9807-3e91395e3e28" /> | <img width="270" height="585" alt="Ratings Screen" src="https://github.com/user-attachments/assets/c4210496-2b5a-4c5e-bc2a-4e42caad8919" /> | <img width="270" height="585" alt="Lists Screen" src="https://github.com/user-attachments/assets/dfc789e5-04d3-4ad6-82ae-340431065347" /> |
+| Request Media | Edit Request | View Requests |
+| <img width="270" height="585" alt="Screenshot_20250927_182216" src="https://github.com/user-attachments/assets/ab884494-c983-40d0-bc28-aa54a44890ab" /> | <img width="270" height="585" alt="Edit Request Screen" src="https://github.com/user-attachments/assets/0e8b4293-253f-4633-bb71-c59d52614b6e" /> | <img width="270" height="585" alt="View Requests Screen" src="https://github.com/user-attachments/assets/27dd688a-a283-4e57-98ac-aa3fe2503873" /> |
+
 ## Core Features
 
 The following table outlines the main features of our app:
@@ -90,7 +97,5 @@ properties file that is not committed to the repository.
 2. Add your API keys to this file in the format: `PROPERTY_NAME=value`
 3. In your app's `build.gradle`, reference these properties using `secrets.propertyName`
 
-## Preview
 
-https://github.com/user-attachments/assets/5cde896d-c2ce-4ea7-819b-52884a914efc
 
