@@ -34,7 +34,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val baseUrl = "${restClient.tmdbUrl}/discover/movie?"
     val url = baseUrl +
       "&include_adult=false" +
-      "&language=en-US" +
+      "&language=${restClient.metadataLanguage()}" +
       "&page=${request.page}" +
       "&sort_by=popularity.desc" +
       "&vote_count.gte=50"
@@ -47,7 +47,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
   override fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/search/multi?"
     val url = baseUrl +
-      "&language=en-US" +
+      "&language=${restClient.metadataLanguage()}" +
       "&query=${request.query}" +
       "&page=${request.page}" +
       "&include_adult=false"
@@ -61,7 +61,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
   override fun fetchSearchMovies(request: SearchRequestApi): Flow<SearchResponseApi> = flow {
     val baseUrl = "${restClient.tmdbUrl}/search/movie?"
     val url = baseUrl +
-      "&language=en-US" +
+      "&language=${restClient.metadataLanguage()}" +
       "&query=${request.query}" +
       "&page=${request.page}" +
       "&include_adult=false"
@@ -79,6 +79,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       media = request.mediaType,
       id = request.id,
       appendToResponse = appendToResponse,
+      language = restClient.metadataLanguage(),
     )
 
     val response = restClient.get<DetailsResponseApi>(url = url)
@@ -91,7 +92,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val url = baseUrl +
       "${request.id}" +
       "/reviews?" +
-      "&language=en-US" +
+      "&language=${restClient.metadataLanguage()}" +
       "&include_adult=false"
 
     val response = restClient.get<ReviewsResponseApi>(url = url)
@@ -105,7 +106,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       val url = baseUrl +
         "${request.id}" +
         "/recommendations?" +
-        "&language=en-US" +
+        "&language=${restClient.metadataLanguage()}" +
         "&include_adult=false"
 
       val response = restClient.get<MoviesResponseApi>(url = url)
@@ -118,7 +119,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val url = baseUrl +
       "${request.id}" +
       "/recommendations?" +
-      "&language=en-US" +
+      "&language=${restClient.metadataLanguage()}" +
       "&include_adult=false"
 
     val response = restClient.get<TvResponseApi>(url = url)
@@ -131,7 +132,7 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val url = baseUrl +
       "${request.id}" +
       "/videos?" +
-      "&language=en-US"
+      "&language=${restClient.metadataLanguage()}"
 
     val response = restClient.get<VideosResponseApi>(url = url)
 

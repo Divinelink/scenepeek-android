@@ -1,6 +1,7 @@
 package com.divinelink.core.network.client
 
 import com.divinelink.core.datastore.EncryptedStorage
+import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -8,11 +9,14 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.bearerAuth
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.coroutines.flow.first
 
 class AuthTMDbClient(
   engine: HttpClientEngine,
   encryptedStorage: EncryptedStorage,
+  private val storage: PreferenceStorage,
 ) {
+  suspend fun metadataLanguage() = storage.metadataLanguage.first().code
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
 
   val client: HttpClient = ktorClient(engine).config {

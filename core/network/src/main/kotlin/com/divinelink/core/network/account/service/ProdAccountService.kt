@@ -16,6 +16,7 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/movies" +
       "?page=$page" +
+      "&language=${restClient.metadataLanguage()}" +
       "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 
@@ -32,6 +33,7 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/watchlist/tv" +
       "?page=$page" +
+      "&language=${restClient.metadataLanguage()}" +
       "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 
@@ -48,6 +50,7 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
   ): Flow<MoviesResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/movies" +
       "?page=$page" +
+      "&language=${restClient.metadataLanguage()}" +
       "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 
@@ -64,6 +67,7 @@ class ProdAccountService(private val restClient: TMDbClient) : AccountService {
   ): Flow<TvResponseApi> = flow {
     val url = "${restClient.tmdbUrl}/account/$accountId/rated/tv" +
       "?page=$page" +
+      "&language=${restClient.metadataLanguage()}" +
       "&session_id=$sessionId" +
       "&sort_by=created_at.$sortBy"
 

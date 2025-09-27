@@ -10,13 +10,14 @@ fun buildFetchDetailsUrl(
   id: Int,
   media: MediaType,
   appendToResponse: Boolean,
+  language: String,
 ): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
   encodedPath = Routes.TMDb.V3 + "/${media.value}" + "/$id"
 
   parameters.apply {
-    append("language", "en-US")
+    append("language", language)
     if (appendToResponse) {
       when (media) {
         MediaType.MOVIE -> append("append_to_response", "credits")

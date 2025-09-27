@@ -11,13 +11,15 @@ import kotlinx.coroutines.flow.flow
 class ProdPersonService(private val restClient: TMDbClient) : PersonService {
 
   override fun fetchPersonDetails(id: Long): Flow<PersonDetailsApi> = flow {
-    val url = "${restClient.tmdbUrl}/person/$id"
+    val url = "${restClient.tmdbUrl}/person/$id" +
+      "?language=${restClient.metadataLanguage()}"
 
     emit(restClient.get<PersonDetailsApi>(url = url))
   }
 
   override fun fetchPersonCombinedCredits(id: Long): Flow<PersonCreditsApi> = flow {
-    val url = "${restClient.tmdbUrl}/person/$id/combined_credits"
+    val url = "${restClient.tmdbUrl}/person/$id/combined_credits" +
+      "?language=${restClient.metadataLanguage()}"
 
     emit(restClient.get<PersonCreditsApi>(url = url))
   }
@@ -29,7 +31,8 @@ class ProdPersonService(private val restClient: TMDbClient) : PersonService {
     val url = "${restClient.tmdbUrl}/person/$id/changes" +
       "?page=${body.page}" +
       "&start_date=${body.startDate}" +
-      "&end_date=${body.endDate}"
+      "&end_date=${body.endDate}" +
+      "language=${restClient.metadataLanguage()}"
 
     emit(restClient.get<ChangesResponseApi>(url = url))
   }

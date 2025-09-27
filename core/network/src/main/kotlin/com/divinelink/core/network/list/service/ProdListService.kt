@@ -54,6 +54,7 @@ class ProdListService(private val client: AuthTMDbClient) : ListService {
       url = buildFetchListDetailsUrl(
         listId = listId,
         page = page,
+        language = client.metadataLanguage(),
       ),
     )
   }
