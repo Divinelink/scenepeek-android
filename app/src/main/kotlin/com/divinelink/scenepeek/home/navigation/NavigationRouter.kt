@@ -6,6 +6,7 @@ import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.navigateToAddToList
 import com.divinelink.core.navigation.route.navigateToCreateList
 import com.divinelink.core.navigation.route.navigateToDetails
+import com.divinelink.core.navigation.route.navigateToDiscover
 import com.divinelink.core.navigation.route.navigateToEditList
 import com.divinelink.core.navigation.route.navigateToListDetails
 import com.divinelink.core.navigation.route.navigateToLists
@@ -57,6 +58,7 @@ fun NavController.findNavigation(route: Navigation) {
 
     is Navigation.ActionMenuRoute.Media -> openDefaultActionMenuModal(route)
     Navigation.JellyseerrRequestsRoute -> navigateToRequests()
+    Navigation.DiscoverRoute -> navigateToDiscover()
 
     // This is from top level navigation
     Navigation.HomeRoute -> {

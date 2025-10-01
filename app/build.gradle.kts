@@ -100,6 +100,7 @@ dependencies {
   implementation(projects.feature.search)
   implementation(projects.feature.settings)
   implementation(projects.feature.credits)
+  implementation(projects.feature.discover)
   implementation(projects.feature.tmdbAuth)
   implementation(projects.feature.onboarding)
   implementation(projects.feature.profile)
