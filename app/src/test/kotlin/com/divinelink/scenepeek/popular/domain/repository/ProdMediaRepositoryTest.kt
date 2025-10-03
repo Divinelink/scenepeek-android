@@ -4,18 +4,24 @@ import app.cash.turbine.test
 import com.divinelink.core.commons.domain.data
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.data.media.repository.ProdMediaRepository
+import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchResponseApi
 import com.divinelink.core.testing.dao.TestMediaDao
+import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.factories.api.SearchMovieApiFactory
 import com.google.common.truth.Truth.assertThat
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -182,5 +188,41 @@ class ProdMediaRepositoryTest {
     repository.removeFavoriteMedia(movie.id, mediaType = MediaType.MOVIE)
 
     mediaDao.verifyRemoveMovie(movie.id)
+  }
+
+  @Test
+  fun `test fetch movie genres with success`() = runTest {
+    mediaService.mockFetchMovieGenres(
+      Result.success(GenresListResponse(GenreResponseFactory.Movie.all)),
+    )
+
+    repository.fetchMovieGenres() shouldBe Result.success(GenreFactory.Movie.all)
+  }
+
+  @Test
+  fun `test fetch tv genres with success`() = runTest {
+    mediaService.mockFetchTvGenres(
+      Result.success(GenresListResponse(GenreResponseFactory.Tv.all)),
+    )
+
+    repository.fetchTvGenres() shouldBe Result.success(GenreFactory.Tv.all)
+  }
+
+  @Test
+  fun `test fetch movie genres with failure`() = runTest {
+    mediaService.mockFetchMovieGenres(Result.failure(AppException.Unknown()))
+
+    shouldThrow<AppException.Unknown> {
+      repository.fetchMovieGenres().data
+    }
+  }
+
+  @Test
+  fun `test fetch tv genres with failure`() = runTest {
+    mediaService.mockFetchTvGenres(Result.failure(AppException.Unknown()))
+
+    shouldThrow<AppException.Unknown> {
+      repository.fetchTvGenres().data
+    }
   }
 }

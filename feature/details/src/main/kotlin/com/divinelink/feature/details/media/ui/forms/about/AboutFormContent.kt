@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontStyle
 import com.divinelink.core.designsystem.component.ScenePeekLazyColumn
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Person
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.details.media.MediaDetailsInformation
@@ -27,7 +28,7 @@ import com.divinelink.feature.details.media.ui.components.TvInformationSection
 fun AboutFormContent(
   modifier: Modifier = Modifier,
   aboutData: DetailsData.About,
-  onGenreClick: (String) -> Unit,
+  onGenreClick: (Genre) -> Unit,
   onPersonClick: (Person) -> Unit,
 ) {
   ScenePeekLazyColumn(
@@ -57,12 +58,12 @@ fun AboutFormContent(
           style = MaterialTheme.typography.bodyMedium,
         )
       }
-    }
-
-    aboutData.genres?.let { genres ->
       item {
         HorizontalDivider()
       }
+    }
+
+    aboutData.genres?.let { genres ->
       item {
         GenresSection(genres, onGenreClick)
       }

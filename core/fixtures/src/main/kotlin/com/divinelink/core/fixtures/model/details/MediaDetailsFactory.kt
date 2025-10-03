@@ -1,6 +1,7 @@
 package com.divinelink.core.fixtures.model.details
 
 import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.Movie
 import com.divinelink.core.model.details.Person
@@ -36,7 +37,11 @@ object MediaDetailsFactory {
       ),
     ),
     cast = ActorFactory.all(),
-    genres = listOf("Thriller", "Drama", "Comedy"),
+    genres = listOf(
+      GenreFactory.Movie.thriller,
+      GenreFactory.Movie.drama,
+      GenreFactory.Movie.comedy,
+    ),
     runtime = "2h 10m",
     imdbId = "tt0137523",
     tagline = "You don't talk about Fight Club.",
@@ -72,7 +77,7 @@ object MediaDetailsFactory {
     releaseDate = "2005-03-24",
     ratingCount = RatingCount.tmdb(8.6, 4503),
     isFavorite = false,
-    genres = listOf("Comedy"),
+    genres = listOf(GenreFactory.Tv.comedy),
     seasons = SeasonFactory.all(),
     creators = listOf(
       Person(

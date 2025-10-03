@@ -2,6 +2,7 @@ package com.divinelink.core.network.media.util
 
 import com.divinelink.core.model.media.MediaType
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class BuildUrlTest {
@@ -67,5 +68,15 @@ class BuildUrlTest {
     assertThat(url).isEqualTo(
       "https://api.themoviedb.org/3/find/tt1234?external_source=imdb_id",
     )
+  }
+
+  @Test
+  fun `test buildMovieGenreUrl`() {
+    buildMovieGenreUrl() shouldBe "https://api.themoviedb.org/3/genre/movie/list?language=en"
+  }
+
+  @Test
+  fun `test buildTvGenreUrl`() {
+    buildTvGenreUrl() shouldBe "https://api.themoviedb.org/3/genre/tv/list?language=en"
   }
 }

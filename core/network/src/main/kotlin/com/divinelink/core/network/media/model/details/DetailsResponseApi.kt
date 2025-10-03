@@ -14,6 +14,8 @@ import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.network.media.mapper.credits.map
 import com.divinelink.core.network.media.mapper.details.map
+import com.divinelink.core.network.media.mapper.map
+import com.divinelink.core.network.media.model.GenreResponse
 import com.divinelink.core.network.media.model.details.credits.CastApi
 import com.divinelink.core.network.media.model.details.credits.CrewApi
 import com.divinelink.core.network.media.model.details.credits.SeriesCreatorApi
@@ -27,7 +29,7 @@ import kotlinx.serialization.json.JsonObject
 sealed class DetailsResponseApi {
   abstract val id: Int
   abstract val adult: Boolean
-  abstract val genres: List<Genre>
+  abstract val genres: List<GenreResponse>
 
   @SerialName("backdrop_path")
   abstract val backdropPath: String?
@@ -58,7 +60,7 @@ sealed class DetailsResponseApi {
     @SerialName("backdrop_path") override val backdropPath: String?,
     @SerialName("belongs_to_collection") val belongToCollection: JsonObject? = null,
     val budget: Int,
-    override val genres: List<Genre>,
+    override val genres: List<GenreResponse>,
     val homepage: String? = null,
     @SerialName("imdb_id") val imdbId: String? = null,
     @SerialName("original_language") override val originalLanguage: String,
@@ -86,7 +88,7 @@ sealed class DetailsResponseApi {
     override val id: Int,
     override val adult: Boolean,
     @SerialName("backdrop_path") override val backdropPath: String?,
-    override val genres: List<Genre>,
+    override val genres: List<GenreResponse>,
     @SerialName("origin_country") val originCountry: List<String>,
     @SerialName("original_language") override val originalLanguage: String,
     @SerialName("original_name") val originalName: String,
@@ -128,7 +130,7 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
   ),
   tagline = this.tagline.takeIf { it.isNotBlank() },
   overview = this.overview,
-  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
+  genres = this.genres.map { it.map() },
   creators = this.credits?.crew?.map(),
   cast = this.credits?.cast?.toActors() ?: emptyList(),
   runtime = this.runtime.toHourMinuteFormat(),
@@ -163,7 +165,7 @@ private fun DetailsResponseApi.TV.toDomainTVShow(): MediaDetails = TV(
   backdropPath = this.backdropPath ?: "",
   releaseDate = this.releaseDate,
   title = this.name,
-  genres = this.genres.map { it.name }.takeIf { it.isNotEmpty() },
+  genres = this.genres.map { it.map() },
   ratingCount = RatingCount.tmdb(
     tmdbVoteAverage = this.voteAverage.round(1),
     tmdbVoteCount = voteCount,
@@ -230,12 +232,6 @@ private fun Int?.toHourMinuteFormat(): String? {
 data class CreditsApi(
   val cast: List<CastApi>,
   val crew: List<CrewApi>,
-)
-
-@Serializable
-data class Genre(
-  val id: Int,
-  val name: String,
 )
 
 @Serializable

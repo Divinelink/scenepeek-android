@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 import com.divinelink.core.model.details.rating.RatingSource
@@ -18,7 +19,7 @@ sealed class MediaDetails {
   abstract val overview: String?
   abstract val releaseDate: String
   abstract val ratingCount: RatingCount
-  abstract val genres: List<String>?
+  abstract val genres: List<Genre>?
   abstract val isFavorite: Boolean
   abstract val imdbId: String?
   abstract val popularity: Double
@@ -32,7 +33,7 @@ sealed class MediaDetails {
     tagline: String? = this.tagline,
     overview: String? = this.overview,
     releaseDate: String = this.releaseDate,
-    genres: List<String>? = this.genres,
+    genres: List<Genre>? = this.genres,
     isFavorite: Boolean = this.isFavorite,
     ratingCount: RatingCount = this.ratingCount,
     imdbId: String? = this.imdbId,

@@ -1,5 +1,6 @@
 package com.divinelink.core.data.media.repository
 
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -64,4 +65,7 @@ interface MediaRepository {
     id: Int,
     mediaType: MediaType,
   ): Result<Boolean>
+
+  suspend fun fetchMovieGenres(): Result<List<Genre>>
+  suspend fun fetchTvGenres(): Result<List<Genre>>
 }

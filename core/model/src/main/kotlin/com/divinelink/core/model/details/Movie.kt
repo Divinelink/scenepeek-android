@@ -1,5 +1,6 @@
 package com.divinelink.core.model.details
 
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.media.MediaDetailsInformation
 import com.divinelink.core.model.details.rating.RatingCount
 
@@ -12,7 +13,7 @@ data class Movie(
   override val posterPath: String,
   override val backdropPath: String,
   override val overview: String?,
-  override val genres: List<String>?,
+  override val genres: List<Genre>?,
   override val releaseDate: String,
   override val ratingCount: RatingCount,
   override val tagline: String?,

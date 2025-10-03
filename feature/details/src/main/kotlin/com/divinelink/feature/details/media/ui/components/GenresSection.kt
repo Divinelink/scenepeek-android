@@ -10,13 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.Genre
 import com.divinelink.core.ui.components.details.genres.GenreLabel
 import com.divinelink.feature.details.R
 
 @Composable
 fun GenresSection(
-  genres: List<String>,
-  onGenreClick: (String) -> Unit,
+  genres: List<Genre>,
+  onGenreClick: (Genre) -> Unit,
 ) {
   Column {
     Text(

@@ -16,14 +16,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.fixtures.model.GenreFactory
+import com.divinelink.core.model.Genre
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 
 @Composable
 fun GenreLabel(
   modifier: Modifier = Modifier,
-  genre: String,
-  onGenreClick: (String) -> Unit,
+  genre: Genre,
+  onGenreClick: (Genre) -> Unit,
 ) {
   Surface(
     shape = RoundedCornerShape(4.dp),
@@ -42,7 +44,7 @@ fun GenreLabel(
           .align(Alignment.Center)
           .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
         textAlign = TextAlign.Center,
-        text = genre,
+        text = genre.name,
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
       )
@@ -53,12 +55,10 @@ fun GenreLabel(
 @Previews
 @Composable
 private fun GenreLabelPreview() {
-  AppTheme {
-    Surface {
-      GenreLabel(
-        genre = "Documentary",
-        onGenreClick = {},
-      )
-    }
+  PreviewLocalProvider {
+    GenreLabel(
+      genre = GenreFactory.Movie.documentary,
+      onGenreClick = {},
+    )
   }
 }
