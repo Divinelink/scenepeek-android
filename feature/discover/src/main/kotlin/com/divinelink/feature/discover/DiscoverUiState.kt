@@ -1,13 +1,15 @@
 package com.divinelink.feature.discover
 
+import com.divinelink.core.model.tab.MediaTab
+
 data class DiscoverUiState(
-  val todo: Int,
-  val todo2: Int,
+  val selectedTabIndex: Int,
+  val tabs: List<MediaTab>,
 ) {
   companion object {
     val initial = DiscoverUiState(
-      todo = 0,
-      todo2 = 0,
+      selectedTabIndex = MediaTab.Movie.order,
+      tabs = MediaTab.entries,
     )
   }
 }

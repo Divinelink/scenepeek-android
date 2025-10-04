@@ -2,6 +2,7 @@ package com.divinelink.feature.user.data
 
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.testing.MainDispatcherRule

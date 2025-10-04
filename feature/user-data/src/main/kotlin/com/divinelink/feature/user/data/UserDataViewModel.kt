@@ -7,6 +7,7 @@ import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.session.ObserveAccountUseCase
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataParameters
 import com.divinelink.core.model.user.data.UserDataResponse
@@ -33,9 +34,9 @@ class UserDataViewModel(
   private val _uiState: MutableStateFlow<UserDataUiState> = MutableStateFlow(
     UserDataUiState(
       section = route.userDataSection,
-      selectedTabIndex = MediaTab.MOVIE.ordinal,
+      selectedTabIndex = MediaTab.Movie.order,
       tabs = mapOf(
-        MediaTab.MOVIE to null,
+        MediaTab.Movie to null,
         MediaTab.TV to null,
       ),
       pages = mapOf(
@@ -186,7 +187,7 @@ class UserDataViewModel(
         pages = uiState.pages + (response.type to response.page + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
         tabs = uiState.tabs + if (response.type == MediaType.MOVIE) {
-          MediaTab.MOVIE to response.totalResults
+          MediaTab.Movie to response.totalResults
         } else {
           MediaTab.TV to response.totalResults
         },

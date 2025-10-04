@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.model.user.data.UserDataSection.Ratings

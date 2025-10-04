@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="feature_user_data_movie_tab">Movies</string>
-  <string name="feature_user_data_tv_show_tab">TV Shows</string>
-
   <string name="feature_user_data_empty_movies_watchlist">You haven\'t added any movies to your watchlist.</string>
   <string name="feature_user_data_empty_tv_shows_watchlist">You haven\'t added any TV shows to your watchlist.</string>
 
