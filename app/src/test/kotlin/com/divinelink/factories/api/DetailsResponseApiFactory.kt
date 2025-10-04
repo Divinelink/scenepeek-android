@@ -5,8 +5,8 @@ package com.divinelink.factories.api
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
 import com.divinelink.core.network.media.model.details.ProductionCompany
 import com.divinelink.core.network.media.model.details.ProductionCountryResponse
+import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
 import com.divinelink.factories.CreditsFactory
-import com.divinelink.factories.GenreFactory
 
 object DetailsResponseApiFactory {
 
@@ -15,7 +15,11 @@ object DetailsResponseApiFactory {
     backdropPath = "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
     belongToCollection = null,
     budget = 63000000,
-    genres = GenreFactory.all(),
+    genres = listOf(
+      GenreResponseFactory.Movie.thriller,
+      GenreResponseFactory.Movie.drama,
+      GenreResponseFactory.Movie.comedy,
+    ),
     homepage = null,
     id = 550,
     imdbId = "tt0137523",

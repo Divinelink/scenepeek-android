@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
@@ -55,4 +56,7 @@ interface MediaService {
   suspend fun addToWatchlist(request: AddToWatchlistRequestApi): Result<SubmitOnAccountResponse>
 
   fun findById(externalId: String): Flow<FindByIdResponseApi>
+
+  suspend fun fetchMovieGenres(): Result<GenresListResponse>
+  suspend fun fetchTvGenres(): Result<GenresListResponse>
 }

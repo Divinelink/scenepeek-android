@@ -1,11 +1,15 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
 import com.divinelink.core.network.media.model.rating.AddRatingRequestApi
 import com.divinelink.core.network.media.model.rating.DeleteRatingRequestApi
+import com.divinelink.core.testing.factories.api.media.GenreResponseFactory
+import com.divinelink.core.testing.factories.json.model.GenreListResponseJsonFactory
 import com.divinelink.core.testing.network.TestRestClient
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -178,6 +182,38 @@ class ProdMediaServiceTest {
           statusMessage = "The item/record was deleted successfully.",
         ),
       ),
+    )
+  }
+
+  @Test
+  fun `test get movie genres list`() = runTest {
+    testRestClient.mockGet<GenresListResponse>(
+      url = "",
+      json = GenreListResponseJsonFactory.movieGenreJson,
+    )
+
+    service = ProdMediaService(testRestClient.restClient)
+
+    val result = service.fetchMovieGenres()
+
+    result shouldBe Result.success(
+      GenresListResponse(GenreResponseFactory.Movie.all),
+    )
+  }
+
+  @Test
+  fun `test get tv genres list`() = runTest {
+    testRestClient.mockGet<GenresListResponse>(
+      url = "",
+      json = GenreListResponseJsonFactory.tvGenreJson,
+    )
+
+    service = ProdMediaService(testRestClient.restClient)
+
+    val result = service.fetchTvGenres()
+
+    result shouldBe Result.success(
+      GenresListResponse(GenreResponseFactory.Tv.all),
     )
   }
 }

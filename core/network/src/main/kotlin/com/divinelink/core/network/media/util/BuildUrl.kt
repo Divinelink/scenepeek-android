@@ -41,3 +41,23 @@ fun buildFindByIdUrl(
     append("external_source", externalSource)
   }
 }.toString()
+
+fun buildMovieGenreUrl(): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/genre/movie/list"
+
+  parameters.apply {
+    append("language", "en")
+  }
+}.toString()
+
+fun buildTvGenreUrl(): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/genre/tv/list"
+
+  parameters.apply {
+    append("language", "en")
+  }
+}.toString()

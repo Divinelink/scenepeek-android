@@ -1,6 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.network.client.TMDbClient
+import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
 import com.divinelink.core.network.media.model.details.DetailsResponseApi
@@ -24,6 +25,8 @@ import com.divinelink.core.network.media.model.states.AccountMediaDetailsRespons
 import com.divinelink.core.network.media.model.tv.TvResponseApi
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
+import com.divinelink.core.network.media.util.buildMovieGenreUrl
+import com.divinelink.core.network.media.util.buildTvGenreUrl
 import com.divinelink.core.network.runCatchingWithNetworkRetry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -213,5 +216,13 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
     val url = buildFindByIdUrl(externalId = externalId)
 
     emit(restClient.get<FindByIdResponseApi>(url = url))
+  }
+
+  override suspend fun fetchMovieGenres(): Result<GenresListResponse> = runCatching {
+    restClient.get<GenresListResponse>(url = buildMovieGenreUrl())
+  }
+
+  override suspend fun fetchTvGenres(): Result<GenresListResponse> = runCatching {
+    restClient.get<GenresListResponse>(url = buildTvGenreUrl())
   }
 }
