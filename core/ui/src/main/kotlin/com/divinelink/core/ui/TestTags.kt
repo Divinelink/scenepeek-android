@@ -11,6 +11,10 @@ object TestTags {
     const val SCROLLABLE_CONTENT = "Scrollable Content"
     const val PULL_TO_REFRESH = "Pull to refresh"
 
+    object Fab {
+      const val DISCOVER = "Discover Floating Action Button"
+    }
+
     object Button {
       const val CLEAR_FILTERS = "Clear filters button"
       const val SWITCH_VIEW = "Switch View Button"

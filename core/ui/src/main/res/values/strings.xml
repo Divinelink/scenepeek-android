@@ -4,6 +4,7 @@
   <string name="core_ui_cancel">Cancel</string>
   <string name="core_ui_confirm">Confirm</string>
   <string name="core_ui_delete">Delete</string>
+  <string name="core_ui_discover">Discover</string>
   <string name="core_ui_share_error_details">Share error details</string>
 
   <string name="core_ui_approve">Approve</string>

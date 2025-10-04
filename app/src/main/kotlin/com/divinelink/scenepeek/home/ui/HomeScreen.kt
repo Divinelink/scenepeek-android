@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,7 +26,9 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
+import com.divinelink.core.ui.components.extensions.showExpandedFab
 import com.divinelink.scenepeek.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -38,6 +41,8 @@ fun HomeScreen(
 ) {
   val viewState by viewModel.viewState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val browserScrollState = rememberLazyGridState()
+  val filterScrollState = rememberLazyGridState()
 
   rememberScaffoldState(
     animatedVisibilityScope = animatedVisibilityScope,
@@ -76,6 +81,12 @@ fun HomeScreen(
     navigationBar = {
       PersistentNavigationBar()
     },
+    floatingActionButton = {
+      DiscoverFab(
+        expanded = browserScrollState.showExpandedFab() && filterScrollState.showExpandedFab(),
+        onNavigate = onNavigate,
+      )
+    },
   ) {
     Column {
       Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
@@ -113,6 +124,8 @@ fun HomeScreen(
         onClearFiltersClick = viewModel::onClearFiltersClicked,
         onRetryClick = viewModel::onRetryClick,
         onNavigate = onNavigate,
+        browserScrollState = browserScrollState,
+        filterScrollState = filterScrollState,
       )
     }
   }

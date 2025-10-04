@@ -13,6 +13,7 @@ import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.feature.profile.ui.ProfileContent
 import org.koin.androidx.compose.koinViewModel
 
@@ -31,6 +32,12 @@ fun AnimatedVisibilityScope.ProfileScreen(
     },
     navigationBar = {
       PersistentNavigationBar()
+    },
+    floatingActionButton = {
+      DiscoverFab(
+        expanded = true,
+        onNavigate = onNavigate,
+      )
     },
     content = {
       Column {

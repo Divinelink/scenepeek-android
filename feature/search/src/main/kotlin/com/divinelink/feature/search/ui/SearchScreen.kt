@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,8 +30,11 @@ import com.divinelink.core.scaffold.PersistentNavigationRail
 import com.divinelink.core.scaffold.PersistentScaffold
 import com.divinelink.core.scaffold.rememberScaffoldState
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.components.DiscoverFab
 import com.divinelink.core.ui.components.ScenePeekSearchBar
 import com.divinelink.core.ui.components.ToolbarState
+import com.divinelink.core.ui.components.extensions.canScrollToTop
+import com.divinelink.core.ui.components.extensions.showExpandedFab
 import com.divinelink.feature.search.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,6 +49,7 @@ fun AnimatedVisibilityScope.SearchScreen(
   var focusTrigger by remember { mutableIntStateOf(0) }
 
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val scrollState = rememberLazyGridState()
 
   LaunchedEffect(uiState.focusSearch) {
     if (uiState.focusSearch) {
@@ -108,6 +113,12 @@ fun AnimatedVisibilityScope.SearchScreen(
         },
       )
     },
+    floatingActionButton = {
+      DiscoverFab(
+        expanded = scrollState.showExpandedFab(),
+        onNavigate = onNavigate,
+      )
+    },
     content = { paddingValues ->
       Column {
         Spacer(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
@@ -117,6 +128,7 @@ fun AnimatedVisibilityScope.SearchScreen(
           onNavigate = onNavigate,
           onLoadNextPage = viewModel::onLoadNextPage,
           onRetryClick = viewModel::onRetryClick,
+          scrollState = scrollState,
         )
       }
     },
