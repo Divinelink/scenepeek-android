@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
@@ -54,7 +56,7 @@ fun BlankSlate(
         modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_8),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.bodyMedium,
-        text = description.getString(),
+        text = AnnotatedString.fromHtml(description.getString()),
       )
     }
 

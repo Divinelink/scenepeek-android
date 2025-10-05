@@ -66,6 +66,7 @@ fun AnimatedVisibilityScope.DiscoverScreen(
         DiscoverContent(
           uiState = uiState,
           action = viewModel::onAction,
+          onNavigate = onNavigate,
         )
       }
     },
