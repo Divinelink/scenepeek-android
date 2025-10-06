@@ -159,6 +159,7 @@
   <string name="core_ui_private">Private</string>
 
   <string name="core_ui_genres">Genres</string>
+  <string name="core_ui_languages">Languages</string>
 
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>

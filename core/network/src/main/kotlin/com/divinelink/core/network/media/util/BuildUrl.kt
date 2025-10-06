@@ -74,11 +74,17 @@ fun buildDiscoverUrl(
 
   parameters.apply {
     append("page", page.toString())
-    append("language", "en")
+    append("language", "en-US")
+    append("include_adult", "false")
+    append("vote_count.gte", "10")
+    append("sort_by", "popularity.desc")
     filters.forEach { filter ->
       when (filter) {
         is DiscoverFilter.Genres -> if (filter.filters.isNotEmpty()) {
           append("with_genres", filter.filters.joinToString(","))
+        }
+        is DiscoverFilter.Languages -> if (filter.filters.isNotEmpty()) {
+          append("with_original_language", filter.filters.joinToString(","))
         }
       }
     }

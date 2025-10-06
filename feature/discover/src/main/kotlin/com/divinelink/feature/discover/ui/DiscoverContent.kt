@@ -46,8 +46,10 @@ import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
 import com.divinelink.feature.discover.DiscoverAction
 import com.divinelink.feature.discover.DiscoverForm
 import com.divinelink.feature.discover.DiscoverUiState
+import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.R
-import com.divinelink.feature.discover.genre.SelectGenreModalBottomSheet
+import com.divinelink.feature.discover.filters.SelectFilterModalBottomSheet
+import com.divinelink.feature.discover.language.LanguageFilterChip
 import com.divinelink.feature.discover.ui.provider.DiscoverUiStateParameterProvider
 import kotlinx.coroutines.launch
 
@@ -62,7 +64,7 @@ fun DiscoverContent(
     initialPage = uiState.selectedTabIndex,
     pageCount = { uiState.tabs.size },
   )
-  var showGenreModal by remember { mutableStateOf(false) }
+  var filterModal by remember { mutableStateOf<FilterModal?>(null) }
 
   LaunchedEffect(pagerState) {
     snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -70,11 +72,12 @@ fun DiscoverContent(
     }
   }
 
-  if (showGenreModal) {
-    SelectGenreModalBottomSheet(
+  filterModal?.let { type ->
+    SelectFilterModalBottomSheet(
+      type = type,
       mediaType = uiState.selectedTab.mediaType,
       onDismissRequest = {
-        showGenreModal = false
+        filterModal = null
         action(DiscoverAction.DiscoverMedia)
       },
     )
@@ -106,8 +109,15 @@ fun DiscoverContent(
     ) {
       item {
         GenreFilterChip(
-          filters = uiState.selectedGenreFilters,
-          onClick = { showGenreModal = true },
+          filters = uiState.genreFilters,
+          onClick = { filterModal = FilterModal.Genre },
+        )
+      }
+
+      item {
+        LanguageFilterChip(
+          filters = uiState.languageFilters,
+          onClick = { filterModal = FilterModal.Language },
         )
       }
     }

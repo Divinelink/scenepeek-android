@@ -1,6 +1,7 @@
 package com.divinelink.feature.discover
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MediaTab
@@ -11,7 +12,8 @@ data class DiscoverUiState(
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
-  val genreFilters: Map<MediaType, List<Genre>>,
+  val genreFiltersMap: Map<MediaType, List<Genre>>,
+  val languagesFiltersMap: Map<MediaType, List<Language>>,
   val loadingMap: Map<MediaType, Boolean>,
 ) {
   companion object {
@@ -30,7 +32,11 @@ data class DiscoverUiState(
         MediaType.MOVIE to true,
         MediaType.TV to true,
       ),
-      genreFilters = mapOf(
+      genreFiltersMap = mapOf(
+        MediaType.MOVIE to emptyList(),
+        MediaType.TV to emptyList(),
+      ),
+      languagesFiltersMap = mapOf(
         MediaType.MOVIE to emptyList(),
         MediaType.TV to emptyList(),
       ),
@@ -43,6 +49,7 @@ data class DiscoverUiState(
 
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
-  val selectedGenreFilters = genreFilters[selectedTab.mediaType] ?: emptyList()
+  val genreFilters = genreFiltersMap[selectedTab.mediaType] ?: emptyList()
+  val languageFilters = languagesFiltersMap[selectedTab.mediaType] ?: emptyList()
   val isLoading = loadingMap[selectedMedia] == true
 }

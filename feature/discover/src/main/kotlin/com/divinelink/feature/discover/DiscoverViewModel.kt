@@ -2,7 +2,7 @@ package com.divinelink.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divinelink.core.data.GenreRepository
+import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.DiscoverParameters
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 class DiscoverViewModel(
-  private val genreRepository: GenreRepository,
+  private val filterRepository: FilterRepository,
   private val discoverUseCase: DiscoverMediaUseCase,
 ) : ViewModel() {
 
@@ -25,13 +25,26 @@ class DiscoverViewModel(
   val uiState: StateFlow<DiscoverUiState> = _uiState
 
   init {
-    genreRepository
+    filterRepository
       .selectedGenres
       .onEach { genres ->
         _uiState.update { uiState ->
           uiState.copy(
-            genreFilters = uiState.genreFilters.plus(
-              uiState.selectedTab.mediaType to genres.toList(),
+            genreFiltersMap = uiState.genreFiltersMap.plus(
+              uiState.selectedTab.mediaType to genres,
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
+
+    filterRepository
+      .selectedLanguages
+      .onEach { languages ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            languagesFiltersMap = uiState.languagesFiltersMap.plus(
+              uiState.selectedTab.mediaType to languages,
             ),
           )
         }
@@ -73,11 +86,15 @@ class DiscoverViewModel(
       }
     }
 
-    val genreFilters = uiState.value.selectedGenreFilters
+    val genreFilters = uiState.value.genreFilters
+    val languageFilters = uiState.value.languageFilters
 
     val discoverFilters = buildList {
       if (genreFilters.isNotEmpty()) {
         add(DiscoverFilter.Genres(genreFilters.map { it.id }))
+      }
+      if (languageFilters.isNotEmpty()) {
+        add(DiscoverFilter.Languages(languageFilters.map { it.code }))
       }
     }
 
@@ -142,6 +159,6 @@ class DiscoverViewModel(
 
   override fun onCleared() {
     super.onCleared()
-    genreRepository.clear()
+    filterRepository.clear()
   }
 }
