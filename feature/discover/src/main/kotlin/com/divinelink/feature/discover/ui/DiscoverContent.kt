@@ -68,7 +68,10 @@ fun DiscoverContent(
   if (showGenreModal) {
     SelectGenreModalBottomSheet(
       mediaType = uiState.selectedTab.mediaType,
-      onDismissRequest = { showGenreModal = false },
+      onDismissRequest = {
+        showGenreModal = false
+        action(DiscoverAction.DiscoverMedia)
+      },
     )
   }
 
@@ -149,7 +152,7 @@ fun DiscoverContent(
                     ),
                   )
                 },
-                onLoadMore = { Unit },
+                onLoadMore = { action(DiscoverAction.LoadMore) },
                 onLongClick = { media ->
                   onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
                 },

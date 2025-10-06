@@ -12,4 +12,8 @@ class GenreRepository {
   fun updateSelectedGenres(genres: Set<Genre>) {
     _selectedGenres.value = genres
   }
+
+  fun clear() {
+    _selectedGenres.value = emptySet()
+  }
 }

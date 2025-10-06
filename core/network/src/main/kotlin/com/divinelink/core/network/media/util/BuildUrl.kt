@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.util
 
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
@@ -59,5 +60,27 @@ fun buildTvGenreUrl(): String = buildUrl {
 
   parameters.apply {
     append("language", "en")
+  }
+}.toString()
+
+fun buildDiscoverUrl(
+  page: Int,
+  media: MediaType,
+  filters: List<DiscoverFilter>,
+): String = buildUrl {
+  protocol = URLProtocol.HTTPS
+  host = Routes.TMDb.HOST
+  encodedPath = Routes.TMDb.V3 + "/discover/${media.value}"
+
+  parameters.apply {
+    append("page", page.toString())
+    append("language", "en")
+    filters.forEach { filter ->
+      when (filter) {
+        is DiscoverFilter.Genres -> if (filter.filters.isNotEmpty()) {
+          append("with_genres", filter.filters.joinToString(","))
+        }
+      }
+    }
   }
 }.toString()

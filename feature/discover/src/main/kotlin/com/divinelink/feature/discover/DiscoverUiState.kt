@@ -37,5 +37,6 @@ data class DiscoverUiState(
   }
 
   val selectedTab = tabs[selectedTabIndex]
+  val selectedMedia = selectedTab.mediaType
   val selectedGenreFilters = genreFilters[selectedTab.mediaType] ?: emptyList()
 }

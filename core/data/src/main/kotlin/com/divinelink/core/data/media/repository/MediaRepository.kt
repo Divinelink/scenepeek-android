@@ -2,9 +2,11 @@ package com.divinelink.core.data.media.repository
 
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.model.user.data.UserDataResponse
 import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
@@ -24,6 +26,16 @@ interface MediaRepository {
    * Uses [Flow] in order to observe changes to our popular movies list.
    */
   fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult>
+
+  fun discoverMovies(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<Result<UserDataResponse>>
+
+  fun discoverTvShows(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<Result<UserDataResponse>>
 
   /**
    * Fetch all popular movies that the user has marked as favorite.

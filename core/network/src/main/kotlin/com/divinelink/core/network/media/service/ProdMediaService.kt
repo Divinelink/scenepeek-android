@@ -1,5 +1,7 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.client.TMDbClient
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
@@ -23,6 +25,7 @@ import com.divinelink.core.network.media.model.search.multi.MultiSearchResponseA
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsRequestApi
 import com.divinelink.core.network.media.model.states.AccountMediaDetailsResponseApi
 import com.divinelink.core.network.media.model.tv.TvResponseApi
+import com.divinelink.core.network.media.util.buildDiscoverUrl
 import com.divinelink.core.network.media.util.buildFetchDetailsUrl
 import com.divinelink.core.network.media.util.buildFindByIdUrl
 import com.divinelink.core.network.media.util.buildMovieGenreUrl
@@ -43,6 +46,36 @@ class ProdMediaService(private val restClient: TMDbClient) : MediaService {
       "&vote_count.gte=50"
 
     val response = restClient.get<MoviesResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchDiscoverMovies(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<MoviesResponseApi> = flow {
+    val url = buildDiscoverUrl(
+      media = MediaType.MOVIE,
+      page = page,
+      filters = filters,
+    )
+
+    val response = restClient.get<MoviesResponseApi>(url = url)
+
+    emit(response)
+  }
+
+  override fun fetchDiscoverTv(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<TvResponseApi> = flow {
+    val url = buildDiscoverUrl(
+      media = MediaType.TV,
+      page = page,
+      filters = filters,
+    )
+
+    val response = restClient.get<TvResponseApi>(url = url)
 
     emit(response)
   }

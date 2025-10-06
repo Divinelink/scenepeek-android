@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -25,6 +26,16 @@ import kotlinx.coroutines.flow.Flow
 interface MediaService {
 
   fun fetchPopularMovies(request: MoviesRequestApi): Flow<MoviesResponseApi>
+
+  fun fetchDiscoverMovies(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<MoviesResponseApi>
+
+  fun fetchDiscoverTv(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<TvResponseApi>
 
   fun fetchMultiInfo(request: MultiSearchRequestApi): Flow<MultiSearchResponseApi>
 

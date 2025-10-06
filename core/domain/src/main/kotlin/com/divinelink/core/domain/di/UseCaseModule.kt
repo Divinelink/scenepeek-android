@@ -1,6 +1,7 @@
 package com.divinelink.core.domain.di
 
 import com.divinelink.core.domain.CreateRequestTokenUseCase
+import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.domain.FetchUserDataUseCase
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.GetAccountDetailsUseCase
@@ -68,6 +69,7 @@ val useCaseModule = module {
   factoryOf(::GetDropdownMenuItemsUseCase)
   factoryOf(::GetDetailsActionItemsUseCase)
   factoryOf(::MarkAsFavoriteUseCase)
+  factoryOf(::DiscoverMediaUseCase)
 
   factoryOf(::SpoilersObfuscationUseCase)
 

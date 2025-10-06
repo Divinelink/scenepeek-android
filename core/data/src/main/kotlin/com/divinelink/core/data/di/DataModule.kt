@@ -16,6 +16,7 @@ import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.data.preferences.ProdPreferencesRepository
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
