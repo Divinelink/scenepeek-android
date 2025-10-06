@@ -13,7 +13,7 @@ data class DiscoverUiState(
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
   val genreFiltersMap: Map<MediaType, List<Genre>>,
-  val languagesFiltersMap: Map<MediaType, List<Language>>,
+  val languageFilterMap: Map<MediaType, Language?>,
   val loadingMap: Map<MediaType, Boolean>,
 ) {
   companion object {
@@ -36,9 +36,9 @@ data class DiscoverUiState(
         MediaType.MOVIE to emptyList(),
         MediaType.TV to emptyList(),
       ),
-      languagesFiltersMap = mapOf(
-        MediaType.MOVIE to emptyList(),
-        MediaType.TV to emptyList(),
+      languageFilterMap = mapOf(
+        MediaType.MOVIE to null,
+        MediaType.TV to null,
       ),
       loadingMap = mapOf(
         MediaType.MOVIE to false,
@@ -50,6 +50,6 @@ data class DiscoverUiState(
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
   val genreFilters = genreFiltersMap[selectedTab.mediaType] ?: emptyList()
-  val languageFilters = languagesFiltersMap[selectedTab.mediaType] ?: emptyList()
+  val languageFilter = languageFilterMap[selectedTab.mediaType]
   val isLoading = loadingMap[selectedMedia] == true
 }

@@ -39,11 +39,11 @@ class DiscoverViewModel(
       .launchIn(viewModelScope)
 
     filterRepository
-      .selectedLanguages
+      .selectedLanguage
       .onEach { languages ->
         _uiState.update { uiState ->
           uiState.copy(
-            languagesFiltersMap = uiState.languagesFiltersMap.plus(
+            languageFilterMap = uiState.languageFilterMap.plus(
               uiState.selectedTab.mediaType to languages,
             ),
           )
@@ -87,14 +87,14 @@ class DiscoverViewModel(
     }
 
     val genreFilters = uiState.value.genreFilters
-    val languageFilters = uiState.value.languageFilters
+    val languageFilter = uiState.value.languageFilter
 
     val discoverFilters = buildList {
       if (genreFilters.isNotEmpty()) {
         add(DiscoverFilter.Genres(genreFilters.map { it.id }))
       }
-      if (languageFilters.isNotEmpty()) {
-        add(DiscoverFilter.Languages(languageFilters.map { it.code }))
+      languageFilter?.let { filter ->
+        add(DiscoverFilter.Language(filter.code))
       }
     }
 

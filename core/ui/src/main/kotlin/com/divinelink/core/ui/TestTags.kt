@@ -16,7 +16,7 @@ object TestTags {
     }
 
     object Button {
-      const val CLEAR_FILTERS = "Clear filters button"
+      const val CLEAR_FILTERS = "Clear language button"
       const val SWITCH_VIEW = "Switch View Button"
     }
 

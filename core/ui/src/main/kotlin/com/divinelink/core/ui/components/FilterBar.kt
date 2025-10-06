@@ -38,10 +38,10 @@ import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 
 /**
- * A composable that will display a list of filters.
+ * A composable that will display a list of language.
  *
  * @param modifier The modifier to be applied to the filter bar.
- * @param filters The list of filters to display.
+ * @param language The list of language to display.
  * @param onFilterClick A callback that will be called when a filter is clicked.
  * @param onClearClick A callback that will be called when the clear button is clicked.
  */

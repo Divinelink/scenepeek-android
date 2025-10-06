@@ -8,7 +8,7 @@ data class SelectFilterUiState(
   val genres: List<Genre>,
   val languages: List<Language>,
   val selectedGenres: List<Genre>,
-  val selectedLanguages: List<Language>,
+  val selectedLanguage: Language?,
 ) {
   companion object {
     val initial = SelectFilterUiState(
@@ -16,7 +16,7 @@ data class SelectFilterUiState(
       genres = emptyList(),
       selectedGenres = emptyList(),
       languages = Language.entries,
-      selectedLanguages = emptyList(),
+      selectedLanguage = null,
     )
   }
 }

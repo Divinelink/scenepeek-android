@@ -52,13 +52,24 @@ fun SelectFilterModalBottomSheet(
     onDismissRequest = onDismissRequest,
   ) {
     when (type) {
-      FilterModal.Genre -> SelectGenreContent(
-        uiState = uiState,
-        onAction = viewModel::onAction,
+      FilterModal.Genre -> SelectableFilterList(
+        titleRes = UiString.core_ui_genres,
+        items = uiState.genres,
+        key = { it.id },
+        isSelected = { it in uiState.selectedGenres },
+        onItemClick = { viewModel.onAction(SelectFilterAction.SelectGenre(it)) },
+        itemName = { it.name },
       )
-      FilterModal.Language -> SelectLanguageContent(
-        uiState = uiState,
-        onAction = viewModel::onAction,
+      FilterModal.Language -> SelectableFilterList(
+        titleRes = UiString.core_ui_language,
+        items = uiState.languages,
+        key = { it.code },
+        isSelected = { it == uiState.selectedLanguage },
+        onItemClick = {
+          viewModel.onAction(SelectFilterAction.SelectLanguage(it))
+          onDismissRequest()
+        },
+        itemName = { stringResource(it.nameRes) },
       )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -66,11 +77,17 @@ fun SelectFilterModalBottomSheet(
 }
 
 @Composable
-private fun SelectGenreContent(
-  uiState: SelectFilterUiState,
-  onAction: (SelectFilterAction) -> Unit,
+fun <T : Any> SelectableFilterList(
+  titleRes: Int,
+  items: List<T>,
+  key: (T) -> Any,
+  isSelected: (T) -> Boolean,
+  onItemClick: (T) -> Unit,
+  itemName: @Composable (T) -> String,
+  modifier: Modifier = Modifier,
 ) {
   LazyColumn(
+    modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     item {
@@ -78,19 +95,20 @@ private fun SelectGenreContent(
         modifier = Modifier
           .fillMaxWidth()
           .padding(MaterialTheme.dimensions.keyline_16),
-        text = stringResource(UiString.core_ui_genres),
+        text = stringResource(titleRes),
         style = MaterialTheme.typography.titleMedium,
       )
       HorizontalDivider()
     }
+
     items(
-      items = uiState.genres,
-      key = { it.id },
-    ) { genre ->
+      items = items,
+      key = key,
+    ) { item ->
       Row(
         modifier = Modifier
           .fillMaxWidth()
-          .clickable { onAction.invoke(SelectFilterAction.SelectGenre(genre)) }
+          .clickable { onItemClick(item) }
           .padding(
             horizontal = MaterialTheme.dimensions.keyline_20,
             vertical = MaterialTheme.dimensions.keyline_8,
@@ -101,67 +119,11 @@ private fun SelectGenreContent(
           modifier = Modifier
             .weight(1f)
             .padding(MaterialTheme.dimensions.keyline_8),
-          text = genre.name,
+          text = itemName(item),
           style = MaterialTheme.typography.bodyMedium,
         )
 
-        AnimatedVisibility(genre in uiState.selectedGenres) {
-          Icon(
-            imageVector = Icons.Default.Done,
-            tint = MaterialTheme.colorScheme.primary,
-            contentDescription = null,
-          )
-        }
-      }
-
-      HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-      )
-    }
-  }
-}
-
-@Composable
-private fun SelectLanguageContent(
-  uiState: SelectFilterUiState,
-  onAction: (SelectFilterAction) -> Unit,
-) {
-  LazyColumn(
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    item {
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(MaterialTheme.dimensions.keyline_16),
-        text = stringResource(UiString.core_ui_languages),
-        style = MaterialTheme.typography.titleMedium,
-      )
-      HorizontalDivider()
-    }
-    items(
-      items = uiState.languages,
-      key = { it.code },
-    ) { language ->
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .clickable { onAction.invoke(SelectFilterAction.SelectLanguage(language)) }
-          .padding(
-            horizontal = MaterialTheme.dimensions.keyline_20,
-            vertical = MaterialTheme.dimensions.keyline_8,
-          ),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Text(
-          modifier = Modifier
-            .weight(1f)
-            .padding(MaterialTheme.dimensions.keyline_8),
-          text = stringResource(language.nameRes),
-          style = MaterialTheme.typography.bodyMedium,
-        )
-
-        AnimatedVisibility(language in uiState.selectedLanguages) {
+        AnimatedVisibility(isSelected(item)) {
           Icon(
             imageVector = Icons.Default.Done,
             tint = MaterialTheme.colorScheme.primary,

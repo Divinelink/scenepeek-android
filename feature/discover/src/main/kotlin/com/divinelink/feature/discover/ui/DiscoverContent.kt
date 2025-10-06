@@ -116,7 +116,7 @@ fun DiscoverContent(
 
       item {
         LanguageFilterChip(
-          filters = uiState.languageFilters,
+          language = uiState.languageFilter,
           onClick = { filterModal = FilterModal.Language },
         )
       }

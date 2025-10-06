@@ -75,14 +75,14 @@ class SelectFilterViewModel(
 
   private fun handleSelectLanguage(action: SelectFilterAction.SelectLanguage) {
     _uiState.update { uiState ->
-      val updatedLanguages = if (action.language in uiState.selectedLanguages) {
-        uiState.selectedLanguages - action.language
+      val newLanguage = if (action.language == uiState.selectedLanguage) {
+        null
       } else {
-        uiState.selectedLanguages + action.language
+        action.language
       }
 
-      filterRepository.updateLanguages(updatedLanguages)
-      uiState.copy(selectedLanguages = updatedLanguages)
+      filterRepository.updateLanguage(newLanguage)
+      uiState.copy(selectedLanguage = newLanguage)
     }
   }
 }

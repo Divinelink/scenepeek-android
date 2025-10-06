@@ -997,7 +997,7 @@ class PersonScreenTest : ComposeTest() {
       // Switch to TV Shows tab
       onNodeWithText("TV Shows").performClick()
 
-      // Verify TV Shows tab has no filters
+      // Verify TV Shows tab has no language
       onNodeWithTag(TestTags.Components.FILTER_BUTTON).assertIsDisplayed()
       onNodeWithContentDescription(
         getString(uiR.string.core_ui_filter_button_content_desc),

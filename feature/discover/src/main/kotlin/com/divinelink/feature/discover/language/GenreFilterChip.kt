@@ -13,20 +13,16 @@ import com.divinelink.core.ui.UiString
 
 @Composable
 fun LanguageFilterChip(
-  filters: List<Language>,
+  language: Language?,
   onClick: () -> Unit,
 ) {
   FilterChip(
-    selected = filters.isNotEmpty(),
+    selected = language != null,
     label = {
-      val text = when {
-        filters.isEmpty() -> stringResource(UiString.core_ui_languages)
-        filters.size == 1 -> stringResource(filters.first().nameRes)
-        else -> buildString {
-          append(stringResource(filters.first().nameRes))
-          append("+")
-          append(filters.size - 1)
-        }
+      val text = if (language == null) {
+        stringResource(UiString.core_ui_language)
+      } else {
+        stringResource(language.nameRes)
       }
 
       Text(

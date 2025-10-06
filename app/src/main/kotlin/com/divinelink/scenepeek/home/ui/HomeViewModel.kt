@@ -95,7 +95,7 @@ class HomeViewModel(
   /**
    * Checks whether to load more popularMovies movies,
    * or make a search query with incremented page.
-   * If there are filters selected, it will not load more movies.
+   * If there are language selected, it will not load more movies.
    */
   fun onLoadNextPage() {
     when (viewState.value.mode) {
@@ -145,7 +145,7 @@ class HomeViewModel(
   }
 
   /**
-   * Handles the filters for the liked movies.
+   * Handles the language for the liked movies.
    * This method fetches the liked movies from the database and updates the view state.
    */
   private fun updateLikedFilteredMovies() {
@@ -175,9 +175,9 @@ class HomeViewModel(
   }
 
   /**
-   * Updates the filters list.
+   * Updates the language list.
    * @param [homeFilter] The filter to be updated.
-   * This method updates the filters list by toggling the selected state of the filter.
+   * This method updates the language list by toggling the selected state of the filter.
    * If the filter is already selected, it will be unselected and vice versa.
    */
   private fun updateFilters(homeFilter: HomeFilter?) {

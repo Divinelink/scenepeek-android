@@ -10,19 +10,19 @@ class FilterRepository {
   private val _selectedGenres = MutableStateFlow<List<Genre>>(emptyList())
   val selectedGenres: StateFlow<List<Genre>> = _selectedGenres.asStateFlow()
 
-  private val _selectedLanguages = MutableStateFlow<List<Language>>(emptyList())
-  val selectedLanguages: StateFlow<List<Language>> = _selectedLanguages.asStateFlow()
+  private val _selectedLanguage = MutableStateFlow<Language?>(null)
+  val selectedLanguage: StateFlow<Language?> = _selectedLanguage.asStateFlow()
 
   fun updateSelectedGenres(genres: List<Genre>) {
     _selectedGenres.value = genres
   }
 
-  fun updateLanguages(languages: List<Language>) {
-    _selectedLanguages.value = languages
+  fun updateLanguage(language: Language?) {
+    _selectedLanguage.value = language
   }
 
   fun clear() {
-    _selectedLanguages.value = emptyList()
+    _selectedLanguage.value = null
     _selectedGenres.value = emptyList()
   }
 }
