@@ -1,9 +1,9 @@
 package com.divinelink.feature.discover
 
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MediaTab
-import com.divinelink.core.ui.blankslate.BlankSlateState
 
 data class DiscoverUiState(
   val selectedTabIndex: Int,
@@ -11,6 +11,7 @@ data class DiscoverUiState(
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
+  val genreFilters: Map<MediaType, List<Genre>>,
 ) {
   companion object {
     val initial = DiscoverUiState(
@@ -28,8 +29,13 @@ data class DiscoverUiState(
         MediaType.MOVIE to true,
         MediaType.TV to true,
       ),
+      genreFilters = mapOf(
+        MediaType.MOVIE to emptyList(),
+        MediaType.TV to emptyList(),
+      ),
     )
   }
 
   val selectedTab = tabs[selectedTabIndex]
+  val selectedGenreFilters = genreFilters[selectedTab.mediaType] ?: emptyList()
 }

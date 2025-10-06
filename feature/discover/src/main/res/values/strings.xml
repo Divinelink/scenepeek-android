@@ -5,4 +5,5 @@
   <string name="feature_discover_description_first">Use filters to find exactly what you\'re looking for</string>
   <string name="feature_discover_description_second">Filter by year, country, language, genre and more</string>
   <string name="feature_discover_empty_result">We couldn\'t find anything. Try using some other filters.</string>
+  <string name="feature_discover_show_filter">Show filters</string>
 </resources>
