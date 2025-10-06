@@ -1,5 +1,6 @@
 package com.divinelink.feature.discover.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,13 +26,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -76,6 +81,14 @@ fun DiscoverContent(
   }
 
   Column {
+    AnimatedVisibility(uiState.isLoading) {
+      LinearProgressIndicator(
+        modifier = Modifier
+          .testTag(TestTags.LINEAR_LOADING_INDICATOR)
+          .fillMaxWidth(),
+      )
+    }
+
     ScenePeekSecondaryTabs(
       tabs = uiState.tabs,
       selectedIndex = uiState.selectedTabIndex,
@@ -92,30 +105,8 @@ fun DiscoverContent(
       ),
     ) {
       item {
-        FilterChip(
-          selected = uiState.selectedGenreFilters.isNotEmpty(),
-          label = {
-            val text = when {
-              uiState.selectedGenreFilters.isEmpty() -> stringResource(UiString.core_ui_genres)
-              uiState.selectedGenreFilters.size == 1 -> uiState.selectedGenreFilters.first().name
-              else -> buildString {
-                append(uiState.selectedGenreFilters.first().name)
-                append("+")
-                append(uiState.selectedGenreFilters.size - 1)
-              }
-            }
-
-            Text(
-              text = text,
-              style = MaterialTheme.typography.titleSmall,
-            )
-          },
-          trailingIcon = {
-            Icon(
-              imageVector = Icons.Default.ArrowDropDown,
-              contentDescription = null,
-            )
-          },
+        GenreFilterChip(
+          filters = uiState.selectedGenreFilters,
           onClick = { showGenreModal = true },
         )
       }
@@ -163,6 +154,39 @@ fun DiscoverContent(
       }
     }
   }
+}
+
+@Composable
+private fun GenreFilterChip(
+  filters: List<Genre>,
+  onClick: () -> Unit,
+) {
+  FilterChip(
+    selected = filters.isNotEmpty(),
+    label = {
+      val text = when {
+        filters.isEmpty() -> stringResource(UiString.core_ui_genres)
+        filters.size == 1 -> filters.first().name
+        else -> buildString {
+          append(filters.first().name)
+          append("+")
+          append(filters.size - 1)
+        }
+      }
+
+      Text(
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
+      )
+    },
+    trailingIcon = {
+      Icon(
+        imageVector = Icons.Default.ArrowDropDown,
+        contentDescription = null,
+      )
+    },
+    onClick = onClick,
+  )
 }
 
 @Composable

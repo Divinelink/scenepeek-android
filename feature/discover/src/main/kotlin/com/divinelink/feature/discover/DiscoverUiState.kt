@@ -12,6 +12,7 @@ data class DiscoverUiState(
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
   val genreFilters: Map<MediaType, List<Genre>>,
+  val loadingMap: Map<MediaType, Boolean>,
 ) {
   companion object {
     val initial = DiscoverUiState(
@@ -33,10 +34,15 @@ data class DiscoverUiState(
         MediaType.MOVIE to emptyList(),
         MediaType.TV to emptyList(),
       ),
+      loadingMap = mapOf(
+        MediaType.MOVIE to false,
+        MediaType.TV to false,
+      ),
     )
   }
 
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
   val selectedGenreFilters = genreFilters[selectedTab.mediaType] ?: emptyList()
+  val isLoading = loadingMap[selectedMedia] == true
 }

@@ -66,7 +66,10 @@ class DiscoverViewModel(
   private fun handleDiscoverMedia(reset: Boolean) {
     if (reset) {
       _uiState.update { uiState ->
-        uiState.copy(pages = uiState.pages + (uiState.selectedMedia to 1))
+        uiState.copy(
+          pages = uiState.pages + (uiState.selectedMedia to 1),
+          loadingMap = uiState.loadingMap + (uiState.selectedMedia to true),
+        )
       }
     }
 
@@ -82,6 +85,7 @@ class DiscoverViewModel(
       _uiState.update { uiState ->
         uiState.copy(
           forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
+          loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
         )
       }
     } else {
@@ -131,6 +135,7 @@ class DiscoverViewModel(
         ),
         pages = uiState.pages + (response.type to response.page + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
+        loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
       )
     }
   }
