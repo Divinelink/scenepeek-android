@@ -55,8 +55,16 @@ class SelectFilterViewModel(
 
   fun onAction(action: SelectFilterAction) {
     when (action) {
+      SelectFilterAction.ClearGenres -> handleClearGenres()
       is SelectFilterAction.SelectGenre -> handleSelectGenre(action)
       is SelectFilterAction.SelectLanguage -> handleSelectLanguage(action)
+    }
+  }
+
+  private fun handleClearGenres() {
+    _uiState.update { uiState ->
+      filterRepository.updateSelectedGenres(emptyList())
+      uiState.copy(selectedGenres = emptyList())
     }
   }
 

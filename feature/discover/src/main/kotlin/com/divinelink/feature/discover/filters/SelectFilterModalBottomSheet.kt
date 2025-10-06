@@ -2,6 +2,8 @@ package com.divinelink.feature.discover.filters
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,12 +27,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
 import com.divinelink.feature.discover.FilterModal
 import org.koin.compose.viewmodel.koinViewModel
@@ -44,6 +56,7 @@ fun SelectFilterModalBottomSheet(
   ) { parametersOf(mediaType, type) },
   onDismissRequest: () -> Unit,
 ) {
+  val density = LocalDensity.current
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -52,14 +65,64 @@ fun SelectFilterModalBottomSheet(
     onDismissRequest = onDismissRequest,
   ) {
     when (type) {
-      FilterModal.Genre -> SelectableFilterList(
-        titleRes = UiString.core_ui_genres,
-        items = uiState.genres,
-        key = { it.id },
-        isSelected = { it in uiState.selectedGenres },
-        onItemClick = { viewModel.onAction(SelectFilterAction.SelectGenre(it)) },
-        itemName = { it.name },
-      )
+      FilterModal.Genre -> Box {
+        var actionsSize by remember { mutableStateOf(0.dp) }
+
+        SelectableFilterList(
+          modifier = Modifier.padding(
+            bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
+          ),
+          titleRes = UiString.core_ui_genres,
+          items = uiState.genres,
+          key = { it.id },
+          isSelected = { it in uiState.selectedGenres },
+          onItemClick = { viewModel.onAction(SelectFilterAction.SelectGenre(it)) },
+          itemName = { it.name },
+        )
+
+        Row(
+          modifier = Modifier
+            .onSizeChanged {
+              with(density) {
+                actionsSize = it.height.toDp()
+              }
+            }
+            .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          ElevatedButton(
+            enabled = uiState.selectedGenres.isNotEmpty(),
+            modifier = Modifier.weight(1f),
+            onClick = {
+              viewModel.onAction(SelectFilterAction.ClearGenres)
+              onDismissRequest()
+            },
+          ) {
+            Text(text = stringResource(UiString.core_ui_clear_all))
+          }
+
+          Button(
+            enabled = uiState.selectedGenres.isNotEmpty(),
+            modifier = Modifier.weight(1f),
+            onClick = onDismissRequest,
+          ) {
+            Text(
+              text = if (uiState.selectedGenres.isEmpty()) {
+                stringResource(UiString.core_ui_apply_filters)
+              } else {
+                pluralStringResource(
+                  UiPlurals.core_ui_apply_filters,
+                  uiState.selectedGenres.size,
+                  uiState.selectedGenres.size,
+                )
+              },
+            )
+          }
+        }
+      }
       FilterModal.Language -> SelectableFilterList(
         titleRes = UiString.core_ui_language,
         items = uiState.languages,
