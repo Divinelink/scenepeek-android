@@ -1,11 +1,13 @@
 package com.divinelink.core.data.media.repository
 
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
@@ -15,13 +17,16 @@ import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
 import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlin.time.Clock
 
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
+  private val clock: Clock,
 ) : MediaRepository {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> = combine(
@@ -106,9 +111,18 @@ class ProdMediaRepository(
     Result.success(it)
   }
 
-  override suspend fun fetchMovieGenres(): Result<List<Genre>> = remote
-    .fetchMovieGenres()
-    .map(GenresListResponse::map)
+  override suspend fun fetchMovieGenres(): Flow<Resource<List<Genre>>> = networkBoundResource(
+    query = { dao.fetchGenres(MediaType.MOVIE) },
+    fetch = {
+      remote
+        .fetchMovieGenres()
+        .map(GenresListResponse::map)
+    },
+    saveFetchResult = { remoteData ->
+      dao.insertGenres(mediaType = MediaType.MOVIE, genres = remoteData.data)
+    },
+    shouldFetch = { it.isEmpty() },
+  )
 
   override suspend fun fetchTvGenres(): Result<List<Genre>> = remote
     .fetchTvGenres()

@@ -5,6 +5,7 @@ import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
@@ -66,6 +67,6 @@ interface MediaRepository {
     mediaType: MediaType,
   ): Result<Boolean>
 
-  suspend fun fetchMovieGenres(): Result<List<Genre>>
+  suspend fun fetchMovieGenres(): Flow<Resource<List<Genre>>>
   suspend fun fetchTvGenres(): Result<List<Genre>>
 }
