@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -24,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
@@ -141,34 +144,37 @@ fun DiscoverContent(
           is DiscoverForm.Initial -> DiscoverInitialContent(tab = uiState.selectedTab)
           is DiscoverForm.Loading -> LoadingContent()
           is DiscoverForm.Error -> BlankSlate(
+            modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
             uiState = it.blankSlate,
-            onRetry = {},
           )
-          is DiscoverForm.Data -> {
-            if (it.isEmpty) {
-              BlankSlate(
-                uiState = BlankSlateState.Custom(
-                  title = UIText.ResourceText(R.string.feature_discover_empty_result),
+          is DiscoverForm.Data -> if (it.isEmpty) {
+            BlankSlate(
+              modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
+              uiState = BlankSlateState.Custom(
+                icon = UiDrawable.no_results,
+                title = UIText.ResourceText(R.string.feature_discover_empty_result_title),
+                description = UIText.ResourceText(
+                  R.string.feature_discover_empty_result_description,
                 ),
-              )
-            } else {
-              MediaListContent(
-                list = it.media,
-                onClick = { media ->
-                  onNavigate(
-                    Navigation.DetailsRoute(
-                      mediaType = media.mediaType,
-                      id = media.id,
-                      isFavorite = media.isFavorite,
-                    ),
-                  )
-                },
-                onLoadMore = { action(DiscoverAction.LoadMore) },
-                onLongClick = { media ->
-                  onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
-                },
-              )
-            }
+              ),
+            )
+          } else {
+            MediaListContent(
+              list = it.media,
+              onClick = { media ->
+                onNavigate(
+                  Navigation.DetailsRoute(
+                    mediaType = media.mediaType,
+                    id = media.id,
+                    isFavorite = media.isFavorite,
+                  ),
+                )
+              },
+              onLoadMore = { action(DiscoverAction.LoadMore) },
+              onLongClick = { media ->
+                onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
+              },
+            )
           }
         }
       }

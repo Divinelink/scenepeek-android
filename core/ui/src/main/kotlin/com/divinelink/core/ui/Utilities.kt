@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 
 typealias UiString = R.string
 typealias UiPlurals = R.plurals
+typealias UiDrawable = R.drawable
 
 @Stable
 object UiTokens {

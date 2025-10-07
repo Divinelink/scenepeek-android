@@ -9,6 +9,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.media.MediaContent
@@ -32,7 +33,7 @@ fun SearchContent(
     uiState.searchResults?.data?.isEmpty() == true -> BlankSlate(
       modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
       uiState = BlankSlateState.Custom(
-        icon = com.divinelink.core.ui.R.drawable.core_ui_search,
+        icon = UiDrawable.searching,
         title = UIText.ResourceText(R.string.search__empty_result_title),
         description = UIText.ResourceText(R.string.search__empty_result_description),
       ),

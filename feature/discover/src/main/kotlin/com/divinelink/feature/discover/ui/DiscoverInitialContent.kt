@@ -27,7 +27,6 @@ fun DiscoverInitialContent(tab: MediaTab) {
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Text(
-      modifier = Modifier.padding(top = MaterialTheme.dimensions.keyline_24),
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleLarge,
       text = when (tab) {

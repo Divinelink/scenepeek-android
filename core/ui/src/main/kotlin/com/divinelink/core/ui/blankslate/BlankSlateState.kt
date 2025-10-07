@@ -10,7 +10,7 @@ sealed class BlankSlateState(
   open val retryText: UIText? = null,
 ) {
   data object Offline : BlankSlateState(
-    icon = R.drawable.core_ui_feeling_blue,
+    icon = R.drawable.no_connection,
     title = UIText.ResourceText(R.string.core_ui_offline_title),
     description = UIText.ResourceText(R.string.core_ui_offline_description),
     retryText = UIText.ResourceText(R.string.core_ui_retry),

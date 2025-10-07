@@ -222,7 +222,7 @@ object TestTags {
   }
 
   object Watchlist {
-    const val TAB_BAR = "Watchlist Tab Bar $%s"
+    const val TAB_BAR = "Watchlist Tab Bar %s"
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }

@@ -17,6 +17,7 @@ import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
@@ -162,15 +163,15 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
       .assertIsSelected()
   }
@@ -200,11 +201,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
@@ -214,7 +215,7 @@ class UserDataScreenTest : ComposeTest() {
 
     composeTestRule.onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
 
     val emptyTVWatchlistString = composeTestRule.activity.getString(
@@ -248,11 +249,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
@@ -262,7 +263,7 @@ class UserDataScreenTest : ComposeTest() {
 
     composeTestRule.onNodeWithText(emptyMovieWatchlistString).assertIsDisplayed()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .performClick()
 
     composeTestRule.onNodeWithTag(TestTags.LOADING_CONTENT).assertIsDisplayed()
@@ -293,11 +294,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
 
@@ -361,11 +362,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
       .performClick()
@@ -417,11 +418,11 @@ class UserDataScreenTest : ComposeTest() {
       )
     }
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.MOVIE.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.Movie.value))
       .assertIsDisplayed()
       .assertIsSelected()
 
-    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaType.TV.value))
+    composeTestRule.onNodeWithTag(TestTags.Watchlist.TAB_BAR.format(MediaTab.TV.value))
       .assertIsDisplayed()
       .assertIsNotSelected()
       .performClick()

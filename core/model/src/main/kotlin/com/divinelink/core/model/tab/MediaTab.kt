@@ -12,14 +12,14 @@ sealed class MediaTab(
   data object Movie : MediaTab(
     mediaType = MediaType.MOVIE,
     order = 0,
-    value = "movie",
+    value = MediaType.MOVIE.value,
     titleRes = R.string.movie_tab,
   )
 
   data object TV : MediaTab(
     mediaType = MediaType.TV,
     order = 1,
-    value = "show",
+    value = MediaType.TV.value,
     titleRes = R.string.tv_show_tab,
   )
 
