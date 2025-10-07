@@ -146,6 +146,7 @@ fun DiscoverContent(
           is DiscoverForm.Error -> BlankSlate(
             modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
             uiState = it.blankSlate,
+            onRetry = { action(DiscoverAction.DiscoverMedia) },
           )
           is DiscoverForm.Data -> if (it.isEmpty) {
             BlankSlate(

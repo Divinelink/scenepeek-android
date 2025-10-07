@@ -6,6 +6,7 @@ import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.DiscoverParameters
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,6 +95,8 @@ class DiscoverViewModel(
   }
 
   private fun handleDiscoverMedia(reset: Boolean) {
+    val mediaType = uiState.value.selectedMedia
+
     if (reset) {
       _uiState.update { uiState ->
         uiState.copy(
@@ -123,7 +126,7 @@ class DiscoverViewModel(
       discoverUseCase.invoke(
         parameters = DiscoverParameters(
           page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
-          mediaType = uiState.value.selectedMedia,
+          mediaType = mediaType,
           filters = discoverFilters,
         ),
       )
@@ -136,7 +139,13 @@ class DiscoverViewModel(
                 response = response,
               )
             },
-            onFailure = {},
+            onFailure = { error ->
+              updateUiOnFailure(
+                type = mediaType,
+                error = error,
+                reset = reset,
+              )
+            },
           )
         }
         .launchIn(viewModelScope)
@@ -166,6 +175,28 @@ class DiscoverViewModel(
         ),
         pages = uiState.pages + (response.type to response.page + 1),
         canFetchMore = uiState.canFetchMore + (response.type to response.canFetchMore),
+        loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+      )
+    }
+  }
+
+  private fun updateUiOnFailure(
+    reset: Boolean,
+    type: MediaType,
+    error: Throwable,
+  ) {
+    _uiState.update { uiState ->
+      uiState.copy(
+        forms = if (uiState.forms[type] !is DiscoverForm.Data || reset) {
+          uiState.forms.plus(
+            type to when (error) {
+              is AppException.Offline -> DiscoverForm.Error.Network
+              else -> DiscoverForm.Error.Unknown
+            },
+          )
+        } else {
+          uiState.forms
+        },
         loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
       )
     }
