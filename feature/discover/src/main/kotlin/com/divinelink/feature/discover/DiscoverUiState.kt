@@ -1,10 +1,25 @@
 package com.divinelink.feature.discover
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MediaTab
+
+data class MediaTypeFilters(
+  val genres: List<Genre>,
+  val language: Language? = null,
+  val country: Country? = null,
+) {
+  companion object {
+    val initial = MediaTypeFilters(
+      genres = emptyList(),
+      language = null,
+      country = null,
+    )
+  }
+}
 
 data class DiscoverUiState(
   val selectedTabIndex: Int,
@@ -12,8 +27,7 @@ data class DiscoverUiState(
   val pages: Map<MediaType, Int>,
   val forms: Map<MediaType, DiscoverForm<MediaItem.Media>>,
   val canFetchMore: Map<MediaType, Boolean>,
-  val genreFiltersMap: Map<MediaType, List<Genre>>,
-  val languageFilterMap: Map<MediaType, Language?>,
+  val filters: Map<MediaType, MediaTypeFilters>,
   val loadingMap: Map<MediaType, Boolean>,
 ) {
   companion object {
@@ -32,13 +46,9 @@ data class DiscoverUiState(
         MediaType.MOVIE to true,
         MediaType.TV to true,
       ),
-      genreFiltersMap = mapOf(
-        MediaType.MOVIE to emptyList(),
-        MediaType.TV to emptyList(),
-      ),
-      languageFilterMap = mapOf(
-        MediaType.MOVIE to null,
-        MediaType.TV to null,
+      filters = mapOf(
+        MediaType.MOVIE to MediaTypeFilters.initial,
+        MediaType.TV to MediaTypeFilters.initial,
       ),
       loadingMap = mapOf(
         MediaType.MOVIE to false,
@@ -49,7 +59,6 @@ data class DiscoverUiState(
 
   val selectedTab = tabs[selectedTabIndex]
   val selectedMedia = selectedTab.mediaType
-  val genreFilters = genreFiltersMap[selectedTab.mediaType] ?: emptyList()
-  val languageFilter = languageFilterMap[selectedTab.mediaType]
+  val currentFilters = filters[selectedTab.mediaType] ?: MediaTypeFilters.initial
   val isLoading = loadingMap[selectedMedia] == true
 }

@@ -9,13 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,16 +22,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.dimensions
-import com.divinelink.core.model.Genre
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
@@ -48,8 +40,8 @@ import com.divinelink.feature.discover.DiscoverForm
 import com.divinelink.feature.discover.DiscoverUiState
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.R
+import com.divinelink.feature.discover.chips.DiscoverFilterChip
 import com.divinelink.feature.discover.filters.SelectFilterModalBottomSheet
-import com.divinelink.feature.discover.language.LanguageFilterChip
 import com.divinelink.feature.discover.ui.provider.DiscoverUiStateParameterProvider
 import kotlinx.coroutines.launch
 
@@ -100,24 +92,30 @@ fun DiscoverContent(
 
     LazyRow(
       modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
       contentPadding = PaddingValues(
-        vertical = MaterialTheme.dimensions.keyline_4,
         horizontal = MaterialTheme.dimensions.keyline_16,
       ),
     ) {
       item {
-        GenreFilterChip(
-          filters = uiState.genreFilters,
+        DiscoverFilterChip.Genre(
+          filters = uiState.currentFilters.genres,
           onClick = { filterModal = FilterModal.Genre },
         )
       }
 
       item {
-        LanguageFilterChip(
-          language = uiState.languageFilter,
+        DiscoverFilterChip.Language(
+          language = uiState.currentFilters.language,
           onClick = { filterModal = FilterModal.Language },
+        )
+      }
+
+      item {
+        DiscoverFilterChip.Country(
+          country = uiState.currentFilters.country,
+          onClick = { filterModal = FilterModal.Country },
         )
       }
     }
@@ -164,39 +162,6 @@ fun DiscoverContent(
       }
     }
   }
-}
-
-@Composable
-private fun GenreFilterChip(
-  filters: List<Genre>,
-  onClick: () -> Unit,
-) {
-  FilterChip(
-    selected = filters.isNotEmpty(),
-    label = {
-      val text = when {
-        filters.isEmpty() -> stringResource(UiString.core_ui_genres)
-        filters.size == 1 -> filters.first().name
-        else -> buildString {
-          append(filters.first().name)
-          append("+")
-          append(filters.size - 1)
-        }
-      }
-
-      Text(
-        text = text,
-        style = MaterialTheme.typography.titleSmall,
-      )
-    },
-    trailingIcon = {
-      Icon(
-        imageVector = Icons.Default.ArrowDropDown,
-        contentDescription = null,
-      )
-    },
-    onClick = onClick,
-  )
 }
 
 @Composable

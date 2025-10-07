@@ -6,6 +6,7 @@ import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
 import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.DiscoverParameters
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,8 +31,9 @@ class DiscoverViewModel(
       .onEach { genres ->
         _uiState.update { uiState ->
           uiState.copy(
-            genreFiltersMap = uiState.genreFiltersMap.plus(
-              uiState.selectedTab.mediaType to genres,
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(genres = genres) },
             ),
           )
         }
@@ -40,11 +42,26 @@ class DiscoverViewModel(
 
     filterRepository
       .selectedLanguage
-      .onEach { languages ->
+      .onEach { language ->
         _uiState.update { uiState ->
           uiState.copy(
-            languageFilterMap = uiState.languageFilterMap.plus(
-              uiState.selectedTab.mediaType to languages,
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(language = language) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
+
+    filterRepository
+      .selectedCountry
+      .onEach { country ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(country = country) },
             ),
           )
         }
@@ -85,16 +102,13 @@ class DiscoverViewModel(
         )
       }
     }
-
-    val genreFilters = uiState.value.genreFilters
-    val languageFilter = uiState.value.languageFilter
-
-    val discoverFilters = buildList {
-      if (genreFilters.isNotEmpty()) {
-        add(DiscoverFilter.Genres(genreFilters.map { it.id }))
-      }
-      languageFilter?.let { filter ->
-        add(DiscoverFilter.Language(filter.code))
+    val discoverFilters = with(_uiState.value.currentFilters) {
+      buildList {
+        if (genres.isNotEmpty()) {
+          add(DiscoverFilter.Genres(genres.map { it.id }))
+        }
+        language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
+        country?.let { add(DiscoverFilter.Country(it.code)) }
       }
     }
 
@@ -160,5 +174,13 @@ class DiscoverViewModel(
   override fun onCleared() {
     super.onCleared()
     filterRepository.clear()
+  }
+
+  private fun Map<MediaType, MediaTypeFilters>.updateFilters(
+    mediaType: MediaType,
+    update: (MediaTypeFilters) -> MediaTypeFilters,
+  ): Map<MediaType, MediaTypeFilters> {
+    val current = this[mediaType] ?: MediaTypeFilters.initial
+    return this + (mediaType to update(current))
   }
 }

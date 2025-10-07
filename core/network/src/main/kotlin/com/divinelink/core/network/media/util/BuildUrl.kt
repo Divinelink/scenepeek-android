@@ -84,6 +84,7 @@ fun buildDiscoverUrl(
           append("with_genres", filter.filters.joinToString(","))
         }
         is DiscoverFilter.Language -> append("with_original_language", filter.language)
+        is DiscoverFilter.Country -> append("with_origin_country", filter.countryCode)
       }
     }
   }

@@ -1,6 +1,7 @@
 package com.divinelink.core.data
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,9 @@ class FilterRepository {
   private val _selectedLanguage = MutableStateFlow<Language?>(null)
   val selectedLanguage: StateFlow<Language?> = _selectedLanguage.asStateFlow()
 
+  private val _selectedCountry = MutableStateFlow<Country?>(null)
+  val selectedCountry: StateFlow<Country?> = _selectedCountry.asStateFlow()
+
   fun updateSelectedGenres(genres: List<Genre>) {
     _selectedGenres.value = genres
   }
@@ -21,8 +25,13 @@ class FilterRepository {
     _selectedLanguage.value = language
   }
 
+  fun updateCountry(country: Country?) {
+    _selectedCountry.value = country
+  }
+
   fun clear() {
-    _selectedLanguage.value = null
     _selectedGenres.value = emptyList()
+    _selectedLanguage.value = null
+    _selectedCountry.value = null
   }
 }
