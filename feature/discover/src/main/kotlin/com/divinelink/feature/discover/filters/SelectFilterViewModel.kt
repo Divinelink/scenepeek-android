@@ -5,9 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.media.repository.MediaRepository
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.Resource
 import com.divinelink.feature.discover.FilterModal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -26,29 +30,27 @@ class SelectFilterViewModel(
   init {
     if (type is FilterModal.Genre) {
       viewModelScope.launch {
-        if (mediaType == MediaType.TV) {
-          repository
-            .fetchTvGenres()
-            .onSuccess { genres ->
-              _uiState.update { uiState ->
+        repository
+          .fetchGenres(mediaType)
+          .distinctUntilChanged()
+          .onEach { result ->
+            when (result) {
+              is Resource.Error -> Unit
+              is Resource.Loading -> _uiState.update { uiState ->
                 uiState.copy(
                   loading = false,
-                  genres = genres,
+                  genres = result.data ?: emptyList(),
+                )
+              }
+              is Resource.Success -> _uiState.update { uiState ->
+                uiState.copy(
+                  loading = false,
+                  genres = result.data,
                 )
               }
             }
-        } else {
-          repository
-            .fetchMovieGenres()
-            .onSuccess { genres ->
-              _uiState.update { uiState ->
-                uiState.copy(
-                  loading = false,
-                  genres = genres,
-                )
-              }
-            }
-        }
+          }
+          .launchIn(viewModelScope)
       }
     }
   }

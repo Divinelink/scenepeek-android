@@ -1,6 +1,7 @@
 package com.divinelink.core.network.media.service
 
 import com.divinelink.core.model.discover.DiscoverFilter
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -68,6 +69,5 @@ interface MediaService {
 
   fun findById(externalId: String): Flow<FindByIdResponseApi>
 
-  suspend fun fetchMovieGenres(): Result<GenresListResponse>
-  suspend fun fetchTvGenres(): Result<GenresListResponse>
+  suspend fun fetchGenres(mediaType: MediaType): Result<GenresListResponse>
 }

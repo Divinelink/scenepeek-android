@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.service
 
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.details.watchlist.AddToWatchlistRequestApi
 import com.divinelink.core.network.media.model.details.watchlist.SubmitOnAccountResponse
@@ -194,7 +195,7 @@ class ProdMediaServiceTest {
 
     service = ProdMediaService(testRestClient.restClient)
 
-    val result = service.fetchMovieGenres()
+    val result = service.fetchGenres(MediaType.MOVIE)
 
     result shouldBe Result.success(
       GenresListResponse(GenreResponseFactory.Movie.all),
@@ -210,7 +211,7 @@ class ProdMediaServiceTest {
 
     service = ProdMediaService(testRestClient.restClient)
 
-    val result = service.fetchTvGenres()
+    val result = service.fetchGenres(MediaType.TV)
 
     result shouldBe Result.success(
       GenresListResponse(GenreResponseFactory.Tv.all),

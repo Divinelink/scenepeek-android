@@ -79,6 +79,5 @@ interface MediaRepository {
     mediaType: MediaType,
   ): Result<Boolean>
 
-  suspend fun fetchMovieGenres(): Flow<Resource<List<Genre>>>
-  suspend fun fetchTvGenres(): Result<List<Genre>>
+  suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>>
 }

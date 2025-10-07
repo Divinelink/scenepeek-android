@@ -24,12 +24,10 @@ import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlin.time.Clock
 
 class ProdMediaRepository(
   private val remote: MediaService,
   private val dao: MediaDao,
-  private val clock: Clock,
 ) : MediaRepository {
 
   override fun fetchPopularMovies(request: MoviesRequestApi): Flow<MediaListResult> = combine(
@@ -164,20 +162,13 @@ class ProdMediaRepository(
     Result.success(it)
   }
 
-  override suspend fun fetchMovieGenres(): Flow<Resource<List<Genre>>> = networkBoundResource(
-    query = { dao.fetchGenres(MediaType.MOVIE) },
-    fetch = {
-      remote
-        .fetchMovieGenres()
-        .map(GenresListResponse::map)
-    },
-    saveFetchResult = { remoteData ->
-      dao.insertGenres(mediaType = MediaType.MOVIE, genres = remoteData.data)
-    },
-    shouldFetch = { it.isEmpty() },
-  )
-
-  override suspend fun fetchTvGenres(): Result<List<Genre>> = remote
-    .fetchTvGenres()
-    .map(GenresListResponse::map)
+  override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> =
+    networkBoundResource(
+      query = { dao.fetchGenres(mediaType) },
+      fetch = { remote.fetchGenres(mediaType).map(GenresListResponse::map) },
+      saveFetchResult = { remoteData ->
+        dao.insertGenres(mediaType = mediaType, genres = remoteData.data)
+      },
+      shouldFetch = { it.isEmpty() },
+    )
 }

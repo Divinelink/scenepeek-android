@@ -72,11 +72,15 @@ class BuildUrlTest {
 
   @Test
   fun `test buildMovieGenreUrl`() {
-    buildMovieGenreUrl() shouldBe "https://api.themoviedb.org/3/genre/movie/list?language=en"
+    buildGenreUrl(
+      MediaType.MOVIE,
+    ) shouldBe "https://api.themoviedb.org/3/genre/movie/list?language=en"
   }
 
   @Test
   fun `test buildTvGenreUrl`() {
-    buildTvGenreUrl() shouldBe "https://api.themoviedb.org/3/genre/tv/list?language=en"
+    buildGenreUrl(
+      MediaType.TV,
+    ) shouldBe "https://api.themoviedb.org/3/genre/tv/list?language=en"
   }
 }

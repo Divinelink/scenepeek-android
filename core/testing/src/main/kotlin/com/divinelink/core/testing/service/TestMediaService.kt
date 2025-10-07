@@ -1,5 +1,6 @@
 package com.divinelink.core.testing.service
 
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.network.media.model.credits.AggregateCreditsApi
@@ -169,7 +170,7 @@ class TestMediaService {
 
   suspend fun mockFetchMovieGenres(result: Result<GenresListResponse>) {
     whenever(
-      mock.fetchMovieGenres(),
+      mock.fetchGenres(MediaType.MOVIE),
     ).thenReturn(
       result,
     )
@@ -177,7 +178,7 @@ class TestMediaService {
 
   suspend fun mockFetchTvGenres(result: Result<GenresListResponse>) {
     whenever(
-      mock.fetchTvGenres(),
+      mock.fetchGenres(MediaType.TV),
     ).thenReturn(
       result,
     )

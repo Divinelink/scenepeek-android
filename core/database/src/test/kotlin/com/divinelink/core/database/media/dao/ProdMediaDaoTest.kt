@@ -4,9 +4,11 @@ import app.cash.turbine.test
 import com.divinelink.core.database.Database
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
+import com.divinelink.core.fixtures.model.GenreFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.toStub
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.database.TestDatabaseFactory
@@ -159,6 +161,24 @@ class ProdMediaDaoTest {
           },
         )
       }
+    }
+  }
+
+  @Test
+  fun `test fetch and insert genres for movies`() = runTest {
+    dao.fetchGenres(mediaType = MediaType.MOVIE).test {
+      awaitItem() shouldBe emptyList()
+      dao.insertGenres(mediaType = MediaType.MOVIE, genres = GenreFactory.Movie.all)
+      awaitItem() shouldBe GenreFactory.Movie.all.sortedBy { it.id }
+    }
+  }
+
+  @Test
+  fun `test fetch and insert genres for tv`() = runTest {
+    dao.fetchGenres(mediaType = MediaType.TV).test {
+      awaitItem() shouldBe emptyList()
+      dao.insertGenres(mediaType = MediaType.TV, genres = GenreFactory.Tv.all)
+      awaitItem() shouldBe GenreFactory.Tv.all.sortedBy { it.id }
     }
   }
 }

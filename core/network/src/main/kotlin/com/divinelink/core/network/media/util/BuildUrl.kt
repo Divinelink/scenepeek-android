@@ -43,20 +43,10 @@ fun buildFindByIdUrl(
   }
 }.toString()
 
-fun buildMovieGenreUrl(): String = buildUrl {
+fun buildGenreUrl(media: MediaType): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + "/genre/movie/list"
-
-  parameters.apply {
-    append("language", "en")
-  }
-}.toString()
-
-fun buildTvGenreUrl(): String = buildUrl {
-  protocol = URLProtocol.HTTPS
-  host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + "/genre/tv/list"
+  encodedPath = Routes.TMDb.V3 + "/genre/${media.value}/list"
 
   parameters.apply {
     append("language", "en")
