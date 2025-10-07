@@ -18,10 +18,12 @@ object DiscoverFilterChip {
 
   @Composable
   fun Genre(
+    modifier: Modifier,
     filters: List<Genre>,
     onClick: () -> Unit,
   ) {
     Chip(
+      modifier = modifier,
       selected = filters.isNotEmpty(),
       label = when {
         filters.isEmpty() -> stringResource(UiString.core_ui_genres)
@@ -38,10 +40,12 @@ object DiscoverFilterChip {
 
   @Composable
   fun Language(
+    modifier: Modifier,
     language: Language?,
     onClick: () -> Unit,
   ) {
     Chip(
+      modifier = modifier,
       selected = language != null,
       label = if (language == null) {
         stringResource(UiString.core_ui_language)
@@ -54,10 +58,12 @@ object DiscoverFilterChip {
 
   @Composable
   fun Country(
+    modifier: Modifier,
     country: Country?,
     onClick: () -> Unit,
   ) {
     Chip(
+      modifier = modifier,
       selected = country != null,
       label = if (country == null) {
         stringResource(UiString.core_ui_country)

@@ -1,6 +1,7 @@
 package com.divinelink.feature.discover.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -91,7 +92,9 @@ fun DiscoverContent(
     )
 
     LazyRow(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier
+        .animateContentSize()
+        .fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
       contentPadding = PaddingValues(
@@ -100,6 +103,9 @@ fun DiscoverContent(
     ) {
       item {
         DiscoverFilterChip.Genre(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
           filters = uiState.currentFilters.genres,
           onClick = { filterModal = FilterModal.Genre },
         )
@@ -107,6 +113,9 @@ fun DiscoverContent(
 
       item {
         DiscoverFilterChip.Language(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
           language = uiState.currentFilters.language,
           onClick = { filterModal = FilterModal.Language },
         )
@@ -114,6 +123,9 @@ fun DiscoverContent(
 
       item {
         DiscoverFilterChip.Country(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
           country = uiState.currentFilters.country,
           onClick = { filterModal = FilterModal.Country },
         )
