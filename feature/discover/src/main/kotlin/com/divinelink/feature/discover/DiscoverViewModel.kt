@@ -75,7 +75,13 @@ class DiscoverViewModel(
       is DiscoverAction.OnSelectTab -> handleSelectTab(action)
       DiscoverAction.DiscoverMedia -> handleDiscoverMedia(reset = true)
       DiscoverAction.LoadMore -> handleLoadMore()
+      DiscoverAction.ClearFilters -> handleClearFilters()
     }
+  }
+
+  private fun handleClearFilters() {
+    filterRepository.clear()
+    handleDiscoverMedia(reset = true)
   }
 
   private fun handleSelectTab(action: DiscoverAction.OnSelectTab) {

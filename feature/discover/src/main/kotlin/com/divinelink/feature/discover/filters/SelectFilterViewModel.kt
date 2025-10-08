@@ -33,8 +33,32 @@ class SelectFilterViewModel(
   val uiState: StateFlow<SelectFilterUiState> = _uiState
 
   init {
-    if (type is FilterModal.Genre) {
-      fetchGenres(mediaType)
+    when (type) {
+      FilterModal.Country -> {
+        filterRepository
+          .selectedCountry
+          .onEach { country ->
+            _uiState.update { it.copy(selectedCountry = country) }
+          }
+          .launchIn(viewModelScope)
+      }
+      FilterModal.Genre -> {
+        fetchGenres(mediaType)
+        filterRepository
+          .selectedGenres
+          .onEach { genres ->
+            _uiState.update { it.copy(selectedGenres = genres) }
+          }
+          .launchIn(viewModelScope)
+      }
+      FilterModal.Language -> {
+        filterRepository
+          .selectedLanguage
+          .onEach { language ->
+            _uiState.update { it.copy(selectedLanguage = language) }
+          }
+          .launchIn(viewModelScope)
+      }
     }
   }
 
@@ -109,41 +133,32 @@ class SelectFilterViewModel(
   }
 
   private fun handleSelectGenre(action: SelectFilterAction.SelectGenre) {
-    _uiState.update { uiState ->
-      val genres = if (action.genre in uiState.selectedGenres) {
-        uiState.selectedGenres - action.genre
-      } else {
-        uiState.selectedGenres + action.genre
-      }
+    val selectedGenres = _uiState.value.selectedGenres
 
-      filterRepository.updateSelectedGenres(genres)
-      uiState.copy(selectedGenres = genres)
+    val genres = if (action.genre in selectedGenres) {
+      selectedGenres - action.genre
+    } else {
+      selectedGenres + action.genre
     }
+
+    filterRepository.updateSelectedGenres(genres)
   }
 
   private fun handleSelectLanguage(action: SelectFilterAction.SelectLanguage) {
-    _uiState.update { uiState ->
-      val language = if (action.language == uiState.selectedLanguage) {
-        null
-      } else {
-        action.language
-      }
-
-      filterRepository.updateLanguage(language)
-      uiState.copy(selectedLanguage = language)
+    val language = if (action.language == uiState.value.selectedLanguage) {
+      null
+    } else {
+      action.language
     }
+    filterRepository.updateLanguage(language)
   }
 
   private fun handleSelectCountry(action: SelectFilterAction.SelectCountry) {
-    _uiState.update { uiState ->
-      val country = if (action.country == uiState.selectedCountry) {
-        null
-      } else {
-        action.country
-      }
-
-      filterRepository.updateCountry(country)
-      uiState.copy(selectedCountry = country)
+    val language = if (action.country == uiState.value.selectedCountry) {
+      null
+    } else {
+      action.country
     }
+    filterRepository.updateCountry(language)
   }
 }

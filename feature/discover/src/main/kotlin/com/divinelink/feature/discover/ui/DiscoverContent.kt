@@ -36,6 +36,7 @@ import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.components.clearButton
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.media.MediaListContent
 import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
@@ -101,9 +102,15 @@ fun DiscoverContent(
       horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       verticalAlignment = Alignment.CenterVertically,
       contentPadding = PaddingValues(
-        horizontal = MaterialTheme.dimensions.keyline_16,
+        start = MaterialTheme.dimensions.keyline_8,
+        end = MaterialTheme.dimensions.keyline_16,
       ),
     ) {
+      clearButton(
+        isVisible = uiState.currentFilters.hasSelectedFilters,
+        onClearClick = { action(DiscoverAction.ClearFilters) },
+      )
+
       item {
         DiscoverFilterChip.Genre(
           modifier = Modifier

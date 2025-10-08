@@ -19,6 +19,9 @@ data class MediaTypeFilters(
       country = null,
     )
   }
+
+  val hasSelectedFilters
+    get() = genres.isNotEmpty() || language != null || country != null
 }
 
 data class DiscoverUiState(
