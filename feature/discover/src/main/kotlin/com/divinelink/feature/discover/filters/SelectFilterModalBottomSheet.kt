@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
@@ -27,6 +28,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,6 +87,7 @@ fun SelectFilterModalBottomSheet(
           onDismissRequest()
         },
         itemName = { stringResource(it.nameRes) },
+        selected = uiState.selectedLanguage,
       )
       FilterModal.Country -> SelectableFilterList(
         titleRes = UiString.core_ui_country,
@@ -96,6 +99,7 @@ fun SelectFilterModalBottomSheet(
           onDismissRequest()
         },
         itemName = { stringResource(it.nameRes) + "  ${it.flag}" },
+        selected = uiState.selectedCountry,
       )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -127,6 +131,7 @@ private fun SelectGenresContent(
         key = { it.id },
         isSelected = { it in uiState.selectedGenres },
         onItemClick = { action(SelectFilterAction.SelectGenre(it)) },
+        selected = uiState.selectedGenres.firstOrNull(),
         itemName = { it.name },
       )
 
@@ -183,10 +188,24 @@ fun <T : Any> SelectableFilterList(
   key: (T) -> Any,
   isSelected: (T) -> Boolean,
   onItemClick: (T) -> Unit,
+  selected: T?,
   itemName: @Composable (T) -> String,
   modifier: Modifier = Modifier,
 ) {
+  val state = rememberLazyListState()
+
+  LaunchedEffect(Unit) {
+    val selectedIndex = items.indexOf(selected)
+    if (selectedIndex != -1) {
+      state.animateScrollToItem(
+        index = selectedIndex,
+        scrollOffset = -800,
+      )
+    }
+  }
+
   LazyColumn(
+    state = state,
     modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
@@ -233,7 +252,7 @@ fun <T : Any> SelectableFilterList(
       }
 
       HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
       )
     }
   }
