@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
@@ -43,6 +44,8 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.blankslate.BlankSlate
+import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.discover.FilterModal
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -68,7 +71,7 @@ fun SelectFilterModalBottomSheet(
     when (type) {
       FilterModal.Genre -> SelectGenresContent(
         uiState = uiState,
-        viewModel = viewModel,
+        action = viewModel::onAction,
         density = density,
         onDismissRequest = onDismissRequest,
       )
@@ -102,65 +105,72 @@ fun SelectFilterModalBottomSheet(
 @Composable
 private fun SelectGenresContent(
   uiState: SelectFilterUiState,
-  viewModel: SelectFilterViewModel,
+  action: (SelectFilterAction) -> Unit,
   density: Density,
   onDismissRequest: () -> Unit,
 ) {
-  Box {
-    var actionsSize by remember { mutableStateOf(0.dp) }
-
-    SelectableFilterList(
-      modifier = Modifier.padding(
-        bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
-      ),
-      titleRes = UiString.core_ui_genres,
-      items = uiState.genres,
-      key = { it.id },
-      isSelected = { it in uiState.selectedGenres },
-      onItemClick = { viewModel.onAction(SelectFilterAction.SelectGenre(it)) },
-      itemName = { it.name },
+  when {
+    uiState.loading -> LoadingContent(modifier = Modifier.fillMaxSize())
+    uiState.error != null -> BlankSlate(
+      uiState = uiState.error,
+      onRetry = { action(SelectFilterAction.Retry) },
     )
+    else -> Box {
+      var actionsSize by remember { mutableStateOf(0.dp) }
 
-    Row(
-      modifier = Modifier
-        .onSizeChanged {
-          with(density) {
-            actionsSize = it.height.toDp()
+      SelectableFilterList(
+        modifier = Modifier.padding(
+          bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
+        ),
+        titleRes = UiString.core_ui_genres,
+        items = uiState.genres,
+        key = { it.id },
+        isSelected = { it in uiState.selectedGenres },
+        onItemClick = { action(SelectFilterAction.SelectGenre(it)) },
+        itemName = { it.name },
+      )
+
+      Row(
+        modifier = Modifier
+          .onSizeChanged {
+            with(density) {
+              actionsSize = it.height.toDp()
+            }
           }
-        }
-        .padding(horizontal = MaterialTheme.dimensions.keyline_16)
-        .align(Alignment.BottomCenter)
-        .fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      ElevatedButton(
-        enabled = uiState.selectedGenres.isNotEmpty(),
-        modifier = Modifier.weight(1f),
-        onClick = {
-          viewModel.onAction(SelectFilterAction.ClearGenres)
-          onDismissRequest()
-        },
+          .padding(horizontal = MaterialTheme.dimensions.keyline_16)
+          .align(Alignment.BottomCenter)
+          .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+        verticalAlignment = Alignment.CenterVertically,
       ) {
-        Text(text = stringResource(UiString.core_ui_clear_all))
-      }
-
-      Button(
-        enabled = uiState.selectedGenres.isNotEmpty(),
-        modifier = Modifier.weight(1f),
-        onClick = onDismissRequest,
-      ) {
-        Text(
-          text = if (uiState.selectedGenres.isEmpty()) {
-            stringResource(UiString.core_ui_apply_filters)
-          } else {
-            pluralStringResource(
-              UiPlurals.core_ui_apply_filters,
-              uiState.selectedGenres.size,
-              uiState.selectedGenres.size,
-            )
+        ElevatedButton(
+          enabled = uiState.selectedGenres.isNotEmpty(),
+          modifier = Modifier.weight(1f),
+          onClick = {
+            action(SelectFilterAction.ClearGenres)
+            onDismissRequest()
           },
-        )
+        ) {
+          Text(text = stringResource(UiString.core_ui_clear_all))
+        }
+
+        Button(
+          enabled = uiState.selectedGenres.isNotEmpty(),
+          modifier = Modifier.weight(1f),
+          onClick = onDismissRequest,
+        ) {
+          Text(
+            text = if (uiState.selectedGenres.isEmpty()) {
+              stringResource(UiString.core_ui_apply_filters)
+            } else {
+              pluralStringResource(
+                UiPlurals.core_ui_apply_filters,
+                uiState.selectedGenres.size,
+                uiState.selectedGenres.size,
+              )
+            },
+          )
+        }
       }
     }
   }

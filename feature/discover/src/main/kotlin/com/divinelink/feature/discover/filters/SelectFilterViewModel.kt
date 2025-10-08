@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.media.repository.MediaRepository
+import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
+import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.feature.discover.FilterModal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,41 +25,68 @@ class SelectFilterViewModel(
 ) : ViewModel() {
 
   private val _uiState: MutableStateFlow<SelectFilterUiState> = MutableStateFlow(
-    SelectFilterUiState.initial,
+    SelectFilterUiState.initial(
+      filterModal = type,
+      mediaType = mediaType,
+    ),
   )
   val uiState: StateFlow<SelectFilterUiState> = _uiState
 
   init {
     if (type is FilterModal.Genre) {
-      viewModelScope.launch {
-        repository
-          .fetchGenres(mediaType)
-          .distinctUntilChanged()
-          .onEach { result ->
-            when (result) {
-              is Resource.Error -> Unit
-              is Resource.Loading -> _uiState.update { uiState ->
-                uiState.copy(
-                  loading = false,
-                  genres = result.data ?: emptyList(),
-                )
+      fetchGenres(mediaType)
+    }
+  }
+
+  private fun fetchGenres(mediaType: MediaType) {
+    viewModelScope.launch {
+      _uiState.update {
+        it.copy(
+          loading = true,
+          error = null,
+        )
+      }
+
+      repository
+        .fetchGenres(mediaType)
+        .distinctUntilChanged()
+        .onEach { result ->
+          when (result) {
+            is Resource.Error -> _uiState.update {
+              val blankSlate = when (result.error) {
+                is AppException.Offline -> BlankSlateState.Offline
+                else -> BlankSlateState.Generic
               }
-              is Resource.Success -> _uiState.update { uiState ->
-                uiState.copy(
-                  loading = false,
-                  genres = result.data,
-                )
-              }
+
+              it.copy(
+                error = blankSlate,
+                loading = false,
+              )
+            }
+            is Resource.Loading -> _uiState.update { uiState ->
+              uiState.copy(
+                loading = false,
+                genres = result.data ?: emptyList(),
+                error = null,
+              )
+            }
+            is Resource.Success -> _uiState.update { uiState ->
+              uiState.copy(
+                loading = false,
+                genres = result.data,
+                error = null,
+              )
             }
           }
-          .launchIn(viewModelScope)
-      }
+        }
+        .launchIn(viewModelScope)
     }
   }
 
   fun onAction(action: SelectFilterAction) {
     when (action) {
       SelectFilterAction.ClearGenres -> handleClearGenres()
+      SelectFilterAction.Retry -> handleRetry()
       is SelectFilterAction.SelectGenre -> handleSelectGenre(action)
       is SelectFilterAction.SelectLanguage -> handleSelectLanguage(action)
       is SelectFilterAction.SelectCountry -> handleSelectCountry(action)
@@ -68,6 +97,14 @@ class SelectFilterViewModel(
     _uiState.update { uiState ->
       filterRepository.updateSelectedGenres(emptyList())
       uiState.copy(selectedGenres = emptyList())
+    }
+  }
+
+  private fun handleRetry() {
+    when (uiState.value.filterModal) {
+      FilterModal.Genre -> fetchGenres(uiState.value.mediaType)
+      FilterModal.Country -> Unit
+      FilterModal.Language -> Unit
     }
   }
 
