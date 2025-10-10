@@ -49,6 +49,7 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.discover.FilterModal
+import com.divinelink.feature.discover.FilterType
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -70,36 +71,36 @@ fun SelectFilterModalBottomSheet(
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
   ) {
-    when (type) {
-      FilterModal.Genre -> SelectGenresContent(
-        uiState = uiState,
-        action = viewModel::onAction,
-        density = density,
-        onDismissRequest = onDismissRequest,
-      )
-      FilterModal.Language -> SelectableFilterList(
-        titleRes = UiString.core_ui_language,
-        items = uiState.languages,
-        key = { it.code },
-        isSelected = { it == uiState.selectedLanguage },
-        onItemClick = {
-          viewModel.onAction(SelectFilterAction.SelectLanguage(it))
-          onDismissRequest()
-        },
-        itemName = { stringResource(it.nameRes) },
-        selected = uiState.selectedLanguage,
-      )
-      FilterModal.Country -> SelectableFilterList(
+    when (val filterType = uiState.filterType) {
+      is FilterType.Countries -> SelectableFilterList(
         titleRes = UiString.core_ui_country,
-        items = uiState.countries,
+        items = filterType.visibleOptions,
         key = { it.code },
-        isSelected = { it == uiState.selectedCountry },
+        isSelected = { it in filterType.selectedOptions },
         onItemClick = {
           viewModel.onAction(SelectFilterAction.SelectCountry(it))
           onDismissRequest()
         },
         itemName = { stringResource(it.nameRes) + "  ${it.flag}" },
-        selected = uiState.selectedCountry,
+        selected = filterType.selectedOptions.firstOrNull(),
+      )
+      is FilterType.Genres -> SelectGenresContent(
+        uiState = uiState,
+        action = viewModel::onAction,
+        density = density,
+        onDismissRequest = onDismissRequest,
+      )
+      is FilterType.Languages -> SelectableFilterList(
+        titleRes = UiString.core_ui_language,
+        items = filterType.visibleOptions,
+        key = { it.code },
+        isSelected = { it in filterType.selectedOptions },
+        onItemClick = {
+          viewModel.onAction(SelectFilterAction.SelectLanguage(it))
+          onDismissRequest()
+        },
+        itemName = { stringResource(it.nameRes) },
+        selected = filterType.selectedOptions.firstOrNull(),
       )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -121,17 +122,18 @@ private fun SelectGenresContent(
     )
     else -> Box {
       var actionsSize by remember { mutableStateOf(0.dp) }
+      val filterType = uiState.filterType as FilterType.Genres
 
       SelectableFilterList(
         modifier = Modifier.padding(
           bottom = actionsSize.plus(MaterialTheme.dimensions.keyline_8),
         ),
         titleRes = UiString.core_ui_genres,
-        items = uiState.genres,
+        items = filterType.visibleOptions,
         key = { it.id },
-        isSelected = { it in uiState.selectedGenres },
+        isSelected = { it in uiState.filterType.selectedOptions },
         onItemClick = { action(SelectFilterAction.SelectGenre(it)) },
-        selected = uiState.selectedGenres.firstOrNull(),
+        selected = uiState.filterType.selectedOptions.firstOrNull(),
         itemName = { it.name },
       )
 
@@ -149,7 +151,7 @@ private fun SelectGenresContent(
         verticalAlignment = Alignment.CenterVertically,
       ) {
         ElevatedButton(
-          enabled = uiState.selectedGenres.isNotEmpty(),
+          enabled = filterType.selectedOptions.isNotEmpty(),
           modifier = Modifier.weight(1f),
           onClick = {
             action(SelectFilterAction.ClearGenres)
@@ -160,18 +162,18 @@ private fun SelectGenresContent(
         }
 
         Button(
-          enabled = uiState.selectedGenres.isNotEmpty(),
+          enabled = filterType.selectedOptions.isNotEmpty(),
           modifier = Modifier.weight(1f),
           onClick = onDismissRequest,
         ) {
           Text(
-            text = if (uiState.selectedGenres.isEmpty()) {
+            text = if (filterType.selectedOptions.isEmpty()) {
               stringResource(UiString.core_ui_apply_filters)
             } else {
               pluralStringResource(
                 UiPlurals.core_ui_apply_filters,
-                uiState.selectedGenres.size,
-                uiState.selectedGenres.size,
+                filterType.selectedOptions.size,
+                filterType.selectedOptions.size,
               )
             },
           )
