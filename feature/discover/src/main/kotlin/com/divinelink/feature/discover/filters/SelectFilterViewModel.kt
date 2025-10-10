@@ -41,6 +41,7 @@ class SelectFilterViewModel(
             it.copy(
               filterType = (it.filterType as FilterType.Countries).copy(
                 selectedOptions = country?.let { listOf(country) } ?: emptyList(),
+                query = null,
               ),
             )
           }
@@ -64,6 +65,7 @@ class SelectFilterViewModel(
             it.copy(
               filterType = (it.filterType as FilterType.Languages).copy(
                 selectedOptions = language?.let { listOf(language) } ?: emptyList(),
+                query = null,
               ),
             )
           }
