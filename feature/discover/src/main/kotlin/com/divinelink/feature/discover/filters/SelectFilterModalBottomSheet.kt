@@ -1,6 +1,8 @@
 package com.divinelink.feature.discover.filters
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
@@ -50,6 +53,7 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
+import com.divinelink.feature.discover.ui.SearchField
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -68,22 +72,11 @@ fun SelectFilterModalBottomSheet(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
+    modifier = Modifier.fillMaxHeight(),
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
   ) {
     when (val filterType = uiState.filterType) {
-      is FilterType.Countries -> SelectableFilterList(
-        titleRes = UiString.core_ui_country,
-        items = filterType.visibleOptions,
-        key = { it.code },
-        isSelected = { it in filterType.selectedOptions },
-        onItemClick = {
-          viewModel.onAction(SelectFilterAction.SelectCountry(it))
-          onDismissRequest()
-        },
-        itemName = { stringResource(it.nameRes) + "  ${it.flag}" },
-        selected = filterType.selectedOptions.firstOrNull(),
-      )
       is FilterType.Genres -> SelectGenresContent(
         uiState = uiState,
         action = viewModel::onAction,
@@ -101,6 +94,22 @@ fun SelectFilterModalBottomSheet(
         },
         itemName = { stringResource(it.nameRes) },
         selected = filterType.selectedOptions.firstOrNull(),
+        onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
+        query = filterType.query,
+      )
+      is FilterType.Countries -> SelectableFilterList(
+        titleRes = UiString.core_ui_country,
+        items = filterType.visibleOptions,
+        key = { it.code },
+        isSelected = { it in filterType.selectedOptions },
+        onItemClick = {
+          viewModel.onAction(SelectFilterAction.SelectCountry(it))
+          onDismissRequest()
+        },
+        itemName = { stringResource(it.nameRes) + "  ${it.flag}" },
+        selected = filterType.selectedOptions.firstOrNull(),
+        onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
+        query = filterType.query,
       )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -135,6 +144,8 @@ private fun SelectGenresContent(
         onItemClick = { action(SelectFilterAction.SelectGenre(it)) },
         selected = uiState.filterType.selectedOptions.firstOrNull(),
         itemName = { it.name },
+        onValueChange = { action(SelectFilterAction.SearchFilters(it)) },
+        query = filterType.query,
       )
 
       Row(
@@ -192,6 +203,8 @@ fun <T : Any> SelectableFilterList(
   onItemClick: (T) -> Unit,
   selected: T?,
   itemName: @Composable (T) -> String,
+  query: String?,
+  onValueChange: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val state = rememberLazyListState()
@@ -208,7 +221,9 @@ fun <T : Any> SelectableFilterList(
 
   LazyColumn(
     state = state,
-    modifier = modifier,
+    modifier = modifier
+      .fillMaxHeight()
+      .animateContentSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     item {
@@ -219,6 +234,20 @@ fun <T : Any> SelectableFilterList(
         text = stringResource(titleRes),
         style = MaterialTheme.typography.titleMedium,
       )
+    }
+
+    stickyHeader {
+      SearchField(
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+          )
+          .padding(MaterialTheme.dimensions.keyline_16),
+        value = query,
+        onValueChange = onValueChange,
+      )
+
       HorizontalDivider()
     }
 
@@ -229,6 +258,7 @@ fun <T : Any> SelectableFilterList(
       Row(
         modifier = Modifier
           .fillMaxWidth()
+          .animateItem()
           .clickable { onItemClick(item) }
           .padding(
             horizontal = MaterialTheme.dimensions.keyline_20,
