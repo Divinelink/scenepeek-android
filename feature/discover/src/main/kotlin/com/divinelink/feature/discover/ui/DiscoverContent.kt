@@ -1,6 +1,5 @@
 package com.divinelink.feature.discover.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
@@ -31,7 +28,6 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
@@ -81,14 +77,6 @@ fun DiscoverContent(
   }
 
   Column {
-    AnimatedVisibility(uiState.isLoading) {
-      LinearProgressIndicator(
-        modifier = Modifier
-          .testTag(TestTags.LINEAR_LOADING_INDICATOR)
-          .fillMaxWidth(),
-      )
-    }
-
     ScenePeekSecondaryTabs(
       tabs = uiState.tabs,
       selectedIndex = uiState.selectedTabIndex,

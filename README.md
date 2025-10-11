@@ -33,7 +33,7 @@ The following table outlines the main features of our app:
 | Jellyseerr Authentication | Log in to your Jellyseerr account             | ✅ Implemented       |
 | Jellyseerr Requests       | Request movies and TV shows via Jellyseerr    | ✅ Implemented       |
 | Additional Rating Sources | View IMDb & Trakt ratings for all content     | ✅ Implemented       |
-| Discover Feed             | Personalized content recommendations          | 🚧 Work in Progress |
+| Discover Feed             | Discover media through advanced filtering     | ✅ Implemented       |
 | TV Show Seasons           | Detailed information about individual seasons | 🚧 Work in Progress |
 
 We are continuously working on improving and expanding these features to enhance the user
