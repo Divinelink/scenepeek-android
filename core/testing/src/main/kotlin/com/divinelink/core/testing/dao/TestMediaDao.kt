@@ -1,6 +1,7 @@
 package com.divinelink.core.testing.dao
 
 import com.divinelink.core.database.media.dao.MediaDao
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
@@ -90,5 +91,9 @@ class TestMediaDao {
     result: Boolean,
   ) {
     whenever(mock.isMediaFavorite(id, mediaType)).thenReturn(result)
+  }
+
+  fun mockFetchGenres(result: Flow<List<Genre>>) {
+    whenever(mock.fetchGenres(any())).thenReturn(result)
   }
 }

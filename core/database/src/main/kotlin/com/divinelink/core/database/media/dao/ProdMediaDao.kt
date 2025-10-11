@@ -8,6 +8,7 @@ import com.divinelink.core.database.MediaItemEntity
 import com.divinelink.core.database.SeasonEntity
 import com.divinelink.core.database.currentEpochSeconds
 import com.divinelink.core.database.media.mapper.map
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
@@ -191,6 +192,34 @@ class ProdMediaDao(
         mediaId = mediaId.toLong(),
         status = season.status.value,
         seasonNumber = season.seasonNumber.toLong(),
+      )
+    }
+  }
+
+  override fun fetchGenres(mediaType: MediaType): Flow<List<Genre>> = database
+    .genreEntityQueries
+    .fetchGenres(mediaType = mediaType.value, locale = "en")
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .map { list ->
+      list.map { entity ->
+        Genre(
+          id = entity.id.toInt(),
+          name = entity.name,
+        )
+      }
+    }
+
+  override fun insertGenres(
+    mediaType: MediaType,
+    genres: List<Genre>,
+  ) = database.transaction {
+    genres.forEach { genre ->
+      database.genreEntityQueries.insertGenre(
+        id = genre.id.toLong(),
+        name = genre.name,
+        mediaType = mediaType.value,
+        locale = "en",
       )
     }
   }

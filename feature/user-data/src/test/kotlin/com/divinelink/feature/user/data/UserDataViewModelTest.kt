@@ -3,6 +3,7 @@ package com.divinelink.feature.user.data
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.assertUiState
@@ -99,7 +100,7 @@ class UserDataViewModelTest {
             MediaType.TV to 2,
           ),
           tabs = mapOf(
-            MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
+            MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
             MediaTab.TV to UserDataResponseFactory.tv().totalResults,
           ),
         ),
@@ -146,7 +147,7 @@ class UserDataViewModelTest {
             MediaType.TV to 2,
           ),
           tabs = mapOf(
-            MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
+            MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
             MediaTab.TV to UserDataResponseFactory.tv().totalResults,
           ),
         ),
@@ -178,7 +179,7 @@ class UserDataViewModelTest {
         MediaType.TV to 2,
       ),
       tabs = mapOf(
-        MediaTab.MOVIE to 30,
+        MediaTab.Movie to 30,
         MediaTab.TV to 30,
       ),
     )
@@ -299,7 +300,7 @@ class UserDataViewModelTest {
               MediaType.TV to 1,
             ),
             tabs = mapOf(
-              MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
+              MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
               MediaTab.TV to null,
             ),
           ),
@@ -325,7 +326,7 @@ class UserDataViewModelTest {
               MediaType.TV to true,
             ),
             tabs = mapOf(
-              MediaTab.MOVIE to UserDataResponseFactory.movies().totalResults,
+              MediaTab.Movie to UserDataResponseFactory.movies().totalResults,
               MediaTab.TV to null,
             ),
           ),
@@ -374,7 +375,7 @@ class UserDataViewModelTest {
             MediaType.TV to 1,
           ),
           tabs = mapOf(
-            MediaTab.MOVIE to 30,
+            MediaTab.Movie to 30,
             MediaTab.TV to null,
           ),
         ),
@@ -424,7 +425,7 @@ class UserDataViewModelTest {
             MediaType.TV to 2,
           ),
           tabs = mapOf(
-            MediaTab.MOVIE to null,
+            MediaTab.Movie to null,
             MediaTab.TV to UserDataResponseFactory.tv().totalResults,
           ),
         ),
@@ -434,7 +435,7 @@ class UserDataViewModelTest {
   private fun createUiState(
     selectedTabIndex: Int = 0,
     tabs: Map<MediaTab, Int?> = mapOf(
-      MediaTab.MOVIE to null,
+      MediaTab.Movie to null,
       MediaTab.TV to null,
     ),
     pages: Map<MediaType, Int> = mapOf(

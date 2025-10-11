@@ -5,10 +5,10 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.home.HomeMode
 import com.divinelink.core.model.home.HomePage
 import com.divinelink.core.model.media.MediaSection
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.Filter
 import com.divinelink.scenepeek.R
-import com.divinelink.core.ui.R as uiR
 
 @Immutable
 data class HomeViewState(
@@ -32,7 +32,7 @@ data class HomeViewState(
 
   private val emptyContentUiState: BlankSlateState? = when (mode) {
     HomeMode.Filtered -> BlankSlateState.Custom(
-      icon = uiR.drawable.core_ui_ghost,
+      icon = UiDrawable.no_results,
       title = UIText.ResourceText(R.string.home__empty_filtered_result_title),
       description = UIText.ResourceText(R.string.home__empty_filtered_result_description),
     )

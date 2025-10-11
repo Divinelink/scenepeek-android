@@ -1,0 +1,16 @@
+CREATE TABLE GenreEntity (
+  id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  mediaType TEXT NOT NULL,
+  locale TEXT NOT NULL,
+  PRIMARY KEY (id, mediaType, locale)
+);
+
+insertGenre:
+INSERT OR REPLACE INTO GenreEntity (id, name, mediaType, locale)
+VALUES (?,?,?, ?);
+
+fetchGenres:
+SELECT * FROM GenreEntity
+WHERE mediaType = ? AND locale = ?
+ORDER BY name;

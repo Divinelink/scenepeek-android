@@ -11,8 +11,12 @@ object TestTags {
     const val SCROLLABLE_CONTENT = "Scrollable Content"
     const val PULL_TO_REFRESH = "Pull to refresh"
 
+    object Fab {
+      const val DISCOVER = "Discover Floating Action Button"
+    }
+
     object Button {
-      const val CLEAR_FILTERS = "Clear filters button"
+      const val CLEAR_FILTERS = "Clear language button"
       const val SWITCH_VIEW = "Switch View Button"
     }
 
@@ -218,7 +222,7 @@ object TestTags {
   }
 
   object Watchlist {
-    const val TAB_BAR = "Watchlist Tab Bar $%s"
+    const val TAB_BAR = "Watchlist Tab Bar %s"
     const val WATCHLIST_SCREEN = "Watchlist Screen"
     const val WATCHLIST_ERROR_CONTENT = "Watchlist Error Content"
   }

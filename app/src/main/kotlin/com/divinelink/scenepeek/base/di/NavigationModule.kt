@@ -10,6 +10,7 @@ import com.divinelink.feature.add.to.account.modal.navigation.defaultMediaAction
 import com.divinelink.feature.credits.navigation.creditsScreen
 import com.divinelink.feature.details.navigation.detailsScreen
 import com.divinelink.feature.details.navigation.personScreen
+import com.divinelink.feature.discover.ui.navigation.discoverScreen
 import com.divinelink.feature.lists.create.ui.navigation.createListScreen
 import com.divinelink.feature.lists.create.ui.navigation.editListScreen
 import com.divinelink.feature.lists.details.ui.navigation.listDetailsScreen
@@ -258,6 +259,13 @@ val navigationModule = module {
   single<NavGraphExtension>(named<Navigation.ActionMenuRoute.Media>()) {
     { navController, _ ->
       defaultMediaActionMenu(navController::findNavigation)
+    }
+  }
+
+  // Action Menu Navigation
+  single<NavGraphExtension>(named<Navigation.DiscoverRoute>()) {
+    { navController, _ ->
+      discoverScreen(navController::findNavigation)
     }
   }
 

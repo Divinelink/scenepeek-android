@@ -1,7 +1,7 @@
 package com.divinelink.feature.search.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
@@ -9,6 +9,7 @@ import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.UiDrawable
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.media.MediaContent
@@ -20,6 +21,7 @@ fun SearchContent(
   onNavigate: (Navigation) -> Unit,
   onRetryClick: () -> Unit,
   onLoadNextPage: () -> Unit,
+  scrollState: LazyGridState,
 ) {
   when {
     uiState.error is BlankSlateState.Offline -> BlankSlate(
@@ -31,7 +33,7 @@ fun SearchContent(
     uiState.searchResults?.data?.isEmpty() == true -> BlankSlate(
       modifier = Modifier.padding(bottom = LocalBottomNavigationPadding.current),
       uiState = BlankSlateState.Custom(
-        icon = com.divinelink.core.ui.R.drawable.core_ui_search,
+        icon = UiDrawable.searching,
         title = UIText.ResourceText(R.string.search__empty_result_title),
         description = UIText.ResourceText(R.string.search__empty_result_description),
       ),
@@ -67,7 +69,7 @@ fun SearchContent(
       },
       onLoadNextPage = onLoadNextPage,
       onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
-      scrollState = rememberLazyGridState(),
+      scrollState = scrollState,
     )
 
     else -> BlankSlate(

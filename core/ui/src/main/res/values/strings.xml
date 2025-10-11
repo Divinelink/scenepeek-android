@@ -4,6 +4,7 @@
   <string name="core_ui_cancel">Cancel</string>
   <string name="core_ui_confirm">Confirm</string>
   <string name="core_ui_delete">Delete</string>
+  <string name="core_ui_discover">Discover</string>
   <string name="core_ui_share_error_details">Share error details</string>
 
   <string name="core_ui_approve">Approve</string>
@@ -156,6 +157,19 @@
   <string name="core_ui_backdrop">Backdrop</string>
   <string name="core_ui_public">Public</string>
   <string name="core_ui_private">Private</string>
+
+  <string name="core_ui_genres">Genres</string>
+  <string name="core_ui_language">Language</string>
+  <string name="core_ui_country">Country</string>
+
+  <string name="core_ui_clear_all">Clear all</string>
+
+
+  <string name="core_ui_apply_filters">Apply filters</string>
+  <plurals name="core_ui_apply_filters">
+    <item quantity="one">Apply 1 filter</item>
+    <item quantity="other">Apply %s filters</item>
+  </plurals>
 
   <!-- Accessibility -->
   <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>

@@ -1,11 +1,15 @@
 package com.divinelink.core.data.media.repository
 
+import com.divinelink.core.commons.domain.data
 import com.divinelink.core.database.media.dao.MediaDao
 import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.search.MultiSearch
+import com.divinelink.core.model.user.data.UserDataResponse
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.mapper.map
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
@@ -14,7 +18,9 @@ import com.divinelink.core.network.media.model.search.movie.SearchRequestApi
 import com.divinelink.core.network.media.model.search.movie.toDomainMoviesList
 import com.divinelink.core.network.media.model.search.multi.MultiSearchRequestApi
 import com.divinelink.core.network.media.model.search.multi.mapper.map
+import com.divinelink.core.network.media.model.tv.map
 import com.divinelink.core.network.media.service.MediaService
+import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -35,6 +41,56 @@ class ProdMediaRepository(
       )
     }
     Result.success(updatedMovies)
+  }
+
+  override fun discoverMovies(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<Result<UserDataResponse>> = combine(
+    remote.fetchDiscoverMovies(page, filters),
+    dao.getFavoriteMediaIds(MediaType.MOVIE),
+  ) { response, favoriteIds ->
+    val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedMovies = data.list.map { media ->
+      (media as MediaItem.Media.Movie).copy(isFavorite = media.id in favoriteSet)
+    }
+
+    Result.success(
+      UserDataResponse(
+        data = updatedMovies,
+        page = page,
+        totalResults = data.totalResults,
+        type = MediaType.MOVIE,
+        canFetchMore = page < data.totalPages,
+      ),
+    )
+  }
+
+  override fun discoverTvShows(
+    page: Int,
+    filters: List<DiscoverFilter>,
+  ): Flow<Result<UserDataResponse>> = combine(
+    remote.fetchDiscoverTv(page, filters),
+    dao.getFavoriteMediaIds(MediaType.TV),
+  ) { response, favoriteIds ->
+    val data = response.map()
+    val favoriteSet = favoriteIds.toSet()
+
+    val updatedTv = data.list.map { media ->
+      (media as MediaItem.Media.TV).copy(isFavorite = media.id in favoriteSet)
+    }
+
+    Result.success(
+      UserDataResponse(
+        data = updatedTv,
+        page = page,
+        totalResults = data.totalResults,
+        type = MediaType.TV,
+        canFetchMore = page < data.totalPages,
+      ),
+    )
   }
 
   override fun fetchFavorites(): Flow<MediaListResult> = dao
@@ -106,11 +162,13 @@ class ProdMediaRepository(
     Result.success(it)
   }
 
-  override suspend fun fetchMovieGenres(): Result<List<Genre>> = remote
-    .fetchMovieGenres()
-    .map(GenresListResponse::map)
-
-  override suspend fun fetchTvGenres(): Result<List<Genre>> = remote
-    .fetchTvGenres()
-    .map(GenresListResponse::map)
+  override suspend fun fetchGenres(mediaType: MediaType): Flow<Resource<List<Genre>>> =
+    networkBoundResource(
+      query = { dao.fetchGenres(mediaType) },
+      fetch = { remote.fetchGenres(mediaType).map(GenresListResponse::map) },
+      saveFetchResult = { remoteData ->
+        dao.insertGenres(mediaType = mediaType, genres = remoteData.data)
+      },
+      shouldFetch = { it.isEmpty() },
+    )
 }

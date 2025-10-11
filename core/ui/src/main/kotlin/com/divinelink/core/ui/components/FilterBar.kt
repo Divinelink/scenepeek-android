@@ -2,26 +2,14 @@
 
 package com.divinelink.core.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -29,19 +17,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
-import com.divinelink.core.ui.TestTags
 
 /**
- * A composable that will display a list of filters.
+ * A composable that will display a list of language.
  *
  * @param modifier The modifier to be applied to the filter bar.
- * @param filters The list of filters to display.
+ * @param language The list of language to display.
  * @param onFilterClick A callback that will be called when a filter is clicked.
  * @param onClearClick A callback that will be called when the clear button is clicked.
  */
@@ -67,17 +51,11 @@ fun FilterBar(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       val sortedFilters = filters.sortedBy { !it.isSelected }
-      item {
-        AnimatedVisibility(
-          enter = slideInHorizontally() + expandHorizontally(),
-          exit = slideOutHorizontally() + shrinkHorizontally(),
-          visible = sortedFilters.any { it.isSelected },
-        ) {
-          ClearButton(
-            onClearClick = onClearClick,
-          )
-        }
-      }
+
+      clearButton(
+        isVisible = sortedFilters.any { it.isSelected },
+        onClearClick = onClearClick,
+      )
 
       items(
         count = sortedFilters.size,
@@ -91,37 +69,6 @@ fun FilterBar(
         )
       }
     }
-  }
-}
-
-/**
- * A composable that will display a clear button.
- * @param onClearClick A callback that will be called when the clear button is clicked.
- * @param modifier The modifier to be applied to the clear button.
- */
-@Composable
-private fun ClearButton(
-  modifier: Modifier = Modifier,
-  onClearClick: () -> Unit,
-) {
-  val containerColor = MaterialTheme.colorScheme.surfaceVariant
-  OutlinedButton(
-    onClick = onClearClick,
-    modifier = modifier
-      .testTag(TestTags.Components.Button.CLEAR_FILTERS)
-      .size(MaterialTheme.dimensions.keyline_40),
-    border = null,
-    shape = CircleShape,
-    contentPadding = PaddingValues(0.dp),
-    colors = ButtonDefaults.outlinedButtonColors(
-      containerColor = containerColor,
-      contentColor = contentColorFor(containerColor),
-    ),
-  ) {
-    Icon(
-      imageVector = Icons.Default.Clear,
-      contentDescription = stringResource(id = R.string.clear_filters_button_content_description),
-    )
   }
 }
 

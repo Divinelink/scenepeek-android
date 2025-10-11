@@ -5,6 +5,7 @@ package com.divinelink.scenepeek.home.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,10 +38,9 @@ fun HomeContent(
   onFilterClick: (Filter) -> Unit,
   onClearFiltersClick: () -> Unit,
   onRetryClick: () -> Unit,
+  browserScrollState: LazyGridState = rememberLazyGridState(),
+  filterScrollState: LazyGridState = rememberLazyGridState(),
 ) {
-  val browserScrollState = rememberLazyGridState()
-  val filterScrollState = rememberLazyGridState()
-
   Column {
     FilterBar(
       modifier = modifier

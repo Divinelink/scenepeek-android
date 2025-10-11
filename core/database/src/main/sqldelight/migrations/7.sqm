@@ -1,0 +1,7 @@
+CREATE TABLE GenreEntity (
+  id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  mediaType TEXT NOT NULL,
+  locale TEXT NOT NULL,
+  PRIMARY KEY (id, mediaType, locale)
+);

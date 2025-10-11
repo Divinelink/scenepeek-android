@@ -9,6 +9,7 @@ import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory.toWizard
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
+import com.divinelink.core.network.Resource
 import com.divinelink.core.network.media.model.GenresListResponse
 import com.divinelink.core.network.media.model.movie.MoviesRequestApi
 import com.divinelink.core.network.media.model.movie.MoviesResponseApi
@@ -20,7 +21,6 @@ import com.divinelink.core.testing.factories.api.movie.MovieApiFactory
 import com.divinelink.core.testing.service.TestMediaService
 import com.divinelink.factories.api.SearchMovieApiFactory
 import com.google.common.truth.Truth.assertThat
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -192,37 +192,78 @@ class ProdMediaRepositoryTest {
 
   @Test
   fun `test fetch movie genres with success`() = runTest {
+    mediaDao.mockFetchGenres(
+      flowOf(
+        emptyList(),
+        GenreFactory.Movie.all,
+      ),
+    )
     mediaService.mockFetchMovieGenres(
       Result.success(GenresListResponse(GenreResponseFactory.Movie.all)),
     )
 
-    repository.fetchMovieGenres() shouldBe Result.success(GenreFactory.Movie.all)
+    repository.fetchGenres(MediaType.MOVIE).test {
+      awaitItem() shouldBe Resource.Loading(emptyList())
+      awaitItem() shouldBe Resource.Success(emptyList())
+      awaitItem() shouldBe Resource.Success(GenreFactory.Movie.all)
+      awaitComplete()
+    }
   }
 
   @Test
   fun `test fetch tv genres with success`() = runTest {
+    mediaDao.mockFetchGenres(
+      flowOf(
+        emptyList(),
+        GenreFactory.Tv.all,
+      ),
+    )
     mediaService.mockFetchTvGenres(
       Result.success(GenresListResponse(GenreResponseFactory.Tv.all)),
     )
 
-    repository.fetchTvGenres() shouldBe Result.success(GenreFactory.Tv.all)
+    repository.fetchGenres(MediaType.TV).test {
+      awaitItem() shouldBe Resource.Loading(emptyList())
+      awaitItem() shouldBe Resource.Success(emptyList())
+      awaitItem() shouldBe Resource.Success(GenreFactory.Tv.all)
+      awaitComplete()
+    }
+  }
+
+  @Test
+  fun `test fetch tv genres with success and cached data`() = runTest {
+    mediaDao.mockFetchGenres(flowOf(GenreFactory.Tv.all))
+
+    repository.fetchGenres(MediaType.TV).test {
+      awaitItem() shouldBe Resource.Loading(GenreFactory.Tv.all)
+      awaitItem() shouldBe Resource.Success(GenreFactory.Tv.all)
+      awaitComplete()
+    }
+
+    mediaService.verifyNoInteractions()
   }
 
   @Test
   fun `test fetch movie genres with failure`() = runTest {
+    mediaDao.mockFetchGenres(flowOf(emptyList()))
     mediaService.mockFetchMovieGenres(Result.failure(AppException.Unknown()))
 
-    shouldThrow<AppException.Unknown> {
-      repository.fetchMovieGenres().data
+    repository.fetchGenres(MediaType.MOVIE).test {
+      awaitItem() shouldBe Resource.Loading(emptyList())
+      awaitItem() shouldBe Resource.Error(AppException.Unknown(), emptyList())
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch tv genres with failure`() = runTest {
+    mediaDao.mockFetchGenres(flowOf(emptyList()))
     mediaService.mockFetchTvGenres(Result.failure(AppException.Unknown()))
 
-    shouldThrow<AppException.Unknown> {
-      repository.fetchTvGenres().data
+    repository.fetchGenres(MediaType.TV).test {
+      awaitItem() shouldBe Resource.Loading(emptyList())
+      awaitItem() shouldBe Resource.Error(AppException.Unknown(), emptyList())
+      awaitComplete()
     }
   }
 }

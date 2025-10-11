@@ -1,6 +1,7 @@
 package com.divinelink.core.database.media.dao
 
 import com.divinelink.core.database.MediaItemEntity
+import com.divinelink.core.model.Genre
 import com.divinelink.core.model.details.Season
 import com.divinelink.core.model.jellyseerr.media.SeasonRequest
 import com.divinelink.core.model.media.MediaItem
@@ -52,4 +53,11 @@ interface MediaDao {
     mediaId: Int,
     mediaType: MediaType,
   ): Boolean
+
+  fun fetchGenres(mediaType: MediaType): Flow<List<Genre>>
+
+  fun insertGenres(
+    mediaType: MediaType,
+    genres: List<Genre>,
+  )
 }

@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.util
 
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Routes
 import io.ktor.http.URLProtocol
@@ -42,22 +43,39 @@ fun buildFindByIdUrl(
   }
 }.toString()
 
-fun buildMovieGenreUrl(): String = buildUrl {
+fun buildGenreUrl(media: MediaType): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + "/genre/movie/list"
+  encodedPath = Routes.TMDb.V3 + "/genre/${media.value}/list"
 
   parameters.apply {
     append("language", "en")
   }
 }.toString()
 
-fun buildTvGenreUrl(): String = buildUrl {
+fun buildDiscoverUrl(
+  page: Int,
+  media: MediaType,
+  filters: List<DiscoverFilter>,
+): String = buildUrl {
   protocol = URLProtocol.HTTPS
   host = Routes.TMDb.HOST
-  encodedPath = Routes.TMDb.V3 + "/genre/tv/list"
+  encodedPath = Routes.TMDb.V3 + "/discover/${media.value}"
 
   parameters.apply {
-    append("language", "en")
+    append("page", page.toString())
+    append("language", "en-US")
+    append("include_adult", "false")
+    append("vote_count.gte", "10")
+    append("sort_by", "popularity.desc")
+    filters.forEach { filter ->
+      when (filter) {
+        is DiscoverFilter.Genres -> if (filter.filters.isNotEmpty()) {
+          append("with_genres", filter.filters.joinToString(","))
+        }
+        is DiscoverFilter.Language -> append("with_original_language", filter.language)
+        is DiscoverFilter.Country -> append("with_origin_country", filter.countryCode)
+      }
+    }
   }
 }.toString()

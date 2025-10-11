@@ -7,9 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +21,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UiTokens
+import com.divinelink.core.ui.conditional
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -57,13 +56,16 @@ fun ScaffoldState.ScaffoldFab(
             verticalAlignment = Alignment.CenterVertically,
           ) {
             if (icon != null) FabIcon(icon)
-            if (icon == null || expanded) {
-              if (icon != null) {
-                Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_8))
-              }
+            AnimatedVisibility(
+              visible = icon == null || expanded,
+            ) {
               text?.let {
                 AnimatedContent(targetState = text) { text ->
                   Text(
+                    modifier = Modifier.conditional(
+                      condition = icon == null,
+                      ifFalse = { padding(start = MaterialTheme.dimensions.keyline_8) },
+                    ),
                     text = text,
                     maxLines = 1,
                   )

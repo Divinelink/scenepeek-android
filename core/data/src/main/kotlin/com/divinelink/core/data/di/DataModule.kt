@@ -1,5 +1,6 @@
 package com.divinelink.core.data.di
 
+import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.data.account.AccountRepository
 import com.divinelink.core.data.account.ProdAccountRepository
 import com.divinelink.core.data.auth.AuthRepository
@@ -26,6 +27,7 @@ val dataModule = module {
   singleOf(::ProdPersonRepository) { bind<PersonRepository>() }
   singleOf(::ProdPreferencesRepository) { bind<PreferencesRepository>() }
   singleOf(::ProdAuthRepository) { bind<AuthRepository>() }
+  singleOf(::FilterRepository)
 
   singleOf(::ConnectivityManagerNetworkMonitor) { bind<NetworkMonitor>() }
 }

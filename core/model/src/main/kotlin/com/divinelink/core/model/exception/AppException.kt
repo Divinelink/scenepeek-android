@@ -31,5 +31,5 @@ sealed class AppException(message: String? = null) : IOException(message) {
   class ServerError(message: String? = null) : AppException(message)
   class BadRequest(message: String? = null) : AppException(message)
 
-  class Unknown(override val message: String? = null) : AppException(message = message)
+  data class Unknown(override val message: String? = null) : AppException(message = message)
 }

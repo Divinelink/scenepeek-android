@@ -122,4 +122,7 @@ sealed interface Navigation {
 
   @Serializable
   data object JellyseerrRequestsRoute : Navigation
+
+  @Serializable
+  data object DiscoverRoute : Navigation
 }
