@@ -38,4 +38,6 @@
   <string name="feature_onboarding_v27_jellyseerr_requests_screen">- [Jellyseerr] Add requests screen where the user can view and edit all their requests. Head over to Profile > Requests and give it a go!</string>
   <string name="feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists">- [TMDB] Show the lists that the media is added to when adding it to lists.</string>
   <string name="feature_onboarding_v27_jellyseerr_encryption">- Improve encryption implementation when storing the jellyseerr account. If you were connected to Jellyseerr previously you have been signed out and you need to re-login.</string>
+
+  <string name="feature_onboarding_v28_discover_screen">- Add discover screen to discover movies and TV shows based on advanced filtering</string>
 </resources>

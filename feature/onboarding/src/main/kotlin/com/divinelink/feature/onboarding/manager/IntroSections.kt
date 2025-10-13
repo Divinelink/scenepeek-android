@@ -106,6 +106,15 @@ object IntroSections {
     ),
   )
 
+  val v28 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.20.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(
+      UIText.ResourceText(R.string.feature_onboarding_v28_discover_screen),
+    ),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -115,5 +124,6 @@ object IntroSections {
     25 to v25,
     26 to v26,
     27 to v27,
+    28 to v28,
   )
 }

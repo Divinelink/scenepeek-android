@@ -169,7 +169,7 @@ class ProdMediaDaoTest {
     dao.fetchGenres(mediaType = MediaType.MOVIE).test {
       awaitItem() shouldBe emptyList()
       dao.insertGenres(mediaType = MediaType.MOVIE, genres = GenreFactory.Movie.all)
-      awaitItem() shouldBe GenreFactory.Movie.all.sortedBy { it.id }
+      awaitItem() shouldBe GenreFactory.Movie.all.sortedBy { it.name }
     }
   }
 
@@ -178,7 +178,7 @@ class ProdMediaDaoTest {
     dao.fetchGenres(mediaType = MediaType.TV).test {
       awaitItem() shouldBe emptyList()
       dao.insertGenres(mediaType = MediaType.TV, genres = GenreFactory.Tv.all)
-      awaitItem() shouldBe GenreFactory.Tv.all.sortedBy { it.id }
+      awaitItem() shouldBe GenreFactory.Tv.all.sortedBy { it.name }
     }
   }
 }
