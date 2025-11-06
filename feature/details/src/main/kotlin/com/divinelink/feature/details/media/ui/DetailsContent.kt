@@ -59,6 +59,7 @@ import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.model.jellyseerr.permission.canManageRequests
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -116,6 +117,7 @@ fun DetailsContent(
   onDeleteRequest: (Int) -> Unit,
   onDeleteMedia: (Boolean) -> Unit,
   onUpdateMediaInfo: (JellyseerrMediaInfo) -> Unit,
+  onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -285,6 +287,7 @@ fun DetailsContent(
             },
             onBackdropLoaded = { onBackdropLoaded = true },
             onOpenManageModal = { showManageMediaModal = true },
+            onSwitchViewMode = onSwitchViewMode,
             scope = scope,
           )
           null -> {
@@ -323,6 +326,7 @@ private fun MediaDetailsContent(
   onShowTitle: (Float) -> Unit,
   onBackdropLoaded: () -> Unit,
   onOpenManageModal: () -> Unit,
+  onSwitchViewMode: (ViewableSection) -> Unit,
   scope: CoroutineScope,
 ) {
   if (uiState.mediaDetails == null) return
@@ -416,6 +420,7 @@ private fun MediaDetailsContent(
                 modifier = Modifier.fillMaxSize(),
                 recommendations = form.data as DetailsData.Recommendations,
                 title = uiState.mediaDetails.title,
+                onSwitchViewMode = onSwitchViewMode,
                 onItemClick = onMediaItemClick,
                 onLongClick = { onNavigate(Navigation.ActionMenuRoute.Media(it.encodeToString())) },
               )
@@ -474,6 +479,7 @@ fun DetailsContentPreview(
               onPlayTrailerClick = {},
               onDeleteRequest = {},
               onDeleteMedia = {},
+              onSwitchViewMode = {},
               onUpdateMediaInfo = {},
             )
           }

@@ -5,4 +5,5 @@ enum class ViewableSection(val key: String) {
   PERSON_CREDITS("person_credits"),
   DISCOVER("discover"),
   USER_DATA("user_data"),
+  MEDIA_DETAILS("media_details"),
 }

@@ -17,6 +17,8 @@ import androidx.compose.ui.test.swipeRight
 import androidx.compose.ui.test.swipeUp
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.data.details.model.RecommendedException
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.review.ReviewFactory
 import com.divinelink.core.fixtures.details.season.SeasonFactory
@@ -102,6 +104,11 @@ class DetailsScreenTest : ComposeTest() {
   private val deleteMediaUseCase = TestDeleteMediaUseCase()
   private val authRepository = TestAuthRepository()
 
+  private val preferencesRepository = TestPreferencesRepository()
+  private val switchViewButtonViewModel = SwitchViewButtonViewModel(
+    repository = preferencesRepository,
+  )
+
   @BeforeTest
   fun setup() {
     startKoin {
@@ -163,6 +170,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -230,6 +238,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -297,6 +306,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -354,6 +364,7 @@ class DetailsScreenTest : ComposeTest() {
             detailsRoute = it
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -458,6 +469,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -516,6 +528,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -587,6 +600,7 @@ class DetailsScreenTest : ComposeTest() {
             route = it
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -659,6 +673,7 @@ class DetailsScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       DetailsScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = DetailsViewModel(
           getMediaDetailsUseCase = getMovieDetailsUseCase.mock,
           onMarkAsFavoriteUseCase = markAsFavoriteUseCase,
@@ -741,6 +756,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -802,6 +818,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -917,6 +934,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }
@@ -1047,6 +1065,7 @@ class DetailsScreenTest : ComposeTest() {
       DetailsScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
         animatedVisibilityScope = this,
       )
     }

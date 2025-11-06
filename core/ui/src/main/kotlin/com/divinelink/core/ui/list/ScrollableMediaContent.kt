@@ -29,6 +29,7 @@ import com.divinelink.core.ui.composition.rememberViewModePreferences
 
 @Composable
 fun ScrollableMediaContent(
+  modifier: Modifier = Modifier,
   state: LazyGridState = rememberLazyGridState(),
   items: List<MediaItem.Media>,
   section: ViewableSection,
@@ -50,7 +51,7 @@ fun ScrollableMediaContent(
   )
 
   LazyVerticalGrid(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxSize()
       .testTag(TestTags.Components.MEDIA_LIST_CONTENT),
     columns = columns,

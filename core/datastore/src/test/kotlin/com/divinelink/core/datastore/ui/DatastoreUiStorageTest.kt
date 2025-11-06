@@ -38,12 +38,7 @@ class DatastoreUiStorageTest {
     storage.uiPreferences.test {
       assertThat(awaitItem()).isEqualTo(
         UiPreferences.Initial.copy(
-          viewModes = mapOf(
-            ViewableSection.LISTS to ViewMode.LIST,
-            ViewableSection.PERSON_CREDITS to ViewMode.LIST,
-            ViewableSection.DISCOVER to ViewMode.LIST,
-            ViewableSection.USER_DATA to ViewMode.LIST,
-          ),
+          viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
         ),
       )
 
@@ -53,12 +48,15 @@ class DatastoreUiStorageTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences.Initial.copy(
-          viewModes = mapOf(
-            ViewableSection.LISTS to ViewMode.LIST,
-            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
-            ViewableSection.DISCOVER to ViewMode.LIST,
-            ViewableSection.USER_DATA to ViewMode.LIST,
-          ),
+          viewModes = ViewableSection.entries.associateWith {
+            when (it) {
+              ViewableSection.LISTS -> ViewMode.LIST
+              ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+              ViewableSection.DISCOVER -> ViewMode.LIST
+              ViewableSection.USER_DATA -> ViewMode.LIST
+              ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+            }
+          },
         ),
       )
 
@@ -68,12 +66,15 @@ class DatastoreUiStorageTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences.Initial.copy(
-          viewModes = mapOf(
-            ViewableSection.LISTS to ViewMode.GRID,
-            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
-            ViewableSection.DISCOVER to ViewMode.LIST,
-            ViewableSection.USER_DATA to ViewMode.LIST,
-          ),
+          viewModes = ViewableSection.entries.associateWith {
+            when (it) {
+              ViewableSection.LISTS -> ViewMode.GRID
+              ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+              ViewableSection.DISCOVER -> ViewMode.LIST
+              ViewableSection.USER_DATA -> ViewMode.LIST
+              ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+            }
+          },
         ),
       )
     }

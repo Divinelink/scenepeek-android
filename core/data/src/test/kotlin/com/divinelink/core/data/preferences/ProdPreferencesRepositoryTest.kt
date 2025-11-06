@@ -46,6 +46,7 @@ class ProdPreferencesRepositoryTest {
             ViewableSection.PERSON_CREDITS to ViewMode.GRID,
             ViewableSection.DISCOVER to ViewMode.LIST,
             ViewableSection.USER_DATA to ViewMode.LIST,
+            ViewableSection.MEDIA_DETAILS to ViewMode.LIST,
           ),
         ),
       )
@@ -61,6 +62,7 @@ class ProdPreferencesRepositoryTest {
             ViewableSection.PERSON_CREDITS to ViewMode.GRID,
             ViewableSection.DISCOVER to ViewMode.LIST,
             ViewableSection.USER_DATA to ViewMode.LIST,
+            ViewableSection.MEDIA_DETAILS to ViewMode.LIST,
           ),
         ),
       )
