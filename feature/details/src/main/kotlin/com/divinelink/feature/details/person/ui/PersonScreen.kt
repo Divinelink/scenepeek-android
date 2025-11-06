@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -122,9 +121,7 @@ fun PersonScreen(
               )
             },
             onTabSelected = viewModel::onTabSelected,
-            onUpdateViewMode = {
-              switchViewButtonViewModel.switchViewMode(ViewableSection.PERSON_CREDITS)
-            },
+            onUpdateViewMode = switchViewButtonViewModel::switchViewMode,
             onApplyFilter = viewModel::onApplyFilter,
             onProgressUpdate = { toolbarProgress = it },
             onNavigate = onNavigate,

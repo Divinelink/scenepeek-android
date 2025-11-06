@@ -26,6 +26,7 @@ import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.UiDrawable
@@ -34,7 +35,7 @@ import com.divinelink.core.ui.blankslate.BlankSlateState
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.core.ui.components.clearButton
 import com.divinelink.core.ui.composition.PreviewLocalProvider
-import com.divinelink.core.ui.media.MediaListContent
+import com.divinelink.core.ui.list.ScrollableMediaContent
 import com.divinelink.core.ui.tab.ScenePeekSecondaryTabs
 import com.divinelink.feature.discover.DiscoverAction
 import com.divinelink.feature.discover.DiscoverForm
@@ -51,6 +52,7 @@ fun DiscoverContent(
   uiState: DiscoverUiState,
   action: (DiscoverAction) -> Unit,
   onNavigate: (Navigation) -> Unit,
+  onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
   val scope = rememberCoroutineScope()
   val pagerState = rememberPagerState(
@@ -155,8 +157,11 @@ fun DiscoverContent(
               ),
             )
           } else {
-            MediaListContent(
-              list = it.media,
+            ScrollableMediaContent(
+              items = it.media,
+              section = ViewableSection.DISCOVER,
+              onLoadMore = { action(DiscoverAction.LoadMore) },
+              onSwitchViewMode = onSwitchViewMode,
               onClick = { media ->
                 onNavigate(
                   Navigation.DetailsRoute(
@@ -166,7 +171,6 @@ fun DiscoverContent(
                   ),
                 )
               },
-              onLoadMore = { action(DiscoverAction.LoadMore) },
               onLongClick = { media ->
                 onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
               },
@@ -188,6 +192,7 @@ fun DiscoverContentPreview(
       uiState = state,
       action = {},
       onNavigate = {},
+      onSwitchViewMode = {},
     )
   }
 }

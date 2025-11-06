@@ -32,15 +32,14 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
     UiPreferences(
       personCreditsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.PERSON_CREDITS)]),
       listsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.LISTS)]),
+      userDataViewMode = ViewMode.from(it[viewModeKey(ViewableSection.USER_DATA)]),
+      discoverViewMode = ViewMode.from(it[viewModeKey(ViewableSection.DISCOVER)]),
     )
   }
 
   override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
-      val currentViewMode = when (section) {
-        ViewableSection.PERSON_CREDITS -> preferences[viewModeKey(ViewableSection.PERSON_CREDITS)]
-        ViewableSection.LISTS -> preferences[viewModeKey(ViewableSection.LISTS)]
-      }
+      val currentViewMode = preferences[viewModeKey(section)]
 
       preferences[viewModeKey(section)] = ViewMode.from(currentViewMode).other().value
     }

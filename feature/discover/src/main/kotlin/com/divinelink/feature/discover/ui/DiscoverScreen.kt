@@ -19,6 +19,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
 import com.divinelink.core.scaffold.PersistentNavigationRail
@@ -35,6 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimatedVisibilityScope.DiscoverScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: DiscoverViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -82,6 +84,7 @@ fun AnimatedVisibilityScope.DiscoverScreen(
           uiState = uiState,
           action = viewModel::onAction,
           onNavigate = onNavigate,
+          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
         )
       }
     },

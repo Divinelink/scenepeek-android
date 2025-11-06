@@ -90,7 +90,7 @@ fun PersonContent(
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
-  onUpdateViewMode: () -> Unit,
+  onUpdateViewMode: (ViewableSection) -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
   onProgressUpdate: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,

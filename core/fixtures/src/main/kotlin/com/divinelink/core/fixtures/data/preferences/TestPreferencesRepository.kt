@@ -18,6 +18,8 @@ class TestPreferencesRepository(uiPreferences: UiPreferences = UiPreferences.Ini
     val currentViewMode = when (section) {
       ViewableSection.PERSON_CREDITS -> uiPreferencesFlow.value.personCreditsViewMode
       ViewableSection.LISTS -> uiPreferencesFlow.value.listsViewMode
+      ViewableSection.USER_DATA -> uiPreferencesFlow.value.userDataViewMode
+      ViewableSection.DISCOVER -> uiPreferencesFlow.value.discoverViewMode
     }
 
     uiPreferencesFlow.value = when (section) {
@@ -26,6 +28,12 @@ class TestPreferencesRepository(uiPreferences: UiPreferences = UiPreferences.Ini
       )
       ViewableSection.LISTS -> uiPreferencesFlow.value.copy(
         listsViewMode = currentViewMode.other(),
+      )
+      ViewableSection.USER_DATA -> uiPreferencesFlow.value.copy(
+        userDataViewMode = currentViewMode.other(),
+      )
+      ViewableSection.DISCOVER -> uiPreferencesFlow.value.copy(
+        discoverViewMode = currentViewMode.other(),
       )
     }
   }

@@ -20,5 +20,7 @@ fun rememberViewModePreferences(section: ViewableSection): ViewMode {
   return when (section) {
     ViewableSection.LISTS -> uiPreferences.listsViewMode
     ViewableSection.PERSON_CREDITS -> uiPreferences.personCreditsViewMode
+    ViewableSection.USER_DATA -> uiPreferences.userDataViewMode
+    ViewableSection.DISCOVER -> uiPreferences.discoverViewMode
   }
 }

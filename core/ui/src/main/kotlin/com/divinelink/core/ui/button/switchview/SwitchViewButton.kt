@@ -31,7 +31,7 @@ import com.divinelink.core.ui.composition.rememberViewModePreferences
 fun SwitchViewButton(
   modifier: Modifier = Modifier,
   section: ViewableSection,
-  onClick: () -> Unit,
+  onClick: (ViewableSection) -> Unit,
 ) {
   val isGrid = rememberViewModePreferences(section)
   val icon = remember(isGrid) {
@@ -46,7 +46,7 @@ fun SwitchViewButton(
     modifier = modifier
       .clip(shape = MaterialTheme.shapes.large)
       .testTag(TestTags.Components.Button.SWITCH_VIEW),
-    onClick = onClick,
+    onClick = { onClick(section) },
   ) {
     Icon(
       imageVector = icon,
