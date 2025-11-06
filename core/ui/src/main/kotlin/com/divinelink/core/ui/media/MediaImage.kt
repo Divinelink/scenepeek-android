@@ -1,6 +1,8 @@
 package com.divinelink.core.ui.media
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -56,14 +58,26 @@ fun MediaImage(
       }
     }
 
-    DiscreetRatingItem(
+    Column(
       modifier = Modifier
         .align(Alignment.TopEnd)
         .padding(
           end = MaterialTheme.dimensions.keyline_4,
           top = MaterialTheme.dimensions.keyline_4,
         ),
-      rating = media.voteAverage,
-    )
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+    ) {
+      media.accountRating?.let {
+        DiscreetRatingItem(
+          rating = it.toDouble(),
+          isAccountRate = true,
+        )
+      }
+
+      DiscreetRatingItem(
+        rating = media.voteAverage,
+        isAccountRate = false,
+      )
+    }
   }
 }

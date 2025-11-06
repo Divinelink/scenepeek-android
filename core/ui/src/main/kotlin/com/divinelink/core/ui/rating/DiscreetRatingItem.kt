@@ -19,11 +19,13 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.extension.getColorRating
 
 @Composable
 fun DiscreetRatingItem(
   modifier: Modifier = Modifier,
   rating: Double?,
+  isAccountRate: Boolean,
 ) {
   val sanitizedRating = if (rating == null) {
     null
@@ -43,7 +45,9 @@ fun DiscreetRatingItem(
     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
   }
 
-  val textColor = if (LocalDarkThemeProvider.current) {
+  val textColor = if (isAccountRate) {
+    rating.getColorRating()
+  } else if (LocalDarkThemeProvider.current) {
     MaterialTheme.colorScheme.onSurface
   } else {
     MaterialTheme.colorScheme.surface
@@ -59,7 +63,6 @@ fun DiscreetRatingItem(
       modifier = modifier.widthIn(min = MaterialTheme.dimensions.keyline_26),
       color = backgroundColor,
       shape = MaterialTheme.shapes.small,
-
     ) {
       Text(
         modifier = Modifier.padding(MaterialTheme.dimensions.keyline_4),
@@ -79,10 +82,13 @@ fun DiscreetRatingItemPreview() {
   AppTheme {
     Surface {
       Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8)) {
-        DiscreetRatingItem(rating = null)
-        DiscreetRatingItem(rating = 1.1)
-        DiscreetRatingItem(rating = 5.4)
-        DiscreetRatingItem(rating = 9.2)
+        DiscreetRatingItem(rating = null, isAccountRate = false)
+        DiscreetRatingItem(rating = 1.1, isAccountRate = false)
+        DiscreetRatingItem(rating = 5.4, isAccountRate = false)
+        DiscreetRatingItem(rating = 9.2, isAccountRate = false)
+        DiscreetRatingItem(rating = 1.0, isAccountRate = true)
+        DiscreetRatingItem(rating = 5.0, isAccountRate = true)
+        DiscreetRatingItem(rating = 9.0, isAccountRate = true)
       }
     }
   }

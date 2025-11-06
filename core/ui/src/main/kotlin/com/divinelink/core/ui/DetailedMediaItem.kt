@@ -28,7 +28,6 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.ui.media.MediaImage
 import com.divinelink.core.ui.provider.MediaItemParameterProvider
-import com.divinelink.core.ui.rating.StarRatingItem
 
 @Composable
 fun DetailedMediaItem(
@@ -71,10 +70,6 @@ fun DetailedMediaItem(
             text = mediaItem.name,
             style = MaterialTheme.typography.titleMedium,
           )
-
-          mediaItem.accountRating?.let {
-            StarRatingItem(it)
-          }
         }
         if (mediaItem.releaseDate.isNotEmpty()) {
           Text(

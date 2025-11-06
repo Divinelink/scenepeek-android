@@ -19,11 +19,14 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.extension.getColorRating
 
 @Composable
-fun StarRatingItem(rating: Int) {
+fun StarRatingItem(
+  modifier: Modifier = Modifier,
+  rating: Int,
+) {
   val color = rating.toDouble().getColorRating()
 
   Row(
-    modifier = Modifier
+    modifier = modifier
       .padding(
         vertical = MaterialTheme.dimensions.keyline_6,
       ),
