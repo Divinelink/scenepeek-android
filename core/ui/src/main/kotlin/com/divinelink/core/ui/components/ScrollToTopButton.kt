@@ -26,8 +26,8 @@ import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.LocalBottomNavigationPadding
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 
 @Composable
 fun ScrollToTopButton(
@@ -56,7 +56,7 @@ fun ScrollToTopButton(
       onClick = onClick,
     ) {
       Text(
-        text = stringResource(R.string.core_ui_back_to_top),
+        text = stringResource(UiString.core_ui_back_to_top),
         style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.W600,
         fontSize = 11.5.sp,

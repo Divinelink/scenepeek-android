@@ -12,7 +12,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
@@ -39,6 +40,11 @@ class UserDataScreenTest : ComposeTest() {
   private val observeAccountUseCase = TestObserveAccountUseCase()
   private val fetchWatchlistUseCase = TestFetchUserDataUseCase()
 
+  private val preferencesRepository = TestPreferencesRepository()
+  private val switchViewButtonViewModel = SwitchViewButtonViewModel(
+    repository = preferencesRepository,
+  )
+
   @Test
   fun `test unknown error`() = runTest {
     observeAccountUseCase.mockResponse(response = Result.success(true))
@@ -55,6 +61,7 @@ class UserDataScreenTest : ComposeTest() {
             ),
           ),
         ),
+        switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
 
@@ -79,6 +86,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -114,6 +122,7 @@ class UserDataScreenTest : ComposeTest() {
             verifyNavigatedToTMDBLogin = true
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -150,6 +159,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -189,6 +199,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -246,6 +257,7 @@ class UserDataScreenTest : ComposeTest() {
       UserDataScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
 
@@ -282,6 +294,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -350,6 +363,7 @@ class UserDataScreenTest : ComposeTest() {
             navArgs = it
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -414,6 +428,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = { route = it },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = viewModel,
       )
     }

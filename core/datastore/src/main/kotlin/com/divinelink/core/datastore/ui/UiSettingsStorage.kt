@@ -30,10 +30,9 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
 
   override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
     UiPreferences(
-      personCreditsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.PERSON_CREDITS)]),
-      listsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.LISTS)]),
-      userDataViewMode = ViewMode.from(it[viewModeKey(ViewableSection.USER_DATA)]),
-      discoverViewMode = ViewMode.from(it[viewModeKey(ViewableSection.DISCOVER)]),
+      viewModes = ViewableSection.entries.associateWith { section ->
+        ViewMode.from(it[viewModeKey(section)])
+      },
     )
   }
 

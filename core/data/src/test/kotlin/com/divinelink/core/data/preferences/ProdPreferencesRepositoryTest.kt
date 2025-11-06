@@ -20,8 +20,7 @@ class ProdPreferencesRepositoryTest {
     repository.uiPreferences.test {
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          personCreditsViewMode = ViewMode.LIST,
-          listsViewMode = ViewMode.LIST,
+          viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
         ),
       )
     }
@@ -32,8 +31,7 @@ class ProdPreferencesRepositoryTest {
     repository.uiPreferences.test {
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          personCreditsViewMode = ViewMode.LIST,
-          listsViewMode = ViewMode.LIST,
+          viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
         ),
       )
 
@@ -43,8 +41,12 @@ class ProdPreferencesRepositoryTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          personCreditsViewMode = ViewMode.GRID,
-          listsViewMode = ViewMode.LIST,
+          viewModes = mapOf(
+            ViewableSection.LISTS to ViewMode.LIST,
+            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
+            ViewableSection.DISCOVER to ViewMode.LIST,
+            ViewableSection.USER_DATA to ViewMode.LIST,
+          ),
         ),
       )
 
@@ -54,8 +56,12 @@ class ProdPreferencesRepositoryTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          personCreditsViewMode = ViewMode.GRID,
-          listsViewMode = ViewMode.GRID,
+          viewModes = mapOf(
+            ViewableSection.LISTS to ViewMode.GRID,
+            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
+            ViewableSection.DISCOVER to ViewMode.LIST,
+            ViewableSection.USER_DATA to ViewMode.LIST,
+          ),
         ),
       )
     }

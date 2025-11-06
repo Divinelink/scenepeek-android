@@ -8,7 +8,6 @@ import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
@@ -25,6 +23,7 @@ import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.composition.LocalUiPreferences
+import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.composition.rememberViewModePreferences
 
 @Composable
@@ -59,32 +58,28 @@ fun SwitchViewButton(
 @Composable
 @Previews
 fun SwitchViewButtonListPreviews() {
-  AppTheme {
-    Surface {
-      Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+  PreviewLocalProvider {
+    Column(
+      verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+    ) {
+      CompositionLocalProvider(
+        LocalUiPreferences provides UiPreferences.Initial.copy(
+          viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
+        ),
       ) {
-        CompositionLocalProvider(
-          LocalUiPreferences provides UiPreferences.Initial.copy(
-            listsViewMode = ViewMode.GRID,
-          ),
-        ) {
-          SwitchViewButton(
-            section = ViewableSection.LISTS,
-            onClick = {},
-          )
-        }
+        SwitchViewButton(
+          section = ViewableSection.LISTS,
+          onClick = {},
+        )
+      }
 
-        CompositionLocalProvider(
-          LocalUiPreferences provides UiPreferences.Initial.copy(
-            listsViewMode = ViewMode.LIST,
-          ),
-        ) {
-          SwitchViewButton(
-            section = ViewableSection.LISTS,
-            onClick = {},
-          )
-        }
+      CompositionLocalProvider(
+        LocalUiPreferences provides UiPreferences.Initial,
+      ) {
+        SwitchViewButton(
+          section = ViewableSection.LISTS,
+          onClick = {},
+        )
       }
     }
   }

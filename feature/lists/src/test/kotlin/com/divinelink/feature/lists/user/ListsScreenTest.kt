@@ -16,6 +16,7 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.testing.ComposeTest
 import com.divinelink.core.testing.setVisibilityScopeContent
@@ -164,7 +165,7 @@ class ListsScreenTest : ComposeTest() {
     setVisibilityScopeContent(
       preferencesRepository = TestPreferencesRepository(
         UiPreferences.Initial.copy(
-          listsViewMode = ViewMode.GRID,
+          viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
         ),
       ),
     ) {

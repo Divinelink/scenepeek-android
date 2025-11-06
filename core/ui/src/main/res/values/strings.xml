@@ -140,7 +140,7 @@
 
   <string name="core_ui_tmdb_user_score">User\nScore</string>
 
-  <string name="core_ui_back_to_top">Back to the top</string>
+  <string name="core_ui_back_to_top">Back to top</string>
 
   <string name="core_ui_section_watchlist">Watchlist</string>
   <string name="core_ui_section_ratings">Ratings</string>

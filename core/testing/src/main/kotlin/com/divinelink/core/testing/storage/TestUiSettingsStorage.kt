@@ -14,12 +14,11 @@ class TestUiSettingsStorage(uiPreferences: UiPreferences = UiPreferences.Initial
   override val uiPreferences: Flow<UiPreferences> = _uiPreferences
 
   override suspend fun updateViewMode(section: ViewableSection) {
-    _uiPreferences.value = when (section) {
-      ViewableSection.PERSON_CREDITS -> _uiPreferences.value.copy(
-        personCreditsViewMode = _uiPreferences.value.personCreditsViewMode.other(),
-      )
-      ViewableSection.LISTS -> _uiPreferences.value.copy(
-        listsViewMode = _uiPreferences.value.listsViewMode.other(),
+    val currentViewMode = _uiPreferences.value.viewModes[section]
+
+    currentViewMode?.let { viewMode ->
+      _uiPreferences.value = _uiPreferences.value.copy(
+        viewModes = _uiPreferences.value.viewModes + (section to viewMode.other()),
       )
     }
   }

@@ -425,7 +425,7 @@ fun PersonContentListPreview(
 fun PersonContentGridPreview() {
   CompositionLocalProvider(
     LocalUiPreferences provides UiPreferences.Initial.copy(
-      personCreditsViewMode = ViewMode.GRID,
+      viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
     ),
   ) {
     AppTheme {

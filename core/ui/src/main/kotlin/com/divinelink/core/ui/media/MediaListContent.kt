@@ -2,7 +2,7 @@ package com.divinelink.core.ui.media
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,11 +26,12 @@ fun MediaListContent(
   onLoadMore: () -> Unit,
   onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
-  val scrollState = rememberLazyListState()
+  val state = rememberLazyGridState()
   val scope = rememberCoroutineScope()
 
   Box(Modifier.fillMaxSize()) {
     ScrollableMediaContent(
+      state = state,
       items = list,
       section = ViewableSection.USER_DATA,
       onLoadMore = onLoadMore,
@@ -41,10 +42,10 @@ fun MediaListContent(
 
     ScrollToTopButton(
       modifier = Modifier.align(Alignment.BottomCenter),
-      visible = scrollState.canScrollToTop(),
+      visible = state.canScrollToTop(),
       onClick = {
         scope.launch {
-          scrollState.animateScrollToItem(0)
+          state.animateScrollToItem(0)
         }
       },
     )
