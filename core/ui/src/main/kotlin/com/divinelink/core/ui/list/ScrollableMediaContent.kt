@@ -3,7 +3,9 @@ package com.divinelink.core.ui.list
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -37,6 +39,7 @@ fun ScrollableMediaContent(
   onSwitchViewMode: (ViewableSection) -> Unit,
   onClick: (MediaItem.Media) -> Unit,
   onLongClick: (MediaItem.Media) -> Unit,
+  emptyContent: @Composable () -> Unit = {},
 ) {
   val viewMode = rememberViewModePreferences(section)
 
@@ -65,34 +68,44 @@ fun ScrollableMediaContent(
     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
   ) {
-    item(span = { GridItemSpan(maxLineSpan) }) {
-      ScreenSettingsRow(
-        section = section,
-        onSwitchViewMode = onSwitchViewMode,
-      )
-    }
+    if (items.isEmpty()) {
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        emptyContent()
+      }
+    } else {
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        ScreenSettingsRow(
+          section = section,
+          onSwitchViewMode = onSwitchViewMode,
+        )
+      }
 
-    items(
-      items = items,
-      key = { it.id },
-    ) { media ->
-      when (viewMode) {
-        ViewMode.GRID -> MediaItem(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          media = media,
-          onClick = onClick,
-          onLongClick = onLongClick,
-        )
-        ViewMode.LIST -> DetailedMediaItem(
-          modifier = Modifier
-            .animateItem()
-            .animateContentSize(),
-          mediaItem = media,
-          onClick = onClick,
-          onLongClick = onLongClick,
-        )
+      items(
+        items = items,
+        key = { it.id },
+      ) { media ->
+        when (viewMode) {
+          ViewMode.GRID -> MediaItem(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            media = media,
+            onClick = onClick,
+            onLongClick = onLongClick,
+          )
+          ViewMode.LIST -> DetailedMediaItem(
+            modifier = Modifier
+              .animateItem()
+              .animateContentSize(),
+            mediaItem = media,
+            onClick = onClick,
+            onLongClick = onLongClick,
+          )
+        }
+      }
+
+      item(span = { GridItemSpan(maxLineSpan) }) {
+        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
       }
     }
   }

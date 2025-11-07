@@ -1,8 +1,11 @@
 package com.divinelink.feature.details.media.ui.forms.recommendation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.details.media.DetailsData
 import com.divinelink.core.model.media.MediaItem
@@ -22,26 +25,27 @@ fun RecommendationsFormContent(
   onLongClick: (MediaItem.Media) -> Unit,
   onSwitchViewMode: (ViewableSection) -> Unit,
 ) {
-  if (recommendations.items.isEmpty()) {
-    BlankSlate(
-      modifier = Modifier.testTag(TestTags.Details.Recommendations.EMPTY),
-      uiState = BlankSlateState.Custom(
-        title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
-        description = UIText.ResourceText(
-          R.string.feature_details_no_recommendations_available_desc,
-          title,
+  ScrollableMediaContent(
+    items = recommendations.items,
+    section = ViewableSection.MEDIA_DETAILS,
+    onLoadMore = {},
+    onSwitchViewMode = onSwitchViewMode,
+    onClick = onItemClick,
+    onLongClick = onLongClick,
+    modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
+    emptyContent = {
+      BlankSlate(
+        modifier = Modifier
+          .testTag(TestTags.Details.Recommendations.EMPTY)
+          .padding(top = MaterialTheme.dimensions.keyline_12),
+        uiState = BlankSlateState.Custom(
+          title = UIText.ResourceText(R.string.feature_details_no_recommendation_available),
+          description = UIText.ResourceText(
+            R.string.feature_details_no_recommendations_available_desc,
+            title,
+          ),
         ),
-      ),
-    )
-  } else {
-    ScrollableMediaContent(
-      items = recommendations.items,
-      section = ViewableSection.MEDIA_DETAILS,
-      onLoadMore = {},
-      onSwitchViewMode = onSwitchViewMode,
-      onClick = onItemClick,
-      onLongClick = onLongClick,
-      modifier = modifier.testTag(TestTags.Details.Recommendations.FORM),
-    )
-  }
+      )
+    },
+  )
 }
