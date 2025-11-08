@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,42 +36,53 @@ class SelectFilterViewModel(
 
   init {
     when (type) {
-      FilterModal.Country -> {
-        filterRepository.selectedCountry.onEach { country ->
-          _uiState.update {
-            it.copy(
-              filterType = (it.filterType as FilterType.Countries).copy(
-                selectedOptions = country?.let { listOf(country) } ?: emptyList(),
-                query = null,
-              ),
-            )
+      FilterModal.Country ->
+        filterRepository
+          .selectedCountry
+          .map { it[_uiState.value.mediaType] }
+          .onEach { country ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.Countries).copy(
+                  selectedOptions = country?.let { listOf(country) } ?: emptyList(),
+                  query = null,
+                ),
+              )
+            }
           }
-        }.launchIn(viewModelScope)
-      }
+          .launchIn(viewModelScope)
+
       FilterModal.Genre -> {
         fetchGenres(mediaType)
-        filterRepository.selectedGenres.onEach { genres ->
-          _uiState.update {
-            it.copy(
-              filterType = (it.filterType as FilterType.Genres).copy(
-                selectedOptions = genres,
-              ),
-            )
+        filterRepository
+          .selectedGenres
+          .map { it[_uiState.value.mediaType] ?: emptyList() }
+          .onEach { genres ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.Genres).copy(
+                  selectedOptions = genres,
+                ),
+              )
+            }
           }
-        }.launchIn(viewModelScope)
+          .launchIn(viewModelScope)
       }
-      FilterModal.Language -> {
-        filterRepository.selectedLanguage.onEach { language ->
-          _uiState.update {
-            it.copy(
-              filterType = (it.filterType as FilterType.Languages).copy(
-                selectedOptions = language?.let { listOf(language) } ?: emptyList(),
-                query = null,
-              ),
-            )
+      FilterModal.Language ->
+        filterRepository
+          .selectedLanguage
+          .map { it[_uiState.value.mediaType] }
+          .onEach { language ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.Languages).copy(
+                  selectedOptions = language?.let { listOf(language) } ?: emptyList(),
+                  query = null,
+                ),
+              )
+            }
           }
-        }.launchIn(viewModelScope)
-      }
+          .launchIn(viewModelScope)
     }
   }
 
@@ -147,7 +159,10 @@ class SelectFilterViewModel(
   }
 
   private fun handleClearGenres() {
-    filterRepository.updateSelectedGenres(emptyList())
+    filterRepository.updateSelectedGenres(
+      mediaType = _uiState.value.mediaType,
+      genres = emptyList(),
+    )
   }
 
   private fun handleRetry() {
@@ -167,7 +182,10 @@ class SelectFilterViewModel(
       selectedGenres + action.genre
     }
 
-    filterRepository.updateSelectedGenres(genres)
+    filterRepository.updateSelectedGenres(
+      mediaType = _uiState.value.mediaType,
+      genres = genres,
+    )
   }
 
   private fun handleSelectLanguage(action: SelectFilterAction.SelectLanguage) {
@@ -178,17 +196,23 @@ class SelectFilterViewModel(
     } else {
       action.language
     }
-    filterRepository.updateLanguage(language)
+    filterRepository.updateLanguage(
+      mediaType = _uiState.value.mediaType,
+      language = language,
+    )
   }
 
   private fun handleSelectCountry(action: SelectFilterAction.SelectCountry) {
     val selectedCountry = (_uiState.value.filterType as FilterType.Countries).selectedOptions
 
-    val language = if (action.country in selectedCountry) {
+    val country = if (action.country in selectedCountry) {
       null
     } else {
       action.country
     }
-    filterRepository.updateCountry(language)
+    filterRepository.updateCountry(
+      mediaType = _uiState.value.mediaType,
+      country = country,
+    )
   }
 }

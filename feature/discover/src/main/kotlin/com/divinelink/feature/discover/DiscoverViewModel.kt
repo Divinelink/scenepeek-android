@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
@@ -29,6 +30,7 @@ class DiscoverViewModel(
   init {
     filterRepository
       .selectedGenres
+      .map { it[uiState.value.selectedMedia] ?: emptyList() }
       .onEach { genres ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -43,6 +45,7 @@ class DiscoverViewModel(
 
     filterRepository
       .selectedLanguage
+      .map { it[uiState.value.selectedMedia] }
       .onEach { language ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -57,6 +60,7 @@ class DiscoverViewModel(
 
     filterRepository
       .selectedCountry
+      .map { it[uiState.value.selectedMedia] }
       .onEach { country ->
         _uiState.update { uiState ->
           uiState.copy(
@@ -80,7 +84,7 @@ class DiscoverViewModel(
   }
 
   private fun handleClearFilters() {
-    filterRepository.clear()
+    filterRepository.clear(mediaType = _uiState.value.selectedMedia)
     handleDiscoverMedia(reset = true)
   }
 
@@ -210,7 +214,7 @@ class DiscoverViewModel(
 
   override fun onCleared() {
     super.onCleared()
-    filterRepository.clear()
+    filterRepository.clear(mediaType = _uiState.value.selectedMedia)
   }
 
   private fun Map<MediaType, MediaTypeFilters>.updateFilters(
