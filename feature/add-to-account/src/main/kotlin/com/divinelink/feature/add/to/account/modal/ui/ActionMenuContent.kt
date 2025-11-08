@@ -2,6 +2,7 @@ package com.divinelink.feature.add.to.account.modal.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -38,13 +39,30 @@ fun ActionMenuContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_8),
       ) {
-        Text(
-          modifier = Modifier
+        Column(
+          Modifier
             .weight(1f)
             .padding(vertical = MaterialTheme.dimensions.keyline_16),
-          text = uiState.media.name,
-          style = MaterialTheme.typography.headlineSmall,
-        )
+          verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_4),
+        ) {
+          Text(
+            text = uiState.media.name,
+            style = MaterialTheme.typography.titleMedium,
+          )
+          val releaseDate = when (uiState.media) {
+            is MediaItem.Media.Movie -> uiState.media.releaseDate
+            is MediaItem.Media.TV -> uiState.media.releaseDate
+            else -> null
+          }
+
+          releaseDate?.let {
+            Text(
+              text = releaseDate.take(4),
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+        }
         if (uiState.media is MediaItem.Media) {
           FavoriteButton(
             isFavorite = uiState.media.isFavorite == true,
