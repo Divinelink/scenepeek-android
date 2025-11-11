@@ -167,7 +167,7 @@ fun ListScrollableContent(
     LazyVerticalGrid(
       modifier = Modifier
         .fillMaxSize()
-        .testTag(TestTags.Components.MEDIA_LIST_CONTENT),
+        .testTag(TestTags.Components.MEDIA_GRID_CONTENT.format(viewMode.value)),
       columns = columns,
       state = scrollState,
       contentPadding = PaddingValues(bottom = LocalBottomNavigationPadding.current),
@@ -265,6 +265,12 @@ fun ListScrollableContent(
             when (viewMode) {
               ViewMode.GRID -> SelectableCardSmall(
                 modifier = Modifier
+                  .semantics {
+                    contentDescription = TestTags.Lists.Details.SELECTED_CARD.format(
+                      media.name,
+                      isSelected,
+                    )
+                  }
                   .padding(horizontal = MaterialTheme.dimensions.keyline_8)
                   .animateItem(),
                 onClick = {

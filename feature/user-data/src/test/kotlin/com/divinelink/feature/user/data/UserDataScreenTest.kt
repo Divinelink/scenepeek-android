@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
 import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
@@ -29,6 +30,7 @@ import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -330,10 +332,16 @@ class UserDataScreenTest : ComposeTest() {
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
     // Scroll up to display the ScrollToTopButton
-    composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
-      .performScrollToNode(
-        matcher = hasText(text = movieList[movieList.lastIndex - 2].name),
-      )
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
+      .performTouchInput {
+        val center = centerY
+
+        swipeDown(
+          startY = center,
+          endY = center + 100,
+        )
+      }
 
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 

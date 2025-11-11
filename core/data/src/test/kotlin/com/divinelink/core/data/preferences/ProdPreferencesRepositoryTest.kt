@@ -41,13 +41,16 @@ class ProdPreferencesRepositoryTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          viewModes = mapOf(
-            ViewableSection.LISTS to ViewMode.LIST,
-            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
-            ViewableSection.DISCOVER to ViewMode.LIST,
-            ViewableSection.USER_DATA to ViewMode.LIST,
-            ViewableSection.MEDIA_DETAILS to ViewMode.LIST,
-          ),
+          viewModes = ViewableSection.entries.associateWith {
+            when (it) {
+              ViewableSection.LISTS -> ViewMode.LIST
+              ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+              ViewableSection.DISCOVER -> ViewMode.LIST
+              ViewableSection.USER_DATA -> ViewMode.LIST
+              ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+              ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            }
+          },
         ),
       )
 
@@ -57,13 +60,16 @@ class ProdPreferencesRepositoryTest {
 
       assertThat(awaitItem()).isEqualTo(
         UiPreferences(
-          viewModes = mapOf(
-            ViewableSection.LISTS to ViewMode.GRID,
-            ViewableSection.PERSON_CREDITS to ViewMode.GRID,
-            ViewableSection.DISCOVER to ViewMode.LIST,
-            ViewableSection.USER_DATA to ViewMode.LIST,
-            ViewableSection.MEDIA_DETAILS to ViewMode.LIST,
-          ),
+          viewModes = ViewableSection.entries.associateWith {
+            when (it) {
+              ViewableSection.LISTS -> ViewMode.GRID
+              ViewableSection.PERSON_CREDITS -> ViewMode.GRID
+              ViewableSection.DISCOVER -> ViewMode.LIST
+              ViewableSection.USER_DATA -> ViewMode.LIST
+              ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+              ViewableSection.LIST_DETAILS -> ViewMode.LIST
+            }
+          },
         ),
       )
     }

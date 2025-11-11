@@ -55,6 +55,7 @@ class DatastoreUiStorageTest {
               ViewableSection.DISCOVER -> ViewMode.LIST
               ViewableSection.USER_DATA -> ViewMode.LIST
               ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+              ViewableSection.LIST_DETAILS -> ViewMode.LIST
             }
           },
         ),
@@ -73,6 +74,7 @@ class DatastoreUiStorageTest {
               ViewableSection.DISCOVER -> ViewMode.LIST
               ViewableSection.USER_DATA -> ViewMode.LIST
               ViewableSection.MEDIA_DETAILS -> ViewMode.LIST
+              ViewableSection.LIST_DETAILS -> ViewMode.LIST
             }
           },
         ),

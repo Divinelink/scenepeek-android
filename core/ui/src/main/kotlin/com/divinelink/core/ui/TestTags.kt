@@ -8,6 +8,7 @@ object TestTags {
 
     const val PERSISTENT_SCAFFOLD = "Persistent Scaffold"
     const val MEDIA_LIST_CONTENT = "Media List Content"
+    const val MEDIA_GRID_CONTENT = "Media Grid Content - Mode %s"
     const val SCROLLABLE_CONTENT = "Scrollable Content"
     const val PULL_TO_REFRESH = "Pull to refresh"
 
