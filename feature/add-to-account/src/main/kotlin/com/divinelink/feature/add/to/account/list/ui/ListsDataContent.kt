@@ -2,7 +2,9 @@ package com.divinelink.feature.add.to.account.list.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -79,6 +81,10 @@ fun ListsDataContent(
           },
           isAdded = listItem.id in addedToLists,
         )
+      }
+
+      item {
+        Spacer(modifier = Modifier.height(LocalBottomNavigationPadding.current))
       }
     }
   }

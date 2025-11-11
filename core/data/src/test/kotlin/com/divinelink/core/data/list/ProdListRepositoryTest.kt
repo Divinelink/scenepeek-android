@@ -8,6 +8,7 @@ import com.divinelink.core.database.media.dao.ProdMediaDao
 import com.divinelink.core.fixtures.core.commons.ClockFactory
 import com.divinelink.core.fixtures.model.list.ListDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListItemFactory
+import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.ListItem
@@ -643,5 +644,80 @@ class ProdListRepositoryTest {
     repository.removeItems(listId, itemsToRemove)
 
     listDao.verifyNoInteraction()
+  }
+
+  @Test
+  fun `test fetch list details observes favorite status`() = runTest {
+    val listId = 8542884
+    val database = TestDatabaseFactory.createInMemoryDatabase()
+
+    val dao = ProdListDao(
+      database = database,
+      dispatcher = testDispatcher,
+    )
+    val mediaDao = ProdMediaDao(
+      database = database,
+      dispatcher = testDispatcher,
+      clock = ClockFactory.augustFirst2021(),
+    )
+    repository = ProdListRepository(
+      listDao = dao,
+      sessionStorage = sessionStorage,
+      mediaDao = mediaDao,
+      clock = clock,
+      service = service.mock,
+    )
+
+    val response = JvmUnitTestDemoAssetManager
+      .open("list-details.json")
+      .use { inputStream ->
+        val json = inputStream.readBytes().decodeToString().trimIndent()
+        val serializer = ListDetailsResponse.serializer()
+        localJson.decodeFromString(serializer, json)
+      }
+
+    service.mockFetchListDetails(
+      Result.success(response),
+    )
+
+    repository.fetchListDetails(
+      listId = listId,
+      page = 1,
+    ).test {
+      awaitItem() shouldBeEqual Resource.Loading(null)
+
+      assertThat(awaitItem()).isEqualTo(
+        Resource.Success(ListDetailsFactory.mustWatch()),
+      )
+
+      mediaDao.addToFavorites(550, MediaType.MOVIE)
+
+      assertThat(awaitItem()).isEqualTo(
+        Resource.Success(
+          ListDetailsFactory.mustWatch().copy(
+            media = listOf(
+              MediaItemFactory.theWire(),
+              MediaItemFactory.FightClub().copy(isFavorite = true),
+              MediaItemFactory.theOffice(),
+            ),
+          ),
+        ),
+      )
+
+      mediaDao.addToFavorites(2316, MediaType.MOVIE)
+      mediaDao.addToFavorites(2316, MediaType.TV)
+
+      assertThat(awaitItem()).isEqualTo(
+        Resource.Success(
+          ListDetailsFactory.mustWatch().copy(
+            media = listOf(
+              MediaItemFactory.theWire(),
+              MediaItemFactory.FightClub().copy(isFavorite = true),
+              MediaItemFactory.theOffice().copy(isFavorite = true),
+            ),
+          ),
+        ),
+      )
+    }
   }
 }

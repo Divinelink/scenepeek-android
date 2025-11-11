@@ -11,6 +11,7 @@ import com.divinelink.core.model.list.AddToListResult
 import com.divinelink.core.model.list.CreateListResult
 import com.divinelink.core.model.list.ListDetails
 import com.divinelink.core.model.list.ListItem
+import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaReference
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.network.Resource
@@ -24,6 +25,7 @@ import com.divinelink.core.network.list.service.ListService
 import com.divinelink.core.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Clock
@@ -58,10 +60,23 @@ class ProdListRepository(
     page: Int,
   ): Flow<Resource<ListDetails?>> = networkBoundResource(
     query = {
-      listDao.fetchListDetails(
-        listId = listId,
-        page = page,
-      )
+      combine(
+        listDao.fetchListDetails(
+          listId = listId,
+          page = page,
+        ),
+        mediaDao.getFavoriteMediaIds(MediaType.TV),
+        mediaDao.getFavoriteMediaIds(MediaType.MOVIE),
+      ) { details, tvIds, movieIds ->
+        details?.copy(
+          media = details.media.map { item ->
+            when (item) {
+              is MediaItem.Media.Movie -> item.copy(isFavorite = item.id in movieIds)
+              is MediaItem.Media.TV -> item.copy(isFavorite = item.id in tvIds)
+            }
+          },
+        )
+      }.distinctUntilChanged()
     },
     fetch = {
       service.fetchListDetails(listId, page)
