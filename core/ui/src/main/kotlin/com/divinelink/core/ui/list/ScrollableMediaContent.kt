@@ -82,7 +82,7 @@ fun ScrollableMediaContent(
 
       items(
         items = items,
-        key = { it.id },
+        key = { it.uniqueIdentifier },
       ) { media ->
         when (viewMode) {
           ViewMode.GRID -> MediaItem(

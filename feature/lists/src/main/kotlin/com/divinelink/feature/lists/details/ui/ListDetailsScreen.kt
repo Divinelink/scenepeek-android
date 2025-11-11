@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.LocalDarkThemeProvider
 import com.divinelink.core.designsystem.theme.updateStatusBarColor
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -48,6 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AnimatedVisibilityScope.ListDetailsScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: ListDetailsViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val view = LocalView.current
   val isDarkTheme = LocalDarkThemeProvider.current
@@ -170,6 +172,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
           },
           onUpdateProgress = { progress -> toolbarProgress = progress },
           onBackdropLoaded = { onBackdropLoaded = true },
+          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
           onNavigate = onNavigate,
         )
       }
