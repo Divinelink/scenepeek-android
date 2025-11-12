@@ -3,6 +3,7 @@ package com.divinelink.feature.lists.details
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -31,12 +32,13 @@ import com.divinelink.core.testing.setVisibilityScopeContent
 import com.divinelink.core.testing.usecase.TestFetchListDetailsUseCase
 import com.divinelink.core.testing.usecase.TestMarkAsFavoriteUseCase
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.feature.add.to.account.R
 import com.divinelink.feature.add.to.account.modal.ActionMenuEntryPoint
 import com.divinelink.feature.add.to.account.modal.ActionMenuViewModel
 import com.divinelink.feature.lists.details.ui.ListDetailsScreen
-import com.google.common.truth.Truth.assertThat
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -44,23 +46,25 @@ import org.koin.test.mock.declare
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import com.divinelink.core.ui.R as uiR
 
 class ListDetailsScreenTest : ComposeTest() {
 
   private val repository = TestListRepository()
   private val markAsFavoriteUseCase = TestMarkAsFavoriteUseCase()
 
-  private val preferencesRepository = TestPreferencesRepository()
-  private val switchViewButtonViewModel = SwitchViewButtonViewModel(
-    repository = preferencesRepository,
-  )
+  private lateinit var preferencesRepository: TestPreferencesRepository
+  private lateinit var switchViewButtonViewModel: SwitchViewButtonViewModel
 
   @BeforeTest
   fun setup() {
     startKoin {
       androidContext(composeTestRule.activity)
     }
+
+    preferencesRepository = TestPreferencesRepository()
+    switchViewButtonViewModel = SwitchViewButtonViewModel(
+      repository = preferencesRepository,
+    )
   }
 
   @AfterTest
@@ -102,9 +106,9 @@ class ListDetailsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
-      assertThat(navigatedUp).isFalse()
+      navigatedUp shouldBe false
       onNodeWithTag(TestTags.Components.TopAppBar.NAVIGATE_UP).performClick()
-      assertThat(navigatedUp).isTrue()
+      navigatedUp shouldBe true
     }
   }
 
@@ -189,20 +193,18 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(
-        TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+        .assertIsDisplayed()
+        .performScrollToNode(hasText("The Wire"))
 
-      assertThat(detailsRoute).isNull()
+      detailsRoute shouldBe null
 
       onNodeWithText("The Wire").assertIsDisplayed().performClick()
 
-      assertThat(detailsRoute).isEqualTo(
-        DetailsRoute(
-          id = 1438,
-          mediaType = MediaType.TV,
-          isFavorite = null,
-        ),
+      detailsRoute shouldBe Navigation.DetailsRoute(
+        id = 1438,
+        mediaType = MediaType.TV,
+        isFavorite = null,
       )
     }
   }
@@ -374,9 +376,9 @@ class ListDetailsScreenTest : ComposeTest() {
 
     with(composeTestRule) {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
-      onNodeWithTag(
-        TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
+      onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+        .assertIsDisplayed()
+        .performScrollToNode(hasText("Fight club 1"))
 
       onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
         longClick()
@@ -466,7 +468,9 @@ class ListDetailsScreenTest : ComposeTest() {
       onNodeWithTag(TestTags.Lists.Details.EMPTY_ITEM).assertIsNotDisplayed()
       onNodeWithTag(
         TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value),
-      ).assertIsDisplayed()
+      )
+        .performScrollToNode(hasText("Fight club 1"))
+        .assertIsDisplayed()
 
       onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
         longClick()
@@ -522,16 +526,16 @@ class ListDetailsScreenTest : ComposeTest() {
       onNodeWithText("1/20 selected").assertIsDisplayed()
 
       // Select all items
-      onNodeWithContentDescription(getString(uiR.string.core_ui_select_all)).performClick()
+      onNodeWithContentDescription(getString(UiString.core_ui_select_all)).performClick()
       onNodeWithText("20/20 selected").assertIsDisplayed()
 
       // Deselect all items
-      onNodeWithContentDescription(getString(uiR.string.core_ui_deselect_all)).performClick()
+      onNodeWithContentDescription(getString(UiString.core_ui_deselect_all)).performClick()
       onNodeWithText("0/20 selected").assertIsDisplayed()
 
       // Dismiss selection
       onNodeWithContentDescription(
-        getString(uiR.string.core_ui_close_multiple_select),
+        getString(UiString.core_ui_close_multiple_select),
       ).performClick()
 
       onNodeWithTag(TestTags.Components.MULTIPLE_SELECT_HEADER).assertIsNotDisplayed()
@@ -578,6 +582,9 @@ class ListDetailsScreenTest : ComposeTest() {
     }
 
     with(composeTestRule) {
+      onNodeWithTag(TestTags.Components.MEDIA_GRID_CONTENT.format(ViewMode.LIST.value))
+        .performScrollToNode(hasText("Fight club 1"))
+
       onNodeWithText("Fight club 1").assertIsDisplayed().performTouchInput {
         longClick()
       }
@@ -598,7 +605,7 @@ class ListDetailsScreenTest : ComposeTest() {
   }
 
   @Test
-  fun `test update view mode`() {
+  fun `test update view mode`() = runTest {
     val fetchListDetailsUseCase = TestFetchListDetailsUseCase()
 
     fetchListDetailsUseCase.mockResponse(
@@ -639,6 +646,7 @@ class ListDetailsScreenTest : ComposeTest() {
         .performScrollToNode(
           hasTestTag(TestTags.Components.Button.SWITCH_VIEW),
         )
+        .performScrollToIndex(1)
 
       onNodeWithTag(TestTags.Components.Button.SWITCH_VIEW).performClick()
 

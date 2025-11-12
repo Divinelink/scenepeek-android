@@ -20,8 +20,8 @@ import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.Previews
-import com.divinelink.core.ui.R
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.composition.LocalUiPreferences
 import com.divinelink.core.ui.composition.PreviewLocalProvider
 import com.divinelink.core.ui.composition.rememberViewModePreferences
@@ -49,7 +49,7 @@ fun SwitchViewButton(
   ) {
     Icon(
       imageVector = icon,
-      contentDescription = stringResource(R.string.core_ui_change_layout_button),
+      contentDescription = stringResource(UiString.core_ui_change_layout_button),
       tint = MaterialTheme.colorScheme.primary,
     )
   }
