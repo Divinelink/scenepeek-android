@@ -11,8 +11,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.fixtures.data.preferences.TestPreferencesRepository
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
@@ -28,6 +30,7 @@ import com.divinelink.core.testing.usecase.TestFetchUserDataUseCase
 import com.divinelink.core.testing.usecase.TestObserveAccountUseCase
 import com.divinelink.core.ui.TestTags
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -38,6 +41,11 @@ class UserDataScreenTest : ComposeTest() {
 
   private val observeAccountUseCase = TestObserveAccountUseCase()
   private val fetchWatchlistUseCase = TestFetchUserDataUseCase()
+
+  private val preferencesRepository = TestPreferencesRepository()
+  private val switchViewButtonViewModel = SwitchViewButtonViewModel(
+    repository = preferencesRepository,
+  )
 
   @Test
   fun `test unknown error`() = runTest {
@@ -55,6 +63,7 @@ class UserDataScreenTest : ComposeTest() {
             ),
           ),
         ),
+        switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
 
@@ -79,6 +88,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -114,6 +124,7 @@ class UserDataScreenTest : ComposeTest() {
             verifyNavigatedToTMDBLogin = true
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -150,6 +161,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -189,6 +201,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -246,6 +259,7 @@ class UserDataScreenTest : ComposeTest() {
       UserDataScreen(
         onNavigate = {},
         viewModel = viewModel,
+        switchViewButtonViewModel = switchViewButtonViewModel,
       )
     }
 
@@ -282,6 +296,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = {},
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -317,10 +332,16 @@ class UserDataScreenTest : ComposeTest() {
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsNotDisplayed()
 
     // Scroll up to display the ScrollToTopButton
-    composeTestRule.onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
-      .performScrollToNode(
-        matcher = hasText(text = movieList[movieList.lastIndex - 2].name),
-      )
+    composeTestRule
+      .onNodeWithTag(TestTags.Components.MEDIA_LIST_CONTENT)
+      .performTouchInput {
+        val center = centerY
+
+        swipeDown(
+          startY = center,
+          endY = center + 100,
+        )
+      }
 
     composeTestRule.onNodeWithTag(TestTags.SCROLL_TO_TOP_BUTTON).assertIsDisplayed().performClick()
 
@@ -350,6 +371,7 @@ class UserDataScreenTest : ComposeTest() {
             navArgs = it
           }
         },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = UserDataViewModel(
           observeAccountUseCase = observeAccountUseCase.mock,
           fetchUserDataUseCase = fetchWatchlistUseCase.mock,
@@ -414,6 +436,7 @@ class UserDataScreenTest : ComposeTest() {
     setVisibilityScopeContent {
       UserDataScreen(
         onNavigate = { route = it },
+        switchViewButtonViewModel = switchViewButtonViewModel,
         viewModel = viewModel,
       )
     }

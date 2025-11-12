@@ -3,7 +3,7 @@ package com.divinelink.core.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +23,7 @@ fun VisibilityBadge(
 ) {
   Box(
     modifier = modifier
-      .wrapContentHeight()
+      .wrapContentSize()
       .graphicsLayer { alpha = 0.8f }
       .background(
         color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.95f),

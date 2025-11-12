@@ -1,13 +1,9 @@
 package com.divinelink.core.model.ui
 
-data class UiPreferences(
-  val personCreditsViewMode: ViewMode,
-  val listsViewMode: ViewMode,
-) {
+data class UiPreferences(val viewModes: Map<ViewableSection, ViewMode>) {
   companion object {
     val Initial = UiPreferences(
-      personCreditsViewMode = ViewMode.LIST,
-      listsViewMode = ViewMode.LIST,
+      viewModes = ViewableSection.entries.associateWith { ViewMode.LIST },
     )
   }
 }

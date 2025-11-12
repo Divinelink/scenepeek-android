@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.commons.util.launchCustomTab
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.navigation.route.Navigation.CreditsRoute
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
@@ -36,6 +37,7 @@ fun DetailsScreen(
   onNavigate: (Navigation) -> Unit,
   animatedVisibilityScope: AnimatedVisibilityScope,
   viewModel: DetailsViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   var videoUrl by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -147,6 +149,7 @@ fun DetailsScreen(
       onDeleteRequest = viewModel::onDeleteRequest,
       onDeleteMedia = viewModel::onDeleteMedia,
       onUpdateMediaInfo = viewModel::onUpdateMediaInfo,
+      onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
     )
 
     OverlayScreen(

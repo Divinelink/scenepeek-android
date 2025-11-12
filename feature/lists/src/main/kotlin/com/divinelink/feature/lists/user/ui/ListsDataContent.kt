@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,10 +35,10 @@ import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.ui.ViewMode
 import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.scaffold.isMediumScreenWidthOrWider
+import com.divinelink.core.ui.ScreenSettingsRow
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.blankslate.BlankSlateState
-import com.divinelink.core.ui.button.switchview.SwitchViewButton
 import com.divinelink.core.ui.components.ScrollToTopButton
 import com.divinelink.core.ui.components.extensions.EndlessScrollHandler
 import com.divinelink.core.ui.components.extensions.canScrollToTop
@@ -108,10 +107,9 @@ fun ListsDataContent(
         horizontalArrangement = Arrangement.spacedBy(padding),
       ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
-          ListSettingsRow(
-            onSwitchViewMode = {
-              userInteraction.invoke(ListsAction.SwitchViewMode)
-            },
+          ScreenSettingsRow(
+            section = ViewableSection.LISTS,
+            onSwitchViewMode = { userInteraction.invoke(ListsAction.SwitchViewMode) },
           )
         }
 
@@ -174,18 +172,5 @@ fun ListsDataContent(
         },
       )
     }
-  }
-}
-
-@Composable
-fun ListSettingsRow(onSwitchViewMode: () -> Unit) {
-  Row(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.End,
-  ) {
-    SwitchViewButton(
-      section = ViewableSection.LISTS,
-      onClick = onSwitchViewMode,
-    )
   }
 }

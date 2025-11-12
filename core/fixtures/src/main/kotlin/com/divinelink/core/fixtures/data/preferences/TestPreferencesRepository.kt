@@ -15,17 +15,11 @@ class TestPreferencesRepository(uiPreferences: UiPreferences = UiPreferences.Ini
   override val uiPreferences: Flow<UiPreferences> = uiPreferencesFlow
 
   override suspend fun switchViewMode(section: ViewableSection) {
-    val currentViewMode = when (section) {
-      ViewableSection.PERSON_CREDITS -> uiPreferencesFlow.value.personCreditsViewMode
-      ViewableSection.LISTS -> uiPreferencesFlow.value.listsViewMode
-    }
+    val currentViewMode = uiPreferencesFlow.value.viewModes[section]
 
-    uiPreferencesFlow.value = when (section) {
-      ViewableSection.PERSON_CREDITS -> uiPreferencesFlow.value.copy(
-        personCreditsViewMode = currentViewMode.other(),
-      )
-      ViewableSection.LISTS -> uiPreferencesFlow.value.copy(
-        listsViewMode = currentViewMode.other(),
+    currentViewMode?.let { viewMode ->
+      uiPreferencesFlow.value = uiPreferencesFlow.value.copy(
+        viewModes = uiPreferencesFlow.value.viewModes + (section to viewMode.other()),
       )
     }
   }

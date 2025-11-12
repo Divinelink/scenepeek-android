@@ -90,7 +90,7 @@ fun PersonContent(
   lazyListState: LazyListState,
   onMediaClick: (MediaItem) -> Unit,
   onTabSelected: (Int) -> Unit,
-  onUpdateViewMode: () -> Unit,
+  onUpdateViewMode: (ViewableSection) -> Unit,
   onApplyFilter: (CreditFilter) -> Unit,
   onProgressUpdate: (Float) -> Unit,
   onNavigate: (Navigation) -> Unit,
@@ -425,7 +425,7 @@ fun PersonContentListPreview(
 fun PersonContentGridPreview() {
   CompositionLocalProvider(
     LocalUiPreferences provides UiPreferences.Initial.copy(
-      personCreditsViewMode = ViewMode.GRID,
+      viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
     ),
   ) {
     AppTheme {

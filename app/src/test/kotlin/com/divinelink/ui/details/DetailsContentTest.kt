@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import com.divinelink.core.fixtures.details.credits.SeriesCastFactory
 import com.divinelink.core.fixtures.details.media.DetailsDataFactory
@@ -105,6 +106,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -143,6 +145,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -179,6 +182,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -215,6 +219,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -251,6 +256,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -297,6 +303,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -336,6 +343,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -386,6 +394,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -428,6 +437,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -469,6 +479,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -520,6 +531,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -573,6 +585,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -612,6 +625,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -648,6 +662,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -716,6 +731,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -786,6 +802,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -836,6 +853,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -884,6 +902,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -928,6 +947,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
         onShowAllRatingsClick = {
           hasClickedViewAllRatings = true
@@ -973,6 +993,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1019,6 +1040,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1064,6 +1086,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1111,6 +1134,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1160,6 +1184,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1203,6 +1228,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1239,6 +1265,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1275,6 +1302,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1311,6 +1339,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1353,6 +1382,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1392,6 +1422,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1428,12 +1459,15 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+      onNodeWithTag(TestTags.Details.Recommendations.FORM)
+        .assertIsDisplayed()
+        .performScrollToIndex(1)
       onNodeWithText(MediaItemFactory.MoviesList().first().overview).assertIsDisplayed()
     }
   }
@@ -1465,12 +1499,15 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
 
     with(composeTestRule) {
-      onNodeWithTag(TestTags.Details.Recommendations.FORM).assertIsDisplayed()
+      onNodeWithTag(TestTags.Details.Recommendations.FORM)
+        .assertIsDisplayed()
+        .performScrollToIndex(1)
       onNodeWithText(MediaItemFactory.TVList().first().overview).assertIsDisplayed()
     }
   }
@@ -1502,6 +1539,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1538,6 +1576,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1581,6 +1620,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }
@@ -1617,6 +1657,7 @@ class DetailsContentTest : ComposeTest() {
         onDeleteRequest = {},
         onDeleteMedia = {},
         onNavigate = {},
+        onSwitchViewMode = {},
         animatedVisibilityScope = this,
       )
     }

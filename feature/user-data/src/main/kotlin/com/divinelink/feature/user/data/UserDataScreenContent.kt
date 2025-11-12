@@ -22,9 +22,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
-import com.divinelink.core.model.tab.MediaTab
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.media.encodeToString
+import com.divinelink.core.model.tab.MediaTab
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.model.user.data.UserDataSection.Ratings
 import com.divinelink.core.model.user.data.UserDataSection.Watchlist
 import com.divinelink.core.navigation.route.Navigation
@@ -40,6 +41,7 @@ fun UserDataScreenContent(
   uiState: UserDataUiState,
   onRefresh: () -> Unit,
   onLoadMore: () -> Unit,
+  onSwitchViewMode: (ViewableSection) -> Unit,
   onTabSelected: (Int) -> Unit,
   onNavigate: (Navigation) -> Unit,
 ) {
@@ -109,6 +111,7 @@ fun UserDataScreenContent(
                 onLongClick = { media ->
                   onNavigate(Navigation.ActionMenuRoute.Media(media.encodeToString()))
                 },
+                onSwitchViewMode = onSwitchViewMode,
               )
             }
           }

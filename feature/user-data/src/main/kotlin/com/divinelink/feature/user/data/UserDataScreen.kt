@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.AppTheme
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
 import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.scaffold.PersistentNavigationBar
@@ -42,6 +43,7 @@ import com.divinelink.core.ui.R as uiR
 fun AnimatedVisibilityScope.UserDataScreen(
   onNavigate: (Navigation) -> Unit,
   viewModel: UserDataViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
 ) {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
   val topAppBarColor = TopAppBarDefaults.topAppBarColors(
@@ -110,6 +112,7 @@ fun AnimatedVisibilityScope.UserDataScreen(
           onRefresh = viewModel::onRefresh,
           onLoadMore = viewModel::onLoadMore,
           onTabSelected = viewModel::onTabSelected,
+          onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
         )
       }
     },
@@ -129,6 +132,7 @@ fun UserDataScreenContentPreview(
         onLoadMore = {},
         onTabSelected = {},
         onNavigate = {},
+        onSwitchViewMode = {},
       )
     }
   }

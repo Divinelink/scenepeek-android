@@ -18,6 +18,7 @@ import com.divinelink.core.fixtures.model.list.ListItemFactory
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.ui.UiPreferences
 import com.divinelink.core.model.ui.ViewMode
+import com.divinelink.core.model.ui.ViewableSection
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.blankslate.BlankSlate
@@ -82,7 +83,7 @@ fun ListsContentListPreview(
 fun ListsContentGridPreview() {
   CompositionLocalProvider(
     LocalUiPreferences provides UiPreferences.Initial.copy(
-      listsViewMode = ViewMode.GRID,
+      viewModes = ViewableSection.entries.associateWith { ViewMode.GRID },
     ),
   ) {
     AppTheme {

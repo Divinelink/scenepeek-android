@@ -1,4 +1,4 @@
-package com.divinelink.core.ui.components
+package com.divinelink.core.ui.components.selectable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -98,3 +98,4 @@ fun SelectableCard(
     }
   }
 }
+

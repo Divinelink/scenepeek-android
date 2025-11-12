@@ -30,17 +30,15 @@ class DatastoreUiStorage(private val dataStore: DataStore<Preferences>) : UiSett
 
   override val uiPreferences: Flow<UiPreferences> = dataStore.data.map {
     UiPreferences(
-      personCreditsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.PERSON_CREDITS)]),
-      listsViewMode = ViewMode.from(it[viewModeKey(ViewableSection.LISTS)]),
+      viewModes = ViewableSection.entries.associateWith { section ->
+        ViewMode.from(it[viewModeKey(section)])
+      },
     )
   }
 
   override suspend fun updateViewMode(section: ViewableSection) {
     dataStore.edit { preferences ->
-      val currentViewMode = when (section) {
-        ViewableSection.PERSON_CREDITS -> preferences[viewModeKey(ViewableSection.PERSON_CREDITS)]
-        ViewableSection.LISTS -> preferences[viewModeKey(ViewableSection.LISTS)]
-      }
+      val currentViewMode = preferences[viewModeKey(section)]
 
       preferences[viewModeKey(section)] = ViewMode.from(currentViewMode).other().value
     }

@@ -17,8 +17,5 @@ fun rememberUiPreferences(): UiPreferences = LocalUiPreferences.current
 fun rememberViewModePreferences(section: ViewableSection): ViewMode {
   val uiPreferences = rememberUiPreferences()
 
-  return when (section) {
-    ViewableSection.LISTS -> uiPreferences.listsViewMode
-    ViewableSection.PERSON_CREDITS -> uiPreferences.personCreditsViewMode
-  }
+  return uiPreferences.viewModes[section] ?: ViewMode.LIST
 }
