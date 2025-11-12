@@ -2,33 +2,33 @@
 version-name = "0.20.0"
 version-code = "28"
 
-compile-sdk = "35"
-target-sdk = "35"
+compile-sdk = "36"
+target-sdk = "36"
 min-sdk = "26"
 
 firebase-appdistribution-gradle = "5.0.0"
 firebase-crashlytics-gradle = "3.0.2"
 google-services = "4.4.2"
-kotlin = "2.2.10"
-ksp = "2.2.10-2.0.2"
+kotlin = "2.2.21"
+ksp = "2.3.2"
 android-tools = "31.12.0"
 # android-tools and agp should be updated together
 agp = "8.12.0"
-core-ktx = "1.16.0"
+core-ktx = "1.17.0"
 coil = "3.3.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.3.0"
 androidx-tracing = "1.3.0"
-androidx-browser = "1.8.0" # 1.9.0 Needs compile sdk 36
-lifecycle-runtime-ktx = "2.9.2"
-activity-compose = "1.10.1"
+androidx-browser = "1.9.0"
+lifecycle-runtime-ktx = "2.9.4"
+activity-compose = "1.11.0"
 start-up = "1.2.0"
 kotlinx-datetime = "0.7.1"
 ktlint = "12.1.1"
 secrets = "2.0.1"
 desugar = "2.0.4"
-navigation-runtime-ktx = "2.9.3"
-navigation-compose = "2.9.3"
+navigation-runtime-ktx = "2.9.6"
+navigation-compose = "2.9.6"
 protobuf = "4.26.1"
 protobufPlugin = "0.9.4"
 
@@ -43,17 +43,17 @@ encrypted-prefs = '1.1.0-alpha04'
 kotlinx-coroutines = '1.10.2'
 
 # Network & Serialization
-ktor = "3.2.3"
+ktor = "3.3.2"
 kotlinx-serialization = "1.9.0"
 kotlinx-io = "0.8.0"
 
 # Depedency Injection
-koin = "4.1.1-Beta1"
+koin = "4.1.1"
 
 # Compose
-compose-bom = "2025.08.00"
-compose-foundation = "1.9.0"
-material3 = "1.3.2"
+compose-bom = "2025.11.00"
+compose-foundation = "1.9.4"
+material3 = "1.4.0"
 
 compose-shimmer = "1.3.3"
 
@@ -64,13 +64,13 @@ timber = "5.0.1"
 kover = "0.8.3"
 screenshot = "0.0.1-alpha11"
 androidx-test = "1.7.0"
-truth = "1.4.4"
+truth = "1.4.5"
 turbine = "1.2.1"
-kotest = "6.0.0.M9"
+kotest = "6.0.4"
 
 # UI
-robolectric = "4.15.1"
-androidx-compose-ui-test = "1.9.0"
+robolectric = "4.16"
+androidx-compose-ui-test = "1.9.4"
 ui-automator = "2.3.0"
 
 # Mockers
