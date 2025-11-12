@@ -4,4 +4,8 @@ sealed interface DiscoverFilter {
   data class Genres(val filters: List<Int>) : DiscoverFilter
   data class Language(val language: String) : DiscoverFilter
   data class Country(val countryCode: String) : DiscoverFilter
+  data class VoteAverage(
+    val lessThan: Int,
+    val greaterThan: Int,
+  ) : DiscoverFilter
 }

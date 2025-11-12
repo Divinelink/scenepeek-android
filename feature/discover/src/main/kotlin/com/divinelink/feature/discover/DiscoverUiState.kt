@@ -11,6 +11,8 @@ data class MediaTypeFilters(
   val genres: List<Genre>,
   val language: Language? = null,
   val country: Country? = null,
+  val voteAverageGreaterThan: Int = 0,
+  val voteAverageLessThan: Int = 10,
 ) {
   companion object {
     val initial = MediaTypeFilters(

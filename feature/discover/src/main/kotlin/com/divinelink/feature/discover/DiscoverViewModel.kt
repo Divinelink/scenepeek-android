@@ -122,6 +122,12 @@ class DiscoverViewModel(
         }
         language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
         country?.let { add(DiscoverFilter.Country(it.code)) }
+        add(
+          DiscoverFilter.VoteAverage(
+            lessThan = voteAverageLessThan,
+            greaterThan = voteAverageGreaterThan,
+          ),
+        )
       }
     }
 

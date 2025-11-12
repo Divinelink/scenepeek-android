@@ -75,6 +75,10 @@ fun buildDiscoverUrl(
         }
         is DiscoverFilter.Language -> append("with_original_language", filter.language)
         is DiscoverFilter.Country -> append("with_origin_country", filter.countryCode)
+        is DiscoverFilter.VoteAverage -> {
+          append("vote_average.gte", filter.greaterThan.toString())
+          append("vote_average.lte", filter.lessThan.toString())
+        }
       }
     }
   }
