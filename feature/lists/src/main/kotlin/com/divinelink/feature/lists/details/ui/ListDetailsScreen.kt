@@ -43,6 +43,7 @@ import com.divinelink.core.ui.snackbar.SnackbarMessageHandler
 import com.divinelink.feature.lists.details.ListDetailsAction
 import com.divinelink.feature.lists.details.ListDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
