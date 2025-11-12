@@ -115,6 +115,17 @@ object IntroSections {
     ),
   )
 
+  val v29 = listOf(
+    IntroSection.Header(UIText.ResourceText(R.string.feature_onboarding_changelog)),
+    IntroSection.WhatsNew("v0.21.0"),
+    IntroSection.SecondaryHeader.Added,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_grid_view)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_discover_rating_filter)),
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_favorite_status_lists)),
+    IntroSection.SecondaryHeader.Fixed,
+    IntroSection.Text(UIText.ResourceText(R.string.feature_onboarding_v29_discover_filters)),
+  )
+
   /**
    * A map of changelog sections keyed by version code.
    */
@@ -125,5 +136,6 @@ object IntroSections {
     26 to v26,
     27 to v27,
     28 to v28,
+    29 to v29,
   )
 }
