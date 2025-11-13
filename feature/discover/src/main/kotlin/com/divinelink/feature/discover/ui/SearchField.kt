@@ -3,6 +3,7 @@ package com.divinelink.feature.discover.ui
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,29 +21,31 @@ fun SearchField(
   value: String?,
   onValueChange: (String) -> Unit,
 ) {
-  BasicTextFieldWithCursorAtEnd(
-    modifier = modifier,
-    value = value ?: "",
-    textStyle = TextStyle(
-      fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-      fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-      color = MaterialTheme.colorScheme.onSurface,
-    ),
-    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-    keyboardActions = KeyboardActions.Default,
-    onValueChange = onValueChange,
-    singleLine = true,
-    decorationBox = { innerTextField ->
-      if (value.isNullOrEmpty()) {
-        Text(
-          textAlign = TextAlign.Start,
-          text = stringResource(id = UiString.core_ui_toolbar_search),
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-      }
-      innerTextField()
-    },
-  )
+  Surface {
+    BasicTextFieldWithCursorAtEnd(
+      modifier = modifier,
+      value = value ?: "",
+      textStyle = TextStyle(
+        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+        color = MaterialTheme.colorScheme.onSurface,
+      ),
+      cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+      keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+      keyboardActions = KeyboardActions.Default,
+      onValueChange = onValueChange,
+      singleLine = true,
+      decorationBox = { innerTextField ->
+        if (value.isNullOrEmpty()) {
+          Text(
+            textAlign = TextAlign.Start,
+            text = stringResource(id = UiString.core_ui_toolbar_search),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+        }
+        innerTextField()
+      },
+    )
+  }
 }

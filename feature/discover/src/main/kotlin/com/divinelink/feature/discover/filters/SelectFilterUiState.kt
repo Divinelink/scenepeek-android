@@ -42,6 +42,7 @@ data class SelectFilterUiState(
         FilterModal.VoteAverage -> FilterType.VoteAverage(
           greaterThan = 0,
           lessThan = 10,
+          minimumVotes = 10,
         )
       },
     )

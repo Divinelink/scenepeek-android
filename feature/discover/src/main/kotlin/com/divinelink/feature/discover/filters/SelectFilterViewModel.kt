@@ -84,7 +84,7 @@ class SelectFilterViewModel(
           }
           .launchIn(viewModelScope)
 
-      FilterModal.VoteAverage ->
+      FilterModal.VoteAverage -> {
         filterRepository
           .voteAverage
           .map { it[_uiState.value.mediaType] }
@@ -99,6 +99,21 @@ class SelectFilterViewModel(
             }
           }
           .launchIn(viewModelScope)
+
+        filterRepository
+          .minimumVotes
+          .map { it[uiState.value.mediaType] }
+          .onEach { votes ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.VoteAverage).copy(
+                  minimumVotes = votes ?: 10,
+                ),
+              )
+            }
+          }
+          .launchIn(viewModelScope)
+      }
     }
   }
 
@@ -160,6 +175,7 @@ class SelectFilterViewModel(
       is SelectFilterAction.SelectCountry -> handleSelectCountry(action)
       is SelectFilterAction.UpdateVoteRange -> handleUpdateVoteRange(action)
       is SelectFilterAction.SearchFilters -> handleSearchFilters(action)
+      is SelectFilterAction.UpdateMinimumVotes -> handleUpdateMinimumVotes(action)
     }
   }
 
@@ -241,6 +257,13 @@ class SelectFilterViewModel(
     filterRepository.updateVoteAverage(
       mediaType = _uiState.value.mediaType,
       voteAverage = action.voteAverage,
+    )
+  }
+
+  private fun handleUpdateMinimumVotes(action: SelectFilterAction.UpdateMinimumVotes) {
+    filterRepository.updateMinimumVotes(
+      mediaType = _uiState.value.mediaType,
+      votes = action.votes,
     )
   }
 }

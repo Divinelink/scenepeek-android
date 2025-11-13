@@ -8,4 +8,6 @@ sealed interface DiscoverFilter {
     val greaterThan: Int,
     val lessThan: Int,
   ) : DiscoverFilter
+
+  data class MinimumVotes(val votes: Int) : DiscoverFilter
 }

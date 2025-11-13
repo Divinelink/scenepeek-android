@@ -43,6 +43,14 @@ class FilterRepository {
   )
   val selectedCountry: StateFlow<Map<MediaType, Country?>> = _selectedCountry.asStateFlow()
 
+  private val _minimumVotes = MutableStateFlow<Map<MediaType, Int?>>(
+    mapOf(
+      MediaType.MOVIE to null,
+      MediaType.TV to null,
+    ),
+  )
+  val minimumVotes: StateFlow<Map<MediaType, Int?>> = _minimumVotes.asStateFlow()
+
   fun updateSelectedGenres(
     mediaType: MediaType,
     genres: List<Genre>,
@@ -71,10 +79,18 @@ class FilterRepository {
     _voteAverage.value += mediaType to voteAverage
   }
 
+  fun updateMinimumVotes(
+    mediaType: MediaType,
+    votes: Int,
+  ) {
+    _minimumVotes.value += mediaType to votes
+  }
+
   fun clear(mediaType: MediaType) {
     _selectedGenres.value += mediaType to emptyList()
     _selectedLanguage.value += mediaType to null
     _selectedCountry.value += mediaType to null
     _voteAverage.value += mediaType to null
+    _minimumVotes.value += mediaType to null
   }
 }

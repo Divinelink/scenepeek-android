@@ -78,12 +78,13 @@ object DiscoverFilterChip {
   @Composable
   fun VoteAverage(
     modifier: Modifier,
+    votes: Int?,
     voteAverage: DiscoverFilter.VoteAverage?,
     onClick: () -> Unit,
   ) {
     Chip(
       modifier = modifier,
-      selected = voteAverage != null,
+      selected = voteAverage != null || votes != null,
       label = if (voteAverage == null) {
         stringResource(UiString.core_ui_rating)
       } else {

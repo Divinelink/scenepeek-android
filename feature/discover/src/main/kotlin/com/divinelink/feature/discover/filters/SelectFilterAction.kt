@@ -13,4 +13,5 @@ sealed interface SelectFilterAction {
   data class SelectCountry(val country: Country) : SelectFilterAction
   data class SearchFilters(val query: String?) : SelectFilterAction
   data class UpdateVoteRange(val voteAverage: DiscoverFilter.VoteAverage) : SelectFilterAction
+  data class UpdateMinimumVotes(val votes: Int) : SelectFilterAction
 }

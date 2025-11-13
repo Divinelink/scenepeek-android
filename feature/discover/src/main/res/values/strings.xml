@@ -8,4 +8,5 @@
   <string name="feature_discover_empty_result_description">Adjust your filters to see more results</string>
   <string name="feature_discover_show_filter">Show filters</string>
   <string name="feature_discover_user_score">User score: %s - %s</string>
+  <string name="feature_discover_minimum_user_votes">Minimum user votes: %s</string>
 </resources>

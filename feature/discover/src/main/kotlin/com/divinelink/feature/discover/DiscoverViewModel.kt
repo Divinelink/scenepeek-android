@@ -87,6 +87,21 @@ class DiscoverViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    filterRepository
+      .minimumVotes
+      .map { it[uiState.value.selectedMedia] }
+      .onEach { votes ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(votes = votes) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun onAction(action: DiscoverAction) {
@@ -138,6 +153,7 @@ class DiscoverViewModel(
         language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
         country?.let { add(DiscoverFilter.Country(it.code)) }
         voteAverage?.let { add(voteAverage) }
+        votes?.let { add(DiscoverFilter.MinimumVotes(it)) }
       }
     }
 

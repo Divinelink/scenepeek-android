@@ -49,5 +49,6 @@ sealed interface FilterType {
   data class VoteAverage(
     val greaterThan: Int,
     val lessThan: Int,
+    val minimumVotes: Int,
   ) : FilterType
 }

@@ -79,6 +79,7 @@ fun buildDiscoverUrl(
           append("vote_average.gte", filter.greaterThan.toString())
           append("vote_average.lte", filter.lessThan.toString())
         }
+        is DiscoverFilter.MinimumVotes -> append("vote_count.gte", filter.votes.toString())
       }
     }
   }

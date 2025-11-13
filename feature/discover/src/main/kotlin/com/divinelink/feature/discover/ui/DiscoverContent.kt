@@ -136,6 +136,7 @@ fun DiscoverContent(
           modifier = Modifier
             .animateItem()
             .animateContentSize(),
+          votes = uiState.currentFilters.votes,
           voteAverage = uiState.currentFilters.voteAverage,
           onClick = { filterModal = FilterModal.VoteAverage },
         )
