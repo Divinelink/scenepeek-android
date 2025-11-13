@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.data.FilterRepository
 import com.divinelink.core.domain.DiscoverMediaUseCase
-import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.discover.DiscoverParameters
+import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.user.data.UserDataResponse
@@ -136,6 +136,7 @@ class DiscoverViewModel(
 
   private fun handleDiscoverMedia(reset: Boolean) {
     val mediaType = uiState.value.selectedMedia
+    val currentFilters = uiState.value.currentFilters
 
     if (reset) {
       _uiState.update { uiState ->
@@ -145,31 +146,13 @@ class DiscoverViewModel(
         )
       }
     }
-    val discoverFilters = with(_uiState.value.currentFilters) {
-      buildList {
-        if (genres.isNotEmpty()) {
-          add(DiscoverFilter.Genres(genres.map { it.id }))
-        }
-        language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
-        country?.let { add(DiscoverFilter.Country(it.code)) }
-        voteAverage?.let { add(voteAverage) }
-        votes?.let { add(DiscoverFilter.MinimumVotes(it)) }
-      }
-    }
 
-    if (discoverFilters.isEmpty()) {
-      _uiState.update { uiState ->
-        uiState.copy(
-          forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
-          loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
-        )
-      }
-    } else {
+    if (currentFilters.hasSelectedFilters) {
       discoverUseCase.invoke(
         parameters = DiscoverParameters(
           page = uiState.value.pages[uiState.value.selectedMedia] ?: 1,
           mediaType = mediaType,
-          filters = discoverFilters,
+          filters = currentFilters,
         ),
       )
         .distinctUntilChanged()
@@ -191,6 +174,13 @@ class DiscoverViewModel(
           )
         }
         .launchIn(viewModelScope)
+    } else {
+      _uiState.update { uiState ->
+        uiState.copy(
+          forms = uiState.forms.plus(uiState.selectedMedia to DiscoverForm.Initial),
+          loadingMap = uiState.loadingMap + (uiState.selectedMedia to false),
+        )
+      }
     }
   }
 

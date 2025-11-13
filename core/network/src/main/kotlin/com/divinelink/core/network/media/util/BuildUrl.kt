@@ -66,7 +66,6 @@ fun buildDiscoverUrl(
     append("page", page.toString())
     append("language", "en-US")
     append("include_adult", "false")
-    append("vote_count.gte", "10")
     append("sort_by", "popularity.desc")
     filters.forEach { filter ->
       when (filter) {
