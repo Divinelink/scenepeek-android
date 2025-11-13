@@ -169,6 +169,7 @@ class SelectFilterViewModel(
   fun onAction(action: SelectFilterAction) {
     when (action) {
       SelectFilterAction.ClearGenres -> handleClearGenres()
+      SelectFilterAction.ResetRatingFilters -> handleResetRatings()
       SelectFilterAction.Retry -> handleRetry()
       is SelectFilterAction.SelectGenre -> handleSelectGenre(action)
       is SelectFilterAction.SelectLanguage -> handleSelectLanguage(action)
@@ -197,6 +198,10 @@ class SelectFilterViewModel(
       mediaType = _uiState.value.mediaType,
       genres = emptyList(),
     )
+  }
+
+  private fun handleResetRatings() {
+    filterRepository.clearRatings(mediaType = _uiState.value.mediaType)
   }
 
   private fun handleRetry() {

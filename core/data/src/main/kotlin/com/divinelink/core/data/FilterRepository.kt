@@ -86,6 +86,11 @@ class FilterRepository {
     _minimumVotes.value += mediaType to votes
   }
 
+  fun clearRatings(mediaType: MediaType) {
+    _voteAverage.value += mediaType to null
+    _minimumVotes.value += mediaType to null
+  }
+
   fun clear(mediaType: MediaType) {
     _selectedGenres.value += mediaType to emptyList()
     _selectedLanguage.value += mediaType to null

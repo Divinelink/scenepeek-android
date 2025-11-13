@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -30,8 +29,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.RangeSlider
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -58,11 +55,9 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
-import com.divinelink.feature.discover.R
 import com.divinelink.feature.discover.ui.SearchField
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -118,16 +113,17 @@ fun SelectFilterModalBottomSheet(
         onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
         query = filterType.query,
       )
-      is FilterType.VoteAverage -> VoteAverageFilterRange(
+      is FilterType.VoteAverage -> RatingFiltersContent(
         voteAverage = DiscoverFilter.VoteAverage(
           greaterThan = filterType.greaterThan,
           lessThan = filterType.lessThan,
         ),
         minimumVotes = DiscoverFilter.MinimumVotes(filterType.minimumVotes),
-        updateRange = { viewModel.onAction(SelectFilterAction.UpdateVoteRange(it)) },
-        updateMinimumVotes = { viewModel.onAction(SelectFilterAction.UpdateMinimumVotes(it)) },
+        action = viewModel::onAction,
+        onDismissRequest = onDismissRequest,
       )
     }
+
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
@@ -306,62 +302,3 @@ fun <T : Any> SelectableFilterList(
   }
 }
 
-@Composable
-fun VoteAverageFilterRange(
-  voteAverage: DiscoverFilter.VoteAverage,
-  minimumVotes: DiscoverFilter.MinimumVotes,
-  updateRange: (DiscoverFilter.VoteAverage) -> Unit,
-  updateMinimumVotes: (Int) -> Unit,
-) {
-  LazyColumn(
-    modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
-    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
-  ) {
-    item {
-      Text(
-        text = stringResource(
-          R.string.feature_discover_user_score,
-          voteAverage.greaterThan,
-          voteAverage.lessThan,
-        ),
-        style = MaterialTheme.typography.titleMedium,
-      )
-    }
-
-    item {
-      RangeSlider(
-        onValueChange = {
-          updateRange(
-            DiscoverFilter.VoteAverage(
-              greaterThan = it.start.roundToInt(),
-              lessThan = it.endInclusive.roundToInt(),
-            ),
-          )
-        },
-        valueRange = 0f..10f,
-        value = voteAverage.greaterThan.toFloat()..voteAverage.lessThan.toFloat(),
-        steps = 9,
-      )
-    }
-
-    item {
-      Spacer(modifier = Modifier.height(MaterialTheme.dimensions.keyline_24))
-    }
-
-    item {
-      Text(
-        text = stringResource(R.string.feature_discover_minimum_user_votes, minimumVotes.votes),
-        style = MaterialTheme.typography.titleMedium,
-      )
-    }
-
-    item {
-      Slider(
-        onValueChange = { updateMinimumVotes(it.roundToInt()) },
-        valueRange = 0f..500f,
-        value = minimumVotes.votes.toFloat(),
-        steps = 9,
-      )
-    }
-  }
-}
