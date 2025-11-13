@@ -82,7 +82,7 @@ fun JellyseerrLoginContent(
         modifier = Modifier
           .testTag(TestTags.Settings.Jellyseerr.ADDRESS_TEXT_FIELD)
           .fillMaxWidth(),
-        value = state.loginData.address,
+        value = state.loginData.address.value,
         colors = OutlinedTextFieldDefaults.colors(
           focusedBorderColor = Color(0xFF6366F1),
           focusedLabelColor = Color(0xFF6366F1),

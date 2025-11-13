@@ -7,6 +7,7 @@ import com.divinelink.core.commons.domain.onError
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.jellyseerr.LoginJellyseerrUseCase
 import com.divinelink.core.domain.jellyseerr.LogoutJellyseerrUseCase
+import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
@@ -127,7 +128,7 @@ class JellyseerrSettingsViewModel(
           jellyseerrState = when (val state = it.jellyseerrState) {
             is JellyseerrState.Login -> state.copy(
               loginData = uiState.value.jellyseerrState.loginData.copy(
-                address = interaction.address,
+                address = Address.from(interaction.address),
               ),
             )
             else -> state
@@ -171,7 +172,7 @@ class JellyseerrSettingsViewModel(
             is JellyseerrState.Login -> {
               state.copy(
                 loginData = state.loginData.copy(
-                  username = Username(interaction.username),
+                  username = Username.from(interaction.username),
                 ),
               )
             }

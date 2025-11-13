@@ -5,6 +5,7 @@ import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.domain.jellyseerr.JellyseerrProfileResult
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrAccountDetailsResultFactory
+import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.UIText
 import com.divinelink.core.model.Username
@@ -49,8 +50,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -78,8 +79,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -107,8 +108,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -136,8 +137,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -247,8 +248,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -265,8 +266,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -292,8 +293,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),
@@ -309,8 +310,8 @@ class JellyseerrSettingsViewModelTest {
           jellyseerrState = JellyseerrState.Login(
             isLoading = false,
             loginData = JellyseerrLoginData(
-              address = "http://localhost:8096",
-              username = Username("username"),
+              address = Address.from("http://localhost:8096"),
+              username = Username.from("username"),
               password = Password("password"),
               authMethod = JellyseerrAuthMethod.JELLYSEERR,
             ),

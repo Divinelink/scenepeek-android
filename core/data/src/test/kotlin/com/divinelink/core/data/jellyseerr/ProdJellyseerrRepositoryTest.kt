@@ -18,6 +18,7 @@ import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanc
 import com.divinelink.core.fixtures.model.jellyseerr.server.radarr.RadarrInstanceFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.server.sonarr.SonarrInstanceFactory
+import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.exception.AppException
@@ -88,9 +89,9 @@ class ProdJellyseerrRepositoryTest {
 
     val result = repository.signInWithJellyfin(
       loginData = JellyseerrLoginData(
-        username = Username("jellyfinUsername"),
+        username = Username.from("jellyfinUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
     )
@@ -104,9 +105,9 @@ class ProdJellyseerrRepositoryTest {
 
     val result = repository.signInWithJellyseerr(
       loginData = JellyseerrLoginData(
-        username = Username("jellyseerrUsername"),
+        username = Username.from("jellyseerrUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     )

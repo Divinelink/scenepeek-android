@@ -25,12 +25,12 @@ import kotlinx.coroutines.flow.flow
 class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : JellyseerrService {
 
   override suspend fun signInWithJellyfin(jellyfinLogin: JellyseerrLoginData): Flow<Unit> = flow {
-    val url = "${jellyfinLogin.address}${AUTH_ENDPOINT}/jellyfin"
+    val url = "${jellyfinLogin.address.normalized}${AUTH_ENDPOINT}/jellyfin"
 
     val response = restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
       url = url,
       body = JellyseerrLoginRequestBodyApi.Jellyfin(
-        username = jellyfinLogin.username.value,
+        username = jellyfinLogin.username.normalized,
         password = jellyfinLogin.password.value,
         serverType = jellyfinLogin.authMethod.serverType,
       ),
@@ -41,12 +41,12 @@ class ProdJellyseerrService(private val restClient: JellyseerrRestClient) : Jell
 
   override suspend fun signInWithJellyseerr(jellyseerrLogin: JellyseerrLoginData): Flow<Unit> =
     flow {
-      val url = "${jellyseerrLogin.address}${AUTH_ENDPOINT}/local"
+      val url = "${jellyseerrLogin.address.normalized}${AUTH_ENDPOINT}/local"
 
       val response = restClient.post<JellyseerrLoginRequestBodyApi, Unit>(
         url = url,
         body = JellyseerrLoginRequestBodyApi.Jellyseerr(
-          email = jellyseerrLogin.username.value,
+          email = jellyseerrLogin.username.normalized,
           password = jellyseerrLogin.password.value,
         ),
       )

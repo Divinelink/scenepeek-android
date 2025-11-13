@@ -9,7 +9,7 @@ sealed class JellyseerrState(
   ) : JellyseerrState(
     loginData = loginData,
   ) {
-    val isLoginEnabled = loginData.address.isNotEmpty() &&
+    val isLoginEnabled = loginData.address.value.isNotEmpty() &&
       loginData.username.value.isNotEmpty() &&
       loginData.password.value.isNotEmpty()
   }
