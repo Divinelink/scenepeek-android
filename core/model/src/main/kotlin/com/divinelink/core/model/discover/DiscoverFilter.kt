@@ -5,7 +5,7 @@ sealed interface DiscoverFilter {
   data class Language(val language: String) : DiscoverFilter
   data class Country(val countryCode: String) : DiscoverFilter
   data class VoteAverage(
-    val lessThan: Int,
     val greaterThan: Int,
+    val lessThan: Int,
   ) : DiscoverFilter
 }

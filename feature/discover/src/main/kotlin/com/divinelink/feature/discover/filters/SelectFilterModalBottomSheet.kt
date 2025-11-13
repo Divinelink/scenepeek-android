@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -28,6 +30,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -46,6 +49,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
@@ -53,9 +57,11 @@ import com.divinelink.core.ui.blankslate.BlankSlate
 import com.divinelink.core.ui.components.LoadingContent
 import com.divinelink.feature.discover.FilterModal
 import com.divinelink.feature.discover.FilterType
+import com.divinelink.feature.discover.R
 import com.divinelink.feature.discover.ui.SearchField
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -72,18 +78,18 @@ fun SelectFilterModalBottomSheet(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
-    modifier = Modifier.fillMaxHeight(),
+    modifier = Modifier.wrapContentSize(),
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
   ) {
     when (val filterType = uiState.filterType) {
-      is FilterType.Genres -> SelectGenresContent(
+      is FilterType.Searchable.Genres -> SelectGenresContent(
         uiState = uiState,
         action = viewModel::onAction,
         density = density,
         onDismissRequest = onDismissRequest,
       )
-      is FilterType.Languages -> SelectableFilterList(
+      is FilterType.Searchable.Languages -> SelectableFilterList(
         titleRes = UiString.core_ui_language,
         items = filterType.visibleOptions,
         key = { it.code },
@@ -97,7 +103,7 @@ fun SelectFilterModalBottomSheet(
         onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
         query = filterType.query,
       )
-      is FilterType.Countries -> SelectableFilterList(
+      is FilterType.Searchable.Countries -> SelectableFilterList(
         titleRes = UiString.core_ui_country,
         items = filterType.visibleOptions,
         key = { it.code },
@@ -110,6 +116,13 @@ fun SelectFilterModalBottomSheet(
         selected = filterType.selectedOptions.firstOrNull(),
         onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
         query = filterType.query,
+      )
+      is FilterType.VoteAverage -> VoteAverageFilterRange(
+        voteAverage = DiscoverFilter.VoteAverage(
+          greaterThan = filterType.greaterThan,
+          lessThan = filterType.lessThan,
+        ),
+        updateRange = { viewModel.onAction(SelectFilterAction.UpdateVoteRange(it)) },
       )
     }
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
@@ -131,7 +144,7 @@ private fun SelectGenresContent(
     )
     else -> Box {
       var actionsSize by remember { mutableStateOf(0.dp) }
-      val filterType = uiState.filterType as FilterType.Genres
+      val filterType = uiState.filterType as FilterType.Searchable.Genres
 
       SelectableFilterList(
         modifier = Modifier.padding(
@@ -287,5 +300,39 @@ fun <T : Any> SelectableFilterList(
         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
       )
     }
+  }
+}
+
+@Composable
+fun VoteAverageFilterRange(
+  voteAverage: DiscoverFilter.VoteAverage,
+  updateRange: (DiscoverFilter.VoteAverage) -> Unit,
+) {
+  Column(
+    modifier = Modifier.padding(MaterialTheme.dimensions.keyline_16),
+    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimensions.keyline_16),
+  ) {
+    Text(
+      text = stringResource(
+        R.string.feature_discover_user_score,
+        voteAverage.greaterThan,
+        voteAverage.lessThan,
+      ),
+      style = MaterialTheme.typography.titleMedium,
+    )
+
+    RangeSlider(
+      onValueChange = {
+        updateRange(
+          DiscoverFilter.VoteAverage(
+            greaterThan = it.start.roundToInt(),
+            lessThan = it.endInclusive.roundToInt(),
+          ),
+        )
+      },
+      valueRange = 0f..10f,
+      value = voteAverage.greaterThan.toFloat()..voteAverage.lessThan.toFloat(),
+      steps = 9,
+    )
   }
 }

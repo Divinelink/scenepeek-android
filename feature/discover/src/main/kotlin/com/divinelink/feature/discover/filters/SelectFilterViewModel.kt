@@ -43,7 +43,7 @@ class SelectFilterViewModel(
           .onEach { country ->
             _uiState.update {
               it.copy(
-                filterType = (it.filterType as FilterType.Countries).copy(
+                filterType = (it.filterType as FilterType.Searchable.Countries).copy(
                   selectedOptions = country?.let { listOf(country) } ?: emptyList(),
                   query = null,
                 ),
@@ -60,7 +60,7 @@ class SelectFilterViewModel(
           .onEach { genres ->
             _uiState.update {
               it.copy(
-                filterType = (it.filterType as FilterType.Genres).copy(
+                filterType = (it.filterType as FilterType.Searchable.Genres).copy(
                   selectedOptions = genres,
                 ),
               )
@@ -75,9 +75,25 @@ class SelectFilterViewModel(
           .onEach { language ->
             _uiState.update {
               it.copy(
-                filterType = (it.filterType as FilterType.Languages).copy(
+                filterType = (it.filterType as FilterType.Searchable.Languages).copy(
                   selectedOptions = language?.let { listOf(language) } ?: emptyList(),
                   query = null,
+                ),
+              )
+            }
+          }
+          .launchIn(viewModelScope)
+
+      FilterModal.VoteAverage ->
+        filterRepository
+          .voteAverage
+          .map { it[_uiState.value.mediaType] }
+          .onEach { voteAverage ->
+            _uiState.update {
+              it.copy(
+                filterType = (it.filterType as FilterType.VoteAverage).copy(
+                  greaterThan = voteAverage?.greaterThan ?: 0,
+                  lessThan = voteAverage?.lessThan ?: 10,
                 ),
               )
             }
@@ -111,7 +127,7 @@ class SelectFilterViewModel(
           is Resource.Loading -> _uiState.update { uiState ->
             uiState.copy(
               loading = false,
-              filterType = FilterType.Genres(
+              filterType = FilterType.Searchable.Genres(
                 options = result.data ?: emptyList(),
                 selectedOptions = emptyList(),
                 query = null,
@@ -122,7 +138,7 @@ class SelectFilterViewModel(
           is Resource.Success -> _uiState.update { uiState ->
             uiState.copy(
               loading = false,
-              filterType = FilterType.Genres(
+              filterType = FilterType.Searchable.Genres(
                 options = result.data,
                 selectedOptions = emptyList(),
                 query = null,
@@ -142,6 +158,7 @@ class SelectFilterViewModel(
       is SelectFilterAction.SelectGenre -> handleSelectGenre(action)
       is SelectFilterAction.SelectLanguage -> handleSelectLanguage(action)
       is SelectFilterAction.SelectCountry -> handleSelectCountry(action)
+      is SelectFilterAction.UpdateVoteRange -> handleUpdateVoteRange(action)
       is SelectFilterAction.SearchFilters -> handleSearchFilters(action)
     }
   }
@@ -150,9 +167,10 @@ class SelectFilterViewModel(
     _uiState.update { uiState ->
       uiState.copy(
         filterType = when (uiState.filterType) {
-          is FilterType.Countries -> uiState.filterType.copy(query = action.query)
-          is FilterType.Genres -> uiState.filterType.copy(query = action.query)
-          is FilterType.Languages -> uiState.filterType.copy(query = action.query)
+          is FilterType.Searchable.Countries -> uiState.filterType.copy(query = action.query)
+          is FilterType.Searchable.Genres -> uiState.filterType.copy(query = action.query)
+          is FilterType.Searchable.Languages -> uiState.filterType.copy(query = action.query)
+          is FilterType.VoteAverage -> uiState.filterType
         },
       )
     }
@@ -170,11 +188,12 @@ class SelectFilterViewModel(
       FilterModal.Genre -> fetchGenres(uiState.value.mediaType)
       FilterModal.Country -> Unit
       FilterModal.Language -> Unit
+      FilterModal.VoteAverage -> Unit
     }
   }
 
   private fun handleSelectGenre(action: SelectFilterAction.SelectGenre) {
-    val selectedGenres = (_uiState.value.filterType as FilterType.Genres).selectedOptions
+    val selectedGenres = (_uiState.value.filterType as FilterType.Searchable.Genres).selectedOptions
 
     val genres = if (action.genre in selectedGenres) {
       selectedGenres - action.genre
@@ -189,7 +208,8 @@ class SelectFilterViewModel(
   }
 
   private fun handleSelectLanguage(action: SelectFilterAction.SelectLanguage) {
-    val selectedLanguage = (_uiState.value.filterType as FilterType.Languages).selectedOptions
+    val selectedLanguage = (_uiState.value.filterType as FilterType.Searchable.Languages)
+      .selectedOptions
 
     val language = if (action.language in selectedLanguage) {
       null
@@ -203,7 +223,8 @@ class SelectFilterViewModel(
   }
 
   private fun handleSelectCountry(action: SelectFilterAction.SelectCountry) {
-    val selectedCountry = (_uiState.value.filterType as FilterType.Countries).selectedOptions
+    val selectedCountry = (_uiState.value.filterType as FilterType.Searchable.Countries)
+      .selectedOptions
 
     val country = if (action.country in selectedCountry) {
       null
@@ -213,6 +234,13 @@ class SelectFilterViewModel(
     filterRepository.updateCountry(
       mediaType = _uiState.value.mediaType,
       country = country,
+    )
+  }
+
+  private fun handleUpdateVoteRange(action: SelectFilterAction.UpdateVoteRange) {
+    filterRepository.updateVoteAverage(
+      mediaType = _uiState.value.mediaType,
+      voteAverage = action.voteAverage,
     )
   }
 }

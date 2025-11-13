@@ -1,6 +1,7 @@
 package com.divinelink.core.data
 
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.model.media.MediaType
@@ -24,6 +25,15 @@ class FilterRepository {
     ),
   )
   val selectedLanguage: StateFlow<Map<MediaType, Language?>> = _selectedLanguage.asStateFlow()
+
+  private val _voteAverage = MutableStateFlow<Map<MediaType, DiscoverFilter.VoteAverage?>>(
+    mapOf(
+      MediaType.MOVIE to null,
+      MediaType.TV to null,
+    ),
+  )
+  val voteAverage: StateFlow<Map<MediaType, DiscoverFilter.VoteAverage?>> = _voteAverage
+    .asStateFlow()
 
   private val _selectedCountry = MutableStateFlow<Map<MediaType, Country?>>(
     mapOf(
@@ -54,9 +64,17 @@ class FilterRepository {
     _selectedCountry.value += mediaType to country
   }
 
+  fun updateVoteAverage(
+    mediaType: MediaType,
+    voteAverage: DiscoverFilter.VoteAverage?,
+  ) {
+    _voteAverage.value += mediaType to voteAverage
+  }
+
   fun clear(mediaType: MediaType) {
     _selectedGenres.value += mediaType to emptyList()
     _selectedLanguage.value += mediaType to null
     _selectedCountry.value += mediaType to null
+    _voteAverage.value += mediaType to null
   }
 }

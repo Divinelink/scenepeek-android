@@ -72,6 +72,21 @@ class DiscoverViewModel(
         }
       }
       .launchIn(viewModelScope)
+
+    filterRepository
+      .voteAverage
+      .map { it[uiState.value.selectedMedia] }
+      .onEach { voteAverage ->
+        _uiState.update { uiState ->
+          uiState.copy(
+            filters = uiState.filters.updateFilters(
+              mediaType = uiState.selectedTab.mediaType,
+              update = { it.copy(voteAverage = voteAverage) },
+            ),
+          )
+        }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun onAction(action: DiscoverAction) {
@@ -122,12 +137,7 @@ class DiscoverViewModel(
         }
         language?.let { filter -> add(DiscoverFilter.Language(filter.code)) }
         country?.let { add(DiscoverFilter.Country(it.code)) }
-        add(
-          DiscoverFilter.VoteAverage(
-            lessThan = voteAverageLessThan,
-            greaterThan = voteAverageGreaterThan,
-          ),
-        )
+        voteAverage?.let { add(voteAverage) }
       }
     }
 

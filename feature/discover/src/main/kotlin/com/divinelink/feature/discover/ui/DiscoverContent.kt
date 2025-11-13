@@ -130,6 +130,16 @@ fun DiscoverContent(
           onClick = { filterModal = FilterModal.Country },
         )
       }
+
+      item {
+        DiscoverFilterChip.VoteAverage(
+          modifier = Modifier
+            .animateItem()
+            .animateContentSize(),
+          voteAverage = uiState.currentFilters.voteAverage,
+          onClick = { filterModal = FilterModal.VoteAverage },
+        )
+      }
     }
 
     HorizontalPager(
