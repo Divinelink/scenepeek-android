@@ -2,6 +2,7 @@ package com.divinelink.core.domain.jellyseerr
 
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
+import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
@@ -44,9 +45,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyfinUsername"),
+        username = Username.from("jellyfinUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
     ).collect {
@@ -81,9 +82,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyseerrUsername"),
+        username = Username.from("jellyseerrUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     ).collect {
@@ -113,9 +114,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyseerrUsername"),
+        username = Username.from("jellyseerrUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     ).first()
@@ -136,9 +137,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyseerrUsername"),
+        username = Username.from("jellyseerrUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
     ).first()
@@ -158,9 +159,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyseerrUsername"),
+        username = Username.from("jellyseerrUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
     ).collect {
@@ -180,9 +181,9 @@ class LoginJellyseerrUseCaseTest {
 
     useCase.invoke(
       JellyseerrLoginData(
-        username = Username("jellyfinUsername"),
+        username = Username.from("jellyfinUsername"),
         password = Password("password"),
-        address = "http://localhost:8096",
+        address = Address.from("http://localhost:8096"),
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
     ).collect {

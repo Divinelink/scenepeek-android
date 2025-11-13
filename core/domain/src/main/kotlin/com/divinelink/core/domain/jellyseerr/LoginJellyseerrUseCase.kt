@@ -29,8 +29,8 @@ class LoginJellyseerrUseCase(
       onSuccess = {
         authRepository.updateJellyseerrCredentials(
           SavedState.JellyseerrCredentials(
-            account = parameters.username.value,
-            address = parameters.address,
+            account = parameters.username.normalized,
+            address = parameters.address.normalized,
             authMethod = parameters.authMethod,
             password = parameters.password.value,
           ),
@@ -38,7 +38,7 @@ class LoginJellyseerrUseCase(
 
         repository.getJellyseerrProfile(
           refresh = true,
-          address = parameters.address,
+          address = parameters.address.value,
         ).collect {
           emit(Result.success(Unit))
         }

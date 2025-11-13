@@ -2,6 +2,7 @@ package com.divinelink.feature.settings.app.account.jellyseerr.preview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.divinelink.core.commons.ExcludeFromKoverReport
+import com.divinelink.core.model.Address
 import com.divinelink.core.model.Password
 import com.divinelink.core.model.Username
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
@@ -19,8 +20,8 @@ class JellyseerrLoginStatePreviewParameterProvider :
     JellyseerrState.Login(
       isLoading = false,
       loginData = JellyseerrLoginData(
-        address = "https://jellyseerr.com",
-        username = Username("DavidLynch"),
+        address = Address.from("https://jellyseerr.com"),
+        username = Username.from("DavidLynch"),
         password = Password("password"),
         authMethod = JellyseerrAuthMethod.JELLYSEERR,
       ),
@@ -28,8 +29,8 @@ class JellyseerrLoginStatePreviewParameterProvider :
     JellyseerrState.Login(
       isLoading = false,
       loginData = JellyseerrLoginData(
-        address = "https://jellyseerr.com",
-        username = Username("DavidLynch"),
+        address = Address.from("https://jellyseerr.com"),
+        username = Username.from("DavidLynch"),
         password = Password("password"),
         authMethod = JellyseerrAuthMethod.JELLYFIN,
       ),
@@ -37,8 +38,8 @@ class JellyseerrLoginStatePreviewParameterProvider :
     JellyseerrState.Login(
       isLoading = false,
       loginData = JellyseerrLoginData(
-        address = "https://jellyseerr.com",
-        username = Username("DavidLynch"),
+        address = Address.from("https://jellyseerr.com"),
+        username = Username.from("DavidLynch"),
         password = Password("password"),
         authMethod = JellyseerrAuthMethod.EMBY,
       ),
@@ -46,8 +47,8 @@ class JellyseerrLoginStatePreviewParameterProvider :
     JellyseerrState.Login(
       isLoading = false,
       loginData = JellyseerrLoginData(
-        address = "https://jellyseerr.com",
-        username = Username("DavidLynch"),
+        address = Address.from("https://jellyseerr.com"),
+        username = Username.from("DavidLynch"),
         password = Password.empty(),
         authMethod = JellyseerrAuthMethod.EMBY,
       ),
@@ -55,8 +56,8 @@ class JellyseerrLoginStatePreviewParameterProvider :
     JellyseerrState.Login(
       isLoading = true,
       loginData = JellyseerrLoginData(
-        address = "https://jellyseerr.com",
-        username = Username("DavidLynch"),
+        address = Address.from("https://jellyseerr.com"),
+        username = Username.from("DavidLynch"),
         password = Password("password"),
         authMethod = JellyseerrAuthMethod.EMBY,
       ),
