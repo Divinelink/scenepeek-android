@@ -161,9 +161,10 @@
   <string name="core_ui_genres">Genres</string>
   <string name="core_ui_language">Language</string>
   <string name="core_ui_country">Country</string>
+  <string name="core_ui_rating">Rating</string>
+  <string name="core_ui_rating_selected">Rating: %s - %s</string>
 
   <string name="core_ui_clear_all">Clear all</string>
-
 
   <string name="core_ui_apply_filters">Apply filters</string>
   <plurals name="core_ui_apply_filters">

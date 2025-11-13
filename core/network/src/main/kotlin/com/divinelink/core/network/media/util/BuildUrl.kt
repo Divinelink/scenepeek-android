@@ -66,7 +66,6 @@ fun buildDiscoverUrl(
     append("page", page.toString())
     append("language", "en-US")
     append("include_adult", "false")
-    append("vote_count.gte", "10")
     append("sort_by", "popularity.desc")
     filters.forEach { filter ->
       when (filter) {
@@ -75,6 +74,11 @@ fun buildDiscoverUrl(
         }
         is DiscoverFilter.Language -> append("with_original_language", filter.language)
         is DiscoverFilter.Country -> append("with_origin_country", filter.countryCode)
+        is DiscoverFilter.VoteAverage -> {
+          append("vote_average.gte", filter.greaterThan.toString())
+          append("vote_average.lte", filter.lessThan.toString())
+        }
+        is DiscoverFilter.MinimumVotes -> append("vote_count.gte", filter.votes.toString())
       }
     }
   }

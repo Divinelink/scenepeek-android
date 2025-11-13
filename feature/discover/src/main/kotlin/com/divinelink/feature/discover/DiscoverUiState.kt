@@ -1,28 +1,9 @@
 package com.divinelink.feature.discover
 
-import com.divinelink.core.model.Genre
-import com.divinelink.core.model.locale.Country
-import com.divinelink.core.model.locale.Language
+import com.divinelink.core.model.discover.MediaTypeFilters
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.tab.MediaTab
-
-data class MediaTypeFilters(
-  val genres: List<Genre>,
-  val language: Language? = null,
-  val country: Country? = null,
-) {
-  companion object {
-    val initial = MediaTypeFilters(
-      genres = emptyList(),
-      language = null,
-      country = null,
-    )
-  }
-
-  val hasSelectedFilters
-    get() = genres.isNotEmpty() || language != null || country != null
-}
 
 data class DiscoverUiState(
   val selectedTabIndex: Int,

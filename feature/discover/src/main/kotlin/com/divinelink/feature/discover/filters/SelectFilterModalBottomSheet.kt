@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.ui.UiPlurals
 import com.divinelink.core.ui.UiString
@@ -72,18 +74,18 @@ fun SelectFilterModalBottomSheet(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
   ModalBottomSheet(
-    modifier = Modifier.fillMaxHeight(),
+    modifier = Modifier.wrapContentSize(),
     sheetState = sheetState,
     onDismissRequest = onDismissRequest,
   ) {
     when (val filterType = uiState.filterType) {
-      is FilterType.Genres -> SelectGenresContent(
+      is FilterType.Searchable.Genres -> SelectGenresContent(
         uiState = uiState,
         action = viewModel::onAction,
         density = density,
         onDismissRequest = onDismissRequest,
       )
-      is FilterType.Languages -> SelectableFilterList(
+      is FilterType.Searchable.Languages -> SelectableFilterList(
         titleRes = UiString.core_ui_language,
         items = filterType.visibleOptions,
         key = { it.code },
@@ -97,7 +99,7 @@ fun SelectFilterModalBottomSheet(
         onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
         query = filterType.query,
       )
-      is FilterType.Countries -> SelectableFilterList(
+      is FilterType.Searchable.Countries -> SelectableFilterList(
         titleRes = UiString.core_ui_country,
         items = filterType.visibleOptions,
         key = { it.code },
@@ -111,7 +113,17 @@ fun SelectFilterModalBottomSheet(
         onValueChange = { viewModel.onAction(SelectFilterAction.SearchFilters(it)) },
         query = filterType.query,
       )
+      is FilterType.VoteAverage -> RatingFiltersContent(
+        voteAverage = DiscoverFilter.VoteAverage(
+          greaterThan = filterType.greaterThan,
+          lessThan = filterType.lessThan,
+        ),
+        minimumVotes = DiscoverFilter.MinimumVotes(filterType.minimumVotes),
+        action = viewModel::onAction,
+        onDismissRequest = onDismissRequest,
+      )
     }
+
     Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBarsIgnoringVisibility))
   }
 }
@@ -131,7 +143,7 @@ private fun SelectGenresContent(
     )
     else -> Box {
       var actionsSize by remember { mutableStateOf(0.dp) }
-      val filterType = uiState.filterType as FilterType.Genres
+      val filterType = uiState.filterType as FilterType.Searchable.Genres
 
       SelectableFilterList(
         modifier = Modifier.padding(
@@ -289,3 +301,4 @@ fun <T : Any> SelectableFilterList(
     }
   }
 }
+

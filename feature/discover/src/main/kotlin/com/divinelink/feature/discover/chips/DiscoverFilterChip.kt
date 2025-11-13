@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.divinelink.core.model.Genre
+import com.divinelink.core.model.discover.DiscoverFilter
 import com.divinelink.core.model.locale.Country
 import com.divinelink.core.model.locale.Language
 import com.divinelink.core.ui.UiString
@@ -69,6 +70,29 @@ object DiscoverFilterChip {
         stringResource(UiString.core_ui_country)
       } else {
         stringResource(country.nameRes) + "  ${country.flag}"
+      },
+      onClick = onClick,
+    )
+  }
+
+  @Composable
+  fun VoteAverage(
+    modifier: Modifier,
+    votes: Int?,
+    voteAverage: DiscoverFilter.VoteAverage?,
+    onClick: () -> Unit,
+  ) {
+    Chip(
+      modifier = modifier,
+      selected = voteAverage != null || votes != null,
+      label = if (voteAverage == null) {
+        stringResource(UiString.core_ui_rating)
+      } else {
+        stringResource(
+          UiString.core_ui_rating_selected,
+          voteAverage.greaterThan,
+          voteAverage.lessThan,
+        )
       },
       onClick = onClick,
     )

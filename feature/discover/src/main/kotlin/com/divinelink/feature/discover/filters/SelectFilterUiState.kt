@@ -24,20 +24,25 @@ data class SelectFilterUiState(
       mediaType = mediaType,
       filterModal = filterModal,
       filterType = when (filterModal) {
-        FilterModal.Genre -> FilterType.Genres(
+        FilterModal.Genre -> FilterType.Searchable.Genres(
           options = emptyList(),
           selectedOptions = emptyList(),
           query = null,
         )
-        FilterModal.Country -> FilterType.Countries(
+        FilterModal.Country -> FilterType.Searchable.Countries(
           options = Country.entries,
           selectedOptions = emptyList(),
           query = null,
         )
-        FilterModal.Language -> FilterType.Languages(
+        FilterModal.Language -> FilterType.Searchable.Languages(
           options = Language.entries,
           selectedOptions = emptyList(),
           query = null,
+        )
+        FilterModal.VoteAverage -> FilterType.VoteAverage(
+          greaterThan = 0,
+          lessThan = 10,
+          minimumVotes = 10,
         )
       },
     )
