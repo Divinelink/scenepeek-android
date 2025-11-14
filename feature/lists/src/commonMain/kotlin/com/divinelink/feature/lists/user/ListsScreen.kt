@@ -1,0 +1,123 @@
+package com.divinelink.feature.lists.user
+
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.domain.components.SwitchViewButtonViewModel
+import com.divinelink.core.model.list.ListData
+import com.divinelink.core.model.ui.ViewableSection
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
+import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.ScaffoldFab
+import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.blankslate.BlankSlateState
+import com.divinelink.core.ui.components.NavigateUpButton
+import com.divinelink.core.ui.core_ui_login
+import com.divinelink.feature.lists.Res
+import com.divinelink.feature.lists.feature_lists_title
+import com.divinelink.feature.lists.user.ui.ListsContent
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AnimatedVisibilityScope.ListsScreen(
+  onNavigate: (Navigation) -> Unit,
+  viewModel: ListsViewModel = koinViewModel(),
+  switchViewButtonViewModel: SwitchViewButtonViewModel = koinViewModel(),
+) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val topAppBarColor = TopAppBarDefaults.topAppBarColors(
+    scrolledContainerColor = MaterialTheme.colorScheme.surface,
+  )
+
+  rememberScaffoldState(
+    animatedVisibilityScope = this,
+  ).PersistentScaffold(
+    modifier = Modifier.testTag(TestTags.Lists.SCREEN),
+    navigationRail = {
+      PersistentNavigationRail()
+    },
+    navigationBar = {
+      PersistentNavigationBar()
+    },
+    topBar = {
+      TopAppBar(
+        colors = topAppBarColor,
+        scrollBehavior = scrollBehavior,
+        title = {
+          Text(text = stringResource(Res.string.feature_lists_title))
+        },
+        navigationIcon = {
+          NavigateUpButton(onClick = { onNavigate(Navigation.Back) })
+        },
+      )
+    },
+    floatingActionButton = {
+      if (uiState.error is BlankSlateState.Unauthenticated) {
+        ScaffoldFab(
+          icon = Icons.Default.AccountCircle,
+          text = stringResource(UiString.core_ui_login),
+          expanded = true,
+          onClick = { onNavigate(Navigation.TMDBAuthRoute) },
+        )
+      } else if (uiState.lists is ListData.Data) {
+        ScaffoldFab(
+          modifier = Modifier.testTag(TestTags.Lists.CREATE_LIST_FAB),
+          icon = Icons.Default.Add,
+          text = null,
+          expanded = false,
+          onClick = { onNavigate(Navigation.CreateListRoute) },
+        )
+      }
+    },
+    content = {
+      Column {
+        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+
+        ListsContent(
+          uiState = uiState,
+          action = { userInteraction ->
+            when (userInteraction) {
+              ListsAction.LoadMore -> viewModel.onLoadMore()
+              ListsAction.Refresh -> viewModel.onRefresh()
+              is ListsAction.OnListClick -> onNavigate(
+                Navigation.ListDetailsRoute(
+                  id = userInteraction.id,
+                  name = userInteraction.name,
+                  backdropPath = userInteraction.backdropPath,
+                  description = userInteraction.description,
+                  public = userInteraction.public,
+                ),
+              )
+
+              ListsAction.SwitchViewMode -> switchViewButtonViewModel.switchViewMode(
+                section = ViewableSection.LISTS,
+              )
+            }
+          },
+        )
+      }
+    },
+  )
+}

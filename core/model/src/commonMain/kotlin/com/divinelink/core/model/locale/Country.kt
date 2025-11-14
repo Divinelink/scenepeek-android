@@ -1,0 +1,415 @@
+package com.divinelink.core.model.locale
+
+import com.divinelink.core.model.Res
+import com.divinelink.core.model.country_afghanistan
+import com.divinelink.core.model.country_albania
+import com.divinelink.core.model.country_algeria
+import com.divinelink.core.model.country_andorra
+import com.divinelink.core.model.country_angola
+import com.divinelink.core.model.country_antigua_barbuda
+import com.divinelink.core.model.country_argentina
+import com.divinelink.core.model.country_armenia
+import com.divinelink.core.model.country_australia
+import com.divinelink.core.model.country_austria
+import com.divinelink.core.model.country_azerbaijan
+import com.divinelink.core.model.country_bahamas
+import com.divinelink.core.model.country_bahrain
+import com.divinelink.core.model.country_bangladesh
+import com.divinelink.core.model.country_barbados
+import com.divinelink.core.model.country_belarus
+import com.divinelink.core.model.country_belgium
+import com.divinelink.core.model.country_belize
+import com.divinelink.core.model.country_benin
+import com.divinelink.core.model.country_bhutan
+import com.divinelink.core.model.country_bolivia
+import com.divinelink.core.model.country_bosnia_herzegovina
+import com.divinelink.core.model.country_brazil
+import com.divinelink.core.model.country_brunei
+import com.divinelink.core.model.country_bulgaria
+import com.divinelink.core.model.country_burkina_faso
+import com.divinelink.core.model.country_burundi
+import com.divinelink.core.model.country_cabo_verde
+import com.divinelink.core.model.country_cambodia
+import com.divinelink.core.model.country_cameroon
+import com.divinelink.core.model.country_canada
+import com.divinelink.core.model.country_central_african_republic
+import com.divinelink.core.model.country_chad
+import com.divinelink.core.model.country_chile
+import com.divinelink.core.model.country_china
+import com.divinelink.core.model.country_colombia
+import com.divinelink.core.model.country_comoros
+import com.divinelink.core.model.country_congo
+import com.divinelink.core.model.country_congo_dr
+import com.divinelink.core.model.country_costa_rica
+import com.divinelink.core.model.country_cote_divoire
+import com.divinelink.core.model.country_croatia
+import com.divinelink.core.model.country_cuba
+import com.divinelink.core.model.country_czechia
+import com.divinelink.core.model.country_denmark
+import com.divinelink.core.model.country_djibouti
+import com.divinelink.core.model.country_dominica
+import com.divinelink.core.model.country_dominican_republic
+import com.divinelink.core.model.country_ecuador
+import com.divinelink.core.model.country_egypt
+import com.divinelink.core.model.country_el_salvador
+import com.divinelink.core.model.country_equatorial_guinea
+import com.divinelink.core.model.country_eritrea
+import com.divinelink.core.model.country_estonia
+import com.divinelink.core.model.country_eswatini
+import com.divinelink.core.model.country_ethiopia
+import com.divinelink.core.model.country_fiji
+import com.divinelink.core.model.country_finland
+import com.divinelink.core.model.country_france
+import com.divinelink.core.model.country_gabon
+import com.divinelink.core.model.country_gambia
+import com.divinelink.core.model.country_georgia
+import com.divinelink.core.model.country_germany
+import com.divinelink.core.model.country_ghana
+import com.divinelink.core.model.country_greece
+import com.divinelink.core.model.country_grenada
+import com.divinelink.core.model.country_guatemala
+import com.divinelink.core.model.country_guinea
+import com.divinelink.core.model.country_guinea_bissau
+import com.divinelink.core.model.country_guyana
+import com.divinelink.core.model.country_haiti
+import com.divinelink.core.model.country_holy_see
+import com.divinelink.core.model.country_honduras
+import com.divinelink.core.model.country_hong_kong
+import com.divinelink.core.model.country_hungary
+import com.divinelink.core.model.country_iceland
+import com.divinelink.core.model.country_india
+import com.divinelink.core.model.country_indonesia
+import com.divinelink.core.model.country_iran
+import com.divinelink.core.model.country_iraq
+import com.divinelink.core.model.country_ireland
+import com.divinelink.core.model.country_italy
+import com.divinelink.core.model.country_jamaica
+import com.divinelink.core.model.country_japan
+import com.divinelink.core.model.country_jordan
+import com.divinelink.core.model.country_kazakhstan
+import com.divinelink.core.model.country_kenya
+import com.divinelink.core.model.country_kiribati
+import com.divinelink.core.model.country_kuwait
+import com.divinelink.core.model.country_kyrgyzstan
+import com.divinelink.core.model.country_laos
+import com.divinelink.core.model.country_latvia
+import com.divinelink.core.model.country_lebanon
+import com.divinelink.core.model.country_lesotho
+import com.divinelink.core.model.country_liberia
+import com.divinelink.core.model.country_libya
+import com.divinelink.core.model.country_liechtenstein
+import com.divinelink.core.model.country_lithuania
+import com.divinelink.core.model.country_luxembourg
+import com.divinelink.core.model.country_madagascar
+import com.divinelink.core.model.country_malawi
+import com.divinelink.core.model.country_malaysia
+import com.divinelink.core.model.country_maldives
+import com.divinelink.core.model.country_mali
+import com.divinelink.core.model.country_malta
+import com.divinelink.core.model.country_marshall_islands
+import com.divinelink.core.model.country_mauritania
+import com.divinelink.core.model.country_mauritius
+import com.divinelink.core.model.country_mexico
+import com.divinelink.core.model.country_micronesia
+import com.divinelink.core.model.country_moldova
+import com.divinelink.core.model.country_monaco
+import com.divinelink.core.model.country_mongolia
+import com.divinelink.core.model.country_montenegro
+import com.divinelink.core.model.country_morocco
+import com.divinelink.core.model.country_mozambique
+import com.divinelink.core.model.country_myanmar
+import com.divinelink.core.model.country_namibia
+import com.divinelink.core.model.country_nauru
+import com.divinelink.core.model.country_nepal
+import com.divinelink.core.model.country_netherlands
+import com.divinelink.core.model.country_new_zealand
+import com.divinelink.core.model.country_nicaragua
+import com.divinelink.core.model.country_niger
+import com.divinelink.core.model.country_nigeria
+import com.divinelink.core.model.country_north_macedonia
+import com.divinelink.core.model.country_norway
+import com.divinelink.core.model.country_oman
+import com.divinelink.core.model.country_pakistan
+import com.divinelink.core.model.country_palau
+import com.divinelink.core.model.country_palestine
+import com.divinelink.core.model.country_panama
+import com.divinelink.core.model.country_papua_new_guinea
+import com.divinelink.core.model.country_paraguay
+import com.divinelink.core.model.country_peru
+import com.divinelink.core.model.country_philippines
+import com.divinelink.core.model.country_poland
+import com.divinelink.core.model.country_portugal
+import com.divinelink.core.model.country_qatar
+import com.divinelink.core.model.country_romania
+import com.divinelink.core.model.country_russia
+import com.divinelink.core.model.country_rwanda
+import com.divinelink.core.model.country_saint_kitts_nevis
+import com.divinelink.core.model.country_saint_lucia
+import com.divinelink.core.model.country_saint_vincent_grenadines
+import com.divinelink.core.model.country_samoa
+import com.divinelink.core.model.country_san_marino
+import com.divinelink.core.model.country_sao_tome_principe
+import com.divinelink.core.model.country_saudi_arabia
+import com.divinelink.core.model.country_senegal
+import com.divinelink.core.model.country_serbia
+import com.divinelink.core.model.country_seychelles
+import com.divinelink.core.model.country_sierra_leone
+import com.divinelink.core.model.country_singapore
+import com.divinelink.core.model.country_slovakia
+import com.divinelink.core.model.country_slovenia
+import com.divinelink.core.model.country_solomon_islands
+import com.divinelink.core.model.country_somalia
+import com.divinelink.core.model.country_south_africa
+import com.divinelink.core.model.country_south_korea
+import com.divinelink.core.model.country_south_sudan
+import com.divinelink.core.model.country_spain
+import com.divinelink.core.model.country_sri_lanka
+import com.divinelink.core.model.country_sudan
+import com.divinelink.core.model.country_suriname
+import com.divinelink.core.model.country_sweden
+import com.divinelink.core.model.country_switzerland
+import com.divinelink.core.model.country_syria
+import com.divinelink.core.model.country_taiwan
+import com.divinelink.core.model.country_tajikistan
+import com.divinelink.core.model.country_tanzania
+import com.divinelink.core.model.country_thailand
+import com.divinelink.core.model.country_togo
+import com.divinelink.core.model.country_tonga
+import com.divinelink.core.model.country_trinidad_tobago
+import com.divinelink.core.model.country_tunisia
+import com.divinelink.core.model.country_turkey
+import com.divinelink.core.model.country_turkmenistan
+import com.divinelink.core.model.country_tuvalu
+import com.divinelink.core.model.country_uae
+import com.divinelink.core.model.country_uganda
+import com.divinelink.core.model.country_ukraine
+import com.divinelink.core.model.country_united_kingdom
+import com.divinelink.core.model.country_united_states
+import com.divinelink.core.model.country_uruguay
+import com.divinelink.core.model.country_uzbekistan
+import com.divinelink.core.model.country_vanuatu
+import com.divinelink.core.model.country_venezuela
+import com.divinelink.core.model.country_vietnam
+import com.divinelink.core.model.country_yemen
+import com.divinelink.core.model.country_zambia
+import com.divinelink.core.model.country_zimbabwe
+import org.jetbrains.compose.resources.StringResource
+
+enum class Country(
+  val nameRes: StringResource,
+  val code: String,
+) {
+  PALESTINE(Res.string.country_palestine, "PS"),
+  UKRAINE(Res.string.country_ukraine, "UA"),
+  UNITED_STATES(Res.string.country_united_states, "US"),
+  UNITED_KINGDOM(Res.string.country_united_kingdom, "GB"),
+  CANADA(Res.string.country_canada, "CA"),
+  AUSTRALIA(Res.string.country_australia, "AU"),
+  GERMANY(Res.string.country_germany, "DE"),
+  FRANCE(Res.string.country_france, "FR"),
+  ITALY(Res.string.country_italy, "IT"),
+  SPAIN(Res.string.country_spain, "ES"),
+  NETHERLANDS(Res.string.country_netherlands, "NL"),
+  BELGIUM(Res.string.country_belgium, "BE"),
+  SWITZERLAND(Res.string.country_switzerland, "CH"),
+  AUSTRIA(Res.string.country_austria, "AT"),
+  SWEDEN(Res.string.country_sweden, "SE"),
+  NORWAY(Res.string.country_norway, "NO"),
+  DENMARK(Res.string.country_denmark, "DK"),
+  FINLAND(Res.string.country_finland, "FI"),
+  ICELAND(Res.string.country_iceland, "IS"),
+  IRELAND(Res.string.country_ireland, "IE"),
+  PORTUGAL(Res.string.country_portugal, "PT"),
+  GREECE(Res.string.country_greece, "GR"),
+  POLAND(Res.string.country_poland, "PL"),
+  CZECHIA(Res.string.country_czechia, "CZ"),
+  HUNGARY(Res.string.country_hungary, "HU"),
+  SLOVAKIA(Res.string.country_slovakia, "SK"),
+  SLOVENIA(Res.string.country_slovenia, "SI"),
+  CROATIA(Res.string.country_croatia, "HR"),
+  SERBIA(Res.string.country_serbia, "RS"),
+  BOSNIA_HERZEGOVINA(Res.string.country_bosnia_herzegovina, "BA"),
+  MONTENEGRO(Res.string.country_montenegro, "ME"),
+  ALBANIA(Res.string.country_albania, "AL"),
+  BULGARIA(Res.string.country_bulgaria, "BG"),
+  ROMANIA(Res.string.country_romania, "RO"),
+  ESTONIA(Res.string.country_estonia, "EE"),
+  LATVIA(Res.string.country_latvia, "LV"),
+  LITHUANIA(Res.string.country_lithuania, "LT"),
+  RUSSIA(Res.string.country_russia, "RU"),
+  BELARUS(Res.string.country_belarus, "BY"),
+  TURKEY(Res.string.country_turkey, "TR"),
+  SAUDI_ARABIA(Res.string.country_saudi_arabia, "SA"),
+  UAE(Res.string.country_uae, "AE"),
+  EGYPT(Res.string.country_egypt, "EG"),
+  MOROCCO(Res.string.country_morocco, "MA"),
+  SOUTH_AFRICA(Res.string.country_south_africa, "ZA"),
+  JAPAN(Res.string.country_japan, "JP"),
+  SOUTH_KOREA(Res.string.country_south_korea, "KR"),
+  CHINA(Res.string.country_china, "CN"),
+  TAIWAN(Res.string.country_taiwan, "TW"),
+  HONG_KONG(Res.string.country_hong_kong, "HK"),
+  SINGAPORE(Res.string.country_singapore, "SG"),
+  MALAYSIA(Res.string.country_malaysia, "MY"),
+  THAILAND(Res.string.country_thailand, "TH"),
+  VIETNAM(Res.string.country_vietnam, "VN"),
+  PHILIPPINES(Res.string.country_philippines, "PH"),
+  INDONESIA(Res.string.country_indonesia, "ID"),
+  INDIA(Res.string.country_india, "IN"),
+  PAKISTAN(Res.string.country_pakistan, "PK"),
+  BANGLADESH(Res.string.country_bangladesh, "BD"),
+  SRI_LANKA(Res.string.country_sri_lanka, "LK"),
+  BRAZIL(Res.string.country_brazil, "BR"),
+  ARGENTINA(Res.string.country_argentina, "AR"),
+  MEXICO(Res.string.country_mexico, "MX"),
+  CHILE(Res.string.country_chile, "CL"),
+  COLOMBIA(Res.string.country_colombia, "CO"),
+  PERU(Res.string.country_peru, "PE"),
+  VENEZUELA(Res.string.country_venezuela, "VE"),
+  ECUADOR(Res.string.country_ecuador, "EC"),
+  URUGUAY(Res.string.country_uruguay, "UY"),
+  PARAGUAY(Res.string.country_paraguay, "PY"),
+  BOLIVIA(Res.string.country_bolivia, "BO"),
+  NEW_ZEALAND(Res.string.country_new_zealand, "NZ"),
+  AFGHANISTAN(Res.string.country_afghanistan, "AF"),
+  ALGERIA(Res.string.country_algeria, "DZ"),
+  ANDORRA(Res.string.country_andorra, "AD"),
+  ANGOLA(Res.string.country_angola, "AO"),
+  ANTIGUA_BARBUDA(Res.string.country_antigua_barbuda, "AG"),
+  ARMENIA(Res.string.country_armenia, "AM"),
+  AZERBAIJAN(Res.string.country_azerbaijan, "AZ"),
+  BAHAMAS(Res.string.country_bahamas, "BS"),
+  BAHRAIN(Res.string.country_bahrain, "BH"),
+  BARBADOS(Res.string.country_barbados, "BB"),
+  BELIZE(Res.string.country_belize, "BZ"),
+  BENIN(Res.string.country_benin, "BJ"),
+  BHUTAN(Res.string.country_bhutan, "BT"),
+  BRUNEI(Res.string.country_brunei, "BN"),
+  BURKINA_FASO(Res.string.country_burkina_faso, "BF"),
+  BURUNDI(Res.string.country_burundi, "BI"),
+  CABO_VERDE(Res.string.country_cabo_verde, "CV"),
+  CAMBODIA(Res.string.country_cambodia, "KH"),
+  CAMEROON(Res.string.country_cameroon, "CM"),
+  CENTRAL_AFRICAN_REPUBLIC(Res.string.country_central_african_republic, "CF"),
+  CHAD(Res.string.country_chad, "TD"),
+  COMOROS(Res.string.country_comoros, "KM"),
+  CONGO(Res.string.country_congo, "CG"),
+  CONGO_DR(Res.string.country_congo_dr, "CD"),
+  COSTA_RICA(Res.string.country_costa_rica, "CR"),
+  COTE_DIVOIRE(Res.string.country_cote_divoire, "CI"),
+  CUBA(Res.string.country_cuba, "CU"),
+  DJIBOUTI(Res.string.country_djibouti, "DJ"),
+  DOMINICA(Res.string.country_dominica, "DM"),
+  DOMINICAN_REPUBLIC(Res.string.country_dominican_republic, "DO"),
+  EL_SALVADOR(Res.string.country_el_salvador, "SV"),
+  EQUATORIAL_GUINEA(Res.string.country_equatorial_guinea, "GQ"),
+  ERITREA(Res.string.country_eritrea, "ER"),
+  ESWATINI(Res.string.country_eswatini, "SZ"),
+  ETHIOPIA(Res.string.country_ethiopia, "ET"),
+  FIJI(Res.string.country_fiji, "FJ"),
+  GABON(Res.string.country_gabon, "GA"),
+  GAMBIA(Res.string.country_gambia, "GM"),
+  GEORGIA(Res.string.country_georgia, "GE"),
+  GHANA(Res.string.country_ghana, "GH"),
+  GRENADA(Res.string.country_grenada, "GD"),
+  GUATEMALA(Res.string.country_guatemala, "GT"),
+  GUINEA(Res.string.country_guinea, "GN"),
+  GUINEA_BISSAU(Res.string.country_guinea_bissau, "GW"),
+  GUYANA(Res.string.country_guyana, "GY"),
+  HAITI(Res.string.country_haiti, "HT"),
+  HONDURAS(Res.string.country_honduras, "HN"),
+  HOLY_SEE(Res.string.country_holy_see, "VA"),
+  IRAN(Res.string.country_iran, "IR"),
+  IRAQ(Res.string.country_iraq, "IQ"),
+  JAMAICA(Res.string.country_jamaica, "JM"),
+  JORDAN(Res.string.country_jordan, "JO"),
+  KAZAKHSTAN(Res.string.country_kazakhstan, "KZ"),
+  KENYA(Res.string.country_kenya, "KE"),
+  KIRIBATI(Res.string.country_kiribati, "KI"),
+  KUWAIT(Res.string.country_kuwait, "KW"),
+  KYRGYZSTAN(Res.string.country_kyrgyzstan, "KG"),
+  LAOS(Res.string.country_laos, "LA"),
+  LEBANON(Res.string.country_lebanon, "LB"),
+  LESOTHO(Res.string.country_lesotho, "LS"),
+  LIBERIA(Res.string.country_liberia, "LR"),
+  LIBYA(Res.string.country_libya, "LY"),
+  LIECHTENSTEIN(Res.string.country_liechtenstein, "LI"),
+  LUXEMBOURG(Res.string.country_luxembourg, "LU"),
+  MADAGASCAR(Res.string.country_madagascar, "MG"),
+  MALAWI(Res.string.country_malawi, "MW"),
+  MALDIVES(Res.string.country_maldives, "MV"),
+  MALI(Res.string.country_mali, "ML"),
+  MALTA(Res.string.country_malta, "MT"),
+  MARSHALL_ISLANDS(Res.string.country_marshall_islands, "MH"),
+  MAURITANIA(Res.string.country_mauritania, "MR"),
+  MAURITIUS(Res.string.country_mauritius, "MU"),
+  MICRONESIA(Res.string.country_micronesia, "FM"),
+  MOLDOVA(Res.string.country_moldova, "MD"),
+  MONACO(Res.string.country_monaco, "MC"),
+  MONGOLIA(Res.string.country_mongolia, "MN"),
+  MOZAMBIQUE(Res.string.country_mozambique, "MZ"),
+  MYANMAR(Res.string.country_myanmar, "MM"),
+  NAMIBIA(Res.string.country_namibia, "NA"),
+  NAURU(Res.string.country_nauru, "NR"),
+  NEPAL(Res.string.country_nepal, "NP"),
+  NICARAGUA(Res.string.country_nicaragua, "NI"),
+  NIGER(Res.string.country_niger, "NE"),
+  NIGERIA(Res.string.country_nigeria, "NG"),
+  NORTH_MACEDONIA(Res.string.country_north_macedonia, "MK"),
+  OMAN(Res.string.country_oman, "OM"),
+  PALAU(Res.string.country_palau, "PW"),
+  PANAMA(Res.string.country_panama, "PA"),
+  PAPUA_NEW_GUINEA(Res.string.country_papua_new_guinea, "PG"),
+  QATAR(Res.string.country_qatar, "QA"),
+  RWANDA(Res.string.country_rwanda, "RW"),
+  SAINT_KITTS_NEVIS(Res.string.country_saint_kitts_nevis, "KN"),
+  SAINT_LUCIA(Res.string.country_saint_lucia, "LC"),
+  SAINT_VINCENT_GRENADINES(Res.string.country_saint_vincent_grenadines, "VC"),
+  SAMOA(Res.string.country_samoa, "WS"),
+  SAN_MARINO(Res.string.country_san_marino, "SM"),
+  SAO_TOME_PRINCIPE(Res.string.country_sao_tome_principe, "ST"),
+  SENEGAL(Res.string.country_senegal, "SN"),
+  SEYCHELLES(Res.string.country_seychelles, "SC"),
+  SIERRA_LEONE(Res.string.country_sierra_leone, "SL"),
+  SOLOMON_ISLANDS(Res.string.country_solomon_islands, "SB"),
+  SOMALIA(Res.string.country_somalia, "SO"),
+  SOUTH_SUDAN(Res.string.country_south_sudan, "SS"),
+  SUDAN(Res.string.country_sudan, "SD"),
+  SURINAME(Res.string.country_suriname, "SR"),
+  SYRIA(Res.string.country_syria, "SY"),
+  TAJIKISTAN(Res.string.country_tajikistan, "TJ"),
+  TANZANIA(Res.string.country_tanzania, "TZ"),
+  TOGO(Res.string.country_togo, "TG"),
+  TONGA(Res.string.country_tonga, "TO"),
+  TRINIDAD_TOBAGO(Res.string.country_trinidad_tobago, "TT"),
+  TUNISIA(Res.string.country_tunisia, "TN"),
+  TURKMENISTAN(Res.string.country_turkmenistan, "TM"),
+  TUVALU(Res.string.country_tuvalu, "TV"),
+  UGANDA(Res.string.country_uganda, "UG"),
+  UZBEKISTAN(Res.string.country_uzbekistan, "UZ"),
+  VANUATU(Res.string.country_vanuatu, "VU"),
+  YEMEN(Res.string.country_yemen, "YE"),
+  ZAMBIA(Res.string.country_zambia, "ZM"),
+  ZIMBABWE(Res.string.country_zimbabwe, "ZW"),
+  ;
+
+  val flag: String
+    get() = code.toFlagEmoji()
+
+  companion object {
+    fun fromCode(code: String): Country? = entries.find { it.code == code.uppercase() }
+  }
+}
+
+private fun String.toFlagEmoji(): String {
+  require(length == 2) { "ISO 3166-1 alpha-2 code must be exactly 2 characters" }
+  return map { char ->
+    check(char in 'a'..'z' || char in 'A'..'Z') {
+      "Invalid character in ISO code: $char"
+    }
+    0x1F1E6 + (char.uppercaseChar() - 'A')
+  }.joinToString("") {
+    // String(Character.toChars(it))
+    CharArray(it).concatToString()
+  }
+}

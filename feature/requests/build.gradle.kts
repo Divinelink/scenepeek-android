@@ -1,18 +1,28 @@
 plugins {
-  alias(libs.plugins.divinelink.android.feature)
-  alias(libs.plugins.divinelink.android.library.compose)
-  alias(libs.plugins.ksp)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
+  alias(libs.plugins.divinelink.compose.feature)
 }
 
-dependencies {
-  implementation(projects.feature.requestMedia)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.data)
+      implementation(projects.core.domain)
+      implementation(projects.core.fixtures)
 
-  implementation(projects.core.data)
-  implementation(projects.core.domain)
-  implementation(projects.core.model)
+      implementation(projects.feature.requestMedia)
+    }
 
-  implementation(projects.core.scaffold)
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
+}
 
-  implementation(projects.core.fixtures)
-  testImplementation(projects.core.testing)
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.feature.requests"
+  generateResClass = auto
 }

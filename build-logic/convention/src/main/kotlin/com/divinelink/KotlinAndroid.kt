@@ -6,7 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -34,17 +33,10 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
 
     compileOptions {
       // https://developer.android.com/studio/write/java11-minimal-support-table
-      sourceCompatibility = JavaVersion.VERSION_17
-      targetCompatibility = JavaVersion.VERSION_17
-      isCoreLibraryDesugaringEnabled = true
+      sourceCompatibility = JavaVersion.VERSION_21
+      targetCompatibility = JavaVersion.VERSION_21
+      isCoreLibraryDesugaringEnabled = false
     }
-  }
-
-  configureKotlin<KotlinAndroidProjectExtension>()
-
-  dependencies {
-    add("coreLibraryDesugaring", libs.findLibrary("android.tools.desugar").get())
-    add("implementation", libs.findLibrary("timber").get())
   }
 }
 

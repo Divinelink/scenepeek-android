@@ -1,0 +1,21 @@
+<resources>
+  <string name="close">Close</string>
+  <string name="save">Save</string>
+  <string name="update">Update</string>
+
+  <string name="home__empty_filtered_result_title">No media found</string>
+  <string name="home__empty_filtered_result_description">You can try to change the filters or search for something else.</string>
+
+  <!-- Error -->
+  <string name="empty_field_error_message">%1$s is required.</string>
+  <string name="general_error_message">Something when wrong.</string>
+
+  <string name="delete">Delete</string>
+  <string name="cancel">Cancel</string>
+
+  <!-- Accessibility -->
+  <string name="movie_image_placeholder">Movie image</string>
+  <string name="settings_button_content_description">Go to settings button</string>
+  <string name="top_level_navigation_content_description_selected">Selected bottom navigation item %s</string>
+  <string name="top_level_navigation_content_description_unselected">Unselected bottom navigation item %s</string>
+</resources>

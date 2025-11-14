@@ -1,6 +1,24 @@
 plugins {
-  alias(libs.plugins.divinelink.android.library)
-  alias(libs.plugins.divinelink.android.koin)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+}
+
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      api(projects.core.model)
+      api(projects.core.network)
+      api(projects.core.database)
+      api(projects.core.datastore)
+
+      implementation(projects.core.commons)
+
+      implementation(libs.kotlinx.datetime)
+    }
+
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
 }
 
 android {
@@ -9,18 +27,4 @@ android {
       isIncludeAndroidResources = true
     }
   }
-}
-
-dependencies {
-  api(projects.core.model)
-  api(projects.core.network)
-  api(projects.core.database)
-  api(projects.core.datastore)
-
-  implementation(projects.core.commons)
-
-  implementation(libs.kotlinx.datetime)
-
-  testImplementation(libs.kotlinx.serialization.json)
-  testImplementation(projects.core.testing)
 }

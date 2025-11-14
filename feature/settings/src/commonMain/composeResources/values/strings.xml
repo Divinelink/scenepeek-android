@@ -1,0 +1,107 @@
+<resources>
+  <string name="settings">Settings</string>
+
+  <string name="login">Login</string>
+
+  <!-- AppearanceSettingsScreen -->
+  <string name="AppearanceSettingsScreen__black_backgrounds">Black background</string>
+  <string name="AppearanceSettingsScreen__black_backgrounds_summary">Use black backgrounds when using dark mode. This will save battery on OLED screens.</string>
+  <string name="AppearanceSettingsScreen__material_you">Material You</string>
+  <string name="AppearanceSettingsScreen__material_you_summary">Automatically adapt the app's colors to match your wallpaper.</string>
+
+  <!-- AccountSettingsScreen -->
+  <string name="feature_settings_account">Account</string>
+  <string name="feature_settings_logout">Logout</string>
+  <string name="feature_settings_logged_in">Logged in •\u00A0</string>
+
+
+  <string name="feature_settings_tmdb_account">TMDB account</string>
+  <string name="feature_settings_not_logged_in">Not logged in</string>
+  <string name="feature_settings_sign_in_to_access_features">Sign in to access TMDB features</string>
+
+  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in as %s. Do you want to logout?</string>
+
+  <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
+  <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
+
+  <string name="feature_settings_jellyseerr_description">Add your Jellyseerr IP Address and select a sign-in method to enable Jellyseerr.\nMake sure to include the full URL with https:// or http:// and port number if needed.</string>
+  <string name="feature_settings_jellyseerr_server_url">Server URL</string>
+  <string name="feature_settings_jellyseerr_address_placeholder">ex. http(s)://your-jellyseerr-url.com</string>
+
+  <string name="feature_settings_sign_in_with">Sign in with %s</string>
+  <string name="feature_settings_signing_in">Signing in…</string>
+
+  <string name="feature_settings_username">Username</string>
+  <string name="feature_settings_email">Email address</string>
+  <string name="feature_settings_password">Password</string>
+
+  <string name="feature_settings_additional_features">Additional features</string>
+  <string name="feature_settings_additional_features_summary">Integrate your self-hosted apps to enable additional features like movie and TV show requests.</string>
+
+  <!-- Link Handling -->
+  <string name="feature_settings_open_settings">Open settings</string>
+  <string name="feature_settings_link_handling_dialog_title">Allow %s to handle specific URLs?</string>
+  <string name="feature_settings_link_handling_dialog_summary">%s can open specific URLs in the app. This can be useful for opening links to movies and TV shows directly in the app.</string>
+
+  <string name="feature_settings_enable_link_handling_step_1">To enable this, follow these steps\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_2">1. Open the settings by pressing the button below.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_3">2. Open by default or Set as default section.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_4">You might find this option directly or under "Advanced" settings, depending on your device.\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_5">3. Choose "Open supported links" for %s\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_6">(some devices have this listed under "Default Apps" in the main settings followed by selecting %s for relevant categories)\n\n</string>
+
+
+  <!-- JellyseerrSettingsScreen -->
+  <string name="feature_settings_jellyseerr_integration">Jellyseerr integration</string>
+  <string name="feature_settings_jellyseerr_account">Jellyseerr account</string>
+  <string name="feature_settings_jellyseerr_total_requests">Total requests</string>
+
+  <string name="feature_settings_jellyseerr_joined_on">Joined on %s | User ID: %s</string>
+
+  <!-- AboutSettingsScreen -->
+  <string name="feature_settings_about">About</string>
+  <string name="feature_settings_about__privacy_policy">Privacy Policy</string>
+  <string name="feature_settings_about__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
+
+  <string name="feature_settings_about__github">Github</string>
+  <string name="feature_settings_about__version">Version %s</string>
+  <string name="feature_settings_about__developer_github_url">https://github.com/%s</string>
+  <string name="feature_settings_about__repository_url">https://github.com/Divinelink/scenepeek-android</string>
+  <string name="feature_settings_about__tmdb_endorsement">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
+
+  <string name="feature_settings_about__ad_free">Ad Free</string>
+  <string name="feature_settings_about__open_source">Open Source</string>
+  <string name="feature_settings_about__no_tracker">No Trackers</string>
+
+  <string name="feature_settings_about__source_code">View source code</string>
+  <string name="feature_settings_about__developed_by">Developed by </string>
+
+  <!-- DetailPreferencesSettingsScreen -->
+  <string name="feature_settings_ratings">Ratings</string>
+  <string name="feature_settings_ratings_summary">Choose the rating system you want to use.\nIt will be displayed in the details screen of movies and TV shows.</string>
+  <string name="feature_settings_movie_rating_preference">Movies</string>
+  <string name="feature_settings_tv_rating_preference">TV Shows</string>
+  <string name="feature_settings_episodes_rating_preference">Episodes</string>
+  <string name="feature_settings_seasons_rating_preference">Seasons</string>
+
+  <!-- preferences.xml -->
+  <string name="preferences__none">None</string>
+  <string name="preferences__account">Account</string>
+  <string name="preferences__appearance">Appearance</string>
+  <string name="feature_settings_details_preferences">Details preferences</string>
+  <string name="feature_settings_link_handling">Link handling</string>
+  <string name="preferences__theme">Theme</string>
+  <string name="preferences__light_theme">Light</string>
+  <string name="preferences__dark_theme">Dark</string>
+  <string name="preferences__system_default">System default</string>
+
+  <string-array name="pref_theme_values" translatable="false">
+    <item>system</item>
+    <item>light</item>
+    <item>dark</item>
+  </string-array>
+
+  <!-- Accessibility -->
+  <string name="feature_settings_show_password">Show password</string>
+  <string name="feature_settings_hide_password">Show password</string>
+</resources>

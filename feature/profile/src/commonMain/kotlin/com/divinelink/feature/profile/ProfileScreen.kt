@@ -1,0 +1,62 @@
+package com.divinelink.feature.profile
+
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.scaffold.PersistentNavigationBar
+import com.divinelink.core.scaffold.PersistentNavigationRail
+import com.divinelink.core.scaffold.PersistentScaffold
+import com.divinelink.core.scaffold.rememberScaffoldState
+import com.divinelink.core.ui.components.DiscoverFab
+import com.divinelink.feature.profile.ui.ProfileContent
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun AnimatedVisibilityScope.ProfileScreen(
+  onNavigate: (Navigation) -> Unit,
+  viewModel: ProfileViewModel = koinViewModel(),
+) {
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+  rememberScaffoldState(
+    animatedVisibilityScope = this,
+  ).PersistentScaffold(
+    navigationRail = {
+      PersistentNavigationRail()
+    },
+    navigationBar = {
+      PersistentNavigationBar()
+    },
+    floatingActionButton = {
+      DiscoverFab(
+        expanded = true,
+        onNavigate = onNavigate,
+      )
+    },
+    content = {
+      Column {
+        Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
+
+        ProfileContent(
+          uiState = uiState,
+          userInteraction = { userInteraction ->
+            when (userInteraction) {
+              ProfileAction.Login -> onNavigate(Navigation.TMDBAuthRoute)
+              is ProfileAction.NavigateToUserData -> onNavigate(
+                Navigation.UserDataRoute(userInteraction.section),
+              )
+              ProfileAction.NavigateToLists -> onNavigate(Navigation.ListsRoute)
+              ProfileAction.NavigateToRequests -> onNavigate(Navigation.JellyseerrRequestsRoute)
+            }
+          },
+        )
+      }
+    },
+  )
+}

@@ -1,0 +1,60 @@
+package com.divinelink.feature.settings.app.account
+
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.divinelink.core.model.UIText
+import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.components.dialog.SimpleAlertDialog
+import com.divinelink.core.ui.core_ui_cancel
+import com.divinelink.feature.settings.Res
+import com.divinelink.feature.settings.components.SettingsScaffold
+import com.divinelink.feature.settings.feature_settings_logout
+import com.divinelink.feature.settings.preferences__account
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun AccountSettingsScreen(
+  onNavigate: (Navigation) -> Unit,
+  sharedTransitionScope: SharedTransitionScope,
+  animatedVisibilityScope: AnimatedVisibilityScope,
+  viewModel: AccountSettingsViewModel = koinViewModel(),
+) {
+  val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(Unit) {
+    viewModel.navigateToTMDBAuth.collect {
+      onNavigate(Navigation.TMDBAuthRoute)
+    }
+  }
+
+  SettingsScaffold(
+    animatedVisibilityScope = animatedVisibilityScope,
+    title = stringResource(Res.string.preferences__account),
+    onNavigationClick = { onNavigate(Navigation.Back) },
+  ) {
+    AccountSettingsContent(
+      transitionScope = sharedTransitionScope,
+      animatedVisibilityScope = animatedVisibilityScope,
+      onLoginClick = viewModel::login,
+      uiState = viewState,
+      onLogoutClick = viewModel::logoutDialog,
+      onNavigateToJellyseerrLogin = { onNavigate(Navigation.JellyseerrSettingsRoute(true)) },
+    )
+  }
+
+  viewState.alertDialogUiState?.let { uiState ->
+    SimpleAlertDialog(
+      confirmClick = viewModel::confirmLogout,
+      dismissClick = viewModel::dismissLogoutDialog,
+      confirmText = UIText.ResourceText(Res.string.feature_settings_logout),
+      dismissText = UIText.ResourceText(UiString.core_ui_cancel),
+      uiState = uiState,
+    )
+  }
+}

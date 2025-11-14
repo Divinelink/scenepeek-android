@@ -1,6 +1,8 @@
 plugins {
-  alias(libs.plugins.divinelink.android.feature)
-  alias(libs.plugins.divinelink.android.library.compose)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+
+  alias(libs.plugins.divinelink.compose.feature)
 }
 
 dependencies {

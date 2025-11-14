@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="feature_onboarding_changelog">Changelog</string>
+  <string name="feature_onboarding_get_started">Get started</string>
+  <string name="feature_onboarding_skip">Skip</string>
+
+  <string name="feature_onboarding_welcome_page_title">Welcome to ScenePeek</string>
+  <string name="feature_onboarding_welcome_page_description">A free and open-source client for TMDB &amp; Jellyseerr</string>
+
+  <string name="feature_onboarding_whats_new_title">What's new in %s for %s</string>
+
+  <string name="feature_onboarding_tmdb_page_title">TMDB</string>
+  <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlist, ratings, lists and more.</string>
+
+  <string name="feature_onboarding_jellyseerr_page_title">Jellyseerr</string>
+  <string name="feature_onboarding_jellyseerr_page_description">Connect to your Jellyseerr instance to request movies and TV shows instantly.</string>
+
+  <string name="feature_onboarding_link_handling_page_title">IMDb &amp; TMDB Link Handling</string>
+  <string name="feature_onboarding_link_handling_page_description"><![CDATA[ScenePeek can open <strong>URLs</strong> from <strong>IMDb</strong> &amp; <strong>TMDB</strong> in the app. This can be useful for opening links to movies, TV shows and people directly in the app.]]></string>
+
+  <string name="feature_onboarding_v22_feature_tmdb_lists">- TMDB Lists: Create and edit custom lists, add movies and TV shows</string>
+  <string name="feature_onboarding_v22_feature_profile">- Watchlist tab has been renamed to Profile, now includes watchlist, lists, and ratings</string>
+  <string name="feature_onboarding_v22_fix_encryption">- Update encryption library that caused app to crash on re-install.\n\nIf you were connected to either TMDB or Jellyseerr you have been signed out. You can re-login to either services</string>
+
+  <string name="feature_onboarding_v24_retry_failed_api_calls">- Fix TMDB's issue causing submit movie/tv-show rating, add to watchlist and add to list to fail</string>
+  <string name="feature_onboarding_v24_add_loading_indicator">- Add loading indication when adding to watchlist and submitting rating</string>
+  <string name="feature_onboarding_v24_update_changelog">- Display all unread changelogs on app update</string>
+
+  <string name="feature_onboarding_v25_support_emby_login">- [Jellyseerr] Add login support for Emby</string>
+  <string name="feature_onboarding_v25_redesign_ui_media_cards">- Redesign and simplify UI for movie and tv show cards</string>
+  <string name="feature_onboarding_v25_redesign_jellyseerr_login">- Redesign the login screen for Jellyseerr</string>
+  <string name="feature_onboarding_v25_media_action_menu">- Add action menu for movies and TV shows. You can now long press on any movie/TV show to easily share, add to list, and mark as favorite</string>
+  <string name="feature_onboarding_v25_fix_favorite_status">- Favorite status is now visible across all media cards</string>
+
+  <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings">- [Jellyseerr] Add advanced settings on movie/tv-show request</string>
+  <string name="feature_onboarding_v26_jellyseerr_request_advanced_settings_extra">You can now select destination server, quality profile and root folder when requesting a media!</string>
+
+  <string name="feature_onboarding_v27_jellyseerr_requests_screen">- [Jellyseerr] Add requests screen where the user can view and edit all their requests. Head over to Profile > Requests and give it a go!</string>
+  <string name="feature_onboarding_v27_tmdb_display_item_status_when_adding_to_lists">- [TMDB] Show the lists that the media is added to when adding it to lists.</string>
+  <string name="feature_onboarding_v27_jellyseerr_encryption">- Improve encryption implementation when storing the jellyseerr account. If you were connected to Jellyseerr previously you have been signed out and you need to re-login.</string>
+
+  <string name="feature_onboarding_v28_discover_screen">- Add discover screen to discover movies and TV shows based on advanced filtering</string>
+
+  <string name="feature_onboarding_v29_grid_view">- Allow user to switch between grid and list view on media lists</string>
+  <string name="feature_onboarding_v29_discover_rating_filter">- Add new discover filters. You can now also discover movies and tv shows by filtering with ratings and minimum votes.</string>
+  <string name="feature_onboarding_v29_favorite_status_lists">- Display media favorite status on list details</string>
+  <string name="feature_onboarding_v29_discover_filters">- Fix an issue with discover filters between movies and tv shows</string>
+</resources>

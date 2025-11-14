@@ -1,13 +1,33 @@
 plugins {
-  alias(libs.plugins.divinelink.android.library)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
   alias(libs.plugins.kotlin.serialization)
 }
 
-dependencies {
-  implementation(projects.core.commons)
-  testImplementation(projects.core.testing)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.commons)
 
-  implementation(libs.kotlinx.serialization.json)
-  implementation(libs.kotlinx.datetime)
-  implementation(libs.kotlinx.io.core)
+      implementation(libs.kotlinx.datetime)
+
+      implementation(libs.compose.resources)
+
+      implementation(projects.core.commons)
+
+      implementation(libs.kotlinx.serialization.json)
+      implementation(libs.kotlinx.datetime)
+      implementation(libs.kotlinx.io.core)
+    }
+
+    commonTest.dependencies {
+      implementation(projects.core.testing)
+    }
+  }
+}
+
+compose.resources {
+  publicResClass = true
+  packageOfResClass = "com.divinelink.core.model"
+  generateResClass = auto
 }

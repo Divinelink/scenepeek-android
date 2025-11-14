@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="system">System</string>
+  <string name="light">Light</string>
+  <string name="dark">Dark</string>
+</resources>

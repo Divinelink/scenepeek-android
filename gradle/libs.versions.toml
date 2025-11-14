@@ -33,7 +33,7 @@ navigation-compose = "2.9.6"
 detekt = "1.23.6"
 
 # Internal Database
-sqldelight = "2.1.0"
+sqldelight = "2.2.1"
 datastore = '1.1.7'
 
 # Multithreading
@@ -48,14 +48,16 @@ kotlinx-io = "0.8.0"
 koin = "4.1.1"
 
 # Compose
+compose = "1.9.3"
 compose-bom = "2025.11.00"
 compose-foundation = "1.9.4"
 material3 = "1.4.0"
+compose-navigation = "2.9.1"
 
 compose-shimmer = "1.3.3"
 
-# Timber
-timber = "5.0.1"
+# Napier
+napier = "2.7.1"
 
 # Testing
 kover = "0.8.3"
@@ -95,13 +97,16 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 # Jetpack Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+compose-backhandler ={ group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose" }
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "compose" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -116,7 +121,7 @@ compose-material3-adaptive = { group = "androidx.compose.material3.adaptive", na
 compose-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout" }
 compose-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation" }
 compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
-
+compose-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
@@ -125,6 +130,7 @@ coil-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.r
 # Network & Serialization
 ktor-client-core = { group = 'io.ktor', name = 'ktor-client-core', version.ref = 'ktor' }
 ktor-client-android = { group = 'io.ktor', name = 'ktor-client-android', version.ref = 'ktor' }
+ktor-client-darwin = { group = 'io.ktor', name = 'ktor-client-darwin', version.ref = 'ktor' }
 ktor-client-logging = { group = 'io.ktor', name = 'ktor-client-logging', version.ref = 'ktor' }
 ktor-client-mock = { group = 'io.ktor', name = 'ktor-client-mock', version.ref = 'ktor' }
 ktor-client-content-negotiation = { group = 'io.ktor', name = 'ktor-client-content-negotiation', version.ref = 'ktor' }
@@ -133,12 +139,14 @@ kotlinx-serialization-json = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-
 
 # Depedency Injection
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-start-up = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
 
 # Misc
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 
 youtube-player = 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
 
@@ -152,9 +160,11 @@ firebase-config = 'com.google.firebase:firebase-config-ktx:22.0.0'
 # Database
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
+datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 sqldelight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-native = { group = "app.cash.sqldelight", name = "native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
 
@@ -180,9 +190,13 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-multiplatform-gradle-plugin = { group = "org.jetbrains.compose", name = "org.jetbrains.compose.gradle.plugin", version.ref = "compose" }
 
 [plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -205,7 +219,15 @@ screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"
 # Plugins defined by this project
 divinelink-android-application = { id = "divinelink.android.application", version = "unspecified" }
 divinelink-android-application-compose = { id = "divinelink.android.application.compose", version = "unspecified" }
-divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
+#divinelink-android-library = { id = "divinelink.android.library", version = "unspecified" }
 divinelink-android-library-compose = { id = "divinelink.android.library.compose", version = "unspecified" }
-divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
+#divinelink-android-feature = { id = "divinelink.android.feature", version = "unspecified" }
 divinelink-android-koin = { id = "divinelink.android.koin", version = "unspecified" }
+
+# Multiplatform
+divinelink-kotlin-multiplatform-application = { id = "com.divinelink.kotlin.multiplatform.application", version = "unspecified" }
+
+divinelink-kotlin-multiplatform = { id = "com.divinelink.kotlin.multiplatform", version = "unspecified" }
+divinelink-compose-multiplatform = { id = "com.divinelink.compose.multiplatform", version = "unspecified" }
+
+divinelink-compose-feature = { id = "com.divinelink.compose.feature", version = "unspecified" }

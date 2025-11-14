@@ -1,0 +1,198 @@
+<resources>
+  <string name="core_ui_okay">Okay</string>
+  <string name="core_ui_cancel">Cancel</string>
+  <string name="core_ui_confirm">Confirm</string>
+  <string name="core_ui_delete">Delete</string>
+  <string name="core_ui_discover">Discover</string>
+  <string name="core_ui_share_error_details">Share error details</string>
+
+  <string name="core_ui_approve">Approve</string>
+  <string name="core_ui_decline">Decline</string>
+
+  <string name="core_ui_save">Save</string>
+  <string name="core_ui_play_trailer">Watch Trailer</string>
+
+  <string name="core_ui_your_rating">Your rating</string>
+
+  <string name="core_ui_connected">You're back online</string>
+  <string name="core_ui_not_connected">You're offline</string>
+
+  <string name="core_ui_select">Select</string>
+  <string name="core_ui_share">Share</string>
+  <string name="core_ui_show_total_episodes_item">Show spoilers</string>
+  <string name="core_ui_hide_total_episodes_item">Hide spoilers</string>
+  <string name="core_ui_show_spoilers_tooltip">Show credits' episode count</string>
+  <string name="core_ui_hide_spoilers_tooltip">Hide credits' episode count to avoid spoilers</string>
+
+  <string name="core_ui_retry">Retry</string>
+  <string name="core_ui_login">Login</string>
+  <string name="core_ui_logout">Logout</string>
+  <string name="core_ui_error_retry">Something when wrong. Please try again.</string>
+  <string name="core_ui_password">Password</string>
+  <string name="core_ui_view_all">View all</string>
+
+  <string name="core_ui_create_list">Create list</string>
+  <string name="core_ui_create">Create</string>
+  <string name="core_ui_edit">Save</string>
+
+  <plurals name="core_ui_character_episode_episodes">
+    <item quantity="one">(%1$s Episode)</item>
+    <item quantity="other">(%1$s Episodes)</item>
+  </plurals>
+
+  <string name="core_ui_general_error_title">An error has occurred</string>
+
+  <string name="details__reviews">Reviews</string>
+  <string name="details__more_like_this">Recommendations</string>
+
+  <string name="details__director_title">Director</string>
+  <string name="details__cast_title">Cast</string>
+  <string name="core_ui_series_cast_title">Series Cast</string>
+
+  <string name="core_ui_director">Director</string>
+  <string name="core_ui_screenplay">Screenplay</string>
+  <string name="core_ui_novel">Novel</string>
+  <string name="core_ui_creator">Creator</string>
+
+  <plurals name="core_ui_season">
+    <item quantity="one">Season</item>
+    <item quantity="other">Seasons</item>
+  </plurals>
+
+  <string name="core_ui_requests">Requests</string>
+
+  <plurals name="core_ui_cast_count">
+    <item quantity="one">%s person</item>
+    <item quantity="other">%s persons</item>
+  </plurals>
+
+  <plurals name="core_ui_episode_count">
+    <item quantity="one">%s episode</item>
+    <item quantity="other">%s episodes</item>
+  </plurals>
+
+  <string name="core_ui_toolbar_search">Search</string>
+  <string name="core_ui_movies">movies</string>
+  <string name="core_ui_tv_shows">tv shows</string>
+  <string name="core_ui_people">people</string>
+
+  <string name="core_ui_media">Media</string>
+  <string name="core_ui_remove_from_radarr">Remove from Radarr</string>
+  <string name="core_ui_remove_from_radarr_description">This will irreversibly remove this movie from Radarr, including all files.</string>
+
+  <string name="core_ui_remove_from_sonarr">Remove from Sonarr</string>
+  <string name="core_ui_remove_from_sonarr_description">This will irreversibly remove this movie from Sonarr, including all files.</string>
+
+  <string name="core_ui_advanced">Advanced</string>
+  <string name="core_ui_clear_data">Clear data</string>
+  <string name="core_ui_clear_data_movie_description">This will irreversibly remove all data for this movie, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
+  <string name="core_ui_clear_data_series_description">This will irreversibly remove all data for this series, including any requests. If this item exists in your Jellyfin library, the media information will be recreated during the next scan.</string>
+
+  <string name="core_ui_loading">Loading…</string>
+  <string name="core_ui_load_more">Loading more…</string>
+
+  <string name="popular_movie__rating">Rating</string>
+  <string name="movie_extra_details">Details &amp; More</string>
+
+  <string name="core_ui_toolbar_search_placeholder">Search for a show, movie, etc.</string>
+
+  <string name="core_ui_season">Season</string>
+  <string name="core_ui_episodes">Episodes</string>
+  <string name="core_ui_status">Status</string>
+
+  <plurals name="core_ui_request_series_button">
+    <item quantity="one">Request 1 season</item>
+    <item quantity="other">Request %d seasons</item>
+  </plurals>
+
+  <string name="core_ui_select_seasons_button">Select season(s)</string>
+  <string name="core_ui_season_number">Season %d</string>
+  <string name="core_ui_request">Request</string>
+  <string name="core_ui_request_movie">Request movie</string>
+  <string name="core_ui_request_series">Request series</string>
+  <string name="core_ui_request_pending_request">Pending request</string>
+
+  <string name="core_ui_edit_request">Edit request</string>
+  <string name="core_ui_cancel_request">Cancel request</string>
+  <string name="core_ui_delete_request">Delete request</string>
+  <string name="core_ui_delete_request_confirmation_text">Are you sure you want to delete this request?</string>
+
+  <string name="core_ui_clear_media_title">Clear data</string>
+
+
+  <string name="core_ui_read_more">Read more</string>
+  <string name="core_ui_show_more">Show more</string>
+  <string name="core_ui_show_less">Show less</string>
+
+  <string name="core_ui_view">View</string>
+  <string name="core_ui_filter">Filter</string>
+
+  <string name="core_ui_offline_title">You are offline</string>
+  <string name="core_ui_offline_description">Please connect to the internet and try again.</string>
+
+  <string name="core_ui_error_generic_title">Something when wrong</string>
+  <string name="core_ui_error_generic_description">Please try again.</string>
+  <string name="core_ui_error_contact_description">Please try again. If the problem persists, please contact the developer.</string>
+
+  <string name="core_ui_jellyseerr_session_expired">Your Jellyseerr session has expired. Please login again.</string>
+
+  <string name="core_ui_tmdb_user_score">User\nScore</string>
+
+  <string name="core_ui_back_to_top">Back to top</string>
+
+  <string name="core_ui_section_watchlist">Watchlist</string>
+  <string name="core_ui_section_ratings">Ratings</string>
+  <string name="core_ui_section_lists">Lists</string>
+  <string name="core_ui_section_requests">Requests</string>
+
+  <string name="core_ui_login_title">Login to your account</string>
+
+  <plurals name="core_ui_item_count">
+    <item quantity="one">%s item</item>
+    <item quantity="other">%s items</item>
+  </plurals>
+
+  <string name="core_ui_backdrop">Backdrop</string>
+  <string name="core_ui_public">Public</string>
+  <string name="core_ui_private">Private</string>
+
+  <string name="core_ui_genres">Genres</string>
+  <string name="core_ui_language">Language</string>
+  <string name="core_ui_country">Country</string>
+  <string name="core_ui_rating">Rating</string>
+  <string name="core_ui_rating_selected">Rating: %s - %s</string>
+
+  <string name="core_ui_clear_all">Clear all</string>
+
+  <string name="core_ui_apply_filters">Apply filters</string>
+  <plurals name="core_ui_apply_filters">
+    <item quantity="one">Apply 1 filter</item>
+    <item quantity="other">Apply %s filters</item>
+  </plurals>
+
+  <!-- Accessibility -->
+  <string name="core_ui_navigate_up_button_content_description">Navigate Up Button</string>
+  <string name="core_ui_movie_image_placeholder">Movie image</string>
+  <string name="core_ui_backdrop_image_placeholder">Backdrop image</string>
+  <string name="core_ui_select_media_backdrop_image">Select media backdrop image</string>
+  <string name="core_ui_avatar_image_placeholder">Avatar image</string>
+  <string name="core_ui_mark_as_favorite_button_content_description">Mark As Favorite Button</string>
+  <string name="clear_search_button_content_description">Clear Search Button</string>
+  <string name="clear_filters_button_content_description">Clear Filters Button</string>
+  <string name="core_ui_add_to_watchlist_content_desc">Add to watchlist</string>
+  <string name="core_ui_add_to_list_content_desc">Add to list</string>
+  <string name="core_ui_remove_from_watchlist_content_desc">Remove from watchlist</string>
+  <string name="core_ui_scroll_to_top_button">Scroll to top</string>
+  <string name="core_ui_toggle_password_visibility_button">Toggle password visibility</string>
+  <string name="core_ui_hidden_spoilers_button">Spoilers are hidden</string>
+  <string name="core_ui_visible_spoilers_button">Spoilers are visible</string>
+  <string name="core_ui_change_layout_button">Change layout style</string>
+  <string name="core_ui_close_multiple_select">Close multiple select</string>
+  <string name="core_ui_select_all">Select all</string>
+  <string name="core_ui_deselect_all">Deselect all</string>
+  <string name="core_ui_filter_button">Filter button</string>
+  <string name="core_ui_filter_button_content_desc">Filter credits</string>
+  <string name="core_ui_collapse">Collapse</string>
+  <string name="core_ui_expand">Expand</string>
+  <string name="core_ui_added_on_list">Added on list %s</string>
+</resources>

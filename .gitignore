@@ -163,3 +163,20 @@ web/js/*
 
 node_modules
 /app/google-services.json.base64
+
+# Log/OS Files
+*.log
+
+# iOS specific files
+iosApp/Pods/
+iosApp/Podfile.lock
+iosApp/build/
+/DerivedData/
+/iosApp.xcworkspace/
+*.preferences_pb
+
+# KMP specific files
+cinterop/
+kotlin-native/
+*.klib
+*.cinteropLibraries.json

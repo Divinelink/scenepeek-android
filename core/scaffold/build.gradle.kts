@@ -1,19 +1,33 @@
 plugins {
-  alias(libs.plugins.divinelink.android.library)
-  alias(libs.plugins.divinelink.android.library.compose)
+  alias(libs.plugins.divinelink.kotlin.multiplatform)
+  alias(libs.plugins.divinelink.compose.multiplatform)
+}
 
-  alias(libs.plugins.kotlin.serialization)
+kotlin {
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.core.ui)
+      implementation(projects.core.data)
+      implementation(projects.core.domain)
+      implementation(projects.core.model)
+
+      // Navigation
+//      implementation(libs.androidx.navigation.runtime.ktx)
+//      implementation(libs.androidx.navigation.compose)
+    }
+  }
+}
+
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.divinelink.core.scaffold"
+  generateResClass = auto
 }
 
 dependencies {
-  implementation(projects.core.ui)
-  implementation(projects.core.data)
-  implementation(projects.core.domain)
-
-  // Navigation
-  implementation(libs.androidx.navigation.runtime.ktx)
-  implementation(libs.androidx.navigation.compose)
-
-  implementation(projects.core.model)
-  implementation(libs.kotlinx.serialization.json)
+//  // Navigation
+//  implementation(libs.androidx.navigation.runtime.ktx)
+//  implementation(libs.androidx.navigation.compose)
+//
+//  implementation(libs.kotlinx.serialization.json)
 }
