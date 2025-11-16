@@ -3,6 +3,7 @@ package com.divinelink.core.testing.usecase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestSessionRepository
 import org.junit.Rule
 import org.mockito.kotlin.mock
@@ -19,6 +20,7 @@ class TestCreateSessionUseCase {
 
   fun useCase() = CreateSessionUseCase(
     repository = TestSessionRepository().mock,
+    authRepository = TestAuthRepository().mock,
     storage = SessionStorageFactory.empty(),
     dispatcher = mainDispatcherRule.testDispatcher,
   )

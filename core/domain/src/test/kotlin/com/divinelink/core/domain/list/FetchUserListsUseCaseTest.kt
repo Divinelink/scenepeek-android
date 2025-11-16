@@ -9,8 +9,8 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestListRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
@@ -25,18 +25,20 @@ class FetchUserListsUseCaseTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private val repository = TestListRepository()
+  private val authRepository = TestAuthRepository()
 
   @Test
   fun `test fetch lists when account storage account id is null emits unauthenticated`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = null,
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
+    authRepository.mockTMDBAccount(null)
 
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -50,17 +52,18 @@ class FetchUserListsUseCaseTest {
       assertThat(awaitItem.toString()).isEqualTo(
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists when observers to accountId changes`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = null,
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(flowOf(null, AccountDetailsFactory.Pinkman()))
     repository.mockFetchUserLists(
       flowOf(Resource.Success(ListItemFactory.page1())),
     )
@@ -68,6 +71,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -82,20 +86,20 @@ class FetchUserListsUseCaseTest {
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
 
-      storage.accountStorage.setAccountDetails(AccountDetailsFactory.Pinkman())
-
       assertThat(awaitItem()).isEqualTo(Result.success(ListItemFactory.page1()))
+
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists with loading resource`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Loading(ListItemFactory.page1())),
     )
@@ -103,6 +107,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -112,17 +117,18 @@ class FetchUserListsUseCaseTest {
       ),
     ).test {
       assertThat(awaitItem()).isEqualTo(Result.success(ListItemFactory.page1()))
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists with loading resource with null content`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Loading(null)),
     )
@@ -130,6 +136,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -138,18 +145,18 @@ class FetchUserListsUseCaseTest {
         page = 1,
       ),
     ).test {
-      expectNoEvents()
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists with success resource with null content`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = AccountDetailsFactory.Pinkman().id.toString(),
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Success(null)),
     )
@@ -157,6 +164,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -165,18 +173,18 @@ class FetchUserListsUseCaseTest {
         page = 1,
       ),
     ).test {
-      expectNoEvents()
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists when v4 account id is null`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = "12345",
       v4AccountId = null,
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Success(ListItemFactory.page1())),
     )
@@ -184,6 +192,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -198,18 +207,18 @@ class FetchUserListsUseCaseTest {
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
 
-      expectNoEvents()
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists when access token is null`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = "12345",
       v4AccountId = "1234",
       accessToken = null,
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Success(ListItemFactory.page1())),
     )
@@ -217,6 +226,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -231,18 +241,18 @@ class FetchUserListsUseCaseTest {
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
 
-      expectNoEvents()
+      awaitComplete()
     }
   }
 
   @Test
   fun `test fetch lists with failure`() = runTest {
     val storage = createSessionStorage(
-      accountDetailsId = "12345",
       v4AccountId = "1234",
       accessToken = AccessTokenFactory.valid(),
     )
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
       flowOf(Resource.Error(Exception("Failed to fetch lists"))),
     )
@@ -250,6 +260,7 @@ class FetchUserListsUseCaseTest {
     val useCase = FetchUserListsUseCase(
       storage = storage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -262,24 +273,18 @@ class FetchUserListsUseCaseTest {
         Result.failure<Exception>(Exception("Failed to fetch lists")).toString(),
       )
 
-      expectNoEvents()
+      awaitComplete()
     }
   }
 
   private fun createSessionStorage(
     v4AccountId: String?,
-    accountDetailsId: String?,
     accessToken: AccessToken? = null,
   ) = SessionStorage(
     encryptedStorage = FakeEncryptedPreferenceStorage(
       sessionId = "123",
       accessToken = accessToken?.accessToken,
       tmdbAccountId = v4AccountId,
-    ),
-    accountStorage = FakeAccountStorage(
-      accountDetails = accountDetailsId?.let {
-        AccountDetailsFactory.Pinkman().copy(id = it.toInt())
-      },
     ),
   )
 }

@@ -1,6 +1,5 @@
 package com.divinelink.core.domain.session
 
-import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
@@ -8,8 +7,8 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestSessionRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -22,16 +21,17 @@ class CreateSessionUseCaseTest {
   val mainDispatcherRule = MainDispatcherRule()
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
-  val repository = TestSessionRepository()
+  private val repository = TestSessionRepository()
+  private val authRepository = TestAuthRepository()
 
   private val storage = SessionStorage(
     encryptedStorage = FakeEncryptedPreferenceStorage(),
-    accountStorage = FakeAccountStorage(),
   )
 
   @Test
   fun `test createSession with null request token clears session and token`() = runTest {
     repository.mockRetrieveRequestToken(Result.failure(SessionException.RequestTokenNotFound()))
+
 
     storage.setAccessToken(
       sessionId = "sessionId",
@@ -40,6 +40,7 @@ class CreateSessionUseCaseTest {
 
     CreateSessionUseCase(
       repository = repository.mock,
+      authRepository = authRepository.mock,
       storage = storage,
       dispatcher = testDispatcher,
     ).invoke(Unit)
@@ -61,6 +62,7 @@ class CreateSessionUseCaseTest {
 
     CreateSessionUseCase(
       repository = repository.mock,
+      authRepository = authRepository.mock,
       storage = storage,
       dispatcher = testDispatcher,
     ).invoke(Unit)
@@ -78,6 +80,7 @@ class CreateSessionUseCaseTest {
 
     CreateSessionUseCase(
       repository = repository.mock,
+      authRepository = authRepository.mock,
       storage = storage,
       dispatcher = testDispatcher,
     ).invoke(Unit)
@@ -100,6 +103,7 @@ class CreateSessionUseCaseTest {
 
     CreateSessionUseCase(
       repository = repository.mock,
+      authRepository = authRepository.mock,
       storage = storage,
       dispatcher = testDispatcher,
     ).invoke(Unit)
@@ -109,9 +113,8 @@ class CreateSessionUseCaseTest {
     assertThat(storage.encryptedStorage.accessToken).isEqualTo(
       AccessTokenFactory.valid().accessToken,
     )
-    storage.accountStorage.accountDetails.test {
-      assertThat(awaitItem()).isEqualTo(AccountDetailsFactory.Pinkman())
-    }
+
+    authRepository.verifySetTMDBAccount(AccountDetailsFactory.Pinkman())
 
     repository.clearRequestTokenInvoke()
   }
@@ -130,6 +133,7 @@ class CreateSessionUseCaseTest {
 
     CreateSessionUseCase(
       repository = repository.mock,
+      authRepository = authRepository.mock,
       storage = storage,
       dispatcher = testDispatcher,
     ).invoke(Unit)
@@ -137,9 +141,8 @@ class CreateSessionUseCaseTest {
     assertThat(storage.sessionId).isNull()
     assertThat(storage.accountId).isNull()
     assertThat(storage.encryptedStorage.accessToken).isNull()
-    storage.accountStorage.accountDetails.test {
-      assertThat(awaitItem()).isNull()
-    }
+
+    authRepository.verifyClearTMDBAccountInvoked()
 
     repository.clearRequestTokenInvoke()
   }
