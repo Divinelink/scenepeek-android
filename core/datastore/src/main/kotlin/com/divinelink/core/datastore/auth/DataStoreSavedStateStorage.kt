@@ -10,6 +10,7 @@ import com.divinelink.core.commons.util.JsonHelper
 import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
 import com.divinelink.core.datastore.crypto.DataEncryptor
 import com.divinelink.core.datastore.crypto.EncryptionSecretKey
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -90,6 +91,18 @@ class DataStoreSavedStateStorage(
     }
   }
 
+  override suspend fun clearTMDBAccount() = updateState { state ->
+    state.copy(
+      tmdbAccount = null,
+    )
+  }
+
+  override suspend fun setTMDBAccount(account: AccountDetails) = updateState { state ->
+    state.copy(
+      tmdbAccount = account,
+    )
+  }
+
   private suspend fun updateState(update: (ConcreteSavedState) -> ConcreteSavedState) {
     dataStore.edit { preferences ->
       val currentState = preferences[SAVED_STATE_KEY]?.let { encrypted ->
@@ -114,6 +127,7 @@ class DataStoreSavedStateStorage(
 }
 
 val InitialSavedState: ConcreteSavedState = ConcreteSavedState(
+  tmdbAccount = null,
   jellyseerrCredentials = emptyMap(),
   jellyseerrProfiles = emptyMap(),
   jellyseerrAuthCookies = emptyMap(),

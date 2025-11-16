@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.auth.isJellyseerrEnabled
 import com.divinelink.core.datastore.auth.profilePermissions
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,11 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
     .map { it.jellyseerrProfiles[it.selectedJellyseerrId] }
     .distinctUntilChanged()
 
+  override val tmdbAccount: Flow<AccountDetails?> = savedStateStorage
+    .savedState
+    .map { it.tmdbAccount }
+    .distinctUntilChanged()
+
   override suspend fun updateJellyseerrCredentials(account: SavedState.JellyseerrCredentials) {
     savedStateStorage.setJellyseerrCredentials(account)
   }
@@ -49,5 +55,13 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
 
   override suspend fun clearSelectedJellyseerrAccount() {
     savedStateStorage.clearSelectedJellyseerrAccount()
+  }
+
+  override suspend fun setTMDBAccount(accountDetails: AccountDetails) {
+    savedStateStorage.setTMDBAccount(accountDetails)
+  }
+
+  override suspend fun clearTMDBAccount() {
+    savedStateStorage.clearTMDBAccount()
   }
 }

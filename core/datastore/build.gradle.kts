@@ -5,19 +5,12 @@ plugins {
   alias(libs.plugins.kotlin.serialization)
 }
 
-android {
-  defaultConfig {
-    consumerProguardFiles("consumer-proguard-rules.pro")
-  }
-}
-
 dependencies {
   implementation(libs.datastore)
   implementation(libs.datastore.core)
   implementation(libs.datastore.preferences)
   implementation(libs.datastore.preferences.core)
   implementation(libs.encrypted.preferences)
-  api(projects.core.datastoreProto)
   api(projects.core.model)
 
   implementation(projects.core.designsystem)

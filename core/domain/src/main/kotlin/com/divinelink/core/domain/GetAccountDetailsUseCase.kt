@@ -2,6 +2,7 @@ package com.divinelink.core.domain
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.account.TMDBAccount
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class GetAccountDetailsUseCase(
   private val repository: SessionRepository,
+  private val authRepository: AuthRepository,
   private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<Unit, TMDBAccount>(dispatcher.default) {
@@ -22,12 +24,14 @@ class GetAccountDetailsUseCase(
     val sessionId = storage.sessionId
 
     launch(dispatcher.default) {
-      storage.accountStorage.accountDetails
+      authRepository
+        .tmdbAccount
         .distinctUntilChanged()
         .collect { accountDetails ->
           if (accountDetails == null || storage.accountId == null || storage.sessionId == null) {
             send(Result.failure(SessionException.Unauthenticated()))
             storage.clearSession()
+            authRepository.clearTMDBAccount()
           } else {
             send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
           }
@@ -40,11 +44,12 @@ class GetAccountDetailsUseCase(
       } else {
         repository.getAccountDetails(sessionId).fold(
           onSuccess = { details ->
-            storage.accountStorage.setAccountDetails(details)
+            authRepository.setTMDBAccount(details)
           },
           onFailure = {
             if (it is AppException.Unauthorized) {
               storage.clearSession()
+              authRepository.clearTMDBAccount()
               send(Result.failure(SessionException.Unauthenticated()))
             } else {
               send(Result.failure(it))

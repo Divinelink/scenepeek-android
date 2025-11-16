@@ -3,6 +3,7 @@ package com.divinelink.feature.details.media.usecase
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.commons.domain.data
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.details.model.MediaDetailsParams
 import com.divinelink.core.data.details.repository.DetailsRepository
 import com.divinelink.core.datastore.SessionStorage
@@ -15,11 +16,12 @@ import kotlinx.coroutines.flow.flow
 
 open class FetchAccountMediaDetailsUseCase(
   private val sessionStorage: SessionStorage,
+  private val authRepository: AuthRepository,
   private val repository: DetailsRepository,
   val dispatcher: DispatcherProvider,
 ) : FlowUseCase<MediaDetailsParams, AccountMediaDetails>(dispatcher.default) {
   override fun execute(parameters: MediaDetailsParams): Flow<Result<AccountMediaDetails>> = flow {
-    sessionStorage.accountStorage.accountId.collect {
+    authRepository.tmdbAccount.collect {
       val sessionId = sessionStorage.sessionId
       if (sessionId == null) {
         emit(Result.failure(SessionException.Unauthenticated()))

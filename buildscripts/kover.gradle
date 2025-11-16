@@ -5,7 +5,6 @@ dependencies {
   kover(projects.core.data)
   kover(projects.core.database)
   kover(projects.core.datastore)
-  kover(projects.core.datastoreProto)
   kover(projects.core.designsystem)
   kover(projects.core.domain)
   kover(projects.core.model)
