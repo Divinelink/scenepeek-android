@@ -2,6 +2,7 @@ package com.divinelink.core.domain.list
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.FlowUseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.PaginationData
@@ -19,6 +20,7 @@ data class UserListsParameters(
 )
 
 class FetchUserListsUseCase(
+  private val authRepository: AuthRepository,
   private val storage: SessionStorage,
   private val repository: ListRepository,
   val dispatcher: DispatcherProvider,
@@ -26,8 +28,8 @@ class FetchUserListsUseCase(
 
   override fun execute(parameters: UserListsParameters): Flow<Result<PaginationData<ListItem>>> =
     channelFlow {
-      storage.accountStorage.accountId.collect { accountId ->
-        if (accountId == null) {
+      authRepository.tmdbAccount.collect { account ->
+        if (account == null) {
           send(Result.failure(SessionException.Unauthenticated()))
         } else {
           val v4AccountId = storage.accountId

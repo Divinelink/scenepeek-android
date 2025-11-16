@@ -8,13 +8,14 @@ import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.factories.details.domain.model.account.AccountMediaDetailsFactory
 import com.divinelink.feature.details.media.usecase.FetchAccountMediaDetailsUseCase
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -27,21 +28,25 @@ class FetchAccountMediaDetailsUseCaseTest {
   private val testDispatcher = mainDispatcherRule.testDispatcher
 
   private lateinit var repository: TestDetailsRepository
+  private lateinit var authRepository: TestAuthRepository
 
   private lateinit var sessionStorage: SessionStorage
 
   @Before
   fun setUp() {
     repository = TestDetailsRepository()
+    authRepository = TestAuthRepository()
   }
 
   @Test
   fun `test user with no session id cannot fetch account media details`() = runTest {
     sessionStorage = createSessionStorage(sessionId = null)
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -62,6 +67,7 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test user with session id can fetch account media details for movie`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchAccountMediaDetails(
       response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
@@ -69,6 +75,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -87,6 +94,7 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test user with session id can fetch account media details for tv show`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
+    authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchAccountMediaDetails(
       response = Result.success(AccountMediaDetailsFactory.Rated()),
     )
@@ -94,6 +102,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -115,6 +124,7 @@ class FetchAccountMediaDetailsUseCaseTest {
     val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -133,11 +143,23 @@ class FetchAccountMediaDetailsUseCaseTest {
   fun `test fetch account media details obverses tmdb account`() = runTest {
     sessionStorage = createSessionStorage(sessionId = "session_id")
 
-    repository.mockFetchAccountMediaDetails(Result.success(AccountMediaDetailsFactory.initial()))
+    authRepository.mockTMDBAccount(
+      flowOf(
+        null,
+        AccountDetailsFactory.Pinkman(),
+      ),
+    )
+    repository.mockFetchAccountMediaDetails(
+      flowOf(
+        Result.success(AccountMediaDetailsFactory.initial()),
+        Result.success(AccountMediaDetailsFactory.Rated()),
+      ),
+    )
 
     val useCase = FetchAccountMediaDetailsUseCase(
       sessionStorage = sessionStorage,
       repository = repository.mock,
+      authRepository = authRepository.mock,
       dispatcher = testDispatcher,
     )
 
@@ -148,17 +170,18 @@ class FetchAccountMediaDetailsUseCaseTest {
       ),
     ).test {
       assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.initial()))
-      repository.mockFetchAccountMediaDetails(Result.success(AccountMediaDetailsFactory.Rated()))
-      sessionStorage.setTMDbAccountDetails(AccountDetailsFactory.Pinkman())
       assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.Rated()))
+
+      assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.initial()))
+      assertThat(awaitItem()).isEqualTo(Result.success(AccountMediaDetailsFactory.Rated()))
+
+      awaitComplete()
     }
   }
 
   private fun createSessionStorage(
     sessionId: String?,
-    accountStorage: FakeAccountStorage = FakeAccountStorage(),
   ) = SessionStorage(
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
-    accountStorage = accountStorage,
   )
 }

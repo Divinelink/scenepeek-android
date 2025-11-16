@@ -90,6 +90,12 @@ class TestDetailsRepository {
     )
   }
 
+  fun mockFetchAccountMediaDetails(response: Flow<Result<AccountMediaDetails>>) {
+    whenever(
+      mock.fetchAccountMediaDetails(any()),
+    ).thenReturn(response)
+  }
+
   suspend fun mockSubmitRating(response: Result<Unit>) {
     whenever(
       mock.submitRating(any()),

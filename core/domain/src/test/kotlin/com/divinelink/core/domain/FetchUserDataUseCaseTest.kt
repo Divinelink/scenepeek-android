@@ -2,7 +2,6 @@ package com.divinelink.core.domain
 
 import app.cash.turbine.test
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.media.MediaItemFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
@@ -13,7 +12,6 @@ import com.divinelink.core.model.user.data.UserDataSection
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAccountRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
@@ -82,9 +80,6 @@ class FetchUserDataUseCaseTest {
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
       ),
-      accountStorage = FakeAccountStorage(
-        accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
-      ),
     )
 
     accountRepository.mockFetchTvShowsWatchlist(
@@ -125,9 +120,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-      ),
-      accountStorage = FakeAccountStorage(
-        accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
     )
 
@@ -170,9 +162,6 @@ class FetchUserDataUseCaseTest {
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
       ),
-      accountStorage = FakeAccountStorage(
-        accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
-      ),
     )
 
     accountRepository.mockFetchRatedTvShows(
@@ -214,9 +203,6 @@ class FetchUserDataUseCaseTest {
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
       ),
-      accountStorage = FakeAccountStorage(
-        accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
-      ),
     )
 
     accountRepository.mockFetchRatedMovies(
@@ -257,9 +243,6 @@ class FetchUserDataUseCaseTest {
       encryptedStorage = FakeEncryptedPreferenceStorage(
         sessionId = "123456789",
         tmdbAccountId = AccessTokenFactory.valid().accountId,
-      ),
-      accountStorage = FakeAccountStorage(
-        accountDetails = AccountDetailsFactory.Pinkman().copy(id = 123456789),
       ),
     )
 

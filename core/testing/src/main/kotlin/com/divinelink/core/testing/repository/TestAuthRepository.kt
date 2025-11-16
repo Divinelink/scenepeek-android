@@ -2,6 +2,7 @@ package com.divinelink.core.testing.repository
 
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.datastore.auth.SavedState
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
 import kotlinx.coroutines.channels.Channel
@@ -9,7 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TestAuthRepository {
@@ -49,11 +52,31 @@ class TestAuthRepository {
     whenever(mock.selectedJellyseerrProfile).thenReturn(profile)
   }
 
+  fun mockTMDBAccount(account: AccountDetails?) {
+    whenever(mock.tmdbAccount).thenReturn(flowOf(account))
+  }
+
+  fun mockTMDBAccount(account: Flow<AccountDetails?>) {
+    whenever(mock.tmdbAccount).thenReturn(account)
+  }
+
+  suspend fun verifySetTMDBAccount(account: AccountDetails) {
+    verify(mock).setTMDBAccount(account)
+  }
+
   suspend fun verifyAccountUpdated(account: SavedState.JellyseerrCredentials) {
     verify(mock).updateJellyseerrCredentials(account)
   }
 
   suspend fun verifyClearSelectedJellyseerrAccount() {
     verify(mock).clearSelectedJellyseerrAccount()
+  }
+
+  fun verifyNoInteraction() {
+    verifyNoInteractions(mock)
+  }
+
+  suspend fun verifyClearTMDBAccountInvoked(times: Int = 1) {
+    verify(mock, times(times)).clearTMDBAccount()
   }
 }

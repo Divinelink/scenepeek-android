@@ -1,14 +1,12 @@
 package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
@@ -162,11 +160,6 @@ class AddToWatchlistUseCaseTest {
       sessionId = sessionId,
       accessToken = accessToken?.accessToken,
       tmdbAccountId = accountId,
-    ),
-    accountStorage = FakeAccountStorage(
-      accountDetails = accountId?.let {
-        AccountDetailsFactory.Pinkman().copy(id = it.toInt())
-      },
     ),
   )
 }

@@ -1,6 +1,7 @@
 package com.divinelink.core.datastore.auth
 
 import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrAuthMethod
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -8,6 +9,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 
 interface SavedState {
+  val tmdbAccount: AccountDetails?
+
   val jellyseerrCredentials: Map<String, JellyseerrCredentials>
   val jellyseerrProfiles: Map<String, JellyseerrProfile>
   val jellyseerrAuthCookies: Map<String, String>
@@ -25,6 +28,7 @@ interface SavedState {
 
 @Serializable
 data class ConcreteSavedState(
+  override val tmdbAccount: AccountDetails?,
   override val jellyseerrCredentials: Map<String, JellyseerrCredentials>,
   override val jellyseerrProfiles: Map<String, JellyseerrProfile>,
   override val jellyseerrAuthCookies: Map<String, String>,

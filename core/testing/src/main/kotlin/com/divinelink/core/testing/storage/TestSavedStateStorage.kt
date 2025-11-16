@@ -4,11 +4,13 @@ import com.divinelink.core.datastore.auth.ConcreteSavedState
 import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.datastore.auth.SavedState.JellyseerrCredentials
 import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TestSavedStateStorage(
+  tmdbAccount: AccountDetails? = null,
   jellyseerrCredentials: Map<String, JellyseerrCredentials> = emptyMap(),
   jellyseerrProfiles: Map<String, JellyseerrProfile> = emptyMap(),
   jellyseerrAuthCookies: Map<String, String> = emptyMap(),
@@ -20,6 +22,7 @@ class TestSavedStateStorage(
 
   private val _savedState = MutableStateFlow(
     ConcreteSavedState(
+      tmdbAccount = tmdbAccount,
       jellyseerrCredentials = jellyseerrCredentials,
       jellyseerrProfiles = jellyseerrProfiles,
       jellyseerrAuthCookies = jellyseerrAuthCookies,
@@ -61,6 +64,18 @@ class TestSavedStateStorage(
       jellyseerrProfiles = currentState.jellyseerrProfiles - selectedId,
       jellyseerrCredentials = currentState.jellyseerrCredentials - selectedId,
       jellyseerrAuthCookies = currentState.jellyseerrAuthCookies - selectedId,
+    )
+  }
+
+  override suspend fun setTMDBAccount(account: AccountDetails) {
+    _savedState.value = _savedState.value.copy(
+      tmdbAccount = account,
+    )
+  }
+
+  override suspend fun clearTMDBAccount() {
+    _savedState.value = _savedState.value.copy(
+      tmdbAccount = null,
     )
   }
 }

@@ -6,7 +6,6 @@ import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.testing.storage.FakeAccountStorage
 import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
@@ -127,6 +126,5 @@ class DeleteRatingUseCaseTest {
 
   private fun createSessionStorage(sessionId: String?) = SessionStorage(
     encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
-    accountStorage = FakeAccountStorage(),
   )
 }

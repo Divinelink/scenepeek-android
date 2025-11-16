@@ -1,7 +1,9 @@
 package com.divinelink.core.model.account
 
 import com.divinelink.core.commons.ApiConstants
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AccountDetails(
   val id: Int,
   val username: String,

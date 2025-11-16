@@ -2,14 +2,16 @@ package com.divinelink.core.domain.session
 
 import com.divinelink.core.commons.domain.DispatcherProvider
 import com.divinelink.core.commons.domain.UseCase
+import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.session.repository.SessionRepository
 import com.divinelink.core.datastore.SessionStorage
 import kotlinx.coroutines.delay
 
-const val TMDB_AUTH_DELAY = 1500L // 3 seconds
+const val TMDB_AUTH_DELAY = 1500L // 1.5 seconds
 
 class CreateSessionUseCase(
   private val repository: SessionRepository,
+  private val authRepository: AuthRepository,
   private val storage: SessionStorage,
   val dispatcher: DispatcherProvider,
 ) : UseCase<Unit, Unit>(dispatcher.default) {
@@ -19,6 +21,7 @@ class CreateSessionUseCase(
 
     if (requestToken?.token == null) {
       storage.clearSession()
+      authRepository.clearTMDBAccount()
       repository.clearRequestToken()
       return
     }
@@ -36,19 +39,21 @@ class CreateSessionUseCase(
             )
 
             repository.getAccountDetails(session.id).onSuccess { accountDetails ->
-              storage.setTMDbAccountDetails(accountDetails)
+              authRepository.setTMDBAccount(accountDetails)
             }
 
             repository.clearRequestToken()
           },
           onFailure = {
             storage.clearSession()
+            authRepository.clearTMDBAccount()
             repository.clearRequestToken()
           },
         )
       },
       onFailure = {
         storage.clearSession()
+        authRepository.clearTMDBAccount()
         repository.clearRequestToken()
       },
     )
