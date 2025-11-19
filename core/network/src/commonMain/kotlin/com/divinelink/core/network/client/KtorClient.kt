@@ -1,7 +1,7 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.Constants
+import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.model.exception.AppException
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
@@ -91,12 +91,27 @@ fun ktorClient(
         is SocketTimeoutException -> AppException.SocketTimeout(cause.toString())
         is ConnectTimeoutException -> AppException.ConnectionTimeout(cause.toString())
         is HttpRequestTimeoutException -> AppException.RequestTimeout(cause.toString())
-//        is SSLHandshakeException -> AppException.Ssl(cause.toString()) // TODO KMP
         is SerializationException -> AppException.Serialization(cause.toString())
-//        is ConnectException -> AppException.Offline(cause.toString()) // TODO KMP
-//        is UnknownHostException -> AppException.Offline(cause.toString()) // TODO KMP
         is AppException -> cause
-        else -> AppException.Unknown(cause.toString())
+        else -> {
+          when (cause::class.simpleName) {
+            "SSLHandshakeException", "SSLException" -> AppException.Ssl(cause.toString())
+            "ConnectException" -> AppException.Offline(cause.toString())
+            "UnknownHostException" -> AppException.Offline(cause.toString())
+            else -> {
+              val message = cause.message?.lowercase() ?: ""
+              when {
+                message.contains("ssl") || message.contains("certificate") ->
+                  AppException.Ssl(cause.toString())
+                message.contains("connection") ||
+                  message.contains("network") ||
+                  message.contains("host") ||
+                  message.contains("unreachable") -> AppException.Offline(cause.toString())
+                else -> AppException.Unknown(cause.toString())
+              }
+            }
+          }
+        }
       }
       throw dataError
     }

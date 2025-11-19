@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
+import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
-  private val findByIdUseCase: com.divinelink.core.domain.FindByIdUseCase,
+  private val findByIdUseCase: FindByIdUseCase,
   private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
