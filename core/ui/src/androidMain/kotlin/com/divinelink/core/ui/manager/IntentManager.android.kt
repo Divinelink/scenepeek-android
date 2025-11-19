@@ -3,8 +3,12 @@ package com.divinelink.core.ui.manager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.commons.provider.BuildConfigProvider
@@ -47,7 +51,21 @@ internal class AndroidIntentManager(
   )
 
   override fun navigateToAppSettings() {
-    context
+    val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      Intent(Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS)
+    } else {
+      Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    }
+
+    intent.apply {
+      data = Uri.fromParts(PACKAGE_SCHEME, context.packageName, null)
+    }
+
+    context.startActivity(intent, null)
+  }
+
+  companion object {
+    private const val PACKAGE_SCHEME = "package"
   }
 }
 
