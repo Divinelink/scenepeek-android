@@ -53,7 +53,7 @@ fun GridItemBackdropImage(
       onError = { isError = true },
       onSuccess = { isError = false },
       colorFilter = if (isError) {
-        ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainer)
+        ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLowest)
       } else {
         null
       },
