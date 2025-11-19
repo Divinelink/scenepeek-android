@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.provider.ConstantsProvider
+import com.divinelink.core.commons.provider.getConstantsProvider
 
 typealias UiString = Res.string
 typealias UiPlurals = Res.plurals
@@ -21,4 +24,10 @@ object UiTokens {
     @Composable get() = WindowInsets.navigationBars.asPaddingValues().run {
       calculateTopPadding() + calculateBottomPadding()
     }
+}
+
+
+@Composable
+fun rememberConstants(): ConstantsProvider {
+  return remember { getConstantsProvider() }
 }

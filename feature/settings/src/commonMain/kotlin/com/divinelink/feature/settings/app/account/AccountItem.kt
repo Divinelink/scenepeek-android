@@ -31,11 +31,13 @@ import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.account.getAvatarUrl
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.core_ui_logout
+import com.divinelink.core.ui.rememberConstants
 import com.divinelink.feature.settings.Res
 import com.divinelink.feature.settings.feature_settings_not_logged_in
 import com.divinelink.feature.settings.feature_settings_sign_in_to_access_features
@@ -68,6 +70,8 @@ private fun LoggedInContent(
   details: AccountDetails,
   onLogoutClick: () -> Unit,
 ) {
+  val constants = rememberConstants()
+
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -76,7 +80,7 @@ private fun LoggedInContent(
     verticalAlignment = Alignment.CenterVertically,
   ) {
     AvatarImage.Small(
-      avatarUrl = details.avatarUrl,
+      avatarUrl = details.getAvatarUrl(constants.imageUrl),
       username = details.username,
     )
     Column(

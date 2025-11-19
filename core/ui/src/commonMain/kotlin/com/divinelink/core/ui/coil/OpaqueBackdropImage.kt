@@ -5,14 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.core_ui_backdrop_image_placeholder
+import com.divinelink.core.ui.rememberConstants
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -21,16 +20,18 @@ fun OpaqueBackdropImage(
   modifier: Modifier = Modifier,
   contentScale: ContentScale = ContentScale.FillWidth,
 ) {
+  val constants = rememberConstants()
+
   AsyncImage(
     modifier = modifier
       .graphicsLayer {
         alpha = 0.2f
       }
       .fillMaxWidth(),
-    model = ImageRequest.Builder(LocalContext.current)
+    model = ImageRequest.Builder(platformContext())
       .memoryCachePolicy(CachePolicy.ENABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
-      .data(ApiConstants.TMDB_BACKDROP_URL + path)
+      .data(constants.backdropUrl + path)
       .crossfade(true)
       .build(),
     contentDescription = stringResource(UiString.core_ui_backdrop_image_placeholder),

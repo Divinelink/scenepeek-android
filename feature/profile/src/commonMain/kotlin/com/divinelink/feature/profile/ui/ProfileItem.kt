@@ -26,9 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.account.TMDBAccount
+import com.divinelink.core.model.account.getAvatarUrl
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.coil.AvatarImage
 import com.divinelink.core.ui.core_ui_login
+import com.divinelink.core.ui.rememberConstants
 import com.divinelink.feature.profile.Res
 import com.divinelink.feature.profile.feature_profile_login_description
 import com.divinelink.feature.profile.feature_profile_my_profile
@@ -63,6 +65,8 @@ fun ProfileItem(
 
 @Composable
 private fun LoggedInProfileItem(account: TMDBAccount.LoggedIn) {
+  val constants = rememberConstants()
+
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -71,7 +75,7 @@ private fun LoggedInProfileItem(account: TMDBAccount.LoggedIn) {
     verticalAlignment = Alignment.CenterVertically,
   ) {
     AvatarImage.Medium(
-      avatarUrl = account.accountDetails.avatarUrl,
+      avatarUrl = account.accountDetails.getAvatarUrl(constants.imageUrl),
       username = account.accountDetails.username,
     )
     Spacer(modifier = Modifier.width(MaterialTheme.dimensions.keyline_16))

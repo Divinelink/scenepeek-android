@@ -21,8 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
 import com.divinelink.core.commons.extensions.markdownToHtml
 import com.divinelink.core.designsystem.theme.AppTheme
@@ -32,7 +30,9 @@ import com.divinelink.core.model.details.review.Review
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.coil.AvatarImage
+import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.extension.getColorRating
+import com.divinelink.core.ui.fromHtml
 import com.divinelink.core.ui.text.SimpleExpandingText
 
 @Composable
@@ -73,7 +73,7 @@ fun ReviewItemCard(
     }
     SimpleExpandingText(
       modifier = Modifier.padding(horizontal = MaterialTheme.dimensions.keyline_16),
-      text = AnnotatedString.fromHtml(review.content.markdownToHtml()),
+      text = review.content.markdownToHtml().fromHtml(),
     )
 
     review.rating?.let {

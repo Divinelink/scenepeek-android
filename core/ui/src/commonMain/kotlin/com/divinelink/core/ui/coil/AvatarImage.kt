@@ -28,7 +28,7 @@ import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.divinelink.core.commons.ApiConstants
+import com.divinelink.core.commons.provider.getConstantsProvider
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.Previews
@@ -39,7 +39,7 @@ import org.jetbrains.compose.resources.stringResource
 object AvatarImage {
 
   fun buildTMDBAvatarUrl(avatarPath: String?): String? = if (avatarPath != null) {
-    ApiConstants.TMDB_IMAGE_URL + avatarPath
+    getConstantsProvider().imageUrl + avatarPath
   } else {
     null
   }

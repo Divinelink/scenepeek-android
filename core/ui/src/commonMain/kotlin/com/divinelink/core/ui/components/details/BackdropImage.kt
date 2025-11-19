@@ -15,16 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.divinelink.core.commons.ApiConstants
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.ui.UiString
+import com.divinelink.core.ui.coil.platformContext
 import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.core_ui_backdrop_image_placeholder
+import com.divinelink.core.ui.rememberConstants
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -35,6 +35,7 @@ fun BackdropImage(
   onBackdropLoaded: () -> Unit,
   applyOffset: Boolean = true,
 ) {
+  val constants = rememberConstants()
   val backdropOffset = WindowInsets.statusBars.asPaddingValues()
     .calculateTopPadding() + MaterialTheme.dimensions.keyline_64
 
@@ -48,10 +49,10 @@ fun BackdropImage(
       )
       .bottomFadeOut()
       .fillMaxWidth(),
-    model = ImageRequest.Builder(LocalContext.current)
+    model = ImageRequest.Builder(platformContext())
       .memoryCachePolicy(CachePolicy.ENABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
-      .data(ApiConstants.TMDB_BACKDROP_URL + path)
+      .data(constants.backdropUrl + path)
       .crossfade(true)
       .build(),
     onSuccess = { onBackdropLoaded() },
