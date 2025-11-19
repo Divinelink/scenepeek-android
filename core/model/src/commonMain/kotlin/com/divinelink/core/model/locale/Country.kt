@@ -1,5 +1,6 @@
 package com.divinelink.core.model.locale
 
+import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.model.Res
 import com.divinelink.core.model.country_afghanistan
 import com.divinelink.core.model.country_albania
@@ -407,9 +408,22 @@ private fun String.toFlagEmoji(): String {
     check(char in 'a'..'z' || char in 'A'..'Z') {
       "Invalid character in ISO code: $char"
     }
-    0x1F1E6 + (char.uppercaseChar() - 'A')
-  }.joinToString("") {
-    // String(Character.toChars(it))
-    CharArray(it).concatToString()
+    val offset = char.uppercaseChar() - 'A'
+    val codePoint = 0x1F1E6 + offset
+    codePoint.toCodePointString()
+  }.joinToString("")
+}
+
+@ExcludeFromKoverReport
+private fun Int.toCodePointString(): String {
+  return if (this < 0 || this > 0x10FFFF || (this in 0xD800..0xDFFF)) {
+    "\uFFFD"
+  } else if (this <= 0xFFFF) {
+    this.toChar().toString()
+  } else {
+    val code = this - 0x10000
+    val highSurrogate = 0xD800 + (code ushr 10)
+    val lowSurrogate = 0xDC00 + (code and 0x3FF)
+    "${highSurrogate.toChar()}${lowSurrogate.toChar()}"
   }
 }
