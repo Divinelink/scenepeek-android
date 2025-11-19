@@ -62,13 +62,13 @@
   <string name="core_ui_requests">Requests</string>
 
   <plurals name="core_ui_cast_count">
-    <item quantity="one">%s person</item>
-    <item quantity="other">%s persons</item>
+    <item quantity="one">%1$s person</item>
+    <item quantity="other">%1$s persons</item>
   </plurals>
 
   <plurals name="core_ui_episode_count">
-    <item quantity="one">%s episode</item>
-    <item quantity="other">%s episodes</item>
+    <item quantity="one">%1$s episode</item>
+    <item quantity="other">%1$s episodes</item>
   </plurals>
 
   <string name="core_ui_toolbar_search">Search</string>
@@ -148,8 +148,8 @@
   <string name="core_ui_login_title">Login to your account</string>
 
   <plurals name="core_ui_item_count">
-    <item quantity="one">%s item</item>
-    <item quantity="other">%s items</item>
+    <item quantity="one">%1$s item</item>
+    <item quantity="other">%1$s items</item>
   </plurals>
 
   <string name="core_ui_backdrop">Backdrop</string>
@@ -160,14 +160,14 @@
   <string name="core_ui_language">Language</string>
   <string name="core_ui_country">Country</string>
   <string name="core_ui_rating">Rating</string>
-  <string name="core_ui_rating_selected">Rating: %s - %s</string>
+  <string name="core_ui_rating_selected">Rating: %1$s - %2$s</string>
 
   <string name="core_ui_clear_all">Clear all</string>
 
   <string name="core_ui_apply_filters">Apply filters</string>
   <plurals name="core_ui_apply_filters">
     <item quantity="one">Apply 1 filter</item>
-    <item quantity="other">Apply %s filters</item>
+    <item quantity="other">Apply %1$s filters</item>
   </plurals>
 
   <!-- Accessibility -->
@@ -194,5 +194,5 @@
   <string name="core_ui_filter_button_content_desc">Filter credits</string>
   <string name="core_ui_collapse">Collapse</string>
   <string name="core_ui_expand">Expand</string>
-  <string name="core_ui_added_on_list">Added on list %s</string>
+  <string name="core_ui_added_on_list">Added on list %1$s</string>
 </resources>

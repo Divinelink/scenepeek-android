@@ -7,7 +7,7 @@
   <string name="feature_onboarding_welcome_page_title">Welcome to ScenePeek</string>
   <string name="feature_onboarding_welcome_page_description">A free and open-source client for TMDB &amp; Jellyseerr</string>
 
-  <string name="feature_onboarding_whats_new_title">What's new in %s for %s</string>
+  <string name="feature_onboarding_whats_new_title">What's new in %1$s for %2$s</string>
 
   <string name="feature_onboarding_tmdb_page_title">TMDB</string>
   <string name="feature_onboarding_tmdb_page_description">Connect your TMDB account to access your watchlist, ratings, lists and more.</string>

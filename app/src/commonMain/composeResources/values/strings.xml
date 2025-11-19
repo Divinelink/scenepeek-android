@@ -16,6 +16,6 @@
   <!-- Accessibility -->
   <string name="movie_image_placeholder">Movie image</string>
   <string name="settings_button_content_description">Go to settings button</string>
-  <string name="top_level_navigation_content_description_selected">Selected bottom navigation item %s</string>
-  <string name="top_level_navigation_content_description_unselected">Unselected bottom navigation item %s</string>
+  <string name="top_level_navigation_content_description_selected">Selected bottom navigation item %1$s</string>
+  <string name="top_level_navigation_content_description_unselected">Unselected bottom navigation item %1$s</string>
 </resources>

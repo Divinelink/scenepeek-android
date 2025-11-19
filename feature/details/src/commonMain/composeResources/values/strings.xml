@@ -3,14 +3,14 @@
   <string name="feature_details__watchlist">Watchlist</string>
   <string name="feature_details__add_to_list">Add to list</string>
   <string name="details__add_rating">Rate this</string>
-  <string name="details__add_rating_description"><![CDATA[What do you think of <b>%s</b>?]]></string>
+  <string name="details__add_rating_description"><![CDATA[What do you think of <b>%1$s</b>?]]></string>
   <string name="details__clear_my_rating">Clear my rating</string>
   <string name="details__submit_rating_button">Submit rating</string>
 
-  <string name="details__rating_submitted_successfully">Rating submitted for %s</string>
-  <string name="details__rating_deleted_successfully">Rating cleared for %s</string>
-  <string name="details__added_to_watchlist">Added %s to watchlist</string>
-  <string name="details__removed_from_watchlist">Removed %s from watchlist</string>
+  <string name="details__rating_submitted_successfully">Rating submitted for %1$s</string>
+  <string name="details__rating_deleted_successfully">Rating cleared for %1$s</string>
+  <string name="details__added_to_watchlist">Added %1$s to watchlist</string>
+  <string name="details__removed_from_watchlist">Removed %1$s from watchlist</string>
   <string name="details__must_be_logged_in_to_rate">Please login to submit your rating.</string>
   <string name="details__must_be_logged_in_to_watchlist">Please login to add to your watchlist.</string>
 
@@ -22,13 +22,13 @@
   <string name="feature_details_information">Information</string>
 
   <string name="feature_details_jellyseerr_success_request_delete">Request deleted successfully</string>
-  <string name="feature_details_jellyseerr_success_media_delete"><b>%s</b> successfully removed</string>
-  <string name="feature_details_jellyseerr_failure_media_delete">Failed to remove <b>%s</b></string>
+  <string name="feature_details_jellyseerr_success_media_delete"><b>%1$s</b> successfully removed</string>
+  <string name="feature_details_jellyseerr_failure_media_delete">Failed to remove <b>%1$s</b></string>
   <string name="feature_details_jellyseerr_failed_request_delete">Failed to delete request</string>
   <string name="feature_details_request">Request</string>
   <string name="feature_details_manage_movie">Manage movie</string>
   <string name="feature_details_manage_tv">Manage series</string>
-  <string name="feature_details_season">Season %s</string>
+  <string name="feature_details_season">Season %1$s</string>
 
   <string name="feature_details_personal_info_section">Personal info</string>
   <string name="feature_details_known_for_section">Known For</string>
@@ -41,40 +41,40 @@
   <string name="feature_details_person_credits_known_for_section">Known For</string>
 
   <string name="feature_details_person_credits_department">Department</string>
-  <string name="feature_details_person_credits_department_size">%s (%s)</string>
+  <string name="feature_details_person_credits_department_size">%1$s (%2$s)</string>
 
   <string name="feature_details_filter_sort_release_date">Release date</string>
 
   <plurals name="feature_details_number_of_seasons">
-    <item quantity="one">%s season</item>
-    <item quantity="other">%s seasons</item>
+    <item quantity="one">%1$s season</item>
+    <item quantity="other">%1$s seasons</item>
   </plurals>
 
   <plurals name="feature_details_movies">
-    <item quantity="one">%s movie</item>
-    <item quantity="other">%s movies</item>
+    <item quantity="one">%1$s movie</item>
+    <item quantity="other">%1$s movies</item>
   </plurals>
 
   <plurals name="feature_details_tv_shows">
-    <item quantity="one">%s TV Show</item>
-    <item quantity="other">%s TV Shows</item>
+    <item quantity="one">%1$s TV Show</item>
+    <item quantity="other">%1$s TV Shows</item>
   </plurals>
 
   <!-- 1.%s birthday 2. %s current age -->
-  <string name="feature_details_person_birthday">%s (%s years old)</string>
-  <string name="feature_details_person_blank_biography">We don't have a biography for %s.</string>
+  <string name="feature_details_person_birthday">%1$s (%2$s years old)</string>
+  <string name="feature_details_person_blank_biography">We don't have a biography for %1$s.</string>
 
   <string name="feature_details_no_movies_available">No movies available</string>
-  <string name="feature_details_no_movies_available_desc">%s hasn't appeared in any movies yet.</string>
+  <string name="feature_details_no_movies_available_desc">%1$s hasn't appeared in any movies yet.</string>
 
   <string name="feature_details_no_tv_shows_available">No TV shows available</string>
-  <string name="feature_details_no_tv_shows_available_desc">%s hasn't appeared in any TV shows yet.</string>
+  <string name="feature_details_no_tv_shows_available_desc">%1$s hasn't appeared in any TV shows yet.</string>
 
   <string name="feature_details_no_cast_available">No cast available</string>
-  <string name="feature_details_no_cast_available_desc">We don't have any cast information for %s.</string>
+  <string name="feature_details_no_cast_available_desc">We don't have any cast information for %1$s.</string>
 
   <string name="feature_details_no_recommendation_available">No recommendations available</string>
-  <string name="feature_details_no_recommendations_available_desc">We don't have any recommendations for %s.</string>
+  <string name="feature_details_no_recommendations_available_desc">We don't have any recommendations for %1$s.</string>
 
   <string name="feature_details_no_reviews_available">No reviews available</string>
   <string name="feature_details_no_reviews_available_desc">We don't have any reviews for %s.</string>

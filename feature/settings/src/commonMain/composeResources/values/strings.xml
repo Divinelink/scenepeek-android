@@ -19,7 +19,7 @@
   <string name="feature_settings_not_logged_in">Not logged in</string>
   <string name="feature_settings_sign_in_to_access_features">Sign in to access TMDB features</string>
 
-  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in as %s. Do you want to logout?</string>
+  <string name="feature_settings_currently_login_dialog_summary">You are currently logged in as %1$s. Do you want to logout?</string>
 
   <string name="feature_settings_invalid_credentials">The credentials you entered are invalid.</string>
   <string name="feature_settings_could_not_connect">Could not connect to server. Make sure the IP address is correct and the server is running.</string>
@@ -28,7 +28,7 @@
   <string name="feature_settings_jellyseerr_server_url">Server URL</string>
   <string name="feature_settings_jellyseerr_address_placeholder">ex. http(s)://your-jellyseerr-url.com</string>
 
-  <string name="feature_settings_sign_in_with">Sign in with %s</string>
+  <string name="feature_settings_sign_in_with">Sign in with %1$s</string>
   <string name="feature_settings_signing_in">Signing in…</string>
 
   <string name="feature_settings_username">Username</string>
@@ -40,15 +40,15 @@
 
   <!-- Link Handling -->
   <string name="feature_settings_open_settings">Open settings</string>
-  <string name="feature_settings_link_handling_dialog_title">Allow %s to handle specific URLs?</string>
-  <string name="feature_settings_link_handling_dialog_summary">%s can open specific URLs in the app. This can be useful for opening links to movies and TV shows directly in the app.</string>
+  <string name="feature_settings_link_handling_dialog_title">Allow %1$s to handle specific URLs?</string>
+  <string name="feature_settings_link_handling_dialog_summary">%1$s can open specific URLs in the app. This can be useful for opening links to movies and TV shows directly in the app.</string>
 
   <string name="feature_settings_enable_link_handling_step_1">To enable this, follow these steps\n\n</string>
   <string name="feature_settings_enable_link_handling_step_2">1. Open the settings by pressing the button below.\n\n</string>
   <string name="feature_settings_enable_link_handling_step_3">2. Open by default or Set as default section.\n\n</string>
   <string name="feature_settings_enable_link_handling_step_4">You might find this option directly or under "Advanced" settings, depending on your device.\n\n</string>
-  <string name="feature_settings_enable_link_handling_step_5">3. Choose "Open supported links" for %s\n\n</string>
-  <string name="feature_settings_enable_link_handling_step_6">(some devices have this listed under "Default Apps" in the main settings followed by selecting %s for relevant categories)\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_5">3. Choose "Open supported links" for %1$s\n\n</string>
+  <string name="feature_settings_enable_link_handling_step_6">(some devices have this listed under "Default Apps" in the main settings followed by selecting %1$s for relevant categories)\n\n</string>
 
 
   <!-- JellyseerrSettingsScreen -->
@@ -56,7 +56,7 @@
   <string name="feature_settings_jellyseerr_account">Jellyseerr account</string>
   <string name="feature_settings_jellyseerr_total_requests">Total requests</string>
 
-  <string name="feature_settings_jellyseerr_joined_on">Joined on %s | User ID: %s</string>
+  <string name="feature_settings_jellyseerr_joined_on">Joined on %1$s | User ID: %2$s</string>
 
   <!-- AboutSettingsScreen -->
   <string name="feature_settings_about">About</string>
@@ -64,8 +64,8 @@
   <string name="feature_settings_about__privacy_policy_url">https://scenepeek.github.io/privacy-policy</string>
 
   <string name="feature_settings_about__github">Github</string>
-  <string name="feature_settings_about__version">Version %s</string>
-  <string name="feature_settings_about__developer_github_url">https://github.com/%s</string>
+  <string name="feature_settings_about__version">Version %1$s</string>
+  <string name="feature_settings_about__developer_github_url">https://github.com/%1$s</string>
   <string name="feature_settings_about__repository_url">https://github.com/Divinelink/scenepeek-android</string>
   <string name="feature_settings_about__tmdb_endorsement">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
 

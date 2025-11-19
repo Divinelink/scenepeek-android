@@ -15,19 +15,19 @@
   <string name="feature_lists_description">Description</string>
   <string name="feature_lists_public_description">Public lists can be viewed by other users.</string>
 
-  <string name='feature_lists_update_successfully'>%s updated successfully</string>
-  <string name='feature_lists_update_failure'>Failed to update %s</string>
+  <string name='feature_lists_update_successfully'>%1$s updated successfully</string>
+  <string name='feature_lists_update_failure'>Failed to update %1$s</string>
 
-  <string name='feature_lists_delete_successfully'>%s deleted successfully</string>
-  <string name='feature_lists_delete_failure'>Failed to delete %s</string>
+  <string name='feature_lists_delete_successfully'>%1$s deleted successfully</string>
+  <string name='feature_lists_delete_failure'>Failed to delete %1$s</string>
 
-  <string name='feature_lists_create_successfully'>%s created successfully</string>
-  <string name='feature_lists_create_failure'>Failed to create %s</string>
+  <string name='feature_lists_create_successfully'>%1$s created successfully</string>
+  <string name='feature_lists_create_failure'>Failed to create %1$s</string>
 
   <string name="feature_lists_backdrops_empty">There are no images for this list. Add items to be able to change the image.</string>
   <string name="feature_lists_change_image">Change image</string>
 
-  <string name="feature_lists_selected">%s/%s selected</string>
+  <string name="feature_lists_selected">%1$s/%2$s selected</string>
 
-  <string name="feature_lists_selected_media_content_desc">Selected media %s</string>
+  <string name="feature_lists_selected_media_content_desc">Selected media %1$s</string>
 </resources>
