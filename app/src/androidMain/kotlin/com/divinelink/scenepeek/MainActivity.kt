@@ -81,7 +81,7 @@ class MainActivity :
 
   private fun handleIntent(intent: Intent?) {
     if (intent != null && intent.action == Intent.ACTION_VIEW) {
-      viewModel.handleDeepLink(intent.data?.path)
+      viewModel.handleDeepLink(intent.data.toString())
     }
   }
 }
