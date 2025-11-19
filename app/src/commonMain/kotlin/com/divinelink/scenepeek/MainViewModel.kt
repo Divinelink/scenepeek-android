@@ -81,7 +81,7 @@ class MainViewModel(
         },
       )
       else -> {
-        val (id, type) = deeplinkUri.toString().extractDetailsFromDeepLink() ?: return
+        val (id, type) = deeplinkUri.raw.extractDetailsFromDeepLink() ?: return
 
         when (val mediaType = MediaType.from(type)) {
           MediaType.TV, MediaType.MOVIE -> navigateToMediaDetails(id, mediaType)
