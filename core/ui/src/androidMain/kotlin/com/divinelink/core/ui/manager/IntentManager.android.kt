@@ -8,7 +8,6 @@ import android.os.Build
 import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.divinelink.core.commons.ExcludeFromKoverReport
 import com.divinelink.core.commons.provider.BuildConfigProvider
@@ -70,7 +69,7 @@ internal class AndroidIntentManager(
 }
 
 @Composable
-actual fun getIntentManager(
+actual fun rememberIntentManager(
   buildConfigProvider: BuildConfigProvider,
 ): IntentManager {
   val context = LocalContext.current

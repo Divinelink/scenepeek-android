@@ -1,5 +1,7 @@
 package com.divinelink.core.model
 
+import kotlin.jvm.JvmInline
+
 @JvmInline
 value class Address private constructor(val address: String) {
   val value

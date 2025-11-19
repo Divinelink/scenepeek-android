@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import com.divinelink.core.commons.BuildConfig
+import com.divinelink.core.commons.provider.BuildConfigProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -15,7 +15,10 @@ interface OnboardingStorage {
   suspend fun setOnboardingCompleted()
 }
 
-class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) :
+class DataStoreOnboardingStorage(
+  private val dataStore: DataStore<Preferences>,
+  private val buildConfigProvider: BuildConfigProvider,
+) :
   OnboardingStorage {
 
   companion object {
@@ -36,7 +39,7 @@ class DataStoreOnboardingStorage(private val dataStore: DataStore<Preferences>) 
   override suspend fun setOnboardingCompleted() {
     dataStore.edit { preferences ->
       preferences[PreferencesKeys.IS_FIRST_LAUNCH] = false
-      preferences[PreferencesKeys.LAST_SEEN_VERSION] = BuildConfig.VERSION_CODE
+      preferences[PreferencesKeys.LAST_SEEN_VERSION] = buildConfigProvider.versionCode
     }
   }
 }

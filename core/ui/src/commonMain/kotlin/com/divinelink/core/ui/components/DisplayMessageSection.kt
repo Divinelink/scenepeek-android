@@ -25,12 +25,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.UIText
 import com.divinelink.core.ui.Previews
+import com.divinelink.core.ui.fromHtml
 import com.divinelink.core.ui.getString
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -97,7 +97,7 @@ fun DisplayMessageSection(
       .background(containerColor),
   ) {
     Text(
-      text = AnnotatedString.fromHtml(message?.message?.getString() ?: ""),
+      text = message?.message?.getString()?.fromHtml() ?: AnnotatedString(""),
       modifier = Modifier
         .padding(MaterialTheme.dimensions.keyline_16),
       color = color,

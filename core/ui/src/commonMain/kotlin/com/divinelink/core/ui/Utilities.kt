@@ -8,7 +8,9 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.commons.provider.ConstantsProvider
+import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.commons.provider.getConstantsProvider
 
 typealias UiString = Res.string
@@ -30,4 +32,10 @@ object UiTokens {
 @Composable
 fun rememberConstants(): ConstantsProvider {
   return remember { getConstantsProvider() }
+}
+
+
+@Composable
+fun rememberConfigProvider(): BuildConfigProvider {
+  return remember { getBuildConfigProvider() }
 }

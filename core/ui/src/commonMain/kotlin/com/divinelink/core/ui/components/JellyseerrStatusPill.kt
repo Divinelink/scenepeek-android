@@ -18,6 +18,7 @@ import com.divinelink.core.designsystem.theme.shape
 import com.divinelink.core.model.jellyseerr.media.JellyseerrStatus
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.conditional
+import com.divinelink.core.ui.extension.format
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

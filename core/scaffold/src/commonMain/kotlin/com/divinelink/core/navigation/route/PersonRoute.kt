@@ -10,7 +10,7 @@ fun Person.toPersonRoute() = Navigation.PersonRoute(
   knownForDepartment = knownForDepartment,
   name = name,
   profilePath = profilePath,
-  gender = gender,
+  gender = gender.value,
 )
 
 fun Navigation.PersonRoute.map() = Person(
@@ -18,7 +18,7 @@ fun Navigation.PersonRoute.map() = Person(
   knownForDepartment = knownForDepartment,
   name = name ?: "",
   profilePath = profilePath,
-  gender = gender ?: Gender.NOT_SET,
+  gender = Gender.from(gender),// ?: Gender.NOT_SET,
   role = listOf(PersonRole.Unknown),
 )
 

@@ -4,6 +4,7 @@ import com.divinelink.core.model.DisplayMessage
 import com.divinelink.core.model.list.ListData
 import com.divinelink.core.model.list.ListItem
 import com.divinelink.core.model.media.MediaReference
+import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.navigation.route.Navigation.AddToListRoute
 import com.divinelink.core.ui.blankslate.BlankSlateState
 
@@ -22,7 +23,7 @@ data class AddToListUiState(
     fun initial(addToListRoute: AddToListRoute) = AddToListUiState(
       media = MediaReference(
         mediaId = addToListRoute.id,
-        mediaType = addToListRoute.mediaType,
+        mediaType = MediaType.from(addToListRoute.mediaType),
       ),
       page = 1,
       lists = ListData.Initial,

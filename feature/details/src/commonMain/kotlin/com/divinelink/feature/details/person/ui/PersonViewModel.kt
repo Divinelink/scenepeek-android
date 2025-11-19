@@ -30,7 +30,7 @@ class PersonViewModel(
     knownForDepartment = savedStateHandle["knownForDepartment"],
     name = savedStateHandle["name"],
     profilePath = savedStateHandle["profilePath"],
-    gender = savedStateHandle["gender"],
+    gender = savedStateHandle["gender"] ?: 0,
   )
 
   private val _uiState: MutableStateFlow<PersonUiState> = MutableStateFlow(

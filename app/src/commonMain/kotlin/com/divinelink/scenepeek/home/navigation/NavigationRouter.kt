@@ -53,7 +53,7 @@ fun NavController.findNavigation(route: Navigation) {
       SearchEntryPoint.HOME -> navigateToSearchFromHome()
       SearchEntryPoint.SEARCH_TAB -> navigateToSearchFromTab()
     }
-    is Navigation.UserDataRoute -> navigateToUserData(route.userDataSection)
+    is Navigation.UserDataRoute -> navigateToUserData(route)
     is Navigation.WebViewRoute -> navigateToWebView(route)
 
     is Navigation.ActionMenuRoute.Media -> openDefaultActionMenuModal(route)

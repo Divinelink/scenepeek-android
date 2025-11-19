@@ -1,7 +1,5 @@
 package com.divinelink.core.navigation.route
 
-import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.person.Gender
 import com.divinelink.core.model.search.SearchEntryPoint
 import com.divinelink.core.model.user.data.UserDataSection
 import kotlinx.serialization.Serializable
@@ -52,19 +50,19 @@ sealed interface Navigation {
     val knownForDepartment: String?,
     val name: String?,
     val profilePath: String?,
-    val gender: Gender?,
+    val gender: Int,
   ) : Navigation
 
   @Serializable
   data class CreditsRoute(
     val id: Long,
-    val mediaType: MediaType?,
+    val mediaType: String?,
   ) : Navigation
 
   @Serializable
   data class DetailsRoute(
     val id: Int,
-    val mediaType: MediaType,
+    val mediaType: String,
     val isFavorite: Boolean?,
   ) : Navigation
 
@@ -74,13 +72,20 @@ sealed interface Navigation {
   @Serializable
   data object TMDBAuthRoute : Navigation
 
+  @ConsistentCopyVisibility
   @Serializable
-  data class UserDataRoute(val userDataSection: UserDataSection) : Navigation
+  data class UserDataRoute private constructor(val section: String) : Navigation {
+    constructor(
+      section: UserDataSection,
+    ) : this(
+      section = section.value,
+    )
+  }
 
   @Serializable
   data class AddToListRoute(
     val id: Int,
-    val mediaType: MediaType,
+    val mediaType: String,
   ) : Navigation
 
   @Serializable

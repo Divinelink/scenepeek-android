@@ -28,12 +28,12 @@ class UserDataViewModel(
 ) : ViewModel() {
 
   private val route: UserDataRoute = UserDataRoute(
-    userDataSection = savedStateHandle.get<UserDataSection>("userDataSection")!!,
+    section = UserDataSection.from(savedStateHandle.get<String>("section")!!),
   )
 
   private val _uiState: MutableStateFlow<UserDataUiState> = MutableStateFlow(
     UserDataUiState(
-      section = route.userDataSection,
+      section = UserDataSection.from(route.section),
       selectedTabIndex = MediaTab.Movie.order,
       tabs = mapOf(
         MediaTab.Movie to null,
@@ -61,11 +61,11 @@ class UserDataViewModel(
         .collectLatest { result ->
           result.onSuccess {
             fetchUserData(
-              section = route.userDataSection,
+              section = UserDataSection.from(route.section),
               mediaType = MediaType.TV,
             )
             fetchUserData(
-              section = route.userDataSection,
+              section = UserDataSection.from(route.section),
               mediaType = MediaType.MOVIE,
             )
           }.onFailure { throwable ->

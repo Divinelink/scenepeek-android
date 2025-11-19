@@ -27,7 +27,7 @@ import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
 import com.divinelink.core.ui.rememberUrlHandlerWithResult
-import com.divinelink.feature.tmdb.auth.webview.LoginWebViewScreen
+import com.divinelink.feature.tmdb.auth.webview.Webview
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -74,7 +74,7 @@ fun TMDBAuthScreen(
 
       AnimatedContent(uiState.webViewFallback) { useWebView ->
         when (useWebView) {
-          true -> LoginWebViewScreen(
+          true -> Webview(
             onCloseWebview = { viewModel.createSession() },
             url = uiState.url,
           )

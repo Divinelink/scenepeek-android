@@ -1,6 +1,5 @@
 package com.divinelink.core.ui.credit
 
-import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -167,7 +166,7 @@ fun CharacterWithBlurredEpisodes(
     style = baseStyle,
   )
 
-  val episodesCount = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S && isObfuscated) {
+  val episodesCount = if (shouldHideEpisodeCount() && isObfuscated) {
     ""
   } else {
     Text(
@@ -191,3 +190,5 @@ fun CharacterWithBlurredEpisodes(
     ),
   )
 }
+
+expect fun shouldHideEpisodeCount(): Boolean

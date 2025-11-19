@@ -81,12 +81,9 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
   DisposableEffect(textColor) {
     val isLight = textColor == surfaceColor
     systemUiController.setStatusBarColor(isLight = !isLight && !isDarkTheme)
-//    updateStatusBarColor(view = view, setLight = !isLight && !isDarkTheme)
 
     onDispose {
-      // Reset the status bar color when the composable is disposed
       systemUiController.setStatusBarColor(isLight = !isDarkTheme)
-//      updateStatusBarColor(view = view, setLight = !isDarkTheme)
     }
   }
 
@@ -165,7 +162,7 @@ fun AnimatedVisibilityScope.ListDetailsScreen(
               is ListDetailsAction.OnItemClick -> onNavigate(
                 Navigation.DetailsRoute(
                   id = action.mediaId,
-                  mediaType = action.mediaType,
+                  mediaType = action.mediaType.value,
                   isFavorite = null,
                 ),
               )

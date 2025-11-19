@@ -3,25 +3,44 @@ package com.divinelink.core.commons.extensions
 import com.divinelink.core.commons.Constants
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+@OptIn(FormatStringsInDatetimeFormats::class)
 fun String.formatTo(
   inputFormat: String,
   outputFormat: String,
 ): String? = try {
-  val input = SimpleDateFormat(inputFormat, Locale.ENGLISH)
-  val output = SimpleDateFormat(outputFormat, Locale.ENGLISH)
-  val date = input.parse(this)
-  date?.let { output.format(it) }
+  val inputFormatter = LocalDateTime.Format {
+    byUnicodePattern(inputFormat)
+  }
+  val dateTime = inputFormatter.parse(this)
+
+  val outputFormatter = LocalDateTime.Format {
+    byUnicodePattern(outputFormat)
+  }
+  dateTime.format(outputFormatter)
 } catch (e: Exception) {
   null
 }
+//fun String.formatTo(
+//  inputFormat: String,
+//  outputFormat: String,
+//): String? = try {
+//  val input = SimpleDateFormat(inputFormat, Locale.ENGLISH)
+//  val output = SimpleDateFormat(outputFormat, Locale.ENGLISH)
+//  val date = input.parse(this)
+//  date?.let { output.format(it) }
+//} catch (e: Exception) {
+//  null
+//}
 
 fun String.localizeIsoDate() = this.formatTo(
   inputFormat = Constants.ISO_8601,

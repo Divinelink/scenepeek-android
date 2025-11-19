@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.divinelink.core.commons.provider.getBuildConfigProvider
 import com.divinelink.core.model.network.NetworkState
 import com.divinelink.core.navigation.route.navigateToDetails
 import com.divinelink.core.navigation.route.navigateToOnboarding
@@ -22,6 +23,7 @@ import com.divinelink.core.navigation.route.navigateToPerson
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.core.ui.components.LoadingContent
+import com.divinelink.core.ui.composition.LocalProvider
 import com.divinelink.core.ui.network.NetworkStatusIndicator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,11 +69,11 @@ fun ScenePeekApp(
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
       is MainUiEvent.NavigateToDetails -> {
-        state.navController.navigateToDetails(uiEvent.route)
+//        state.navController.navigateToDetails(uiEvent.route)
         onConsumeEvent()
       }
       is MainUiEvent.NavigateToPersonDetails -> {
-        state.navController.navigateToPerson(uiEvent.route)
+//        state.navController.navigateToPerson(uiEvent.route)
         onConsumeEvent()
       }
       MainUiEvent.None -> {
@@ -86,26 +88,29 @@ fun ScenePeekApp(
     }
   }
 
-  Column(modifier = Modifier.fillMaxSize()) {
-    SharedTransitionLayout(
-      modifier = Modifier
-        .fillMaxSize()
-        .weight(1f),
-    ) {
-      state.sharedTransitionScope = this@SharedTransitionLayout
-
-      ProvideScenePeekAppState(
-        appState = state,
+  LocalProvider(
+    snackbarHostState = state.snackbarHostState,
+    coroutineScope = state.scope,
+    buildConfigProvider = getBuildConfigProvider(),
+  ) {
+    Column(modifier = Modifier.fillMaxSize()) {
+      SharedTransitionLayout(
+        modifier = Modifier.fillMaxSize().weight(1f),
       ) {
-        Surface(modifier = Modifier.fillMaxSize()) {
-          when (uiState) {
-            is MainUiState.Completed -> ScenePeekNavHost()
-            MainUiState.Loading -> LoadingContent()
+        state.sharedTransitionScope = this@SharedTransitionLayout
+        ProvideScenePeekAppState(
+          appState = state,
+        ) {
+          Surface(modifier = Modifier.fillMaxSize()) {
+            when (uiState) {
+              is MainUiState.Completed -> ScenePeekNavHost()
+              MainUiState.Loading -> LoadingContent()
+            }
           }
         }
       }
+      NetworkStatusIndicator(networkState = networkState)
     }
-    NetworkStatusIndicator(networkState = networkState)
   }
 }
 

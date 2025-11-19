@@ -18,8 +18,6 @@ import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.TestTags
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
-import com.divinelink.feature.profile.ProfileScreen
-import com.divinelink.feature.profile.ProfileViewModel
 import kotlin.test.Test
 
 class ProfileScreenTest : ComposeTest() {
@@ -70,7 +68,7 @@ class ProfileScreenTest : ComposeTest() {
         viewModel = viewModel,
         onNavigate = {
           if (it is Navigation.UserDataRoute) {
-            userDataSection = it.userDataSection
+            userDataSection = it.section
           }
         },
       )
@@ -96,7 +94,7 @@ class ProfileScreenTest : ComposeTest() {
         viewModel = viewModel,
         onNavigate = {
           if (it is Navigation.UserDataRoute) {
-            userDataSection = it.userDataSection
+            userDataSection = it.section
           }
         },
       )

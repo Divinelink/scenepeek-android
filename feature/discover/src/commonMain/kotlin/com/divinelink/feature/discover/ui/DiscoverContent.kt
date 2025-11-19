@@ -179,7 +179,7 @@ fun DiscoverContent(
               onClick = { media ->
                 onNavigate(
                   Navigation.DetailsRoute(
-                    mediaType = media.mediaType,
+                    mediaType = media.mediaType.value,
                     id = media.id,
                     isFavorite = media.isFavorite,
                   ),

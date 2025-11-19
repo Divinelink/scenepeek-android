@@ -13,9 +13,8 @@ import kotlinx.serialization.json.jsonPrimitive
 
 object RateResponseApiSerializer : KSerializer<RateResponseApi> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor(
-    serialName = RateResponseApi::class.java.name,
+    serialName = RateResponseApi::class.simpleName.toString(),
   )
-
   override fun deserialize(decoder: Decoder): RateResponseApi {
     val jsonInput = decoder as? JsonDecoder ?: error("Can be deserialized only by JSON")
 

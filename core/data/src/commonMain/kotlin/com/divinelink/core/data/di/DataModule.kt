@@ -9,8 +9,6 @@ import com.divinelink.core.data.jellyseerr.repository.JellyseerrRepository
 import com.divinelink.core.data.jellyseerr.repository.ProdJellyseerrRepository
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.data.list.ProdListRepository
-import com.divinelink.core.data.network.ConnectivityManagerNetworkMonitor
-import com.divinelink.core.data.network.NetworkMonitor
 import com.divinelink.core.data.person.repository.PersonRepository
 import com.divinelink.core.data.person.repository.ProdPersonRepository
 import com.divinelink.core.data.preferences.PreferencesRepository
@@ -28,6 +26,4 @@ val dataModule = module {
   singleOf(::ProdPreferencesRepository) { bind<PreferencesRepository>() }
   singleOf(::ProdAuthRepository) { bind<AuthRepository>() }
   singleOf(::FilterRepository)
-
-  singleOf(::ConnectivityManagerNetworkMonitor) { bind<NetworkMonitor>() }
 }

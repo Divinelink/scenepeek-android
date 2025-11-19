@@ -43,7 +43,7 @@ class AddToListViewModel(
 
   private val route: AddToListRoute = AddToListRoute(
     id = savedStateHandle.get<Int>("id") ?: -1,
-    mediaType = savedStateHandle.get<MediaType>("mediaType") ?: MediaType.UNKNOWN,
+    mediaType = savedStateHandle.get<String>("mediaType") ?: MediaType.UNKNOWN.value,
   )
 
   private val _uiState: MutableStateFlow<AddToListUiState> = MutableStateFlow(

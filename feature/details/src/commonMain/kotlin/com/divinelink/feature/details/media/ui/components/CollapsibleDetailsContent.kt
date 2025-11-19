@@ -157,7 +157,7 @@ fun CollapsibleDetailsContent(
             onNavigate(
               Navigation.AddToListRoute(
                 id = id,
-                mediaType = mediaType,
+                mediaType = mediaType.value,
               ),
             )
           }

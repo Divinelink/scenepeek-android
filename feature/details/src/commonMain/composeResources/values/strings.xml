@@ -77,10 +77,10 @@
   <string name="feature_details_no_recommendations_available_desc">We don't have any recommendations for %1$s.</string>
 
   <string name="feature_details_no_reviews_available">No reviews available</string>
-  <string name="feature_details_no_reviews_available_desc">We don't have any reviews for %s.</string>
+  <string name="feature_details_no_reviews_available_desc">We don't have any reviews for %1$s.</string>
 
   <string name="feature_details_no_seasons_available">No seasons available</string>
-  <string name="feature_details_no_seasons_available_desc">We don't have any seasons for %s.</string>
+  <string name="feature_details_no_seasons_available_desc">We don't have any seasons for %1$s.</string>
 
   <string name="feature_details_information_original_title">Original title</string>
   <string name="feature_details_information_status">Status</string>

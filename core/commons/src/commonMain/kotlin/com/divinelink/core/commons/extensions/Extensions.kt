@@ -58,3 +58,6 @@ fun Long.bytesToHumanReadable(decimalPlaces: Int = 2): String {
 
   return "$rounded ${units[unitIndex]}"
 }
+
+expect fun Int.formatWithCommas(): String
+expect fun Long.formatWithCommas(): String

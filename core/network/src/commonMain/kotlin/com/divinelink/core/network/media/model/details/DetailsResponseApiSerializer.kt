@@ -12,7 +12,7 @@ import kotlinx.serialization.json.jsonObject
 
 object DetailsResponseApiSerializer : KSerializer<DetailsResponseApi> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor(
-    serialName = DetailsResponseApi::class.java.name,
+    serialName = DetailsResponseApi::class.simpleName.toString(),
   )
 
   override fun deserialize(decoder: Decoder): DetailsResponseApi {

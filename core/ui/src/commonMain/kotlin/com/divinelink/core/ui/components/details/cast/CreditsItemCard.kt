@@ -1,6 +1,5 @@
 package com.divinelink.core.ui.components.details.cast
 
-import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +35,7 @@ import com.divinelink.core.ui.conditional
 import com.divinelink.core.ui.core_ui_episode_count
 import com.divinelink.core.ui.core_ui_ic_female_person_placeholder
 import com.divinelink.core.ui.core_ui_ic_person_placeholder
+import com.divinelink.core.ui.credit.shouldHideEpisodeCount
 import com.divinelink.core.ui.provider.PersonParameterProvider
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.pluralStringResource
@@ -105,7 +105,7 @@ fun CreditsItemCard(
                   condition = obfuscateEpisodes,
                   ifTrue = { blurEffect() },
                 ),
-              text = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S && obfuscateEpisodes) {
+              text = if (shouldHideEpisodeCount() && obfuscateEpisodes) {
                 ""
               } else {
                 pluralStringResource(

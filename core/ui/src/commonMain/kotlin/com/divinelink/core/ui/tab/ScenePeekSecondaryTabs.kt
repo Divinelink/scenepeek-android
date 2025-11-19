@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.extension.format
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

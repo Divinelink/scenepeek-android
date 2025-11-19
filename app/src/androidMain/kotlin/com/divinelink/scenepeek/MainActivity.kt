@@ -6,35 +6,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.divinelink.core.commons.provider.getBuildConfigProvider
-import com.divinelink.core.data.network.NetworkMonitor
-import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.designsystem.theme.AppTheme
-import com.divinelink.core.designsystem.theme.Theme
-import com.divinelink.core.domain.onboarding.OnboardingManager
-import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
-import com.divinelink.core.ui.MainUiState
-import com.divinelink.core.ui.composition.LocalProvider
+import com.divinelink.scenepeek.ui.shouldUseDarkTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 @ExperimentalAnimationApi
-class MainActivity :
-  ComponentActivity(),
-  KoinComponent {
-
+class MainActivity : ComponentActivity() {
   private val viewModel: MainViewModel by viewModel()
-
-  private val networkMonitor: NetworkMonitor by inject<NetworkMonitor>()
-  private val onboardingManager: OnboardingManager by inject<OnboardingManager>()
-  private val preferencesRepository: PreferencesRepository by inject<PreferencesRepository>()
-  private val navigationProviders: List<NavGraphExtension> by inject()
 
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
@@ -52,29 +33,23 @@ class MainActivity :
       )
 
       val state = rememberScenePeekAppState(
-        onboardingManager = onboardingManager,
-        networkMonitor = networkMonitor,
-        preferencesRepository = preferencesRepository,
-        navigationProvider = navigationProviders,
+        onboardingManager = viewModel.onboardingManager,
+        networkMonitor = viewModel.networkMonitor,
+        preferencesRepository = viewModel.preferencesRepository,
+        navigationProvider = viewModel.navigationProviders,
       )
 
-      LocalProvider(
-        snackbarHostState = state.snackbarHostState,
-        coroutineScope = state.scope,
-        buildConfigProvider = getBuildConfigProvider(),
+      AppTheme(
+        useDarkTheme = darkTheme,
+        dynamicColor = viewModel.materialYou.collectAsState().value,
+        blackBackground = viewModel.blackBackgrounds.collectAsState().value,
       ) {
-        AppTheme(
-          useDarkTheme = darkTheme,
-          dynamicColor = viewModel.materialYou.collectAsState().value,
-          blackBackground = viewModel.blackBackgrounds.collectAsState().value,
-        ) {
-          ScenePeekApp(
-            state = state,
-            uiState = viewModel.uiState.collectAsState().value,
-            uiEvent = viewModel.uiEvent.collectAsState().value,
-            onConsumeEvent = viewModel::consumeUiEvent,
-          )
-        }
+        ScenePeekApp(
+          state = state,
+          uiState = viewModel.uiState.collectAsState().value,
+          uiEvent = viewModel.uiEvent.collectAsState().value,
+          onConsumeEvent = viewModel::consumeUiEvent,
+        )
       }
     }
   }
@@ -83,18 +58,5 @@ class MainActivity :
     if (intent != null && intent.action == Intent.ACTION_VIEW) {
       viewModel.handleDeepLink(intent.data.toString())
     }
-  }
-}
-
-@Composable
-private fun shouldUseDarkTheme(
-  uiState: MainUiState,
-  selectedTheme: Theme,
-): Boolean = when (uiState) {
-  is MainUiState.Loading -> isSystemInDarkTheme()
-  is MainUiState.Completed -> when (selectedTheme) {
-    Theme.SYSTEM -> isSystemInDarkTheme()
-    Theme.LIGHT -> false
-    Theme.DARK -> true
   }
 }

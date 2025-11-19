@@ -1,5 +1,6 @@
 package com.divinelink.core.network.media.model.details
 
+import com.divinelink.core.commons.extensions.formatWithCommas
 import com.divinelink.core.commons.extensions.round
 import com.divinelink.core.model.credits.PersonRole
 import com.divinelink.core.model.details.MediaDetails
@@ -149,12 +150,12 @@ private fun DetailsResponseApi.Movie.toDomainMovie(): MediaDetails = Movie(
     budget = if (budget == 0) {
       "-"
     } else {
-      "$%,d".format(budget)
+      budget.formatWithCommas()
     },
     revenue = if (revenue == 0L) {
       "-"
     } else {
-      "$%,d".format(revenue)
+      budget.formatWithCommas()
     },
   ),
 )

@@ -44,7 +44,18 @@ import com.divinelink.core.network.media.model.MediaRequestApi
 import com.divinelink.core.ui.UiString
 import com.divinelink.core.ui.core_ui_error_retry
 import com.divinelink.core.ui.snackbar.SnackbarMessage
-import com.divinelink.feature.details.*
+import com.divinelink.feature.details.Res
+import com.divinelink.feature.details.details__added_to_watchlist
+import com.divinelink.feature.details.details__must_be_logged_in_to_rate
+import com.divinelink.feature.details.details__must_be_logged_in_to_watchlist
+import com.divinelink.feature.details.details__rating_deleted_successfully
+import com.divinelink.feature.details.details__rating_submitted_successfully
+import com.divinelink.feature.details.details__removed_from_watchlist
+import com.divinelink.feature.details.feature_details_jellyseerr_failed_request_delete
+import com.divinelink.feature.details.feature_details_jellyseerr_failure_media_delete
+import com.divinelink.feature.details.feature_details_jellyseerr_success_media_delete
+import com.divinelink.feature.details.feature_details_jellyseerr_success_request_delete
+import com.divinelink.feature.details.login
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
@@ -81,22 +92,21 @@ class DetailsViewModel(
 
   private val route: DetailsRoute = DetailsRoute(
     id = savedStateHandle.get<Int>("id") ?: -1,
-    mediaType = savedStateHandle.get<MediaType>("mediaType") ?: MediaType.UNKNOWN,
+    mediaType = savedStateHandle.get<String>("mediaType") ?: MediaType.UNKNOWN.value,
     isFavorite = savedStateHandle.get<Boolean>("isFavorite") ?: false,
   )
 
-  private val _viewState: MutableStateFlow<com.divinelink.feature.details.media.ui.DetailsViewState> =
-    MutableStateFlow(
-      value = com.divinelink.feature.details.media.ui.DetailsViewState(
-        mediaId = route.id,
-        mediaType = route.mediaType,
-        isLoading = true,
-        tabs = when (route.mediaType) {
+  private val _viewState: MutableStateFlow<DetailsViewState> = MutableStateFlow(
+    value = DetailsViewState(
+      mediaId = route.id,
+      mediaType = MediaType.from(route.mediaType),
+      isLoading = true,
+      tabs = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries
         MediaType.MOVIE -> MovieTab.entries
         else -> emptyList()
       },
-      forms = when (route.mediaType) {
+      forms = when (MediaType.from(route.mediaType)) {
         MediaType.TV -> TvTab.entries.associate { tab ->
           tab.order to when (tab) {
             TvTab.About -> DetailsForm.Loading
@@ -118,8 +128,7 @@ class DetailsViewModel(
       },
     ),
   )
-  val viewState: StateFlow<com.divinelink.feature.details.media.ui.DetailsViewState> =
-    _viewState.asStateFlow()
+  val viewState: StateFlow<DetailsViewState> = _viewState.asStateFlow()
 
   private val _openUrlTab = Channel<String>()
   val openUrlTab: Flow<String> = _openUrlTab.receiveAsFlow()
@@ -785,7 +794,6 @@ class DetailsViewModel(
       creators = when (result.mediaDetails) {
         is TV -> result.mediaDetails.creators
         is Movie -> result.mediaDetails.creators
-        else -> null
       },
       information = result.mediaDetails.information,
     )

@@ -9,7 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.divinelink.core.commons.provider.BuildConfigProvider
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.fixtures.core.commons.PreviewBuildConfigProvider
-import com.divinelink.core.ui.manager.getIntentManager
+import com.divinelink.core.ui.manager.rememberIntentManager
 import com.divinelink.core.ui.snackbar.controller.LocalSnackbarController
 import com.divinelink.core.ui.snackbar.controller.SnackbarController
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +22,7 @@ fun LocalProvider(
   content: @Composable () -> Unit,
 ) {
   CompositionLocalProvider(
-    LocalIntentManager provides getIntentManager(
+    LocalIntentManager provides rememberIntentManager(
       buildConfigProvider = buildConfigProvider,
     ),
     LocalSnackbarController provides SnackbarController(

@@ -2,9 +2,12 @@
 
 package com.divinelink.core.model.media
 
+import kotlinx.serialization.Serializable
+
 /**
  * Represents the type of media.
  */
+@Serializable
 enum class MediaType(
   val value: String,
   val traktPath: String,

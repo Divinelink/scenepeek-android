@@ -134,7 +134,7 @@ internal fun PersonGridContent(
                 onNavigate(
                   DetailsRoute(
                     id = it.id,
-                    mediaType = it.mediaType,
+                    mediaType = it.mediaType.value,
                     isFavorite = null,
                   ),
                 )
@@ -152,7 +152,7 @@ internal fun PersonGridContent(
                 onNavigate(
                   DetailsRoute(
                     id = it.id,
-                    mediaType = it.mediaType,
+                    mediaType = it.mediaType.value,
                     isFavorite = null,
                   ),
                 )

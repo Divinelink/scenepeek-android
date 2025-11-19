@@ -137,7 +137,7 @@ fun ListScrollableContent(
         onNavigate(
           Navigation.AddToListRoute(
             id = it.id,
-            mediaType = it.mediaType,
+            mediaType = it.mediaType.value,
           ),
         )
       },

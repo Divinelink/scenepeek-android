@@ -18,6 +18,6 @@ interface IntentManager {
 }
 
 @Composable
-expect fun getIntentManager(
+expect fun rememberIntentManager(
   buildConfigProvider: BuildConfigProvider,
 ): IntentManager

@@ -152,7 +152,7 @@ fun RequestsScrollableContent(
               onClick = {
                 onNavigate(
                   Navigation.DetailsRoute(
-                    mediaType = it.mediaType,
+                    mediaType = it.mediaType.value,
                     id = it.id,
                     isFavorite = it.isFavorite,
                   ),

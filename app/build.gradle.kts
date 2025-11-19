@@ -153,10 +153,6 @@ dependencies {
   // Misc
   implementation(libs.napier)
 
-  // Navigation
-  implementation(libs.androidx.navigation.runtime.ktx)
-  implementation(libs.androidx.navigation.compose)
-
   // Network & Serialization
   implementation(libs.ktor.client.core)
   implementation(libs.ktor.client.android)

@@ -22,7 +22,7 @@ internal class ConnectivityManagerNetworkMonitor(
   dispatcher: DispatcherProvider,
 ) : NetworkMonitor {
   override val isOnline: Flow<Boolean> = callbackFlow {
-    trace<Unit>("NetworkMonitor.callbackFlow") {
+    trace("NetworkMonitor.callbackFlow") {
       val connectivityManager = context.getSystemService<ConnectivityManager>()
       if (connectivityManager == null) {
         channel.trySend(false)

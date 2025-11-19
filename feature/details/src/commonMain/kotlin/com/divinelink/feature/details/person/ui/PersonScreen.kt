@@ -115,7 +115,7 @@ fun PersonScreen(
               onNavigate(
                 DetailsRoute(
                   id = mediaItem.id,
-                  mediaType = mediaItem.mediaType,
+                  mediaType = mediaItem.mediaType.value,
                   isFavorite = null,
                 ),
               )

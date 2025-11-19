@@ -251,7 +251,14 @@ fun DetailsContent(
         onAddRateClicked = onAddRateClick,
         onAddToWatchlistClicked = onAddToWatchlistClick,
         onAddToListClicked = {
-          viewState.mediaItem?.let { onNavigate(Navigation.AddToListRoute(it.id, it.mediaType)) }
+          viewState.mediaItem?.let {
+            onNavigate(
+              Navigation.AddToListRoute(
+                id = it.id,
+                mediaType = it.mediaType.value,
+              ),
+            )
+          }
         },
         onRequestClicked = { showRequestModal = true },
         onManageMovie = { showManageMediaModal = true },
@@ -311,7 +318,7 @@ fun DetailsContent(
 
 @Composable
 private fun MediaDetailsContent(
-  uiState: com.divinelink.feature.details.media.ui.DetailsViewState,
+  uiState: DetailsViewState,
   onNavigate: (Navigation) -> Unit,
   trailer: Video?,
   obfuscateEpisodes: Boolean,

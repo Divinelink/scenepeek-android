@@ -52,7 +52,7 @@ fun SearchContent(
           is MediaItem.Media -> {
             val route = Navigation.DetailsRoute(
               id = media.id,
-              mediaType = media.mediaType,
+              mediaType = media.mediaType.value,
               isFavorite = media.isFavorite,
             )
             onNavigate(route)
@@ -63,7 +63,7 @@ fun SearchContent(
               knownForDepartment = media.knownForDepartment,
               name = media.name,
               profilePath = media.profilePath,
-              gender = media.gender,
+              gender = media.gender.value,
             )
             onNavigate(route)
           }

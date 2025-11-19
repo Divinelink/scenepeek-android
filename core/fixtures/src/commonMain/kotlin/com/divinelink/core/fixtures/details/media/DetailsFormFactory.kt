@@ -5,6 +5,7 @@ import com.divinelink.core.model.details.media.DetailsForm
 import com.divinelink.core.model.details.media.DetailsForms
 import com.divinelink.core.model.tab.MovieTab
 import com.divinelink.core.model.tab.TvTab
+import kotlin.jvm.JvmStatic
 
 object DetailsFormFactory {
 

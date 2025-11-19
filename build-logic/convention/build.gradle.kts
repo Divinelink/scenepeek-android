@@ -60,14 +60,6 @@ gradlePlugin {
       id = "divinelink.android.application.compose"
       implementationClass = "AndroidApplicationComposeConventionPlugin"
     }
-//    register("androidLibrary") {
-//      id = "divinelink.android.library"
-//      implementationClass = "AndroidLibraryConventionPlugin"
-//    }
-//    register("androidFeature") {
-//      id = "divinelink.android.feature"
-//      implementationClass = "AndroidFeatureConventionPlugin"
-//    }
     register("androidLibraryCompose") {
       id = "divinelink.android.library.compose"
       implementationClass = "AndroidLibraryComposeConventionPlugin"

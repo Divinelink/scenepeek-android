@@ -16,6 +16,7 @@ import com.divinelink.core.model.tab.PersonTab
 import com.divinelink.core.model.tab.Tab
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
+import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.tab.custom.CustomPrimaryScrollableTabRow
 
 @OptIn(ExperimentalMaterial3Api::class)

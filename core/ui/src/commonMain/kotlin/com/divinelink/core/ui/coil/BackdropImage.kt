@@ -3,7 +3,6 @@ package com.divinelink.core.ui.coil
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
@@ -20,7 +19,7 @@ fun BackdropImage(
 ) {
   AsyncImage(
     modifier = modifier,
-    model = ImageRequest.Builder(LocalContext.current)
+    model = ImageRequest.Builder(platformContext())
       .memoryCachePolicy(CachePolicy.ENABLED)
       .diskCachePolicy(CachePolicy.ENABLED)
       .data(url)

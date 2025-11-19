@@ -38,7 +38,10 @@ actual val storageModule = module {
 
   single<OnboardingStorage> {
     val context: Context = get()
-    DataStoreOnboardingStorage(context.onboardingDataStore)
+    DataStoreOnboardingStorage(
+      buildConfigProvider = get(),
+      dataStore = context.onboardingDataStore,
+    )
   }
 
   single<UiSettingsStorage> {

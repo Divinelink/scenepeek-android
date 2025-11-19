@@ -119,7 +119,7 @@ fun DetailsScreen(
       onSimilarMovieClicked = { movie ->
         val route = DetailsRoute(
           id = movie.id,
-          mediaType = movie.mediaType,
+          mediaType = movie.mediaType.value,
           isFavorite = movie.isFavorite ?: false,
         )
         onNavigate(route)
@@ -133,7 +133,7 @@ fun DetailsScreen(
         viewState.mediaDetails?.id?.let { id ->
           onNavigate(
             CreditsRoute(
-              mediaType = viewState.mediaType,
+              mediaType = viewState.mediaType.value,
               id = id.toLong(),
             ),
           )

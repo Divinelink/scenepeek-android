@@ -4,14 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.divinelink.core.commons.DeepLinkUri
 import com.divinelink.core.commons.extensions.extractDetailsFromDeepLink
+import com.divinelink.core.data.network.NetworkMonitor
+import com.divinelink.core.data.preferences.PreferencesRepository
 import com.divinelink.core.domain.FindByIdUseCase
 import com.divinelink.core.domain.jellyseerr.GetJellyseerrProfileUseCase
+import com.divinelink.core.domain.onboarding.OnboardingManager
 import com.divinelink.core.domain.session.CreateSessionUseCase
 import com.divinelink.core.model.media.MediaItem
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.model.person.Gender
 import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.PersonRoute
+import com.divinelink.core.scaffold.NavGraphExtension
 import com.divinelink.core.ui.MainUiEvent
 import com.divinelink.core.ui.MainUiState
 import com.divinelink.scenepeek.ui.ThemedActivityDelegate
@@ -25,6 +29,10 @@ class MainViewModel(
   private val createSessionUseCase: CreateSessionUseCase,
   private val findByIdUseCase: FindByIdUseCase,
   private val getJellyseerrProfileUseCase: GetJellyseerrProfileUseCase,
+  val networkMonitor: NetworkMonitor,
+  val onboardingManager: OnboardingManager,
+  val preferencesRepository: PreferencesRepository,
+  val navigationProviders: List<NavGraphExtension>,
   themedActivityDelegate: ThemedActivityDelegate,
 ) : ViewModel(),
     ThemedActivityDelegate by themedActivityDelegate {
@@ -71,7 +79,7 @@ class MainViewModel(
                   when (mediaItem) {
                     is MediaItem.Media.Movie,
                     is MediaItem.Media.TV,
-                    -> navigateToMediaDetails(mediaItem.id, mediaItem.mediaType)
+                      -> navigateToMediaDetails(mediaItem.id, mediaItem.mediaType)
                     is MediaItem.Person -> navigateToPersonDetails(mediaItem)
                     MediaItem.Unknown -> updateUiEvent(MainUiEvent.None)
                   }
@@ -101,7 +109,7 @@ class MainViewModel(
           knownForDepartment = it.knownForDepartment,
           name = it.name,
           profilePath = it.profilePath,
-          gender = it.gender,
+          gender = it.gender.value,
         ),
       ),
     )
@@ -115,7 +123,7 @@ class MainViewModel(
           knownForDepartment = null,
           name = null,
           profilePath = null,
-          gender = Gender.NOT_SET,
+          gender = Gender.NOT_SET.value,
         ),
       ),
     )
@@ -129,7 +137,7 @@ class MainViewModel(
       MainUiEvent.NavigateToDetails(
         DetailsRoute(
           id = id,
-          mediaType = mediaType,
+          mediaType = mediaType.value,
           isFavorite = false,
         ),
       ),

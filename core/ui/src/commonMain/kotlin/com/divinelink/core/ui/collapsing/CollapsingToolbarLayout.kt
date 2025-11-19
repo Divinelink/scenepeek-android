@@ -1,6 +1,5 @@
 package com.divinelink.core.ui.collapsing
 
-import android.os.Build
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalOverscrollFactory
@@ -60,7 +59,8 @@ fun CollapsingToolBarLayout(
       CollapsingToolBarLayoutToolBarScope(state, toolBarCollapsedInfo).toolbar()
     }
     // Content
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+    if (
       state.collapsingOption.collapsingWhenTop &&
       LocalOverscrollFactory.current != null
     ) {

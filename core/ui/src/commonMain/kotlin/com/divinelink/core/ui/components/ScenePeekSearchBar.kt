@@ -68,6 +68,7 @@ import com.divinelink.core.ui.core_ui_people
 import com.divinelink.core.ui.core_ui_toolbar_search
 import com.divinelink.core.ui.core_ui_toolbar_search_placeholder
 import com.divinelink.core.ui.core_ui_tv_shows
+import com.divinelink.core.ui.extension.format
 import com.divinelink.core.ui.text.BasicTextFieldWithCursorAtEnd
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.StringResource

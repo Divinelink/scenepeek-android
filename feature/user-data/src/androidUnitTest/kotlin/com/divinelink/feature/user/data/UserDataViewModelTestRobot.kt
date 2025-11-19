@@ -26,7 +26,7 @@ class UserDataViewModelTestRobot : ViewModelTestRobot<UserDataUiState>() {
       fetchUserDataUseCase = fetchUserDataUseCase.mock,
       savedStateHandle = SavedStateHandle(
         mapOf(
-          "userDataSection" to navArgs.userDataSection,
+          "section" to navArgs.section,
         ),
       ),
     )
