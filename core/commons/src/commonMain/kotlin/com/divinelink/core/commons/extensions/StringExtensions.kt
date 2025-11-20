@@ -30,17 +30,6 @@ fun String.formatTo(
 } catch (e: Exception) {
   null
 }
-//fun String.formatTo(
-//  inputFormat: String,
-//  outputFormat: String,
-//): String? = try {
-//  val input = SimpleDateFormat(inputFormat, Locale.ENGLISH)
-//  val output = SimpleDateFormat(outputFormat, Locale.ENGLISH)
-//  val date = input.parse(this)
-//  date?.let { output.format(it) }
-//} catch (e: Exception) {
-//  null
-//}
 
 fun String.localizeIsoDate() = this.formatTo(
   inputFormat = Constants.ISO_8601,
