@@ -24,7 +24,6 @@ import com.divinelink.core.navigation.route.Navigation.DetailsRoute
 import com.divinelink.core.navigation.route.Navigation.TMDBAuthRoute
 import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.components.OverlayScreen
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
 import com.divinelink.core.ui.manager.url.rememberUrlHandler
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
@@ -151,17 +150,11 @@ fun DetailsScreen(
       onSwitchViewMode = switchViewButtonViewModel::switchViewMode,
     )
 
-    OverlayScreen(
-      isVisible = !videoUrl.isNullOrEmpty(),
-      onDismiss = { videoUrl = null },
-      content = {
-        videoUrl?.let {
-          YouTubePlayerScreen(
-            videoId = it,
-            onBack = { videoUrl = null },
-          )
-        }
-      },
-    )
+    videoUrl?.let {
+      YouTubePlayerScreen(
+        videoId = it,
+        onBack = { videoUrl = null },
+      )
+    }
   }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.divinelink.core.designsystem.theme.dimensions
+import com.divinelink.core.ui.components.OverlayScreen
 import com.divinelink.core.ui.fullscreen.FullscreenMode
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -38,58 +39,64 @@ actual fun YouTubePlayerScreen(
   val lifecycleOwner = LocalLifecycleOwner.current
   var playbackPosition by rememberSaveable { mutableFloatStateOf(0f) }
 
-  FullscreenMode {
-    Box(
-      contentAlignment = Alignment.Center,
-      modifier = Modifier
-        .fillMaxSize(),
-    ) {
-      Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight(),
-      ) {
-        Column(modifier = Modifier.align(Alignment.Center)) {
-          AndroidView(
-            modifier = Modifier.aspectRatio(16f / 9f),
-            factory = { context ->
-              YouTubePlayerView(context).apply {
-                lifecycleOwner.lifecycle.addObserver(this)
+  OverlayScreen(
+    isVisible = true,
+    onDismiss = { onBack() },
+    content = {
+      FullscreenMode {
+        Box(
+          contentAlignment = Alignment.Center,
+          modifier = Modifier
+            .fillMaxSize(),
+        ) {
+          Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+              .fillMaxWidth()
+              .wrapContentHeight(),
+          ) {
+            Column(modifier = Modifier.align(Alignment.Center)) {
+              AndroidView(
+                modifier = Modifier.aspectRatio(16f / 9f),
+                factory = { context ->
+                  YouTubePlayerView(context).apply {
+                    lifecycleOwner.lifecycle.addObserver(this)
 
-                addYouTubePlayerListener(
-                  object : AbstractYouTubePlayerListener() {
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                      youTubePlayer.loadVideo(videoId, playbackPosition)
-                    }
+                    addYouTubePlayerListener(
+                      object : AbstractYouTubePlayerListener() {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
+                          youTubePlayer.loadVideo(videoId, playbackPosition)
+                        }
 
-                    override fun onCurrentSecond(
-                      youTubePlayer: YouTubePlayer,
-                      second: Float,
-                    ) {
-                      playbackPosition = second
-                    }
-                  },
-                )
-              }
-            },
-          )
+                        override fun onCurrentSecond(
+                          youTubePlayer: YouTubePlayer,
+                          second: Float,
+                        ) {
+                          playbackPosition = second
+                        }
+                      },
+                    )
+                  }
+                },
+              )
+            }
+          }
+
+          IconButton(
+            modifier = Modifier
+              .padding(MaterialTheme.dimensions.keyline_32)
+              .align(Alignment.TopStart),
+            onClick = onBack,
+          ) {
+            Icon(
+              imageVector = Icons.Filled.Close,
+              contentDescription = "Close video player",
+              tint = Color.White,
+              modifier = Modifier.size(MaterialTheme.dimensions.keyline_32),
+            )
+          }
         }
       }
-
-      IconButton(
-        modifier = Modifier
-          .padding(MaterialTheme.dimensions.keyline_32)
-          .align(Alignment.TopStart),
-        onClick = onBack,
-      ) {
-        Icon(
-          imageVector = Icons.Filled.Close,
-          contentDescription = "Close video player",
-          tint = Color.White,
-          modifier = Modifier.size(MaterialTheme.dimensions.keyline_32),
-        )
-      }
-    }
-  }
+    },
+  )
 }

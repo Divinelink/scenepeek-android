@@ -58,6 +58,7 @@ compose-shimmer = "1.3.3"
 
 # Napier
 napier = "2.7.1"
+android-youtube-player = "13.0.0"
 
 # Testing
 kover = "0.8.3"
@@ -147,9 +148,7 @@ koin-start-up = { group = "io.insert-koin", name = "koin-androidx-startup", vers
 
 # Misc
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
-
-youtube-player = 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
-
+android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
 
 # Firebase
 firebase-bom = 'com.google.firebase:firebase-bom:33.4.0'

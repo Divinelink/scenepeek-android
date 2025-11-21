@@ -25,7 +25,7 @@ kotlin {
       implementation(libs.androidx.lifecycle.runtime.ktx)
       implementation(libs.androidx.browser)
       implementation(libs.ktor.client.android)
-      implementation(libs.youtube.player)
+      implementation(libs.android.youtube.player)
     }
 
     nativeMain.dependencies {
