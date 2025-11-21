@@ -3,8 +3,6 @@ package com.divinelink.core.datastore.di
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.divinelink.core.datastore.DataStorePreferenceStorage
-import com.divinelink.core.datastore.EncryptedPreferenceStorage
-import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.auth.DataStoreSavedStateStorage
@@ -13,8 +11,6 @@ import com.divinelink.core.datastore.crypto.AndroidDataEncryptor
 import com.divinelink.core.datastore.crypto.DataEncryptor
 import com.divinelink.core.datastore.crypto.DataStoreKeystoreSecretsStorage
 import com.divinelink.core.datastore.crypto.KeystoreSecretsStorage
-import com.divinelink.core.datastore.destroyEncryptedSharedPreferencesAndRebuild
-import com.divinelink.core.datastore.getEncryptedSharedPreferences
 import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
 import com.divinelink.core.datastore.ui.DatastoreUiStorage
@@ -22,7 +18,6 @@ import com.divinelink.core.datastore.ui.UiSettingsStorage
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import java.security.GeneralSecurityException
 
 private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
 private val Context.uiSettingsDataStore by preferencesDataStore(DatastoreUiStorage.PREFS_NAME)
@@ -66,20 +61,6 @@ val storageModule = module {
     DataStoreKeystoreSecretsStorage(
       dataStore = context.keystoreDataStore,
     )
-  }
-
-  single<EncryptedStorage> {
-    val preferenceStorage = try {
-      getEncryptedSharedPreferences(application = get())
-    } catch (_: GeneralSecurityException) {
-      // Handle when a bad master key or key-set has been attempted
-      destroyEncryptedSharedPreferencesAndRebuild(application = get())
-    } catch (@Suppress("TooGenericExceptionCaught") _: RuntimeException) {
-      // Handle KeystoreExceptions that get wrapped up in a RuntimeException
-      destroyEncryptedSharedPreferencesAndRebuild(application = get())
-    }
-
-    EncryptedPreferenceStorage(encryptedPreferences = preferenceStorage)
   }
 
   singleOf(::AndroidDataEncryptor) { bind<DataEncryptor>() }

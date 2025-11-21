@@ -35,7 +35,6 @@ detekt = "1.23.6"
 # Internal Database
 sqldelight = "2.1.0"
 datastore = '1.1.7'
-encrypted-prefs = '1.1.0-alpha04'
 
 # Multithreading
 kotlinx-coroutines = '1.10.2'
@@ -155,7 +154,6 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
-encrypted-preferences = { module = "androidx.security:security-crypto-ktx", version.ref = "encrypted-prefs" }
 sqldelight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }

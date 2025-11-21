@@ -4,6 +4,7 @@ import com.divinelink.core.datastore.auth.SavedState
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.session.TmdbSession
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -20,5 +21,7 @@ interface AuthRepository {
   suspend fun clearSelectedJellyseerrAccount()
 
   suspend fun setTMDBAccount(accountDetails: AccountDetails)
-  suspend fun clearTMDBAccount()
+  suspend fun setTMDBSession(session: TmdbSession)
+  suspend fun clearTMDBSession()
+
 }

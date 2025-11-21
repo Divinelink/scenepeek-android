@@ -5,8 +5,8 @@ import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.feature.details.media.usecase.DeleteRatingParameters
 import com.divinelink.feature.details.media.usecase.DeleteRatingUseCase
 import com.google.common.truth.Truth.assertThat
@@ -32,7 +32,7 @@ class DeleteRatingUseCaseTest {
 
   @Test
   fun `test user with no session id cannot submit rating`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = null)
+    sessionStorage = SessionStorageFactory.empty()
 
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
@@ -55,7 +55,7 @@ class DeleteRatingUseCaseTest {
 
   @Test
   fun `test user with session id can delete rating for movie`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+    sessionStorage = SessionStorageFactory.full()
 
     repository.mockDeleteRating(
       response = Result.success(Unit),
@@ -80,7 +80,7 @@ class DeleteRatingUseCaseTest {
 
   @Test
   fun `test user with session id can delete rating for tv`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+    sessionStorage = SessionStorageFactory.full()
 
     repository.mockDeleteRating(
       response = Result.success(Unit),
@@ -105,7 +105,7 @@ class DeleteRatingUseCaseTest {
 
   @Test
   fun `test cannot fetch account media details for unknown media type`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = "session_id")
+    sessionStorage = SessionStorageFactory.full()
 
     val useCase = DeleteRatingUseCase(
       sessionStorage = sessionStorage,
@@ -123,8 +123,4 @@ class DeleteRatingUseCaseTest {
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
-
-  private fun createSessionStorage(sessionId: String?) = SessionStorage(
-    encryptedStorage = FakeEncryptedPreferenceStorage(sessionId = sessionId),
-  )
 }

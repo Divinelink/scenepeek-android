@@ -3,12 +3,12 @@ package com.divinelink.core.testing.network
 import JvmUnitTestDemoAssetManager
 import com.divinelink.core.network.client.AuthTMDbClient
 import com.divinelink.core.network.client.get
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 
 class TestAuthTMDbClient {
 
   lateinit var restClient: AuthTMDbClient
-  val encryptedStorage = FakeEncryptedPreferenceStorage()
+  val encryptedStorage = TestSavedStateStorage()
 
   suspend inline fun <reified T : Any, reified V : Any> mockPost(
     url: String,

@@ -20,8 +20,7 @@ class CreateSessionUseCase(
     val requestToken = repository.retrieveRequestToken().getOrNull()
 
     if (requestToken?.token == null) {
-      storage.clearSession()
-      authRepository.clearTMDBAccount()
+      authRepository.clearTMDBSession()
       repository.clearRequestToken()
       return
     }
@@ -45,15 +44,13 @@ class CreateSessionUseCase(
             repository.clearRequestToken()
           },
           onFailure = {
-            storage.clearSession()
-            authRepository.clearTMDBAccount()
+            authRepository.clearTMDBSession()
             repository.clearRequestToken()
           },
         )
       },
       onFailure = {
-        storage.clearSession()
-        authRepository.clearTMDBAccount()
+        authRepository.clearTMDBSession()
         repository.clearRequestToken()
       },
     )

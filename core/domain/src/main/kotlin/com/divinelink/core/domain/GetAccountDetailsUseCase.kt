@@ -21,17 +21,14 @@ class GetAccountDetailsUseCase(
 ) : FlowUseCase<Unit, TMDBAccount>(dispatcher.default) {
 
   override fun execute(parameters: Unit): Flow<Result<TMDBAccount>> = channelFlow {
-    val sessionId = storage.sessionId
-
     launch(dispatcher.default) {
       authRepository
         .tmdbAccount
         .distinctUntilChanged()
         .collect { accountDetails ->
-          if (accountDetails == null || storage.accountId == null || storage.sessionId == null) {
+          if (accountDetails == null) {
             send(Result.failure(SessionException.Unauthenticated()))
-            storage.clearSession()
-            authRepository.clearTMDBAccount()
+            authRepository.clearTMDBSession()
           } else {
             send(Result.success(TMDBAccount.LoggedIn(accountDetails)))
           }
@@ -39,23 +36,25 @@ class GetAccountDetailsUseCase(
     }
 
     launch(dispatcher.default) {
-      if (sessionId == null) {
-        send(Result.failure(SessionException.Unauthenticated()))
-      } else {
-        repository.getAccountDetails(sessionId).fold(
-          onSuccess = { details ->
-            authRepository.setTMDBAccount(details)
-          },
-          onFailure = {
-            if (it is AppException.Unauthorized) {
-              storage.clearSession()
-              authRepository.clearTMDBAccount()
-              send(Result.failure(SessionException.Unauthenticated()))
-            } else {
-              send(Result.failure(it))
-            }
-          },
-        )
+      storage.sessionFlow.collect { session ->
+        if (session == null) {
+          send(Result.failure(SessionException.Unauthenticated()))
+          authRepository.clearTMDBSession()
+        } else {
+          repository.getAccountDetails(session.sessionId).fold(
+            onSuccess = { details ->
+              authRepository.setTMDBAccount(details)
+            },
+            onFailure = {
+              if (it is AppException.Unauthorized) {
+                authRepository.clearTMDBSession()
+                send(Result.failure(SessionException.Unauthenticated()))
+              } else {
+                send(Result.failure(it))
+              }
+            },
+          )
+        }
       }
     }
   }

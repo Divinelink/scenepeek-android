@@ -76,7 +76,7 @@ class TestAuthRepository {
     verifyNoInteractions(mock)
   }
 
-  suspend fun verifyClearTMDBAccountInvoked(times: Int = 1) {
-    verify(mock, times(times)).clearTMDBAccount()
+  suspend fun verifyClearTMDBSessionInvoked(times: Int = 1) {
+    verify(mock, times(times)).clearTMDBSession()
   }
 }

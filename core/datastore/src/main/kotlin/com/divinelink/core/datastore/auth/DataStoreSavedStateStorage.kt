@@ -12,6 +12,7 @@ import com.divinelink.core.datastore.crypto.DataEncryptor
 import com.divinelink.core.datastore.crypto.EncryptionSecretKey
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
+import com.divinelink.core.model.session.TmdbSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -91,15 +92,23 @@ class DataStoreSavedStateStorage(
     }
   }
 
-  override suspend fun clearTMDBAccount() = updateState { state ->
-    state.copy(
-      tmdbAccount = null,
-    )
-  }
 
   override suspend fun setTMDBAccount(account: AccountDetails) = updateState { state ->
     state.copy(
       tmdbAccount = account,
+    )
+  }
+
+  override suspend fun setTMDBSession(session: TmdbSession) = updateState { state ->
+    state.copy(
+      tmdbSession = session,
+    )
+  }
+
+  override suspend fun clearTMDBSession() = updateState { state ->
+    state.copy(
+      tmdbSession = null,
+      tmdbAccount = null,
     )
   }
 
@@ -128,6 +137,7 @@ class DataStoreSavedStateStorage(
 
 val InitialSavedState: ConcreteSavedState = ConcreteSavedState(
   tmdbAccount = null,
+  tmdbSession = null,
   jellyseerrCredentials = emptyMap(),
   jellyseerrProfiles = emptyMap(),
   jellyseerrAuthCookies = emptyMap(),

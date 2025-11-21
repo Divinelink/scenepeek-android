@@ -1,16 +1,19 @@
 package com.divinelink.core.domain.session
 
-import com.divinelink.core.datastore.SessionStorage
+import app.cash.turbine.test
+import com.divinelink.core.datastore.auth.accessToken
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.session.AccessTokenFactory
+import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.session.RequestToken
 import com.divinelink.core.model.session.Session
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestSessionRepository
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import kotlin.test.Test
@@ -24,14 +27,11 @@ class CreateSessionUseCaseTest {
   private val repository = TestSessionRepository()
   private val authRepository = TestAuthRepository()
 
-  private val storage = SessionStorage(
-    encryptedStorage = FakeEncryptedPreferenceStorage(),
-  )
+  private val storage = SessionStorageFactory.empty()
 
   @Test
   fun `test createSession with null request token clears session and token`() = runTest {
     repository.mockRetrieveRequestToken(Result.failure(SessionException.RequestTokenNotFound()))
-
 
     storage.setAccessToken(
       sessionId = "sessionId",
@@ -45,9 +45,11 @@ class CreateSessionUseCaseTest {
       dispatcher = testDispatcher,
     ).invoke(Unit)
 
-    assertThat(storage.sessionId).isEqualTo(null)
-    assertThat(storage.accountId).isEqualTo(null)
-    assertThat(storage.encryptedStorage.accessToken).isEqualTo(null)
+    storage.sessionId shouldBe "sessionId"
+    storage.savedState.accessToken shouldBe AccessTokenFactory.valid().accessToken
+
+    authRepository.verifyClearTMDBSessionInvoked()
+    repository.clearRequestTokenInvoke()
   }
 
   @Test
@@ -67,9 +69,11 @@ class CreateSessionUseCaseTest {
       dispatcher = testDispatcher,
     ).invoke(Unit)
 
-    assertThat(storage.sessionId).isEqualTo(null)
-    assertThat(storage.accountId).isEqualTo(null)
-    assertThat(storage.encryptedStorage.accessToken).isEqualTo(null)
+    storage.sessionId shouldBe "sessionId"
+    storage.savedState.accessToken shouldBe AccessTokenFactory.valid().accessToken
+
+    authRepository.verifyClearTMDBSessionInvoked()
+    repository.clearRequestTokenInvoke()
   }
 
   @Test
@@ -87,7 +91,7 @@ class CreateSessionUseCaseTest {
 
     assertThat(storage.sessionId).isEqualTo("sessionId")
     assertThat(storage.accountId).isEqualTo(AccessTokenFactory.valid().accountId)
-    assertThat(storage.encryptedStorage.accessToken).isEqualTo(
+    assertThat(storage.savedState.accessToken).isEqualTo(
       AccessTokenFactory.valid().accessToken,
     )
 
@@ -110,7 +114,7 @@ class CreateSessionUseCaseTest {
 
     assertThat(storage.sessionId).isEqualTo("sessionId")
     assertThat(storage.accountId).isEqualTo(AccessTokenFactory.valid().accountId)
-    assertThat(storage.encryptedStorage.accessToken).isEqualTo(
+    assertThat(storage.savedState.accessToken).isEqualTo(
       AccessTokenFactory.valid().accessToken,
     )
 
@@ -138,12 +142,11 @@ class CreateSessionUseCaseTest {
       dispatcher = testDispatcher,
     ).invoke(Unit)
 
-    assertThat(storage.sessionId).isNull()
-    assertThat(storage.accountId).isNull()
-    assertThat(storage.encryptedStorage.accessToken).isNull()
+    storage.sessionFlow.test {
+      awaitItem() shouldBe TmdbSessionFactory.full()
+    }
 
-    authRepository.verifyClearTMDBAccountInvoked()
-
+    authRepository.verifyClearTMDBSessionInvoked()
     repository.clearRequestTokenInvoke()
   }
 }
