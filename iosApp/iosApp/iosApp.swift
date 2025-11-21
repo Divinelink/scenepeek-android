@@ -18,4 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
+
+    func application(
+        _ application: UIApplication,
+        open uri: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        ExternalUriHandler.shared.onNewUri(uri: uri.absoluteString)
+        return true
+    }
 }

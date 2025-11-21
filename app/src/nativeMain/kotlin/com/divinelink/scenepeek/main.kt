@@ -1,10 +1,12 @@
 package com.divinelink.scenepeek
 
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.window.ComposeUIViewController
 import com.divinelink.core.designsystem.theme.AppTheme
 import com.divinelink.core.scaffold.ScenePeekApp
 import com.divinelink.core.scaffold.rememberScenePeekAppState
+import com.divinelink.scenepeek.shared.ExternalUriHandler
 import com.divinelink.scenepeek.ui.shouldUseDarkTheme
 import org.koin.compose.viewmodel.koinViewModel
 import platform.UIKit.UIViewController
@@ -29,6 +31,16 @@ fun MainViewController(): UIViewController = ComposeUIViewController {
     dynamicColor = viewModel.materialYou.collectAsState().value,
     blackBackground = viewModel.blackBackgrounds.collectAsState().value,
   ) {
+
+    DisposableEffect(Unit) {
+      ExternalUriHandler.listener = { uri ->
+        viewModel.handleDeepLink(uri)
+      }
+      onDispose {
+        ExternalUriHandler.listener = null
+      }
+    }
+
     ScenePeekApp(
       state = state,
       uiState = viewModel.uiState.collectAsState().value,

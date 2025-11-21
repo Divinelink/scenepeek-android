@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import com.divinelink.core.datastore.DataStorePreferenceStorage
-import com.divinelink.core.datastore.EncryptedStorage
 import com.divinelink.core.datastore.PreferenceStorage
 import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.datastore.auth.DataStoreSavedStateStorage
@@ -12,7 +11,6 @@ import com.divinelink.core.datastore.auth.SavedStateStorage
 import com.divinelink.core.datastore.crypto.DataEncryptor
 import com.divinelink.core.datastore.crypto.DataStoreKeystoreSecretsStorage
 import com.divinelink.core.datastore.crypto.EncryptionProvider
-import com.divinelink.core.datastore.crypto.IOSEncryptedStorage
 import com.divinelink.core.datastore.crypto.KeystoreSecretsStorage
 import com.divinelink.core.datastore.onboarding.DataStoreOnboardingStorage
 import com.divinelink.core.datastore.onboarding.OnboardingStorage
@@ -82,13 +80,6 @@ actual val storageModule = module {
       dataStore = createDataStore(DataStoreKeystoreSecretsStorage.PREFS_NAME),
     )
   }
-
-  single<EncryptedStorage> { // TODO Complete this
-    IOSEncryptedStorage(
-      dataStore = createDataStore("FAKE_ENCRYPTED_STORAGE"),
-    )
-  }
-
 
   singleOf(::EncryptionProvider) { bind<DataEncryptor>() }
 

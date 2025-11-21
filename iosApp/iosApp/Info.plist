@@ -4,19 +4,16 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>TheMovieDB</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https://www.themoviedb.org</string>
-			</array>
-		</dict>
-		<dict/>
-	</array>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLName</key>
+      <string>com.divinelink.scenepeek</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>scenepeek</string>
+      </array>
+    </dict>
+  </array>
 </dict>
 </plist>

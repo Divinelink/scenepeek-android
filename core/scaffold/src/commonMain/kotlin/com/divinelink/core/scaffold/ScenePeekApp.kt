@@ -69,11 +69,11 @@ fun ScenePeekApp(
   LaunchedEffect(uiEvent) {
     when (uiEvent) {
       is MainUiEvent.NavigateToDetails -> {
-//        state.navController.navigateToDetails(uiEvent.route)
+        state.navController.navigateToDetails(uiEvent.route)
         onConsumeEvent()
       }
       is MainUiEvent.NavigateToPersonDetails -> {
-//        state.navController.navigateToPerson(uiEvent.route)
+        state.navController.navigateToPerson(uiEvent.route)
         onConsumeEvent()
       }
       MainUiEvent.None -> {

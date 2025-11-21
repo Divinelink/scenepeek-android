@@ -17,7 +17,7 @@
 /* Begin PBXFileReference section */
 		448564E72CF372F0003CA801 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		44A67CD72CF624AA00B62AF4 /* DebugSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSetup.swift; sourceTree = "<group>"; };
-		A93A953A29CC810C00F8E227 /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = iosApp.swift; path = "/Users/divinelink/Documents/Development/go/tudu/questkeeper-app/iosApp/iosApp/iosApp.swift"; sourceTree = "<absolute>"; };
+		A93A953A29CC810C00F8E227 /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = iosApp.swift; path = "/Users/divinelink/Documents/Development/Android/scenepeek-android/iosApp/iosApp/iosApp.swift"; sourceTree = "<absolute>"; };
 		A93A953E29CC810D00F8E227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A93A954129CC810D00F8E227 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
