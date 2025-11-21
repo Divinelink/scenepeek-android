@@ -104,7 +104,7 @@ fun TMDBRatingItem(
         color = color.copy(alpha = 0.3f),
         startAngle = 0f,
         sweepAngle = 360f,
-        useCenter = true,
+        useCenter = false,
         style = Stroke(
           width = 2.dp.toPx(),
           miter = 2f,
