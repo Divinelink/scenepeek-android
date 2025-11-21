@@ -1,4 +1,4 @@
-package com.divinelink.core.ui
+package com.divinelink.core.ui.manager.url
 
 import androidx.compose.runtime.Composable
 

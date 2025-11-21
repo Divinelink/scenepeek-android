@@ -1,4 +1,4 @@
-package com.divinelink.core.ui
+package com.divinelink.core.ui.manager.url
 
 import android.content.Context
 import android.content.Intent
@@ -63,7 +63,7 @@ class AndroidUrlHandlerWithResult(
 }
 
 @ExcludeFromKoverReport
-private fun launchCustomTab(
+internal fun launchCustomTab(
   context: Context,
   launcher: ActivityResultLauncher<Intent>,
   url: String,

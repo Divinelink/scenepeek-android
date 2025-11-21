@@ -23,10 +23,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.divinelink.core.designsystem.theme.dimensions
 import com.divinelink.core.model.UIText
 import com.divinelink.core.navigation.route.Navigation
+import com.divinelink.core.network.Routes
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.AppTopAppBar
 import com.divinelink.core.ui.components.Material3CircularProgressIndicator
-import com.divinelink.core.ui.rememberUrlHandlerWithResult
+import com.divinelink.core.ui.manager.url.rememberAuthUrlHandler
 import com.divinelink.feature.tmdb.auth.webview.Webview
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,10 +39,9 @@ fun TMDBAuthScreen(
   viewModel: TMDBAuthViewModel = koinViewModel(),
 ) {
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val urlHandler = rememberUrlHandlerWithResult(
-    onResult = { viewModel.handleCloseWeb() },
-  )
-
+  val urlHandler = rememberAuthUrlHandler {
+    viewModel.handleCloseWeb(it)
+  }
 
   LaunchedEffect(Unit) {
     viewModel.onNavigateUp.collect {
@@ -54,6 +54,7 @@ fun TMDBAuthScreen(
     viewModel.openUrlTab.collect { url ->
       urlHandler.openUrl(
         url = url,
+        callbackUrlScheme = Routes.TMDb.TMDB_AUTH_SCHEME,
         onError = { viewModel.setWebViewFallback() },
       )
     }
@@ -75,7 +76,7 @@ fun TMDBAuthScreen(
       AnimatedContent(uiState.webViewFallback) { useWebView ->
         when (useWebView) {
           true -> Webview(
-            onCloseWebview = { viewModel.createSession() },
+            onCloseWebview = { viewModel.handleCloseWeb(createSession = true) },
             url = uiState.url,
           )
           false -> Box(

@@ -34,7 +34,7 @@ import com.divinelink.core.model.core_model_ic_tmdb
 import com.divinelink.core.navigation.route.Navigation
 import com.divinelink.core.ui.Previews
 import com.divinelink.core.ui.TestTags
-import com.divinelink.core.ui.rememberUrlHandler
+import com.divinelink.core.ui.manager.url.rememberUrlHandler
 import com.divinelink.feature.settings.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

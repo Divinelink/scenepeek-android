@@ -54,10 +54,16 @@ class TMDBAuthViewModel(
    * There's a delay to make sure the session is properly created before proceeding
    * Also check [com.divinelink.core.domain.session.CreateSessionUseCase]
    */
-  fun handleCloseWeb() {
-    viewModelScope.launch {
-      delay(TMDB_AUTH_DELAY)
-      _onNavigateUp.trySend(Unit)
+  fun handleCloseWeb(
+    createSession: Boolean,
+  ) {
+    if (createSession) {
+      createSession()
+    } else {
+      viewModelScope.launch {
+        delay(TMDB_AUTH_DELAY)
+        _onNavigateUp.trySend(Unit)
+      }
     }
   }
 
@@ -65,13 +71,15 @@ class TMDBAuthViewModel(
     _uiState.update { uiState -> uiState.copy(webViewFallback = true) }
   }
 
-  fun createSession() {
+  private fun createSession() {
     viewModelScope.launch {
-      createSessionUseCase.invoke(Unit).onSuccess {
-        _onNavigateUp.send(Unit)
-      }.onFailure {
-        _onNavigateUp.send(Unit)
-      }
+      createSessionUseCase.invoke(Unit)
+        .onSuccess {
+          _onNavigateUp.send(Unit)
+        }
+        .onFailure {
+          _onNavigateUp.send(Unit)
+        }
     }
   }
 }

@@ -26,7 +26,7 @@ import com.divinelink.core.navigation.route.toPersonRoute
 import com.divinelink.core.ui.TestTags
 import com.divinelink.core.ui.components.OverlayScreen
 import com.divinelink.core.ui.components.details.videos.YouTubePlayerScreen
-import com.divinelink.core.ui.rememberUrlHandler
+import com.divinelink.core.ui.manager.url.rememberUrlHandler
 import com.divinelink.feature.details.media.ui.rate.RateModalBottomSheet
 import com.divinelink.feature.details.media.ui.ratings.AllRatingsModalBottomSheet
 import org.koin.compose.viewmodel.koinViewModel

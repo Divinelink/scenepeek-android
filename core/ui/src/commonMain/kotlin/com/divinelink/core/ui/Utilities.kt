@@ -28,12 +28,10 @@ object UiTokens {
     }
 }
 
-
 @Composable
 fun rememberConstants(): ConstantsProvider {
   return remember { getConstantsProvider() }
 }
-
 
 @Composable
 fun rememberConfigProvider(): BuildConfigProvider {
