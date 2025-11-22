@@ -8,9 +8,10 @@ class AndroidBuildConfigProvider : BuildConfigProvider {
   override val isDebug: Boolean = BuildConfig.DEBUG
   override val buildType: String = BuildConfig.BUILD_TYPE
   override val versionData: String = buildString {
+    append("Android ")
     append(BuildConfig.VERSION_NAME)
     if (BuildConfig.DEBUG) append(" DEBUG")
-    append(" (${BuildConfig.VERSION_CODE}")
+    append(" (${BuildConfig.VERSION_CODE})")
   }
 }
 
