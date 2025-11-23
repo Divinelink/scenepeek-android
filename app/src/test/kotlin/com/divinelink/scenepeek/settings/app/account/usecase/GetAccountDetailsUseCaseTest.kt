@@ -3,18 +3,21 @@ package com.divinelink.scenepeek.settings.app.account.usecase
 import app.cash.turbine.test
 import com.divinelink.core.commons.exception.InvalidStatusException
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.datastore.auth.observedTmdbSession
 import com.divinelink.core.domain.GetAccountDetailsUseCase
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
-import com.divinelink.core.fixtures.model.session.AccessTokenFactory
+import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
 import com.divinelink.core.model.account.TMDBAccount
 import com.divinelink.core.model.exception.AppException
 import com.divinelink.core.model.exception.SessionException
-import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestSessionRepository
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
+import com.divinelink.core.testing.storage.TestSavedStateStorage
 import com.google.common.truth.Truth.assertThat
+import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -37,10 +40,10 @@ class GetAccountDetailsUseCaseTest {
 
   @Test
   fun `given no sessionId, when getAccountDetails is called, then return failure`() = runTest {
-    val sessionStorage = createSessionStorage()
+    val storage = SessionStorageFactory.empty()
 
     val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
+      storage = storage,
       repository = repository.mock,
       authRepository = authRepository.mock,
       dispatcher = testDispatcher,
@@ -54,42 +57,15 @@ class GetAccountDetailsUseCaseTest {
       assertThat(
         awaitItem(),
       ).isInstanceOf(Result.failure<Exception>(SessionException.Unauthenticated())::class.java)
-
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun `given no account id when getAccountDetails is called return unauthenticated`() = runTest {
-    val sessionStorage = createSessionStorage(sessionId = "session_id")
-
-    repository.mockGetAccountDetails(
-      Result.success(
-        AccountDetailsFactory.Pinkman(),
-      ),
-    )
-    authRepository.mockTMDBAccount(null)
-
-    val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
-      repository = repository.mock,
-      authRepository = authRepository.mock,
-      dispatcher = testDispatcher,
-    )
-
-    useCase.invoke(Unit).test {
-      assertThat(awaitItem()).isInstanceOf(
-        Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
-      )
-      awaitComplete()
     }
   }
 
   @Test
   fun `test getAccountDetails with failure and 401 clears session`() = runTest {
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
+    val storage = SessionStorage(
+      savedState = TestSavedStateStorage(
+        tmdbSession = TmdbSessionFactory.full(),
+      ),
     )
 
     repository.mockGetAccountDetails(
@@ -98,7 +74,7 @@ class GetAccountDetailsUseCaseTest {
     authRepository.mockTMDBAccount(null)
 
     val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
+      storage = storage,
       repository = repository.mock,
       authRepository = authRepository.mock,
       dispatcher = testDispatcher,
@@ -111,23 +87,14 @@ class GetAccountDetailsUseCaseTest {
       assertThat(awaitItem()).isInstanceOf(
         Result.failure<Exception>(SessionException.Unauthenticated())::class.java,
       )
-
-      awaitComplete()
     }
 
-    assertThat(sessionStorage.sessionId).isNull()
-    assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
-    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
-
-    authRepository.verifyClearTMDBAccountInvoked()
+    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
   fun `test getAccountDetails with generic failure emits failure`() = runTest {
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     repository.mockGetAccountDetails(
       Result.failure(InvalidStatusException(404)),
@@ -135,7 +102,7 @@ class GetAccountDetailsUseCaseTest {
     authRepository.mockTMDBAccount(null)
 
     val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
+      storage = storage,
       repository = repository.mock,
       authRepository = authRepository.mock,
       dispatcher = testDispatcher,
@@ -148,21 +115,15 @@ class GetAccountDetailsUseCaseTest {
       assertThat(awaitItem().toString()).isEqualTo(
         Result.failure<Exception>(InvalidStatusException(404)).toString(),
       )
-
-      awaitComplete()
     }
 
-    assertThat(sessionStorage.sessionId).isNull()
-    assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
-    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
+    storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
+    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
   fun `test getAccountDetails with other failure emits failure and clears data`() = runTest {
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     repository.mockGetAccountDetails(
       Result.failure(Exception("Foo")),
@@ -170,7 +131,7 @@ class GetAccountDetailsUseCaseTest {
     authRepository.mockTMDBAccount(null)
 
     val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
+      storage = storage,
       repository = repository.mock,
       authRepository = authRepository.mock,
       dispatcher = testDispatcher,
@@ -183,22 +144,15 @@ class GetAccountDetailsUseCaseTest {
       assertThat(awaitItem().toString()).isEqualTo(
         Result.failure<Exception>(Exception("Foo")).toString(),
       )
-
-      awaitComplete()
     }
 
-    assertThat(sessionStorage.sessionId).isNull()
-    assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
-    assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
-    authRepository.verifyClearTMDBAccountInvoked()
+    storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
+    authRepository.verifyClearTMDBSessionInvoked()
   }
 
   @Test
   fun `test getAccountDetails with unauthorised clears session`() = runTest {
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(null)
     repository.mockGetAccountDetails(
@@ -206,7 +160,7 @@ class GetAccountDetailsUseCaseTest {
     )
 
     val useCase = GetAccountDetailsUseCase(
-      storage = sessionStorage,
+      storage = storage,
       repository = repository.mock,
       authRepository = authRepository.mock,
       dispatcher = testDispatcher,
@@ -220,21 +174,14 @@ class GetAccountDetailsUseCaseTest {
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
 
-      assertThat(sessionStorage.sessionId).isNull()
-      assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
-      assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
-      authRepository.verifyClearTMDBAccountInvoked(times = 2)
-
-      awaitComplete()
+      storage.savedState.observedTmdbSession.first() shouldBe TmdbSessionFactory.full()
+      authRepository.verifyClearTMDBSessionInvoked(times = 2)
     }
   }
 
   @Test
   fun `test getAccountDetails from local storage with unknown remote error`() = runTest {
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val sessionStorage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockGetAccountDetails(
@@ -256,19 +203,14 @@ class GetAccountDetailsUseCaseTest {
         Result.failure<Exception>(AppException.Unknown()).toString(),
       )
 
-      assertThat(sessionStorage.sessionId).isEqualTo("session_id")
-
-      awaitComplete()
+      sessionStorage.sessionId shouldBe "sessionId"
     }
   }
 
   @Test
   fun `test getAccountDetails from local storage with unauthorised error clears data`() = runTest {
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
-    val sessionStorage = createSessionStorage(
-      sessionId = "session_id",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val sessionStorage = SessionStorageFactory.full()
 
     repository.mockGetAccountDetails(
       Result.failure(AppException.Unauthorized("Unauthorized")),
@@ -288,23 +230,8 @@ class GetAccountDetailsUseCaseTest {
       assertThat(awaitItem().toString()).isEqualTo(
         Result.failure<Exception>(SessionException.Unauthenticated()).toString(),
       )
-      awaitComplete()
 
-      assertThat(sessionStorage.sessionId).isNull()
-      assertThat(sessionStorage.encryptedStorage.accessToken).isNull()
-      assertThat(sessionStorage.encryptedStorage.tmdbAccountId).isNull()
-      authRepository.verifyClearTMDBAccountInvoked()
+      authRepository.verifyClearTMDBSessionInvoked()
     }
   }
-
-  private fun createSessionStorage(
-    sessionId: String? = null,
-    accessToken: AccessToken? = null,
-  ) = SessionStorage(
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      sessionId = sessionId,
-      accessToken = accessToken?.accessToken,
-      tmdbAccountId = accessToken?.accountId,
-    ),
-  )
 }

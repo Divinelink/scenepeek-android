@@ -1,7 +1,11 @@
 package com.divinelink.core.data.auth
 
 import app.cash.turbine.test
+import com.divinelink.core.datastore.auth.InitialSavedState
+import com.divinelink.core.datastore.auth.observedTmdbSession
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.jellyseerr.JellyseerrProfileFactory
+import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
 import com.divinelink.core.testing.storage.TestSavedStateStorage
 import io.kotest.matchers.shouldBe
@@ -128,5 +132,60 @@ class ProdAuthRepositoryTest {
     savedStateStorage.savedState.value.jellyseerrAuthCookies shouldBe mapOf(
       "account_2" to "test-cookie-value_2",
     )
+  }
+
+  @Test
+  fun `test set tmdb account`() = runTest {
+    savedStateStorage = TestSavedStateStorage(
+      tmdbAccount = null,
+    )
+    repository = ProdAuthRepository(savedStateStorage)
+
+
+    repository.tmdbAccount.test {
+      awaitItem() shouldBe null
+
+      repository.setTMDBAccount(AccountDetailsFactory.Pinkman())
+
+      awaitItem() shouldBe AccountDetailsFactory.Pinkman()
+    }
+  }
+
+  @Test
+  fun `test set tmdb session`() = runTest {
+    savedStateStorage = TestSavedStateStorage(
+      tmdbAccount = null,
+    )
+    repository = ProdAuthRepository(savedStateStorage)
+
+
+    savedStateStorage.observedTmdbSession.test {
+      awaitItem() shouldBe null
+
+      repository.setTMDBSession(TmdbSessionFactory.full())
+
+      awaitItem() shouldBe TmdbSessionFactory.full()
+    }
+  }
+
+  @Test
+  fun `test clear tmdb session`() = runTest {
+    savedStateStorage = TestSavedStateStorage(
+      tmdbAccount = AccountDetailsFactory.Pinkman(),
+      tmdbSession = TmdbSessionFactory.full(),
+    )
+    repository = ProdAuthRepository(savedStateStorage)
+
+
+    savedStateStorage.savedState.test {
+      awaitItem() shouldBe InitialSavedState.copy(
+        tmdbSession = TmdbSessionFactory.full(),
+        tmdbAccount = AccountDetailsFactory.Pinkman(),
+      )
+
+      repository.clearTMDBSession()
+
+      awaitItem() shouldBe InitialSavedState
+    }
   }
 }

@@ -10,7 +10,6 @@ dependencies {
   implementation(libs.datastore.core)
   implementation(libs.datastore.preferences)
   implementation(libs.datastore.preferences.core)
-  implementation(libs.encrypted.preferences)
   api(projects.core.model)
 
   implementation(projects.core.designsystem)

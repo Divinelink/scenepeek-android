@@ -7,6 +7,7 @@ import com.divinelink.core.datastore.auth.profilePermissions
 import com.divinelink.core.model.account.AccountDetails
 import com.divinelink.core.model.jellyseerr.JellyseerrProfile
 import com.divinelink.core.model.jellyseerr.permission.ProfilePermission
+import com.divinelink.core.model.session.TmdbSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -61,7 +62,11 @@ class ProdAuthRepository(private val savedStateStorage: SavedStateStorage) : Aut
     savedStateStorage.setTMDBAccount(accountDetails)
   }
 
-  override suspend fun clearTMDBAccount() {
-    savedStateStorage.clearTMDBAccount()
+  override suspend fun setTMDBSession(session: TmdbSession) {
+    savedStateStorage.setTMDBSession(session)
+  }
+
+  override suspend fun clearTMDBSession() {
+    savedStateStorage.clearTMDBSession()
   }
 }

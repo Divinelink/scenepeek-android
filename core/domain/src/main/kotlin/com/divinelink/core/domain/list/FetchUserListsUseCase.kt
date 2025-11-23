@@ -5,6 +5,7 @@ import com.divinelink.core.commons.domain.FlowUseCase
 import com.divinelink.core.data.auth.AuthRepository
 import com.divinelink.core.data.list.ListRepository
 import com.divinelink.core.datastore.SessionStorage
+import com.divinelink.core.datastore.auth.accessToken
 import com.divinelink.core.model.PaginationData
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.list.ListItem
@@ -33,7 +34,7 @@ class FetchUserListsUseCase(
           send(Result.failure(SessionException.Unauthenticated()))
         } else {
           val v4AccountId = storage.accountId
-          val accessToken = storage.encryptedStorage.accessToken
+          val accessToken = storage.savedState.accessToken
 
           if (v4AccountId == null || accessToken == null) {
             send(Result.failure(SessionException.Unauthenticated()))

@@ -1,13 +1,11 @@
 package com.divinelink.scenepeek.details.domain.usecase
 
 import com.divinelink.core.datastore.SessionStorage
-import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
 import com.divinelink.core.model.media.MediaType
-import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestDetailsRepository
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.divinelink.feature.details.media.usecase.AddToWatchlistParameters
 import com.divinelink.feature.details.media.usecase.AddToWatchlistUseCase
 import com.google.common.truth.Truth.assertThat
@@ -33,7 +31,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with no account id cannot add to watchlist`() = runTest {
-    sessionStorage = createSessionStorage(accountId = null, sessionId = "123")
+    sessionStorage = SessionStorageFactory.empty()
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -55,7 +53,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with no session id cannot add to watchlist`() = runTest {
-    sessionStorage = createSessionStorage(sessionId = null, accountId = "123")
+    sessionStorage = SessionStorageFactory.empty()
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -77,7 +75,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with account and session id can add to watchlist for movie`() = runTest {
-    sessionStorage = createSessionStorage(accountId = "123", sessionId = "123")
+    sessionStorage = SessionStorageFactory.full()
 
     repository.mockAddToWatchlist(
       response = Result.success(Unit),
@@ -102,11 +100,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test user with account and session id can add to watchlist for tv show`() = runTest {
-    sessionStorage = createSessionStorage(
-      accountId = "123",
-      sessionId = "123",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    sessionStorage = SessionStorageFactory.full()
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -131,7 +125,7 @@ class AddToWatchlistUseCaseTest {
 
   @Test
   fun `test invalid media type throws exception`() = runTest {
-    sessionStorage = createSessionStorage(accountId = "123", sessionId = "123")
+    sessionStorage = SessionStorageFactory.full()
 
     val useCase = AddToWatchlistUseCase(
       sessionStorage = sessionStorage,
@@ -150,16 +144,4 @@ class AddToWatchlistUseCaseTest {
     assertThat(result.isFailure).isTrue()
     assertThat(result.exceptionOrNull()).isInstanceOf(Exception::class.java)
   }
-
-  private fun createSessionStorage(
-    accountId: String?,
-    sessionId: String?,
-    accessToken: AccessToken? = null,
-  ) = SessionStorage(
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      sessionId = sessionId,
-      accessToken = accessToken?.accessToken,
-      tmdbAccountId = accountId,
-    ),
-  )
 }

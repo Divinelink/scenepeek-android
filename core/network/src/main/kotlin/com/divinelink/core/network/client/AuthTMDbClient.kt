@@ -1,6 +1,7 @@
 package com.divinelink.core.network.client
 
-import com.divinelink.core.datastore.EncryptedStorage
+import com.divinelink.core.datastore.auth.SavedStateStorage
+import com.divinelink.core.datastore.auth.accessToken
 import com.divinelink.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -11,7 +12,7 @@ import io.ktor.http.contentType
 
 class AuthTMDbClient(
   engine: HttpClientEngine,
-  encryptedStorage: EncryptedStorage,
+  encryptedStorage: SavedStateStorage,
 ) {
   val tmdbUrl = BuildConfig.TMDB_BASE_URL
 

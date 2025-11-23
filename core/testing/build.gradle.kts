@@ -48,5 +48,4 @@ dependencies {
   api(libs.datastore.core)
   api(libs.datastore.preferences)
   api(libs.datastore.preferences.core)
-  api(libs.encrypted.preferences)
 }

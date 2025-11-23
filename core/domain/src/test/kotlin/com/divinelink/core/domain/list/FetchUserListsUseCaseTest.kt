@@ -1,17 +1,14 @@
 package com.divinelink.core.domain.list
 
 import app.cash.turbine.test
-import com.divinelink.core.datastore.SessionStorage
 import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
 import com.divinelink.core.fixtures.model.list.ListItemFactory
-import com.divinelink.core.fixtures.model.session.AccessTokenFactory
 import com.divinelink.core.model.exception.SessionException
-import com.divinelink.core.model.session.AccessToken
 import com.divinelink.core.network.Resource
 import com.divinelink.core.testing.MainDispatcherRule
+import com.divinelink.core.testing.factories.storage.SessionStorageFactory
 import com.divinelink.core.testing.repository.TestAuthRepository
 import com.divinelink.core.testing.repository.TestListRepository
-import com.divinelink.core.testing.storage.FakeEncryptedPreferenceStorage
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -29,10 +26,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists when account storage account id is null emits unauthenticated`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
     authRepository.mockTMDBAccount(null)
 
     val useCase = FetchUserListsUseCase(
@@ -58,10 +52,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists when observers to accountId changes`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(flowOf(null, AccountDetailsFactory.Pinkman()))
     repository.mockFetchUserLists(
@@ -94,10 +85,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists with loading resource`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -123,10 +111,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists with loading resource with null content`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -151,10 +136,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists with success resource with null content`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -179,10 +161,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists when v4 account id is null`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = null,
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.empty()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -213,10 +192,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists when access token is null`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = null,
-    )
+    val storage = SessionStorageFactory.empty()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -247,10 +223,7 @@ class FetchUserListsUseCaseTest {
 
   @Test
   fun `test fetch lists with failure`() = runTest {
-    val storage = createSessionStorage(
-      v4AccountId = "1234",
-      accessToken = AccessTokenFactory.valid(),
-    )
+    val storage = SessionStorageFactory.full()
 
     authRepository.mockTMDBAccount(AccountDetailsFactory.Pinkman())
     repository.mockFetchUserLists(
@@ -276,15 +249,4 @@ class FetchUserListsUseCaseTest {
       awaitComplete()
     }
   }
-
-  private fun createSessionStorage(
-    v4AccountId: String?,
-    accessToken: AccessToken? = null,
-  ) = SessionStorage(
-    encryptedStorage = FakeEncryptedPreferenceStorage(
-      sessionId = "123",
-      accessToken = accessToken?.accessToken,
-      tmdbAccountId = v4AccountId,
-    ),
-  )
 }

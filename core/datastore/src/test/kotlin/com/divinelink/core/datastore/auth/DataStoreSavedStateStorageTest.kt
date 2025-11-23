@@ -1,6 +1,8 @@
 package com.divinelink.core.datastore.auth
 
 import app.cash.turbine.test
+import com.divinelink.core.fixtures.model.account.AccountDetailsFactory
+import com.divinelink.core.fixtures.model.session.TmdbSessionFactory
 import com.divinelink.core.testing.datastore.TestDatastoreFactory
 import com.divinelink.core.testing.factories.core.commons.JsonFactory
 import com.divinelink.core.testing.factories.datastore.auth.JellyseerrAccountFactory
@@ -92,6 +94,49 @@ class DataStoreSavedStateStorageTest {
     dataStore.savedState.test {
       awaitItem() shouldBe InitialSavedState
       dataStore.clearSelectedJellyseerrAccount()
+    }
+  }
+
+  @Test
+  fun `test set TMDB account`() = runTest {
+    dataStore.savedState.test {
+      awaitItem() shouldBe InitialSavedState
+      dataStore.setTMDBAccount(AccountDetailsFactory.Pinkman())
+      awaitItem() shouldBe InitialSavedState.copy(
+        tmdbAccount = AccountDetailsFactory.Pinkman(),
+      )
+    }
+  }
+
+  @Test
+  fun `test set TMDB session`() = runTest {
+    dataStore.savedState.test {
+      awaitItem() shouldBe InitialSavedState
+      dataStore.setTMDBSession(TmdbSessionFactory.full())
+      awaitItem() shouldBe InitialSavedState.copy(
+        tmdbSession = TmdbSessionFactory.full(),
+      )
+    }
+  }
+
+  @Test
+  fun `test clear TMDB session`() = runTest {
+    dataStore.savedState.test {
+      awaitItem() shouldBe InitialSavedState
+
+      dataStore.setTMDBAccount(AccountDetailsFactory.Pinkman())
+      awaitItem() shouldBe InitialSavedState.copy(
+        tmdbAccount = AccountDetailsFactory.Pinkman(),
+      )
+
+      dataStore.setTMDBSession(TmdbSessionFactory.full())
+      awaitItem() shouldBe InitialSavedState.copy(
+        tmdbAccount = AccountDetailsFactory.Pinkman(),
+        tmdbSession = TmdbSessionFactory.full(),
+      )
+
+      dataStore.clearTMDBSession()
+      awaitItem() shouldBe InitialSavedState
     }
   }
 }
